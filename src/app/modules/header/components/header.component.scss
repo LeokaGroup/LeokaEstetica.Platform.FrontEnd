@@ -1,0 +1,21 @@
+ .header {
+   padding: 10px;
+   align-items: center;
+   position: absolute;
+   z-index: 2;
+   top: 0;
+ }
+
+ .menu-item {
+   padding: 0 10px;
+   position: relative;
+   z-index: 1;
+ }
+
+ .btn-header {
+   background: #5664d2
+ }
+
+ .navbar-brand {
+   margin-right: 100px;
+ }
