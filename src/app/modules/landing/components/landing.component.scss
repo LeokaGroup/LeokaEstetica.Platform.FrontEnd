@@ -7,29 +7,10 @@
   width: 100%;
   margin-top: -5px;
   padding-top: -5px;
-  // position: relative; 
 
   img {
     opacity: 0.1;
   }
-}
-
-.header {
-  padding: 10px;
-  align-items: center;
-  position: absolute;
-  z-index: 2;
-  top: 0; 
-}
-
-.menu-item {
-  padding: 0 10px; 
-  position: relative;
-  z-index: 1;
-}
-
-.btn-header {
-  background: #5664d2
 }
 
 .fon-content {
@@ -43,10 +24,6 @@
   }
 
   .fon-text {
-    color: rgba(255,255,255,.5);
+    color: rgba(255, 255, 255, .5);
   }
-}
-
-.navbar-brand {
-  margin-right: 100px;
 }
