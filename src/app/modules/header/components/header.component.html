@@ -4,11 +4,9 @@
       <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
       <div class="header-buttons d-flex">
-        <div class="menu-item">Элемент 1</div>
-        <div class="menu-item">Элемент 2</div>
-        <div class="menu-item">Элемент 3</div>
-        <div class="menu-item">Элемент 4</div>
-        <div class="menu-item">Элемент 5</div>
+        <div *ngFor="let item of headerData$.value">
+            <div class="menu-item">{{item.menuItemTitle}}</div>
+        </div>        
       </div>
     </div>
   

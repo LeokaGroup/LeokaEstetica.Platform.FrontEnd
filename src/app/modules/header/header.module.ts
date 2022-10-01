@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from './components/header.component';
 import { HeaderRoutingModule } from './header-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
@@ -12,7 +13,8 @@ import { HeaderRoutingModule } from './header-routing.module';
     imports: [
         CommonModule,
         FormsModule,
-        HeaderRoutingModule
+        HeaderRoutingModule,
+        HttpClientModule
     ],
 
     exports: [],
