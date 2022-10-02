@@ -20,6 +20,10 @@ export class HeaderComponent implements OnInit {
         await this.getHeaderItemsAsync();
     }
 
+    /**
+     * Функция получит список элементов хидера.
+     * @returns - Список элементов хидера.
+     */
     private async getHeaderItemsAsync() {
         (await this._headerService.getHeaderItemsAsync())
         .subscribe(_ => {
