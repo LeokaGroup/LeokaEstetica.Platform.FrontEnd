@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { forkJoin } from "rxjs";
 import { LandingService } from "../services/landing.service";
 
 @Component({
@@ -12,12 +13,16 @@ import { LandingService } from "../services/landing.service";
  */
 export class LandingComponent implements OnInit {
     public readonly fonData$ = this._landingService.fonData$;
+    public readonly platformOffers$ = this._landingService.platformOffers$;
 
     constructor(private readonly _landingService: LandingService) {
     }
 
     public async ngOnInit() {
-        await this.getFonLandingStartAsync();
+        forkJoin([
+            await this.getFonLandingStartAsync(),
+            await this.getPlatformOffersAsync()
+        ]).subscribe();        
     };
 
     /**
@@ -28,6 +33,17 @@ export class LandingComponent implements OnInit {
         (await this._landingService.getFonLandingStartAsync())
         .subscribe(_ => {
             console.log("Данные фона лендинга: ", this.fonData$.value);
+        });
+    };
+
+    /**
+     * Функция получает данные предложений платформы.
+     * @returns - Данные предложений платформы.
+     */
+    private async getPlatformOffersAsync() {
+        (await this._landingService.getPlatformOffersAsync())
+        .subscribe(_ => {
+            console.log("Список предложений платформы: ", this.platformOffers$.value);
         });
     };
 }

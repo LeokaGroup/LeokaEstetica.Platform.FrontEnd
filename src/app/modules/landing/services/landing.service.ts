@@ -6,6 +6,7 @@ import { API_URL } from 'src/app/core/core-urls/api-urls';
 @Injectable()
 export class LandingService {
     public fonData$ = new BehaviorSubject<any>(null);
+    public platformOffers$ = new BehaviorSubject<any>([]);
 
     constructor(private readonly http: HttpClient) {
 
@@ -18,6 +19,17 @@ export class LandingService {
     public async getFonLandingStartAsync() {
         return await this.http.get(API_URL.apiUrl + "/landing/fon/start").pipe(
             tap(data => this.fonData$.next(data)
+            )
+        );
+    };
+
+    /**
+     * Функция получает данные предложений платформы.
+     * @returns - Данные предложений платформы.
+     */
+    public async getPlatformOffersAsync() {
+        return await this.http.get(API_URL.apiUrl + "/landing/offers").pipe(
+            tap(data => this.platformOffers$.next(data)
             )
         );
     };
