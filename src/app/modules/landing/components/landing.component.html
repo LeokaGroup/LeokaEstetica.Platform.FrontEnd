@@ -24,4 +24,10 @@
   </div>
 
   <p class="col-lg-12 d-flex justify-content-center">{{platformOffers$.value.offerSubTitle}}</p>
+
+  <div class="platform-offers col-lg-12">
+    <div *ngFor="let item of platformOffers$.value.platformOfferItems">
+      <div class="col-lg-4 offer-item">{{item.itemText}}</div>
+    </div>
+  </div>
 </div>

@@ -27,3 +27,14 @@
     color: rgba(255, 255, 255, .5);
   }
 }
+
+.platform-offers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .offer-item {
+    width: 300px;
+    margin: 30px 20px 0px 0px;
+  }
+}
