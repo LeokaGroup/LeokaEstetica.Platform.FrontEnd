@@ -1,8 +1,11 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgxLoadingModule } from 'ngx-loading';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { NetworkInterceptor } from './core/interceptors/network-interceptor';
+import { NetworkService } from './core/interceptors/network.service';
 import { HeaderComponent } from './modules/header/components/header.component';
 import { HeaderService } from './modules/header/services/header.service';
 import { LandingService } from './modules/landing/services/landing.service';
@@ -16,12 +19,24 @@ import { LandingService } from './modules/landing/services/landing.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule    
+    HttpClientModule,
+    NgxLoadingModule.forRoot({
+      primaryColour: '#7C3AED',
+      secondaryColour: '#7C3AED',
+      tertiaryColour: '#7C3AED',
+      fullScreenBackdrop: true
+    })
   ],
 
   providers: [
     HeaderService,
-    LandingService
+    LandingService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: NetworkInterceptor,
+      multi: true
+    },
+    NetworkService
   ],
 
   bootstrap: [AppComponent]
