@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NetworkService } from './core/interceptors/network.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'LeokaEstetica.Platform.FrontEnd';
+  public loading$ = this.networkService.loading$;
+
+  constructor(public networkService: NetworkService) { }
 }

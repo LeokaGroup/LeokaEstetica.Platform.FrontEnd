@@ -20,6 +20,8 @@
     "@angular/router": "~13.3.0",
     "bootstrap": "^5.2.1",
     "jquery": "^3.6.1",
+    "ngx-loading": "^13.0.0",
+    "ngx-loading-x": "^1.0.3",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
