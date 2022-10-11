@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignUpComponent } from './signup/components/signup.component';
 import { UserRoutingModule } from './user-routing.module';
+import { UserService } from './signup/services/user.service';
 
 @NgModule({
     declarations: [
@@ -12,13 +13,14 @@ import { UserRoutingModule } from './user-routing.module';
     imports: [
         CommonModule,
         FormsModule,
-        UserRoutingModule
+        UserRoutingModule,
+        ReactiveFormsModule
     ],
 
     exports: [],
 
     providers: [
-        
+        UserService
     ]
 })
 
