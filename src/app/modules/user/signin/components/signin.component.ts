@@ -3,15 +3,15 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { UserService } from "../../services/user.service";
 
 @Component({
-    selector: "signup",
-    templateUrl: "./signup.component.html",
-    styleUrls: ["./signup.component.scss"]
+    selector: "signin",
+    templateUrl: "./signin.component.html",
+    styleUrls: ["./signin.component.scss"]
 })
 
 /**
- * Класс компонента формы регистрации пользователя.
+ * Класс компонента формы авторизации пользователя.
  */
-export class SignUpComponent implements OnInit {
+export class SignInComponent implements OnInit {
     constructor(private readonly _userService: UserService) { }
 
     formSignUp: FormGroup = new FormGroup({
@@ -33,14 +33,17 @@ export class SignUpComponent implements OnInit {
 
     };
 
-   /**
+     /**
      * Функция регистрирует пользователя.     
      * @returns - Данные пользователя.
      */
-    public async onSendFormSignUpAsync() {    
-        (await this._userService.signUpAsync(this.formSignUp.value.email, this.formSignUp.value.password))
+      public async onSendFormSignInAsync() {    
+        (await this._userService.signInAsync(this.formSignUp.value.email, this.formSignUp.value.password))
         .subscribe(_ => {
-            console.log("Новый пользователь: ", this.userData$.value);
+            console.log("Авторизовались: ", this.userData$.value);
+            if (this.userData$.value.isSuccess) {
+                localStorage["token"] = this.userData$.value.token;
+            }
         });
     };
 }

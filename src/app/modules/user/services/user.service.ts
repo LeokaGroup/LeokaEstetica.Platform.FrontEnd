@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
-import { ConfirmInput } from '../models/input/confirm-input';
-import { SignUpInput } from '../models/input/signup-input';
+import { ConfirmInput } from '../signup/models/input/confirm-input';
+import { SignUpInput } from '../signup/models/input/signup-input';
 
 /**
  * Класс сервиса работы с пользователями.
@@ -30,6 +30,23 @@ export class UserService {
         modelInput.password = password;
 
         return await this._http.post(API_URL.apiUrl + "/user/signup", modelInput).pipe(
+            tap(data => this.userData$.next(data)
+            )
+        );
+    };
+
+    /**
+     * Функция авторизует пользователя.
+     * @param email - Email.
+     * @param password - Пароль.
+     * @returns - Данные пользователя.
+     */
+     public async signInAsync(email: string, password: string) {
+        let modelInput= new SignUpInput();
+        modelInput.email = email;
+        modelInput.password = password;
+
+        return await this._http.post(API_URL.apiUrl + "/user/signin", modelInput).pipe(
             tap(data => this.userData$.next(data)
             )
         );
