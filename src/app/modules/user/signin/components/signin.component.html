@@ -1,10 +1,10 @@
-  <form [formGroup]="formSignUp" class="section-1-container section-container">
+<form [formGroup]="formSignUp" class="section-1-container section-container">
     <div class="container">
       <div class="row">
         <div class="col-10 offset-1 col-lg-8 offset-lg-2 div-wrapper d-flex justify-content-center align-items-center">
           <div class="div-to-align">
-            <div class="row justify-content-center form-signup">
-              <h3 class="text-center title-text">Регистрация</h3>
+            <div class="row justify-content-center form-signin">
+              <h3 class="text-center title-text">Вход</h3>
 
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email</label>
@@ -12,7 +12,6 @@
                         class="input-control" 
                         aria-describedby="emailHelp" 
                         formControlName="email">
-                <div id="emailHelp" class="form-text">Мы никогда не будем делиться вашей электронной почтой с кем-либо еще.</div>
               </div>
 
               <div class="mb-3">
@@ -23,10 +22,14 @@
                         formControlName="password">
               </div>
 
+              <div class="mb-3 form-check">
+                <a href="" class="form-check-label" for="exampleCheck1">Забыли пароль?</a>
+              </div>
+
               <button type="submit" 
                       class="btn btn-primary button-action-pur-control" 
-                      (click)="onSendFormSignUpAsync()">
-                Регистрация
+                      (click)="onSendFormSignInAsync()">
+                Войти
               </button>
             </div>
           </div>

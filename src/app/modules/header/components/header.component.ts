@@ -39,4 +39,11 @@ export class HeaderComponent implements OnInit {
     public onRouteSignUp() {
         this._router.navigate(["/user/signup"]);
     };
+
+    /**
+     * Функция редиректит на форму авторизации.
+     */
+    public onRouteSignIn() {
+        this._router.navigate(["/user/signin"]);
+    };
 }
