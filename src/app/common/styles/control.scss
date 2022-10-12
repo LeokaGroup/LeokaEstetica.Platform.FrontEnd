@@ -1,0 +1,74 @@
+.input-control {
+    color: #403866;
+    line-height: 1.2;
+    font-size: 18px;
+    display: block;
+    width: 100%;
+    background-color: #e6e6e6;
+    height: 62px;
+    padding: 0 20px 0 38px;
+    outline: none;
+    border: none;
+}
+
+.button-action-pur-control {
+    background-color: #827ffe;
+    width: 100%;
+    height: 62px;
+    font-size: 16px;
+    color: #fff;
+    line-height: 1.2;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    border-radius: 3px;
+    font-family: Ubuntu-Bold;
+    outline: none;
+    border: none;
+
+    &:focus {
+        background-color: #827ffe;
+    }
+
+    &:hover {
+        background-color: #827ffe;
+    }
+}
+
+.button-action-auth-control {
+    background-color: #827ffe;
+    // width: 100%;
+    // height: 62px;
+    font-size: 16px;
+    color: #fff;
+    // line-height: 1.2;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // padding: 0 20px;
+    border-radius: 3px;
+    font-family: Ubuntu-Bold;
+    outline: none;
+    border: none;
+
+    &:focus {
+        background-color: #827ffe;
+    }
+
+    &:hover {
+        background-color: #827ffe;
+    }
+}
+
+.title-text {
+    font-family: Ubuntu-Bold;
+    font-size: 30px;
+    color: #403866;
+    line-height: 1.2;
+    text-transform: uppercase;
+    text-align: center;
+    width: 100%;
+}

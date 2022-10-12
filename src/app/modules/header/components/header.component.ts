@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { HeaderService } from "../services/header.service";
 
 @Component({
@@ -13,7 +14,8 @@ import { HeaderService } from "../services/header.service";
 export class HeaderComponent implements OnInit {
     public readonly headerData$ = this._headerService.headerData$;
 
-    constructor(private readonly _headerService: HeaderService) {
+    constructor(private readonly _headerService: HeaderService,
+        private readonly _router: Router) {
     }
 
     public async ngOnInit() {
@@ -29,5 +31,12 @@ export class HeaderComponent implements OnInit {
         .subscribe(_ => {
             console.log("Данные хидера: ", this.headerData$.value);
         });
+    };
+
+    /**
+     * Функция редиректит на форму регистрации.
+     */
+    public onRouteSignUp() {
+        this._router.navigate(["/user/signup"]);
     };
 }
