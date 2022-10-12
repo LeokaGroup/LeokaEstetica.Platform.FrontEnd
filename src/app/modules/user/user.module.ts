@@ -4,10 +4,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignUpComponent } from './signup/components/signup.component';
 import { UserRoutingModule } from './user-routing.module';
 import { UserService } from './signup/services/user.service';
+import { ConfirmComponent } from './confirm-account/confirm-account.component';
 
 @NgModule({
     declarations: [
-        SignUpComponent
+        SignUpComponent,
+        ConfirmComponent
     ],
 
     imports: [

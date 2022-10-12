@@ -33,6 +33,10 @@ export class SignUpComponent implements OnInit {
 
     };
 
+   /**
+     * Функция регистрирует пользователя.     
+     * @returns - Данные пользователя.
+     */
     public async sendFormSignUpAsync() {    
         (await this._userService.signUpAsync(this.formSignUp.value.email, this.formSignUp.value.password))
         .subscribe(_ => {

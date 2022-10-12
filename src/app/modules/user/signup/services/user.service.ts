@@ -2,16 +2,21 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
-import { SignUpInput } from '../models/signup-input';
+import { ConfirmInput } from '../models/input/confirm-input';
+import { SignUpInput } from '../models/input/signup-input';
 
+/**
+ * Класс сервиса работы с пользователями.
+ */
 @Injectable()
 export class UserService {    
-    constructor(private readonly http: HttpClient) {
+    constructor(private readonly _http: HttpClient) {
 
     }
 
     public headerData$ = new BehaviorSubject<any>(null);
     public userData$ = new BehaviorSubject<any>(null);
+    public confirmAccount$ = new BehaviorSubject<any>(null);
 
     /**
      * Функция регистрирует пользователя.
@@ -24,8 +29,23 @@ export class UserService {
         modelInput.email = email;
         modelInput.password = password;
 
-        return await this.http.post(API_URL.apiUrl + "/user/signup", modelInput).pipe(
+        return await this._http.post(API_URL.apiUrl + "/user/signup", modelInput).pipe(
             tap(data => this.userData$.next(data)
+            )
+        );
+    };
+
+    /**
+     * Функция подтверждает аккаунт по коду.   
+     * @param confirmEmailCode - Код подтверждения.
+     * @returns - Статус подтверждения.
+     */
+    public async confirmEmailCodeAsync(confirmAccountCode: string) {
+        let modelInput= new ConfirmInput();
+        modelInput.ConfirmAccountCode = confirmAccountCode;
+
+        return await this._http.patch(API_URL.apiUrl + "/user/account/confirm?code=", modelInput).pipe(
+            tap(data => this.confirmAccount$.next(data)
             )
         );
     };
