@@ -1,5 +1,6 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { Observable, throwError } from "rxjs";
 import { catchError, finalize } from "rxjs/operators";
 import { NetworkService } from "./network.service";
@@ -7,7 +8,8 @@ import { NetworkService } from "./network.service";
 // Класс перехватчика api-запросов.
 @Injectable()
 export class NetworkInterceptor implements HttpInterceptor {
-    constructor(private loader: NetworkService) {
+    constructor(private readonly _loader: NetworkService,
+        private readonly _router: Router) {
 
     }
 
@@ -26,16 +28,20 @@ export class NetworkInterceptor implements HttpInterceptor {
         // req = req.clone({ headers: req.headers.set('Content-Type', 'multipart/form-data') });
         // req = req.clone({ headers: req.headers.set('Content-Type', 'multipart/form-data;boundary="boundary"') });
 
-        this.loader.setBusy(true);
+        this._loader.setBusy(true);
 
         return next.handle(req).pipe(
             catchError((response: HttpErrorResponse) => {
-                // this.commonService.routeToStart(response);
+                if (response.status == 403) {
+                    localStorage.clear();
+                    this._router.navigate(["/user/signin"]);
+                }
+
                 return throwError(response.message);
             }),
 
             finalize(() => {
-                this.loader.setBusy(false);
+                this._loader.setBusy(false);
             }));
     }
 }

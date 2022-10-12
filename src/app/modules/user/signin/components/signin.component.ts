@@ -41,6 +41,9 @@ export class SignInComponent implements OnInit {
         (await this._userService.signInAsync(this.formSignUp.value.email, this.formSignUp.value.password))
         .subscribe(_ => {
             console.log("Авторизовались: ", this.userData$.value);
+            if (this.userData$.value.isSuccess) {
+                localStorage["token"] = this.userData$.value.token;
+            }
         });
     };
 }
