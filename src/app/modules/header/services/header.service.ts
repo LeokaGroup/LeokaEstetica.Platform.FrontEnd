@@ -21,4 +21,32 @@ export class HeaderService {
             )
         );
     };
+
+    // Функция обновит токена пользователя.
+    public async refreshTokenAsync() {
+        setInterval(async () => {
+            if (!localStorage["token"]) {
+                clearInterval();
+                return;
+            }
+
+            try {
+                await this.http.get(API_URL.apiUrl.concat("/user/token"))
+                    .subscribe({
+                        next: (response: any) => {
+                            localStorage["token"] = response.token;
+                            console.log("refresh token", response);
+                        },
+
+                        error: (err) => {
+                            console.log("error refresh token", err);
+                        }
+                    });
+            }
+
+            catch (e: any) {
+                throw new Error(e);
+            }
+        }, 3600000); // Каждые 60 мин. 
+    }; 
 }

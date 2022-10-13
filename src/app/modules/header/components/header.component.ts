@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit {
 
     public async ngOnInit() {
         await this.getHeaderItemsAsync();
+        await this._headerService.refreshTokenAsync();
     }
 
     /**
