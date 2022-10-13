@@ -10,6 +10,11 @@ const routes: Routes = [
   {
     path: "user",
     loadChildren: () => import('./modules/user/user.module').then(m => m.UserModule)
+  },
+
+  {
+    path: "profile",
+    loadChildren: () => import('./modules/backoffice/backoffice.module').then(m => m.BackOfficeModule)
   }
 ];
 
