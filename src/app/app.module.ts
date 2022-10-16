@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NetworkInterceptor } from './core/interceptors/network-interceptor';
 import { NetworkService } from './core/interceptors/network.service';
+import { BackOfficeService } from './modules/backoffice/services/backoffice.service';
 import { HeaderComponent } from './modules/header/components/header.component';
 import { HeaderService } from './modules/header/services/header.service';
 import { LandingService } from './modules/landing/services/landing.service';
@@ -31,6 +32,7 @@ import { LandingService } from './modules/landing/services/landing.service';
   providers: [
     HeaderService,
     LandingService,
+    BackOfficeService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: NetworkInterceptor,
