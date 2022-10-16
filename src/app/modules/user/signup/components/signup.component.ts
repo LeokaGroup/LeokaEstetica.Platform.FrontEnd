@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 import { UserService } from "../../services/user.service";
 
 @Component({
@@ -12,7 +13,8 @@ import { UserService } from "../../services/user.service";
  * Класс компонента формы регистрации пользователя.
  */
 export class SignUpComponent implements OnInit {
-    constructor(private readonly _userService: UserService) { }
+    constructor(private readonly _userService: UserService,
+        private readonly _router: Router) { }
 
     formSignUp: FormGroup = new FormGroup({
 
@@ -41,6 +43,7 @@ export class SignUpComponent implements OnInit {
         (await this._userService.signUpAsync(this.formSignUp.value.email, this.formSignUp.value.password))
         .subscribe(_ => {
             console.log("Новый пользователь: ", this.userData$.value);
+            this._router.navigate(["/user/signin"]);
         });
     };
 }

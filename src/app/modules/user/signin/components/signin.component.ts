@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 import { UserService } from "../../services/user.service";
 
 @Component({
@@ -12,7 +13,8 @@ import { UserService } from "../../services/user.service";
  * Класс компонента формы авторизации пользователя.
  */
 export class SignInComponent implements OnInit {
-    constructor(private readonly _userService: UserService) { }
+    constructor(private readonly _userService: UserService,
+        private readonly _router: Router) { }
 
     formSignUp: FormGroup = new FormGroup({
 
@@ -43,6 +45,7 @@ export class SignInComponent implements OnInit {
             console.log("Авторизовались: ", this.userData$.value);
             if (this.userData$.value.isSuccess) {
                 localStorage["token"] = this.userData$.value.token;
+                this._router.navigate(["/profile/aboutme"]);
             }
         });
     };
