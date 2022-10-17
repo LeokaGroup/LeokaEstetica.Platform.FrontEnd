@@ -1,11 +1,15 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxLoadingModule } from 'ngx-loading';
+import { SlideMenuModule } from 'primeng/slidemenu';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NetworkInterceptor } from './core/interceptors/network-interceptor';
 import { NetworkService } from './core/interceptors/network.service';
+import { BackOfficeModule } from './modules/backoffice/backoffice.module';
+import { LeftMenuComponent } from './modules/backoffice/left-menu/components/left-menu.component';
 import { BackOfficeService } from './modules/backoffice/services/backoffice.service';
 import { HeaderComponent } from './modules/header/components/header.component';
 import { HeaderService } from './modules/header/services/header.service';
@@ -14,7 +18,8 @@ import { LandingService } from './modules/landing/services/landing.service';
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent
+    HeaderComponent,
+    LeftMenuComponent
   ],
 
   imports: [
@@ -26,7 +31,10 @@ import { LandingService } from './modules/landing/services/landing.service';
       secondaryColour: '#7C3AED',
       tertiaryColour: '#7C3AED',
       fullScreenBackdrop: true
-    })
+    }),
+    BackOfficeModule,
+    BrowserAnimationsModule,
+    SlideMenuModule
   ],
 
   providers: [

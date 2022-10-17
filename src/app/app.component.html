@@ -1,3 +1,4 @@
 <ngx-loading [show]="loading$.value"></ngx-loading>
 <header></header>
+<left-menu *ngIf="isVisibleProfileMenu"></left-menu>
 <router-outlet></router-outlet>

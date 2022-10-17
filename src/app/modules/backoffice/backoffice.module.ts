@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BackOfficeRoutingModule } from './backoffice-routing.module';
 import { AboutmeComponent } from './aboutme/components/aboutme.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -14,7 +14,7 @@ import { AboutmeComponent } from './aboutme/components/aboutme.component';
         CommonModule,
         FormsModule,
         BackOfficeRoutingModule,
-        HttpClientModule
+        HttpClientModule                
     ],
 
     exports: [],
