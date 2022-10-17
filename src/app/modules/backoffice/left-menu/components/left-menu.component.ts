@@ -16,30 +16,47 @@ export class LeftMenuComponent implements OnInit {
 
     items = [
         {
-            label: 'File',
-            items: [{
-                    label: 'New', 
-                    icon: 'pi pi-fw pi-plus',
-                    items: [
-                        {label: 'Project'},
-                        {label: 'Other'},
-                    ]
-                },
-                {label: 'Open'},
-                {label: 'Quit'}
+            label: "Анкета",
+            items: [
+                {label: "Просмотр анкеты"},
+                {label: "Изменить анкету"},
+                {label: "Удалить анкету"}
             ]
         },
         {
-            label: 'Edit',
-            icon: 'pi pi-fw pi-pencil',
+            label: "Мои проекты",
             items: [
-                {label: 'Delete', icon: 'pi pi-fw pi-trash'},
-                {label: 'Refresh', icon: 'pi pi-fw pi-refresh'}
+                {label: "Мои проекты"},
+                {label: "Проекты в архиве"}
             ]
+        },
+        {
+            label: "Команды"
+        },
+        {
+            label: "Приглашения"
+        },
+        {
+            label: "Баланс"
+        },
+        {
+            label: "Сообщения"
+        },
+        {
+            label: "Подписки"
+        },
+        {
+            label: "Тарифы"
+        },
+        {
+            label: "Настройки"
+        },
+        {
+            label: "Выйти"
         }
     ];
 
     public async ngOnInit() {
-
+        console.log(this.items);
     }
 }
