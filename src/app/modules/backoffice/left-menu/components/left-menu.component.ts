@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { BackOfficeService } from "../../services/backoffice.service";
 
 @Component({
     selector: "left-menu",
@@ -11,10 +12,13 @@ import { Router } from "@angular/router";
  * Класс календаря пользователя.
  */
 export class LeftMenuComponent implements OnInit {
-    constructor(private readonly _router: Router) {
+    public readonly profileItems$ = this._backOfficeService.profileItems$;
+
+    constructor(private readonly _router: Router,
+        private readonly _backOfficeService: BackOfficeService) {
     }
 
-    items = [
+    aProfileMenuItems = [
         {
             label: "Анкета",
             items: [
@@ -31,7 +35,7 @@ export class LeftMenuComponent implements OnInit {
             ]
         },
         {
-            label: "Команды"
+            label: "Команды", sysName: "Test"
         },
         {
             label: "Приглашения"
@@ -57,6 +61,14 @@ export class LeftMenuComponent implements OnInit {
     ];
 
     public async ngOnInit() {
-        console.log(this.items);
+        console.log(this.aProfileMenuItems);
+        await this.getProfileInfoAsync();
     }
+
+    private async getProfileInfoAsync() {
+        (await this._backOfficeService.getProfileItemsAsync())
+        .subscribe(_ => {
+            console.log("Меню профиля: ", this.profileItems$.value);
+        });
+    };
 }

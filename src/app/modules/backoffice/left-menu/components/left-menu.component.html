@@ -1,6 +1,6 @@
 <div class="col-lg-12 d-flex block-profile">
     <div class="col-lg-4 profile-left-menu">
-        <p-slideMenu [model]="items" [viewportHeight]="650"></p-slideMenu>
+        <p-slideMenu [model]="this.profileItems$.value.profileMenuItems" [viewportHeight]="650"></p-slideMenu>
     </div>
 
     <div class="col-lg-6">
