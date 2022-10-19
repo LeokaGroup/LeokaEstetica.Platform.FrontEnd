@@ -1,0 +1,29 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
+
+.block-worksheet {
+    margin-right: 50px;
+}
+
+.space-top {
+    margin-top: 50px;
+}
+
+.input-control-worksheet {
+    width: 300px;
+    outline: none;
+
+    &:focus {
+        outline: none;
+        border: 1px solid #403866;
+        box-shadow: none;
+    }
+
+    &:hover {
+        border-color: #403866;
+    }
+}
+
+.worksheet-line {
+    margin-top: 30px;
+}

@@ -4,6 +4,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { BackOfficeRoutingModule } from './backoffice-routing.module';
 import { AboutmeComponent } from './aboutme/components/aboutme.component';
 import { FormsModule } from '@angular/forms';
+import { PanelModule } from 'primeng/panel';
+import { MenuModule } from 'primeng/menu';
+import { InputTextModule } from 'primeng/inputtext';
+import { CheckboxModule } from 'primeng/checkbox';
+import { InputMaskModule } from 'primeng/inputmask';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+
 
 @NgModule({
     declarations: [
@@ -14,7 +21,13 @@ import { FormsModule } from '@angular/forms';
         CommonModule,
         FormsModule,
         BackOfficeRoutingModule,
-        HttpClientModule                
+        HttpClientModule,
+        PanelModule,
+        MenuModule,
+        InputTextModule,
+        CheckboxModule,
+        InputMaskModule,
+        InputTextareaModule
     ],
 
     exports: [],
