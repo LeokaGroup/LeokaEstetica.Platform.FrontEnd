@@ -6,6 +6,7 @@ import { API_URL } from 'src/app/core/core-urls/api-urls';
 @Injectable()
 export class BackOfficeService {
     public profileInfoData$ = new BehaviorSubject<any>(null);
+    public profileItems$ = new BehaviorSubject<any>([]);
 
     constructor(private readonly http: HttpClient) {
 
@@ -21,4 +22,11 @@ export class BackOfficeService {
             )
         );
     };   
+
+    public async getProfileItemsAsync() {
+        return await this.http.get(API_URL.apiUrl + "/profile/menu").pipe(
+            tap(data => this.profileItems$.next(data)
+            )
+        );
+    };  
 }
