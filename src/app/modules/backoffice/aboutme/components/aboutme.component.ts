@@ -13,6 +13,9 @@ import { BackOfficeService } from "../../services/backoffice.service";
 export class AboutmeComponent implements OnInit {
     public readonly profileInfoData$ = this._backofficeService.profileInfoData$;
 
+    isShortFirstName: boolean = false;
+    phoneNumber: string = "";
+
     constructor(private readonly _backofficeService: BackOfficeService) {
     }
 
