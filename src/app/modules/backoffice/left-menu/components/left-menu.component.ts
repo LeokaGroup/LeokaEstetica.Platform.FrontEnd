@@ -20,6 +20,10 @@ export class LeftMenuComponent implements OnInit {
         await this.getProfileInfoAsync();
     }
 
+    /**
+     * Функция получает пункты меню профиля пользователя.
+     * @returns Список меню.
+     */
     private async getProfileInfoAsync() {
         (await this._backOfficeService.getProfileItemsAsync())
         .subscribe(_ => {

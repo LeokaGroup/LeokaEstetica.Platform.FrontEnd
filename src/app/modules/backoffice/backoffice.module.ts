@@ -10,6 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { PickListModule } from 'primeng/picklist';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
         InputTextModule,
         CheckboxModule,
         InputMaskModule,
-        InputTextareaModule
+        InputTextareaModule,
+        PickListModule
     ],
 
     exports: [],

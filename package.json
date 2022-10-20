@@ -11,6 +11,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^13.3.11",
+    "@angular/cdk": "^13.3.0",
     "@angular/common": "~13.3.0",
     "@angular/compiler": "~13.3.0",
     "@angular/core": "~13.3.0",
@@ -20,6 +21,7 @@
     "@angular/router": "~13.3.0",
     "bootstrap": "^5.2.1",
     "jquery": "^3.6.1",
+    "ng-drag-drop": "^5.0.0",
     "ngx-loading": "^13.0.0",
     "ngx-loading-x": "^1.0.3",
     "primeng": "^13.0.0",
