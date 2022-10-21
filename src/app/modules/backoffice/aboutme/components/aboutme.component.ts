@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { forkJoin } from "rxjs";
 import { BackOfficeService } from "../../services/backoffice.service";
 
 @Component({
@@ -12,6 +13,7 @@ import { BackOfficeService } from "../../services/backoffice.service";
  */
 export class AboutmeComponent implements OnInit {
     public readonly profileSkillsItems$ = this._backofficeService.profileSkillsItems$;
+    public readonly profileIntentsItems$ = this._backofficeService.profileIntentsItems$;
 
     isShortFirstName: boolean = false;
     phoneNumber: string = "";
@@ -21,7 +23,10 @@ export class AboutmeComponent implements OnInit {
     }
 
     public async ngOnInit() {
-        await this.getProfileSkillsAsync();
+        forkJoin([
+            await this.getProfileSkillsAsync(),
+            await this.getProfileIntentsAsync()
+        ]).subscribe();    
     }
 
      /**
@@ -32,6 +37,17 @@ export class AboutmeComponent implements OnInit {
         (await this._backofficeService.getProfileSkillsAsync())
         .subscribe(_ => {
             console.log("Список навыков для выбора: ", this.profileSkillsItems$.value);
+        });
+    };
+
+    /**
+     * Функция получает список целей на платформе для выбора пользователем.
+     * @returns - Список целей.
+     */
+    private async getProfileIntentsAsync() {
+        (await this._backofficeService.getProfileIntentsAsync())
+        .subscribe(_ => {
+            console.log("Список целей для выбора: ", this.profileIntentsItems$.value);
         });
     };
 }

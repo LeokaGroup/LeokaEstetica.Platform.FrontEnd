@@ -8,6 +8,7 @@ export class BackOfficeService {
     public profileInfoData$ = new BehaviorSubject<any>(null);
     public profileItems$ = new BehaviorSubject<any>([]);
     public profileSkillsItems$ = new BehaviorSubject<any>([]);
+    public profileIntentsItems$ = new BehaviorSubject<any>([]);
 
     constructor(private readonly http: HttpClient) {
 
@@ -42,6 +43,17 @@ export class BackOfficeService {
     public async getProfileSkillsAsync() {
         return await this.http.get(API_URL.apiUrl + "/profile/skills").pipe(
             tap(data => this.profileSkillsItems$.next(data)
+            )
+        );
+    }; 
+
+    /**
+     * Функция получает список целей на платформе для выбора пользователем.
+     * @returns - Список целей.
+     */
+    public async getProfileIntentsAsync() {
+        return await this.http.get(API_URL.apiUrl + "/profile/intents").pipe(
+            tap(data => this.profileIntentsItems$.next(data)
             )
         );
     }; 
