@@ -16,6 +16,9 @@ export class AboutmeComponent implements OnInit {
     isShortFirstName: boolean = false;
     phoneNumber: string = "";
 
+    sourceCars: any[] = [];
+    targetCars: any[] = [];
+
     constructor(private readonly _backofficeService: BackOfficeService) {
     }
 
