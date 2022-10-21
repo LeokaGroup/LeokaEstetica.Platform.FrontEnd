@@ -7,6 +7,7 @@ import { API_URL } from 'src/app/core/core-urls/api-urls';
 export class BackOfficeService {
     public profileInfoData$ = new BehaviorSubject<any>(null);
     public profileItems$ = new BehaviorSubject<any>([]);
+    public profileSkillsItems$ = new BehaviorSubject<any>([]);
 
     constructor(private readonly http: HttpClient) {
 
@@ -23,10 +24,25 @@ export class BackOfficeService {
         );
     };   
 
+    /**
+     * Функция получает пункты меню профиля пользователя.
+     * @returns Список меню.
+     */
     public async getProfileItemsAsync() {
         return await this.http.get(API_URL.apiUrl + "/profile/menu").pipe(
             tap(data => this.profileItems$.next(data)
             )
         );
     };  
+
+    /**
+     * Функция получает список навыков пользователя для выбора.
+     * @returns - Список навыков.
+     */
+    public async getProfileSkillsAsync() {
+        return await this.http.get(API_URL.apiUrl + "/profile/skills").pipe(
+            tap(data => this.profileSkillsItems$.next(data)
+            )
+        );
+    }; 
 }

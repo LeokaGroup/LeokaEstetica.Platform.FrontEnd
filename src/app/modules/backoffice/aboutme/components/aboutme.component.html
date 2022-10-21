@@ -169,12 +169,35 @@
           </button>
           <p-menu #menu id="config_menu" [popup]="true"></p-menu>
         </ng-template>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua.
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-          Excepteur sint occaecat
-          cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+        <p-pickList [source]="profileSkillsItems$.value" 
+                    [target]="aSelectedSkills" 
+                    sourceHeader="Выберете навыки" 
+                    targetHeader="Выбранные навыки" 
+                    [dragdrop]="true"
+                    [responsive]="true" 
+                    [sourceStyle]="{'height':'30rem'}" 
+                    [targetStyle]="{'height':'30rem'}" 
+                    filterBy="name"
+                    sourceFilterPlaceholder="Search by name" 
+                    targetFilterPlaceholder="Search by name">
+    <ng-template let-product pTemplate="item">
+        <div class="product-item">
+            <div class="image-container">
+                    <!-- <img src="assets/showcase/images/demo/product/{{product.image}}" [alt]="product.name" class="product-image" /> -->
+            </div>
+            <div class="product-list-detail">
+                <h5 class="mb-2">{{product.skillName}}</h5>
+                <i class="pi pi-tag product-category-icon"></i>
+                <span class="product-category">{{product.tag}}</span>
+            </div>
+            <div class="product-list-action">
+                <!-- <h6 class="mb-2">${{product.price}}</h6> -->
+                <!-- <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span> -->
+            </div>
+        </div>
+    </ng-template>
+</p-pickList>
 
           <div class="d-flex worksheet-line">
             <div class="control-input-text-worksheet">
@@ -195,12 +218,8 @@
             </button>
             <p-menu #menu id="config_menu" [popup]="true"></p-menu>
           </ng-template>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-            magna aliqua.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat
-            cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+         <!-- <p-pickList [source]="sourceCars" [target]="targetCars" [dragdrop]="true"></p-pickList> -->
 
             <div class="d-flex worksheet-line">
                 <div class="control-input-text-worksheet">

@@ -11,26 +11,27 @@ import { BackOfficeService } from "../../services/backoffice.service";
  * Класс страницы профиля пользователя (Обо мне).
  */
 export class AboutmeComponent implements OnInit {
-    public readonly profileInfoData$ = this._backofficeService.profileInfoData$;
+    public readonly profileSkillsItems$ = this._backofficeService.profileSkillsItems$;
 
     isShortFirstName: boolean = false;
     phoneNumber: string = "";
+    aSelectedSkills: any[] = [];
 
     constructor(private readonly _backofficeService: BackOfficeService) {
     }
 
     public async ngOnInit() {
-        await this.getProfileInfoAsync();
+        await this.getProfileSkillsAsync();
     }
 
      /**
-     * Функция получает информацию о профиля для раздела обо мне.
-     * @returns - Данные обо мне.
+     * Функция получает список навыков пользователя для выбора.
+     * @returns - Список навыков.
      */
-    private async getProfileInfoAsync() {
-        (await this._backofficeService.getProfileInfoAsync())
+    private async getProfileSkillsAsync() {
+        (await this._backofficeService.getProfileSkillsAsync())
         .subscribe(_ => {
-            console.log("Данные обо мне: ", this.profileInfoData$.value);
+            console.log("Список навыков для выбора: ", this.profileSkillsItems$.value);
         });
     };
 }
