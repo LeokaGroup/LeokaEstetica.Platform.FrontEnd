@@ -219,7 +219,34 @@
             <p-menu #menu id="config_menu" [popup]="true"></p-menu>
           </ng-template>
 
-         <!-- <p-pickList [source]="sourceCars" [target]="targetCars" [dragdrop]="true"></p-pickList> -->
+          <p-pickList [source]="profileIntentsItems$.value" 
+                    [target]="aSelectedSkills" 
+                    sourceHeader="Выберете ваши цели на платформе" 
+                    targetHeader="Выбранные цели" 
+                    [dragdrop]="true"
+                    [responsive]="true" 
+                    [sourceStyle]="{'height':'30rem'}" 
+                    [targetStyle]="{'height':'30rem'}" 
+                    filterBy="name"
+                    sourceFilterPlaceholder="Search by name" 
+                    targetFilterPlaceholder="Search by name">
+    <ng-template let-product pTemplate="item">
+        <div class="product-item">
+            <div class="image-container">
+                    <!-- <img src="assets/showcase/images/demo/product/{{product.image}}" [alt]="product.name" class="product-image" /> -->
+            </div>
+            <div class="product-list-detail">
+                <h5 class="mb-2">{{product.intentName}}</h5>
+                <!-- <i class="pi pi-tag product-category-icon"></i>
+                <span class="product-category">{{product.tag}}</span> -->
+            </div>
+            <div class="product-list-action">
+                <!-- <h6 class="mb-2">${{product.price}}</h6> -->
+                <!-- <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span> -->
+            </div>
+        </div>
+    </ng-template>
+</p-pickList>
 
             <div class="d-flex worksheet-line">
                 <div class="control-input-text-worksheet">
