@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
     private _router: Router) { }
 
     public ngOnInit() {
-      this.checkCurrentRouteUrl();
+      this.checkCurrentRouteUrl();      
     };
   
     /**

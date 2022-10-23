@@ -46,7 +46,7 @@ import { LandingService } from './modules/landing/services/landing.service';
       useClass: NetworkInterceptor,
       multi: true
     },
-    NetworkService
+    NetworkService    
   ],
 
   bootstrap: [AppComponent]
