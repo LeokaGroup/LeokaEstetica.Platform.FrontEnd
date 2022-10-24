@@ -45,6 +45,7 @@ export class SignInComponent implements OnInit {
             console.log("Авторизовались: ", this.userData$.value);
             if (this.userData$.value.isSuccess) {
                 localStorage["token"] = this.userData$.value.token;
+                localStorage["u_c"] = this.userData$.value.userCode;
                 this._router.navigate(["/profile/aboutme"]);
             }
         });

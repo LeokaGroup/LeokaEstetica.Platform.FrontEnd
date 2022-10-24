@@ -13,6 +13,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PickListModule } from 'primeng/picklist';
 import { SignalrService } from '../notifications/signalr/services/signalr.service';
 import { LoadingScriptService } from 'src/app/common/services/loading-scripts.service';
+import { RedisService } from '../redis/services/redis.service';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { LoadingScriptService } from 'src/app/common/services/loading-scripts.se
 
     providers: [
         LoadingScriptService,
-        SignalrService
+        SignalrService,
+        RedisService
     ]
 })
 

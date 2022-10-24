@@ -2,30 +2,35 @@ import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { Observable, Subject } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
-import { Feed } from '../models/feed';
+import { RedisService } from 'src/app/modules/redis/services/redis.service';
 
 @Injectable()
 export class SignalrService {
-
     private hubConnection: any;
-    private $allFeed: Subject<Feed> = new Subject<Feed>();
+    private $allFeed: Subject<any> = new Subject<any>();   
 
-    constructor() { }
+    constructor(public readonly _redisService: RedisService) { 
+       
+    }
 
-    public startConnection() {
-        return new Promise((resolve, reject) => {
-            this.hubConnection = new HubConnectionBuilder()
-                .withUrl(API_URL.apiUrl + "/notify").build();    
+    public async startConnection() {               
+        return await new Promise(async (resolve, reject) => {
+            this.hubConnection = new HubConnectionBuilder().withUrl(API_URL.apiUrl + "/notify").build();                
 
-            this.hubConnection
-            .start()
-                .then(() => {
-                    console.log("connection established");
-                    console.log("connectionId:", this.hubConnection.connectionId);
+            this.hubConnection.start()
+                .then(async () => {
+                    console.log("Соединение установлено");
+                    console.log("ConnectionId:", this.hubConnection.connectionId);    
+                    
+                    (await this._redisService.saveConnectionIdCacheAsync(this.hubConnection.connectionId, localStorage["u_c"]))
+                    .subscribe(async (_) => {
+                        
+                    });
+                    
                     return resolve(true);
                 })
                 .catch((err: any) => {
-                    console.log("error occured" + err);
+                    console.log("Ошибка соединения: " + err);
                     reject(err);
                 });
         });
