@@ -15,7 +15,7 @@ export class SignalrService {
 
     public async startConnection() {               
         return await new Promise(async (resolve, reject) => {
-            this.hubConnection = new HubConnectionBuilder().withUrl(API_URL.apiUrl + "/notify").build();                
+            this.hubConnection = new HubConnectionBuilder().withUrl(API_URL.apiUrl + "/notify", 4).build();                
 
             this.hubConnection.start()
                 .then(async () => {
@@ -41,7 +41,7 @@ export class SignalrService {
     }
 
     public listenToAllFeeds() {
-        (<HubConnection>this.hubConnection).on("Receive", (data: any) => {
+        (<HubConnection>this.hubConnection).on("SendNotifySuccessSave", (data: any) => {
             console.log("Данные из хаба: ", data);
             this.$allFeed.next(data);
         });
