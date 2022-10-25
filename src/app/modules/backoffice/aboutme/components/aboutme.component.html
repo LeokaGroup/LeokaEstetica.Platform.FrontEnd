@@ -19,7 +19,8 @@
                         class="p-inputtext-sm input-control-worksheet" 
                         placeholder="Фамилия" 
                         pInputText
-                        autocomplete="new-password" />
+                        autocomplete="new-password"
+                        [(ngModel)]="lastName" />
 
                 <div class="field-checkbox">
                     <p-checkbox [(ngModel)]="isShortFirstName" [binary]="true" inputId="binary"></p-checkbox>
@@ -34,7 +35,8 @@
                         class="p-inputtext-sm input-control-worksheet" 
                         placeholder="Имя" 
                         pInputText
-                        autocomplete="new-password" />
+                        autocomplete="new-password"
+                        [(ngModel)]="firstName" />
             </div>
 
             <div class="control-input-text-worksheet">
@@ -42,7 +44,8 @@
                         class="p-inputtext-sm input-control-worksheet" 
                         placeholder="Отчество" 
                         pInputText
-                        autocomplete="new-password" />
+                        autocomplete="new-password"
+                        [(ngModel)]="patronymic" />
             </div>            
         </div>       
 
@@ -52,7 +55,8 @@
                         class="p-inputtext-sm input-control-worksheet" 
                         placeholder="Email" 
                         pInputText
-                        autocomplete="new-password" />                
+                        autocomplete="new-password"
+                        [(ngModel)]="email" />                
             </div>
 
             <div class="control-input-text-worksheet">
@@ -60,7 +64,8 @@
                         class="p-inputtext-sm input-control-worksheet" 
                         placeholder="Номер телефона" 
                         pInputText
-                        autocomplete="new-password" />   
+                        autocomplete="new-password"
+                        [(ngModel)]="phoneNumber" />   
             </div>           
         </div>
 
@@ -70,7 +75,8 @@
                         class="p-inputtext-sm input-control-worksheet" 
                         placeholder="Telegram" 
                         pInputText
-                        autocomplete="new-password" />   
+                        autocomplete="new-password"
+                        [(ngModel)]="telegram" />   
             </div>
 
             <div class="control-input-text-worksheet">
@@ -78,7 +84,8 @@
                         class="p-inputtext-sm input-control-worksheet" 
                         placeholder="WhatsApp" 
                         pInputText
-                        autocomplete="new-password" />   
+                        autocomplete="new-password"
+                        [(ngModel)]="whatsApp" />   
             </div>
 
             <div class="control-input-text-worksheet">
@@ -86,7 +93,8 @@
                         class="p-inputtext-sm input-control-worksheet" 
                         placeholder="ВКонтакте" 
                         pInputText
-                        autocomplete="new-password" />   
+                        autocomplete="new-password"
+                        [(ngModel)]="vkontakte" />   
             </div>
         </div>
 
@@ -96,10 +104,11 @@
                         class="p-inputtext-sm input-control-worksheet" 
                         placeholder="Другая соц.сеть" 
                         pInputText
-                        autocomplete="new-password" />   
+                        autocomplete="new-password"
+                        [(ngModel)]="otherLink" />   
             </div>        
         </div>
-
+<!-- 
         <div class="d-flex worksheet-line">
             <div class="control-input-text-worksheet">
                 <button type="submit" 
@@ -107,7 +116,7 @@
                 Сохранить
               </button>
             </div>
-        </div>
+        </div> -->
       </p-panel>
     </div>
 
@@ -127,7 +136,9 @@
                             cols="100" 
                             pInputTextarea 
                             [autoResize]="true" 
-                            autocomplete="new-password" >
+                            autocomplete="new-password"
+                            placeholder="Напишите о себе"
+                            [(ngModel)]="aboutme" >
                 </textarea>
             </div>                         
         </div>
@@ -138,26 +149,29 @@
                         class="p-inputtext-sm input-control-worksheet" 
                         placeholder="Должность" 
                         pInputText
-                        autocomplete="new-password" />   
+                        autocomplete="new-password"
+                        [(ngModel)]="job" />   
             </div>  
 
+            <!-- TODO: Передавать это поле на бэк, когда там будет оно добавлено. -->
             <div class="control-input-text-worksheet">
                 <input type="text" 
                         class="p-inputtext-sm input-control-worksheet" 
                         placeholder="Опыт (стаж)" 
                         pInputText
-                        autocomplete="new-password" />   
+                        autocomplete="new-password"
+                        [(ngModel)]="experience" />   
             </div>  
         </div>
 
-        <div class="d-flex worksheet-line">
+        <!-- <div class="d-flex worksheet-line">
             <div class="control-input-text-worksheet">
                 <button type="submit" 
                       class="btn btn-primary button-action-pur-control-worksheet">
                 Сохранить
               </button>
             </div>
-        </div>
+        </div> -->
       </p-panel>
     </div>
 
@@ -199,14 +213,14 @@
     </ng-template>
 </p-pickList>
 
-          <div class="d-flex worksheet-line">
+          <!-- <div class="d-flex worksheet-line">
             <div class="control-input-text-worksheet">
                 <button type="submit" 
                       class="btn btn-primary button-action-pur-control-worksheet">
                 Сохранить
               </button>
             </div>
-        </div>
+        </div> -->
       </p-panel>
     </div>
 
@@ -248,15 +262,18 @@
     </ng-template>
 </p-pickList>
 
-            <div class="d-flex worksheet-line">
-                <div class="control-input-text-worksheet">
-                    <button type="submit" 
-                          class="btn btn-primary button-action-pur-control-worksheet">
-                    Сохранить
-                  </button>
-                </div>
-            </div>
+            
         </p-panel>
       </div>
+
+      <div class="d-flex worksheet-line mb-3">
+            <div class="control-input-text-worksheet">
+              <button type="button" 
+                      class="btn btn-primary button-action-pur-control-worksheet"
+                      (click)="onSaveProfileInfoAsync()">
+                Сохранить
+              </button>
+            </div>
+        </div>
   </div>
 </div>

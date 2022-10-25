@@ -22,10 +22,10 @@ export class SignalrService {
                     console.log("Соединение установлено");
                     console.log("ConnectionId:", this.hubConnection.connectionId);    
                     
-                    (await this._redisService.saveConnectionIdCacheAsync(this.hubConnection.connectionId, localStorage["u_c"]))
-                    .subscribe(async (_) => {
+                    // (await this._redisService.saveConnectionIdCacheAsync(this.hubConnection.connectionId, localStorage["u_c"]))
+                    // .subscribe(async (_) => {
                         
-                    });
+                    // });
                     
                     return resolve(true);
                 })

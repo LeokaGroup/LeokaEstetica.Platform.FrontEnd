@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { forkJoin, Subscription } from "rxjs";
 import { BackOfficeService } from "../../services/backoffice.service";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
+import { ProfileInfoInput } from "../models/input/profile-info-input";
 
 @Component({
     selector: "aboutme",
@@ -17,9 +18,20 @@ export class AboutmeComponent implements OnInit, OnDestroy {
     public readonly profileIntentsItems$ = this._backofficeService.profileIntentsItems$;
 
     isShortFirstName: boolean = false;
-    phoneNumber: string = "";
+    phoneNumber!: string;
     aSelectedSkills: any[] = [];
     allFeedSubscription: any;
+    lastName!: string;
+    firstName!: string;
+    patronymic!: string;
+    telegram!: string;
+    whatsApp!: string;
+    vkontakte!: string;
+    otherLink!: string;
+    aboutme!: string;
+    job!: string;
+    email!: string;
+    experience!: string;
 
     constructor(private readonly _backofficeService: BackOfficeService,
         private readonly _signalrService: SignalrService) {
@@ -69,7 +81,38 @@ export class AboutmeComponent implements OnInit, OnDestroy {
             });
     };
 
+    /**
+     * Функция сохраняет данные профиля пользователя.
+     * @returns - Сохраненные данные.
+     */
+    public async onSaveProfileInfoAsync() {
+        let model = this.createProfileInfoModel();
+        console.log("ProfileInfoInput", model);
+    };
+
+    /**
+     * Функция создает входную модель для сохранения данных профиля пользователя.
+     * @returns - Данные модели для сохранения.
+     */
+    private createProfileInfoModel(): ProfileInfoInput {
+        let profileInfoInput = new ProfileInfoInput();
+        profileInfoInput.FirstName = this.firstName;
+        profileInfoInput.LastName = this.lastName;
+        profileInfoInput.Patronymic = this.patronymic;
+        profileInfoInput.Aboutme = this.aboutme;
+        profileInfoInput.Email = this.email;
+        profileInfoInput.IsShortFirstName = this.isShortFirstName;
+        profileInfoInput.Job = this.job;
+        profileInfoInput.PhoneNumber = this.phoneNumber;
+        profileInfoInput.Telegram = this.telegram;
+        profileInfoInput.WhatsApp = this.whatsApp;
+        profileInfoInput.Vkontakte = this.vkontakte;
+        profileInfoInput.OtherLink = this.otherLink;
+
+        return profileInfoInput;
+    };
+
     ngOnDestroy(): void {
         (<Subscription>this.allFeedSubscription).unsubscribe();
-    }
+    };
 }
