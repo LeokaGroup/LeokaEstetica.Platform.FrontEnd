@@ -2,13 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
+import { ProfileInfoInput } from '../aboutme/models/input/profile-info-input';
 
+/**
+ * Класс сервиса профиля пользователя.
+ */
 @Injectable()
 export class BackOfficeService {
     public profileInfoData$ = new BehaviorSubject<any>(null);
     public profileItems$ = new BehaviorSubject<any>([]);
     public profileSkillsItems$ = new BehaviorSubject<any>([]);
     public profileIntentsItems$ = new BehaviorSubject<any>([]);
+    public profileInfo$ = new BehaviorSubject<any>([]);
 
     constructor(private readonly http: HttpClient) {
 
@@ -20,7 +25,7 @@ export class BackOfficeService {
      */
     public async getProfileInfoAsync() {
         return await this.http.get(API_URL.apiUrl + "/profile/info").pipe(
-            tap(data => this.profileInfoData$.next(data)
+            tap(data => this.profileInfo$.next(data)
             )
         );
     };   
@@ -54,6 +59,17 @@ export class BackOfficeService {
     public async getProfileIntentsAsync() {
         return await this.http.get(API_URL.apiUrl + "/profile/intents").pipe(
             tap(data => this.profileIntentsItems$.next(data)
+            )
+        );
+    }; 
+
+    /**
+     * Функция создает входную модель для сохранения данных профиля пользователя.
+     * @returns - Данные модели для сохранения.
+     */
+    public async saveProfileInfoAsync(profileInfoInput: ProfileInfoInput) {
+        return await this.http.post(API_URL.apiUrl + "/profile/info", profileInfoInput).pipe(
+            tap(data => this.profileInfo$.next(data)
             )
         );
     }; 

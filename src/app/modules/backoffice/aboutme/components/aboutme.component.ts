@@ -16,6 +16,7 @@ import { ProfileInfoInput } from "../models/input/profile-info-input";
 export class AboutmeComponent implements OnInit, OnDestroy {
     public readonly profileSkillsItems$ = this._backofficeService.profileSkillsItems$;
     public readonly profileIntentsItems$ = this._backofficeService.profileIntentsItems$;
+    public readonly profileInfo$ = this._backofficeService.profileInfo$;
 
     isShortFirstName: boolean = false;
     phoneNumber!: string;
@@ -41,7 +42,8 @@ export class AboutmeComponent implements OnInit, OnDestroy {
     public async ngOnInit() {
         forkJoin([
             await this.getProfileSkillsAsync(),
-            await this.getProfileIntentsAsync()
+            await this.getProfileIntentsAsync(),
+            await this.getProfileInfoAsync()
         ]).subscribe();
 
         // Подключаемся.
@@ -88,6 +90,11 @@ export class AboutmeComponent implements OnInit, OnDestroy {
     public async onSaveProfileInfoAsync() {
         let model = this.createProfileInfoModel();
         console.log("ProfileInfoInput", model);
+
+        (await this._backofficeService.saveProfileInfoAsync(model))
+        .subscribe(_ => {
+            console.log("Данные анкеты: ", this.profileInfo$.value);
+        });
     };
 
     /**
@@ -112,7 +119,18 @@ export class AboutmeComponent implements OnInit, OnDestroy {
         return profileInfoInput;
     };
 
-    ngOnDestroy(): void {
+    /**
+     * Функция получает данные профиля пользователя.
+     * @returbs - Данные анкеты.
+     */
+    private async getProfileInfoAsync() {
+        (await this._backofficeService.getProfileInfoAsync())
+        .subscribe(_ => {
+            console.log("Данные анкеты: ", this.profileInfo$.value);
+        });
+    };
+
+    public ngOnDestroy(): void {
         (<Subscription>this.allFeedSubscription).unsubscribe();
     };
 }
