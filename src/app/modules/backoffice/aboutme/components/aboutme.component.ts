@@ -3,6 +3,7 @@ import { forkJoin, Subscription } from "rxjs";
 import { BackOfficeService } from "../../services/backoffice.service";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { ProfileInfoInput } from "../models/input/profile-info-input";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
     selector: "aboutme",
@@ -33,9 +34,12 @@ export class AboutmeComponent implements OnInit, OnDestroy {
     job!: string;
     email!: string;
     experience!: string;
+    isModeView!: boolean;
+    isModeEdit!: boolean;
 
     constructor(private readonly _backofficeService: BackOfficeService,
-        private readonly _signalrService: SignalrService) {
+        private readonly _signalrService: SignalrService,
+        private activatedRoute: ActivatedRoute) {
 
     }
 
@@ -59,6 +63,24 @@ export class AboutmeComponent implements OnInit, OnDestroy {
                     console.log("Подписались на сообщения", res);
                 });
         });
+
+        this.checkUrlParams();
+    };
+
+    private checkUrlParams() {
+        this.activatedRoute.queryParams
+        .subscribe(params => {
+            let mode = params["mode"];
+            console.log("mode: ", mode);
+
+            if (mode == "view") {
+                this.isModeView = true;
+            }
+
+            if (mode == "edit") {
+                this.isModeEdit = true;
+            }
+          });
     };
 
     /**

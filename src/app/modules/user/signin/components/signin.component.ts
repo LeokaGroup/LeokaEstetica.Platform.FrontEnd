@@ -46,7 +46,11 @@ export class SignInComponent implements OnInit {
             if (this.userData$.value.isSuccess) {
                 localStorage["token"] = this.userData$.value.token;
                 localStorage["u_c"] = this.userData$.value.userCode;
-                this._router.navigate(["/profile/aboutme"]);
+                this._router.navigate(["/profile/aboutme"], {
+                    queryParams: {
+                        mode: "view"
+                    }
+                });
             }
         });
     };

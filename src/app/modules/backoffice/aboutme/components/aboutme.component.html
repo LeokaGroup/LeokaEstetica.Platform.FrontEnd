@@ -20,10 +20,30 @@
                         placeholder="Фамилия" 
                         pInputText
                         autocomplete="new-password"
-                        [(ngModel)]="lastName" />
+                        [(ngModel)]="lastName"
+                        *ngIf="isModeEdit" />
+
+               <div *ngIf="isModeView">
+                 <label>
+                   <small>Фамилия</small>
+                 </label>
+               </div>
+               <div>
+                <span *ngIf="isModeView">{{profileInfo$.value.lastName}}</span>      
+               </div>                  
 
                 <div class="field-checkbox">
-                    <p-checkbox [(ngModel)]="isShortFirstName" [binary]="true" inputId="binary"></p-checkbox>
+                    <p-checkbox [(ngModel)]="profileInfo$.value.isShortFirstName" 
+                                [binary]="true" 
+                                inputId="binary" 
+                                *ngIf="isModeEdit">
+                  </p-checkbox>
+                    <p-checkbox [(ngModel)]="isShortFirstName" 
+                                [binary]="true" 
+                                inputId="binary" 
+                                *ngIf="isModeView" 
+                                [disabled]="true">
+                  </p-checkbox>
                     <label for="binary">
                         <small>Отображать только первую букву фамилии</small>
                     </label>
@@ -36,7 +56,14 @@
                         placeholder="Имя" 
                         pInputText
                         autocomplete="new-password"
-                        [(ngModel)]="firstName" />
+                        [(ngModel)]="firstName"
+                        *ngIf="isModeEdit" />
+                <div *ngIf="isModeView">
+                  <label>
+                    <small>Имя</small>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.firstName}}</span>      
             </div>
 
             <div class="control-input-text-worksheet">
@@ -45,7 +72,14 @@
                         placeholder="Отчество" 
                         pInputText
                         autocomplete="new-password"
-                        [(ngModel)]="patronymic" />
+                        [(ngModel)]="patronymic"
+                        *ngIf="isModeEdit" />
+                <div *ngIf="isModeView">
+                  <label>
+                    <small>Отчество</small>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.patronymic}}</span>      
             </div>            
         </div>       
 
@@ -56,7 +90,14 @@
                         placeholder="Email" 
                         pInputText
                         autocomplete="new-password"
-                        [(ngModel)]="email" />                
+                        [(ngModel)]="email"
+                        *ngIf="isModeEdit" />     
+                <div *ngIf="isModeView">
+                  <label>
+                    <small>Email</small>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.email}}</span>               
             </div>
 
             <div class="control-input-text-worksheet">
@@ -65,7 +106,14 @@
                         placeholder="Номер телефона" 
                         pInputText
                         autocomplete="new-password"
-                        [(ngModel)]="phoneNumber" />   
+                        [(ngModel)]="phoneNumber"
+                        *ngIf="isModeEdit" />   
+                <div *ngIf="isModeView">
+                  <label>
+                    <small>Номер телефона</small>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.phoneNumber}}</span>         
             </div>           
         </div>
 
@@ -76,7 +124,14 @@
                         placeholder="Telegram" 
                         pInputText
                         autocomplete="new-password"
-                        [(ngModel)]="telegram" />   
+                        [(ngModel)]="telegram"
+                        *ngIf="isModeEdit" />   
+                <div *ngIf="isModeView">
+                  <label>
+                    <small>Telegram</small>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.telegram}}</span>         
             </div>
 
             <div class="control-input-text-worksheet">
@@ -85,7 +140,14 @@
                         placeholder="WhatsApp" 
                         pInputText
                         autocomplete="new-password"
-                        [(ngModel)]="whatsApp" />   
+                        [(ngModel)]="whatsApp"
+                        *ngIf="isModeEdit" />   
+                <div *ngIf="isModeView">
+                  <label>
+                    <small>WhatsApp</small>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.whatsApp}}</span>        
             </div>
 
             <div class="control-input-text-worksheet">
@@ -94,7 +156,14 @@
                         placeholder="ВКонтакте" 
                         pInputText
                         autocomplete="new-password"
-                        [(ngModel)]="vkontakte" />   
+                        [(ngModel)]="vkontakte"
+                        *ngIf="isModeEdit" />   
+                <div *ngIf="isModeView">
+                  <label>
+                    <small>Ссылка ВКонтакте</small>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.vkontakte}}</span>       
             </div>
         </div>
 
@@ -105,7 +174,14 @@
                         placeholder="Другая соц.сеть" 
                         pInputText
                         autocomplete="new-password"
-                        [(ngModel)]="otherLink" />   
+                        [(ngModel)]="otherLink"
+                        *ngIf="isModeEdit" />   
+                <div *ngIf="isModeView">
+                  <label>
+                    <small>Другая ссылка</small>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.otherLink}}</span>   
             </div>        
         </div>
 <!-- 
@@ -138,7 +214,14 @@
                             [autoResize]="true" 
                             autocomplete="new-password"
                             placeholder="Напишите о себе"
-                            [(ngModel)]="aboutme" >
+                            [(ngModel)]="aboutme"
+                            *ngIf="isModeEdit">
+                <div *ngIf="isModeView">
+                  <label>
+                    <small>О себе</small>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.aboutme}}</span>   
                 </textarea>
             </div>                         
         </div>
@@ -150,7 +233,14 @@
                         placeholder="Должность" 
                         pInputText
                         autocomplete="new-password"
-                        [(ngModel)]="job" />   
+                        [(ngModel)]="job"
+                        *ngIf="isModeEdit" />   
+                <div *ngIf="isModeView">
+                  <label>
+                    <small>Должность</small>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.job}}</span>   
             </div>  
 
             <!-- TODO: Передавать это поле на бэк, когда там будет оно добавлено. -->
@@ -160,7 +250,14 @@
                         placeholder="Опыт (стаж)" 
                         pInputText
                         autocomplete="new-password"
-                        [(ngModel)]="experience" />   
+                        [(ngModel)]="experience"
+                        *ngIf="isModeEdit"  />   
+                <div *ngIf="isModeView">
+                  <label>
+                    <small>Опыт (стаж)</small>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.experience}}</span>  
             </div>  
         </div>
 
@@ -193,8 +290,8 @@
                     [sourceStyle]="{'height':'30rem'}" 
                     [targetStyle]="{'height':'30rem'}" 
                     filterBy="name"
-                    sourceFilterPlaceholder="Search by name" 
-                    targetFilterPlaceholder="Search by name">
+                    sourceFilterPlaceholder="Найти по названию" 
+                    targetFilterPlaceholder="Найти по названию">
     <ng-template let-product pTemplate="item">
         <div class="product-item">
             <div class="image-container">
@@ -242,8 +339,8 @@
                     [sourceStyle]="{'height':'30rem'}" 
                     [targetStyle]="{'height':'30rem'}" 
                     filterBy="name"
-                    sourceFilterPlaceholder="Search by name" 
-                    targetFilterPlaceholder="Search by name">
+                    sourceFilterPlaceholder="Найти по названию" 
+                    targetFilterPlaceholder="Найти по названию">
     <ng-template let-product pTemplate="item">
         <div class="product-item">
             <div class="image-container">
