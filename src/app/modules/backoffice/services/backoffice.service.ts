@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { ProfileInfoInput } from '../aboutme/models/input/profile-info-input';
+import { SelectMenuInput } from '../left-menu/models/input/select-menu-input';
 
 /**
  * Класс сервиса профиля пользователя.
@@ -14,6 +15,7 @@ export class BackOfficeService {
     public profileSkillsItems$ = new BehaviorSubject<any>([]);
     public profileIntentsItems$ = new BehaviorSubject<any>([]);
     public profileInfo$ = new BehaviorSubject<any>([]);
+    public selectMenu$ = new BehaviorSubject<any>({});
 
     constructor(private readonly http: HttpClient) {
 
@@ -70,6 +72,21 @@ export class BackOfficeService {
     public async saveProfileInfoAsync(profileInfoInput: ProfileInfoInput) {
         return await this.http.post(API_URL.apiUrl + "/profile/info", profileInfoInput).pipe(
             tap(data => this.profileInfo$.next(data)
+            )
+        );
+    }; 
+
+     /**
+     * Функция находит системное имя выбранного пункта меню.
+     * @param text - Название пункта меню.
+     * @returns - Системное имя выбранного пункта меню.
+     */
+      public async selectProfileMenuAsync(text: string) {
+        let selectMenuInput = new SelectMenuInput();
+        selectMenuInput.Text = text;
+
+        return await this.http.post(API_URL.apiUrl + "/profile/select-menu", selectMenuInput).pipe(
+            tap(data => this.selectMenu$.next(data)
             )
         );
     }; 
