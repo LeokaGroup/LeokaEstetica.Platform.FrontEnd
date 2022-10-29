@@ -4,6 +4,7 @@ import { BackOfficeService } from "../../services/backoffice.service";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { ProfileInfoInput } from "../models/input/profile-info-input";
 import { ActivatedRoute } from "@angular/router";
+import { MessageService } from "primeng/api";
 
 @Component({
     selector: "aboutme",
@@ -39,7 +40,8 @@ export class AboutmeComponent implements OnInit, OnDestroy {
 
     constructor(private readonly _backofficeService: BackOfficeService,
         private readonly _signalrService: SignalrService,
-        private activatedRoute: ActivatedRoute) {
+        private readonly _activatedRoute: ActivatedRoute,
+        private readonly _messageService: MessageService) {
 
     }
 
@@ -59,8 +61,9 @@ export class AboutmeComponent implements OnInit, OnDestroy {
 
             // Подписываемся на получение всех сообщений.
             this.allFeedSubscription = this._signalrService.AllFeedObservable
-                .subscribe((res: any) => {
-                    console.log("Подписались на сообщения", res);
+                .subscribe((response: any) => {
+                    console.log("Подписались на сообщения", response);
+                    this._messageService.add({ severity: 'success', summary: response.title, detail: response.message });
                 });
         });
 
@@ -68,7 +71,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
     };
 
     private checkUrlParams() {
-        this.activatedRoute.queryParams
+        this._activatedRoute.queryParams
         .subscribe(params => {
             let mode = params["mode"];
             console.log("mode: ", mode);
@@ -91,6 +94,9 @@ export class AboutmeComponent implements OnInit, OnDestroy {
           });
     };
 
+    /**
+     * Функция подтягивает данные в поля анкеты в режиме изменения.
+     */
     private setEditFields() {
         this.firstName = this.profileInfo$.value.firstName;
         this.lastName = this.profileInfo$.value.lastName;
@@ -172,6 +178,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
         (await this._backofficeService.getProfileInfoAsync())
         .subscribe(_ => {
             console.log("Данные анкеты: ", this.profileInfo$.value);
+            this.setEditFields();
         });
     };
 

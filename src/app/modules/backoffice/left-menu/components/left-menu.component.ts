@@ -64,7 +64,6 @@ export class LeftMenuComponent implements OnInit {
                         mode: "view"
                     }
                 });
-                return;
             }
             
             if (this.aEditSysNames.includes(this.sysName)) {
@@ -73,7 +72,6 @@ export class LeftMenuComponent implements OnInit {
                         mode: "edit"
                     }
                 });
-                return;
             }
         });
     };

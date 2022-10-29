@@ -14,7 +14,9 @@ import { PickListModule } from 'primeng/picklist';
 import { SignalrService } from '../notifications/signalr/services/signalr.service';
 import { LoadingScriptService } from 'src/app/common/services/loading-scripts.service';
 import { RedisService } from '../redis/services/redis.service';
-import {PanelMenuModule} from 'primeng/panelmenu';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 
 @NgModule({
@@ -34,7 +36,8 @@ import {PanelMenuModule} from 'primeng/panelmenu';
         InputMaskModule,
         InputTextareaModule,
         PickListModule,
-        PanelMenuModule
+        PanelMenuModule,
+        ToastModule
     ],
 
     exports: [],
@@ -42,7 +45,8 @@ import {PanelMenuModule} from 'primeng/panelmenu';
     providers: [
         LoadingScriptService,
         SignalrService,
-        RedisService
+        RedisService,
+        MessageService
     ]
 })
 
