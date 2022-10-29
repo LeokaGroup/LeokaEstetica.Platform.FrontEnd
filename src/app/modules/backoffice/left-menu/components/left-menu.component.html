@@ -1,12 +1,9 @@
 <div class="d-flex block-profile space-top-50">
   <div class="profile-left-menu">
-    <!-- <p-slideMenu #menu
-                [model]="profileItems$.value.profileMenuItems" 
-                [viewportHeight]="600"
-                [backLabel]="'Назад'"
+    <p-panelMenu [model]="profileItems$.value.profileMenuItems" 
+                [style]="{'width':'300px'}" 
                 (click)="onSelectMenu($event)">
-    </p-slideMenu> -->
-    <p-panelMenu [model]="profileItems$.value.profileMenuItems" [style]="{'width':'300px'}" (click)="onSelectMenu($event)"></p-panelMenu>
+  </p-panelMenu>
   </div>
 
   <div class="">

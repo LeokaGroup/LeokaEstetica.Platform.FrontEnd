@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { BackOfficeService } from "../../services/backoffice.service";
 
 @Component({
@@ -17,8 +18,15 @@ export class LeftMenuComponent implements OnInit {
     sysName: string = "";
     isFindSysName: boolean = false;
     aProfileMenuLine: any[] = [];
+    aViewSysNames: string[] = [
+        "ViewWorksheet"
+    ];
+    aEditSysNames: string[] = [
+        "EditWorksheet"
+    ];
 
-    constructor(private readonly _backOfficeService: BackOfficeService) {
+    constructor(private readonly _backOfficeService: BackOfficeService,
+        private readonly _router: Router) {
     }
 
     public async ngOnInit() {
@@ -47,7 +55,26 @@ export class LeftMenuComponent implements OnInit {
 
         (await this._backOfficeService.selectProfileMenuAsync(text))
         .subscribe(_ => {
-            console.log("Выбрали меню: ", this.selectMenu$.value);
+            console.log("Выбрали меню: ", this.selectMenu$.value.sysName);
+            this.sysName = this.selectMenu$.value.sysName;
+
+            if (this.aViewSysNames.includes(this.sysName)) {
+                this._router.navigate(["/profile/aboutme"], {
+                    queryParams: {
+                        mode: "view"
+                    }
+                });
+                return;
+            }
+            
+            if (this.aEditSysNames.includes(this.sysName)) {
+                this._router.navigate(["/profile/aboutme"], {
+                    queryParams: {
+                        mode: "edit"
+                    }
+                });
+                return;
+            }
         });
     };
 }

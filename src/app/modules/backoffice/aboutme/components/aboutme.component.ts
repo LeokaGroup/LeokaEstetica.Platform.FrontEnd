@@ -76,11 +76,34 @@ export class AboutmeComponent implements OnInit, OnDestroy {
             if (mode == "view") {
                 this.isModeView = true;
             }
+            else {
+                this.isModeView = false;
+            }
 
             if (mode == "edit") {
                 this.isModeEdit = true;
+                this.setEditFields();
+            }
+
+            else {
+                this.isModeEdit = false;
             }
           });
+    };
+
+    private setEditFields() {
+        this.firstName = this.profileInfo$.value.firstName;
+        this.lastName = this.profileInfo$.value.lastName;
+        this.patronymic = this.profileInfo$.value.patronymic;
+        this.aboutme = this.profileInfo$.value.aboutme;
+        this.email = this.profileInfo$.value.email;
+        this.isShortFirstName = this.profileInfo$.value.isShortFirstName;
+        this.job = this.profileInfo$.value.job;
+        this.phoneNumber = this.profileInfo$.value.phoneNumber;
+        this.telegram = this.profileInfo$.value.telegram;
+        this.whatsApp = this.profileInfo$.value.whatsApp;
+        this.vkontakte = this.profileInfo$.value.vkontakte;
+        this.otherLink = this.profileInfo$.value.otherLink;
     };
 
     /**
