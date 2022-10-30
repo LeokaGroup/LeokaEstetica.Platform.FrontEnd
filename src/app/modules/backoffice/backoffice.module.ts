@@ -11,6 +11,9 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PickListModule } from 'primeng/picklist';
+import { SignalrService } from '../notifications/signalr/services/signalr.service';
+import { LoadingScriptService } from 'src/app/common/services/loading-scripts.service';
+import { RedisService } from '../redis/services/redis.service';
 
 
 @NgModule({
@@ -35,7 +38,9 @@ import { PickListModule } from 'primeng/picklist';
     exports: [],
 
     providers: [
-
+        LoadingScriptService,
+        SignalrService,
+        RedisService
     ]
 })
 
