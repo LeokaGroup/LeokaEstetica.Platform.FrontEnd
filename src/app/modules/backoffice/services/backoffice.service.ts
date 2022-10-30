@@ -16,7 +16,8 @@ export class BackOfficeService {
     public profileIntentsItems$ = new BehaviorSubject<any>([]);
     public profileInfo$ = new BehaviorSubject<any>([]);
     public selectMenu$ = new BehaviorSubject<any>({});
-    public selectedSkillsItems$ = new BehaviorSubject<any>({});
+    public selectedSkillsItems$ = new BehaviorSubject<any>([]);
+    public selectedIntentsItems$ = new BehaviorSubject<any>([]);
 
     constructor(private readonly http: HttpClient) {
 
@@ -95,4 +96,14 @@ export class BackOfficeService {
             tap(data => this.selectedSkillsItems$.next(data))
         );
     }; 
+
+    /**
+     * Функция получает список выбранных целей пользователя.
+     * @returns - Список навыков.
+     */
+     public async getSelectedUserIntentsAsync() {
+        return await this.http.get(API_URL.apiUrl + "/profile/selected-intents").pipe(
+            tap(data => this.selectedIntentsItems$.next(data))
+        );
+    };
 }

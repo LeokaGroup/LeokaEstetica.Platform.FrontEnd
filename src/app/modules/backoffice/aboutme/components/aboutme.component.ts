@@ -20,6 +20,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
     public readonly profileIntentsItems$ = this._backofficeService.profileIntentsItems$;
     public readonly profileInfo$ = this._backofficeService.profileInfo$;
     public readonly selectedSkillsItems$ = this._backofficeService.selectedSkillsItems$;
+    public readonly selectedIntentsItems$ = this._backofficeService.selectedIntentsItems$;
 
     isShortFirstName: boolean = false;
     phoneNumber!: string;
@@ -52,7 +53,8 @@ export class AboutmeComponent implements OnInit, OnDestroy {
             await this.getProfileSkillsAsync(),
             await this.getProfileIntentsAsync(),
             await this.getProfileInfoAsync(),
-            await this.getSelectedUserSkillsAsync()
+            await this.getSelectedUserSkillsAsync(),
+            await this.getSelectedUserIntentsAsync()
         ]).subscribe();
 
         // Подключаемся.
@@ -219,6 +221,18 @@ export class AboutmeComponent implements OnInit, OnDestroy {
             .subscribe(_ => {
                 console.log("Список выбранных навыков: ", this.selectedSkillsItems$.value);
                 this.aSelectedSkills = this.selectedSkillsItems$.value;
+            });
+    };
+
+     /**
+    * Функция получает список выбранных целей пользователя.
+    * @returns - Список навыков.
+    */
+      private async getSelectedUserIntentsAsync() {
+        (await this._backofficeService.getSelectedUserIntentsAsync())
+            .subscribe(_ => {
+                console.log("Список выбранных целей: ", this.selectedIntentsItems$.value);
+                this.aSelectedIntents = this.selectedIntentsItems$.value;
             });
     };
 
