@@ -14,6 +14,8 @@ import { BackOfficeService } from './modules/backoffice/services/backoffice.serv
 import { HeaderComponent } from './modules/header/components/header.component';
 import { HeaderService } from './modules/header/services/header.service';
 import { LandingService } from './modules/landing/services/landing.service';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { LandingService } from './modules/landing/services/landing.service';
     }),
     BackOfficeModule,
     BrowserAnimationsModule,
-    SlideMenuModule
+    SlideMenuModule,
+    PanelMenuModule,
+    ToastModule
   ],
 
   providers: [

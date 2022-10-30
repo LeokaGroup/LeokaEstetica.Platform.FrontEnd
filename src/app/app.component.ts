@@ -11,7 +11,8 @@ export class AppComponent implements OnInit {
   public loading$ = this.networkService.loading$;
   public isVisibleProfileMenu: boolean = false;
   private _aVisibleProfileMenuRoutes: string[] = [
-    "/profile/aboutme"
+    "/profile/aboutme?mode=view",
+    "/profile/aboutme?mode=edit"
   ];
 
   constructor(public networkService: NetworkService,

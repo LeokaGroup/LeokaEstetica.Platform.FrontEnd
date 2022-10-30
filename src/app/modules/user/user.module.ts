@@ -6,6 +6,8 @@ import { UserRoutingModule } from './user-routing.module';
 import { UserService } from './services/user.service';
 import { ConfirmComponent } from './confirm-account/confirm-account.component';
 import { SignInComponent } from './signin/components/signin.component';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
     declarations: [
@@ -18,13 +20,15 @@ import { SignInComponent } from './signin/components/signin.component';
         CommonModule,
         FormsModule,
         UserRoutingModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        ToastModule
     ],
 
     exports: [],
 
     providers: [
-        UserService
+        UserService,
+        MessageService
     ]
 })
 
