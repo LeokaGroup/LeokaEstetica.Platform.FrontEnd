@@ -19,6 +19,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
     public readonly profileSkillsItems$ = this._backofficeService.profileSkillsItems$;
     public readonly profileIntentsItems$ = this._backofficeService.profileIntentsItems$;
     public readonly profileInfo$ = this._backofficeService.profileInfo$;
+    public readonly selectedSkillsItems$ = this._backofficeService.selectedSkillsItems$;
 
     isShortFirstName: boolean = false;
     phoneNumber!: string;
@@ -50,7 +51,8 @@ export class AboutmeComponent implements OnInit, OnDestroy {
         forkJoin([
             await this.getProfileSkillsAsync(),
             await this.getProfileIntentsAsync(),
-            await this.getProfileInfoAsync()
+            await this.getProfileInfoAsync(),
+            await this.getSelectedUserSkillsAsync()
         ]).subscribe();
 
         // Подключаемся.
@@ -206,6 +208,18 @@ export class AboutmeComponent implements OnInit, OnDestroy {
 
     public async onSaveProfileUserSkillsAsync() {
         console.log("selected skills: ", this.aSelectedSkills);
+    };
+
+     /**
+    * Функция получает список выбранных навыков пользователя.
+    * @returns - Список навыков.
+    */
+      private async getSelectedUserSkillsAsync() {
+        (await this._backofficeService.getSelectedUserSkillsAsync())
+            .subscribe(_ => {
+                console.log("Список выбранных навыков: ", this.selectedSkillsItems$.value);
+                this.aSelectedSkills = this.selectedSkillsItems$.value;
+            });
     };
 
     public ngOnDestroy(): void {
