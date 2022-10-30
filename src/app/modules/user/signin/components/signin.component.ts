@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { MessageService } from "primeng/api";
 import { UserService } from "../../services/user.service";
 
 @Component({
@@ -14,7 +15,8 @@ import { UserService } from "../../services/user.service";
  */
 export class SignInComponent implements OnInit {
     constructor(private readonly _userService: UserService,
-        private readonly _router: Router) { }
+        private readonly _router: Router,
+        private readonly _messageService: MessageService) { }
 
     formSignUp: FormGroup = new FormGroup({
 
@@ -41,7 +43,7 @@ export class SignInComponent implements OnInit {
      */
       public async onSendFormSignInAsync() {    
         (await this._userService.signInAsync(this.formSignUp.value.email, this.formSignUp.value.password))
-        .subscribe(_ => {
+        .subscribe((response: any) => {
             console.log("Авторизовались: ", this.userData$.value);
             if (this.userData$.value.isSuccess) {
                 localStorage["token"] = this.userData$.value.token;
@@ -51,6 +53,13 @@ export class SignInComponent implements OnInit {
                         mode: "view"
                     }
                 });
+            }
+
+            else {
+                console.log("errors validate", response);
+                response.errors.forEach((item: any) => {
+                    this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item });
+                });                
             }
         });
     };
