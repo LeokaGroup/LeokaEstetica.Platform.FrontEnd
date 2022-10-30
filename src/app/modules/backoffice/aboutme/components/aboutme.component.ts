@@ -143,8 +143,14 @@ export class AboutmeComponent implements OnInit, OnDestroy {
         console.log("ProfileInfoInput", model);
 
         (await this._backofficeService.saveProfileInfoAsync(model))
-        .subscribe(_ => {
+        .subscribe((response: any) => {
             console.log("Данные анкеты: ", this.profileInfo$.value);
+
+            if (!response.isSuccess) {
+                response.errors.forEach((item: any) => {
+                    this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item });
+                });    
+            }
         });
     };
 
