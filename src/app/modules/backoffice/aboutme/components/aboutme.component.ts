@@ -56,14 +56,17 @@ export class AboutmeComponent implements OnInit, OnDestroy {
         this._signalrService.startConnection().then(() => {
             console.log("Подключились");
 
-            // Регистрация всех.
-            this._signalrService.listenToAllFeeds();
+            // Слушаем уведомления о сохранении профиля.
+            this._signalrService.listenSuccessSaveProfileInfo();
+
+            // Слушаем уведомления о навыках пользователя.
+            this._signalrService.listenWarningUserSkillsInfo();
 
             // Подписываемся на получение всех сообщений.
             this.allFeedSubscription = this._signalrService.AllFeedObservable
                 .subscribe((response: any) => {
                     console.log("Подписались на сообщения", response);
-                    this._messageService.add({ severity: 'success', summary: response.title, detail: response.message });
+                    this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
                 });
         });
 
@@ -172,6 +175,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
         profileInfoInput.WhatsApp = this.whatsApp;
         profileInfoInput.Vkontakte = this.vkontakte;
         profileInfoInput.OtherLink = this.otherLink;
+        profileInfoInput.UserSkills = this.aSelectedSkills;
 
         return profileInfoInput;
     };
@@ -186,6 +190,10 @@ export class AboutmeComponent implements OnInit, OnDestroy {
             console.log("Данные анкеты: ", this.profileInfo$.value);
             this.setEditFields();
         });
+    };
+
+    public async onSaveProfileUserSkillsAsync() {
+        console.log("selected skills: ", this.aSelectedSkills);
     };
 
     public ngOnDestroy(): void {

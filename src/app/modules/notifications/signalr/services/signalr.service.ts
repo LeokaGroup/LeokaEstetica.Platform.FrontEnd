@@ -22,11 +22,6 @@ export class SignalrService {
                     console.log("Соединение установлено");
                     console.log("ConnectionId:", this.hubConnection.connectionId);    
                     
-                    // (await this._redisService.saveConnectionIdCacheAsync(this.hubConnection.connectionId, localStorage["u_c"]))
-                    // .subscribe(async (_) => {
-                        
-                    // });
-                    
                     return resolve(true);
                 })
                 .catch((err: any) => {
@@ -40,8 +35,21 @@ export class SignalrService {
         return this.$allFeed.asObservable();
     }
 
-    public listenToAllFeeds() {
+    /**
+     * Функция слушает уведомления сохранения профиля пользователя из хаба.
+     */
+    public listenSuccessSaveProfileInfo() {
         (<HubConnection>this.hubConnection).on("SendNotifySuccessSave", (data: any) => {
+            console.log("Данные из хаба: ", data);
+            this.$allFeed.next(data);
+        });
+    };
+
+    /**
+     * Функция слушает уведомления предупреждения о навыках пользователя из хаба.
+     */
+    public listenWarningUserSkillsInfo() {
+        (<HubConnection>this.hubConnection).on("SendNotificationWarningSaveUserSkills", (data: any) => {
             console.log("Данные из хаба: ", data);
             this.$allFeed.next(data);
         });
