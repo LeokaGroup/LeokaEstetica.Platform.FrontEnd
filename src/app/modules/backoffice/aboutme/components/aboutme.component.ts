@@ -172,6 +172,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
         profileInfoInput.WhatsApp = this.whatsApp;
         profileInfoInput.Vkontakte = this.vkontakte;
         profileInfoInput.OtherLink = this.otherLink;
+        profileInfoInput.UserSkills = this.aSelectedSkills;
 
         return profileInfoInput;
     };
@@ -186,6 +187,10 @@ export class AboutmeComponent implements OnInit, OnDestroy {
             console.log("Данные анкеты: ", this.profileInfo$.value);
             this.setEditFields();
         });
+    };
+
+    public async onSaveProfileUserSkillsAsync() {
+        console.log("selected skills: ", this.aSelectedSkills);
     };
 
     public ngOnDestroy(): void {

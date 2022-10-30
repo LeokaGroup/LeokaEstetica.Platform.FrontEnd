@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { ProfileInfoInput } from '../aboutme/models/input/profile-info-input';
+import { SaveUserSkillsInput } from '../aboutme/models/input/save-user-skills-input';
 import { SelectMenuInput } from '../left-menu/models/input/select-menu-input';
 
 /**
@@ -27,8 +28,7 @@ export class BackOfficeService {
      */
     public async getProfileInfoAsync() {
         return await this.http.get(API_URL.apiUrl + "/profile/info").pipe(
-            tap(data => this.profileInfo$.next(data)
-            )
+            tap(data => this.profileInfo$.next(data))
         );
     };   
 
@@ -38,8 +38,7 @@ export class BackOfficeService {
      */
     public async getProfileItemsAsync() {
         return await this.http.get(API_URL.apiUrl + "/profile/menu").pipe(
-            tap(data => this.profileItems$.next(data)
-            )
+            tap(data => this.profileItems$.next(data))
         );
     };  
 
@@ -49,8 +48,7 @@ export class BackOfficeService {
      */
     public async getProfileSkillsAsync() {
         return await this.http.get(API_URL.apiUrl + "/profile/skills").pipe(
-            tap(data => this.profileSkillsItems$.next(data)
-            )
+            tap(data => this.profileSkillsItems$.next(data))
         );
     }; 
 
@@ -60,8 +58,7 @@ export class BackOfficeService {
      */
     public async getProfileIntentsAsync() {
         return await this.http.get(API_URL.apiUrl + "/profile/intents").pipe(
-            tap(data => this.profileIntentsItems$.next(data)
-            )
+            tap(data => this.profileIntentsItems$.next(data))
         );
     }; 
 
@@ -71,8 +68,7 @@ export class BackOfficeService {
      */
     public async saveProfileInfoAsync(profileInfoInput: ProfileInfoInput) {
         return await this.http.post(API_URL.apiUrl + "/profile/info", profileInfoInput).pipe(
-            tap(data => this.profileInfo$.next(data)
-            )
+            tap(data => this.profileInfo$.next(data))
         );
     }; 
 
@@ -86,8 +82,7 @@ export class BackOfficeService {
         selectMenuInput.Text = text;
 
         return await this.http.post(API_URL.apiUrl + "/profile/select-menu", selectMenuInput).pipe(
-            tap(data => this.selectMenu$.next(data)
-            )
+            tap(data => this.selectMenu$.next(data))
         );
     }; 
 }

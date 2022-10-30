@@ -1,3 +1,5 @@
+import { SaveUserSkillsInput } from "./save-user-skills-input";
+
 /**
  * Класс входной модели для сохранения данных профиля пользователя.
  */
@@ -61,4 +63,9 @@ export class ProfileInfoInput {
      * Номер телефона.
      */
     PhoneNumber!: string;
+
+    /**
+     * Список навыков пользователя.
+     */
+    UserSkills: SaveUserSkillsInput[] = [];
 }
