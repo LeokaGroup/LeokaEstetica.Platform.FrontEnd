@@ -23,6 +23,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
     isShortFirstName: boolean = false;
     phoneNumber!: string;
     aSelectedSkills: any[] = [];
+    aSelectedIntents: any[] = [];
     allFeedSubscription: any;
     lastName!: string;
     firstName!: string;
@@ -56,11 +57,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
         this._signalrService.startConnection().then(() => {
             console.log("Подключились");
 
-            // Слушаем уведомления о сохранении профиля.
-            this._signalrService.listenSuccessSaveProfileInfo();
-
-            // Слушаем уведомления о навыках пользователя.
-            this._signalrService.listenWarningUserSkillsInfo();
+            this.listenAllHubsNotifications();            
 
             // Подписываемся на получение всех сообщений.
             this.allFeedSubscription = this._signalrService.AllFeedObservable
@@ -71,6 +68,20 @@ export class AboutmeComponent implements OnInit, OnDestroy {
         });
 
         this.checkUrlParams();
+    };
+
+    /**
+     * Функция слушает все хабы.
+     */
+    private listenAllHubsNotifications() {
+        // Слушаем уведомления о сохранении профиля.
+        this._signalrService.listenSuccessSaveProfileInfo();
+
+        // Слушаем уведомления о навыках пользователя.
+        this._signalrService.listenWarningUserSkillsInfo();
+
+        // Слушаем уведомления о целях пользователя.
+        this._signalrService.listenWarningUserIntentsInfo();
     };
 
     private checkUrlParams() {
@@ -176,6 +187,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
         profileInfoInput.Vkontakte = this.vkontakte;
         profileInfoInput.OtherLink = this.otherLink;
         profileInfoInput.UserSkills = this.aSelectedSkills;
+        profileInfoInput.UserIntents = this.aSelectedIntents;
 
         return profileInfoInput;
     };
