@@ -40,7 +40,7 @@ export class SignalrService {
      */
     public listenSuccessSaveProfileInfo() {
         (<HubConnection>this.hubConnection).on("SendNotifySuccessSave", (data: any) => {
-            console.log("Данные из хаба: ", data);
+            console.log("Хаб успешного сохранения: ", data);
             this.$allFeed.next(data);
         });
     };
@@ -50,7 +50,17 @@ export class SignalrService {
      */
     public listenWarningUserSkillsInfo() {
         (<HubConnection>this.hubConnection).on("SendNotificationWarningSaveUserSkills", (data: any) => {
-            console.log("Данные из хаба: ", data);
+            console.log("Хаб навыков: ", data);
+            this.$allFeed.next(data);
+        });
+    };
+
+     /**
+     * Функция слушает уведомления предупреждения о целях пользователя из хаба.
+     */
+      public listenWarningUserIntentsInfo() {
+        (<HubConnection>this.hubConnection).on("SendNotificationWarningSaveUserIntents", (data: any) => {
+            console.log("Хаб целей: ", data);
             this.$allFeed.next(data);
         });
     };

@@ -1,3 +1,4 @@
+import { SaveUserIntentsInput } from "./save-user-intents-input";
 import { SaveUserSkillsInput } from "./save-user-skills-input";
 
 /**
@@ -65,7 +66,12 @@ export class ProfileInfoInput {
     PhoneNumber!: string;
 
     /**
-     * Список навыков пользователя.
+     * Список выбранных навыков пользователя.
      */
     UserSkills: SaveUserSkillsInput[] = [];
+
+    /**
+     * Список выбранных целей пользователя.
+     */
+    UserIntents: SaveUserIntentsInput[] = [];
 }
