@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { ProfileInfoInput } from '../aboutme/models/input/profile-info-input';
-import { SaveUserSkillsInput } from '../aboutme/models/input/save-user-skills-input';
 import { SelectMenuInput } from '../left-menu/models/input/select-menu-input';
 
 /**
@@ -17,6 +16,7 @@ export class BackOfficeService {
     public profileIntentsItems$ = new BehaviorSubject<any>([]);
     public profileInfo$ = new BehaviorSubject<any>([]);
     public selectMenu$ = new BehaviorSubject<any>({});
+    public selectedSkillsItems$ = new BehaviorSubject<any>({});
 
     constructor(private readonly http: HttpClient) {
 
@@ -83,6 +83,16 @@ export class BackOfficeService {
 
         return await this.http.post(API_URL.apiUrl + "/profile/select-menu", selectMenuInput).pipe(
             tap(data => this.selectMenu$.next(data))
+        );
+    }; 
+
+    /**
+     * Функция получает список выбранных навыков пользователя.
+     * @returns - Список навыков.
+     */
+     public async getSelectedUserSkillsAsync() {
+        return await this.http.get(API_URL.apiUrl + "/profile/selected-skills").pipe(
+            tap(data => this.selectedSkillsItems$.next(data))
         );
     }; 
 }
