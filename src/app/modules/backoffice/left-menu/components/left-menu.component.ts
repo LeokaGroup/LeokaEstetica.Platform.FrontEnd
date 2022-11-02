@@ -24,6 +24,9 @@ export class LeftMenuComponent implements OnInit {
     aEditSysNames: string[] = [
         "EditWorksheet"
     ];
+    aProjectsSysName: string[] = [
+        "MyProjectsList"
+    ];
 
     constructor(private readonly _backOfficeService: BackOfficeService,
         private readonly _router: Router) {
@@ -45,8 +48,7 @@ export class LeftMenuComponent implements OnInit {
     };
 
      /**
-     * Функция находит элемент списка, который выделили в меню. 
-     * Если на первом уровне его нет, то опускаемся ниже и снова ищем и тд.
+     * Функция распределяет по роутам. 
      * @param event - Событие.
      */
     public async onSelectMenu(event: any) {
@@ -58,6 +60,7 @@ export class LeftMenuComponent implements OnInit {
             console.log("Выбрали меню: ", this.selectMenu$.value.sysName);
             this.sysName = this.selectMenu$.value.sysName;
 
+            // Роут на просмотр анкеты.
             if (this.aViewSysNames.includes(this.sysName)) {
                 this._router.navigate(["/profile/aboutme"], {
                     queryParams: {
@@ -66,10 +69,20 @@ export class LeftMenuComponent implements OnInit {
                 });
             }
             
+            // Роут на изменение анкеты.
             if (this.aEditSysNames.includes(this.sysName)) {
                 this._router.navigate(["/profile/aboutme"], {
                     queryParams: {
                         mode: "edit"
+                    }
+                });
+            }
+
+            // Роут на страницу мои проекты.
+            if (this.aProjectsSysName.includes(this.sysName)) {
+                this._router.navigate(["/profile/projects"], {
+                    queryParams: {
+                        mode: "my"
                     }
                 });
             }

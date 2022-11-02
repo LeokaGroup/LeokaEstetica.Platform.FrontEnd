@@ -17,11 +17,13 @@ import { RedisService } from '../redis/services/redis.service';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { ProjectComponent } from './project/project.component';
 
 
 @NgModule({
     declarations: [
-        AboutmeComponent
+        AboutmeComponent,
+        ProjectComponent
     ],
 
     imports: [
