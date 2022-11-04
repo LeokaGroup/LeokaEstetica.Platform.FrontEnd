@@ -17,7 +17,8 @@ import { RedisService } from '../redis/services/redis.service';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { ProjectComponent } from './project/project.component';
+import { ProjectComponent } from './project/components/project.component';
+import {TableModule} from 'primeng/table';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { ProjectComponent } from './project/project.component';
         InputTextareaModule,
         PickListModule,
         PanelMenuModule,
-        ToastModule
+        ToastModule,
+        TableModule
     ],
 
     exports: [],

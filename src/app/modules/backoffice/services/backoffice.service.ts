@@ -18,6 +18,7 @@ export class BackOfficeService {
     public selectMenu$ = new BehaviorSubject<any>({});
     public selectedSkillsItems$ = new BehaviorSubject<any>([]);
     public selectedIntentsItems$ = new BehaviorSubject<any>([]);
+    public projectColumns$ = new BehaviorSubject<any>([]);
 
     constructor(private readonly http: HttpClient) {
 
@@ -104,6 +105,16 @@ export class BackOfficeService {
      public async getSelectedUserIntentsAsync() {
         return await this.http.get(API_URL.apiUrl + "/profile/selected-intents").pipe(
             tap(data => this.selectedIntentsItems$.next(data))
+        );
+    };
+
+     /**
+    // * Функция получает поля таблицы проектов пользователя.
+    // * @returns - Список полей.
+    */
+    public async getProjectsColumnNamesAsync() {
+        return await this.http.get(API_URL.apiUrl + "/projects/config-user-projects").pipe(
+            tap(data => this.projectColumns$.next(data))
         );
     };
 }

@@ -3,7 +3,7 @@ import { forkJoin, Subscription } from "rxjs";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { ActivatedRoute } from "@angular/router";
 import { MessageService } from "primeng/api";
-import { BackOfficeService } from "../services/backoffice.service";
+import { BackOfficeService } from "../../services/backoffice.service";
 
 @Component({
     selector: "project",
@@ -15,9 +15,10 @@ import { BackOfficeService } from "../services/backoffice.service";
  * Класс создания проекта.
  */
 export class ProjectComponent implements OnInit, OnDestroy {
-    // public readonly profileSkillsItems$ = this._backofficeService.profileSkillsItems$;
+    public readonly projectColumns$ = this._backofficeService.projectColumns$;
 
     allFeedSubscription: any;
+    products: any[] = [];
 
     constructor(private readonly _backofficeService: BackOfficeService,
         private readonly _signalrService: SignalrService,
@@ -28,7 +29,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
     public async ngOnInit() {
         forkJoin([
-           
+           await this.getProjectsColumnNamesAsync()
         ]).subscribe();
 
         // Подключаемся.
@@ -97,16 +98,16 @@ export class ProjectComponent implements OnInit, OnDestroy {
     //     this.otherLink = this.profileInfo$.value.otherLink;
     // };
 
-    // /**
-    // * Функция получает список навыков пользователя для выбора.
-    // * @returns - Список навыков.
-    // */
-    // private async getProfileSkillsAsync() {
-    //     (await this._backofficeService.getProfileSkillsAsync())
-    //         .subscribe(_ => {
-    //             console.log("Список навыков для выбора: ", this.profileSkillsItems$.value);
-    //         });
-    // };
+    /**
+    // * Функция получает поля таблицы проектов пользователя.
+    // * @returns - Список полей.
+    */
+    private async getProjectsColumnNamesAsync() {
+        (await this._backofficeService.getProjectsColumnNamesAsync())
+            .subscribe(_ => {
+                console.log("Столбцы таблицы проектов пользователя: ", this.projectColumns$.value);
+            });
+    };
 
     // /**
     //  * Функция сохраняет данные профиля пользователя.
