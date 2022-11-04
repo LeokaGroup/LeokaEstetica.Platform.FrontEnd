@@ -19,12 +19,15 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import {TableModule} from 'primeng/table';
 import { MyProjectsComponent } from './project/my-projects/components/my-projects.component';
+import { CreateProjectComponent } from './project/create-project/components/create-project.component';
+import {EditorModule} from 'primeng/editor';
 
 
 @NgModule({
     declarations: [
         AboutmeComponent,
-        MyProjectsComponent
+        MyProjectsComponent,
+        CreateProjectComponent
     ],
 
     imports: [
@@ -41,7 +44,8 @@ import { MyProjectsComponent } from './project/my-projects/components/my-project
         PickListModule,
         PanelMenuModule,
         ToastModule,
-        TableModule
+        TableModule,
+        EditorModule
     ],
 
     exports: [],

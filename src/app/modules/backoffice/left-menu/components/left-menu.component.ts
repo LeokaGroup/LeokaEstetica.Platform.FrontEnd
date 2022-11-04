@@ -27,6 +27,9 @@ export class LeftMenuComponent implements OnInit {
     aProjectsSysName: string[] = [
         "MyProjectsList"
     ];
+    aCreateProjectsSysName: string[] = [
+        "CreateProject"
+    ];
 
     constructor(private readonly _backOfficeService: BackOfficeService,
         private readonly _router: Router) {
@@ -81,6 +84,11 @@ export class LeftMenuComponent implements OnInit {
             // Роут на страницу мои проекты.
             if (this.aProjectsSysName.includes(this.sysName)) {
                 this._router.navigate(["/profile/projects/my"]);
+            }
+
+            // Роут на страницу создания проекта.
+            if (this.aCreateProjectsSysName.includes(this.sysName)) {
+                this._router.navigate(["/profile/projects/create"]);
             }
         });
     };

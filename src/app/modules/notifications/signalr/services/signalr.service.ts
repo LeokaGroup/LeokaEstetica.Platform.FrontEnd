@@ -64,4 +64,14 @@ export class SignalrService {
             this.$allFeed.next(data);
         });
     };
+
+     /**
+     * Функция слушает уведомления создания проекта пользователя из хаба.
+     */
+      public listenSuccessCreatedUserProjectInfo() {
+        (<HubConnection>this.hubConnection).on("SendNotificationSuccessCreatedUserProject", (data: any) => {
+            console.log("Хаб создания проекта: ", data);
+            this.$allFeed.next(data);
+        });
+    };
 };

@@ -4,6 +4,7 @@ import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { ProfileInfoInput } from '../aboutme/models/input/profile-info-input';
 import { SelectMenuInput } from '../left-menu/models/input/select-menu-input';
+import { CreateProjectInput } from '../project/create-project/models/input/create-project-input';
 
 /**
  * Класс сервиса профиля пользователя.
@@ -19,6 +20,7 @@ export class BackOfficeService {
     public selectedSkillsItems$ = new BehaviorSubject<any>([]);
     public selectedIntentsItems$ = new BehaviorSubject<any>([]);
     public projectColumns$ = new BehaviorSubject<any>([]);
+    public projectData$ = new BehaviorSubject<any>({});
 
     constructor(private readonly http: HttpClient) {
 
@@ -115,6 +117,12 @@ export class BackOfficeService {
     public async getProjectsColumnNamesAsync() {
         return await this.http.get(API_URL.apiUrl + "/projects/config-user-projects").pipe(
             tap(data => this.projectColumns$.next(data))
+        );
+    };
+
+    public async createProjectAsync(createProjectInput: CreateProjectInput) {
+        return await this.http.post(API_URL.apiUrl + "/projects/project", createProjectInput).pipe(
+            tap(data => this.projectData$.next(data))
         );
     };
 }
