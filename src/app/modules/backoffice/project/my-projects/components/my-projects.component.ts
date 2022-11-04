@@ -3,18 +3,18 @@ import { forkJoin, Subscription } from "rxjs";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { ActivatedRoute } from "@angular/router";
 import { MessageService } from "primeng/api";
-import { BackOfficeService } from "../../services/backoffice.service";
+import { BackOfficeService } from "../../../services/backoffice.service";
 
 @Component({
-    selector: "project",
-    templateUrl: "./project.component.html",
-    styleUrls: ["./project.component.scss"]
+    selector: "my-projects",
+    templateUrl: "./my-projects.component.html",
+    styleUrls: ["./my-projects.component.scss"]
 })
 
 /**
- * Класс создания проекта.
+ * Класс проектов пользователя.
  */
-export class ProjectComponent implements OnInit, OnDestroy {
+export class MyProjectsComponent implements OnInit, OnDestroy {
     public readonly projectColumns$ = this._backofficeService.projectColumns$;
 
     allFeedSubscription: any;

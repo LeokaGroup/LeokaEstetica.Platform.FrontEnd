@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   private _aVisibleProfileMenuRoutes: string[] = [
     "/profile/aboutme?mode=view",
     "/profile/aboutme?mode=edit",
-    "/profile/projects?mode=my"
+    "/profile/projects/my"
   ];
 
   constructor(public networkService: NetworkService,

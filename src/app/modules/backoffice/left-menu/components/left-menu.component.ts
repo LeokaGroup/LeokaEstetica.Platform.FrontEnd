@@ -80,11 +80,7 @@ export class LeftMenuComponent implements OnInit {
 
             // Роут на страницу мои проекты.
             if (this.aProjectsSysName.includes(this.sysName)) {
-                this._router.navigate(["/profile/projects"], {
-                    queryParams: {
-                        mode: "my"
-                    }
-                });
+                this._router.navigate(["/profile/projects/my"]);
             }
         });
     };
