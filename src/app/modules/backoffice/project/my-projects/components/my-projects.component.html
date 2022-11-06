@@ -1,0 +1,32 @@
+<div class="d-flex block-profile space-top-50">
+  <div class="profile-left-menu col-lg-3">
+
+  </div>
+
+  <div>
+    <p-table [value]="products" styleClass="p-datatable-gridlines" responsiveLayout="scroll">
+      <ng-template pTemplate="caption">
+          <h3>Ваши проекты</h3>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+          <tr>
+              <th *ngFor="let item of projectColumns$.value">{{item.columnName}}</th>            
+          </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-product>
+          <tr>
+              <td>test</td>
+              <td>test</td>
+              <td>test</td>
+              <td>test</td>
+          </tr>
+      </ng-template>
+
+      <ng-template pTemplate="summary">
+          Всего:
+      </ng-template>
+  </p-table>
+  </div>
+</div>

@@ -17,11 +17,17 @@ import { RedisService } from '../redis/services/redis.service';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import {TableModule} from 'primeng/table';
+import { MyProjectsComponent } from './project/my-projects/components/my-projects.component';
+import { CreateProjectComponent } from './project/create-project/components/create-project.component';
+import {EditorModule} from 'primeng/editor';
 
 
 @NgModule({
     declarations: [
-        AboutmeComponent
+        AboutmeComponent,
+        MyProjectsComponent,
+        CreateProjectComponent
     ],
 
     imports: [
@@ -37,7 +43,9 @@ import { MessageService } from 'primeng/api';
         InputTextareaModule,
         PickListModule,
         PanelMenuModule,
-        ToastModule
+        ToastModule,
+        TableModule,
+        EditorModule
     ],
 
     exports: [],
