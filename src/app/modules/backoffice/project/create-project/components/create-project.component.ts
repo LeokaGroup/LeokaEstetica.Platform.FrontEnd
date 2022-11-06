@@ -4,6 +4,7 @@ import { SignalrService } from "src/app/modules/notifications/signalr/services/s
 import { MessageService } from "primeng/api";
 import { BackOfficeService } from "../../../services/backoffice.service";
 import { CreateProjectInput } from "../models/input/create-project-input";
+import { Router } from "@angular/router";
 
 @Component({
     selector: "create-project",
@@ -24,8 +25,8 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
 
     constructor(private readonly _backofficeService: BackOfficeService,
         private readonly _signalrService: SignalrService,
-        private readonly _messageService: MessageService) {
-
+        private readonly _messageService: MessageService,
+        private readonly _router: Router) {
     }
 
     public async ngOnInit() {
@@ -85,6 +86,8 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
                         this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item });
                     });  
                 }
+                
+                this._router.navigate(["/profile/projects/my"]);
             });
     };
 
