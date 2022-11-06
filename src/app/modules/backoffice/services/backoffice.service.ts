@@ -120,6 +120,10 @@ export class BackOfficeService {
         );
     };
 
+     /**
+     * Функция создает новый проект пользователя.
+     * @returns Данные проекта.
+     */
     public async createProjectAsync(createProjectInput: CreateProjectInput) {
         return await this.http.post(API_URL.apiUrl + "/projects/project", createProjectInput).pipe(
             tap(data => this.projectData$.next(data))

@@ -46,8 +46,6 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
                     this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
                 });
         });
-
-        // this.checkUrlParams();
     };
 
     /**
@@ -55,6 +53,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
      */
     private listenAllHubsNotifications() {
         this._signalrService.listenSuccessCreatedUserProjectInfo();
+        this._signalrService.listenWarningDublicateUserProjectInfo();
     };
 
     /**
@@ -68,6 +67,10 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
             });
     };
 
+    /**
+     * Функция создает новый проект пользователя.
+     * @returns Данные проекта.
+     */
     public async onCreateProjectAsync() {
         let createProjectInput = new CreateProjectInput();
         createProjectInput.ProjectName = this.projectName;

@@ -74,4 +74,14 @@ export class SignalrService {
             this.$allFeed.next(data);
         });
     };
+
+    /**
+     * Функция слушает уведомления создания проекта пользователя из хаба.
+     */
+     public listenWarningDublicateUserProjectInfo() {
+        (<HubConnection>this.hubConnection).on("SendNotificationWarningDublicateUserProject", (data: any) => {
+            console.log("Хаб дубликата проекта: ", data);
+            this.$allFeed.next(data);
+        });
+    };
 };
