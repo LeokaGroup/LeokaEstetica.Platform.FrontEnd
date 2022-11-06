@@ -86,8 +86,12 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
                         this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item });
                     });  
                 }
-                
-                this._router.navigate(["/profile/projects/my"]);
+
+                else {
+                    setTimeout(() => {
+                        this._router.navigate(["/profile/projects/my"]);
+                    }, 4000);
+                }                           
             });
     };
 
