@@ -294,7 +294,8 @@
                     filterBy="name"
                     sourceFilterPlaceholder="Найти по названию" 
                     targetFilterPlaceholder="Найти по названию"
-                    (onMoveToTarget)="onSaveProfileUserSkillsAsync()">
+                    (onMoveToTarget)="onSaveProfileUserSkillsAsync()"
+                    [disabled]="isModeView">
     <ng-template let-product pTemplate="item">
         <div class="product-item">
             <div class="image-container">
@@ -343,7 +344,8 @@
                     [targetStyle]="{'height':'30rem'}" 
                     filterBy="name"
                     sourceFilterPlaceholder="Найти по названию" 
-                    targetFilterPlaceholder="Найти по названию">
+                    targetFilterPlaceholder="Найти по названию"
+                    [disabled]="isModeView">
     <ng-template let-product pTemplate="item">
         <div class="product-item">
             <div class="image-container">
