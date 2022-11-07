@@ -21,6 +21,7 @@ export class BackOfficeService {
     public selectedIntentsItems$ = new BehaviorSubject<any>([]);
     public projectColumns$ = new BehaviorSubject<any>([]);
     public projectData$ = new BehaviorSubject<any>({});
+    public userProjects$ = new BehaviorSubject<any>([]);
 
     constructor(private readonly http: HttpClient) {
 
@@ -127,6 +128,16 @@ export class BackOfficeService {
     public async createProjectAsync(createProjectInput: CreateProjectInput) {
         return await this.http.post(API_URL.apiUrl + "/projects/project", createProjectInput).pipe(
             tap(data => this.projectData$.next(data))
+        );
+    };
+
+     /**
+     * Функция получает список проектов пользователя.
+     * @returns Список проектов.
+     */
+    public async getUserProjectsAsync() {
+        return await this.http.get(API_URL.apiUrl + "/projects/user-projects").pipe(
+            tap(data => this.userProjects$.next(data))
         );
     };
 }

@@ -4,7 +4,7 @@
   </div>
 
   <div>
-    <p-table [value]="products" styleClass="p-datatable-gridlines" responsiveLayout="scroll">
+    <p-table [value]="userProjects$.value" styleClass="p-datatable-gridlines" responsiveLayout="scroll">
       <ng-template pTemplate="caption">
           <h3>Ваши проекты</h3>
       </ng-template>
@@ -15,12 +15,12 @@
           </tr>
       </ng-template>
 
-      <ng-template pTemplate="body" let-product>
+      <ng-template pTemplate="body" let-project>
           <tr>
-              <td>test</td>
-              <td>test</td>
-              <td>test</td>
-              <td>test</td>
+            <td>{{project.projectCode}}</td>
+              <td>{{project.projectName}}</td>
+              <td>{{project.projectDetails}}</td>
+              <td>{{project.projectStatusName}}</td>
           </tr>
       </ng-template>
 
