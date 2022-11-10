@@ -15,6 +15,11 @@ const routes: Routes = [
   {
     path: "profile",
     loadChildren: () => import('./modules/backoffice/backoffice.module').then(m => m.BackOfficeModule)
+  },
+
+  {
+    path: "vacancies",
+    loadChildren: () => import('./modules/vacancy/vacancy.module').then(m => m.VacancyModule)
   }
 ];
 
