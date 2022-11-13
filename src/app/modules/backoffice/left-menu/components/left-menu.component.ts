@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { NavigationStart, Router, Event as NavigationEvent } from "@angular/router";
+import { Router, Event as NavigationEvent } from "@angular/router";
 import { BackOfficeService } from "../../services/backoffice.service";
 
 @Component({

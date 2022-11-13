@@ -47,4 +47,9 @@ export class HeaderComponent implements OnInit {
     public onRouteSignIn() {
         this._router.navigate(["/user/signin"]);
     };
+
+    public onSelectHeaderItem(e: any) {
+        console.log(e.menuItemUrl);
+        this._router.navigate([e.menuItemUrl]);
+    };
 }
