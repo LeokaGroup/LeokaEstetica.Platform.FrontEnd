@@ -13,6 +13,7 @@ import { CreateProjectInput } from '../project/create-project/models/input/creat
 export class BackOfficeService {
     public profileInfoData$ = new BehaviorSubject<any>(null);
     public profileItems$ = new BehaviorSubject<any>([]);
+    public vacancyItems$ = new BehaviorSubject<any>([]);
     public profileSkillsItems$ = new BehaviorSubject<any>([]);
     public profileIntentsItems$ = new BehaviorSubject<any>([]);
     public profileInfo$ = new BehaviorSubject<any>([]);
@@ -46,6 +47,16 @@ export class BackOfficeService {
             tap(data => this.profileItems$.next(data))
         );
     };  
+
+    /**
+     * Функция получает пункты меню вакансий.
+     * @returns Список меню.
+     */
+     public async getVacancyItemsAsync() {
+        return await this.http.get(API_URL.apiUrl + "/vacancies/menu").pipe(
+            tap(data => this.vacancyItems$.next(data))
+        );
+    }; 
 
     /**
      * Функция получает список навыков пользователя для выбора.

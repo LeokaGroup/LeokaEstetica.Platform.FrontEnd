@@ -9,12 +9,16 @@ import { NetworkService } from './core/interceptors/network.service';
 })
 export class AppComponent implements OnInit {
   public loading$ = this.networkService.loading$;
-  public isVisibleProfileMenu: boolean = false;
+  public isVisibleMenu: boolean = false;
   private _aVisibleProfileMenuRoutes: string[] = [
     "/profile/aboutme?mode=view",
     "/profile/aboutme?mode=edit",
     "/profile/projects/my",
-    "/profile/projects/create"
+    "/profile/projects/create",
+    "/vacancies/catalog"
+  ];
+  private _aVisibleVacancyMenuRoutes: string[] = [
+    "/vacancies/catalog"
   ];
 
   constructor(public networkService: NetworkService,
@@ -45,7 +49,13 @@ export class AppComponent implements OnInit {
     private checkRoutes(currentUrl: string) {
       // Отображение левого меню профиля пользователя.
       if (this._aVisibleProfileMenuRoutes.includes(currentUrl)) {
-        this.isVisibleProfileMenu = true;
+        this.isVisibleMenu = true;
+        localStorage["m_t"] = 1;
+      }
+
+      if (this._aVisibleVacancyMenuRoutes.includes(currentUrl)) {
+        localStorage["m_t"] = 2;
+        this.isVisibleMenu = true;
       }
     };
 }
