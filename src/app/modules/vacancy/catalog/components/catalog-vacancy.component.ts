@@ -27,7 +27,7 @@ export class CatalogVacancyComponent implements OnInit {
     public readonly userData$ = this._userService.userData$;
 
     public async ngOnInit() {
-
+        
     };
 
    /**

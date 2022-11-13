@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { NavigationStart, Router, Event as NavigationEvent } from "@angular/router";
 import { BackOfficeService } from "../../services/backoffice.service";
 
 @Component({
@@ -13,6 +13,7 @@ import { BackOfficeService } from "../../services/backoffice.service";
  */
 export class LeftMenuComponent implements OnInit {
     public readonly profileItems$ = this._backOfficeService.profileItems$;
+    public readonly vacancyItems$ = this._backOfficeService.vacancyItems$;
     public readonly selectMenu$ = this._backOfficeService.selectMenu$;
 
     sysName: string = "";
@@ -31,13 +32,21 @@ export class LeftMenuComponent implements OnInit {
         "CreateProject"
     ];
 
+    manuItems: any[] = [];
+
     constructor(private readonly _backOfficeService: BackOfficeService,
         private readonly _router: Router) {
     }
 
-    public async ngOnInit() {
-        await this.getProfileInfoAsync();        
-    }
+    public async ngOnInit() {                 
+        if (localStorage["m_t"] == "1") {
+            await this.getProfileInfoAsync();      
+        }
+
+        if (localStorage["m_t"] == "2") {
+            await this.getVacancyInfoAsync();
+        }
+    };
 
     /**
      * Функция получает пункты меню профиля пользователя.
@@ -47,6 +56,19 @@ export class LeftMenuComponent implements OnInit {
         (await this._backOfficeService.getProfileItemsAsync())
         .subscribe(_ => {
             console.log("Меню профиля: ", this.profileItems$.value);
+            this.manuItems = this.profileItems$.value.profileMenuItems;
+        });
+    };
+
+    /**
+     * Функция получает пункты меню вакансий.
+     * @returns Список меню.
+     */
+     private async getVacancyInfoAsync() {
+        (await this._backOfficeService.getVacancyItemsAsync())
+        .subscribe(_ => {
+            console.log("Меню вакансий: ", this.vacancyItems$.value);
+            this.manuItems = this.vacancyItems$.value.vacancyMenuItems;
         });
     };
 
