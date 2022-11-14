@@ -19,6 +19,9 @@ export class CreateVacancyComponent implements OnInit {
 
     vacancyName: string = "";
     vacancyText: string = "";
+    workExperience: string = "";
+    employment: string = "";
+    payment: string = "";
 
     public async ngOnInit() {
         
