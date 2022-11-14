@@ -1,0 +1,57 @@
+<p-toast></p-toast>
+
+<div class="d-flex block-profile space-top-50">
+  <div class="profile-left-menu col-lg-3">
+
+  </div>
+
+  <div class="block-worksheet">
+    <div class="worksheet-panel">
+      <p-panel header="Заполнение информации о вакансии" [toggleable]="true">
+        <ng-template pTemplate="icons">
+          <button pButton class="p-panel-header-icon p-link" (click)="menu.toggle($event)">
+            <span class="pi pi-cog"></span>
+          </button>
+          <p-menu #menu id="config_menu" [popup]="true"></p-menu>
+        </ng-template>
+
+        <div class="d-flex">
+          <div class="control-input-text-worksheet">
+            <div>
+                <label>Название вакансии</label>
+            </div>
+            <div>
+                <input type="text" class="p-inputtext-sm input-control-worksheet control-project" placeholder="Название вакансии" pInputText
+              autocomplete="new-password" [(ngModel)]="vacancyName"/>    
+            </div>          
+          </div>         
+        </div>
+
+        <div class="d-flex mt-3">
+            <div class="control-input-text-worksheet">
+                <div class="control-input-text-worksheet">
+                    <div class="d-flex worksheet-line">
+                        <div class="control-input-text-worksheet">
+                            <div>
+                                <label>Описание вакансии</label>
+                            </div>
+                            <div>
+                                <p-editor autocomplete="new-password" [(ngModel)]="vacancyText"  [style]="{'height':'320px'}"></p-editor>
+                            </div>
+                        </div>                         
+                    </div>
+                  </div>
+              </div>
+        </div>
+      </p-panel>
+    </div>
+
+    <div class="d-flex worksheet-line mt-3">
+      <div class="control-input-text-worksheet">
+        <button type="button" class="btn btn-primary button-action-pur-control-worksheet">
+          Сохранить
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
