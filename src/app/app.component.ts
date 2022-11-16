@@ -18,7 +18,8 @@ export class AppComponent implements OnInit {
     "/vacancies/catalog"
   ];
   private _aVisibleVacancyMenuRoutes: string[] = [
-    "/vacancies/catalog"
+    "/vacancies/catalog",
+    "/vacancies/create"
   ];
 
   constructor(public networkService: NetworkService,
