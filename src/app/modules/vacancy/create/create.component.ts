@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { UserService } from "../../user/services/user.service";
+import { CreateVacancyInput } from "../models/input/create-vacancy-input";
+import { VacancyService } from "../services/vacancy.service";
 
 @Component({
     selector: "create",
@@ -14,8 +15,9 @@ import { UserService } from "../../user/services/user.service";
  */
 export class CreateVacancyComponent implements OnInit {
     constructor(private readonly _userService: UserService,
-        private readonly _router: Router) { }
-    public readonly userData$ = this._userService.userData$;
+        private readonly _router: Router,
+        private readonly _vacancyService: VacancyService) { }
+    public readonly vacancy$ = this._vacancyService.vacancy$;
 
     vacancyName: string = "";
     vacancyText: string = "";
@@ -31,11 +33,27 @@ export class CreateVacancyComponent implements OnInit {
      * Функция регистрирует пользователя.     
      * @returns - Данные пользователя.
      */
-    // public async onSendFormSignUpAsync() {    
-    //     (await this._userService.signUpAsync(this.formSignUp.value.email, this.formSignUp.value.password))
-    //     .subscribe(_ => {
-    //         console.log("Новый пользователь: ", this.userData$.value);
-    //         this._router.navigate(["/user/signin"]);
-    //     });
-    // };
+    public async onCreateVacancyAsync() {  
+        let model = this.CreateVacancyModel();  
+
+        (await this._vacancyService.createVacancyAsync(model))
+        .subscribe(_ => {
+            console.log("Новая вакансия: ", this.vacancy$.value);            
+        });
+    };
+
+    /**
+     * Функция создает модель для создания вакансии.
+     * @returns - Входная модель вакансии.
+     */
+    private CreateVacancyModel(): CreateVacancyInput {
+        let model = new CreateVacancyInput();
+        model.VacancyName = this.vacancyName;
+        model.VacancyText = this.vacancyText;
+        model.Employment = this.employment;
+        model.Payment = this.payment;
+        model.WorkExperience = this.workExperience;
+
+        return model;
+    };
 }

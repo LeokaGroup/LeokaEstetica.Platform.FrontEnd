@@ -16,6 +16,7 @@ import { HeaderService } from './modules/header/services/header.service';
 import { LandingService } from './modules/landing/services/landing.service';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { ToastModule } from 'primeng/toast';
+import { VacancyService } from './modules/vacancy/services/vacancy.service';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { ToastModule } from 'primeng/toast';
       useClass: NetworkInterceptor,
       multi: true
     },
-    NetworkService
+    NetworkService,
+    VacancyService
   ],
 
   bootstrap: [AppComponent]
