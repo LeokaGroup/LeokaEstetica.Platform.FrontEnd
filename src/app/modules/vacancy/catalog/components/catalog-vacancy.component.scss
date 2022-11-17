@@ -1,1 +1,7 @@
+@use "/src/app/common/styles/spaces.scss";
 @use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+
+.tag {
+    margin-left: 20px;
+}

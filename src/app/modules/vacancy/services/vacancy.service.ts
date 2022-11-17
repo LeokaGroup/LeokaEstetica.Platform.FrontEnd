@@ -7,6 +7,7 @@ import { CreateVacancyInput } from '../models/input/create-vacancy-input';
 @Injectable()
 export class VacancyService {
     public vacancy$ = new BehaviorSubject<any>(null);
+    public catalog$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -19,6 +20,16 @@ export class VacancyService {
     public async createVacancyAsync(createVacancyInput: CreateVacancyInput) {
         return await this.http.post(API_URL.apiUrl + "/vacancies/vacancy", createVacancyInput).pipe(
             tap(data => this.vacancy$.next(data))
+        );
+    };
+
+     /**
+     * Функция создает новую вакансию.
+     * @returns - Данные вакансии.
+     */
+      public async loadCatalogVacanciesAsync() {
+        return await this.http.get(API_URL.apiUrl + "/vacancies").pipe(
+            tap(data => this.catalog$.next(data))
         );
     };
 }

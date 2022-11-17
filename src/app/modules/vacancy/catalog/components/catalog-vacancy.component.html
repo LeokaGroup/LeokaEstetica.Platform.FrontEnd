@@ -1,0 +1,25 @@
+<p-toast></p-toast>
+
+<div class="d-flex block-profile space-top-50">
+  <div class="col-lg-3">
+
+  </div>
+
+  <div class="col-lg-6 block-catalog-vacancies">
+    <div class="catalog-vacancies-item" *ngFor="let item of catalog$.value.catalogVacancies">
+        <div class="d-flex">
+            <div>{{item.payment}}</div>
+            <div class="tag">{{item.workExperience}}</div>            
+            <div class="tag">{{item.employment}}</div>
+        </div>
+        <h3>{{item.vacancyName}}</h3>
+        <div>{{item.vacancyText}}</div>
+    </div>
+  </div>
+
+  <!-- <div class="col-lg-2"></div> -->
+
+  <div class="col-lg-3 block-catalog-filters">
+    <h3>Фильтры</h3>
+  </div>
+</div>
