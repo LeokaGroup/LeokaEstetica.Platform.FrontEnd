@@ -17,6 +17,7 @@ import { LandingService } from './modules/landing/services/landing.service';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { ToastModule } from 'primeng/toast';
 import { VacancyService } from './modules/vacancy/services/vacancy.service';
+import { ProjectService } from './modules/project/services/project.service';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { VacancyService } from './modules/vacancy/services/vacancy.service';
       multi: true
     },
     NetworkService,
-    VacancyService
+    VacancyService,
+    ProjectService
   ],
 
   bootstrap: [AppComponent]

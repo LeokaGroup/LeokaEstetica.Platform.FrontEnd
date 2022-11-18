@@ -16,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SignalrService } from '../notifications/signalr/services/signalr.service';
 import { ProjectRoutingModule } from './project-routing.module';
 import { CatalogProjectsComponent } from './catalog/components/catalog.component';
+import { ProjectService } from './services/project.service';
 
 @NgModule({
     declarations: [
