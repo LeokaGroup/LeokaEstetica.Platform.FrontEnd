@@ -16,7 +16,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
 import { HttpClientModule } from '@angular/common/http';
-import { VacancyService } from './services/vacancy.service';
+import { SignalrService } from '../notifications/signalr/services/signalr.service';
 
 @NgModule({
     declarations: [
@@ -44,8 +44,8 @@ import { VacancyService } from './services/vacancy.service';
 
     providers: [
         UserService,
-        MessageService
-        // VacancyService
+        MessageService,
+        SignalrService
     ]
 })
 

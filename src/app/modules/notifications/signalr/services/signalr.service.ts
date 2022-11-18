@@ -84,4 +84,14 @@ export class SignalrService {
             this.$allFeed.next(data);
         });
     };
+
+    /**
+     * Функция слушает уведомления создания вакансии пользователя из хаба.
+     */
+     public listenSuccessCreatedUserVacancyInfo() {
+        (<HubConnection>this.hubConnection).on("SendNotificationSuccessCreatedUserVacancy", (data: any) => {
+            console.log("Хаб дубликата проекта: ", data);
+            this.$allFeed.next(data);
+        });
+    };
 };
