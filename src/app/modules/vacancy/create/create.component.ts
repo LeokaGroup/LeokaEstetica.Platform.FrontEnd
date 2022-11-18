@@ -1,5 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { MessageService } from "primeng/api";
+import { Subscription } from "rxjs";
+import { SignalrService } from "../../notifications/signalr/services/signalr.service";
 import { UserService } from "../../user/services/user.service";
 import { CreateVacancyInput } from "../models/input/create-vacancy-input";
 import { VacancyService } from "../services/vacancy.service";
@@ -16,7 +19,9 @@ import { VacancyService } from "../services/vacancy.service";
 export class CreateVacancyComponent implements OnInit {
     constructor(private readonly _userService: UserService,
         private readonly _router: Router,
-        private readonly _vacancyService: VacancyService) { }
+        private readonly _vacancyService: VacancyService,
+        private readonly _signalrService: SignalrService,
+        private readonly _messageService: MessageService) { }
     public readonly vacancy$ = this._vacancyService.vacancy$;
 
     vacancyName: string = "";
@@ -24,10 +29,31 @@ export class CreateVacancyComponent implements OnInit {
     workExperience: string = "";
     employment: string = "";
     payment: string = "";
+    allFeedSubscription: any;
 
     public async ngOnInit() {
-        
+         // Подключаемся.
+         this._signalrService.startConnection().then(() => {
+            console.log("Подключились");
+
+            this.listenAllHubsNotifications();            
+
+            // Подписываемся на получение всех сообщений.
+            this.allFeedSubscription = this._signalrService.AllFeedObservable
+                .subscribe((response: any) => {
+                    console.log("Подписались на сообщения", response);      
+                    this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });               
+                });
+        });
     };
+
+    /**
+     * Функция слушает все хабы.
+     */
+     private listenAllHubsNotifications() {
+        this._signalrService.listenSuccessCreatedUserVacancyInfo();
+    };
+
 
    /**
      * Функция регистрирует пользователя.     
@@ -37,8 +63,20 @@ export class CreateVacancyComponent implements OnInit {
         let model = this.CreateVacancyModel();  
 
         (await this._vacancyService.createVacancyAsync(model))
-        .subscribe(_ => {
+        .subscribe((response: any) => {
             console.log("Новая вакансия: ", this.vacancy$.value);            
+
+            if (!response.isSuccess) {
+                response.errors.forEach((item: any) => {
+                    this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item });
+                });  
+            }
+
+            else {
+                setTimeout(() => {
+                    this._router.navigate(["/vacancies/catalog"]);
+                }, 4000);
+            }   
         });
     };
 
@@ -55,5 +93,9 @@ export class CreateVacancyComponent implements OnInit {
         model.WorkExperience = this.workExperience;
 
         return model;
+    };
+
+    public ngOnDestroy(): void {
+        (<Subscription>this.allFeedSubscription).unsubscribe();
     };
 }
