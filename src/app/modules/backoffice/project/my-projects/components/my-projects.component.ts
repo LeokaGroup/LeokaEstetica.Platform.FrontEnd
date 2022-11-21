@@ -19,6 +19,8 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
 
     allFeedSubscription: any;
     products: any[] = [];
+    selectedProjects: any;
+    isSelectionPageOnly: boolean = true;
 
     constructor(private readonly _backofficeService: BackOfficeService,
         private readonly _signalrService: SignalrService,
@@ -72,8 +74,15 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
     private async getUserProjectsAsync() {        
         (await this._backofficeService.getUserProjectsAsync())
         .subscribe(_ => {
-            console.log("Проекты пользователя: ", this.userProjects$.value);
+            console.log("Проекты пользователя:", this.userProjects$.value);
         });
+    };
+
+    /**
+     * Функция получает выделенный проект.
+     */
+    public onSelectProject() {
+        console.log(this.selectedProjects);
     };
 
     public ngOnDestroy(): void {
