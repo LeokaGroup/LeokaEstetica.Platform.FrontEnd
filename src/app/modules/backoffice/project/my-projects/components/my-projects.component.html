@@ -4,7 +4,7 @@
   </div>
 
   <div>
-    <p-table [value]="userProjects$.value" 
+    <p-table [value]="userProjects$.value.userProjects" 
             [(selection)]="selectedProjects" 
             dataKey="projectId" 
             [paginator]="true" 
@@ -45,7 +45,7 @@
       </ng-template>
 
       <ng-template pTemplate="summary">
-          Всего:
+          Всего: {{userProjects$.value.total}}
       </ng-template>
   </p-table>
   </div>
