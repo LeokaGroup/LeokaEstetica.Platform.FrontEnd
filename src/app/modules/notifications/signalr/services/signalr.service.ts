@@ -94,4 +94,14 @@ export class SignalrService {
             this.$allFeed.next(data);
         });
     };
+
+    /**
+     * Функция слушает уведомления обновления проекта пользователя из хаба.
+     */
+     public listenSuccessUpdatedUserVacancyInfo() {
+        (<HubConnection>this.hubConnection).on("SendNotificationSuccessUpdatedUserProject", (data: any) => {
+            console.log("Хаб обновления проекта: ", data);
+            this.$allFeed.next(data);
+        });
+    };
 };

@@ -3,6 +3,7 @@ import { forkJoin, Subscription } from "rxjs";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { MessageService } from "primeng/api";
 import { BackOfficeService } from "../../../services/backoffice.service";
+import { Router } from "@angular/router";
 
 @Component({
     selector: "my-projects",
@@ -24,7 +25,8 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
 
     constructor(private readonly _backofficeService: BackOfficeService,
         private readonly _signalrService: SignalrService,
-        private readonly _messageService: MessageService) {
+        private readonly _messageService: MessageService,
+        private readonly _router: Router) {
 
     }
 
@@ -87,5 +89,31 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
 
     public ngOnDestroy(): void {
         (<Subscription>this.allFeedSubscription).unsubscribe();
+    };
+
+    /**
+     * Функция переходит на страницу редактирования проекта и подставляет в роут Id проекта.
+     * @param projectId - Id проекта.
+     */
+    public onRouteEditProject(projectId: number) {
+        this._router.navigate(["/projects/project"], {
+            queryParams: {
+                projectId,
+                mode: "edit"
+            }
+        });
+    };
+
+    /**
+     * Функция переходит на страницу просмотра проекта и подставляет в роут Id проекта.
+     * @param projectId - Id проекта.
+     */
+     public onRouteViewProject(projectId: number) {
+        this._router.navigate(["/projects/project"], {
+            queryParams: {
+                projectId: projectId,
+                mode: "view"
+            }
+        });
     };
 }

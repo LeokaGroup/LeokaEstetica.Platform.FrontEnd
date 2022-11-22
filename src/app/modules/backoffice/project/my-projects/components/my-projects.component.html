@@ -24,7 +24,8 @@
             <th>
               
             </th>
-              <th *ngFor="let item of projectColumns$.value">{{item.columnName}}</th>        
+              <th *ngFor="let item of projectColumns$.value">{{item.columnName}}</th>    
+              <th>Просмотр</th>        
               <th>Редактирование</th>    
               <th>Удаление</th>    
           </tr>
@@ -39,7 +40,18 @@
             <td>{{project.projectName}}</td>
             <td>{{project.projectDetails}}</td>
             <td>{{project.projectStatusName}}</td>
-            <td><button pButton type="button" label="Редактировать" class="p-button-outlined p-button-primary"></button></td>
+            <td><button pButton type="button" 
+              label="Просмотр" 
+              class="p-button-outlined p-button-primaryproject.projectId" 
+              (click)="onRouteViewProject(project.projectId)">
+                </button>
+            </td>
+            <td><button pButton type="button" 
+                        label="Редактировать" 
+                        class="p-button-outlined p-button-primaryproject.projectId" 
+                        (click)="onRouteEditProject(project.projectId)">
+                </button>
+            </td>
             <td><button pButton type="button" label="Удалить" class="p-button-outlined p-button-danger"></button></td>
           </tr>
       </ng-template>
