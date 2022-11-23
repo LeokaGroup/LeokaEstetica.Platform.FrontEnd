@@ -29,6 +29,7 @@ export class DetailProjectComponent implements OnInit {
     projectDetails: string = "";
     projectId: number = 0;
     allFeedSubscription: any;
+    isEditMode: boolean = false;
 
     public async ngOnInit() {
         forkJoin([
@@ -63,13 +64,16 @@ export class DetailProjectComponent implements OnInit {
             let mode = params["mode"];
 
             if (mode == "view") {
-                
+                this.getEditProjectAsync(params["projectId"], "View");  
+                this.isEditMode = false;
             }
 
             if (mode == "edit") {
-                this.getEditProjectAsync(params["projectId"], "Edit");
-                this.projectId = params["projectId"];
+                this.getEditProjectAsync(params["projectId"], "Edit");             
+                this.isEditMode = true;   
             }
+
+            this.projectId = params["projectId"];
           });
     };
 
