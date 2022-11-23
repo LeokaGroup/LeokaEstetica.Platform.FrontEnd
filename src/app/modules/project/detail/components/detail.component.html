@@ -21,8 +21,13 @@
                 <label>Название проекта</label>
             </div>
             <div>
-                <input type="text" class="p-inputtext-sm input-control-worksheet control-project" placeholder="Название проекта" pInputText
-              autocomplete="new-password" [(ngModel)]="selectedProject$.value.projectName"/>    
+                <input type="text" 
+                        class="p-inputtext-sm input-control-worksheet control-project" 
+                        placeholder="Название проекта" 
+                        pInputText
+                        autocomplete="new-password" 
+                        [(ngModel)]="selectedProject$.value.projectName" 
+                        [disabled]="!isEditMode"/>    
             </div>          
           </div>         
         </div>
@@ -36,7 +41,11 @@
                                 <label>Описание проекта</label>
                             </div>
                             <div>
-                                <p-editor autocomplete="new-password" [(ngModel)]="selectedProject$.value.projectDetails"  [style]="{'height':'320px'}"></p-editor>
+                              <p-editor autocomplete="new-password" 
+                                        [(ngModel)]="selectedProject$.value.projectDetails"
+                                        [style]="{'height':'320px'}"
+                                        [readonly]="!isEditMode">
+                              </p-editor>
                             </div>
                         </div>                         
                     </div>

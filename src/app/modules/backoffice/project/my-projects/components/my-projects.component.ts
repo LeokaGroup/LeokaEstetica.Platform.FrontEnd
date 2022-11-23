@@ -111,7 +111,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
      public onRouteViewProject(projectId: number) {
         this._router.navigate(["/projects/project"], {
             queryParams: {
-                projectId: projectId,
+                projectId,
                 mode: "view"
             }
         });
