@@ -3,6 +3,7 @@ import { forkJoin, Subscription } from "rxjs";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { MessageService } from "primeng/api";
 import { BackOfficeService } from "../../../services/backoffice.service";
+import { Router } from "@angular/router";
 
 @Component({
     selector: "my-projects",
@@ -19,10 +20,13 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
 
     allFeedSubscription: any;
     products: any[] = [];
+    selectedProjects: any;
+    isSelectionPageOnly: boolean = true;
 
     constructor(private readonly _backofficeService: BackOfficeService,
         private readonly _signalrService: SignalrService,
-        private readonly _messageService: MessageService) {
+        private readonly _messageService: MessageService,
+        private readonly _router: Router) {
 
     }
 
@@ -72,11 +76,44 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
     private async getUserProjectsAsync() {        
         (await this._backofficeService.getUserProjectsAsync())
         .subscribe(_ => {
-            console.log("Проекты пользователя: ", this.userProjects$.value);
+            console.log("Проекты пользователя:", this.userProjects$.value);
         });
+    };
+
+    /**
+     * Функция получает выделенный проект.
+     */
+    public onSelectProject() {
+        console.log(this.selectedProjects);
     };
 
     public ngOnDestroy(): void {
         (<Subscription>this.allFeedSubscription).unsubscribe();
+    };
+
+    /**
+     * Функция переходит на страницу редактирования проекта и подставляет в роут Id проекта.
+     * @param projectId - Id проекта.
+     */
+    public onRouteEditProject(projectId: number) {
+        this._router.navigate(["/projects/project"], {
+            queryParams: {
+                projectId,
+                mode: "edit"
+            }
+        });
+    };
+
+    /**
+     * Функция переходит на страницу просмотра проекта и подставляет в роут Id проекта.
+     * @param projectId - Id проекта.
+     */
+     public onRouteViewProject(projectId: number) {
+        this._router.navigate(["/projects/project"], {
+            queryParams: {
+                projectId: projectId,
+                mode: "view"
+            }
+        });
     };
 }

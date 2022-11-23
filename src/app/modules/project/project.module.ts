@@ -16,11 +16,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { SignalrService } from '../notifications/signalr/services/signalr.service';
 import { ProjectRoutingModule } from './project-routing.module';
 import { CatalogProjectsComponent } from './catalog/components/catalog.component';
-import { ProjectService } from './services/project.service';
+import { DetailProjectComponent } from './detail/components/detail.component';
 
 @NgModule({
     declarations: [
-        CatalogProjectsComponent
+        CatalogProjectsComponent,
+        DetailProjectComponent
     ],
 
     imports: [

@@ -15,12 +15,16 @@ export class AppComponent implements OnInit {
     "/profile/aboutme?mode=edit",
     "/profile/projects/my",
     "/profile/projects/create",
-    "/vacancies/catalog"
+    "/vacancies/catalog",
+    "/projects/project?projectId"
   ];
+
   private _aVisibleVacancyMenuRoutes: string[] = [
     "/vacancies/catalog",
     "/vacancies/create"
   ];
+
+  private projectModeUrl = "/projects/project?projectId";
 
   constructor(public networkService: NetworkService,
     private _router: Router) { }
@@ -57,6 +61,11 @@ export class AppComponent implements OnInit {
       if (this._aVisibleVacancyMenuRoutes.includes(currentUrl)) {
         localStorage["m_t"] = 2;
         this.isVisibleMenu = true;
+      }
+
+      if (currentUrl.indexOf(this.projectModeUrl) >= 0) {
+        this.isVisibleMenu = true;
+        localStorage["m_t"] = 1;
       }
     };
 }
