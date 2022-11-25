@@ -17,6 +17,7 @@ import { SignalrService } from '../notifications/signalr/services/signalr.servic
 import { ProjectRoutingModule } from './project-routing.module';
 import { CatalogProjectsComponent } from './catalog/components/catalog.component';
 import { DetailProjectComponent } from './detail/components/detail.component';
+import {DropdownModule} from 'primeng/dropdown';
 
 @NgModule({
     declarations: [
@@ -37,7 +38,8 @@ import { DetailProjectComponent } from './detail/components/detail.component';
         PanelMenuModule,
         ToastModule,
         EditorModule,
-        ProjectRoutingModule
+        ProjectRoutingModule,
+        DropdownModule
     ],
 
     exports: [],
