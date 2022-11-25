@@ -11,6 +11,7 @@ import { UpdateProjectInput } from '../detail/models/input/update-project-input'
 export class ProjectService {
     public catalog$ = new BehaviorSubject<any>(null);
     public selectedProject$ = new BehaviorSubject<any>(null);
+    public projectStages$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -38,9 +39,24 @@ export class ProjectService {
         );
     };
 
+    /**
+     * Функция обновляет проект.
+     * @param model - Входная модель.
+     * @returns - Обновленные данные проекта.
+     */
     public async updateProjectAsync(model: UpdateProjectInput) {
         return await this.http.put(API_URL.apiUrl + "/projects/project", model).pipe(
             tap(data => this.selectedProject$.next(data))
+        );
+    };
+
+    /**
+     * Функция получает список стадий проекта.
+     * @returns - Список стадий проекта.
+     */
+    public async getProjectStagesAsync() {
+        return await this.http.get(API_URL.apiUrl + "/projects/stages").pipe(
+            tap(data => this.projectStages$.next(data))
         );
     };
 }

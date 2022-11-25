@@ -90,6 +90,10 @@ export class DetailProjectComponent implements OnInit {
         });
     };
     
+    /**
+     * Функция обновляет проект.
+     * @returns - Обновленные данные проекта.
+     */
     public async onUpdateProjectAsync() {
         let model = new UpdateProjectInput();
         model.ProjectName = this.selectedProject$.value.projectName;
