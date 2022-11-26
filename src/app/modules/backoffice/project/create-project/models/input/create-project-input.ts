@@ -11,4 +11,7 @@ export class CreateProjectInput {
      * Описание проекта.
      */
     ProjectDetails: string = "";
+
+    // Системное название стадии проекта.
+    ProjectStage: string = "";
 }

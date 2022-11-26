@@ -30,10 +30,13 @@ export class DetailProjectComponent implements OnInit {
     projectId: number = 0;
     allFeedSubscription: any;
     isEditMode: boolean = false;
+    selectedStage: any;
+    public readonly projectStages$ = this._projectService.projectStages$;
 
     public async ngOnInit() {
         forkJoin([
-        this.checkUrlParams()
+        this.checkUrlParams(),
+        await this.getProjectStagesAsync()
         ]).subscribe();
 
          // Подключаемся.
@@ -90,6 +93,10 @@ export class DetailProjectComponent implements OnInit {
         });
     };
     
+    /**
+     * Функция обновляет проект.
+     * @returns - Обновленные данные проекта.
+     */
     public async onUpdateProjectAsync() {
         let model = new UpdateProjectInput();
         model.ProjectName = this.selectedProject$.value.projectName;
@@ -100,5 +107,20 @@ export class DetailProjectComponent implements OnInit {
         .subscribe(_ => {
             console.log("Обновили проект: ", this.selectedProject$.value);
         });
+    };
+
+    /**
+     * Функция получает список стадий проекта.
+     * @returns - Список стадий проекта.
+     */
+     private async getProjectStagesAsync() {
+        (await this._projectService.getProjectStagesAsync())
+            .subscribe(_ => {
+                console.log("Стадии проекта для выбора: ", this.projectStages$.value);
+            });
+    };
+
+    public onSelectProjectStage() {
+        console.log(this.selectedStage);
     };
 }

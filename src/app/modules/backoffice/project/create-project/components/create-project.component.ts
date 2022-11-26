@@ -5,6 +5,7 @@ import { MessageService } from "primeng/api";
 import { BackOfficeService } from "../../../services/backoffice.service";
 import { CreateProjectInput } from "../models/input/create-project-input";
 import { Router } from "@angular/router";
+import { ProjectService } from "src/app/modules/project/services/project.service";
 
 @Component({
     selector: "create-project",
@@ -18,20 +19,24 @@ import { Router } from "@angular/router";
 export class CreateProjectComponent implements OnInit, OnDestroy {
     public readonly projectColumns$ = this._backofficeService.projectColumns$;
     public readonly projectData$ = this._backofficeService.projectData$;
+    public readonly projectStages$ = this._projectService.projectStages$;
 
     allFeedSubscription: any;
     projectName: string = "";
     projectDetails: string = "";
+    selectedStage: any;
 
     constructor(private readonly _backofficeService: BackOfficeService,
         private readonly _signalrService: SignalrService,
         private readonly _messageService: MessageService,
-        private readonly _router: Router) {
+        private readonly _router: Router,
+        private readonly _projectService: ProjectService) {
     }
 
     public async ngOnInit() {
         forkJoin([
-           await this.getProjectsColumnNamesAsync()
+           await this.getProjectsColumnNamesAsync(),
+           await this.getProjectStagesAsync()
         ]).subscribe();
 
         // Подключаемся.
@@ -76,6 +81,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
         let createProjectInput = new CreateProjectInput();
         createProjectInput.ProjectName = this.projectName;
         createProjectInput.ProjectDetails = this.projectDetails;
+        createProjectInput.ProjectStage = this.selectedStage;
 
         (await this._backofficeService.createProjectAsync(createProjectInput))
             .subscribe((response: any) => {
@@ -97,5 +103,20 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
 
     public ngOnDestroy(): void {
         (<Subscription>this.allFeedSubscription).unsubscribe();
+    };
+
+    /**
+     * Функция получает список стадий проекта.
+     * @returns - Список стадий проекта.
+     */
+    private async getProjectStagesAsync() {
+        (await this._projectService.getProjectStagesAsync())
+            .subscribe(_ => {
+                console.log("Стадии проекта для выбора: ", this.projectStages$.value);
+            });
+    };
+
+    public onSelectProjectStage() {
+        console.log(this.selectedStage);
     };
 }

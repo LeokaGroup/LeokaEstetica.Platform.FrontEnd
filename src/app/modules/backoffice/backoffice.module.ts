@@ -22,6 +22,7 @@ import { MyProjectsComponent } from './project/my-projects/components/my-project
 import { CreateProjectComponent } from './project/create-project/components/create-project.component';
 import {EditorModule} from 'primeng/editor';
 import { ButtonModule } from 'primeng/button';
+import {DropdownModule} from 'primeng/dropdown';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { ButtonModule } from 'primeng/button';
         ToastModule,
         TableModule,
         EditorModule,
-        ButtonModule
+        ButtonModule,
+        DropdownModule
     ],
 
     exports: [],
