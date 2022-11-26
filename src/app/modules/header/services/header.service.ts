@@ -25,7 +25,7 @@ export class HeaderService {
     // Функция обновит токена пользователя.
     public async refreshTokenAsync() {
         setInterval(async () => {
-            if (!localStorage["token"]) {
+            if (!localStorage["t_n"]) {
                 clearInterval();
                 return;
             }
@@ -34,7 +34,7 @@ export class HeaderService {
                 await this.http.get(API_URL.apiUrl.concat("/user/token"))
                     .subscribe({
                         next: (response: any) => {
-                            localStorage["token"] = response.token;
+                            localStorage["t_n"] = response.token;
                             console.log("refresh token", response);
                         },
 
