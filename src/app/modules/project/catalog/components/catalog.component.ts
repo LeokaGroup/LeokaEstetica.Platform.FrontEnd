@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { ProjectService } from "../../services/project.service";
 
@@ -12,7 +13,8 @@ import { ProjectService } from "../../services/project.service";
  * Класс каталога проектов.
  */
 export class CatalogProjectsComponent implements OnInit {
-    constructor(private readonly _projectService: ProjectService) {
+    constructor(private readonly _projectService: ProjectService,
+        private readonly _router: Router) {
     }
 
     public readonly catalog$ = this._projectService.catalog$;
@@ -31,6 +33,19 @@ export class CatalogProjectsComponent implements OnInit {
         (await this._projectService.loadCatalogProjectsAsync())
         .subscribe(_ => {
             console.log("Список проектов: ", this.catalog$.value);
+        });
+    };
+
+    /**
+     * Функция переходит к проекту, который выбрали.
+     * @param projectId - Id проекта.
+     */
+    public async onRouteSelectedProject(projectId: number) {
+        this._router.navigate(["/projects/project"], {
+            queryParams: {
+                projectId,
+                mode: "view"
+            }
         });
     };
 }

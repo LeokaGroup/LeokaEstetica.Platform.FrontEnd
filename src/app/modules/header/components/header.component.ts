@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { HeaderService } from "../services/header.service";
 
 @Component({
@@ -14,13 +14,17 @@ import { HeaderService } from "../services/header.service";
 export class HeaderComponent implements OnInit {
     public readonly headerData$ = this._headerService.headerData$;
 
+    isHideAuthButtons: boolean = false;
+
     constructor(private readonly _headerService: HeaderService,
-        private readonly _router: Router) {
+        private readonly _router: Router,
+        private readonly _activatedRoute: ActivatedRoute) {
     }
 
     public async ngOnInit() {
         await this.getHeaderItemsAsync();
         await this._headerService.refreshTokenAsync();
+        this.checkUrlParams();
     }
 
     /**
@@ -51,5 +55,16 @@ export class HeaderComponent implements OnInit {
     public onSelectHeaderItem(e: any) {
         console.log(e.menuItemUrl);
         this._router.navigate([e.menuItemUrl]);
+    };
+
+    private checkUrlParams() {
+        this._activatedRoute.queryParams
+        .subscribe(params => {
+            let mode = params["mode"];
+
+            if (mode == "view") {
+                this.isHideAuthButtons = true;
+            }
+          });
     };
 }

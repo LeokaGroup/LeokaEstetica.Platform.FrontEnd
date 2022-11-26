@@ -27,7 +27,7 @@ export class RedisService implements OnInit {
         console.log("connectionId",connectionId, "userCode",userCode);
 
         const REQ_HEADERS = new HttpHeaders({ 
-            'Authorization': 'Bearer ' + localStorage["token"]
+            'Authorization': 'Bearer ' + localStorage["t_n"]
          });
         
         return await this._http.post(API_URL.apiUrl + "/notifications/signalr-connectionid", model, { headers: REQ_HEADERS }).pipe(

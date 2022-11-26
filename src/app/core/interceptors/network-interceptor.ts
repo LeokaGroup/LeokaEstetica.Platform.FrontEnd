@@ -16,7 +16,7 @@ export class NetworkInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
         req = req.clone({
             headers: req.headers.set(
-                "Authorization", "Bearer " + localStorage["token"]
+                "Authorization", "Bearer " + localStorage["t_n"]
             ),
 
             // Если нужно отправлять куки с каждым запросом.
