@@ -63,7 +63,8 @@
                           [(ngModel)]="selectedStage" 
                           optionLabel="stageName"
                           class="control-project-stages"
-                          (onChange)="onSelectProjectStage()">
+                          (onChange)="onSelectProjectStage()"
+                          [disabled]="!isEditMode">
               </p-dropdown>
             </div>          
           </div>         
@@ -74,7 +75,8 @@
     <div class="d-flex worksheet-line mt-3">
       <div class="control-input-text-worksheet">
         <button type="button" class="btn btn-primary button-action-pur-control-worksheet"
-          (click)="onUpdateProjectAsync()">
+          (click)="onUpdateProjectAsync()"
+          *ngIf="isEdit">
           Сохранить
         </button>
       </div>

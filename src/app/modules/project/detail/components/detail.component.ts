@@ -24,6 +24,7 @@ export class DetailProjectComponent implements OnInit {
 
     public readonly catalog$ = this._projectService.catalog$;
     public readonly selectedProject$ = this._projectService.selectedProject$;
+    public readonly projectStages$ = this._projectService.projectStages$;
 
     projectName: string = "";
     projectDetails: string = "";
@@ -31,7 +32,7 @@ export class DetailProjectComponent implements OnInit {
     allFeedSubscription: any;
     isEditMode: boolean = false;
     selectedStage: any;
-    public readonly projectStages$ = this._projectService.projectStages$;
+    isEdit: any;    
 
     public async ngOnInit() {
         forkJoin([
