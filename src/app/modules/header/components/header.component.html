@@ -16,15 +16,21 @@
       <div class="d-flex">
         <div class="menu-item">
           <button class="btn btn-primary btn-header button-action-auth-control" 
-          [hidden]="isHideAuthButtons"
+          *ngIf="!isHideAuthButtons"
           (click)="onRouteSignIn()">Вход</button>
         </div>
   
         <div class="menu-item">
           <button class="btn btn-primary btn-header button-action-auth-control" 
-          [hidden]="isHideAuthButtons"
+          *ngIf="!isHideAuthButtons"
           (click)="onRouteSignUp()">Регистрация</button>
         </div>
       </div>
     </div>
+
+    <p-avatar label="P" 
+    shape="circle" 
+    *ngIf="isHideAuthButtons"
+    (click)="onRouteProfile()">
+    </p-avatar>
   </nav>

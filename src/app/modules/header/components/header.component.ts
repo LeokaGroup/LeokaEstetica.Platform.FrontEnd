@@ -67,4 +67,15 @@ export class HeaderComponent implements OnInit {
             }
           });
     };
+
+    /**
+     * Функция переходит в профиль пользователя.
+     */
+    public onRouteProfile() {
+        this._router.navigate(["/profile/aboutme"], {
+            queryParams: {
+                mode: "view"
+            }
+        });
+    };
 }

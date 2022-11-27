@@ -18,6 +18,7 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 import { ToastModule } from 'primeng/toast';
 import { VacancyService } from './modules/vacancy/services/vacancy.service';
 import { ProjectService } from './modules/project/services/project.service';
+import {AvatarModule} from 'primeng/avatar';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ProjectService } from './modules/project/services/project.service';
     BrowserAnimationsModule,
     SlideMenuModule,
     PanelMenuModule,
-    ToastModule
+    ToastModule,
+    AvatarModule
   ],
 
   providers: [
