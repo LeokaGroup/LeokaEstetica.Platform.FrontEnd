@@ -18,6 +18,7 @@ import { ProjectRoutingModule } from './project-routing.module';
 import { CatalogProjectsComponent } from './catalog/components/catalog.component';
 import { DetailProjectComponent } from './detail/components/detail.component';
 import {DropdownModule} from 'primeng/dropdown';
+import {TableModule} from 'primeng/table';
 
 @NgModule({
     declarations: [
@@ -39,7 +40,8 @@ import {DropdownModule} from 'primeng/dropdown';
         ToastModule,
         EditorModule,
         ProjectRoutingModule,
-        DropdownModule
+        DropdownModule,
+        TableModule
     ],
 
     exports: [],
