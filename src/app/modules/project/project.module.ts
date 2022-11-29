@@ -19,6 +19,7 @@ import { CatalogProjectsComponent } from './catalog/components/catalog.component
 import { DetailProjectComponent } from './detail/components/detail.component';
 import {DropdownModule} from 'primeng/dropdown';
 import {TableModule} from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
     declarations: [
@@ -41,7 +42,8 @@ import {TableModule} from 'primeng/table';
         EditorModule,
         ProjectRoutingModule,
         DropdownModule,
-        TableModule
+        TableModule,
+        ButtonModule
     ],
 
     exports: [],

@@ -36,6 +36,7 @@ export class DetailProjectComponent implements OnInit {
     selectedStage: any;
     isEdit: any;    
     selectedProjectVacancy: any;
+    totalVacancies: number = 0;
 
     public async ngOnInit() {
         forkJoin([
@@ -138,6 +139,7 @@ export class DetailProjectComponent implements OnInit {
         (await this._projectService.getProjectVacanciesAsync(this.projectId))
             .subscribe(_ => {
                 console.log("Вакансии проекта: ", this.projectVacancies$.value);
+                this.totalVacancies = this.projectVacancies$.value.total;
             });
     };
 
@@ -148,7 +150,7 @@ export class DetailProjectComponent implements OnInit {
     private async getProjectVacanciesColumnNamesAsync() {
         (await this._projectService.getProjectVacanciesColumnNamesAsync())
             .subscribe(_ => {
-                console.log("Столбцы таблицы вакансий проектов пользователя: ", this.projectVacanciesColumns$.value);
+                console.log("Столбцы таблицы вакансий проектов пользователя: ", this.projectVacanciesColumns$.value);                
             });
     };
 }

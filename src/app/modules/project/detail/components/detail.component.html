@@ -92,23 +92,34 @@
         </ng-template>
 
         <div>
-          <p-table [value]="projectVacancies$.value" 
+          <p-table [value]="projectVacancies$.value.projectVacancies" 
                   [(selection)]="selectedProjectVacancy" 
                   dataKey="userVacancy.vacancyId" 
                   [paginator]="true" 
                   [rows]="10"             
                   styleClass="p-datatable-gridlines" 
                   responsiveLayout="scroll">
-            <!-- <ng-template pTemplate="caption">
-                <h3>Вакансии проекта</h3>
-            </ng-template> -->
+            <ng-template pTemplate="caption">
+             <div class="d-flex">
+               <div>
+                 <button pButton type="button" label="Добавить" class="p-button-outlined">
+                 </button>
+               </div>
+               &nbsp;&nbsp;&nbsp;
+               <div>
+                 <button pButton type="button" label="Привязать" class="p-button-outlined p-button-secondary">
+                 </button>
+               </div>
+             </div>
+            </ng-template>
       
             <ng-template pTemplate="header">
                 <tr>
                   <th style="width: 4rem">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                   </th>
-                    <th *ngFor="let item of projectVacanciesColumns$.value">{{item.columnName}}</th>    
+                    <th *ngFor="let item of projectVacanciesColumns$.value">
+                      {{item.columnName}}</th>    
                     <th>Просмотр</th>        
                     <th>Редактирование</th>    
                     <th>Удаление</th>    
@@ -125,23 +136,22 @@
                   <td>{{vacancy.userVacancy.vacancyText}}</td>
                   <!-- <td>{{vacancy.projectStatusName}}</td>              -->
                   <td>Надо вывести</td>
-                  <td>Надо вывести</td>
                   <td><button pButton type="button" 
                     label="Просмотр" 
-                    class="p-button-outlined p-button-primaryproject.projectId">                    
+                    class="p-button-text">
                       </button>
                   </td>
                   <td><button pButton type="button" 
                               label="Редактировать" 
-                              class="p-button-outlined p-button-primaryproject.projectId">
+                              class="p-button-secondary p-button-text">
                       </button>
                   </td>
-                  <td><button pButton type="button" label="Удалить" class="p-button-outlined p-button-danger"></button></td>
+                  <td><button pButton type="button" label="Удалить" class="p-button-danger p-button-text"></button></td>
                 </tr>
             </ng-template>
       
             <ng-template pTemplate="summary">
-                Всего: Надо вывести
+                Всего: {{totalVacancies}}
             </ng-template>
         </p-table>
         </div>
