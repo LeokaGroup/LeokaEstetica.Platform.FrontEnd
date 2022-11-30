@@ -25,6 +25,8 @@ export class DetailProjectComponent implements OnInit {
     public readonly catalog$ = this._projectService.catalog$;
     public readonly selectedProject$ = this._projectService.selectedProject$;
     public readonly projectStages$ = this._projectService.projectStages$;
+    public readonly projectVacancies$ = this._projectService.projectVacancies$;
+    public readonly projectVacanciesColumns$ = this._projectService.projectVacanciesColumns$;
 
     projectName: string = "";
     projectDetails: string = "";
@@ -33,11 +35,15 @@ export class DetailProjectComponent implements OnInit {
     isEditMode: boolean = false;
     selectedStage: any;
     isEdit: any;    
+    selectedProjectVacancy: any;
+    totalVacancies: number = 0;
 
     public async ngOnInit() {
         forkJoin([
         this.checkUrlParams(),
-        await this.getProjectStagesAsync()
+        await this.getProjectStagesAsync(),
+        await this.getProjectVacanciesAsync(),
+        await this.getProjectVacanciesColumnNamesAsync()
         ]).subscribe();
 
          // Подключаемся.
@@ -123,5 +129,28 @@ export class DetailProjectComponent implements OnInit {
 
     public onSelectProjectStage() {
         console.log(this.selectedStage);
+    };
+
+    /**
+     * Функция получает список вакансий проекта.
+     * @returns - Список вакансий проекта.
+     */
+    private async getProjectVacanciesAsync() {
+        (await this._projectService.getProjectVacanciesAsync(this.projectId))
+            .subscribe(_ => {
+                console.log("Вакансии проекта: ", this.projectVacancies$.value);
+                this.totalVacancies = this.projectVacancies$.value.total;
+            });
+    };
+
+     /**
+    // * Функция получает поля таблицы проектов пользователя.
+    // * @returns - Список полей.
+    */
+    private async getProjectVacanciesColumnNamesAsync() {
+        (await this._projectService.getProjectVacanciesColumnNamesAsync())
+            .subscribe(_ => {
+                console.log("Столбцы таблицы вакансий проектов пользователя: ", this.projectVacanciesColumns$.value);                
+            });
     };
 }

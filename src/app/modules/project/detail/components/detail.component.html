@@ -81,5 +81,81 @@
         </button>
       </div>
     </div>
+
+    <div class="worksheet-panel">
+      <p-panel header="Вакансии проекта" [toggleable]="true">
+        <ng-template pTemplate="icons">
+          <button pButton class="p-panel-header-icon p-link" (click)="menu.toggle($event)">
+            <span class="pi pi-cog"></span>
+          </button>
+          <p-menu #menu id="config_menu" [popup]="true"></p-menu>
+        </ng-template>
+
+        <div>
+          <p-table [value]="projectVacancies$.value.projectVacancies" 
+                  [(selection)]="selectedProjectVacancy" 
+                  dataKey="userVacancy.vacancyId" 
+                  [paginator]="true" 
+                  [rows]="10"             
+                  styleClass="p-datatable-gridlines" 
+                  responsiveLayout="scroll">
+            <ng-template pTemplate="caption">
+             <div class="d-flex">
+               <div>
+                 <button pButton type="button" label="Добавить" class="p-button-outlined">
+                 </button>
+               </div>
+               &nbsp;&nbsp;&nbsp;
+               <div>
+                 <button pButton type="button" label="Привязать" class="p-button-outlined p-button-secondary">
+                 </button>
+               </div>
+             </div>
+            </ng-template>
+      
+            <ng-template pTemplate="header">
+                <tr>
+                  <th style="width: 4rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                  </th>
+                    <th *ngFor="let item of projectVacanciesColumns$.value">
+                      {{item.columnName}}</th>    
+                    <th>Просмотр</th>        
+                    <th>Редактирование</th>    
+                    <th>Удаление</th>    
+                </tr>
+            </ng-template>
+      
+            <ng-template pTemplate="body" let-vacancy>
+                <tr>
+                  <td>
+                    <p-tableCheckbox [value]="vacancy"></p-tableCheckbox>
+                  </td>
+                  <td>{{vacancy.vacancyId}}</td>
+                  <td>{{vacancy.userVacancy.vacancyName}}</td>
+                  <td>{{vacancy.userVacancy.vacancyText}}</td>
+                  <!-- <td>{{vacancy.projectStatusName}}</td>              -->
+                  <td>Надо вывести</td>
+                  <td><button pButton type="button" 
+                    label="Просмотр" 
+                    class="p-button-text">
+                      </button>
+                  </td>
+                  <td><button pButton type="button" 
+                              label="Редактировать" 
+                              class="p-button-secondary p-button-text">
+                      </button>
+                  </td>
+                  <td><button pButton type="button" label="Удалить" class="p-button-danger p-button-text"></button></td>
+                </tr>
+            </ng-template>
+      
+            <ng-template pTemplate="summary">
+                Всего: {{totalVacancies}}
+            </ng-template>
+        </p-table>
+        </div>
+      </p-panel>
+    </div>
   </div>
 </div>

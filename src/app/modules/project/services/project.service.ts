@@ -12,6 +12,8 @@ export class ProjectService {
     public catalog$ = new BehaviorSubject<any>(null);
     public selectedProject$ = new BehaviorSubject<any>(null);
     public projectStages$ = new BehaviorSubject<any>(null);
+    public projectVacancies$ = new BehaviorSubject<any>(null);
+    public projectVacanciesColumns$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -57,6 +59,27 @@ export class ProjectService {
     public async getProjectStagesAsync() {
         return await this.http.get(API_URL.apiUrl + "/projects/stages").pipe(
             tap(data => this.projectStages$.next(data))
+        );
+    };
+
+    /**
+     * Функция получает список вакансий проекта.
+     * @param projectId - Id проекта.
+     * @returns - Список вакансий проекта.
+     */
+     public async getProjectVacanciesAsync(projectId: number) {
+        return await this.http.get(API_URL.apiUrl + "/projects/vacancies?projectId=" + projectId).pipe(
+            tap(data => this.projectVacancies$.next(data))
+        );
+    };
+
+    /**
+    // * Функция получает поля таблицы вакансий проектов пользователя.
+    // * @returns - Список полей.
+    */
+    public async getProjectVacanciesColumnNamesAsync() {
+        return await this.http.get(API_URL.apiUrl + "/vacancies/config-user-vacancies").pipe(
+            tap(data => this.projectVacanciesColumns$.next(data))
         );
     };
 }
