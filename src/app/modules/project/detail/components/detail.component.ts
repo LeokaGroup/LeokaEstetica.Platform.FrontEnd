@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
@@ -19,7 +19,8 @@ export class DetailProjectComponent implements OnInit {
     constructor(private readonly _projectService: ProjectService,
         private readonly _activatedRoute: ActivatedRoute,
         private readonly _signalrService: SignalrService,
-        private readonly _messageService: MessageService) {
+        private readonly _messageService: MessageService,
+        private readonly _router: Router) {
     }
 
     public readonly catalog$ = this._projectService.catalog$;
@@ -152,5 +153,18 @@ export class DetailProjectComponent implements OnInit {
             .subscribe(_ => {
                 console.log("Столбцы таблицы вакансий проектов пользователя: ", this.projectVacanciesColumns$.value);                
             });
+    };
+
+    /**
+     * Функция переходит на страницу создания вакансии проекта. Передавая Id проекта, к которому будет привязана вакансия автоматически.
+     */
+    public onRouteCreateProjectVacancy() {
+        let projectId = this.projectId;
+        
+        this._router.navigate(["/vacancies/create"], {
+            queryParams: {
+                projectId
+            }
+        });
     };
 }

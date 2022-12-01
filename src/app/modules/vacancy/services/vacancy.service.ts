@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
+import { CreateProjectVacancyInput } from '../models/input/create-project-vacancy-input';
 import { CreateVacancyInput } from '../models/input/create-vacancy-input';
 
 @Injectable()
@@ -14,11 +15,21 @@ export class VacancyService {
     }
 
     /**
-     * Функция создает новую вакансию.
+     * Функция создает новую вакансию вне проекта.
      * @returns - Данные вакансии.
      */
     public async createVacancyAsync(createVacancyInput: CreateVacancyInput) {
         return await this.http.post(API_URL.apiUrl + "/vacancies/vacancy", createVacancyInput).pipe(
+            tap(data => this.vacancy$.next(data))
+        );
+    };
+
+    /**
+     * Функция создает новую вакансию проекта и автоматически прикрепляет ее к нему.
+     * @returns - Данные вакансии.
+     */
+     public async createProjectVacancyAsync(createProjectVacancyInput: CreateProjectVacancyInput) {
+        return await this.http.post(API_URL.apiUrl + "/projects/vacancy", createProjectVacancyInput).pipe(
             tap(data => this.vacancy$.next(data))
         );
     };
