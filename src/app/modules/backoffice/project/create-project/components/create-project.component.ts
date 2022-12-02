@@ -81,15 +81,15 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
         let createProjectInput = new CreateProjectInput();
         createProjectInput.ProjectName = this.projectName;
         createProjectInput.ProjectDetails = this.projectDetails;
-        createProjectInput.ProjectStage = this.selectedStage;
+        createProjectInput.ProjectStage = this.selectedStage.stageSysName;
 
         (await this._backofficeService.createProjectAsync(createProjectInput))
             .subscribe((response: any) => {
                 console.log("Создание проекта: ", this.projectData$.value);
 
-                if (!this.projectData$.value.isSuccess) {
+                if (this.projectData$.value.errors.length > 0) {
                     response.errors.forEach((item: any) => {
-                        this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item });
+                        this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item.errorMessage});
                     });  
                 }
 
