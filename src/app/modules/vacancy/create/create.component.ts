@@ -4,7 +4,7 @@ import { MessageService } from "primeng/api";
 import { Subscription } from "rxjs";
 import { SignalrService } from "../../notifications/signalr/services/signalr.service";
 import { CreateProjectVacancyInput } from "../models/input/create-project-vacancy-input";
-import { CreateVacancyInput } from "../models/input/create-vacancy-input";
+import { VacancyInput } from "../models/input/vacancy-input";
 import { VacancyService } from "../services/vacancy.service";
 
 @Component({
@@ -130,8 +130,8 @@ export class CreateVacancyComponent implements OnInit {
      * Функция создает модель для создания вакансии вне проекта.
      * @returns - Входная модель вакансии.
      */
-    private CreateVacancyModel(): CreateVacancyInput {
-        let model = new CreateVacancyInput();
+    private CreateVacancyModel(): VacancyInput {
+        let model = new VacancyInput();
         model.VacancyName = this.vacancyName;
         model.VacancyText = this.vacancyText;
         model.Employment = this.employment;

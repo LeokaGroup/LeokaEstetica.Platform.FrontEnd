@@ -144,12 +144,13 @@
                   <td><button pButton type="button" 
                               label="Просмотр" 
                               class="p-button-text"
-                              (click)="onShowVacancyModal(vacancy.vacancyId)">
+                              (click)="onShowVacancyModal(vacancy.vacancyId, false)">
                       </button>
                   </td>
                   <td><button pButton type="button" 
                               label="Редактировать" 
-                              class="p-button-secondary p-button-text">
+                              class="p-button-secondary p-button-text"
+                              (click)="onShowVacancyModal(vacancy.vacancyId, true)">
                       </button>
                   </td>
                   <td><button pButton type="button" label="Удалить" class="p-button-danger p-button-text"></button></td>
@@ -195,7 +196,7 @@
   </ng-template>
 </p-dialog>
 
-<!-- Диалог просмотра вакансии. -->
+<!-- Диалог вакансии. -->
 <p-dialog header="Просмотр вакансии" 
           [(visible)]="isShowVacancyModal" 
           [modal]="true" 
@@ -293,7 +294,7 @@
   </div>
   <ng-template pTemplate="footer">
     <p-button icon="pi pi-check" 
-              (click)="onSaveProjectVacancyAsync()" 
+              (click)="onUpdateVacancyAsync()" 
               label="Сохранить" 
               styleClass="p-button-text"
               *ngIf="isEditMode">

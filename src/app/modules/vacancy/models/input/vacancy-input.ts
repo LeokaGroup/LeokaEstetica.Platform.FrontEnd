@@ -1,7 +1,7 @@
 /**
- * Класс входной модели создания вакансии.
+ * Класс входной модели вакансии.
  */
-export class CreateVacancyInput {
+export class VacancyInput {
     /**
      * Название вакансии.
      */
@@ -26,4 +26,9 @@ export class CreateVacancyInput {
      * Оплата у вакансии.
      */
     Payment: string = "";
+
+    /**
+     * Id вакансии.
+     */
+    VacancyId: number = 0;
 }
