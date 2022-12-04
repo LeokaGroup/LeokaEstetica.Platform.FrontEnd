@@ -4,6 +4,7 @@ import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { ProjectService } from "../../services/project.service";
+import { AttachProjectVacancyInput } from "../models/input/attach-project-vacancy-input";
 import { UpdateProjectInput } from "../models/input/update-project-input";
 
 @Component({
@@ -28,6 +29,7 @@ export class DetailProjectComponent implements OnInit {
     public readonly projectStages$ = this._projectService.projectStages$;
     public readonly projectVacancies$ = this._projectService.projectVacancies$;
     public readonly projectVacanciesColumns$ = this._projectService.projectVacanciesColumns$;
+    public readonly availableAttachVacancies$ = this._projectService.availableAttachVacancies$;
 
     projectName: string = "";
     projectDetails: string = "";
@@ -38,13 +40,16 @@ export class DetailProjectComponent implements OnInit {
     isEdit: any;    
     selectedProjectVacancy: any;
     totalVacancies: number = 0;
+    isAttach: boolean = false;
+    selectedVacancy: any;
 
     public async ngOnInit() {
         forkJoin([
         this.checkUrlParams(),
         await this.getProjectStagesAsync(),
         await this.getProjectVacanciesAsync(),
-        await this.getProjectVacanciesColumnNamesAsync()
+        await this.getProjectVacanciesColumnNamesAsync(),
+        await this.getAvailableAttachVacanciesAsync()
         ]).subscribe();
 
          // Подключаемся.
@@ -67,6 +72,8 @@ export class DetailProjectComponent implements OnInit {
      */
       private listenAllHubsNotifications() {
         this._signalrService.listenSuccessUpdatedUserVacancyInfo();
+        this._signalrService.listenSuccessAttachProjectVacancyInfo();
+        this._signalrService.listenErrorDublicateAttachProjectVacancyInfo();
     };
 
     private checkUrlParams() {
@@ -165,6 +172,44 @@ export class DetailProjectComponent implements OnInit {
             queryParams: {
                 projectId
             }
+        });
+    };
+
+    /**
+     * Функция отображает модалку для прикрепления вакансии к проекту.
+     */
+    public onShowAttachModel() {
+        this.isAttach = true;
+    };
+
+    /**
+    // * Функция получает список вакансий пользователя, которые можно прикрепить к проекту
+    // * @returns - Список вакансий.
+    */
+    private async getAvailableAttachVacanciesAsync() {
+        (await this._projectService.getAvailableAttachVacanciesAsync(this.projectId))
+            .subscribe(_ => {
+                console.log("Доступные к привязке вакансии: ", this.availableAttachVacancies$.value);
+            });
+    };
+
+    public onSelectVacancy() {
+        console.log(this.selectedVacancy);
+    };
+
+    /**
+     * Функция прикрепляет вакансию к проекту.
+     */
+    public async onSaveProjectVacancyAsync() {
+        let attachModel = new AttachProjectVacancyInput();
+        attachModel.ProjectId = this.selectedVacancy.projectId;
+        attachModel.VacancyId = this.selectedVacancy.vacancyId;
+
+        (await this._projectService.attachProjectVacancyAsync(attachModel))
+        .subscribe(async _ => {
+            console.log("Прикрепили вакансию: ", this.selectedVacancy.vacancyId);       
+            this.isAttach = false;         
+            await this.getProjectVacanciesAsync();
         });
     };
 }

@@ -87,9 +87,9 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
             .subscribe((response: any) => {
                 console.log("Создание проекта: ", this.projectData$.value);
 
-                if (this.projectData$.value.errors.length > 0) {
+                if (this.projectData$.value.errors !== null && this.projectData$.value.errors.length > 0) {
                     response.errors.forEach((item: any) => {
-                        this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item.errorMessage});
+                        this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item.errorMessage });
                     });  
                 }
 

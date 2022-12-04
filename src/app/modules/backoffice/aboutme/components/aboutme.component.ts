@@ -164,7 +164,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
         .subscribe((response: any) => {
             console.log("Данные анкеты: ", this.profileInfo$.value);
 
-            if (response.errors.length > 0) {
+            if (response.errors !== null && response.errors.length > 0) {
                 response.errors.forEach((item: any) => {
                     this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item.errorMessage });
                 });    

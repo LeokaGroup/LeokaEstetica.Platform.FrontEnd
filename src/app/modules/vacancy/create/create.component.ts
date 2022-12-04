@@ -82,7 +82,7 @@ export class CreateVacancyComponent implements OnInit {
         .subscribe((response: any) => {
             console.log("Новая вакансия: ", this.vacancy$.value);            
 
-            if (response.errors.length > 0) {
+            if (response.errors !== null && response.errors.length > 0) {
                 response.errors.forEach((item: any) => {
                     this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item.errorMessage });
                 });  
@@ -106,7 +106,7 @@ export class CreateVacancyComponent implements OnInit {
         .subscribe((response: any) => {
             console.log("Новая вакансия проекта: ", this.vacancy$.value);            
 
-            if (response.errors.length > 0) {
+            if (response.errors !== null && response.errors.length > 0) {
                 response.errors.forEach((item: any) => {
                     this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item.errorMessage });
                 });  
