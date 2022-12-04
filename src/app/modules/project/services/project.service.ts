@@ -15,7 +15,7 @@ export class ProjectService {
     public projectStages$ = new BehaviorSubject<any>(null);
     public projectVacancies$ = new BehaviorSubject<any>(null);
     public projectVacanciesColumns$ = new BehaviorSubject<any>(null);
-    public availableAttachVacancies$ = new BehaviorSubject<any>(null);
+    public availableAttachVacancies$ = new BehaviorSubject<any>(null);    
 
     constructor(private readonly http: HttpClient) {
 
@@ -104,5 +104,5 @@ export class ProjectService {
         // .pipe(
         //     tap(data => this.availableAttachVacancies$.next(data))
         // );
-    };
+    };   
 }

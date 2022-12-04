@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
+import { VacancyInput } from "src/app/modules/vacancy/models/input/vacancy-input";
+import { VacancyService } from "src/app/modules/vacancy/services/vacancy.service";
 import { ProjectService } from "../../services/project.service";
 import { AttachProjectVacancyInput } from "../models/input/attach-project-vacancy-input";
 import { UpdateProjectInput } from "../models/input/update-project-input";
@@ -21,7 +23,8 @@ export class DetailProjectComponent implements OnInit {
         private readonly _activatedRoute: ActivatedRoute,
         private readonly _signalrService: SignalrService,
         private readonly _messageService: MessageService,
-        private readonly _router: Router) {
+        private readonly _router: Router,
+        private readonly _vacancyService: VacancyService) {
     }
 
     public readonly catalog$ = this._projectService.catalog$;
@@ -30,6 +33,7 @@ export class DetailProjectComponent implements OnInit {
     public readonly projectVacancies$ = this._projectService.projectVacancies$;
     public readonly projectVacanciesColumns$ = this._projectService.projectVacanciesColumns$;
     public readonly availableAttachVacancies$ = this._projectService.availableAttachVacancies$;
+    public readonly selectedVacancy$ = this._vacancyService.selectedVacancy$;
 
     projectName: string = "";
     projectDetails: string = "";
@@ -40,8 +44,15 @@ export class DetailProjectComponent implements OnInit {
     isEdit: any;    
     selectedProjectVacancy: any;
     totalVacancies: number = 0;
-    isAttach: boolean = false;
+    isShowAttachVacancyModal: boolean = false;
     selectedVacancy: any;
+    vacancyName: string = "";
+    vacancyText: string = "";
+    workExperience: string = "";
+    employment: string = "";
+    payment: string = "";
+    isShowVacancyModal: boolean = false;
+    vacancyId: number = 0;
 
     public async ngOnInit() {
         forkJoin([
@@ -179,7 +190,7 @@ export class DetailProjectComponent implements OnInit {
      * Функция отображает модалку для прикрепления вакансии к проекту.
      */
     public onShowAttachModel() {
-        this.isAttach = true;
+        this.isShowAttachVacancyModal = true;
     };
 
     /**
@@ -208,8 +219,70 @@ export class DetailProjectComponent implements OnInit {
         (await this._projectService.attachProjectVacancyAsync(attachModel))
         .subscribe(async _ => {
             console.log("Прикрепили вакансию: ", this.selectedVacancy.vacancyId);       
-            this.isAttach = false;         
+            this.isShowAttachVacancyModal = false;         
             await this.getProjectVacanciesAsync();
         });
+    };
+
+    /**
+     * Функция показывает модалку вакансии.
+     * @param vacancyId - Id вакансии.
+     */
+    public async onShowVacancyModal(vacancyId: number, isEdit: boolean) {
+        console.log(this.isShowVacancyModal);
+        this.isShowVacancyModal = true;
+        this.isEditMode = isEdit;
+
+        if (isEdit) {
+            this.vacancyId = vacancyId;
+        }
+        
+        (await this._vacancyService.getVacancyByIdAsync(vacancyId))
+        .subscribe(async _ => {
+            console.log("Получили вакансию: ", this.selectedVacancy$.value);       
+            this.vacancyName = this.selectedVacancy$.value.vacancyName;
+            this.vacancyText = this.selectedVacancy$.value.vacancyText;
+            this.workExperience = this.selectedVacancy$.value.workExperience;
+            this.employment = this.selectedVacancy$.value.employment;
+            this.payment = this.selectedVacancy$.value.payment;
+        });
+    };
+
+     /**
+     * Функция создает вакансию вне проекта.
+     * @returns - Данные вакансии.
+     */
+      public async onUpdateVacancyAsync() {
+        let model = this.UpdateVacancyModel(); 
+        (await this._vacancyService.updateVacancyAsync(model))
+        .subscribe((response: any) => {       
+            if (response.errors !== null && response.errors.length > 0) {
+                response.errors.forEach((item: any) => {
+                    this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item.errorMessage });
+                });  
+            }
+
+            // else {
+            //     setTimeout(() => {
+            //         this._router.navigate(["/vacancies/catalog"]);
+            //     }, 4000);
+            // }   
+        });
+    };
+
+    /**
+     * Функция создает модель для обновления вакансии проекта.
+     * @returns - Входная модель вакансии.
+     */
+     private UpdateVacancyModel(): VacancyInput {
+        let model = new VacancyInput();
+        model.VacancyName = this.vacancyName;
+        model.VacancyText = this.vacancyText;
+        model.Employment = this.employment;
+        model.Payment = this.payment;
+        model.WorkExperience = this.workExperience;
+        model.VacancyId = this.vacancyId;
+
+        return model;
     };
 }
