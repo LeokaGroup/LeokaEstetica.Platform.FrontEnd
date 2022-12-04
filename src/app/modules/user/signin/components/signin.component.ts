@@ -45,7 +45,7 @@ export class SignInComponent implements OnInit {
         (await this._userService.signInAsync(this.formSignUp.value.email, this.formSignUp.value.password))
         .subscribe((response: any) => {
             console.log("Авторизовались: ", this.userData$.value);
-            if (this.userData$.value.errors.length == 0) {
+            if (this.userData$.value.errors == null) {
                 localStorage["t_n"] = this.userData$.value.token;
                 localStorage["u_c"] = this.userData$.value.userCode;
                 this._router.navigate(["/profile/aboutme"], {

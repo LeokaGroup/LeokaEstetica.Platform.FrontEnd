@@ -2,16 +2,11 @@ import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { Observable, Subject } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
-import { RedisService } from 'src/app/modules/redis/services/redis.service';
 
 @Injectable()
 export class SignalrService {
     private hubConnection: any;
     private $allFeed: Subject<any> = new Subject<any>();   
-
-    constructor(public readonly _redisService: RedisService) { 
-       
-    }
 
     public async startConnection() {               
         return await new Promise(async (resolve, reject) => {
@@ -40,7 +35,6 @@ export class SignalrService {
      */
     public listenSuccessSaveProfileInfo() {
         (<HubConnection>this.hubConnection).on("SendNotifySuccessSave", (data: any) => {
-            console.log("Хаб успешного сохранения: ", data);
             this.$allFeed.next(data);
         });
     };
@@ -50,7 +44,6 @@ export class SignalrService {
      */
     public listenWarningUserSkillsInfo() {
         (<HubConnection>this.hubConnection).on("SendNotificationWarningSaveUserSkills", (data: any) => {
-            console.log("Хаб навыков: ", data);
             this.$allFeed.next(data);
         });
     };
@@ -60,7 +53,6 @@ export class SignalrService {
      */
       public listenWarningUserIntentsInfo() {
         (<HubConnection>this.hubConnection).on("SendNotificationWarningSaveUserIntents", (data: any) => {
-            console.log("Хаб целей: ", data);
             this.$allFeed.next(data);
         });
     };
@@ -70,7 +62,6 @@ export class SignalrService {
      */
       public listenSuccessCreatedUserProjectInfo() {
         (<HubConnection>this.hubConnection).on("SendNotificationSuccessCreatedUserProject", (data: any) => {
-            console.log("Хаб создания проекта: ", data);
             this.$allFeed.next(data);
         });
     };
@@ -80,7 +71,6 @@ export class SignalrService {
      */
      public listenWarningDublicateUserProjectInfo() {
         (<HubConnection>this.hubConnection).on("SendNotificationWarningDublicateUserProject", (data: any) => {
-            console.log("Хаб дубликата проекта: ", data);
             this.$allFeed.next(data);
         });
     };
@@ -90,7 +80,6 @@ export class SignalrService {
      */
      public listenSuccessCreatedUserVacancyInfo() {
         (<HubConnection>this.hubConnection).on("SendNotificationSuccessCreatedUserVacancy", (data: any) => {
-            console.log("Хаб дубликата проекта: ", data);
             this.$allFeed.next(data);
         });
     };
@@ -100,7 +89,24 @@ export class SignalrService {
      */
      public listenSuccessUpdatedUserVacancyInfo() {
         (<HubConnection>this.hubConnection).on("SendNotificationSuccessUpdatedUserProject", (data: any) => {
-            console.log("Хаб обновления проекта: ", data);
+            this.$allFeed.next(data);
+        });
+    };
+
+    /**
+     * Функция слушает уведомления прикрепления вакансии проекта из хаба.
+     */
+     public listenSuccessAttachProjectVacancyInfo() {
+        (<HubConnection>this.hubConnection).on("SendNotificationSuccessAttachProjectVacancy", (data: any) => {
+            this.$allFeed.next(data);
+        });
+    };
+
+    /**
+     * Функция слушает уведомления дубликата прикрепления вакансии проекта из хаба.
+     */
+     public listenErrorDublicateAttachProjectVacancyInfo() {
+        (<HubConnection>this.hubConnection).on("SendNotificationErrorDublicateAttachProjectVacancy", (data: any) => {
             this.$allFeed.next(data);
         });
     };
