@@ -9,6 +9,7 @@ import { CreateVacancyInput } from '../models/input/create-vacancy-input';
 export class VacancyService {
     public vacancy$ = new BehaviorSubject<any>(null);
     public catalog$ = new BehaviorSubject<any>(null);
+    public selectedVacancy$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -43,4 +44,15 @@ export class VacancyService {
             tap(data => this.catalog$.next(data))
         );
     };
+
+     /**
+   // * Функция получает вакансию по ее Id.
+    * @param vacancyId - Id вакансии.
+   // * @returns - Данные вакансии.
+   */
+   public async getVacancyByIdAsync(vacancyId: number) {
+    return await this.http.get(API_URL.apiUrl + "/vacancies/vacancy?vacancyId=" + vacancyId).pipe(
+        tap(data => this.selectedVacancy$.next(data))
+    );
+};
 }
