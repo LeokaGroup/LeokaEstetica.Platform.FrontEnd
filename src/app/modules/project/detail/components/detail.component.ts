@@ -7,6 +7,7 @@ import { VacancyInput } from "src/app/modules/vacancy/models/input/vacancy-input
 import { VacancyService } from "src/app/modules/vacancy/services/vacancy.service";
 import { ProjectService } from "../../services/project.service";
 import { AttachProjectVacancyInput } from "../models/input/attach-project-vacancy-input";
+import { ProjectResponseInput } from "../models/input/project-response-input";
 import { UpdateProjectInput } from "../models/input/update-project-input";
 
 @Component({
@@ -53,6 +54,7 @@ export class DetailProjectComponent implements OnInit {
     payment: string = "";
     isShowVacancyModal: boolean = false;
     vacancyId: number = 0;
+    isResponseVacancy: boolean = false;
 
     public async ngOnInit() {
         forkJoin([
@@ -284,5 +286,36 @@ export class DetailProjectComponent implements OnInit {
         model.VacancyId = this.vacancyId;
 
         return model;
+    };
+
+    /**
+     * Первичная обработка отклика на проект. 
+     * С вакансией либо без нее.
+     * @param isResponseVacancy - Признак отклика с вакансией либо без нее.
+     */
+    public onShowProjectResponseModal(isResponseVacancy: boolean) {
+        this.isResponseVacancy = isResponseVacancy;        
+    };    
+    
+    /**
+     * Функция записывает отклик на проект.
+     * Запись происходит либо с указанием вакансии либо без нее.
+     * @returns - Данные отклика на проект.
+     */
+    public async onProjectResponseAsync() {
+        let model = new ProjectResponseInput();
+        model.ProjectId = this.projectId;
+        model.VacancyId = this.vacancyId;
+
+        (await this._projectService.writeProjectResponseAsync(model))
+            .subscribe((response: any) => {
+                if (response.errors !== null && response.errors.length > 0) {
+                    response.errors.forEach((item: any) => {
+                        this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item.errorMessage });
+                    });
+                }
+
+                this.isResponseVacancy = false;
+            });
     };
 }

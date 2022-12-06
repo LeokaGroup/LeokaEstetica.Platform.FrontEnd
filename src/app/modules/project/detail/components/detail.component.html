@@ -179,14 +179,20 @@
             <div class="mb-3">
               <div>
                 <div>
-                  <button pButton type="button" label="Откликнуться на проект (без указания вакансии)"
-                    class="p-button-outlined p-button-secondary p-button-text">
+                  <button pButton 
+                          type="button" 
+                          label="Откликнуться на проект (без указания вакансии)"
+                          class="p-button-outlined p-button-secondary p-button-text"
+                          (click)="onShowProjectResponseModal(false)">
                   </button>
                 </div>
 
                 <div>
-                  <button pButton type="button" label="Откликнуться на проект (с указанием вакансии)"
-                    class="p-button-outlined p-button-secondary p-button-text">
+                  <button pButton 
+                          type="button" 
+                          label="Откликнуться на проект (с указанием вакансии)"
+                          class="p-button-outlined p-button-secondary p-button-text"
+                          (click)="onShowProjectResponseModal(true)">
                   </button>
                 </div>
 
@@ -335,6 +341,38 @@
               label="Сохранить" 
               styleClass="p-button-text"
               *ngIf="isEditMode">
+    </p-button>
+  </ng-template>
+</p-dialog>
+
+ <!-- Диалог выбора способа отклика на проект (с вакансией либо без ее указания). -->
+ <p-dialog header="Привязка вакансии к проекту" 
+          [(visible)]="isResponseVacancy" 
+          [modal]="true" 
+          [style]="{width: '50vw', height: '50vw'}"
+          [maximizable]="false" 
+          [draggable]="false" 
+          [resizable]="false">
+ 
+  <div class="d-flex mt-3">
+    <div class="control-input-text-worksheet">
+      <div>
+          <label>Выберите вакансию</label>
+      </div>
+      <div>
+        <p-dropdown [options]="this.availableAttachVacancies$.value.projectVacancies" 
+                    [(ngModel)]="selectedVacancy" 
+                    optionLabel="userVacancy.vacancyName"
+                    (onChange)="onSelectVacancy()">
+        </p-dropdown>
+      </div>          
+    </div>         
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-check" 
+              (click)="onProjectResponseAsync()" 
+              label="Откликнуться на проект" 
+              styleClass="p-button-text">
     </p-button>
   </ng-template>
 </p-dialog>
