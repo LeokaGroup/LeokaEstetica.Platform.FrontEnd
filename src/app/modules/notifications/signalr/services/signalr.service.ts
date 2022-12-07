@@ -110,4 +110,22 @@ export class SignalrService {
             this.$allFeed.next(data);
         });
     };
+
+    /**
+     * Функция слушает уведомления об отклике на проект из хаба.
+     */
+     public listenSuccessProjectResponseInfo() {
+        (<HubConnection>this.hubConnection).on("SendNotificationSuccessProjectResponse", (data: any) => {
+            this.$allFeed.next(data);
+        });
+    };
+
+    /**
+     * Функция слушает уведомления о предупреждении отклика на проект из хаба.
+     */
+     public listenWarningProjectResponseInfo() {
+        (<HubConnection>this.hubConnection).on("SendNotificationWarningProjectResponse", (data: any) => {
+            this.$allFeed.next(data);
+        });
+    };
 };

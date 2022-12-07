@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { AttachProjectVacancyInput } from '../detail/models/input/attach-project-vacancy-input';
+import { ProjectResponseInput } from '../detail/models/input/project-response-input';
 import { UpdateProjectInput } from '../detail/models/input/update-project-input';
 
 /**
@@ -16,6 +17,7 @@ export class ProjectService {
     public projectVacancies$ = new BehaviorSubject<any>(null);
     public projectVacanciesColumns$ = new BehaviorSubject<any>(null);
     public availableAttachVacancies$ = new BehaviorSubject<any>(null);    
+    public projectResponse$ = new BehaviorSubject<any>(null);    
 
     constructor(private readonly http: HttpClient) {
 
@@ -105,4 +107,16 @@ export class ProjectService {
         //     tap(data => this.availableAttachVacancies$.next(data))
         // );
     };   
+
+    /**
+     * Функция записывает отклик на проект.
+     * Запись происходит либо с указанием вакансии либо без нее.
+     * @param responseInput - Входная модель.
+     * @returns - Данные отклика на проект.
+     */
+    public async writeProjectResponseAsync(responseInput: ProjectResponseInput) {
+        return await this.http.post(API_URL.apiUrl + "/projects/response", responseInput).pipe(
+            tap(data => this.projectResponse$.next(data))
+        );
+    };
 }

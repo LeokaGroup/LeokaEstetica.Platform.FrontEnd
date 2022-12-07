@@ -81,7 +81,7 @@
       </div>
     </div>
 
-    <div class="worksheet-panel">
+    <div class="worksheet-panel space-top-50 d-flex">
       <p-panel header="Вакансии проекта" [toggleable]="true">
         <ng-template pTemplate="icons">
           <button pButton class="p-panel-header-icon p-link" (click)="menu.toggle($event)">
@@ -161,6 +161,49 @@
                 Всего: {{totalVacancies}}
             </ng-template>
         </p-table>
+        </div>
+      </p-panel>
+    </div>
+
+    <div class="worksheet-panel space-top-50 space-bottom-50 d-flex" *ngIf="!isEditMode">
+      <p-panel header="Действия" [toggleable]="true">
+        <ng-template pTemplate="icons">
+          <button pButton class="p-panel-header-icon p-link" (click)="menu.toggle($event)">
+            <span class="pi pi-cog"></span>
+          </button>
+          <p-menu #menu id="config_menu" [popup]="true"></p-menu>
+        </ng-template>
+
+        <div class="d-flex">
+          <div class="control-input-text-worksheet">
+            <div class="mb-3">
+              <div>
+                <div>
+                  <button pButton 
+                          type="button" 
+                          label="Откликнуться на проект (без указания вакансии)"
+                          class="p-button-outlined p-button-secondary p-button-text"
+                          (click)="onShowProjectResponseNotVacancyModal(true)">
+                  </button>
+                </div>
+
+                <div>
+                  <button pButton 
+                          type="button" 
+                          label="Откликнуться на проект (с указанием вакансии)"
+                          class="p-button-outlined p-button-secondary p-button-text"
+                          (click)="onShowProjectResponseWithVacancyModal(true)">
+                  </button>
+                </div>
+
+                <div>
+                  <button pButton type="button" label="Написать владельцу"
+                    class="p-button-outlined p-button-secondary p-button-text">
+                  </button>
+                </div>
+              </div>
+            </div>                    
+          </div>         
         </div>
       </p-panel>
     </div>
@@ -300,4 +343,50 @@
               *ngIf="isEditMode">
     </p-button>
   </ng-template>
+</p-dialog>
+
+ <!-- Диалог выбора способа отклика на проект (с вакансией либо без ее указания). -->
+ <p-dialog header="Отклик на проект с указанием вакансии" 
+          [(visible)]="isResponseVacancy" 
+          [modal]="true" 
+          [style]="{width: '50vw', height: '50vw'}"
+          [maximizable]="false" 
+          [draggable]="false" 
+          [resizable]="false">
+ 
+  <div class="d-flex mt-3">
+    <div class="control-input-text-worksheet">
+      <div>
+          <label>Выберите вакансию</label>
+      </div>
+      <div>
+        <p-dropdown [options]="this.availableAttachVacancies$.value.projectVacancies" 
+                    [(ngModel)]="selectedVacancy" 
+                    optionLabel="userVacancy.vacancyName"
+                    (onChange)="onSelectVacancy()">
+        </p-dropdown>
+      </div>          
+    </div>         
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-check" 
+              (click)="onProjectResponseAsync()" 
+              label="Откликнуться на проект" 
+              styleClass="p-button-text">
+    </p-button>
+  </ng-template>
+</p-dialog>
+
+<!-- Диалог отклика без вакансии. -->
+<p-dialog header="Отклик на проект без указания вакансии" 
+          [(visible)]="isResponseNotVacancy" 
+          [breakpoints]="{'960px': '75vw'}" 
+          [style]="{width: '50vw'}"
+          [draggable]="false" 
+          [resizable]="false">
+        <p>Откликнуться без вакансии?</p>
+        <ng-template pTemplate="footer">
+        <p-button (click)="isResponseNotVacancy=false" label="Нет" styleClass="p-button-text"></p-button>
+        <p-button (click)="onProjectResponseAsync()" label="Да" styleClass="p-button-text"></p-button>
+        </ng-template>
 </p-dialog>
