@@ -11,5 +11,5 @@ export class ProjectResponseInput {
     /**
      * Id вакансии.
      */
-    VacancyId?: number;
+    VacancyId?: number | null;
 }

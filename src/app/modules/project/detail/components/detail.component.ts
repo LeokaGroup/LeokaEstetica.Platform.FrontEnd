@@ -55,6 +55,7 @@ export class DetailProjectComponent implements OnInit {
     isShowVacancyModal: boolean = false;
     vacancyId: number = 0;
     isResponseVacancy: boolean = false;
+    isResponseNotVacancy: boolean = false;
 
     public async ngOnInit() {
         forkJoin([
@@ -87,6 +88,8 @@ export class DetailProjectComponent implements OnInit {
         this._signalrService.listenSuccessUpdatedUserVacancyInfo();
         this._signalrService.listenSuccessAttachProjectVacancyInfo();
         this._signalrService.listenErrorDublicateAttachProjectVacancyInfo();
+        this._signalrService.listenSuccessProjectResponseInfo();
+        this._signalrService.listenWarningProjectResponseInfo();
     };
 
     private checkUrlParams() {
@@ -293,9 +296,18 @@ export class DetailProjectComponent implements OnInit {
      * С вакансией либо без нее.
      * @param isResponseVacancy - Признак отклика с вакансией либо без нее.
      */
-    public onShowProjectResponseModal(isResponseVacancy: boolean) {
+    public onShowProjectResponseWithVacancyModal(isResponseVacancy: boolean) {
         this.isResponseVacancy = isResponseVacancy;        
     };    
+
+    /**
+     * Первичная обработка отклика на проект без вакансии. 
+     * С вакансией либо без нее.
+     * @param isResponseVacancy - Признак отклика с вакансией либо без нее.
+     */
+     public onShowProjectResponseNotVacancyModal(isResponseNotVacancy: boolean) {
+        this.isResponseNotVacancy = isResponseNotVacancy;        
+    }; 
     
     /**
      * Функция записывает отклик на проект.
@@ -305,7 +317,7 @@ export class DetailProjectComponent implements OnInit {
     public async onProjectResponseAsync() {
         let model = new ProjectResponseInput();
         model.ProjectId = this.projectId;
-        model.VacancyId = this.vacancyId;
+        model.VacancyId = this.vacancyId == 0 ? null : this.vacancyId;
 
         (await this._projectService.writeProjectResponseAsync(model))
             .subscribe((response: any) => {
@@ -316,6 +328,7 @@ export class DetailProjectComponent implements OnInit {
                 }
 
                 this.isResponseVacancy = false;
+                this.isResponseNotVacancy = false;
             });
     };
 }

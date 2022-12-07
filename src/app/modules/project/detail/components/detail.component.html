@@ -183,7 +183,7 @@
                           type="button" 
                           label="Откликнуться на проект (без указания вакансии)"
                           class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onShowProjectResponseModal(false)">
+                          (click)="onShowProjectResponseNotVacancyModal(true)">
                   </button>
                 </div>
 
@@ -192,7 +192,7 @@
                           type="button" 
                           label="Откликнуться на проект (с указанием вакансии)"
                           class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onShowProjectResponseModal(true)">
+                          (click)="onShowProjectResponseWithVacancyModal(true)">
                   </button>
                 </div>
 
@@ -346,7 +346,7 @@
 </p-dialog>
 
  <!-- Диалог выбора способа отклика на проект (с вакансией либо без ее указания). -->
- <p-dialog header="Привязка вакансии к проекту" 
+ <p-dialog header="Отклик на проект с указанием вакансии" 
           [(visible)]="isResponseVacancy" 
           [modal]="true" 
           [style]="{width: '50vw', height: '50vw'}"
@@ -375,4 +375,18 @@
               styleClass="p-button-text">
     </p-button>
   </ng-template>
+</p-dialog>
+
+<!-- Диалог отклика без вакансии. -->
+<p-dialog header="Отклик на проект без указания вакансии" 
+          [(visible)]="isResponseNotVacancy" 
+          [breakpoints]="{'960px': '75vw'}" 
+          [style]="{width: '50vw'}"
+          [draggable]="false" 
+          [resizable]="false">
+        <p>Откликнуться без вакансии?</p>
+        <ng-template pTemplate="footer">
+        <p-button (click)="isResponseNotVacancy=false" label="Нет" styleClass="p-button-text"></p-button>
+        <p-button (click)="onProjectResponseAsync()" label="Да" styleClass="p-button-text"></p-button>
+        </ng-template>
 </p-dialog>
