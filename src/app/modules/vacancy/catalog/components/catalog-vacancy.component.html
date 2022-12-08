@@ -12,7 +12,7 @@
             <div class="tag">{{item.workExperience}}</div>            
             <div class="tag">{{item.employment}}</div>
         </div>
-        <h3>{{item.vacancyName}}</h3>
+        <h3 (click)="onRouteSelectedVacancy(item.vacancyId)">{{item.vacancyName}}</h3>
         <div>{{item.vacancyText}}</div>
     </div>
   </div>

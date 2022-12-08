@@ -8,13 +8,6 @@
   <div class="block-worksheet">
     <div class="worksheet-panel">
       <p-panel header="Заполнение информации о проекте" [toggleable]="true">
-        <ng-template pTemplate="icons">
-          <button pButton class="p-panel-header-icon p-link" (click)="menu.toggle($event)">
-            <span class="pi pi-cog"></span>
-          </button>
-          <p-menu #menu id="config_menu" [popup]="true"></p-menu>
-        </ng-template>
-
         <div class="d-flex">
           <div class="control-input-text-worksheet">
             <div>
@@ -83,13 +76,6 @@
 
     <div class="worksheet-panel space-top-50 d-flex">
       <p-panel header="Вакансии проекта" [toggleable]="true">
-        <ng-template pTemplate="icons">
-          <button pButton class="p-panel-header-icon p-link" (click)="menu.toggle($event)">
-            <span class="pi pi-cog"></span>
-          </button>
-          <p-menu #menu id="config_menu" [popup]="true"></p-menu>
-        </ng-template>
-
         <div>
           <p-table [value]="projectVacancies$.value.projectVacancies" 
                   [(selection)]="selectedProjectVacancy" 
@@ -166,14 +152,7 @@
     </div>
 
     <div class="worksheet-panel space-top-50 space-bottom-50 d-flex" *ngIf="!isEditMode">
-      <p-panel header="Действия" [toggleable]="true">
-        <ng-template pTemplate="icons">
-          <button pButton class="p-panel-header-icon p-link" (click)="menu.toggle($event)">
-            <span class="pi pi-cog"></span>
-          </button>
-          <p-menu #menu id="config_menu" [popup]="true"></p-menu>
-        </ng-template>
-
+      <p-panel header="Действия" [toggleable]="true">       
         <div class="d-flex">
           <div class="control-input-text-worksheet">
             <div class="mb-3">

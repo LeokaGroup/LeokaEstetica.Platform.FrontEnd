@@ -7,14 +7,7 @@
 
   <div class="block-worksheet">
     <div class="worksheet-panel">
-      <p-panel header="Контактная информация" [toggleable]="true">
-        <ng-template pTemplate="icons">
-          <button pButton class="p-panel-header-icon p-link" (click)="menu.toggle($event)">
-            <span class="pi pi-cog"></span>
-          </button>
-          <p-menu #menu id="config_menu" [popup]="true"></p-menu>
-        </ng-template>
-        
+      <p-panel header="Контактная информация" [toggleable]="true">      
         <div class="d-flex">
             <div class="control-input-text-worksheet">
                 <input type="text" 
@@ -200,13 +193,6 @@
 
     <div class="worksheet-panel space-top">
       <p-panel header="О себе" [toggleable]="true">
-        <ng-template pTemplate="icons">
-          <button pButton class="p-panel-header-icon p-link" (click)="menu.toggle($event)">
-            <span class="pi pi-cog"></span>
-          </button>
-          <p-menu #menu id="config_menu" [popup]="true"></p-menu>
-        </ng-template>
-        
         <div class="d-flex worksheet-line">
             <div class="control-input-text-worksheet">
                 <textarea input-control-worksheet 
@@ -276,13 +262,6 @@
 
     <div class="worksheet-panel space-top">
       <p-panel header="Навыки" [toggleable]="true">
-        <ng-template pTemplate="icons">
-          <button pButton class="p-panel-header-icon p-link" (click)="menu.toggle($event)">
-            <span class="pi pi-cog"></span>
-          </button>
-          <p-menu #menu id="config_menu" [popup]="true"></p-menu>
-        </ng-template>
-
         <p-pickList [source]="profileSkillsItems$.value" 
                     [target]="aSelectedSkills" 
                     sourceHeader="Выберете навыки" 
@@ -325,14 +304,7 @@
     </div>
 
     <div class="worksheet-panel space-top">
-        <p-panel header="Цели на платформе" [toggleable]="true">
-          <ng-template pTemplate="icons">
-            <button pButton class="p-panel-header-icon p-link" (click)="menu.toggle($event)">
-              <span class="pi pi-cog"></span>
-            </button>
-            <p-menu #menu id="config_menu" [popup]="true"></p-menu>
-          </ng-template>
-
+        <p-panel header="Цели на платформе" [toggleable]="true">  
           <p-pickList [source]="profileIntentsItems$.value" 
                     [target]="aSelectedIntents" 
                     sourceHeader="Выберете ваши цели на платформе" 
