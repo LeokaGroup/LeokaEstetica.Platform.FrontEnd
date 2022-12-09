@@ -17,11 +17,13 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
 import { HttpClientModule } from '@angular/common/http';
 import { SignalrService } from '../notifications/signalr/services/signalr.service';
+import { DetailVacancyComponent } from './detail/detail.component';
 
 @NgModule({
     declarations: [
         CatalogVacancyComponent,
-        CreateVacancyComponent
+        CreateVacancyComponent,
+        DetailVacancyComponent
     ],
 
     imports: [

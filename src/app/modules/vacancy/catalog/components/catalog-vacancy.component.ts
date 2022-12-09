@@ -14,8 +14,7 @@ import { VacancyService } from "../../services/vacancy.service";
  * Класс компонента каталога вакансий.
  */
 export class CatalogVacancyComponent implements OnInit {
-    constructor(private readonly _userService: UserService,
-        private readonly _router: Router,
+    constructor(private readonly _router: Router,
         private readonly _vacancyService: VacancyService) { }
 
     formSignUp: FormGroup = new FormGroup({
@@ -27,6 +26,8 @@ export class CatalogVacancyComponent implements OnInit {
     });
 
     public readonly catalog$ = this._vacancyService.catalog$;
+
+    vacancyId: number = 0;
 
     public async ngOnInit() {
         await this.loadCatalogVacanciesAsync();
@@ -40,6 +41,19 @@ export class CatalogVacancyComponent implements OnInit {
         (await this._vacancyService.loadCatalogVacanciesAsync())
         .subscribe(_ => {
             console.log("Список вакансий: ", this.catalog$.value);
+        });
+    };
+
+    /**
+     * Функция переход к просмотру вакансии вне проекта.
+     * @param vacancyId - Id вакансии.
+     */
+    public onRouteSelectedVacancy(vacancyId: number) {
+        this._router.navigate(["/vacancies/vacancy"], {
+            queryParams: {
+                vacancyId,
+                mode: "view"
+            }
         });
     };
 }
