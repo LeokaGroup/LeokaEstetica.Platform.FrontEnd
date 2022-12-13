@@ -41,8 +41,9 @@ export class DetailProjectComponent implements OnInit {
     projectId: number = 0;
     allFeedSubscription: any;
     isEditMode: boolean = false;
+    pageTitle: string = "";
     selectedStage: any;
-    isEdit: any;    
+    isEdit: any;
     selectedProjectVacancy: any;
     totalVacancies: number = 0;
     isShowAttachVacancyModal: boolean = false;
@@ -70,7 +71,7 @@ export class DetailProjectComponent implements OnInit {
          this._signalrService.startConnection().then(() => {
             console.log("Подключились");
 
-            this.listenAllHubsNotifications();            
+            this.listenAllHubsNotifications();
 
             // Подписываемся на получение всех сообщений.
             this.allFeedSubscription = this._signalrService.AllFeedObservable
@@ -98,13 +99,15 @@ export class DetailProjectComponent implements OnInit {
             let mode = params["mode"];
 
             if (mode == "view") {
-                this.getEditProjectAsync(params["projectId"], "View");  
+                this.getEditProjectAsync(params["projectId"], "View");
                 this.isEditMode = false;
+                this.pageTitle = "Просмотр информации о проекте"
             }
 
             if (mode == "edit") {
-                this.getEditProjectAsync(params["projectId"], "Edit");             
-                this.isEditMode = true;   
+                this.getEditProjectAsync(params["projectId"], "Edit");
+                this.isEditMode = true;
+                this.pageTitle = "Редактирование информации о проекте"
             }
 
             this.projectId = params["projectId"];
@@ -117,13 +120,13 @@ export class DetailProjectComponent implements OnInit {
      * @param mode - Режим. Чтение или изменение.
      * @returns - Список вакансий.
      */
-      private async getEditProjectAsync(projectId: number, mode: string) {    
+      private async getEditProjectAsync(projectId: number, mode: string) {
         (await this._projectService.getProjectAsync(projectId, mode))
         .subscribe(_ => {
             console.log("Получили проект: ", this.selectedProject$.value);
         });
     };
-    
+
     /**
      * Функция обновляет проект.
      * @returns - Обновленные данные проекта.
@@ -174,7 +177,7 @@ export class DetailProjectComponent implements OnInit {
     private async getProjectVacanciesColumnNamesAsync() {
         (await this._projectService.getProjectVacanciesColumnNamesAsync())
             .subscribe(_ => {
-                console.log("Столбцы таблицы вакансий проектов пользователя: ", this.projectVacanciesColumns$.value);                
+                console.log("Столбцы таблицы вакансий проектов пользователя: ", this.projectVacanciesColumns$.value);
             });
     };
 
@@ -183,7 +186,7 @@ export class DetailProjectComponent implements OnInit {
      */
     public onRouteCreateProjectVacancy() {
         let projectId = this.projectId;
-        
+
         this._router.navigate(["/vacancies/create"], {
             queryParams: {
                 projectId
@@ -223,8 +226,8 @@ export class DetailProjectComponent implements OnInit {
 
         (await this._projectService.attachProjectVacancyAsync(attachModel))
         .subscribe(async _ => {
-            console.log("Прикрепили вакансию: ", this.selectedVacancy.vacancyId);       
-            this.isShowAttachVacancyModal = false;         
+            console.log("Прикрепили вакансию: ", this.selectedVacancy.vacancyId);
+            this.isShowAttachVacancyModal = false;
             await this.getProjectVacanciesAsync();
         });
     };
@@ -241,10 +244,10 @@ export class DetailProjectComponent implements OnInit {
         if (isEdit) {
             this.vacancyId = vacancyId;
         }
-        
+
         (await this._vacancyService.getVacancyByIdAsync(vacancyId))
         .subscribe(async _ => {
-            console.log("Получили вакансию: ", this.selectedVacancy$.value);       
+            console.log("Получили вакансию: ", this.selectedVacancy$.value);
             this.vacancyName = this.selectedVacancy$.value.vacancyName;
             this.vacancyText = this.selectedVacancy$.value.vacancyText;
             this.workExperience = this.selectedVacancy$.value.workExperience;
@@ -258,20 +261,20 @@ export class DetailProjectComponent implements OnInit {
      * @returns - Данные вакансии.
      */
       public async onUpdateVacancyAsync() {
-        let model = this.UpdateVacancyModel(); 
+        let model = this.UpdateVacancyModel();
         (await this._vacancyService.updateVacancyAsync(model))
-        .subscribe((response: any) => {       
+        .subscribe((response: any) => {
             if (response.errors !== null && response.errors.length > 0) {
                 response.errors.forEach((item: any) => {
                     this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item.errorMessage });
-                });  
+                });
             }
 
             // else {
             //     setTimeout(() => {
             //         this._router.navigate(["/vacancies/catalog"]);
             //     }, 4000);
-            // }   
+            // }
         });
     };
 
@@ -292,23 +295,23 @@ export class DetailProjectComponent implements OnInit {
     };
 
     /**
-     * Первичная обработка отклика на проект. 
+     * Первичная обработка отклика на проект.
      * С вакансией либо без нее.
      * @param isResponseVacancy - Признак отклика с вакансией либо без нее.
      */
     public onShowProjectResponseWithVacancyModal(isResponseVacancy: boolean) {
-        this.isResponseVacancy = isResponseVacancy;        
-    };    
+        this.isResponseVacancy = isResponseVacancy;
+    };
 
     /**
-     * Первичная обработка отклика на проект без вакансии. 
+     * Первичная обработка отклика на проект без вакансии.
      * С вакансией либо без нее.
      * @param isResponseVacancy - Признак отклика с вакансией либо без нее.
      */
      public onShowProjectResponseNotVacancyModal(isResponseNotVacancy: boolean) {
-        this.isResponseNotVacancy = isResponseNotVacancy;        
-    }; 
-    
+        this.isResponseNotVacancy = isResponseNotVacancy;
+    };
+
     /**
      * Функция записывает отклик на проект.
      * Запись происходит либо с указанием вакансии либо без нее.
