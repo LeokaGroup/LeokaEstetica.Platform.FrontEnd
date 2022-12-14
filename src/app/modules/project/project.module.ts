@@ -21,6 +21,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { FieldsetModule } from 'primeng/fieldset';
 
 @NgModule({
     declarations: [
@@ -45,7 +46,8 @@ import { DialogModule } from 'primeng/dialog';
         DropdownModule,
         TableModule,
         ButtonModule,
-        DialogModule
+        DialogModule,
+        FieldsetModule
     ],
 
     exports: [],
