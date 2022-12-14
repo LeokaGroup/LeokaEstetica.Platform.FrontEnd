@@ -14,15 +14,15 @@
                 <label>Название проекта</label>
             </div>
             <div>
-                <input type="text" 
-                        class="p-inputtext-sm input-control-worksheet control-project" 
-                        placeholder="Название проекта" 
+                <input type="text"
+                        class="p-inputtext-sm input-control-worksheet control-project"
+                        placeholder="Название проекта"
                         pInputText
-                        autocomplete="new-password" 
-                        [(ngModel)]="selectedProject$.value.projectName" 
-                        [disabled]="!isEditMode"/>    
-            </div>          
-          </div>         
+                        autocomplete="new-password"
+                        [(ngModel)]="selectedProject$.value.projectName"
+                        [disabled]="!isEditMode"/>
+            </div>
+          </div>
         </div>
 
         <div class="d-flex mt-3">
@@ -34,13 +34,13 @@
                                 <label>Описание проекта</label>
                             </div>
                             <div>
-                              <p-editor autocomplete="new-password" 
+                              <p-editor autocomplete="new-password"
                                         [(ngModel)]="selectedProject$.value.projectDetails"
                                         [style]="{'height':'320px'}"
                                         [readonly]="!isEditMode">
                               </p-editor>
                             </div>
-                        </div>                         
+                        </div>
                     </div>
                   </div>
               </div>
@@ -52,14 +52,14 @@
                 <label>Стадия проекта</label>
             </div>
             <div>
-              <p-dropdown [options]="this.projectStages$.value" 
-                          [(ngModel)]="selectedStage" 
+              <p-dropdown [options]="this.projectStages$.value"
+                          [(ngModel)]="selectedStage"
                           optionLabel="stageName"
                           (onChange)="onSelectProjectStage()"
                           [disabled]="!isEditMode">
               </p-dropdown>
-            </div>          
-          </div>         
+            </div>
+          </div>
         </div>
       </p-panel>
     </div>
@@ -77,46 +77,46 @@
     <div class="worksheet-panel space-top-50 d-flex">
       <p-panel header="Вакансии проекта" [toggleable]="true">
         <div>
-          <p-table [value]="projectVacancies$.value.projectVacancies" 
-                  [(selection)]="selectedProjectVacancy" 
-                  dataKey="userVacancy.vacancyId" 
-                  [paginator]="true" 
-                  [rows]="10"             
-                  styleClass="p-datatable-gridlines" 
+          <p-table [value]="projectVacancies$.value.projectVacancies"
+                  [(selection)]="selectedProjectVacancy"
+                  dataKey="userVacancy.vacancyId"
+                  [paginator]="true"
+                  [rows]="10"
+                  styleClass="p-datatable-gridlines"
                   responsiveLayout="scroll">
             <ng-template pTemplate="caption">
              <div class="d-flex">
                <div>
-                 <button pButton type="button" 
-                 label="Добавить" 
+                 <button pButton type="button"
+                 label="Добавить"
                  class="p-button-outlined"
-                 (click)="onRouteCreateProjectVacancy()">
+                 (click)="onShowVacancyCreateModal()">
                  </button>
                </div>
                &nbsp;&nbsp;&nbsp;
                <div>
-                 <button pButton type="button" 
-                 label="Привязать" 
+                 <button pButton type="button"
+                 label="Привязать"
                  class="p-button-outlined p-button-secondary"
                  (click)="onShowAttachModel()">
                  </button>
                </div>
              </div>
             </ng-template>
-      
+
             <ng-template pTemplate="header">
                 <tr>
                   <th style="width: 4rem">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                   </th>
                     <th *ngFor="let item of projectVacanciesColumns$.value">
-                      {{item.columnName}}</th>    
-                    <th>Просмотр</th>        
-                    <th>Редактирование</th>    
-                    <th>Удаление</th>    
+                      {{item.columnName}}</th>
+                    <th>Просмотр</th>
+                    <th>Редактирование</th>
+                    <th>Удаление</th>
                 </tr>
             </ng-template>
-      
+
             <ng-template pTemplate="body" let-vacancy>
                 <tr>
                   <td>
@@ -127,14 +127,14 @@
                   <td>{{vacancy.userVacancy.vacancyText}}</td>
                   <!-- <td>{{vacancy.projectStatusName}}</td>              -->
                   <td>Надо вывести</td>
-                  <td><button pButton type="button" 
-                              label="Просмотр" 
+                  <td><button pButton type="button"
+                              label="Просмотр"
                               class="p-button-text"
                               (click)="onShowVacancyModal(vacancy.vacancyId, false)">
                       </button>
                   </td>
-                  <td><button pButton type="button" 
-                              label="Редактировать" 
+                  <td><button pButton type="button"
+                              label="Редактировать"
                               class="p-button-secondary p-button-text"
                               (click)="onShowVacancyModal(vacancy.vacancyId, true)">
                       </button>
@@ -142,7 +142,7 @@
                   <td><button pButton type="button" label="Удалить" class="p-button-danger p-button-text"></button></td>
                 </tr>
             </ng-template>
-      
+
             <ng-template pTemplate="summary">
                 Всего: {{totalVacancies}}
             </ng-template>
@@ -152,14 +152,14 @@
     </div>
 
     <div class="worksheet-panel space-top-50 space-bottom-50 d-flex" *ngIf="!isEditMode">
-      <p-panel header="Действия" [toggleable]="true">       
+      <p-panel header="Действия" [toggleable]="true">
         <div class="d-flex">
           <div class="control-input-text-worksheet">
             <div class="mb-3">
               <div>
                 <div>
-                  <button pButton 
-                          type="button" 
+                  <button pButton
+                          type="button"
                           label="Откликнуться на проект (без указания вакансии)"
                           class="p-button-outlined p-button-secondary p-button-text"
                           (click)="onShowProjectResponseNotVacancyModal(true)">
@@ -167,8 +167,8 @@
                 </div>
 
                 <div>
-                  <button pButton 
-                          type="button" 
+                  <button pButton
+                          type="button"
                           label="Откликнуться на проект (с указанием вакансии)"
                           class="p-button-outlined p-button-secondary p-button-text"
                           (click)="onShowProjectResponseWithVacancyModal(true)">
@@ -181,8 +181,8 @@
                   </button>
                 </div>
               </div>
-            </div>                    
-          </div>         
+            </div>
+          </div>
         </div>
       </p-panel>
     </div>
@@ -190,27 +190,27 @@
 </div>
 
 <!-- Диалог привязки вакансии к проекту. -->
-<p-dialog header="Привязка вакансии к проекту" 
-          [(visible)]="isShowAttachVacancyModal" 
-          [modal]="true" 
+<p-dialog header="Привязка вакансии к проекту"
+          [(visible)]="isShowAttachVacancyModal"
+          [modal]="true"
           [style]="{width: '50vw', height: '50vw'}"
-          [maximizable]="false" 
-          [draggable]="false" 
+          [maximizable]="false"
+          [draggable]="false"
           [resizable]="false">
- 
+
   <div class="d-flex mt-3">
     <div class="control-input-text-worksheet">
       <div>
           <label>Выберите вакансию для привязки</label>
       </div>
       <div>
-        <p-dropdown [options]="this.availableAttachVacancies$.value.projectVacancies" 
-                    [(ngModel)]="selectedVacancy" 
+        <p-dropdown [options]="this.availableAttachVacancies$.value.projectVacancies"
+                    [(ngModel)]="selectedVacancy"
                     optionLabel="userVacancy.vacancyName"
                     (onChange)="onSelectVacancy()">
         </p-dropdown>
-      </div>          
-    </div>         
+      </div>
+    </div>
   </div>
   <ng-template pTemplate="footer">
     <p-button icon="pi pi-check" (click)="onSaveProjectVacancyAsync()" label="Привязать вакансию" styleClass="p-button-text">
@@ -219,14 +219,14 @@
 </p-dialog>
 
 <!-- Диалог вакансии. -->
-<p-dialog header="Просмотр вакансии" 
-          [(visible)]="isShowVacancyModal" 
-          [modal]="true" 
+<p-dialog header="Просмотр вакансии"
+          [(visible)]="isShowVacancyModal"
+          [modal]="true"
           [style]="{width: '50vw', height: '50vw'}"
-          [maximizable]="false" 
-          [draggable]="false" 
+          [maximizable]="false"
+          [draggable]="false"
           [resizable]="false">
- 
+
   <div class="d-flex mt-3">
     <div class="control-input-text-worksheet">
       <div class="d-flex">
@@ -235,15 +235,15 @@
               <label>Название вакансии</label>
           </div>
           <div>
-              <input type="text" 
-              class="p-inputtext-sm input-control-worksheet control-project" 
-              placeholder="Название вакансии" 
+              <input type="text"
+              class="p-inputtext-sm input-control-worksheet control-project"
+              placeholder="Название вакансии"
               pInputText
-              autocomplete="new-password" 
+              autocomplete="new-password"
               [(ngModel)]="vacancyName"
-              [disabled]="!isEditMode" />    
-          </div>          
-        </div>         
+              [disabled]="!isEditMode" />
+          </div>
+        </div>
       </div>
 
       <div class="d-flex">
@@ -252,11 +252,11 @@
             <label>Опыт</label>
           </div>
           <div>
-            <input type="text" 
-                    class="p-inputtext-sm input-control-worksheet control-vacancy" 
+            <input type="text"
+                    class="p-inputtext-sm input-control-worksheet control-vacancy"
                     placeholder="1–3 года"
-                    pInputText 
-                    autocomplete="new-password" 
+                    pInputText
+                    autocomplete="new-password"
                     [(ngModel)]="workExperience"
                     [disabled]="!isEditMode" />
           </div>
@@ -267,11 +267,11 @@
             <label>Занятость</label>
           </div>
           <div>
-            <input type="text" 
-                    class="p-inputtext-sm input-control-worksheet control-vacancy" 
+            <input type="text"
+                    class="p-inputtext-sm input-control-worksheet control-vacancy"
                     placeholder="Полная занятость, удаленная работа"
-                    pInputText 
-                    autocomplete="new-password" 
+                    pInputText
+                    autocomplete="new-password"
                     [(ngModel)]="employment"
                     [disabled]="!isEditMode" />
           </div>
@@ -282,10 +282,10 @@
             <label>Оплата</label>
           </div>
           <div>
-            <input type="text" 
+            <input type="text"
                     class="p-inputtext-sm input-control-worksheet control-vacancy"
-                    placeholder="20 000 – 40 000 руб." 
-                    pInputText 
+                    placeholder="20 000 – 40 000 руб."
+                    pInputText
                     autocomplete="new-password"
                     [(ngModel)]="payment"
                     [disabled]="!isEditMode" />
@@ -302,66 +302,167 @@
                               <label>Описание вакансии</label>
                           </div>
                           <div>
-                              <p-editor autocomplete="new-password" 
-                              [(ngModel)]="vacancyText" 
+                              <p-editor autocomplete="new-password"
+                              [(ngModel)]="vacancyText"
                               [style]="{'height':'320px'}"
                               [readonly]="!isEditMode"></p-editor>
                           </div>
-                      </div>                         
+                      </div>
                   </div>
                 </div>
             </div>
       </div>
-    </div>         
+    </div>
   </div>
   <ng-template pTemplate="footer">
-    <p-button icon="pi pi-check" 
-              (click)="onUpdateVacancyAsync()" 
-              label="Сохранить" 
+    <p-button icon="pi pi-check"
+              (click)="onUpdateVacancyAsync()"
+              label="Сохранить"
               styleClass="p-button-text"
               *ngIf="isEditMode">
     </p-button>
   </ng-template>
 </p-dialog>
 
- <!-- Диалог выбора способа отклика на проект (с вакансией либо без ее указания). -->
- <p-dialog header="Отклик на проект с указанием вакансии" 
-          [(visible)]="isResponseVacancy" 
-          [modal]="true" 
+
+<!-- Диалог вакансии. -->
+<p-dialog header="Добавление вакансии"
+          [(visible)]="isShowVacancyCreateModal"
+          [modal]="true"
           [style]="{width: '50vw', height: '50vw'}"
-          [maximizable]="false" 
-          [draggable]="false" 
+          [maximizable]="false"
+          [draggable]="false"
           [resizable]="false">
- 
+
+  <div class="d-flex mt-3">
+    <div class="control-input-text-worksheet">
+      <div class="d-flex">
+        <div class="control-input-text-worksheet">
+          <div>
+            <label>Название вакансии</label>
+          </div>
+          <div>
+            <input type="text"
+                   class="p-inputtext-sm input-control-worksheet control-project"
+                   placeholder="Название вакансии"
+                   pInputText
+                   autocomplete="new-password"
+                   [(ngModel)]="tmpVacancyName"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex">
+        <div class="control-input-text-worksheet mt-3">
+          <div>
+            <label>Опыт</label>
+          </div>
+          <div>
+            <input type="text"
+                   class="p-inputtext-sm input-control-worksheet control-vacancy"
+                   placeholder="1–3 года"
+                   pInputText
+                   autocomplete="new-password"
+                   [(ngModel)]="tmpWorkExperience"/>
+          </div>
+        </div>
+
+        <div class="control-input-text-worksheet mt-3">
+          <div>
+            <label>Занятость</label>
+          </div>
+          <div>
+            <input type="text"
+                   class="p-inputtext-sm input-control-worksheet control-vacancy"
+                   placeholder="Полная занятость, удаленная работа"
+                   pInputText
+                   autocomplete="new-password"
+                   [(ngModel)]="tmpEmployment"/>
+          </div>
+        </div>
+
+        <div class="control-input-text-worksheet mt-3">
+          <div>
+            <label>Оплата</label>
+          </div>
+          <div>
+            <input type="text"
+                   class="p-inputtext-sm input-control-worksheet control-vacancy"
+                   placeholder="20 000 – 40 000 руб."
+                   pInputText
+                   autocomplete="new-password"
+                   [(ngModel)]="tmpPayment"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex mt-3">
+        <div class="control-input-text-worksheet">
+          <div class="control-input-text-worksheet">
+            <div class="d-flex worksheet-line">
+              <div class="control-input-text-worksheet">
+                <div>
+                  <label>Описание вакансии</label>
+                </div>
+                <div>
+                  <p-editor autocomplete="new-password"
+                            [(ngModel)]="vacancyText"
+                            [style]="{'height':'320px'}"></p-editor>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-check"
+              (click)="onCreateVacancyAsync()"
+              label="Сохранить"
+              styleClass="p-button-text">
+    </p-button>
+  </ng-template>
+</p-dialog>
+
+ <!-- Диалог выбора способа отклика на проект (с вакансией либо без ее указания). -->
+ <p-dialog header="Отклик на проект с указанием вакансии"
+          [(visible)]="isResponseVacancy"
+          [modal]="true"
+          [style]="{width: '50vw', height: '50vw'}"
+          [maximizable]="false"
+          [draggable]="false"
+          [resizable]="false">
+
   <div class="d-flex mt-3">
     <div class="control-input-text-worksheet">
       <div>
           <label>Выберите вакансию</label>
       </div>
       <div>
-        <p-dropdown [options]="this.availableAttachVacancies$.value.projectVacancies" 
-                    [(ngModel)]="selectedVacancy" 
+        <p-dropdown [options]="this.availableAttachVacancies$.value.projectVacancies"
+                    [(ngModel)]="selectedVacancy"
                     optionLabel="userVacancy.vacancyName"
                     (onChange)="onSelectVacancy()">
         </p-dropdown>
-      </div>          
-    </div>         
+      </div>
+    </div>
   </div>
   <ng-template pTemplate="footer">
-    <p-button icon="pi pi-check" 
-              (click)="onProjectResponseAsync()" 
-              label="Откликнуться на проект" 
+    <p-button icon="pi pi-check"
+              (click)="onProjectResponseAsync()"
+              label="Откликнуться на проект"
               styleClass="p-button-text">
     </p-button>
   </ng-template>
 </p-dialog>
 
 <!-- Диалог отклика без вакансии. -->
-<p-dialog header="Отклик на проект без указания вакансии" 
-          [(visible)]="isResponseNotVacancy" 
-          [breakpoints]="{'960px': '75vw'}" 
+<p-dialog header="Отклик на проект без указания вакансии"
+          [(visible)]="isResponseNotVacancy"
+          [breakpoints]="{'960px': '75vw'}"
           [style]="{width: '50vw'}"
-          [draggable]="false" 
+          [draggable]="false"
           [resizable]="false">
         <p>Откликнуться без вакансии?</p>
         <ng-template pTemplate="footer">
