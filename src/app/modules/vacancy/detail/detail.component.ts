@@ -28,7 +28,8 @@ export class DetailVacancyComponent implements OnInit {
     projectDetails: string = "";
     allFeedSubscription: any;
     isEditMode: boolean = false;
-    isEdit: any;    
+    isEdit: any;
+    pageTitle: string = "";
     selectedVacancy: any;
     vacancyName: string = "";
     vacancyText: string = "";
@@ -38,14 +39,14 @@ export class DetailVacancyComponent implements OnInit {
     vacancyId: number = 0;
     public async ngOnInit() {
         forkJoin([
-        this.checkUrlParams()      
+        this.checkUrlParams()
         ]).subscribe();
 
          // Подключаемся.
          this._signalrService.startConnection().then(() => {
             console.log("Подключились");
 
-            this.listenAllHubsNotifications();            
+            this.listenAllHubsNotifications();
 
             // Подписываемся на получение всех сообщений.
             this.allFeedSubscription = this._signalrService.AllFeedObservable
@@ -60,27 +61,29 @@ export class DetailVacancyComponent implements OnInit {
      * Функция слушает все хабы.
      */
       private listenAllHubsNotifications() {
-        
+
     };
 
-    private checkUrlParams() {
-        this._activatedRoute.queryParams
-        .subscribe(params => {
-            let mode = params["mode"];
+  private checkUrlParams() {
+    this._activatedRoute.queryParams
+      .subscribe(params => {
+        let mode = params["mode"];
 
-            if (mode == "view") {
-                this.getVacancyByIdAsync(params["vacancyId"]);  
-                this.isEditMode = false;
-            }
+        if (mode == "view") {
+          this.getVacancyByIdAsync(params["vacancyId"]);
+          this.isEditMode = false;
+          this.pageTitle = "Просмотр информации о вакансии";
+        }
 
-            if (mode == "edit") {
-                this.getVacancyByIdAsync(params["vacancyId"]);             
-                this.isEditMode = true;   
-            }
+        if (mode == "edit") {
+          this.getVacancyByIdAsync(params["vacancyId"]);
+          this.isEditMode = true;
+          this.pageTitle = "Изменение информации о вакансии";
+        }
 
-            this.vacancyId = params["vacancyId"];
-          });
-    };
+        this.vacancyId = params["vacancyId"];
+      });
+  };
 
     public onSelectVacancy() {
         console.log(this.selectedVacancy);
