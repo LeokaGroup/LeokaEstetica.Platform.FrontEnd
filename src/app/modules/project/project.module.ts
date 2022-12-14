@@ -21,7 +21,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { FieldsetModule } from 'primeng/fieldset';
+import { SplitterModule } from 'primeng/splitter';
 
 @NgModule({
     declarations: [
@@ -47,7 +47,7 @@ import { FieldsetModule } from 'primeng/fieldset';
         TableModule,
         ButtonModule,
         DialogModule,
-        FieldsetModule
+        SplitterModule
     ],
 
     exports: [],
