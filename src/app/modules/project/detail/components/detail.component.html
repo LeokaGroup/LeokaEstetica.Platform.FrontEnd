@@ -191,8 +191,13 @@
     </div>
 
     <!-- Область с чатом. -->
-    <div class="worksheet-panel space-top-50 space-bottom-50 d-flex">
-      <p-splitter [style]="{'height': '500px'}" 
+    <div class="worksheet-panel space-top-50 space-bottom-50 d-flex">      
+    <p-panel header="Чат с владельцем проекта" [toggleable]="true">       
+      <div class="d-flex">
+        <div class="control-input-text-worksheet">
+          <div class="mb-3">
+            <div>
+              <p-splitter [style]="{'height': '500px'}" 
                   [panelSizes]="[20,80]" 
                   [minSizes]="[10,0]" 
                   styleClass="mb-5" 
@@ -206,7 +211,7 @@
             <p-splitter layout="vertical" [panelSizes]="[15,85]">
                 <ng-template pTemplate>
                     <div class="col flex align-items-center justify-content-center">
-                      Чат с владельцем проекта
+                      
                     </div>
                 </ng-template>
                 <ng-template pTemplate>
@@ -225,9 +230,7 @@
                                   <p>{{item.message}}</p>
                                   <span class="time-right">{{item.created}}</span>
                                 </div>                             
-                              </div>
-  
-                             
+                              </div>                            
                             </div>
 
                             <div>
@@ -253,6 +256,11 @@
             </p-splitter>
         </ng-template>
     </p-splitter>
+            </div>
+          </div>                    
+        </div>         
+      </div>
+    </p-panel>
     </div>
   </div>
 </div>
