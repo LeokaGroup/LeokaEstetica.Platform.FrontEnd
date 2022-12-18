@@ -19,6 +19,7 @@ import { ToastModule } from 'primeng/toast';
 import { VacancyService } from './modules/vacancy/services/vacancy.service';
 import { ProjectService } from './modules/project/services/project.service';
 import {AvatarModule} from 'primeng/avatar';
+import { ChatMessagesService } from './modules/messages/chat/services/chat-messages.service';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import {AvatarModule} from 'primeng/avatar';
     },
     NetworkService,
     VacancyService,
-    ProjectService
+    ProjectService,
+    ChatMessagesService
   ],
 
   bootstrap: [AppComponent]
