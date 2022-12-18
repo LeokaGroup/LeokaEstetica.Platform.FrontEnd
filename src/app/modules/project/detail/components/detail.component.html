@@ -197,8 +197,11 @@
                 </div>
 
                 <div>
-                  <button pButton type="button" label="Написать владельцу"
-                    class="p-button-outlined p-button-secondary p-button-text">
+                  <button pButton 
+                          type="button" 
+                          label="Написать владельцу"
+                          class="p-button-outlined p-button-secondary p-button-text"
+                          (click)="onWriteOwnerDialogAsync()">
                   </button>
                 </div>
               </div>
@@ -238,11 +241,11 @@
                         <ng-template pTemplate>
                             <div class="col flex align-items-center justify-content-center">
                               <div class="container">
-                                <img src="/w3images/bandmember.jpg" alt="Avatar">
+                                <!-- <img src="/w3images/bandmember.jpg" alt="Avatar"> -->
                                 <p>Hello. How are you today?</p>
-                                <span class="time-right">11:00</span>
+                                <!-- <span class="time-right">11:00</span> -->
                               </div>
-                  
+<!--                   
                               <div class="container darker">
                                 <img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right">
                                 <p>Hey! I'm fine. Thanks for asking!</p>
@@ -259,11 +262,20 @@
                                 <img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right">
                                 <p>Nah, I dunno. Play soccer.. or learn more coding perhaps?</p>
                                 <span class="time-left">11:05</span>
-                              </div>
+                              </div> -->
+
+                              <div>
+                                <input type="text" 
+                                class="p-inputtext-sm input-control-worksheet control-project" 
+                                placeholder="Введите сообщение" 
+                                pInputText
+                                autocomplete="new-password" 
+                                [(ngModel)]="message" />    
+                            </div>   
                   
                               <div class="d-flex justify-content-end">
                                 <button pButton type="button" label="Отправить"
-                                  class="p-button-outlined p-button-secondary p-button-text">
+                                  class="p-button-outlined">
                                 </button>
                               </div>
                             </div>

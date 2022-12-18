@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
+import { DialogInput } from "src/app/modules/messages/chat/models/input/dialog-input";
+import { ChatMessagesService } from "src/app/modules/messages/chat/services/chat-messages.service";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { VacancyInput } from "src/app/modules/vacancy/models/input/vacancy-input";
 import { VacancyService } from "src/app/modules/vacancy/services/vacancy.service";
@@ -25,7 +27,8 @@ export class DetailProjectComponent implements OnInit {
         private readonly _signalrService: SignalrService,
         private readonly _messageService: MessageService,
         private readonly _router: Router,
-        private readonly _vacancyService: VacancyService) {
+        private readonly _vacancyService: VacancyService,
+        private readonly _messagesService: ChatMessagesService) {
     }
 
     public readonly catalog$ = this._projectService.catalog$;
@@ -35,6 +38,8 @@ export class DetailProjectComponent implements OnInit {
     public readonly projectVacanciesColumns$ = this._projectService.projectVacanciesColumns$;
     public readonly availableAttachVacancies$ = this._projectService.availableAttachVacancies$;
     public readonly selectedVacancy$ = this._vacancyService.selectedVacancy$;
+    public readonly messages$ = this._messagesService.messages$;
+    public readonly dialog$ = this._messagesService.dialog$;
 
     projectName: string = "";
     projectDetails: string = "";
@@ -56,6 +61,8 @@ export class DetailProjectComponent implements OnInit {
     vacancyId: number = 0;
     isResponseVacancy: boolean = false;
     isResponseNotVacancy: boolean = false;
+    message: string = "";
+    dialogId: number = 0;
 
     public async ngOnInit() {
         forkJoin([
@@ -63,7 +70,8 @@ export class DetailProjectComponent implements OnInit {
         await this.getProjectStagesAsync(),
         await this.getProjectVacanciesAsync(),
         await this.getProjectVacanciesColumnNamesAsync(),
-        await this.getAvailableAttachVacanciesAsync()
+        await this.getAvailableAttachVacanciesAsync(),
+        await this.getProjectMessagesAsync()
         ]).subscribe();
 
          // Подключаемся.
@@ -330,5 +338,38 @@ export class DetailProjectComponent implements OnInit {
                 this.isResponseVacancy = false;
                 this.isResponseNotVacancy = false;
             });
+    };
+
+    private async getProjectMessagesAsync() {       
+        (await this._messagesService.getProjectDialogsAsync())
+        .subscribe(async _ => {
+            console.log("Сообщения чата проекта: ", this.messages$.value);     
+            
+            // Диалогов нет, создаем новый пустой диалог для начала общения.
+            if (!this.messages$.value.length) {
+                (await this._messagesService.getProjectDialogAsync(this.projectId))
+                    .subscribe(_ => {
+                        console.log("Получили диалог: ", this.dialog$.value);
+
+                        // if (this.dialog$.value.dialogState == "Empty") {
+                            
+                        // }
+                    });
+            }
+        });
+    };
+
+    public async onWriteOwnerDialogAsync() {
+        let dialogInput = new DialogInput();
+        dialogInput.DiscussionTypeId = this.projectId;
+        dialogInput.DiscussionType = "Project";
+
+        (await this._messagesService.writeOwnerDialogAsync(dialogInput))
+        .subscribe(async _ => {   
+            console.log("Получили диалог: ", this.dialog$.value);           
+            if (this.dialog$.value.dialogId > 0) {
+                this.dialogId = this.dialog$.value.dialogId;
+            }
+        });
     };
 }
