@@ -59,3 +59,12 @@
     float: left;
     color: #999;
 }
+
+::ng-deep.p-splitter-panel-nested .p-splitter-panel {
+    display: block;
+  }
+
+  .block-messages {
+    height: 300px;
+    overflow-y: scroll;
+  }

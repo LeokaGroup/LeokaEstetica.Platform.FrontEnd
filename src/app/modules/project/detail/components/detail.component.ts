@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
 import { DialogInput } from "src/app/modules/messages/chat/models/input/dialog-input";
+import { DialogMessageInput } from "src/app/modules/messages/chat/models/input/dialog-message-input";
 import { ChatMessagesService } from "src/app/modules/messages/chat/services/chat-messages.service";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { VacancyInput } from "src/app/modules/vacancy/models/input/vacancy-input";
@@ -63,6 +64,7 @@ export class DetailProjectComponent implements OnInit {
     isResponseNotVacancy: boolean = false;
     message: string = "";
     dialogId: number = 0;
+    userName: string = "";
 
     public async ngOnInit() {
         forkJoin([
@@ -71,7 +73,9 @@ export class DetailProjectComponent implements OnInit {
         await this.getProjectVacanciesAsync(),
         await this.getProjectVacanciesColumnNamesAsync(),
         await this.getAvailableAttachVacanciesAsync(),
-        await this.getProjectMessagesAsync()
+        await this.getProjectMessagesAsync(),
+        await this.onWriteOwnerDialogAsync(),
+        await this.getProjectDialogMessages()
         ]).subscribe();
 
          // Подключаемся.
@@ -344,19 +348,24 @@ export class DetailProjectComponent implements OnInit {
         (await this._messagesService.getProjectDialogsAsync())
         .subscribe(async _ => {
             console.log("Сообщения чата проекта: ", this.messages$.value);     
+            this.userName = this.messages$.value.fullName;
+            console.log("userName", this.userName);
             
             // Диалогов нет, создаем новый пустой диалог для начала общения.
             if (!this.messages$.value.length) {
                 (await this._messagesService.getProjectDialogAsync(this.projectId))
                     .subscribe(_ => {
                         console.log("Получили диалог: ", this.dialog$.value);
-
-                        // if (this.dialog$.value.dialogState == "Empty") {
-                            
-                        // }
                     });
             }
         });
+    };
+
+    private async getProjectDialogMessages() {
+        (await this._messagesService.getProjectDialogAsync(this.projectId))
+            .subscribe(_ => {
+                console.log("Сообщения диалога: ", this.dialog$.value);
+            });
     };
 
     public async onWriteOwnerDialogAsync() {
@@ -369,7 +378,22 @@ export class DetailProjectComponent implements OnInit {
             console.log("Получили диалог: ", this.dialog$.value);           
             if (this.dialog$.value.dialogId > 0) {
                 this.dialogId = this.dialog$.value.dialogId;
+                this.userName = this.dialog$.value.fullName;
+                console.log("userName", this.userName);
             }
+        });
+    };
+
+    public async onSendMessageAsync() {
+        let dialogInput = new DialogMessageInput();
+        dialogInput.Message = this.message;
+        dialogInput.DialogId = this.dialogId;
+
+        (await this._messagesService.sendDialogMessageAsync(dialogInput))
+        .subscribe(async _ => {   
+            console.log("Сообщения диалога: ", this.messages$.value);    
+            this.message = "";     
+            await this.getProjectDialogMessages();  
         });
     };
 }

@@ -220,7 +220,7 @@
                   class="chat">
         <ng-template pTemplate>
             <div class="col flex align-items-center justify-content-center">
-                Panel 1
+                {{userName}}
             </div>
         </ng-template>
         <ng-template pTemplate>
@@ -239,45 +239,34 @@
                         </ng-template> -->
                         
                         <ng-template pTemplate>
-                            <div class="col flex align-items-center justify-content-center">
-                              <div class="container">
-                                <!-- <img src="/w3images/bandmember.jpg" alt="Avatar"> -->
-                                <p>Hello. How are you today?</p>
-                                <!-- <span class="time-right">11:00</span> -->
+                            <div class="block-messages">
+                              <div *ngFor="let item of dialog$.value.messages">
+                                <div>
+                                  <!-- <img src="/w3images/bandmember.jpg" alt="Avatar"> -->
+                                  <p>{{item.message}}</p>
+                                  <span class="time-right">{{item.created}}</span>
+                                </div>                             
                               </div>
-<!--                   
-                              <div class="container darker">
-                                <img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right">
-                                <p>Hey! I'm fine. Thanks for asking!</p>
-                                <span class="time-left">11:01</span>
-                              </div>
-                  
-                              <div class="container">
-                                <img src="/w3images/bandmember.jpg" alt="Avatar">
-                                <p>Sweet! So, what do you wanna do today?</p>
-                                <span class="time-right">11:02</span>
-                              </div>
-                  
-                              <div class="container darker">
-                                <img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right">
-                                <p>Nah, I dunno. Play soccer.. or learn more coding perhaps?</p>
-                                <span class="time-left">11:05</span>
-                              </div> -->
+  
+                             
+                            </div>
 
-                              <div>
-                                <input type="text" 
-                                class="p-inputtext-sm input-control-worksheet control-project" 
-                                placeholder="Введите сообщение" 
-                                pInputText
-                                autocomplete="new-password" 
-                                [(ngModel)]="message" />    
-                            </div>   
-                  
-                              <div class="d-flex justify-content-end">
-                                <button pButton type="button" label="Отправить"
-                                  class="p-button-outlined">
-                                </button>
-                              </div>
+                            <div>
+                              <input type="text" 
+                              class="p-inputtext-sm input-control-worksheet control-project" 
+                              placeholder="Введите сообщение" 
+                              pInputText
+                              autocomplete="new-password" 
+                              [(ngModel)]="message"
+                              (keyup.enter)="onSendMessageAsync()" />    
+                          </div>   
+                
+                            <div class="d-flex justify-content-end">
+                              <button pButton type="button" 
+                                label="Отправить"
+                                class="p-button-outlined"
+                                (click)="onSendMessageAsync()">
+                              </button>
                             </div>
                         </ng-template>
                     </p-splitter>
