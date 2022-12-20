@@ -19,10 +19,13 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { ModerationRoutingModule } from './moderation-routing.module';
+import { SignInComponent } from './components/signin/signin.component';
+import { ModerationComponent } from './components/moderation/moderation.component';
 
 @NgModule({
     declarations: [
-        
+        SignInComponent,
+        ModerationComponent
     ],
 
     imports: [
