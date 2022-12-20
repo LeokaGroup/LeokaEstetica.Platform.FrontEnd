@@ -20,6 +20,7 @@ import { VacancyService } from './modules/vacancy/services/vacancy.service';
 import { ProjectService } from './modules/project/services/project.service';
 import {AvatarModule} from 'primeng/avatar';
 import { ChatMessagesService } from './modules/messages/chat/services/chat-messages.service';
+import { ModerationModule } from './modules/moderation/moderation.module';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { ChatMessagesService } from './modules/messages/chat/services/chat-messa
     SlideMenuModule,
     PanelMenuModule,
     ToastModule,
-    AvatarModule
+    AvatarModule,
+    ModerationModule
   ],
 
   providers: [
