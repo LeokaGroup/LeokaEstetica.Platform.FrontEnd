@@ -14,6 +14,11 @@ export class ModerationComponent implements OnInit {
     public readonly headerData$ = this._headerService.headerData$;
 
     isHideAuthButtons: boolean = false;
+    items = [
+        { label: 'Проекты' },
+        { label: 'Вакансии' },
+        { label: 'Комментарии к проектам' }
+    ];
 
     constructor(private readonly _headerService: HeaderService) {
     }

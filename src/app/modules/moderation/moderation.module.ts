@@ -21,6 +21,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ModerationRoutingModule } from './moderation-routing.module';
 import { SignInComponent } from './components/signin/signin.component';
 import { ModerationComponent } from './components/moderation/moderation.component';
+import {TabMenuModule} from 'primeng/tabmenu';
 
 @NgModule({
     declarations: [
@@ -45,7 +46,8 @@ import { ModerationComponent } from './components/moderation/moderation.componen
         TableModule,
         ButtonModule,
         DialogModule,
-        ModerationRoutingModule
+        ModerationRoutingModule,
+        TabMenuModule
     ],
 
     exports: [],
