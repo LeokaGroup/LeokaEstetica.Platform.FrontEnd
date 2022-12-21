@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { HeaderService } from "src/app/modules/header/services/header.service";
+import { ModerationService } from "../../services/moderation.service";
 
 @Component({
     selector: "signin",
@@ -13,6 +14,7 @@ import { HeaderService } from "src/app/modules/header/services/header.service";
  */
 export class SignInComponent implements OnInit {
     public readonly headerData$ = this._headerService.headerData$;
+    public readonly accessModeration$ = this._moderationService.accessModeration$;
 
     isHideAuthButtons: boolean = false;
 
@@ -28,7 +30,8 @@ export class SignInComponent implements OnInit {
         ])
     });
 
-    constructor(private readonly _headerService: HeaderService) {
+    constructor(private readonly _headerService: HeaderService,
+        private readonly _moderationService: ModerationService) {
     }
 
     public async ngOnInit() {
@@ -44,6 +47,17 @@ export class SignInComponent implements OnInit {
         (await this._headerService.getHeaderItemsAsync())
         .subscribe(_ => {
             console.log("Данные хидера: ", this.headerData$.value);
+        });
+    };
+
+    /**
+     * Функция првоеряет доступ пользователя к модерации.
+     * @returns - Признак доступа к модерации.
+     */
+    public async onCheckAvailableUserRoleModerationAsync() {
+        (await this._moderationService.checkAvailableUserRoleModerationAsync())
+        .subscribe(_ => {
+            console.log("Проверка роли модерации: ", this.accessModeration$.value);
         });
     };
 }
