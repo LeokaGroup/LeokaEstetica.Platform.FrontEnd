@@ -1,2 +1,6 @@
-@use "/src/app/common/styles/spaces.scss";
 @use "/src/app/common/styles/control.scss";
+
+.form-signin {
+    padding-top: 100px;
+    width: 300px;
+}

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { UserService } from '../user/services/user.service';
@@ -47,7 +47,8 @@ import {TabMenuModule} from 'primeng/tabmenu';
         ButtonModule,
         DialogModule,
         ModerationRoutingModule,
-        TabMenuModule
+        TabMenuModule,
+        ReactiveFormsModule
     ],
 
     exports: [],

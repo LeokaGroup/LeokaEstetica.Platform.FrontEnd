@@ -19,7 +19,6 @@ export class SignInComponent implements OnInit {
         private readonly _messageService: MessageService) { }
 
     formSignUp: FormGroup = new FormGroup({
-
         "email": new FormControl("", [
             Validators.required,
             Validators.email
