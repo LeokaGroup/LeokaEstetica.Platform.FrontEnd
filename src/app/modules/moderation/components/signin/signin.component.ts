@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 import { HeaderService } from "src/app/modules/header/services/header.service";
 import { AccessModerationInput } from "../../models/input/access-moderation-input";
 import { ModerationService } from "../../services/moderation.service";
@@ -32,7 +33,8 @@ export class SignInComponent implements OnInit {
     });
 
     constructor(private readonly _headerService: HeaderService,
-        private readonly _moderationService: ModerationService) {
+        private readonly _moderationService: ModerationService,
+        private readonly _router: Router) {
     }
 
     public async ngOnInit() {
@@ -60,8 +62,12 @@ export class SignInComponent implements OnInit {
         accessModerationInput.Email = this.formAccessModeration.value.emailModeration;
 
         (await this._moderationService.checkAvailableUserRoleModerationAsync(accessModerationInput))
-        .subscribe(_ => {
+        .subscribe((response: any) => {
             console.log("Проверка роли модерации: ", this.accessModeration$.value);
+
+            if (response.accessModeration) {
+                this._router.navigate(["/moderation"]);
+            }
         });
     };
 }
