@@ -1,6 +1,6 @@
 <p-toast></p-toast>
 
-<form [formGroup]="formSignUp" class="section-1-container section-container">
+<form [formGroup]="formAccessModeration" class="section-1-container section-container">
     <div class="container">
       <div class="row">
         <div class="col-10 offset-1 col-lg-8 offset-lg-2 div-wrapper d-flex justify-content-center align-items-center">
@@ -13,20 +13,20 @@
                 <input type="email" 
                         class="input-control" 
                         aria-describedby="emailHelp" 
-                        formControlName="email">
+                        formControlName="emailModeration">
               </div>
 
-              <div class="mb-3">
+              <!-- <div class="mb-3">
                 <label for="exampleInputPassword1">Пароль</label><br>
                 <input type="password" 
                         class="input-control" 
                         autocomplete="new-password"
-                        formControlName="password">
-              </div>
+                        formControlName="passwordModeration">
+              </div> -->
 
-              <div class="mb-3 form-check">
+              <!-- <div class="mb-3 form-check">
                 <a href="" class="form-check-label" for="exampleCheck1">Забыли пароль?</a>
-              </div>
+              </div> -->
 
               <button type="submit" 
                       class="btn btn-primary button-action-pur-control"

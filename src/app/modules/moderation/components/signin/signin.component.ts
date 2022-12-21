@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { HeaderService } from "src/app/modules/header/services/header.service";
+import { AccessModerationInput } from "../../models/input/access-moderation-input";
 import { ModerationService } from "../../services/moderation.service";
 
 @Component({
@@ -18,13 +19,13 @@ export class SignInComponent implements OnInit {
 
     isHideAuthButtons: boolean = false;
 
-    formSignUp: FormGroup = new FormGroup({
-        "email": new FormControl("", [
+    formAccessModeration: FormGroup = new FormGroup({
+        "emailModeration": new FormControl("", [
             Validators.required,
             Validators.email
         ]),
 
-        "password": new FormControl("", [
+        "passwordModeration": new FormControl("", [
             Validators.required,
             Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)
         ])
@@ -55,7 +56,10 @@ export class SignInComponent implements OnInit {
      * @returns - Признак доступа к модерации.
      */
     public async onCheckAvailableUserRoleModerationAsync() {
-        (await this._moderationService.checkAvailableUserRoleModerationAsync())
+        let accessModerationInput = new AccessModerationInput();
+        accessModerationInput.Email = this.formAccessModeration.value.emailModeration;
+
+        (await this._moderationService.checkAvailableUserRoleModerationAsync(accessModerationInput))
         .subscribe(_ => {
             console.log("Проверка роли модерации: ", this.accessModeration$.value);
         });
