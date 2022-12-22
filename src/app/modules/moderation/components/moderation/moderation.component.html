@@ -11,18 +11,26 @@
           </ng-template>
           <ng-template pTemplate="header">
               <tr>
-                  <th>ID</th>
-                  <th>Название проекта</th>
-                  <th>Дата модерации</th>
-                  <th>Дата создания</th>
+                <th>ID</th>
+                <th>Название проекта</th>
+                <th>Дата модерации</th>
+                <th>Дата создания</th>
+                <th>Одобрение</th>
+                <th>Отклонение</th>
               </tr>
           </ng-template>
-          <ng-template pTemplate="body" let-project>
+          <ng-template pTemplate="body" let-prj>
               <tr>
-                  <td>{{project.projectId}}</td>
-                  <td>{{project.projectName}}</td>
-                  <td>{{project.dateModeration}}</td>
-                  <td>{{project.dateCreated}}</td>
+                  <td>{{prj.projectId}}</td>
+                  <td>{{prj.projectName}}</td>
+                  <td>{{prj.dateModeration}}</td>
+                  <td>{{prj.dateCreated}}</td>
+                  <td><button pButton type="button" 
+                    label="Одобрить" 
+                    class="p-button-success p-button-text">
+            </button>
+        </td>       
+        <td><button pButton type="button" label="Отклонить" class="p-button-danger p-button-text"></button></td>
               </tr>
           </ng-template>
           <ng-template pTemplate="summary">
