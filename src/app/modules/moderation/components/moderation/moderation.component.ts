@@ -14,8 +14,11 @@ import { ModerationService } from "../../services/moderation.service";
  */
 export class ModerationComponent implements OnInit {
     public readonly headerData$ = this._headerService.headerData$;
+    public readonly projectsModeration$ = this._moderationService.projectsModeration$;
 
     isHideAuthButtons: boolean = false;
+    aProjects: any[] = [];
+    totalProjects: number = 0;
 
     constructor(private readonly _headerService: HeaderService,
         private readonly _moderationService: ModerationService) {
@@ -50,8 +53,10 @@ export class ModerationComponent implements OnInit {
      */
       private async getProjectsModerationAsync() {
         (await this._moderationService.getProjectsModerationAsync())
-        .subscribe(_ => {
-            console.log("Данные хидера: ", this.headerData$.value);
+        .subscribe((response: any) => {
+            console.log("Проекты для модерации: ", response);
+            this.aProjects = response.projects;
+            this.totalProjects = response.total;
         });
     };
 }

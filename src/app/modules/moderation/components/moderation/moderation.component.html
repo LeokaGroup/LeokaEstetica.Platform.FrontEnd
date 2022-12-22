@@ -1,12 +1,40 @@
 <div class="block-moderation">
   <div>
+    <!-- Список проектов. -->
     <p-tabView (onChange)="onSelectTabAsync($event)">
       <p-tabPanel header="Проекты" [selected]="true">
-        Content 1
+        <p-table [value]="aProjects" 
+                styleClass="p-datatable-gridlines" 
+                [tableStyle]="{'min-width': '50rem'}">
+          <ng-template pTemplate="caption">
+              Проекты на модерации
+          </ng-template>
+          <ng-template pTemplate="header">
+              <tr>
+                  <th>ID</th>
+                  <th>Название проекта</th>
+                  <th>Дата модерации</th>
+                  <th>Дата создания</th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-project>
+              <tr>
+                  <td>{{project.projectId}}</td>
+                  <td>{{project.projectName}}</td>
+                  <td>{{project.dateModeration}}</td>
+                  <td>{{project.dateCreated}}</td>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="summary">
+              Всего: {{totalProjects}}
+          </ng-template>
+      </p-table>
       </p-tabPanel>
+
       <p-tabPanel header="Вакансии">
         Content 2
       </p-tabPanel>
+
       <p-tabPanel header="Комментарии к проектам">
         Content 3
       </p-tabPanel>
