@@ -10,6 +10,7 @@ import { AccessModerationInput } from '../models/input/access-moderation-input';
 @Injectable()
 export class ModerationService {
     public accessModeration$ = new BehaviorSubject<any>(null);
+    public projectsModeration$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -22,6 +23,16 @@ export class ModerationService {
     public async checkAvailableUserRoleModerationAsync(accessModerationInput: AccessModerationInput) {
         return await this.http.post(API_URL.apiUrl + "/moderation/check", accessModerationInput).pipe(
             tap(data => this.accessModeration$.next(data))
+        );
+    };
+
+    /**
+     * Функция получает список проектов для модерации.
+     * @returns - Список проектов.
+     */
+     public async getProjectsModerationAsync() {
+        return await this.http.get(API_URL.apiUrl + "/moderation/projects").pipe(
+            tap(data => this.projectsModeration$.next(data))
         );
     };
 }

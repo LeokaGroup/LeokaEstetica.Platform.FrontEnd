@@ -1,5 +1,15 @@
 <div class="block-moderation">
-    <div>
-        <p-tabMenu [model]="items" [activeItem]="items[0]"></p-tabMenu>
-    </div>
+  <div>
+    <p-tabView (onChange)="onSelectTabAsync($event)">
+      <p-tabPanel header="Проекты" [selected]="true">
+        Content 1
+      </p-tabPanel>
+      <p-tabPanel header="Вакансии">
+        Content 2
+      </p-tabPanel>
+      <p-tabPanel header="Комментарии к проектам">
+        Content 3
+      </p-tabPanel>
+    </p-tabView>
+  </div>
 </div>

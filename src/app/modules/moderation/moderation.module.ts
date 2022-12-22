@@ -21,7 +21,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ModerationRoutingModule } from './moderation-routing.module';
 import { SignInComponent } from './components/signin/signin.component';
 import { ModerationComponent } from './components/moderation/moderation.component';
-import {TabMenuModule} from 'primeng/tabmenu';
+import {TabViewModule} from 'primeng/tabview';
 
 @NgModule({
     declarations: [
@@ -47,7 +47,7 @@ import {TabMenuModule} from 'primeng/tabmenu';
         ButtonModule,
         DialogModule,
         ModerationRoutingModule,
-        TabMenuModule,
+        TabViewModule,
         ReactiveFormsModule
     ],
 
