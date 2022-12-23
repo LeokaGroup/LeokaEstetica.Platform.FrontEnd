@@ -3,40 +3,40 @@
     <!-- Список проектов. -->
     <p-tabView (onChange)="onSelectTabAsync($event)">
       <p-tabPanel header="Проекты" [selected]="true">
-        <p-table [value]="aProjects" 
-                styleClass="p-datatable-gridlines" 
-                [tableStyle]="{'min-width': '50rem'}">
+        <p-table [value]="aProjects" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
           <ng-template pTemplate="caption">
-              Проекты на модерации
+            Проекты на модерации
           </ng-template>
           <ng-template pTemplate="header">
-              <tr>
-                <th>ID</th>
-                <th>Название проекта</th>
-                <th>Дата модерации</th>
-                <th>Дата создания</th>
-                <th>Одобрение</th>
-                <th>Отклонение</th>
-              </tr>
+            <tr>
+              <th>ID</th>
+              <th>Название проекта</th>
+              <th>Дата модерации</th>
+              <th>Дата создания</th>
+              <th>Просмотр</th>
+              <th>Одобрение</th>
+              <th>Отклонение</th>
+            </tr>
           </ng-template>
           <ng-template pTemplate="body" let-prj>
-              <tr>
-                  <td>{{prj.projectId}}</td>
-                  <td>{{prj.projectName}}</td>
-                  <td>{{prj.dateModeration}}</td>
-                  <td>{{prj.dateCreated}}</td>
-                  <td><button pButton type="button" 
-                    label="Одобрить" 
-                    class="p-button-success p-button-text">
-            </button>
-        </td>       
-        <td><button pButton type="button" label="Отклонить" class="p-button-danger p-button-text"></button></td>
-              </tr>
+            <tr>
+              <td>{{prj.projectId}}</td>
+              <td>{{prj.projectName}}</td>
+              <td>{{prj.dateModeration}}</td>
+              <td>{{prj.dateCreated}}</td>
+              <td><button pButton type="button" label="Просмотр" class="p-button-text">
+              </button>
+              </td>
+              <td><button pButton type="button" label="Одобрить" class="p-button-success p-button-text">
+                </button>
+              </td>
+              <td><button pButton type="button" label="Отклонить" class="p-button-danger p-button-text"></button></td>
+            </tr>
           </ng-template>
           <ng-template pTemplate="summary">
-              Всего: {{totalProjects}}
+            Всего: {{totalProjects}}
           </ng-template>
-      </p-table>
+        </p-table>
       </p-tabPanel>
 
       <p-tabPanel header="Вакансии">
