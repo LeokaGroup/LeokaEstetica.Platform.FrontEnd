@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { AccessModerationInput } from '../models/input/access-moderation-input';
+import { ApproveProjectInput } from '../models/input/approve-project-input';
 
 /**
  * Класс сервиса модерации.
@@ -12,6 +13,7 @@ export class ModerationService {
     public accessModeration$ = new BehaviorSubject<any>(null);
     public projectsModeration$ = new BehaviorSubject<any>(null);
     public projectModeration$ = new BehaviorSubject<any>(null);
+    public approveProjectModeration$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -45,6 +47,17 @@ export class ModerationService {
      public async previewProjectAsync(projectId: number) {
         return await this.http.get(API_URL.apiUrl + `/moderation/project/${projectId}/preview`).pipe(
             tap(data => this.projectModeration$.next(data))
+        );
+    };
+
+    /**
+     * Функция одобряет проект.
+     * @param projectId - Id проекта.
+     * @returns - Данные проекта.
+     */
+     public async approveProjectAsync(approveProjectInput: ApproveProjectInput) {
+        return await this.http.patch(API_URL.apiUrl + `/moderation/project/approve`, approveProjectInput).pipe(
+            tap(data => this.approveProjectModeration$.next(data))
         );
     };
 }
