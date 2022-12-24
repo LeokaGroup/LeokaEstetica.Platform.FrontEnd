@@ -15,10 +15,15 @@ import { ModerationService } from "../../services/moderation.service";
 export class ModerationComponent implements OnInit {
     public readonly headerData$ = this._headerService.headerData$;
     public readonly projectsModeration$ = this._moderationService.projectsModeration$;
+    public readonly projectModeration$ = this._moderationService.projectModeration$;
 
     isHideAuthButtons: boolean = false;
     aProjects: any[] = [];
     totalProjects: number = 0;
+    projectName: string = "";
+    projectId: number = 0;
+    isShowPreviewModerationProjectModal: boolean = false;
+    projectDetails: string = "";
 
     constructor(private readonly _headerService: HeaderService,
         private readonly _moderationService: ModerationService) {
@@ -58,5 +63,30 @@ export class ModerationComponent implements OnInit {
             this.aProjects = response.projects;
             this.totalProjects = response.total;
         });
+    };
+
+    /**
+     * Функция получает проект для просмотра модератором.
+     * @param projectId - Id проекта.
+     * @returns - Данные проекта.
+     */
+    public async onPreviewProjectAsync(projectId: number) {
+        this.projectId = projectId;
+
+        (await this._moderationService.previewProjectAsync(projectId))
+        .subscribe((response: any) => {
+            console.log("Проект для модерации: ", response);
+            this.isShowPreviewModerationProjectModal = true;
+            this.projectName = response.projectName;
+            this.projectDetails = response.projectDetails;
+        });
+    };
+
+    public async onApproveProjectAsync(projectId: number) {
+        console.log("onApproveProjectAsync", projectId);
+    };
+
+    public async onRejectProjectAsync(projectId: number) {
+        console.log("onRejectProjectAsync", projectId);
     };
 }

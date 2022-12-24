@@ -11,6 +11,7 @@ import { AccessModerationInput } from '../models/input/access-moderation-input';
 export class ModerationService {
     public accessModeration$ = new BehaviorSubject<any>(null);
     public projectsModeration$ = new BehaviorSubject<any>(null);
+    public projectModeration$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -33,6 +34,17 @@ export class ModerationService {
      public async getProjectsModerationAsync() {
         return await this.http.get(API_URL.apiUrl + "/moderation/projects").pipe(
             tap(data => this.projectsModeration$.next(data))
+        );
+    };
+
+    /**
+     * Функция получает проект для просмотра модератором.
+     * @param projectId - Id проекта.
+     * @returns - Данные проекта.
+     */
+     public async previewProjectAsync(projectId: number) {
+        return await this.http.get(API_URL.apiUrl + `/moderation/project/${projectId}/preview`).pipe(
+            tap(data => this.projectModeration$.next(data))
         );
     };
 }
