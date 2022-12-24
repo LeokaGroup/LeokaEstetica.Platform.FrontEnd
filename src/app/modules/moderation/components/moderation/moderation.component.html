@@ -38,7 +38,11 @@
                           (click)="onApproveProjectAsync(prj.projectId)">
                 </button>
               </td>
-              <td><button pButton type="button" label="Отклонить" class="p-button-danger p-button-text"></button></td>
+              <td><button pButton 
+                type="button" 
+                label="Отклонить" 
+                class="p-button-danger p-button-text"
+                (click)="onRejectProjectAsync(prj.projectId)"></button></td>
             </tr>
           </ng-template>
           <ng-template pTemplate="summary">
