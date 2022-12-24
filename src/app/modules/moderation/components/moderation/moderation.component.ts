@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { forkJoin } from "rxjs";
 import { HeaderService } from "src/app/modules/header/services/header.service";
 import { ApproveProjectInput } from "../../models/input/approve-project-input";
+import { RejectProjectInput } from "../../models/input/reject-project-input";
 import { ModerationService } from "../../services/moderation.service";
 
 @Component({
@@ -102,7 +103,22 @@ export class ModerationComponent implements OnInit {
         });
     };
 
+     /**
+     * Функция отклоняет проект.
+     * @param projectId - Id проекта.
+     * @returns - Данные проекта.
+     */
     public async onRejectProjectAsync(projectId: number) {
-        console.log("onRejectProjectAsync", projectId);
+        let rejectProjectInput = new RejectProjectInput();
+        rejectProjectInput.ProjectId = projectId;
+
+        (await this._moderationService.rejectProjectAsync(rejectProjectInput))
+        .subscribe(async (response: any) => {
+            console.log("Отклонение проекта: ", response);
+            this.isShowPreviewModerationProjectModal = false;
+
+            // Подтянем проекты для обновления таблицы.
+            await this.getProjectsModerationAsync();
+        });
     };
 }

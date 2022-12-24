@@ -4,6 +4,7 @@ import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { AccessModerationInput } from '../models/input/access-moderation-input';
 import { ApproveProjectInput } from '../models/input/approve-project-input';
+import { RejectProjectInput } from '../models/input/reject-project-input';
 
 /**
  * Класс сервиса модерации.
@@ -14,6 +15,7 @@ export class ModerationService {
     public projectsModeration$ = new BehaviorSubject<any>(null);
     public projectModeration$ = new BehaviorSubject<any>(null);
     public approveProjectModeration$ = new BehaviorSubject<any>(null);
+    public rejectProjectModeration$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -58,6 +60,17 @@ export class ModerationService {
      public async approveProjectAsync(approveProjectInput: ApproveProjectInput) {
         return await this.http.patch(API_URL.apiUrl + `/moderation/project/approve`, approveProjectInput).pipe(
             tap(data => this.approveProjectModeration$.next(data))
+        );
+    };
+
+    /**
+     * Функция отклоняет проект.
+     * @param projectId - Id проекта.
+     * @returns - Данные проекта.
+     */
+     public async rejectProjectAsync(rejectProjectInput: RejectProjectInput) {
+        return await this.http.patch(API_URL.apiUrl + `/moderation/project/reject`, rejectProjectInput).pipe(
+            tap(data => this.rejectProjectModeration$.next(data))
         );
     };
 }
