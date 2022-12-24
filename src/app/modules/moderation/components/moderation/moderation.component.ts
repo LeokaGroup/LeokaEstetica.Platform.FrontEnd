@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { forkJoin } from "rxjs";
 import { HeaderService } from "src/app/modules/header/services/header.service";
+import { ApproveProjectInput } from "../../models/input/approve-project-input";
 import { ModerationService } from "../../services/moderation.service";
 
 @Component({
@@ -82,8 +83,23 @@ export class ModerationComponent implements OnInit {
         });
     };
 
+    /**
+     * Функция одобряет проект.
+     * @param projectId - Id проекта.
+     * @returns - Данные проекта.
+     */
     public async onApproveProjectAsync(projectId: number) {
-        console.log("onApproveProjectAsync", projectId);
+        let approveProjectInput = new ApproveProjectInput();
+        approveProjectInput.ProjectId = projectId;
+
+        (await this._moderationService.approveProjectAsync(approveProjectInput))
+        .subscribe(async (response: any) => {
+            console.log("Апрув проекта: ", response);
+            this.isShowPreviewModerationProjectModal = false;
+
+            // Подтянем проекты для обновления таблицы.
+            await this.getProjectsModerationAsync();
+        });
     };
 
     public async onRejectProjectAsync(projectId: number) {

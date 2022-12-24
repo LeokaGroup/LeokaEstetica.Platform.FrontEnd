@@ -31,7 +31,11 @@
                           (click)="onPreviewProjectAsync(prj.projectId)">
               </button>
               </td>
-              <td><button pButton type="button" label="Одобрить" class="p-button-success p-button-text">
+              <td><button pButton 
+                          type="button" 
+                          label="Одобрить" 
+                          class="p-button-success p-button-text" 
+                          (click)="onApproveProjectAsync(prj.projectId)">
                 </button>
               </td>
               <td><button pButton type="button" label="Отклонить" class="p-button-danger p-button-text"></button></td>
