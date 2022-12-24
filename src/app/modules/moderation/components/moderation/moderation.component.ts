@@ -20,6 +20,10 @@ export class ModerationComponent implements OnInit {
     isHideAuthButtons: boolean = false;
     aProjects: any[] = [];
     totalProjects: number = 0;
+    projectName: string = "";
+    projectId: number = 0;
+    isShowPreviewModerationProjectModal: boolean = false;
+    projectDetails: string = "";
 
     constructor(private readonly _headerService: HeaderService,
         private readonly _moderationService: ModerationService) {
@@ -67,9 +71,22 @@ export class ModerationComponent implements OnInit {
      * @returns - Данные проекта.
      */
     public async onPreviewProjectAsync(projectId: number) {
+        this.projectId = projectId;
+
         (await this._moderationService.previewProjectAsync(projectId))
-        .subscribe(_ => {
-            console.log("Проект для модерации: ", this.projectModeration$.value);
+        .subscribe((response: any) => {
+            console.log("Проект для модерации: ", response);
+            this.isShowPreviewModerationProjectModal = true;
+            this.projectName = response.projectName;
+            this.projectDetails = response.projectDetails;
         });
+    };
+
+    public async onApproveProjectAsync(projectId: number) {
+        console.log("onApproveProjectAsync", projectId);
+    };
+
+    public async onRejectProjectAsync(projectId: number) {
+        console.log("onRejectProjectAsync", projectId);
     };
 }
