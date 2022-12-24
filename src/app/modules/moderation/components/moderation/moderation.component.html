@@ -24,7 +24,11 @@
               <td>{{prj.projectName}}</td>
               <td>{{prj.dateModeration}}</td>
               <td>{{prj.dateCreated}}</td>
-              <td><button pButton type="button" label="Просмотр" class="p-button-text">
+              <td><button pButton 
+                          type="button" 
+                          label="Просмотр" 
+                          class="p-button-text"
+                          (click)="onPreviewProjectAsync(prj.projectId)">
               </button>
               </td>
               <td><button pButton type="button" label="Одобрить" class="p-button-success p-button-text">

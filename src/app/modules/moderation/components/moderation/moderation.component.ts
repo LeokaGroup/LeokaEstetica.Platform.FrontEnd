@@ -15,6 +15,7 @@ import { ModerationService } from "../../services/moderation.service";
 export class ModerationComponent implements OnInit {
     public readonly headerData$ = this._headerService.headerData$;
     public readonly projectsModeration$ = this._moderationService.projectsModeration$;
+    public readonly projectModeration$ = this._moderationService.projectModeration$;
 
     isHideAuthButtons: boolean = false;
     aProjects: any[] = [];
@@ -57,6 +58,18 @@ export class ModerationComponent implements OnInit {
             console.log("Проекты для модерации: ", response);
             this.aProjects = response.projects;
             this.totalProjects = response.total;
+        });
+    };
+
+    /**
+     * Функция получает проект для просмотра модератором.
+     * @param projectId - Id проекта.
+     * @returns - Данные проекта.
+     */
+    public async onPreviewProjectAsync(projectId: number) {
+        (await this._moderationService.previewProjectAsync(projectId))
+        .subscribe(_ => {
+            console.log("Проект для модерации: ", this.projectModeration$.value);
         });
     };
 }
