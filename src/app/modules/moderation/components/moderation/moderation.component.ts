@@ -26,6 +26,8 @@ export class ModerationComponent implements OnInit {
     projectId: number = 0;
     isShowPreviewModerationProjectModal: boolean = false;
     projectDetails: string = "";
+    aVacancies: any[] = [];
+    totalVacancies: number = 0;
 
     constructor(private readonly _headerService: HeaderService,
         private readonly _moderationService: ModerationService) {
@@ -52,6 +54,17 @@ export class ModerationComponent implements OnInit {
 
     public async onSelectTabAsync(event: any) {
         console.log(event);
+
+        // В зависимости от индекса срабатывает логика нужного таба.
+        switch (event.index) {
+            case 0:
+                await this.getProjectsModerationAsync();
+                break;
+
+            case 1:
+                await this.getVacanciesModerationAsync();
+                break;
+        }
     };
      
     /**
@@ -119,6 +132,19 @@ export class ModerationComponent implements OnInit {
 
             // Подтянем проекты для обновления таблицы.
             await this.getProjectsModerationAsync();
+        });
+    };
+
+    /**
+     * Функция получает список вакансий для модерации.
+     * @returns - Список вакансий.
+     */
+     private async getVacanciesModerationAsync() {
+        (await this._moderationService.getVacanciesModerationAsync())
+        .subscribe((response: any) => {
+            console.log("Вакансии для модерации: ", response);
+            this.aVacancies = response.vacancies;
+            this.totalVacancies = response.total;
         });
     };
 }
