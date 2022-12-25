@@ -17,6 +17,7 @@ export class ModerationService {
     public approveProjectModeration$ = new BehaviorSubject<any>(null);
     public rejectProjectModeration$ = new BehaviorSubject<any>(null);
     public vacanciesModeration$ = new BehaviorSubject<any>(null);
+    public vacancyModeration$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -82,6 +83,17 @@ export class ModerationService {
      public async getVacanciesModerationAsync() {
         return await this.http.get(API_URL.apiUrl + "/moderation/vacancies").pipe(
             tap(data => this.vacanciesModeration$.next(data))
+        );
+    };
+
+    /**
+     * Функция получает вакансию для просмотра модератором.
+     * @param vacancyId - Id вакансии.
+     * @returns - Данные вакансии.
+     */
+     public async previewVacancyAsync(vacancyId: number) {
+        return await this.http.get(API_URL.apiUrl + `/moderation/vacancy/${vacancyId}/preview`).pipe(
+            tap(data => this.vacancyModeration$.next(data))
         );
     };
 }
