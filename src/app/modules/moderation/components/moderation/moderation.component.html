@@ -51,8 +51,54 @@
         </p-table>
       </p-tabPanel>
 
+      <!-- Список вакансий. -->
       <p-tabPanel header="Вакансии">
-        Content 2
+        <p-table [value]="aVacancies" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+          <ng-template pTemplate="caption">
+            Проекты на модерации
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>ID</th>
+              <th>Название вакансии</th>
+              <th>Дата модерации</th>
+              <th>Дата создания</th>
+              <th>Просмотр</th>
+              <th>Одобрение</th>
+              <th>Отклонение</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-vac>
+            <tr>
+              <td>{{vac.vacancyId}}</td>
+              <td>{{vac.vacancyName}}</td>
+              <td>{{vac.dateModeration}}</td>
+              <td>{{vac.dateCreated}}</td>
+              <td><button pButton 
+                          type="button" 
+                          label="Просмотр" 
+                          class="p-button-text"
+                          (click)="onPreviewProjectAsync(vac.projectId)">
+              </button>
+              </td>
+              <td><button pButton 
+                          type="button" 
+                          label="Одобрить" 
+                          class="p-button-success p-button-text" 
+                          (click)="onApproveProjectAsync(vac.projectId)">
+                </button>
+              </td>
+              <td><button pButton 
+                type="button" 
+                label="Отклонить" 
+                class="p-button-danger p-button-text"
+                (click)="onRejectProjectAsync(vac.projectId)"></button></td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="summary">
+            Всего: {{totalVacancies}}
+          </ng-template>
+        </p-table>
       </p-tabPanel>
 
       <p-tabPanel header="Комментарии к проектам">
