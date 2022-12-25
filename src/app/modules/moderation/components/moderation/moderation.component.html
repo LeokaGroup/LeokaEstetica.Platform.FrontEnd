@@ -85,14 +85,14 @@
                           type="button" 
                           label="Одобрить" 
                           class="p-button-success p-button-text" 
-                          (click)="onApproveProjectAsync(vac.vacancyId)">
+                          (click)="onApproveVacancyAsync(vac.vacancyId)">
                 </button>
               </td>
               <td><button pButton 
                 type="button" 
                 label="Отклонить" 
                 class="p-button-danger p-button-text"
-                (click)="onRejectProjectAsync(vac.vacancyId)"></button></td>
+                (click)="onRejectVacancyAsync(vac.vacancyId)"></button></td>
             </tr>
           </ng-template>
           <ng-template pTemplate="summary">
@@ -258,13 +258,13 @@
   </div>
   <ng-template pTemplate="footer">
     <p-button icon="pi pi-check" 
-              (click)="onApproveProjectAsync(projectId)" 
+              (click)="onApproveVacancyAsync(vacancyId)" 
               label="Одобрить вакансию" 
               styleClass="p-button-success p-button-text">
     </p-button>
 
     <p-button icon="pi pi-check" 
-              (click)="onRejectProjectAsync(projectId)" 
+              (click)="onRejectVacancyAsync(vacancyId)" 
               label="Отклонить вакансию" 
               styleClass="p-button-danger p-button-text">
 </p-button>

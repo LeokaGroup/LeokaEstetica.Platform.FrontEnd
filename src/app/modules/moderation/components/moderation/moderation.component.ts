@@ -2,7 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { forkJoin } from "rxjs";
 import { HeaderService } from "src/app/modules/header/services/header.service";
 import { ApproveProjectInput } from "../../models/input/approve-project-input";
+import { ApproveVacancyInput } from "../../models/input/approve-vacancy-input";
 import { RejectProjectInput } from "../../models/input/reject-project-input";
+import { RejectVacancyInput } from "../../models/input/reject-vacancy-input";
 import { ModerationService } from "../../services/moderation.service";
 
 @Component({
@@ -172,6 +174,44 @@ export class ModerationComponent implements OnInit {
             this.employment = response.employment;
             this.payment = response.payment;
             this.workExperience = response.workExperience;
+        });
+    };
+
+    /**
+     * Функция одобряет вакансию.
+     * @param vacancyId - Id вакансии.
+     * @returns - Данные проекта.
+     */
+     public async onApproveVacancyAsync(vacancyId: number) {
+        let approveVacancyInput = new ApproveVacancyInput();
+        approveVacancyInput.VacancyId = vacancyId;
+
+        (await this._moderationService.approveVacancyAsync(approveVacancyInput))
+        .subscribe(async (response: any) => {
+            console.log("Апрув вакансии: ", response);
+            this.isShowPreviewModerationVacancyModal = false;
+
+            // Подтянем вакансии для обновления таблицы.
+            await this.getVacanciesModerationAsync();
+        });
+    };
+
+     /**
+     * Функция отклоняет вакансию.
+     * @param vacancyId - Id вакансии.
+     * @returns - Данные проекта.
+     */
+    public async onRejectVacancyAsync(vacancyId: number) {
+        let rejectVacancyInput = new RejectVacancyInput();
+        rejectVacancyInput.VacancyId = vacancyId;
+
+        (await this._moderationService.rejectVacancyAsync(rejectVacancyInput))
+        .subscribe(async (response: any) => {
+            console.log("Отклонение вакансии: ", response);
+            this.isShowPreviewModerationVacancyModal = false;
+
+             // Подтянем вакансии для обновления таблицы.
+             await this.getVacanciesModerationAsync();
         });
     };
 }

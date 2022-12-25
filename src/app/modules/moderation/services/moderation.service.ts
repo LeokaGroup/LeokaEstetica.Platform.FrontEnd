@@ -4,7 +4,9 @@ import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { AccessModerationInput } from '../models/input/access-moderation-input';
 import { ApproveProjectInput } from '../models/input/approve-project-input';
+import { ApproveVacancyInput } from '../models/input/approve-vacancy-input';
 import { RejectProjectInput } from '../models/input/reject-project-input';
+import { RejectVacancyInput } from '../models/input/reject-vacancy-input';
 
 /**
  * Класс сервиса модерации.
@@ -18,6 +20,8 @@ export class ModerationService {
     public rejectProjectModeration$ = new BehaviorSubject<any>(null);
     public vacanciesModeration$ = new BehaviorSubject<any>(null);
     public vacancyModeration$ = new BehaviorSubject<any>(null);
+    public approveVacancyModeration$ = new BehaviorSubject<any>(null);
+    public rejectVacancyModeration$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -94,6 +98,28 @@ export class ModerationService {
      public async previewVacancyAsync(vacancyId: number) {
         return await this.http.get(API_URL.apiUrl + `/moderation/vacancy/${vacancyId}/preview`).pipe(
             tap(data => this.vacancyModeration$.next(data))
+        );
+    };
+
+    /**
+     * Функция одобряет вакансию.
+     * @param approveVacancyInput - Входная модель.
+     * @returns - Данные вакансии.
+     */
+     public async approveVacancyAsync(approveVacancyInput: ApproveVacancyInput) {
+        return await this.http.patch(API_URL.apiUrl + `/moderation/vacancy/approve`, approveVacancyInput).pipe(
+            tap(data => this.approveVacancyModeration$.next(data))
+        );
+    };
+
+    /**
+     * Функция отклоняет вакансию.
+     * @param rejectVacancyInput - Входная модель.
+     * @returns - Данные вакансии.
+     */
+     public async rejectVacancyAsync(rejectVacancyInput: RejectVacancyInput) {
+        return await this.http.patch(API_URL.apiUrl + `/moderation/vacancy/reject`, rejectVacancyInput).pipe(
+            tap(data => this.rejectVacancyModeration$.next(data))
         );
     };
 }
