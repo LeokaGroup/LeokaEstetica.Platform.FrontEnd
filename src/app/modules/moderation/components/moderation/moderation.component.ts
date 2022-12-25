@@ -28,6 +28,13 @@ export class ModerationComponent implements OnInit {
     projectDetails: string = "";
     aVacancies: any[] = [];
     totalVacancies: number = 0;
+    vacancyName: string = "";
+    vacancyText: string = "";
+    workExperience: string = "";
+    employment: string = "";
+    payment: string = "";
+    isShowPreviewModerationVacancyModal: boolean = false;
+    vacancyId: number = 0;
 
     constructor(private readonly _headerService: HeaderService,
         private readonly _moderationService: ModerationService) {
@@ -145,6 +152,26 @@ export class ModerationComponent implements OnInit {
             console.log("Вакансии для модерации: ", response);
             this.aVacancies = response.vacancies;
             this.totalVacancies = response.total;
+        });
+    };
+
+    /**
+     * Функция получает вакансию для просмотра модератором.
+     * @param vacancyId - Id вакансии.
+     * @returns - Данные вакансии.
+     */
+     public async onPreviewVacancyAsync(vacancyId: number) {
+        this.vacancyId = vacancyId;
+
+        (await this._moderationService.previewVacancyAsync(vacancyId))
+        .subscribe((response: any) => {
+            console.log("Вакансия для модерации: ", response);
+            this.isShowPreviewModerationVacancyModal = true;
+            this.vacancyName = response.vacancyName;
+            this.vacancyText = response.vacancyText;
+            this.employment = response.employment;
+            this.payment = response.payment;
+            this.workExperience = response.workExperience;
         });
     };
 }
