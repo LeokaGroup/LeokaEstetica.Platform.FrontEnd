@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { AttachProjectVacancyInput } from '../detail/models/input/attach-project-vacancy-input';
+import { CreateProjectCommentInput } from '../detail/models/input/create-project-comment-input';
 import { ProjectResponseInput } from '../detail/models/input/project-response-input';
 import { UpdateProjectInput } from '../detail/models/input/update-project-input';
 
@@ -18,6 +19,7 @@ export class ProjectService {
     public projectVacanciesColumns$ = new BehaviorSubject<any>(null);
     public availableAttachVacancies$ = new BehaviorSubject<any>(null);    
     public projectResponse$ = new BehaviorSubject<any>(null);    
+    public createdProjectComment$ = new BehaviorSubject<any>(null);    
 
     constructor(private readonly http: HttpClient) {
 
@@ -118,5 +120,15 @@ export class ProjectService {
         return await this.http.post(API_URL.apiUrl + "/projects/response", responseInput).pipe(
             tap(data => this.projectResponse$.next(data))
         );
-    };          
+    };    
+    
+    /**
+     * Функция создает комментарий к проекту.
+     * @param createProjectCommentInput - Входная модель.
+     */
+     public async createProjectCommentAsync(createProjectCommentInput: CreateProjectCommentInput) {
+        return await this.http.post(API_URL.apiUrl + "/projects/project/comment", createProjectCommentInput).pipe(
+            tap(data => this.createdProjectComment$.next(data))
+        );
+    };    
 }

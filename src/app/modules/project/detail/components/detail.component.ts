@@ -10,6 +10,7 @@ import { VacancyInput } from "src/app/modules/vacancy/models/input/vacancy-input
 import { VacancyService } from "src/app/modules/vacancy/services/vacancy.service";
 import { ProjectService } from "../../services/project.service";
 import { AttachProjectVacancyInput } from "../models/input/attach-project-vacancy-input";
+import { CreateProjectCommentInput } from "../models/input/create-project-comment-input";
 import { ProjectResponseInput } from "../models/input/project-response-input";
 import { UpdateProjectInput } from "../models/input/update-project-input";
 
@@ -41,6 +42,7 @@ export class DetailProjectComponent implements OnInit {
     public readonly selectedVacancy$ = this._vacancyService.selectedVacancy$;
     public readonly messages$ = this._messagesService.messages$;
     public readonly dialog$ = this._messagesService.dialog$;
+    public readonly createdProjectComment$ = this._projectService.createdProjectComment$;
 
     projectName: string = "";
     projectDetails: string = "";
@@ -65,6 +67,7 @@ export class DetailProjectComponent implements OnInit {
     message: string = "";
     dialogId: number = 0;
     userName: string = "";
+    projectComment: string = "";
 
     public async ngOnInit() {
         forkJoin([
@@ -394,6 +397,22 @@ export class DetailProjectComponent implements OnInit {
             console.log("Сообщения диалога: ", this.messages$.value);    
             this.message = "";     
             await this.getProjectDialogMessages();  
+        });
+    };
+
+    /**
+     * Функция создает комментарий к проекту.
+     */
+    public async onCreateProjectCommentAsync() {
+        let createProjectCommentInput = new CreateProjectCommentInput();
+        createProjectCommentInput.ProjectId = this.projectId;
+        createProjectCommentInput.Comment = this.projectComment;   
+        
+        (await this._projectService.createProjectCommentAsync(createProjectCommentInput))
+        .subscribe(async _ => {   
+            console.log("Комментарий к проекту успешно добавлен.");    
+            this.projectComment = "";     
+            // await this.getProjectDialogMessages();  
         });
     };
 }
