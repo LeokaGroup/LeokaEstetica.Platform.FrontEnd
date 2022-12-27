@@ -20,6 +20,7 @@ export class ProjectService {
     public availableAttachVacancies$ = new BehaviorSubject<any>(null);    
     public projectResponse$ = new BehaviorSubject<any>(null);    
     public createdProjectComment$ = new BehaviorSubject<any>(null);    
+    public projectComments$ = new BehaviorSubject<any>(null);    
 
     constructor(private readonly http: HttpClient) {
 
@@ -131,4 +132,14 @@ export class ProjectService {
             tap(data => this.createdProjectComment$.next(data))
         );
     };    
+
+    /**
+     * Функция получает список комментариев к проекту.
+     * @param commentId - Id проекта.
+     */
+     public async getProjectCommentsAsync(commentId: number) {
+        return await this.http.get(API_URL.apiUrl + `/projects/comments/${commentId}`).pipe(
+            tap(data => this.projectComments$.next(data))
+        );
+    };  
 }
