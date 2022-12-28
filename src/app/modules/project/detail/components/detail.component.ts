@@ -415,6 +415,7 @@ export class DetailProjectComponent implements OnInit {
             console.log("Комментарий к проекту успешно добавлен.");    
             this.projectComment = "";     
             // await this.getProjectDialogMessages();  
+            await this.getProjectCommentsAsync();
         });
     };
 
@@ -426,7 +427,7 @@ export class DetailProjectComponent implements OnInit {
         .subscribe(async (response: any) => {   
             console.log("Комментарии проекта: ", response);    
             this.aProjectComments = response;
-            await this.getProjectCommentsAsync();
+            // await this.getProjectCommentsAsync();
         });
     };
 }
