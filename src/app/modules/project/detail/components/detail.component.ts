@@ -68,6 +68,7 @@ export class DetailProjectComponent implements OnInit {
     dialogId: number = 0;
     userName: string = "";
     projectComment: string = "";
+    aProjectComments: any[] = [];
 
     public async ngOnInit() {
         forkJoin([
@@ -78,7 +79,8 @@ export class DetailProjectComponent implements OnInit {
         await this.getAvailableAttachVacanciesAsync(),
         await this.getProjectMessagesAsync(),
         await this.onWriteOwnerDialogAsync(),
-        await this.getProjectDialogMessages()
+        await this.getProjectDialogMessages(),
+        await this.getProjectCommentsAsync()
         ]).subscribe();
 
          // Подключаемся.
@@ -413,6 +415,18 @@ export class DetailProjectComponent implements OnInit {
             console.log("Комментарий к проекту успешно добавлен.");    
             this.projectComment = "";     
             // await this.getProjectDialogMessages();  
+        });
+    };
+
+    /**
+     * Функция получает список комментариев к проекту.
+     */
+     private async getProjectCommentsAsync() {    
+        (await this._projectService.getProjectCommentsAsync(this.projectId))
+        .subscribe(async (response: any) => {   
+            console.log("Комментарии проекта: ", response);    
+            this.aProjectComments = response;
+            await this.getProjectCommentsAsync();
         });
     };
 }

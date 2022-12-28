@@ -270,65 +270,33 @@
             <div class="control-input-text-worksheet">
               <div class="mb-3">
                 <div>
-                  <p-splitter [style]="{'height': '500px'}" 
-                      [panelSizes]="[20,80]" 
-                      [minSizes]="[10,0]" 
-                      styleClass="mb-5" 
-                      class="chat">
-            <ng-template pTemplate>
-                <div class="col flex align-items-center justify-content-center">
-                    {{userName}}
-                </div>
-            </ng-template>
-            <ng-template pTemplate>
-                <p-splitter layout="vertical" [panelSizes]="[15,85]">
-                    <ng-template pTemplate>
-                        <div class="col flex align-items-center justify-content-center">
-                          
-                        </div>
-                    </ng-template>
-                    <ng-template pTemplate>
-                        <p-splitter [panelSizes]="[20,80]">
-                            <!-- <ng-template pTemplate>
-                                <div class="col flex align-items-center justify-content-center">
-                                    Panel 3
-                                </div>
-                            </ng-template> -->
-                            
-                            <ng-template pTemplate>
-                                <div class="block-messages">
-                                  <div *ngFor="let item of dialog$.value.messages">
-                                    <div>
-                                      <!-- <img src="/w3images/bandmember.jpg" alt="Avatar"> -->
-                                      <p>{{item.message}}</p>
-                                      <span class="time-right">{{item.created}}</span>
-                                    </div>                             
-                                  </div>                            
-                                </div>
-    
-                                <div>
-                                  <input type="text" 
-                                  class="p-inputtext-sm input-control-worksheet control-project" 
-                                  placeholder="Введите сообщение" 
-                                  pInputText
-                                  autocomplete="new-password" 
-                                  [(ngModel)]="projectComment"
-                                  (keyup.enter)="onCreateProjectCommentAsync()" />    
-                              </div>   
-                    
-                                <div class="d-flex justify-content-end">
-                                  <button pButton type="button" 
-                                    label="Отправить"
-                                    class="p-button-outlined"
-                                    (click)="onCreateProjectCommentAsync()">
-                                  </button>
-                                </div>
-                            </ng-template>
-                        </p-splitter>
-                    </ng-template>
-                </p-splitter>
-            </ng-template>
-        </p-splitter>
+                  <div class="">
+                    <div *ngFor="let item of aProjectComments">
+                      <div>
+                        <!-- <img src="/w3images/bandmember.jpg" alt="Avatar"> -->
+                        <p>{{item.comment}}</p>
+                        <span class="time-right">{{item.created}}</span>
+                      </div>                             
+                    </div>                            
+                  </div>
+
+                  <div>
+                    <input type="text" 
+                    class="p-inputtext-sm input-control-worksheet control-project" 
+                    placeholder="Введите сообщение" 
+                    pInputText
+                    autocomplete="new-password" 
+                    [(ngModel)]="projectComment"
+                    (keyup.enter)="onCreateProjectCommentAsync()" />    
+                </div>   
+      
+                  <div class="d-flex justify-content-end">
+                    <button pButton type="button" 
+                      label="Отправить"
+                      class="p-button-outlined"
+                      (click)="onCreateProjectCommentAsync()">
+                    </button>
+                  </div>
                 </div>
               </div>                    
             </div>         
