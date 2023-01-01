@@ -313,7 +313,7 @@
           <div class="d-flex">
             <div class="control-input-text-worksheet">
               <div class="mb-3">
-                <p-table [value]="projectVacancies$.value.projectVacancies" [(selection)]="selectedProjectVacancy"
+                <p-table [value]="projectTeam" [(selection)]="selectedProjectVacancy"
                   dataKey="userVacancy.vacancyId" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines"
                   responsiveLayout="scroll">
                   <ng-template pTemplate="caption">
@@ -345,31 +345,35 @@
                     </tr>
                   </ng-template>
 
-                  <ng-template pTemplate="body" let-vacancy>
+                  <ng-template pTemplate="body" let-team>
                     <tr>
                       <td>
-                        <p-tableCheckbox [value]="vacancy"></p-tableCheckbox>
+                        <p-tableCheckbox [value]="team"></p-tableCheckbox>
                       </td>
-                      <td>{{vacancy.vacancyId}}</td>
-                      <td>{{vacancy.userVacancy.vacancyName}}</td>
-                      <td>{{vacancy.userVacancy.vacancyText}}</td>
+                      <td>{{team.vacancyName}}</td>
+                      <td>{{team.member}}</td>
+                      <td>{{team.joined}}</td>
                       <!-- <td>{{vacancy.projectStatusName}}</td>              -->
-                      <td>Надо вывести</td>
-                      <td><button pButton type="button" label="Просмотр" class="p-button-text"
-                          (click)="onShowVacancyModal(vacancy.vacancyId, false)">
+                      <!-- <td>Надо вывести</td> -->
+                      <!-- <td><button 
+                            pButton 
+                            type="button" 
+                            label="Покинуть проект" 
+                            class="p-button-text">
                         </button>
                       </td>
-                      <td><button pButton type="button" label="Редактировать" class="p-button-secondary p-button-text"
-                          (click)="onShowVacancyModal(vacancy.vacancyId, true)">
+                      <td><button 
+                            pButton 
+                            type="button" 
+                            label="Исключить из проекта" 
+                            class="p-button-secondary p-button-text">
                         </button>
-                      </td>
-                      <td><button pButton type="button" label="Удалить" class="p-button-danger p-button-text"></button>
-                      </td>
+                      </td> -->
                     </tr>
                   </ng-template>
 
                   <ng-template pTemplate="summary">
-                    Всего: {{totalVacancies}}
+                    <!-- Всего: {{totalVacancies}} -->
                   </ng-template>
                 </p-table>
               </div>

@@ -72,6 +72,7 @@ export class DetailProjectComponent implements OnInit {
     aProjectComments: any[] = [];
     projectTeamColumns: any[] = [];
     projectTeam: any;
+    selectedProjectMember: any;
 
     public async ngOnInit() {
         forkJoin([
