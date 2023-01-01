@@ -43,6 +43,7 @@ export class DetailProjectComponent implements OnInit {
     public readonly messages$ = this._messagesService.messages$;
     public readonly dialog$ = this._messagesService.dialog$;
     public readonly createdProjectComment$ = this._projectService.createdProjectComment$;
+    public readonly projectTeamColumns$ = this._projectService.projectTeamColumns$;
 
     projectName: string = "";
     projectDetails: string = "";
@@ -69,6 +70,9 @@ export class DetailProjectComponent implements OnInit {
     userName: string = "";
     projectComment: string = "";
     aProjectComments: any[] = [];
+    projectTeamColumns: any[] = [];
+    projectTeam: any;
+    selectedProjectMember: any;
 
     public async ngOnInit() {
         forkJoin([
@@ -80,7 +84,9 @@ export class DetailProjectComponent implements OnInit {
         await this.getProjectMessagesAsync(),
         await this.onWriteOwnerDialogAsync(),
         await this.getProjectDialogMessages(),
-        await this.getProjectCommentsAsync()
+        await this.getProjectCommentsAsync(),
+        await this.getProjectTeamColumnsNamesAsync(),
+        await this.getProjectTeamAsync()
         ]).subscribe();
 
          // Подключаемся.
@@ -414,7 +420,6 @@ export class DetailProjectComponent implements OnInit {
         .subscribe(async _ => {   
             console.log("Комментарий к проекту успешно добавлен.");    
             this.projectComment = "";     
-            // await this.getProjectDialogMessages();  
             await this.getProjectCommentsAsync();
         });
     };
@@ -427,7 +432,30 @@ export class DetailProjectComponent implements OnInit {
         .subscribe(async (response: any) => {   
             console.log("Комментарии проекта: ", response);    
             this.aProjectComments = response;
-            // await this.getProjectCommentsAsync();
+        });
+    };
+
+    /**
+     * Функция получает названия столбцов команды проекта.
+     * @returns - Названия столбцов команды проекта.
+     */
+    private async getProjectTeamColumnsNamesAsync() {
+        (await this._projectService.getProjectTeamColumnsNamesAsync())
+        .subscribe(async (response: any) => {   
+            console.log("Столбцы команды проекта: ", response);    
+            this.projectTeamColumns = response;
+        });
+    };
+
+    /**
+     * Функция получает данные для таблицы команда проекта
+     * @returns - Данные для таблицы команда проекта.
+     */
+     private async getProjectTeamAsync() {
+        (await this._projectService.getProjectTeamAsync(this.projectId))
+        .subscribe(async (response: any) => {   
+            console.log("Данные команды проекта: ", response);    
+            this.projectTeam = response;
         });
     };
 }

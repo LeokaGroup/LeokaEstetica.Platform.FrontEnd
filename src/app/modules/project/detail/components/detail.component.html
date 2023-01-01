@@ -263,7 +263,8 @@
     </p-panel>
     </div>
 
-     <div class="worksheet-panel">
+    <!-- Комментарии к проекту. -->
+     <div class="worksheet-panel space-top-50 space-bottom-50">
       <p-panel header="Комментарии к проекту" [toggleable]="true">
         <div class="d-flex">
           <div class="d-flex">
@@ -299,6 +300,83 @@
                   </div>
                 </div>
               </div>                    
+            </div>         
+          </div>
+        </div>
+      </p-panel>
+    </div>
+
+    <!-- Команда проекта. -->
+    <div class="worksheet-panel space-top-50 space-bottom-50">
+      <p-panel header="Команда проекта" [toggleable]="true">
+        <div class="d-flex">
+          <div class="d-flex">
+            <div class="control-input-text-worksheet">
+              <div class="mb-3">
+                <p-table [value]="projectTeam" [(selection)]="selectedProjectVacancy"
+                  dataKey="userVacancy.vacancyId" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines"
+                  responsiveLayout="scroll">
+                  <ng-template pTemplate="caption">
+                    <!-- <div class="d-flex">
+                      <div>
+                        <button pButton type="button" label="Добавить" class="p-button-outlined"
+                          (click)="onRouteCreateProjectVacancy()">
+                        </button>
+                      </div>
+                      &nbsp;&nbsp;&nbsp;
+                      <div>
+                        <button pButton type="button" label="Привязать" class="p-button-outlined p-button-secondary"
+                          (click)="onShowAttachModel()">
+                        </button>
+                      </div>
+                    </div> -->
+                  </ng-template>
+
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th style="width: 4rem">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                      </th>
+                      <th *ngFor="let item of projectTeamColumns">
+                        {{item.columnName}}</th>
+                      <!-- <th>Просмотр</th>
+                      <th>Редактирование</th>
+                      <th>Удаление</th> -->
+                    </tr>
+                  </ng-template>
+
+                  <ng-template pTemplate="body" let-team>
+                    <tr>
+                      <td>
+                        <p-tableCheckbox [value]="team"></p-tableCheckbox>
+                      </td>
+                      <td>{{team.vacancyName}}</td>
+                      <td>{{team.member}}</td>
+                      <td>{{team.joined}}</td>
+                      <!-- <td>{{vacancy.projectStatusName}}</td>              -->
+                      <!-- <td>Надо вывести</td> -->
+                      <!-- <td><button 
+                            pButton 
+                            type="button" 
+                            label="Покинуть проект" 
+                            class="p-button-text">
+                        </button>
+                      </td>
+                      <td><button 
+                            pButton 
+                            type="button" 
+                            label="Исключить из проекта" 
+                            class="p-button-secondary p-button-text">
+                        </button>
+                      </td> -->
+                    </tr>
+                  </ng-template>
+
+                  <ng-template pTemplate="summary">
+                    <!-- Всего: {{totalVacancies}} -->
+                  </ng-template>
+                </p-table>
+              </div>
             </div>         
           </div>
         </div>
@@ -423,9 +501,10 @@
                           </div>
                           <div>
                               <p-editor autocomplete="new-password" 
-                              [(ngModel)]="vacancyText" 
-                              [style]="{'height':'320px'}"
-                              [readonly]="!isEditMode"></p-editor>
+                                        [(ngModel)]="vacancyText" 
+                                        [style]="{'height':'320px'}"
+                                        [readonly]="!isEditMode">
+                              </p-editor>
                           </div>
                       </div>                         
                   </div>
