@@ -71,6 +71,7 @@ export class DetailProjectComponent implements OnInit {
     projectComment: string = "";
     aProjectComments: any[] = [];
     projectTeamColumns: any[] = [];
+    projectTeam: any;
 
     public async ngOnInit() {
         forkJoin([
@@ -83,7 +84,8 @@ export class DetailProjectComponent implements OnInit {
         await this.onWriteOwnerDialogAsync(),
         await this.getProjectDialogMessages(),
         await this.getProjectCommentsAsync(),
-        await this.getProjectTeamColumnsNamesAsync()
+        await this.getProjectTeamColumnsNamesAsync(),
+        await this.getProjectTeamAsync()
         ]).subscribe();
 
          // Подключаемся.
@@ -441,6 +443,18 @@ export class DetailProjectComponent implements OnInit {
         .subscribe(async (response: any) => {   
             console.log("Столбцы команды проекта: ", response);    
             this.projectTeamColumns = response;
+        });
+    };
+
+    /**
+     * Функция получает данные для таблицы команда проекта
+     * @returns - Данные для таблицы команда проекта.
+     */
+     private async getProjectTeamAsync() {
+        (await this._projectService.getProjectTeamAsync(this.projectId))
+        .subscribe(async (response: any) => {   
+            console.log("Данные команды проекта: ", response);    
+            this.projectTeam = response;
         });
     };
 }

@@ -21,7 +21,8 @@ export class ProjectService {
     public projectResponse$ = new BehaviorSubject<any>(null);    
     public createdProjectComment$ = new BehaviorSubject<any>(null);    
     public projectComments$ = new BehaviorSubject<any>(null);    
-    public projectTeamColumns$ = new BehaviorSubject<any>(null);    
+    public projectTeamColumns$ = new BehaviorSubject<any>(null);   
+    public projectTeam$ = new BehaviorSubject<any>(null);    
 
     constructor(private readonly http: HttpClient) {
 
@@ -153,4 +154,14 @@ export class ProjectService {
             tap(data => this.projectTeamColumns$.next(data))
         );
     }; 
+
+    /**
+     * Функция получает данные для таблицы команда проекта
+     * @returns - Данные для таблицы команда проекта.
+     */
+    public async getProjectTeamAsync(projectId: number) {
+        return await this.http.get(API_URL.apiUrl + `/projects/${projectId}/team`).pipe(
+            tap(data => this.projectTeam$.next(data))
+        );
+    };
 }
