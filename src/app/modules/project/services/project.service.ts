@@ -21,6 +21,7 @@ export class ProjectService {
     public projectResponse$ = new BehaviorSubject<any>(null);    
     public createdProjectComment$ = new BehaviorSubject<any>(null);    
     public projectComments$ = new BehaviorSubject<any>(null);    
+    public projectTeamColumns$ = new BehaviorSubject<any>(null);    
 
     constructor(private readonly http: HttpClient) {
 
@@ -142,4 +143,14 @@ export class ProjectService {
             tap(data => this.projectComments$.next(data))
         );
     };  
+
+    /**
+     * Функция получает названия столбцов команды проекта.
+     * @returns - Названия столбцов команды проекта.
+     */
+     public async getProjectTeamColumnsNamesAsync() {
+        return await this.http.get(API_URL.apiUrl + "/projects/config-project-team").pipe(
+            tap(data => this.projectTeamColumns$.next(data))
+        );
+    }; 
 }
