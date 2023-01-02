@@ -22,6 +22,7 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { SplitterModule } from 'primeng/splitter';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
     declarations: [
@@ -47,7 +48,8 @@ import { SplitterModule } from 'primeng/splitter';
         TableModule,
         ButtonModule,
         DialogModule,
-        SplitterModule
+        SplitterModule,
+        OverlayPanelModule
     ],
 
     exports: [],

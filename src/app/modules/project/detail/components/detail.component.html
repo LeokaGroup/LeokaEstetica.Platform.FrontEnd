@@ -317,19 +317,43 @@
                   dataKey="userVacancy.vacancyId" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines"
                   responsiveLayout="scroll">
                   <ng-template pTemplate="caption">
-                    <!-- <div class="d-flex">
+                    <div class="d-flex">
                       <div>
-                        <button pButton type="button" label="Добавить" class="p-button-outlined"
-                          (click)="onRouteCreateProjectVacancy()">
+                        <button pButton 
+                                type="button" 
+                                label="Пригласить в проект" 
+                                class="p-button-outlined"
+                                (click)="op.toggle($event)">
                         </button>
+
+                        <p-overlayPanel #op>
+                          <ng-template pTemplate>
+                            <input type="text" 
+                                    class="p-inputtext-sm input-control-worksheet control-project" 
+                                    placeholder="Логин или email пользователя" 
+                                    pInputText
+                                    autocomplete="new-password" 
+                                    [(ngModel)]="searchText"
+                                    (keyup.enter)="onSearchInviteProjectMembersAsync()" />    
+
+                            <button pButton 
+                                    type="button" 
+                                    label="Отправить приглашение"
+                                    class="p-button-text"                             
+                                    (click)="onSearchInviteProjectMembersAsync()">
+                            </button>
+                          </ng-template>                          
+                      </p-overlayPanel>
+                      
+                      <!-- <button type="text" pButton label="Basic" (click)="op.toggle($event)"></button> -->
                       </div>
-                      &nbsp;&nbsp;&nbsp;
+                      <!-- &nbsp;&nbsp;&nbsp;
                       <div>
                         <button pButton type="button" label="Привязать" class="p-button-outlined p-button-secondary"
                           (click)="onShowAttachModel()">
                         </button>
-                      </div>
-                    </div> -->
+                      </div> -->
+                    </div>
                   </ng-template>
 
                   <ng-template pTemplate="header">

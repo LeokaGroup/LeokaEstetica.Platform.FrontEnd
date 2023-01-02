@@ -6,6 +6,7 @@ import { DialogInput } from "src/app/modules/messages/chat/models/input/dialog-i
 import { DialogMessageInput } from "src/app/modules/messages/chat/models/input/dialog-message-input";
 import { ChatMessagesService } from "src/app/modules/messages/chat/services/chat-messages.service";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
+import { SearchProjectService } from "src/app/modules/search/services/search-project-service";
 import { VacancyInput } from "src/app/modules/vacancy/models/input/vacancy-input";
 import { VacancyService } from "src/app/modules/vacancy/services/vacancy.service";
 import { ProjectService } from "../../services/project.service";
@@ -30,7 +31,8 @@ export class DetailProjectComponent implements OnInit {
         private readonly _messageService: MessageService,
         private readonly _router: Router,
         private readonly _vacancyService: VacancyService,
-        private readonly _messagesService: ChatMessagesService) {
+        private readonly _messagesService: ChatMessagesService,
+        private readonly _searchProjectService: SearchProjectService) {
     }
 
     public readonly catalog$ = this._projectService.catalog$;
@@ -44,6 +46,7 @@ export class DetailProjectComponent implements OnInit {
     public readonly dialog$ = this._messagesService.dialog$;
     public readonly createdProjectComment$ = this._projectService.createdProjectComment$;
     public readonly projectTeamColumns$ = this._projectService.projectTeamColumns$;
+    public readonly searchInviteMembers$ = this._searchProjectService.searchInviteMembers$;
 
     projectName: string = "";
     projectDetails: string = "";
@@ -73,6 +76,8 @@ export class DetailProjectComponent implements OnInit {
     projectTeamColumns: any[] = [];
     projectTeam: any;
     selectedProjectMember: any;
+    searchText: string = "";
+    aProjectInvitesUsers: any[] = [];
 
     public async ngOnInit() {
         forkJoin([
@@ -456,6 +461,18 @@ export class DetailProjectComponent implements OnInit {
         .subscribe(async (response: any) => {   
             console.log("Данные команды проекта: ", response);    
             this.projectTeam = response;
+        });
+    };
+
+    /**
+     * Функция получает данные для таблицы команда проекта
+     * @returns - Данные для таблицы команда проекта.
+     */
+     public async onSearchInviteProjectMembersAsync() {
+        (await this._searchProjectService.searchInviteProjectMembersAsync(this.searchText))
+        .subscribe(async (response: any) => {   
+            console.log("Пользователи для добавления в команду проекта: ", response);    
+            this.aProjectInvitesUsers = response;
         });
     };
 }
