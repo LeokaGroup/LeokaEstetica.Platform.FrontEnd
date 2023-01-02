@@ -23,6 +23,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { SplitterModule } from 'primeng/splitter';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 @NgModule({
     declarations: [
@@ -49,7 +50,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
         ButtonModule,
         DialogModule,
         SplitterModule,
-        OverlayPanelModule
+        OverlayPanelModule,
+        AutoCompleteModule
     ],
 
     exports: [],

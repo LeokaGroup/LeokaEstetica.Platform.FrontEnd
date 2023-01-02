@@ -78,6 +78,7 @@ export class DetailProjectComponent implements OnInit {
     selectedProjectMember: any;
     searchText: string = "";
     aProjectInvitesUsers: any[] = [];
+    aSelectedProjectMembers: any[] = [];
 
     public async ngOnInit() {
         forkJoin([
@@ -468,11 +469,15 @@ export class DetailProjectComponent implements OnInit {
      * Функция получает данные для таблицы команда проекта
      * @returns - Данные для таблицы команда проекта.
      */
-     public async onSearchInviteProjectMembersAsync() {
-        (await this._searchProjectService.searchInviteProjectMembersAsync(this.searchText))
+     public async onSearchInviteProjectMembersAsync(event: any) {
+        (await this._searchProjectService.searchInviteProjectMembersAsync(event.query))
         .subscribe(async (response: any) => {   
             console.log("Пользователи для добавления в команду проекта: ", response);    
             this.aProjectInvitesUsers = response;
         });
+    };
+
+    public onSelectProjectMember(event: any) {
+        console.log(event);
     };
 }

@@ -328,20 +328,31 @@
 
                         <p-overlayPanel #op>
                           <ng-template pTemplate>
-                            <input type="text" 
+                            <!-- <input type="text" 
                                     class="p-inputtext-sm input-control-worksheet control-project" 
                                     placeholder="Логин или email пользователя" 
                                     pInputText
                                     autocomplete="new-password" 
                                     [(ngModel)]="searchText"
-                                    (keyup.enter)="onSearchInviteProjectMembersAsync()" />    
+                                    (keyup.enter)="onSearchInviteProjectMembersAsync()" />     -->
 
-                            <button pButton 
+                            <!-- <button pButton 
                                     type="button" 
                                     label="Отправить приглашение"
                                     class="p-button-text"                             
                                     (click)="onSearchInviteProjectMembersAsync()">
-                            </button>
+                            </button> -->
+                            
+                            <span class="p-fluid">
+                              <p-autoComplete [(ngModel)]="searchText" 
+                                              [suggestions]="aProjectInvitesUsers" 
+                                              (completeMethod)="onSearchInviteProjectMembersAsync($event)" 
+                                              field="displayName" 
+                                              [multiple]="true"
+                                              (onSelect)="onSelectProjectMember($event)"
+                                              placeholder="Логин или email пользователя">
+                              </p-autoComplete>
+                          </span>
                           </ng-template>                          
                       </p-overlayPanel>
                       
