@@ -4,6 +4,7 @@ import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { AttachProjectVacancyInput } from '../detail/models/input/attach-project-vacancy-input';
 import { CreateProjectCommentInput } from '../detail/models/input/create-project-comment-input';
+import { InviteProjectTeamMemberInput } from '../detail/models/input/invite-project-team-member-input';
 import { ProjectResponseInput } from '../detail/models/input/project-response-input';
 import { UpdateProjectInput } from '../detail/models/input/update-project-input';
 
@@ -23,6 +24,7 @@ export class ProjectService {
     public projectComments$ = new BehaviorSubject<any>(null);    
     public projectTeamColumns$ = new BehaviorSubject<any>(null);   
     public projectTeam$ = new BehaviorSubject<any>(null);    
+    public invitedProjectTeamMember$ = new BehaviorSubject<any>(null);    
 
     constructor(private readonly http: HttpClient) {
 
@@ -162,6 +164,16 @@ export class ProjectService {
     public async getProjectTeamAsync(projectId: number) {
         return await this.http.get(API_URL.apiUrl + `/projects/${projectId}/team`).pipe(
             tap(data => this.projectTeam$.next(data))
+        );
+    };
+
+    /**
+     * Функция добавляет пользователя в команду проекта.
+     * @returns - Добавленный пользователь.
+     */
+     public async sendInviteProjectTeamAsync(inviteProjectTeamMemberInput: InviteProjectTeamMemberInput) {
+        return await this.http.post(API_URL.apiUrl + "/projects/invite-project-team", inviteProjectTeamMemberInput).pipe(
+            tap(data => this.invitedProjectTeamMember$.next(data))
         );
     };
 }

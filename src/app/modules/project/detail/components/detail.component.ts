@@ -6,11 +6,13 @@ import { DialogInput } from "src/app/modules/messages/chat/models/input/dialog-i
 import { DialogMessageInput } from "src/app/modules/messages/chat/models/input/dialog-message-input";
 import { ChatMessagesService } from "src/app/modules/messages/chat/services/chat-messages.service";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
+import { SearchProjectService } from "src/app/modules/search/services/search-project-service";
 import { VacancyInput } from "src/app/modules/vacancy/models/input/vacancy-input";
 import { VacancyService } from "src/app/modules/vacancy/services/vacancy.service";
 import { ProjectService } from "../../services/project.service";
 import { AttachProjectVacancyInput } from "../models/input/attach-project-vacancy-input";
 import { CreateProjectCommentInput } from "../models/input/create-project-comment-input";
+import { InviteProjectTeamMemberInput } from "../models/input/invite-project-team-member-input";
 import { ProjectResponseInput } from "../models/input/project-response-input";
 import { UpdateProjectInput } from "../models/input/update-project-input";
 
@@ -30,7 +32,8 @@ export class DetailProjectComponent implements OnInit {
         private readonly _messageService: MessageService,
         private readonly _router: Router,
         private readonly _vacancyService: VacancyService,
-        private readonly _messagesService: ChatMessagesService) {
+        private readonly _messagesService: ChatMessagesService,
+        private readonly _searchProjectService: SearchProjectService) {
     }
 
     public readonly catalog$ = this._projectService.catalog$;
@@ -44,6 +47,8 @@ export class DetailProjectComponent implements OnInit {
     public readonly dialog$ = this._messagesService.dialog$;
     public readonly createdProjectComment$ = this._projectService.createdProjectComment$;
     public readonly projectTeamColumns$ = this._projectService.projectTeamColumns$;
+    public readonly searchInviteMembers$ = this._searchProjectService.searchInviteMembers$;
+    public readonly invitedProjectTeamMember$ = this._projectService.invitedProjectTeamMember$;
 
     projectName: string = "";
     projectDetails: string = "";
@@ -73,6 +78,11 @@ export class DetailProjectComponent implements OnInit {
     projectTeamColumns: any[] = [];
     projectTeam: any;
     selectedProjectMember: any;
+    searchText: string = "";
+    aProjectInvitesUsers: any[] = [];
+    aSelectedProjectMembers: any[] = [];
+    selectedInviteVacancy: any;
+    selectedInviteUser: string = "";
 
     public async ngOnInit() {
         forkJoin([
@@ -456,6 +466,39 @@ export class DetailProjectComponent implements OnInit {
         .subscribe(async (response: any) => {   
             console.log("Данные команды проекта: ", response);    
             this.projectTeam = response;
+        });
+    };
+
+    /**
+     * Функция получает данные для таблицы команда проекта.
+     * @param event - Событие. Чтобы достать текст, надо вызвать event.query.
+     * @returns - Данные для таблицы команда проекта.
+     */
+     public async onSearchInviteProjectMembersAsync(event: any) {
+        (await this._searchProjectService.searchInviteProjectMembersAsync(event.query))
+        .subscribe(async (response: any) => {   
+            console.log("Пользователи для добавления в команду проекта: ", response);    
+            this.aProjectInvitesUsers = response;
+        });
+    };
+
+    public onSelectProjectMember(event: any) {
+        console.log(event);
+        this.selectedInviteUser = event.displayName;
+    };
+
+    /**
+     * Функция отправляет приглашение в команду проекта пользователю.
+     */
+    public async onSendInviteProjectTeamAsync() {
+        let inviteProjectTeamMemberInput = new InviteProjectTeamMemberInput();
+        inviteProjectTeamMemberInput.ProjectId = this.projectId;
+        inviteProjectTeamMemberInput.User = this.selectedInviteUser;
+        inviteProjectTeamMemberInput.VacancyId = this.selectedInviteVacancy.vacancyId;
+
+        (await this._projectService.sendInviteProjectTeamAsync(inviteProjectTeamMemberInput))
+        .subscribe(async (response: any) => {   
+            console.log("Добавленный в команду пользователь: ", response);                
         });
     };
 }

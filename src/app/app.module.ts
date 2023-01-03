@@ -22,6 +22,7 @@ import {AvatarModule} from 'primeng/avatar';
 import { ChatMessagesService } from './modules/messages/chat/services/chat-messages.service';
 import { ModerationModule } from './modules/moderation/moderation.module';
 import { ModerationService } from './modules/moderation/services/moderation.service';
+import { SearchProjectService } from './modules/search/services/search-project-service';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { ModerationService } from './modules/moderation/services/moderation.serv
     VacancyService,
     ProjectService,
     ChatMessagesService,
-    ModerationService
+    ModerationService,
+    SearchProjectService
   ],
 
   bootstrap: [AppComponent]
