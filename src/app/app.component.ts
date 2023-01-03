@@ -15,12 +15,12 @@ export class AppComponent implements OnInit {
     "/profile/aboutme?mode=edit",
     "/profile/projects/my",
     "/profile/projects/create",
-    "/vacancies/catalog",
+    "/vacancies",
     "/projects/project?projectId"
   ];
 
   private _aVisibleVacancyMenuRoutes: string[] = [
-    "/vacancies/catalog",
+    "/vacancies",
     "/vacancies/create"
   ];
 

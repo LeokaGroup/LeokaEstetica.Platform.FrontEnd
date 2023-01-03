@@ -5,7 +5,7 @@ import { DetailProjectComponent } from './detail/components/detail.component';
 
 const routes: Routes = [
     {
-        path: 'catalog', component: CatalogProjectsComponent
+        path: '', component: CatalogProjectsComponent
     },
 
     {

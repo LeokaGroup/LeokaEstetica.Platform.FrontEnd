@@ -4,7 +4,7 @@ import { forkJoin } from "rxjs";
 import { ProjectService } from "../../services/project.service";
 
 @Component({
-    selector: "catalog",
+    selector: "",
     templateUrl: "./catalog.component.html",
     styleUrls: ["./catalog.component.scss"]
 })

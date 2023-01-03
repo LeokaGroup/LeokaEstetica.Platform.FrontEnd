@@ -302,7 +302,7 @@ export class DetailProjectComponent implements OnInit {
 
             // else {
             //     setTimeout(() => {
-            //         this._router.navigate(["/vacancies/catalog"]);
+            //         this._router.navigate(["/vacancies"]);
             //     }, 4000);
             // }   
         });

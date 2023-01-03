@@ -1,11 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import { UserService } from "../../../user/services/user.service";
 import { VacancyService } from "../../services/vacancy.service";
 
 @Component({
-    selector: "catalog",
+    selector: "",
     templateUrl: "./catalog-vacancy.component.html",
     styleUrls: ["./catalog-vacancy.component.scss"]
 })
