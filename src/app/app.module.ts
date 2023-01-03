@@ -23,6 +23,7 @@ import { ChatMessagesService } from './modules/messages/chat/services/chat-messa
 import { ModerationModule } from './modules/moderation/moderation.module';
 import { ModerationService } from './modules/moderation/services/moderation.service';
 import { SearchProjectService } from './modules/search/services/search-project-service';
+import { ResumeService } from './modules/resume/catalog/services/resume.service';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { SearchProjectService } from './modules/search/services/search-project-s
     ProjectService,
     ChatMessagesService,
     ModerationService,
-    SearchProjectService
+    SearchProjectService,
+    ResumeService
   ],
 
   bootstrap: [AppComponent]
