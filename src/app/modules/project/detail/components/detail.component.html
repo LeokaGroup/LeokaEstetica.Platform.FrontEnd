@@ -74,13 +74,52 @@
       </div>
     </div>
 
+    <div class="worksheet-panel space-top-50 space-bottom-50 d-flex" *ngIf="!isEditMode">
+      <p-panel header="Действия" [toggleable]="true">       
+        <div class="d-flex">
+          <div class="control-input-text-worksheet">
+            <div class="mb-3">
+              <div>
+                <div>
+                  <button pButton 
+                          type="button" 
+                          label="Откликнуться на проект (без указания вакансии)"
+                          class="p-button-outlined p-button-secondary p-button-text"
+                          (click)="onShowProjectResponseNotVacancyModal(true)">
+                  </button>
+                </div>
+
+                <div>
+                  <button pButton 
+                          type="button" 
+                          label="Откликнуться на проект (с указанием вакансии)"
+                          class="p-button-outlined p-button-secondary p-button-text"
+                          (click)="onShowProjectResponseWithVacancyModal(true)">
+                  </button>
+                </div>
+
+                <div>
+                  <button pButton 
+                          type="button" 
+                          label="Написать владельцу"
+                          class="p-button-outlined p-button-secondary p-button-text"
+                          (click)="onWriteOwnerDialogAsync()">
+                  </button>
+                </div>
+              </div>
+            </div>                    
+          </div>         
+        </div>
+      </p-panel>
+    </div>
+
     <div class="worksheet-panel space-top-50 d-flex">
       <p-panel header="Вакансии проекта" [toggleable]="true">
         <div>
           <p-table [value]="projectVacancies$.value.projectVacancies" 
                   [(selection)]="selectedProjectVacancy" 
                   dataKey="userVacancy.vacancyId" 
-                  [paginator]="true" 
+                  [paginator]="false" 
                   [rows]="10"             
                   styleClass="p-datatable-gridlines" 
                   responsiveLayout="scroll">
@@ -149,46 +188,7 @@
         </p-table>
         </div>
       </p-panel>
-    </div>
-
-    <div class="worksheet-panel space-top-50 space-bottom-50 d-flex" *ngIf="!isEditMode">
-      <p-panel header="Действия" [toggleable]="true">       
-        <div class="d-flex">
-          <div class="control-input-text-worksheet">
-            <div class="mb-3">
-              <div>
-                <div>
-                  <button pButton 
-                          type="button" 
-                          label="Откликнуться на проект (без указания вакансии)"
-                          class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onShowProjectResponseNotVacancyModal(true)">
-                  </button>
-                </div>
-
-                <div>
-                  <button pButton 
-                          type="button" 
-                          label="Откликнуться на проект (с указанием вакансии)"
-                          class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onShowProjectResponseWithVacancyModal(true)">
-                  </button>
-                </div>
-
-                <div>
-                  <button pButton 
-                          type="button" 
-                          label="Написать владельцу"
-                          class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onWriteOwnerDialogAsync()">
-                  </button>
-                </div>
-              </div>
-            </div>                    
-          </div>         
-        </div>
-      </p-panel>
-    </div>
+    </div>   
 
     <!-- Область с чатом. -->
     <div class="worksheet-panel space-top-50 space-bottom-50 d-flex">      
@@ -263,49 +263,6 @@
     </p-panel>
     </div>
 
-    <!-- Комментарии к проекту. -->
-     <div class="worksheet-panel space-top-50 space-bottom-50">
-      <p-panel header="Комментарии к проекту" [toggleable]="true">
-        <div class="d-flex">
-          <div class="d-flex">
-            <div class="control-input-text-worksheet">
-              <div class="mb-3">
-                <div>
-                  <div class="">
-                    <div *ngFor="let item of aProjectComments">
-                      <div>
-                        <!-- <img src="/w3images/bandmember.jpg" alt="Avatar"> -->
-                        <p>{{item.comment}}</p>
-                        <span class="time-right">{{item.created}}</span>
-                      </div>                             
-                    </div>                            
-                  </div>
-
-                  <div>
-                    <input type="text" 
-                    class="p-inputtext-sm input-control-worksheet control-project" 
-                    placeholder="Введите сообщение" 
-                    pInputText
-                    autocomplete="new-password" 
-                    [(ngModel)]="projectComment"
-                    (keyup.enter)="onCreateProjectCommentAsync()" />    
-                </div>   
-      
-                  <div class="d-flex justify-content-end">
-                    <button pButton type="button" 
-                      label="Отправить"
-                      class="p-button-outlined"
-                      (click)="onCreateProjectCommentAsync()">
-                    </button>
-                  </div>
-                </div>
-              </div>                    
-            </div>         
-          </div>
-        </div>
-      </p-panel>
-    </div>
-
     <!-- Команда проекта. -->
     <div class="worksheet-panel space-top-50 space-bottom-50">
       <p-panel header="Команда проекта" [toggleable]="true">
@@ -314,7 +271,7 @@
             <div class="control-input-text-worksheet">
               <div class="mb-3">
                 <p-table [value]="projectTeam" [(selection)]="selectedProjectVacancy"
-                  dataKey="userVacancy.vacancyId" [paginator]="true" [rows]="10" styleClass="p-datatable-gridlines"
+                  dataKey="userVacancy.vacancyId" [paginator]="false" [rows]="10" styleClass="p-datatable-gridlines"
                   responsiveLayout="scroll">
                   <ng-template pTemplate="caption">
                     <div class="d-flex">
@@ -336,23 +293,37 @@
                                     [(ngModel)]="searchText"
                                     (keyup.enter)="onSearchInviteProjectMembersAsync()" />     -->
 
-                            <!-- <button pButton 
-                                    type="button" 
-                                    label="Отправить приглашение"
-                                    class="p-button-text"                             
-                                    (click)="onSearchInviteProjectMembersAsync()">
-                            </button> -->
-                            
-                            <span class="p-fluid">
-                              <p-autoComplete [(ngModel)]="searchText" 
-                                              [suggestions]="aProjectInvitesUsers" 
-                                              (completeMethod)="onSearchInviteProjectMembersAsync($event)" 
-                                              field="displayName" 
-                                              [multiple]="true"
-                                              (onSelect)="onSelectProjectMember($event)"
-                                              placeholder="Логин или email пользователя">
-                              </p-autoComplete>
-                          </span>
+                            <div class="mb-3">
+                              <div>
+                                <label>Выберите вакансию для приглашения</label>
+                            </div>
+                            <div>
+                              <p-dropdown [options]="availableAttachVacancies$.value.projectVacancies" 
+                                          [(ngModel)]="selectedInviteVacancy" 
+                                          optionLabel="userVacancy.vacancyName">
+                              </p-dropdown>
+                            </div>  
+                            </div>
+
+                            <div class="d-flex">
+                              <span class="p-fluid">
+                                <p-autoComplete [(ngModel)]="searchText" 
+                                                [suggestions]="aProjectInvitesUsers"
+                                                (completeMethod)="onSearchInviteProjectMembersAsync($event)" 
+                                                field="displayName"
+                                                [multiple]="false" 
+                                                (onSelect)="onSelectProjectMember($event)"
+                                                placeholder="Логин или email пользователя">
+                                </p-autoComplete>
+                              </span>
+
+                              <button pButton 
+                                      type="button" 
+                                      label="Отправить приглашение" 
+                                      class="p-button-text"
+                                      (click)="onSendInviteProjectTeamAsync()">
+                              </button>
+                            </div>
                           </ng-template>                          
                       </p-overlayPanel>
                       
@@ -417,6 +388,49 @@
         </div>
       </p-panel>
     </div>
+
+    <!-- Комментарии к проекту. -->
+     <div class="worksheet-panel space-top-50 space-bottom-50">
+      <p-panel header="Комментарии к проекту" [toggleable]="true">
+        <div class="d-flex">
+          <div class="d-flex">
+            <div class="control-input-text-worksheet">
+              <div class="mb-3">
+                <div>
+                  <div class="">
+                    <div *ngFor="let item of aProjectComments">
+                      <div>
+                        <!-- <img src="/w3images/bandmember.jpg" alt="Avatar"> -->
+                        <p>{{item.comment}}</p>
+                        <span class="time-right">{{item.created}}</span>
+                      </div>                             
+                    </div>                            
+                  </div>
+
+                  <div>
+                    <input type="text" 
+                    class="p-inputtext-sm input-control-worksheet control-project" 
+                    placeholder="Введите сообщение" 
+                    pInputText
+                    autocomplete="new-password" 
+                    [(ngModel)]="projectComment"
+                    (keyup.enter)="onCreateProjectCommentAsync()" />    
+                </div>   
+      
+                  <div class="d-flex justify-content-end">
+                    <button pButton type="button" 
+                      label="Отправить"
+                      class="p-button-outlined"
+                      (click)="onCreateProjectCommentAsync()">
+                    </button>
+                  </div>
+                </div>
+              </div>                    
+            </div>         
+          </div>
+        </div>
+      </p-panel>
+    </div>    
   </div>
 </div>
 
@@ -437,7 +451,7 @@
           <label>Выберите вакансию для привязки</label>
       </div>
       <div>
-        <p-dropdown [options]="this.availableAttachVacancies$.value.projectVacancies" 
+        <p-dropdown [options]="availableAttachVacancies$.value.projectVacancies" 
                     [(ngModel)]="selectedVacancy" 
                     optionLabel="userVacancy.vacancyName"
                     (onChange)="onSelectVacancy()">

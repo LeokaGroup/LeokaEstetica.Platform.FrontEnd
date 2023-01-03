@@ -12,6 +12,7 @@ import { VacancyService } from "src/app/modules/vacancy/services/vacancy.service
 import { ProjectService } from "../../services/project.service";
 import { AttachProjectVacancyInput } from "../models/input/attach-project-vacancy-input";
 import { CreateProjectCommentInput } from "../models/input/create-project-comment-input";
+import { InviteProjectTeamMemberInput } from "../models/input/invite-project-team-member-input";
 import { ProjectResponseInput } from "../models/input/project-response-input";
 import { UpdateProjectInput } from "../models/input/update-project-input";
 
@@ -47,6 +48,7 @@ export class DetailProjectComponent implements OnInit {
     public readonly createdProjectComment$ = this._projectService.createdProjectComment$;
     public readonly projectTeamColumns$ = this._projectService.projectTeamColumns$;
     public readonly searchInviteMembers$ = this._searchProjectService.searchInviteMembers$;
+    public readonly invitedProjectTeamMember$ = this._projectService.invitedProjectTeamMember$;
 
     projectName: string = "";
     projectDetails: string = "";
@@ -79,6 +81,8 @@ export class DetailProjectComponent implements OnInit {
     searchText: string = "";
     aProjectInvitesUsers: any[] = [];
     aSelectedProjectMembers: any[] = [];
+    selectedInviteVacancy: any;
+    selectedInviteUser: string = "";
 
     public async ngOnInit() {
         forkJoin([
@@ -466,7 +470,8 @@ export class DetailProjectComponent implements OnInit {
     };
 
     /**
-     * Функция получает данные для таблицы команда проекта
+     * Функция получает данные для таблицы команда проекта.
+     * @param event - Событие. Чтобы достать текст, надо вызвать event.query.
      * @returns - Данные для таблицы команда проекта.
      */
      public async onSearchInviteProjectMembersAsync(event: any) {
@@ -479,5 +484,21 @@ export class DetailProjectComponent implements OnInit {
 
     public onSelectProjectMember(event: any) {
         console.log(event);
+        this.selectedInviteUser = event.displayName;
+    };
+
+    /**
+     * Функция отправляет приглашение в команду проекта пользователю.
+     */
+    public async onSendInviteProjectTeamAsync() {
+        let inviteProjectTeamMemberInput = new InviteProjectTeamMemberInput();
+        inviteProjectTeamMemberInput.ProjectId = this.projectId;
+        inviteProjectTeamMemberInput.User = this.selectedInviteUser;
+        inviteProjectTeamMemberInput.VacancyId = this.selectedInviteVacancy.vacancyId;
+
+        (await this._projectService.sendInviteProjectTeamAsync(inviteProjectTeamMemberInput))
+        .subscribe(async (response: any) => {   
+            console.log("Добавленный в команду пользователь: ", response);                
+        });
     };
 }
