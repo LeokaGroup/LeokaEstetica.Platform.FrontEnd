@@ -18,6 +18,8 @@ import { PanelModule } from 'primeng/panel';
 import { HttpClientModule } from '@angular/common/http';
 import { SignalrService } from '../notifications/signalr/services/signalr.service';
 import { DetailVacancyComponent } from './detail/detail.component';
+import { DropdownModule } from 'primeng/dropdown';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @NgModule({
     declarations: [
@@ -39,7 +41,9 @@ import { DetailVacancyComponent } from './detail/detail.component';
         PanelMenuModule,
         ToastModule,
         EditorModule,
-        VacancyRoutingModule
+        VacancyRoutingModule,
+        DropdownModule,
+        RadioButtonModule
     ],
 
     exports: [],
@@ -51,4 +55,4 @@ import { DetailVacancyComponent } from './detail/detail.component';
     ]
 })
 
-export class VacancyModule {}
+export class VacancyModule { }
