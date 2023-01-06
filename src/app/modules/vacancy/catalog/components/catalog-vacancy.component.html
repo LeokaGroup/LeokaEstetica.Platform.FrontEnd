@@ -31,7 +31,8 @@
             <p-radioButton [inputId]="item.key" 
                             name="item" 
                             [value]="item" 
-                            [(ngModel)]="selectedSalary">
+                            [(ngModel)]="selectedSalary"
+                            (onClick)="onFilterSalaryAsync()">
             </p-radioButton>
             <label [for]="item.key">{{item.name}}</label>
         </div>

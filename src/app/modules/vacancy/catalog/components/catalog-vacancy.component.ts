@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { FilterVacancyInput } from "../../models/input/filter-vacancy-input";
 import { VacancyService } from "../../services/vacancy.service";
 
 @Component({
@@ -28,7 +29,7 @@ export class CatalogVacancyComponent implements OnInit {
 
     vacancyId: number = 0;
     aSalaries: any[] = [
-        { name: 'По соответствию', key: 'Match' },
+        // { name: 'По соответствию', key: 'Match' },
         { name: 'По дате', key: 'Date' },
         { name: 'По убыванию зарплат', key: 'DescSalary' },
         { name: 'По возрастанию зарплат', key: 'AscSalary' }
@@ -36,8 +37,8 @@ export class CatalogVacancyComponent implements OnInit {
     selectedSalary: any;
     aPays: any[] = [
         { name: 'Не имеет значения', key: 'Unknown' },
-        { name: 'Есть оплата', key: 'IsPay' },
-        { name: 'Без оплаты', key: 'IsNotPay' }        
+        { name: 'Есть оплата', key: 'Pay' },
+        { name: 'Без оплаты', key: 'NotPay' }        
     ];
     selectedPay: any;
     aExperience: any[] = [
@@ -45,7 +46,7 @@ export class CatalogVacancyComponent implements OnInit {
         { name: 'От 3 до 6 лет', key: 'ThreeSix' },
         { name: 'Более 6 лет', key: 'ManySix' },
         { name: 'От 1 года до 3 лет', key: 'OneThree' },
-        { name: 'Нет опыта', key: 'Unknown' }
+        { name: 'Нет опыта', key: 'NotExperience' }
     ];
     selectedExperience: any;
     aEmployments: any[] = [
@@ -94,5 +95,30 @@ export class CatalogVacancyComponent implements OnInit {
                 mode: "view"
             }
         });
+    };
+
+    /**
+     * Функция фильтрует вакансии по соответствию.
+     * @returns - Список вакансий после фильтрации.
+     */
+    public async onFilterSalaryAsync() {
+        console.log(this.selectedSalary);
+        let filterVacancyInput = this.createFilterVacancyResult();
+        filterVacancyInput.Salary = this.selectedSalary.key;
+
+        (await this._vacancyService.filterSalaryAsync(filterVacancyInput))
+        .subscribe(_ => {
+            console.log("Список вакансий после фильтрации: ", this.catalog$.value);
+        });
+    };
+
+    /**
+     * Функция создает входную модель фильтров вакансий по соответствиям.
+     * @returns - Входная модель.
+     */
+    private createFilterVacancyResult(): FilterVacancyInput {
+        let model = new FilterVacancyInput();
+
+        return model;
     };
 }
