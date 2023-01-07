@@ -29,7 +29,6 @@ export class CatalogVacancyComponent implements OnInit {
 
     vacancyId: number = 0;
     aSalaries: any[] = [
-        // { name: 'По соответствию', key: 'Match' },
         { name: 'По дате', key: 'Date' },
         { name: 'По убыванию зарплат', key: 'DescSalary' },
         { name: 'По возрастанию зарплат', key: 'AscSalary' }
@@ -55,11 +54,13 @@ export class CatalogVacancyComponent implements OnInit {
         { name: 'Частичная занятость', key: 'Partial' }
     ];
     selectedEmployment: any;
-    aKeywords: any[] = [
-        { name: 'В названии вакансии', key: 'VacancyName' },
-        { name: 'В описании вакансии', key: 'VacancyDetail' }
-    ];
-    selectedKeyword: any;
+
+    // TODO: этот тип фильтра будем использовать при поиске. Вне поиска решили не делать.
+    // aKeywords: any[] = [
+    //     { name: 'В названии вакансии', key: 'VacancyName' },
+    //     { name: 'В описании вакансии', key: 'VacancyDetail' }
+    // ];
+    // selectedKeyword: any;
 
     public async ngOnInit() {
         await this.loadCatalogVacanciesAsync();      
