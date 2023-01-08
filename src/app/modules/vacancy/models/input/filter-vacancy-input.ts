@@ -17,7 +17,7 @@ export class FilterVacancyInput {
     /**
      * Фильтр занятости.
      */
-    Employment: string = "";
+     Employments: string[] = [];
 
     /**
      * Фильтр ключевых слов.

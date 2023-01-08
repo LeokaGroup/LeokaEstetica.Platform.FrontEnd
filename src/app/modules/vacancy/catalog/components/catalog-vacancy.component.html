@@ -84,7 +84,7 @@
                       [value]="item" 
                       [(ngModel)]="selectedEmployment" 
                       [inputId]="item.key"
-                      (onClick)="onFilterVacanciesAsync()">
+                      (onChange)="onFilterVacanciesAsync()">
           </p-checkbox>
           <label [for]="item.key">{{item.name}}</label>
       </div>

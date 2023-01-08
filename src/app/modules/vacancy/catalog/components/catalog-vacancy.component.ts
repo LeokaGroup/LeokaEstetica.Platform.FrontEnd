@@ -104,6 +104,7 @@ export class CatalogVacancyComponent implements OnInit {
      */
     public async onFilterVacanciesAsync() {
         let filterVacancyInput = this.createFilterVacancyResult();
+        console.log(filterVacancyInput);
 
         (await this._vacancyService.filterVacanciesAsync(filterVacancyInput))
         .subscribe(_ => {
@@ -118,7 +119,20 @@ export class CatalogVacancyComponent implements OnInit {
     private createFilterVacancyResult(): FilterVacancyInput {
         let model = new FilterVacancyInput();
         model.Salary = this.selectedSalary ? this.selectedSalary.key : "None";
-        model.Employment = this.selectedEmployment? this.selectedEmployment.key : "None";
+
+        // Если выбран 1 чекбокс, то добавляем первое значение.
+        if (this.selectedEmployment.length == 1) {
+            model.Employments.push(this.selectedEmployment[0].key);
+        }
+
+        // Иначе добавляем все значения чекбоксов, которые выделены.
+        else if (this.selectedEmployment.length > 1) {
+            let splitEmployments = this.selectedEmployment.map((u : any) => u.key).join(',').split(",");
+            splitEmployments.forEach((item: any) => {
+                model.Employments.push(item);
+            });
+        }
+
         model.Experience = this.selectedExperience ? this.selectedExperience.key : "None";
         model.Pay = this.selectedPay ? this.selectedPay.key : "None";
 
