@@ -32,7 +32,7 @@
                             name="item" 
                             [value]="item" 
                             [(ngModel)]="selectedSalary"
-                            (onClick)="onFilterSalaryAsync()">
+                            (onClick)="onFilterVacanciesAsync()">
             </p-radioButton>
             <label [for]="item.key">{{item.name}}</label>
         </div>
@@ -48,7 +48,8 @@
             <p-radioButton [inputId]="item.key" 
                             name="item" 
                             [value]="item" 
-                            [(ngModel)]="selectedPay">
+                            [(ngModel)]="selectedPay"
+                            (onClick)="onFilterVacanciesAsync()">
             </p-radioButton>
             <label [for]="item.key">{{item.name}}</label>
         </div>
@@ -64,7 +65,8 @@
             <p-radioButton [inputId]="item.key" 
                             name="item" 
                             [value]="item" 
-                            [(ngModel)]="selectedExperience">
+                            [(ngModel)]="selectedExperience"
+                            (onClick)="onFilterVacanciesAsync()">
             </p-radioButton>
             <label [for]="item.key">{{item.name}}</label>
         </div>
@@ -81,7 +83,8 @@
                       value="item" 
                       [value]="item" 
                       [(ngModel)]="selectedEmployment" 
-                      [inputId]="item.key">
+                      [inputId]="item.key"
+                      (onClick)="onFilterVacanciesAsync()">
           </p-checkbox>
           <label [for]="item.key">{{item.name}}</label>
       </div>

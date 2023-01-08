@@ -9,7 +9,7 @@ import { BackOfficeService } from "../../services/backoffice.service";
 })
 
 /**
- * Класс календаря пользователя.
+ * Класс компонента левого меню.
  */
 export class LeftMenuComponent implements OnInit {
     public readonly profileItems$ = this._backOfficeService.profileItems$;
@@ -30,6 +30,9 @@ export class LeftMenuComponent implements OnInit {
     ];
     aCreateProjectsSysName: string[] = [
         "CreateProject"
+    ];
+    aCreateVacanciesSysName: string[] = [
+        "CreateVacancy"
     ];
 
     manuItems: any[] = [];
@@ -111,6 +114,11 @@ export class LeftMenuComponent implements OnInit {
             // Роут на страницу создания проекта.
             if (this.aCreateProjectsSysName.includes(this.sysName)) {
                 this._router.navigate(["/profile/projects/create"]);
+            }
+
+            // Роут на страницу создания вакансии.
+            if (this.aCreateVacanciesSysName.includes(this.sysName)) {
+                this._router.navigate(["/vacancies/create"]);
             }
         });
     };

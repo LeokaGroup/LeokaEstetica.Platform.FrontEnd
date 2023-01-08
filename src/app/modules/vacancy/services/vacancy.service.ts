@@ -68,11 +68,11 @@ export class VacancyService {
     };
 
     /**
-     * Функция фильтрует вакансии по соответствию.
+     * Функция фильтрует вакансии.
      * @returns - Список вакансий после фильтрации.
      */
-     public async filterSalaryAsync(filterVacancyInput: FilterVacancyInput) {
-        return await this.http.get(API_URL.apiUrl + `/vacancies/filter?salary=${filterVacancyInput.Salary}`).pipe(
+    public async filterVacanciesAsync(filterVacancyInput: FilterVacancyInput) {
+        return await this.http.get(API_URL.apiUrl + `/vacancies/filter?salary=${filterVacancyInput.Salary}&pay=${filterVacancyInput.Pay}&experience=${filterVacancyInput.Experience}&employment=${filterVacancyInput.Employment}`).pipe(
             tap(data => this.catalog$.next(data))
         );
     };

@@ -35,13 +35,13 @@ export class CatalogVacancyComponent implements OnInit {
     ];
     selectedSalary: any;
     aPays: any[] = [
-        { name: 'Не имеет значения', key: 'Unknown' },
+        { name: 'Не имеет значения', key: 'UnknownPay' },
         { name: 'Есть оплата', key: 'Pay' },
         { name: 'Без оплаты', key: 'NotPay' }        
     ];
     selectedPay: any;
     aExperience: any[] = [
-        { name: 'Не имеет значения', key: 'Unknown' },
+        { name: 'Не имеет значения', key: 'UnknownExperience' },
         { name: 'От 3 до 6 лет', key: 'ThreeSix' },
         { name: 'Более 6 лет', key: 'ManySix' },
         { name: 'От 1 года до 3 лет', key: 'OneThree' },
@@ -102,12 +102,10 @@ export class CatalogVacancyComponent implements OnInit {
      * Функция фильтрует вакансии по соответствию.
      * @returns - Список вакансий после фильтрации.
      */
-    public async onFilterSalaryAsync() {
-        console.log(this.selectedSalary);
+    public async onFilterVacanciesAsync() {
         let filterVacancyInput = this.createFilterVacancyResult();
-        filterVacancyInput.Salary = this.selectedSalary.key;
 
-        (await this._vacancyService.filterSalaryAsync(filterVacancyInput))
+        (await this._vacancyService.filterVacanciesAsync(filterVacancyInput))
         .subscribe(_ => {
             console.log("Список вакансий после фильтрации: ", this.catalog$.value);
         });
@@ -119,6 +117,10 @@ export class CatalogVacancyComponent implements OnInit {
      */
     private createFilterVacancyResult(): FilterVacancyInput {
         let model = new FilterVacancyInput();
+        model.Salary = this.selectedSalary ? this.selectedSalary.key : "None";
+        model.Employment = this.selectedEmployment? this.selectedEmployment.key : "None";
+        model.Experience = this.selectedExperience ? this.selectedExperience.key : "None";
+        model.Pay = this.selectedPay ? this.selectedPay.key : "None";
 
         return model;
     };
