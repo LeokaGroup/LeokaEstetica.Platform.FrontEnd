@@ -30,7 +30,7 @@ export class NetworkInterceptor implements HttpInterceptor {
 
         let loadTimeout = setTimeout(()=>{
             this._loader.setBusy(true);
-        },50)
+        }, 1000)
 
         return next.handle(req).pipe(
             catchError((response: HttpErrorResponse) => {
