@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { FilterVacancyInput } from "../../models/input/filter-vacancy-input";
 import { VacancyService } from "../../services/vacancy.service";
 
 @Component({
@@ -27,9 +28,50 @@ export class CatalogVacancyComponent implements OnInit {
     public readonly catalog$ = this._vacancyService.catalog$;
 
     vacancyId: number = 0;
+    aSalaries: any[] = [
+        { name: 'По дате', key: 'Date' },
+        { name: 'По убыванию зарплат', key: 'DescSalary' },
+        { name: 'По возрастанию зарплат', key: 'AscSalary' }
+    ];
+    selectedSalary: any;
+    aPays: any[] = [
+        { name: 'Не имеет значения', key: 'UnknownPay' },
+        { name: 'Есть оплата', key: 'Pay' },
+        { name: 'Без оплаты', key: 'NotPay' }        
+    ];
+    selectedPay: any;
+    aExperience: any[] = [
+        { name: 'Не имеет значения', key: 'UnknownExperience' },
+        { name: 'От 3 до 6 лет', key: 'ThreeSix' },
+        { name: 'Более 6 лет', key: 'ManySix' },
+        { name: 'От 1 года до 3 лет', key: 'OneThree' },
+        { name: 'Нет опыта', key: 'NotExperience' }
+    ];
+    selectedExperience: any;
+    aEmployments: any[] = [
+        { name: 'Полная занятость', key: 'Full' },
+        { name: 'Проектная работа', key: 'ProjectWork' },
+        { name: 'Частичная занятость', key: 'Partial' }
+    ];
+    selectedEmployment: any;
+
+    // TODO: этот тип фильтра будем использовать при поиске. Вне поиска решили не делать.
+    // aKeywords: any[] = [
+    //     { name: 'В названии вакансии', key: 'VacancyName' },
+    //     { name: 'В описании вакансии', key: 'VacancyDetail' }
+    // ];
+    // selectedKeyword: any;
 
     public async ngOnInit() {
-        await this.loadCatalogVacanciesAsync();
+        await this.loadCatalogVacanciesAsync();      
+        this.setDefaultFilters();
+    };
+
+    /**
+     * Функция проставляет начальные фильтры.
+     */
+    private setDefaultFilters() {
+        this.selectedSalary = this.aSalaries[0];  
     };
 
    /**
@@ -54,5 +96,33 @@ export class CatalogVacancyComponent implements OnInit {
                 mode: "view"
             }
         });
+    };
+
+    /**
+     * Функция фильтрует вакансии по соответствию.
+     * @returns - Список вакансий после фильтрации.
+     */
+    public async onFilterVacanciesAsync() {
+        let filterVacancyInput = this.createFilterVacancyResult();
+        console.log(filterVacancyInput);
+
+        (await this._vacancyService.filterVacanciesAsync(filterVacancyInput))
+        .subscribe(_ => {
+            console.log("Список вакансий после фильтрации: ", this.catalog$.value);
+        });
+    };
+
+    /**
+     * Функция создает входную модель фильтров вакансий по соответствиям.
+     * @returns - Входная модель.
+     */
+    private createFilterVacancyResult(): FilterVacancyInput {
+        let model = new FilterVacancyInput();
+        model.Salary = this.selectedSalary ? this.selectedSalary.key : "None";
+        model.EmploymentsValues = this.selectedEmployment.map((u : any) => u.key).join(',');       
+        model.Experience = this.selectedExperience ? this.selectedExperience.key : "None";
+        model.Pay = this.selectedPay ? this.selectedPay.key : "None";
+
+        return model;
     };
 }
