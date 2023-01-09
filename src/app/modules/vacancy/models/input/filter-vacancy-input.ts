@@ -15,9 +15,9 @@ export class FilterVacancyInput {
     Experience: string = "";
 
     /**
-     * Фильтр занятости.
+     * Фильтр занятости (список значений).
      */
-     Employments: string[] = [];
+     EmploymentsValues: string = "";
 
     /**
      * Фильтр ключевых слов.

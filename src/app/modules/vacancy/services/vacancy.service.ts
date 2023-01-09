@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
+import { VacancyApiBuilder } from 'src/app/core/url-builders/vacancy-api-builder';
 import { CreateProjectVacancyInput } from '../models/input/create-project-vacancy-input';
 import { FilterVacancyInput } from '../models/input/filter-vacancy-input';
 import { VacancyInput } from '../models/input/vacancy-input';
@@ -72,7 +73,7 @@ export class VacancyService {
      * @returns - Список вакансий после фильтрации.
      */
     public async filterVacanciesAsync(filterVacancyInput: FilterVacancyInput) {
-        return await this.http.get(API_URL.apiUrl + `/vacancies/filter?salary=${filterVacancyInput.Salary}&pay=${filterVacancyInput.Pay}&experience=${filterVacancyInput.Experience}&employment=${filterVacancyInput.Employments}`).pipe(
+        return await this.http.get(VacancyApiBuilder.createVacanciesFilterApi(filterVacancyInput)).pipe(
             tap(data => this.catalog$.next(data))
         );
     };
