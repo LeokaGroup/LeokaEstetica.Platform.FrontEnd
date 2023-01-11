@@ -2,8 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
+import { ProjectApiBuilder } from 'src/app/core/url-builders/project-api-builder';
 import { AttachProjectVacancyInput } from '../detail/models/input/attach-project-vacancy-input';
 import { CreateProjectCommentInput } from '../detail/models/input/create-project-comment-input';
+import { FilterProjectInput } from '../detail/models/input/filter-project-input';
 import { InviteProjectTeamMemberInput } from '../detail/models/input/invite-project-team-member-input';
 import { ProjectResponseInput } from '../detail/models/input/project-response-input';
 import { UpdateProjectInput } from '../detail/models/input/update-project-input';
@@ -174,6 +176,16 @@ export class ProjectService {
      public async sendInviteProjectTeamAsync(inviteProjectTeamMemberInput: InviteProjectTeamMemberInput) {
         return await this.http.post(API_URL.apiUrl + "/projects/invite-project-team", inviteProjectTeamMemberInput).pipe(
             tap(data => this.invitedProjectTeamMember$.next(data))
+        );
+    };
+
+    /**
+     * Функция фильтрует проекты.
+     * @returns - Список проектов после фильтрации.
+     */
+     public async filterProjectsAsync(filterProjectInput: FilterProjectInput) {
+        return await this.http.get(ProjectApiBuilder.createProjectsFilterApi(filterProjectInput)).pipe(
+            tap(data => this.catalog$.next(data))
         );
     };
 }

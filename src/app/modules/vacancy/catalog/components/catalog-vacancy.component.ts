@@ -113,7 +113,7 @@ export class CatalogVacancyComponent implements OnInit {
     };
 
     /**
-     * Функция создает входную модель фильтров вакансий по соответствиям.
+     * Функция создает входную модель фильтров вакансий.
      * @returns - Входная модель.
      */
     private createFilterVacancyResult(): FilterVacancyInput {

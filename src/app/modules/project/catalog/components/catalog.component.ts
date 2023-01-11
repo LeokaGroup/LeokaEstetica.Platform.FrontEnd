@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { forkJoin } from "rxjs";
+import { FilterProjectInput } from "../../detail/models/input/filter-project-input";
 import { ProjectService } from "../../services/project.service";
 
 @Component({
@@ -18,6 +19,26 @@ export class CatalogProjectsComponent implements OnInit {
     }
 
     public readonly catalog$ = this._projectService.catalog$;
+        
+    aDates: any[] = [
+        { name: 'По дате', key: 'Date' }
+    ];
+    selectedDate: any;
+    anyVacancies: any[] = [
+        { name: 'С наличием вакансий', key: 'IsAnyVacancies' }
+    ];
+    isAnyVacancies: boolean = false;
+    aStages: any[] = [
+        { name: 'Идея', key: 'Concept' },
+        { name: 'Поиск команды', key: 'SearchTeam' },
+        { name: 'Проектирование', key: 'Projecting' },
+        { name: 'Разработка', key: 'Development' },
+        { name: 'Тестирование', key: 'Testing' },
+        { name: 'Поиск инвесторов', key: 'SearchInvestors' },
+        { name: 'Запуск', key: 'Start' },
+        { name: 'Поддержка', key: 'Support' }
+    ];
+    selectedStage: any;
 
     public async ngOnInit() {
         forkJoin([
@@ -47,5 +68,36 @@ export class CatalogProjectsComponent implements OnInit {
                 mode: "view"
             }
         });
+    };
+
+    /**
+     * Функция фильтрует проекты по соответствию.
+     * @returns - Список проектов после фильтрации.
+     */
+     public async onFilterProjectsAsync() {
+        let filterProjectInput = this.createFilterProjectResult();
+        console.log(filterProjectInput);
+
+        (await this._projectService.filterProjectsAsync(filterProjectInput))
+        .subscribe(_ => {
+            console.log("Список проектов после фильтрации: ", this.catalog$.value);
+        });
+    };
+
+    /**
+     * Функция создает входную модель фильтров проектов.
+     * @returns - Входная модель.
+     */
+     private createFilterProjectResult(): FilterProjectInput {
+        let model = new FilterProjectInput();
+        model.Date = this.selectedDate ? this.selectedDate[0].key : "None";
+
+        if (this.selectedStage) {
+            model.StageValues = this.selectedStage.map((u : any) => u.key).join(','); 
+        }
+              
+        model.IsAnyVacancies = this.isAnyVacancies;
+
+        return model;
     };
 }
