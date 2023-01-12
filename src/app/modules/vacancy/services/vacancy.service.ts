@@ -77,4 +77,15 @@ export class VacancyService {
             tap(data => this.catalog$.next(data))
         );
     };
+
+    /**
+     * Функция ищет вакансии по поисковому запросу.
+     * @param searchText - Поисковая строка.
+     * @returns - Список вакансий после поиска.
+     */
+     public async searchVacanciesAsync(searchText: string) {
+        return await this.http.get(API_URL.apiUrl + "/vacancies/search?searchText=" + searchText).pipe(
+            tap(data => this.catalog$.next(data))
+        );
+    };
 }
