@@ -20,6 +20,7 @@ import { SignalrService } from '../notifications/signalr/services/signalr.servic
 import { DetailVacancyComponent } from './detail/detail.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
         EditorModule,
         VacancyRoutingModule,
         DropdownModule,
-        RadioButtonModule
+        RadioButtonModule,
+        AutoCompleteModule
     ],
 
     exports: [],

@@ -54,6 +54,7 @@ export class CatalogVacancyComponent implements OnInit {
         { name: 'Частичная занятость', key: 'Partial' }
     ];
     selectedEmployment: any;
+    searchText: string = "";
 
     // TODO: этот тип фильтра будем использовать при поиске. Вне поиска решили не делать.
     // aKeywords: any[] = [
@@ -63,7 +64,7 @@ export class CatalogVacancyComponent implements OnInit {
     // selectedKeyword: any;
 
     public async ngOnInit() {
-        await this.loadCatalogVacanciesAsync();      
+        await this.onLoadCatalogVacanciesAsync(); 
         this.setDefaultFilters();
     };
 
@@ -124,5 +125,25 @@ export class CatalogVacancyComponent implements OnInit {
         model.Pay = this.selectedPay ? this.selectedPay.key : "None";
 
         return model;
+    };    
+
+    /**
+     * Функция ищет вакансии по поисковому запросу.
+     * @param searchText - Поисковая строка.
+     * @returns - Список вакансий после поиска.
+     */
+   public async onSearchVacanciesAsync(event: any) {
+    if (!event.query) {
+       await this.onLoadCatalogVacanciesAsync();
+    }
+
+    (await this._vacancyService.searchVacanciesAsync(event.query))
+    .subscribe(_ => {
+        console.log("Результаты поиска: ", this.catalog$.value);
+    });
+   };
+
+    public async onLoadCatalogVacanciesAsync() {
+        await this.loadCatalogVacanciesAsync();
     };
 }
