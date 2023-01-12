@@ -94,3 +94,11 @@
 .control-vacancy {
     width: 200px;
 }
+
+::ng-deep .p-autocomplete-input {
+    @include controlGrayForm();   
+   
+    &:focus {
+        box-shadow: none !important;
+    }
+}

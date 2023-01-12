@@ -6,15 +6,21 @@
   </div>
 
   <div class="col-lg-6 block-catalog-vacancies">
-    <p-autoComplete [(ngModel)]="searchText" 
-                    [suggestions]="catalog$.value.catalogVacancies" 
-                    [showEmptyMessage]="true" 
-                    emptyMessage="Результатов не найдено"
-                    field="vacancyName" 
-                    [minLength]="1"
-                    (completeMethod)="onSearchVacanciesAsync($event)"
-                    (onClear)="onLoadCatalogVacanciesAsync()">
-    </p-autoComplete>
+    <div class="mb-3 block-search">
+      <span class="p-fluid control-search">
+        <p-autoComplete [(ngModel)]="searchText" 
+                        [suggestions]="catalog$.value.catalogVacancies" 
+                        [showEmptyMessage]="true" 
+                        emptyMessage="Результатов не найдено"
+                        field="vacancyName" 
+                        [minLength]="1"
+                        (completeMethod)="onSearchVacanciesAsync($event)"
+                        (onClear)="onLoadCatalogVacanciesAsync()"
+                        placeholder="Поиск по вакансиям...">
+        </p-autoComplete>
+      </span>
+    </div>
+
     <div class="catalog-vacancies-item" *ngFor="let item of catalog$.value.catalogVacancies">
         <div class="d-flex">
             <div>{{item.payment}}</div>
