@@ -188,4 +188,15 @@ export class ProjectService {
             tap(data => this.catalog$.next(data))
         );
     };
+
+    /**
+     * Функция ищет проекты по поисковому запросу.
+     * @param searchText - Поисковая строка.
+     * @returns - Список проектов после поиска.
+     */
+     public async searchProjectsAsync(searchText: string) {
+        return await this.http.get(API_URL.apiUrl + "/projects/search?searchText=" + searchText).pipe(
+            tap(data => this.catalog$.next(data))
+        );
+    };
 }
