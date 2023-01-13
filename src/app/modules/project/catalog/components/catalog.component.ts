@@ -39,6 +39,8 @@ export class CatalogProjectsComponent implements OnInit {
         { name: 'Поддержка', key: 'Support' }
     ];
     selectedStage: any;
+    searchText: string = "";
+    aProjectsCatalog: any[] = [];
 
     public async ngOnInit() {
         forkJoin([
@@ -54,6 +56,7 @@ export class CatalogProjectsComponent implements OnInit {
         (await this._projectService.loadCatalogProjectsAsync())
         .subscribe(_ => {
             console.log("Список проектов: ", this.catalog$.value);
+            this.aProjectsCatalog = this.catalog$.value;
         });
     };
 
@@ -99,5 +102,22 @@ export class CatalogProjectsComponent implements OnInit {
         model.IsAnyVacancies = this.isAnyVacancies;
 
         return model;
+    };
+
+    /**
+     * Функция ищет проекты по поисковому запросу.
+     * @param searchText - Поисковая строка.
+     * @returns - Список проектов после поиска.
+     */
+   public async onSearchProjectsAsync(event: any) {
+    (await this._projectService.searchProjectsAsync(event.query))
+    .subscribe(_ => {
+        console.log("Результаты поиска: ", this.catalog$.value);
+        this.aProjectsCatalog = this.catalog$.value.catalogProjects;
+    });
+   };
+
+    public async onLoadCatalogProjectsAsync() {
+        await this.loadCatalogProjectsAsync();
     };
 }
