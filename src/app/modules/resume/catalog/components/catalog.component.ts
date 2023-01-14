@@ -19,6 +19,9 @@ export class CatalogResumeComponent implements OnInit {
 
     public readonly catalogResumes$ = this._resumeService.catalogResumes$;
 
+    aResumesCatalog: any[] = [];
+    searchText: string = "";
+
     public async ngOnInit() {
         forkJoin([
            await this.loadCatalogResumesAsync()
@@ -33,6 +36,24 @@ export class CatalogResumeComponent implements OnInit {
         (await this._resumeService.loadCatalogResumesAsync())
         .subscribe(_ => {
             console.log("База резюме: ", this.catalogResumes$.value);
+            this.aResumesCatalog = this.catalogResumes$.value.catalogResumes;
         });
+    };
+
+    /**
+     * Функция ищет резюме по поисковому запросу.
+     * @param searchText - Поисковая строка.
+     * @returns - Список резюме после поиска.
+     */
+   public async onSearchResumesAsync(event: any) {
+    (await this._resumeService.searchResumesAsync(event.query))
+    .subscribe(_ => {
+        console.log("Результаты поиска: ", this.catalogResumes$.value);
+        this.aResumesCatalog = this.catalogResumes$.value.catalogResumes;
+    });
+   };
+
+    public async onLoadCatalogResumesAsync() {
+        await this.loadCatalogResumesAsync();
     };
 }

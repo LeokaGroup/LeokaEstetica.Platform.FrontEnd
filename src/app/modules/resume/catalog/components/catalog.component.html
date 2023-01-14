@@ -6,7 +6,22 @@
   </div>
 
   <div class="col-lg-6 block-catalog-vacancies">
-    <div class="catalog-vacancies-item" *ngFor="let item of catalogResumes$.value">
+    <div class="mb-3 block-search">
+      <span class="p-fluid control-search">
+        <p-autoComplete [(ngModel)]="searchText" 
+                        [suggestions]="aResumesCatalog" 
+                        [showEmptyMessage]="true" 
+                        emptyMessage="Результатов не найдено"
+                        field="vacancyName" 
+                        [minLength]="1"
+                        (completeMethod)="onSearchResumesAsync($event)"
+                        (onClear)="onLoadCatalogResumesAsync()"
+                        placeholder="Поиск по базе резюме...">
+        </p-autoComplete>
+      </span>
+    </div>
+    
+    <div class="catalog-vacancies-item" *ngFor="let item of aResumesCatalog">
         <!-- <div class="d-flex">
             <div>{{item.payment}}</div>
             <div class="tag">{{item.workExperience}}</div>            
