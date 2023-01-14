@@ -23,4 +23,15 @@ export class ResumeService {
             tap(data => this.catalogResumes$.next(data))
         );
     };
+
+    /**
+     * Функция ищет резюме по поисковому запросу.
+     * @param searchText - Поисковая строка.
+     * @returns - Список резюме после поиска.
+     */
+     public async searchResumesAsync(searchText: string) {
+        return await this.http.get(API_URL.apiUrl + "/resumes/search?searchText=" + searchText).pipe(
+            tap(data => this.catalogResumes$.next(data))
+        );
+    };
 }
