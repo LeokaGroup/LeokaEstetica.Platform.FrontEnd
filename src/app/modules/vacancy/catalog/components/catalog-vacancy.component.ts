@@ -26,6 +26,7 @@ export class CatalogVacancyComponent implements OnInit {
     });
 
     public readonly catalog$ = this._vacancyService.catalog$;
+    public readonly pagination$ = this._vacancyService.pagination$;
 
     vacancyId: number = 0;
     aSalaries: any[] = [
@@ -55,6 +56,7 @@ export class CatalogVacancyComponent implements OnInit {
     ];
     selectedEmployment: any;
     searchText: string = "";
+    rowsCount: number = 0;
 
     // TODO: этот тип фильтра будем использовать при поиске. Вне поиска решили не делать.
     // aKeywords: any[] = [
@@ -65,6 +67,7 @@ export class CatalogVacancyComponent implements OnInit {
 
     public async ngOnInit() {
         await this.onLoadCatalogVacanciesAsync(); 
+        await this.initVacanciesPaginationAsync();
         this.setDefaultFilters();
     };
 
@@ -83,6 +86,7 @@ export class CatalogVacancyComponent implements OnInit {
         (await this._vacancyService.loadCatalogVacanciesAsync())
         .subscribe(_ => {
             console.log("Список вакансий: ", this.catalog$.value);
+            this.rowsCount = this.catalog$.value.total;
         });
     };
 
@@ -132,14 +136,34 @@ export class CatalogVacancyComponent implements OnInit {
      * @param searchText - Поисковая строка.
      * @returns - Список вакансий после поиска.
      */
-   public async onSearchVacanciesAsync(event: any) {
-    (await this._vacancyService.searchVacanciesAsync(event.query))
-    .subscribe(_ => {
-        console.log("Результаты поиска: ", this.catalog$.value);
-    });
-   };
+    public async onSearchVacanciesAsync(event: any) {
+        (await this._vacancyService.searchVacanciesAsync(event.query))
+            .subscribe(_ => {
+                console.log("Результаты поиска: ", this.catalog$.value);
+            });
+    };
 
     public async onLoadCatalogVacanciesAsync() {
-        await this.loadCatalogVacanciesAsync();
+        await this.loadCatalogVacanciesAsync();        
+    };
+
+    /**
+     * Функция пагинации вакансий.
+     * @param page - Номер страницы.
+     * @returns - Список вакансий.
+     */
+     public async onGetVacanciesPaginationAsync(event: any) {                
+        console.log(event);
+        (await this._vacancyService.getVacanciesPaginationAsync(event.page))
+            .subscribe(_ => {
+                console.log("Пагинация: ", this.pagination$.value), "page: " ;
+            });
+    };
+    
+     private async initVacanciesPaginationAsync() {                
+        (await this._vacancyService.getVacanciesPaginationAsync(0))
+            .subscribe(_ => {
+                console.log("Пагинация: ", this.pagination$.value), "page: " ;
+            });
     };
 }

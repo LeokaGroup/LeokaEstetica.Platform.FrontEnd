@@ -12,6 +12,7 @@ export class VacancyService {
     public vacancy$ = new BehaviorSubject<any>(null);
     public catalog$ = new BehaviorSubject<any>(null);
     public selectedVacancy$ = new BehaviorSubject<any>(null);
+    public pagination$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -86,6 +87,17 @@ export class VacancyService {
      public async searchVacanciesAsync(searchText: string) {
         return await this.http.get(API_URL.apiUrl + "/vacancies/search?searchText=" + searchText).pipe(
             tap(data => this.catalog$.next(data))
+        );
+    };
+
+    /**
+     * Функция пагинации вакансий.
+     * @param page - Номер страницы.
+     * @returns - Список вакансий.
+     */
+     public async getVacanciesPaginationAsync(page: number) {
+        return await this.http.get(API_URL.apiUrl + `/vacancies/pagination/${page + 1}`).pipe(
+            tap(data => this.pagination$.next(data))
         );
     };
 }

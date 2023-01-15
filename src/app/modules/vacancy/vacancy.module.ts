@@ -21,6 +21,7 @@ import { DetailVacancyComponent } from './detail/detail.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { PaginatorModule } from 'primeng/paginator';
 
 @NgModule({
     declarations: [
@@ -45,7 +46,8 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
         VacancyRoutingModule,
         DropdownModule,
         RadioButtonModule,
-        AutoCompleteModule
+        AutoCompleteModule,
+        PaginatorModule
     ],
 
     exports: [],
