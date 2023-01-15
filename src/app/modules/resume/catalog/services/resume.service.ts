@@ -9,6 +9,7 @@ import { API_URL } from 'src/app/core/core-urls/api-urls';
 @Injectable()
 export class ResumeService {
     public catalogResumes$ = new BehaviorSubject<any>(null);
+    public pagination$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -32,6 +33,18 @@ export class ResumeService {
      public async searchResumesAsync(searchText: string) {
         return await this.http.get(API_URL.apiUrl + "/resumes/search?searchText=" + searchText).pipe(
             tap(data => this.catalogResumes$.next(data))
+        );
+    };
+
+    /**
+     * Функция пагинации резюме.
+     * @param page - Номер страницы.
+     * @returns - Список резюме.
+     */
+     public async getResumesPaginationAsync(page: number) {
+        // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
+        return await this.http.get(API_URL.apiUrl + `/resumes/pagination/${page + 1}`).pipe(
+            tap(data => this.pagination$.next(data))
         );
     };
 }
