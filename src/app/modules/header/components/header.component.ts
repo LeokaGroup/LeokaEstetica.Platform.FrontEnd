@@ -62,9 +62,9 @@ export class HeaderComponent implements OnInit {
         .subscribe(params => {
             let mode = params["mode"];
 
-            if (mode == "view") {
+            if (!mode || mode == "view") {
                 this.isHideAuthButtons = true;
-            }
+            }          
           });
     };
 

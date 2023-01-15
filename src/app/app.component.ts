@@ -24,7 +24,10 @@ export class AppComponent implements OnInit {
     "/vacancies/create"
   ];
 
-  private projectModeUrl = "/projects/project?projectId";
+  private projectModeUrls = [
+    "/projects/project?projectId",
+    "/projects"
+  ];
 
   constructor(public networkService: NetworkService,
     private _router: Router) { }
@@ -63,7 +66,7 @@ export class AppComponent implements OnInit {
         this.isVisibleMenu = true;
       }
 
-      if (currentUrl.indexOf(this.projectModeUrl) >= 0) {
+      if (this.projectModeUrls.includes(currentUrl)) {
         this.isVisibleMenu = true;
         localStorage["m_t"] = 1;
       }
