@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { FilterVacancyInput } from "../../models/input/filter-vacancy-input";
 import { VacancyService } from "../../services/vacancy.service";
 
@@ -15,15 +14,8 @@ import { VacancyService } from "../../services/vacancy.service";
  */
 export class CatalogVacancyComponent implements OnInit {
     constructor(private readonly _router: Router,
-        private readonly _vacancyService: VacancyService) { }
-
-    formSignUp: FormGroup = new FormGroup({
-
-        "email": new FormControl("", [
-            Validators.required,
-            Validators.email
-        ])
-    });
+        private readonly _vacancyService: VacancyService,
+        private readonly _activatedRoute: ActivatedRoute) { }
 
     public readonly catalog$ = this._vacancyService.catalog$;
     public readonly pagination$ = this._vacancyService.pagination$;
@@ -57,6 +49,7 @@ export class CatalogVacancyComponent implements OnInit {
     selectedEmployment: any;
     searchText: string = "";
     rowsCount: number = 0;
+    page: number = 0;
 
     // TODO: этот тип фильтра будем использовать при поиске. Вне поиска решили не делать.
     // aKeywords: any[] = [
@@ -68,7 +61,25 @@ export class CatalogVacancyComponent implements OnInit {
     public async ngOnInit() {
         await this.onLoadCatalogVacanciesAsync(); 
         await this.initVacanciesPaginationAsync();
-        this.setDefaultFilters();
+        this.setDefaultFilters();                
+        this.checkUrlParams();    
+    };
+
+    private setUrlParams(page: number) {
+        this._router.navigate(["/vacancies"], {
+            queryParams: {
+                page: page
+            }
+        });
+    };
+
+    private checkUrlParams() {
+        this._activatedRoute.queryParams
+        .subscribe(params => {
+            console.log("params: ", params);
+            this.page = params["page"]
+            console.log("page: ", this.page);
+          });
     };
 
     /**
@@ -157,13 +168,15 @@ export class CatalogVacancyComponent implements OnInit {
         (await this._vacancyService.getVacanciesPaginationAsync(event.page))
             .subscribe(_ => {
                 console.log("Пагинация: ", this.pagination$.value), "page: " ;
+                this.setUrlParams(event.page + 1);    
             });
     };
     
      private async initVacanciesPaginationAsync() {                
         (await this._vacancyService.getVacanciesPaginationAsync(0))
             .subscribe(_ => {
-                console.log("Пагинация: ", this.pagination$.value), "page: " ;
+                console.log("Пагинация: ", this.pagination$.value), "page: " + this.page;
+                this.setUrlParams(1);    
             });
     };
 }
