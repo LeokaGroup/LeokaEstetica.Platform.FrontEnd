@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { FilterVacancyInput } from "../../models/input/filter-vacancy-input";
 import { VacancyService } from "../../services/vacancy.service";
 
@@ -15,17 +14,11 @@ import { VacancyService } from "../../services/vacancy.service";
  */
 export class CatalogVacancyComponent implements OnInit {
     constructor(private readonly _router: Router,
-        private readonly _vacancyService: VacancyService) { }
-
-    formSignUp: FormGroup = new FormGroup({
-
-        "email": new FormControl("", [
-            Validators.required,
-            Validators.email
-        ])
-    });
+        private readonly _vacancyService: VacancyService,
+        private readonly _activatedRoute: ActivatedRoute) { }
 
     public readonly catalog$ = this._vacancyService.catalog$;
+    public readonly pagination$ = this._vacancyService.pagination$;
 
     vacancyId: number = 0;
     aSalaries: any[] = [
@@ -55,6 +48,8 @@ export class CatalogVacancyComponent implements OnInit {
     ];
     selectedEmployment: any;
     searchText: string = "";
+    rowsCount: number = 0;
+    page: number = 0;
 
     // TODO: этот тип фильтра будем использовать при поиске. Вне поиска решили не делать.
     // aKeywords: any[] = [
@@ -65,7 +60,26 @@ export class CatalogVacancyComponent implements OnInit {
 
     public async ngOnInit() {
         await this.onLoadCatalogVacanciesAsync(); 
-        this.setDefaultFilters();
+        await this.initVacanciesPaginationAsync();
+        this.setDefaultFilters();                
+        this.checkUrlParams();    
+    };
+
+    private setUrlParams(page: number) {
+        this._router.navigate(["/vacancies"], {
+            queryParams: {
+                page: page
+            }
+        });
+    };
+
+    private checkUrlParams() {
+        this._activatedRoute.queryParams
+        .subscribe(params => {
+            console.log("params: ", params);
+            this.page = params["page"]
+            console.log("page: ", this.page);
+          });
     };
 
     /**
@@ -83,6 +97,7 @@ export class CatalogVacancyComponent implements OnInit {
         (await this._vacancyService.loadCatalogVacanciesAsync())
         .subscribe(_ => {
             console.log("Список вакансий: ", this.catalog$.value);
+            this.rowsCount = this.catalog$.value.total;
         });
     };
 
@@ -132,14 +147,39 @@ export class CatalogVacancyComponent implements OnInit {
      * @param searchText - Поисковая строка.
      * @returns - Список вакансий после поиска.
      */
-   public async onSearchVacanciesAsync(event: any) {
-    (await this._vacancyService.searchVacanciesAsync(event.query))
-    .subscribe(_ => {
-        console.log("Результаты поиска: ", this.catalog$.value);
-    });
-   };
+    public async onSearchVacanciesAsync(event: any) {
+        (await this._vacancyService.searchVacanciesAsync(event.query))
+            .subscribe(_ => {
+                console.log("Результаты поиска: ", this.catalog$.value);
+            });
+    };
 
     public async onLoadCatalogVacanciesAsync() {
-        await this.loadCatalogVacanciesAsync();
+        await this.loadCatalogVacanciesAsync();        
+    };
+
+    /**
+     * Функция пагинации вакансий.
+     * @param page - Номер страницы.
+     * @returns - Список вакансий.
+     */
+     public async onGetVacanciesPaginationAsync(event: any) {                
+        console.log(event);
+        (await this._vacancyService.getVacanciesPaginationAsync(event.page))
+            .subscribe(_ => {
+                console.log("Пагинация: ", this.pagination$.value), "page: " ;
+                this.setUrlParams(event.page + 1); // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
+            });
+    };
+    
+    /**
+     * Функция инициализации пагинации.
+     */
+     private async initVacanciesPaginationAsync() {                
+        (await this._vacancyService.getVacanciesPaginationAsync(0))
+            .subscribe(_ => {
+                console.log("Пагинация: ", this.pagination$.value), "page: " + this.page;
+                this.setUrlParams(1);    
+            });
     };
 }

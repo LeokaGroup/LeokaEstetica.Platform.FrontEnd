@@ -30,7 +30,18 @@
         <h3 (click)="onRouteSelectedVacancy(item.vacancyId)">{{item.vacancyName}}</h3>
         <div>{{item.vacancyText}}</div>
     </div>
+
+    <div>
+      <!-- Пагинация. -->
+      <p-paginator [rows]="20" 
+                  [totalRecords]="rowsCount"                  
+                  (onPageChange)="onGetVacanciesPaginationAsync($event)"
+                  *ngIf="rowsCount > 0">
+      </p-paginator>
+    </div>
   </div>
+
+ 
 
   <!-- Фильтры вакансий. -->
   <div class="col-lg-3 block-catalog-filters">
