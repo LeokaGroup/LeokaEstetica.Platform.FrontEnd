@@ -96,6 +96,7 @@ export class VacancyService {
      * @returns - Список вакансий.
      */
      public async getVacanciesPaginationAsync(page: number) {
+        // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
         return await this.http.get(API_URL.apiUrl + `/vacancies/pagination/${page + 1}`).pipe(
             tap(data => this.pagination$.next(data))
         );

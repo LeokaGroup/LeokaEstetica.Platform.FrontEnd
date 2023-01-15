@@ -168,10 +168,13 @@ export class CatalogVacancyComponent implements OnInit {
         (await this._vacancyService.getVacanciesPaginationAsync(event.page))
             .subscribe(_ => {
                 console.log("Пагинация: ", this.pagination$.value), "page: " ;
-                this.setUrlParams(event.page + 1);    
+                this.setUrlParams(event.page + 1); // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
             });
     };
     
+    /**
+     * Функция инициализации пагинации.
+     */
      private async initVacanciesPaginationAsync() {                
         (await this._vacancyService.getVacanciesPaginationAsync(0))
             .subscribe(_ => {
