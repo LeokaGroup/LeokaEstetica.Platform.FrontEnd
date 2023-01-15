@@ -31,8 +31,8 @@
         <div>{{item.vacancyText}}</div>
     </div>
 
-    <div>
-      <!-- Пагинация. -->
+    <!-- Пагинация. -->
+    <div>      
       <p-paginator [rows]="20" 
                   [totalRecords]="rowsCount"                  
                   (onPageChange)="onGetVacanciesPaginationAsync($event)"

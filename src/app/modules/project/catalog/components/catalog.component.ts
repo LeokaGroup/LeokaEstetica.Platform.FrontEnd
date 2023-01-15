@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { FilterProjectInput } from "../../detail/models/input/filter-project-input";
 import { ProjectService } from "../../services/project.service";
@@ -15,10 +15,12 @@ import { ProjectService } from "../../services/project.service";
  */
 export class CatalogProjectsComponent implements OnInit {
     constructor(private readonly _projectService: ProjectService,
-        private readonly _router: Router) {
+        private readonly _router: Router,
+        private readonly _activatedRoute: ActivatedRoute) {
     }
 
     public readonly catalog$ = this._projectService.catalog$;
+    public readonly pagination$ = this._projectService.pagination$;
         
     aDates: any[] = [
         { name: 'По дате', key: 'Date' }
@@ -41,11 +43,32 @@ export class CatalogProjectsComponent implements OnInit {
     selectedStage: any;
     searchText: string = "";
     aProjectsCatalog: any[] = [];
+    page: number = 0;
+    rowsCount: number = 0;
 
     public async ngOnInit() {
         forkJoin([
-           await this.loadCatalogProjectsAsync()
+           await this.loadCatalogProjectsAsync(),
+           this.checkUrlParams(),
+           await this.initVacanciesPaginationAsync()
         ]).subscribe();
+    };
+
+    private setUrlParams(page: number) {
+        this._router.navigate(["/projects"], {
+            queryParams: {
+                page: page
+            }
+        });
+    };
+
+    private checkUrlParams() {
+        this._activatedRoute.queryParams
+        .subscribe(params => {
+            console.log("params: ", params);
+            this.page = params["page"]
+            console.log("page: ", this.page);
+          });
     };
 
      /**
@@ -56,7 +79,8 @@ export class CatalogProjectsComponent implements OnInit {
         (await this._projectService.loadCatalogProjectsAsync())
         .subscribe(_ => {
             console.log("Список проектов: ", this.catalog$.value);
-            this.aProjectsCatalog = this.catalog$.value;
+            this.aProjectsCatalog = this.catalog$.value.catalogProjects;
+            this.rowsCount = this.catalog$.value.total;
         });
     };
 
@@ -119,5 +143,30 @@ export class CatalogProjectsComponent implements OnInit {
 
     public async onLoadCatalogProjectsAsync() {
         await this.loadCatalogProjectsAsync();
+    };
+
+    /**
+     * Функция пагинации проектов.
+     * @param page - Номер страницы.
+     * @returns - Список проектов.
+     */
+     public async onGetProjectsPaginationAsync(event: any) {                
+        console.log(event);
+        (await this._projectService.getProjectsPaginationAsync(event.page))
+            .subscribe(_ => {
+                console.log("Пагинация: ", this.pagination$.value), "page: " ;
+                this.setUrlParams(event.page + 1); // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
+            });
+    };
+    
+    /**
+     * Функция инициализации пагинации.
+     */
+     private async initVacanciesPaginationAsync() {                
+        (await this._projectService.getProjectsPaginationAsync(0))
+            .subscribe(_ => {
+                console.log("Пагинация: ", this.pagination$.value), "page: " + this.page;
+                this.setUrlParams(1);    
+            });
     };
 }
