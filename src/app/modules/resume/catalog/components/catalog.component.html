@@ -30,6 +30,15 @@
         <h3>{{item.lastName}} {{item.firstName}} {{item.patronymic ?? ''}}</h3>
         <div>{{item.aboutme}}</div>
     </div>
+
+     <!-- Пагинация. -->
+     <div>      
+      <p-paginator [rows]="20" 
+                  [totalRecords]="rowsCount"                  
+                  (onPageChange)="onGetResumesPaginationAsync($event)"
+                  *ngIf="rowsCount > 0">
+      </p-paginator>
+    </div>
   </div>
 
   <!-- <div class="col-lg-2"></div> -->

@@ -30,6 +30,15 @@
         <h3 (click)="onRouteSelectedProject(item.projectId)">{{item.projectName}}</h3>
         <div>{{item.projectDetails}}</div>
     </div>
+
+    <!-- Пагинация. -->
+    <div>      
+      <p-paginator [rows]="20" 
+                  [totalRecords]="rowsCount"                  
+                  (onPageChange)="onGetProjectsPaginationAsync($event)"
+                  *ngIf="rowsCount > 0">
+      </p-paginator>
+    </div>
   </div>
 
   <!-- <div class="col-lg-2"></div> -->

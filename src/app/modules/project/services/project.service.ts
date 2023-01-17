@@ -27,6 +27,7 @@ export class ProjectService {
     public projectTeamColumns$ = new BehaviorSubject<any>(null);   
     public projectTeam$ = new BehaviorSubject<any>(null);    
     public invitedProjectTeamMember$ = new BehaviorSubject<any>(null);    
+    public pagination$ = new BehaviorSubject<any>(null);    
 
     constructor(private readonly http: HttpClient) {
 
@@ -197,6 +198,18 @@ export class ProjectService {
      public async searchProjectsAsync(searchText: string) {
         return await this.http.get(API_URL.apiUrl + "/projects/search?searchText=" + searchText).pipe(
             tap(data => this.catalog$.next(data))
+        );
+    };
+
+    /**
+     * Функция пагинации проектов.
+     * @param page - Номер страницы.
+     * @returns - Список проектов.
+     */
+     public async getProjectsPaginationAsync(page: number) {
+        // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
+        return await this.http.get(API_URL.apiUrl + `/projects/pagination/${page + 1}`).pipe(
+            tap(data => this.pagination$.next(data))
         );
     };
 }
