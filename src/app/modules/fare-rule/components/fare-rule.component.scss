@@ -1,0 +1,13 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+
+.block-fare-rules {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.price {
+    font-size: 30px;
+    font-weight: 600;
+}
