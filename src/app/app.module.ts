@@ -24,6 +24,7 @@ import { ModerationModule } from './modules/moderation/moderation.module';
 import { ModerationService } from './modules/moderation/services/moderation.service';
 import { SearchProjectService } from './modules/search/services/search-project-service';
 import { ResumeService } from './modules/resume/catalog/services/resume.service';
+import { FareRuleService } from './modules/fare-rule/services/fare-rule.service';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { ResumeService } from './modules/resume/catalog/services/resume.service'
     ChatMessagesService,
     ModerationService,
     SearchProjectService,
-    ResumeService
+    ResumeService,
+    FareRuleService
   ],
 
   bootstrap: [AppComponent]
