@@ -1,0 +1,84 @@
+<form [formGroup]="formSignUp" class="section-1-container section-container">
+    <div class="container">
+      <div class="row">
+        <div class="col-10 offset-1 col-lg-8 offset-lg-2 div-wrapper d-flex justify-content-center align-items-center">
+          <div class="div-to-align">
+            <div class="row justify-content-center form-signup">
+              <!-- <h3 class="text-center title-text">Регистрация</h3> -->
+
+              <div class="d-flex mb-3 justify-content-between">
+                <div>
+                    <img src="../../../../assets/images/pay/logo-paymaster-white.png" class="img-pay">
+                </div>
+                <div>
+                  <img src="../../../../assets/images/pay/logo-mir.png" class="img-pay">
+                  <img src="../../../../assets/images/pay/logo-visa.png" class="img-pay">
+                  <img src="../../../../assets/images/pay/logo-mastercard.png" class="img-pay">
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <!-- <label for="exampleInputEmail1" class="form-label">Email</label> -->
+                <input type="text" 
+                        class="input-control" 
+                        aria-describedby="emailHelp" 
+                        formControlName="email"
+                        autocomplete="new-password"
+                        placeholder="Номер карты">
+                <div id="emailHelp" class="form-text">
+                    Мы не храним никакие данные вашей карты, а возлагаем это на платежную систему.
+                </div>
+              </div>
+
+              <div class="d-flex">
+                <div class="mb-3">
+                    <input type="text" 
+                            class="input-control card-short-field" 
+                            autocomplete="new-password"
+                            formControlName="password"
+                            placeholder="ММ / ГГ">
+                  </div>
+
+                  &nbsp;&nbsp;&nbsp;
+
+                  <div class="mb-3">
+                    <input type="text" 
+                            class="input-control card-short-field" 
+                            autocomplete="new-password"
+                            formControlName="password"
+                            placeholder="CVV / CVC">
+                  </div>                  
+              </div>
+
+              <div>
+                <input type="email" 
+                        class="input-control card-short-field" 
+                        autocomplete="new-password"
+                        formControlName="password"
+                        placeholder="Email для квитанции"
+                        *ngIf="!isEmail">
+            </div>
+
+              <div class="d-flex mb-3 mt-3">                
+                <p-checkbox [binary]="true" 
+                            inputId="binary"
+                            (onChange)="isEmail=!isEmail">
+                </p-checkbox>
+
+                &nbsp;
+
+                <label for="binary">
+                  <small>Использовать почту из моей анкеты</small>
+                </label>
+              </div>
+
+              <button type="submit" 
+                      class="btn btn-primary button-action-pur-control">
+                Оплатить
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>

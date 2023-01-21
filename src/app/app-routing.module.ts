@@ -30,6 +30,11 @@ const routes: Routes = [
   {
     path: "resumes",
     loadChildren: () => import('./modules/resume/resume.module').then(m => m.ResumeModule)
+  },
+
+  {
+    path: "pay",
+    loadChildren: () => import('./modules/pay/pay.module').then(m => m.PayModule)
   }
 ];
 
