@@ -1,0 +1,14 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+
+// TODO: Дублирует ,отрефачить и вынести в общие стили куда-нибудь.
+.form-signup {
+    padding-top: 100px;
+    width: 300px;
+}
+
+.card-short-field {
+    // width: 100px;
+    padding: 0 0px 0 25px;
+}

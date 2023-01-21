@@ -25,6 +25,8 @@ import { ModerationService } from './modules/moderation/services/moderation.serv
 import { SearchProjectService } from './modules/search/services/search-project-service';
 import { ResumeService } from './modules/resume/catalog/services/resume.service';
 import { FareRuleService } from './modules/fare-rule/services/fare-rule.service';
+import { PaymentService } from './modules/pay/services/pay.service';
+import { PayModule } from './modules/pay/pay.module';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,8 @@ import { FareRuleService } from './modules/fare-rule/services/fare-rule.service'
     PanelMenuModule,
     ToastModule,
     AvatarModule,
-    ModerationModule
+    ModerationModule,
+    PayModule
   ],
 
   providers: [
@@ -68,7 +71,8 @@ import { FareRuleService } from './modules/fare-rule/services/fare-rule.service'
     ModerationService,
     SearchProjectService,
     ResumeService,
-    FareRuleService
+    FareRuleService,
+    PaymentService
   ],
 
   bootstrap: [AppComponent]
