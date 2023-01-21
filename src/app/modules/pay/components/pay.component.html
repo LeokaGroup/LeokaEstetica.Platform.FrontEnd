@@ -1,4 +1,4 @@
-<form [formGroup]="formSignUp" class="section-1-container section-container">
+<form [formGroup]="formPay" class="section-1-container section-container">
     <div class="container">
       <div class="row">
         <div class="col-10 offset-1 col-lg-8 offset-lg-2 div-wrapper d-flex justify-content-center align-items-center">
@@ -18,11 +18,10 @@
               </div>
 
               <div class="mb-3">
-                <!-- <label for="exampleInputEmail1" class="form-label">Email</label> -->
                 <input type="text" 
                         class="input-control" 
                         aria-describedby="emailHelp" 
-                        formControlName="email"
+                        formControlName="pan"
                         autocomplete="new-password"
                         placeholder="Номер карты">
                 <div id="emailHelp" class="form-text">
@@ -35,7 +34,7 @@
                     <input type="text" 
                             class="input-control card-short-field" 
                             autocomplete="new-password"
-                            formControlName="password"
+                            formControlName="expiry"
                             placeholder="ММ / ГГ">
                   </div>
 
@@ -45,7 +44,7 @@
                     <input type="text" 
                             class="input-control card-short-field" 
                             autocomplete="new-password"
-                            formControlName="password"
+                            formControlName="cvc"
                             placeholder="CVV / CVC">
                   </div>                  
               </div>
@@ -54,15 +53,15 @@
                 <input type="email" 
                         class="input-control card-short-field" 
                         autocomplete="new-password"
-                        formControlName="password"
+                        formControlName="email"
                         placeholder="Email для квитанции"
                         *ngIf="!isEmail">
             </div>
 
               <div class="d-flex mb-3 mt-3">                
                 <p-checkbox [binary]="true" 
-                            inputId="binary"
-                            (onChange)="isEmail=!isEmail">
+                            inputId="binary"                            
+                            (onChange)="onChangevisibleEmailField()">
                 </p-checkbox>
 
                 &nbsp;
@@ -73,7 +72,8 @@
               </div>
 
               <button type="submit" 
-                      class="btn btn-primary button-action-pur-control">
+                      class="btn btn-primary button-action-pur-control"
+                      (click)="onCreateOrderAsync()">
                 Оплатить
               </button>
             </div>

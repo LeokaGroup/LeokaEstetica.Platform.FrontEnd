@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { forkJoin } from "rxjs";
+import { CreateOrderInput } from "../models/create-order-input";
 import { PaymentService } from "../services/pay.service";
 
 @Component({
@@ -13,18 +14,24 @@ import { PaymentService } from "../services/pay.service";
  * Класс компонента страницы оплаты.
  */
 export class PayComponent implements OnInit {
-    // public readonly fonData$ = this._landingService.fonData$;
+    public readonly createOrder$ = this._paymentService.createOrder$;
 
-    formSignUp: FormGroup = new FormGroup({
+    formPay: FormGroup = new FormGroup({
+        "pan": new FormControl("", [
+            Validators.required
+        ]),
 
         "email": new FormControl("", [
             Validators.required,
             Validators.email
         ]),
 
-        "password": new FormControl("", [
-            Validators.required,
-            Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)
+        "expiry": new FormControl("", [
+            Validators.required
+        ]),
+
+        "cvc": new FormControl("", [
+            Validators.required
         ])
     });
 
@@ -40,20 +47,28 @@ export class PayComponent implements OnInit {
     };
 
     /**
-     * Функция получает данные фона главного лендинга.
-     * @returns - Данные фона.
+     * Функция видимости поля почты.
      */
-    // private async getFonLandingStartAsync() {
-    //     (await this._landingService.getFonLandingStartAsync())
-    //     .subscribe(_ => {
-    //         console.log("Данные фона лендинга: ", this.fonData$.value);
-    //     });
-    // };
+    public onChangevisibleEmailField() {
+        this.isEmail = !this.isEmail;
+    };
 
     /**
-     * Функция управляет видимость поля Email.
+     * Функция создает палтеж.
+     * @returns - Данные платежа.
      */
-    // public onChangeVisibleEmail() {
-        
-    // };
+    public async onCreateOrderAsync() {
+        let createOrderInput = new CreateOrderInput();
+        createOrderInput.FareRuleId = localStorage["fr"];
+        createOrderInput.Email = this.formPay.value.email;
+        createOrderInput.PaymentData.Card.CardNumber = this.formPay.value.pan;
+        createOrderInput.PaymentData.Card.Expiry = this.formPay.value.expiry;
+        createOrderInput.PaymentData.Card.Cvc = this.formPay.value.cvc;
+        createOrderInput.IsProfileEmail = this.isEmail;
+
+        (await this._paymentService.createOrderAsync(createOrderInput))
+        .subscribe(_ => {
+            console.log("Данные платежа: ", this.createOrder$.value);
+        });
+    };
 }

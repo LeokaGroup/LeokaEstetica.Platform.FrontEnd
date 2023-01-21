@@ -36,4 +36,13 @@ export class FareRuleComponent implements OnInit {
             console.log("Правила тарифов: ", this.fareRules$.value);
         });
     };
+
+    /**
+     * Функция выбирает тариф.
+     * @param ruleId - Id тарифа.
+     */
+     public onSelectFareRule(ruleId: number) {
+        this._router.navigate(["/pay"]);
+        localStorage["fr"] = ruleId; // Записываем выбранный тариф.
+    };
 }
