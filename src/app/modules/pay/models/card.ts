@@ -5,7 +5,7 @@ export class Card {
     /**
      * Номер карты.
      */
-     CardNumber: string = "";
+     Pan: string = "";
 
      /**
       * Срок действия карты.

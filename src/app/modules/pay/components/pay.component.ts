@@ -61,7 +61,7 @@ export class PayComponent implements OnInit {
         let createOrderInput = new CreateOrderInput();
         createOrderInput.FareRuleId = localStorage["fr"];
         createOrderInput.Email = this.formPay.value.email;
-        createOrderInput.PaymentData.Card.CardNumber = this.formPay.value.pan;
+        createOrderInput.PaymentData.Card.Pan = this.formPay.value.pan;
         createOrderInput.PaymentData.Card.Expiry = this.formPay.value.expiry;
         createOrderInput.PaymentData.Card.Cvc = this.formPay.value.cvc;
         createOrderInput.IsProfileEmail = this.isEmail;
