@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
+import { CreateOrderInput } from "../../pay/models/create-order-input";
+import { PaymentService } from "../../pay/services/pay.service";
 import { FareRuleService } from "../services/fare-rule.service";
 
 @Component({
@@ -15,10 +17,12 @@ import { FareRuleService } from "../services/fare-rule.service";
 export class FareRuleComponent implements OnInit {
     constructor(private readonly _router: Router,
         private readonly _activatedRoute: ActivatedRoute,
-        private readonly _fareRuleService: FareRuleService) {
+        private readonly _fareRuleService: FareRuleService,
+        private readonly _paymentService: PaymentService) {
     }
 
-    public readonly fareRules$ = this._fareRuleService.fareRules$;         
+    public readonly fareRules$ = this._fareRuleService.fareRules$;  
+    public readonly createOrder$ = this._paymentService.createOrder$;       
 
     public async ngOnInit() {
         forkJoin([
@@ -38,11 +42,19 @@ export class FareRuleComponent implements OnInit {
     };
 
     /**
-     * Функция выбирает тариф.
-     * @param ruleId - Id тарифа.
+     * Функция создает заказ.
+     * @returns - Данные заказа.
      */
-     public onSelectFareRule(ruleId: number) {
-        this._router.navigate(["/pay"]);
-        localStorage["fr"] = ruleId; // Записываем выбранный тариф.
+     public async onCreateOrderAsync(fareRuleId: number) {
+        let createOrderInput = new CreateOrderInput();
+        createOrderInput.FareRuleId = fareRuleId;
+
+        (await this._paymentService.createOrderAsync(createOrderInput))
+        .subscribe((response: any) => {
+            console.log("Данные платежа: ", this.createOrder$.value);
+            if (+response.paymentId > 0) {
+                window.location.href = response.url;
+            }   
+        });
     };
 }

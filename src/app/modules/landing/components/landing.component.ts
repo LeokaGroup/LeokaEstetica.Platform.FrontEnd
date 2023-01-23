@@ -13,7 +13,7 @@ import { LandingService } from "../services/landing.service";
  */
 export class LandingComponent implements OnInit {
     public readonly fonData$ = this._landingService.fonData$;
-    public readonly platformOffers$ = this._landingService.platformOffers$;
+    public readonly platformOffers$ = this._landingService.platformOffers$;    
 
     constructor(private readonly _landingService: LandingService) {
     }
