@@ -1,70 +1,89 @@
-@use "/src/app/common/styles/spaces.scss";
-@use "/src/app/common/styles/control.scss";
-@use "/src/app/common/styles/styles.scss";
-
-.chat {
-    width: 750px;
-}
-
-::ng-deep.p-fieldset-toggleable .p-fieldset-legend a {
-  text-decoration: none;
-}
-
-/* Chat containers */
-.container {
-    border: 2px solid #dedede;
-    background-color: #f1f1f1;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px 0;
-}
-
-/* Darker chat container */
-.darker {
-    border-color: #ccc;
-    background-color: #ddd;
-}
-
-/* Clear floats */
-.container::after {
-    content: "";
-    clear: both;
-    display: table;
-}
-
 /* Style images */
 .container img {
-    float: left;
-    max-width: 60px;
-    width: 100%;
-    margin-right: 20px;
-    border-radius: 50%;
+  // float: left;
+  max-width: 32px;
+  width: 100%;
+  margin-right: 20px;
+  border-radius: 50%;
 }
 
-/* Style the right image */
-.container img.right {
-    float: right;
-    margin-left: 20px;
-    margin-right:0;
-}
-
-/* Style time text */
-.time-right {
-    float: right;
+  /* Style time text */
+  .time-right {
+    position: absolute;
+    top: 10px;
+    right: 5px;
     color: #aaa;
-}
-
-/* Style time text */
-.time-left {
-    float: left;
-    color: #999;
-}
-
-::ng-deep.p-splitter-panel-nested .p-splitter-panel {
-    display: block;
   }
 
-  .block-messages {
+ .block-messages {
     height: 300px;
     overflow-y: scroll;
   }
+
+    .comment-item {
+      position: relative;
+      -webkit-box-shadow: 0px 0px 15px -4px rgba(0, 0, 0, 0.2);
+      -moz-box-shadow: 0px 0px 15px -4px rgba(0, 0, 0, 0.2);
+      box-shadow: 0px 0px 15px -4px rgba(0, 0, 0, 0.2);
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      height: fit-content;
+      width: 100%;
+      word-wrap: break-word;
+    }
+
+    .user-name-comments {
+      position: absolute;
+      color: #50667b;
+      font-weight: 600;
+      text-decoration: none;
+      left: 45px;
+      top: 10px;
+      margin-bottom: 0;
+      transition: all 0.15s ease-in-out;
+    }
+
+    .user-name-comments:hover {
+      text-decoration: underline;
+    }
+
+    .user-label-comments {
+      position: absolute;
+      font-size: 16px;
+      color: #f1f1f1;
+      display: inline-block;
+      background-color: #9a9bab;
+      padding: 0px 10px;
+      top: 10px;
+      border-radius: 10px;
+      left: 190px;
+      margin-bottom: 0;
+    }
+
+    .user-avatar-comments {
+      border-radius: 50% !important;
+    }
+
+    .user-comment {
+      margin-bottom: 0;
+    }
+
+    .comments-panel {
+      max-width: 800px;
+    }
+
+    .comments-input {
+      margin-bottom: 1rem;
+    }
+
+    .time-right-chat {
+      position: static;
+    }
+
+    .comment-widtht-100 {
+      width: 100% !important;
+    }
+
+    .control-input-text-worksheet {
+      width: 100% !important;
+    }
