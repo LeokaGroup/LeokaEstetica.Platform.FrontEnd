@@ -1,35 +1,37 @@
 <nav class="navbar navbar-light bg-light justify-content-around">
-    <a class="navbar-brand">Navbar</a>
+    <a class="navbar-brand" href="#">
+      <img src="../../../../assets/images/landing/logo1.png" width="160" height="40" alt="Logo">
+    </a>
     <div class="form-inline">
       <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
       <div class="header-buttons d-flex">
         <div *ngFor="let item of headerData$.value">
             <div class="menu-item" (click)="onSelectHeaderItem(item)">{{item.menuItemTitle}}</div>
-        </div>        
+        </div>
       </div>
     </div>
-  
+
     <div class="form-inline header-buttons d-flex">
       <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
       <div class="d-flex">
         <div class="menu-item">
-          <button class="btn btn-primary btn-header button-action-auth-control" 
+          <button class="btn btn-primary btn-header button-action-auth-control"
           *ngIf="!isHideAuthButtons"
           (click)="onRouteSignIn()">Вход</button>
         </div>
-  
+
         <div class="menu-item">
-          <button class="btn btn-primary btn-header button-action-auth-control" 
+          <button class="btn btn-primary btn-header button-action-auth-control"
           *ngIf="!isHideAuthButtons"
           (click)="onRouteSignUp()">Регистрация</button>
         </div>
       </div>
     </div>
 
-    <p-avatar label="P" 
-    shape="circle" 
+    <p-avatar label="P"
+    shape="circle"
     *ngIf="isHideAuthButtons"
     (click)="onRouteProfile()">
     </p-avatar>

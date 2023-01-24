@@ -1,5 +1,5 @@
 @use "/src/app/common/styles/control.scss";
- 
+
  .header {
    padding: 10px;
    align-items: center;
@@ -16,5 +16,10 @@
  }
 
  .navbar-brand {
-   margin-right: 100px;
+  img {
+    transition: all 0.15s ease-in-out;
+  }
+  img:hover {
+    opacity: 0.8;
+  }
  }

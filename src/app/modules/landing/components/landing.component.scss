@@ -1,23 +1,32 @@
 .fon {
-  background-color: rgba(23, 52, 57, 0.95);
-  display: inline-block;
-  height: 100vh;
-  overflow: hidden;
-  overflow-x: hidden;
-  width: 100%;
+  position: relative;
   margin-top: -5px;
   padding-top: -5px;
+    display: inline-block;
+    background-color: rgba(23, 52, 57, 0.95);
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      overflow-x: hidden;
+}
 
-  img {
-    opacity: 0.1;
-  }
+.fon::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: url('../../../../assets/images/landing/bg-home1-1.jpg');
+  width: 100%;
+  height: 100%;
+  opacity: 0.1;
 }
 
 .fon-content {
   position: absolute;
   z-index: 2;
   top: 100px;
-  padding: 190px 0 225px;
+  padding: 190px 20px 225px;
 
   .fon-title {
     color: #fff;
