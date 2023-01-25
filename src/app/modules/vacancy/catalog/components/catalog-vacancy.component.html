@@ -2,29 +2,29 @@
 
 <div class="d-flex block-profile space-top-50">
   <div class="col-lg-3">
-
   </div>
 
   <div class="col-lg-6 block-catalog-vacancies">
-    <div class="mb-3 block-search">
+    <div class="mb-2 block-search">
       <span class="p-fluid control-search">
-        <p-autoComplete [(ngModel)]="searchText" 
-                        [suggestions]="catalog$.value.catalogVacancies" 
-                        [showEmptyMessage]="true" 
+        <p-autoComplete [(ngModel)]="searchText"
+                        [suggestions]="catalog$.value.catalogVacancies"
+                        [showEmptyMessage]="true"
                         emptyMessage="Результатов не найдено"
-                        field="vacancyName" 
+                        field="vacancyName"
                         [minLength]="1"
                         (completeMethod)="onSearchVacanciesAsync($event)"
                         (onClear)="onLoadCatalogVacanciesAsync()"
                         placeholder="Поиск по вакансиям...">
         </p-autoComplete>
+        <p class="vacancy-count">Найдено вакансий: {{ catalog$.value.total }}</p>
       </span>
     </div>
 
     <div class="catalog-vacancies-item" *ngFor="let item of catalog$.value.catalogVacancies">
         <div class="d-flex">
             <div>{{item.payment}}</div>
-            <div class="tag">{{item.workExperience}}</div>            
+            <div class="tag">{{item.workExperience}}</div>
             <div class="tag">{{item.employment}}</div>
         </div>
         <h3 (click)="onRouteSelectedVacancy(item.vacancyId)">{{item.vacancyName}}</h3>
@@ -32,16 +32,16 @@
     </div>
 
     <!-- Пагинация. -->
-    <div>      
-      <p-paginator [rows]="20" 
-                  [totalRecords]="rowsCount"                  
+    <div>
+      <p-paginator [rows]="20"
+                  [totalRecords]="rowsCount"
                   (onPageChange)="onGetVacanciesPaginationAsync($event)"
                   *ngIf="rowsCount > 0">
       </p-paginator>
     </div>
   </div>
 
- 
+
 
   <!-- Фильтры вакансий. -->
   <div class="col-lg-3 block-catalog-filters">
@@ -52,11 +52,11 @@
         <div>
           <!-- <label>Выберите вакансию для приглашения</label> -->
         </div>
-        <div>         
+        <div>
           <div *ngFor="let item of aSalaries" class="field-checkbox">
-            <p-radioButton [inputId]="item.key" 
-                            name="item" 
-                            [value]="item" 
+            <p-radioButton [inputId]="item.key"
+                            name="item"
+                            [value]="item"
                             [(ngModel)]="selectedSalary"
                             (onClick)="onFilterVacanciesAsync()">
             </p-radioButton>
@@ -71,9 +71,9 @@
         </div>
         <div>
           <div *ngFor="let item of aPays" class="field-checkbox">
-            <p-radioButton [inputId]="item.key" 
-                            name="item" 
-                            [value]="item" 
+            <p-radioButton [inputId]="item.key"
+                            name="item"
+                            [value]="item"
                             [(ngModel)]="selectedPay"
                             (onClick)="onFilterVacanciesAsync()">
             </p-radioButton>
@@ -88,9 +88,9 @@
         </div>
         <div>
           <div *ngFor="let item of aExperience" class="field-checkbox">
-            <p-radioButton [inputId]="item.key" 
-                            name="item" 
-                            [value]="item" 
+            <p-radioButton [inputId]="item.key"
+                            name="item"
+                            [value]="item"
                             [(ngModel)]="selectedExperience"
                             (onClick)="onFilterVacanciesAsync()">
             </p-radioButton>
@@ -103,12 +103,12 @@
         <div>
           <strong>Занятость</strong>
         </div>
-        <div>          
+        <div>
         <div *ngFor="let item of aEmployments" class="field-checkbox">
-          <p-checkbox name="item.key" 
-                      value="item" 
-                      [value]="item" 
-                      [(ngModel)]="selectedEmployment" 
+          <p-checkbox name="item.key"
+                      value="item"
+                      [value]="item"
+                      [(ngModel)]="selectedEmployment"
                       [inputId]="item.key"
                       (onChange)="onFilterVacanciesAsync()">
           </p-checkbox>
@@ -122,12 +122,12 @@
         <div>
           <strong>Ключевые слова</strong>
         </div>
-        <div>          
+        <div>
         <div *ngFor="let item of aKeywords" class="field-checkbox">
-          <p-checkbox name="item.key" 
-                      value="item" 
-                      [value]="item" 
-                      [(ngModel)]="selectedKeyword" 
+          <p-checkbox name="item.key"
+                      value="item"
+                      [value]="item"
+                      [(ngModel)]="selectedKeyword"
                       [inputId]="item.key">
           </p-checkbox>
           <label [for]="item.key">{{item.name}}</label>
