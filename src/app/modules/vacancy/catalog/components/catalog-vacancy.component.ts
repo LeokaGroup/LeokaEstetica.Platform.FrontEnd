@@ -30,7 +30,7 @@ export class CatalogVacancyComponent implements OnInit {
     aPays: any[] = [
         { name: 'Не имеет значения', key: 'UnknownPay' },
         { name: 'Есть оплата', key: 'Pay' },
-        { name: 'Без оплаты', key: 'NotPay' }        
+        { name: 'Без оплаты', key: 'NotPay' }
     ];
     selectedPay: any;
     aExperience: any[] = [
@@ -59,10 +59,10 @@ export class CatalogVacancyComponent implements OnInit {
     // selectedKeyword: any;
 
     public async ngOnInit() {
-        await this.onLoadCatalogVacanciesAsync(); 
+        await this.onLoadCatalogVacanciesAsync();
         await this.initVacanciesPaginationAsync();
-        this.setDefaultFilters();                
-        this.checkUrlParams();    
+        this.setDefaultFilters();
+        this.checkUrlParams();
     };
 
     private setUrlParams(page: number) {
@@ -86,14 +86,14 @@ export class CatalogVacancyComponent implements OnInit {
      * Функция проставляет начальные фильтры.
      */
     private setDefaultFilters() {
-        this.selectedSalary = this.aSalaries[0];  
+        this.selectedSalary = this.aSalaries[0];
     };
 
    /**
      * Функция загружает список вакансий для каталога.
      * @returns - Список вакансий.
      */
-    private async loadCatalogVacanciesAsync() {    
+    private async loadCatalogVacanciesAsync() {
         (await this._vacancyService.loadCatalogVacanciesAsync())
         .subscribe(_ => {
             console.log("Список вакансий: ", this.catalog$.value);
@@ -135,12 +135,12 @@ export class CatalogVacancyComponent implements OnInit {
     private createFilterVacancyResult(): FilterVacancyInput {
         let model = new FilterVacancyInput();
         model.Salary = this.selectedSalary ? this.selectedSalary.key : "None";
-        model.EmploymentsValues = this.selectedEmployment.map((u : any) => u.key).join(',');       
+        model.EmploymentsValues = this.selectedEmployment.map((u : any) => u.key).join(',');
         model.Experience = this.selectedExperience ? this.selectedExperience.key : "None";
         model.Pay = this.selectedPay ? this.selectedPay.key : "None";
 
         return model;
-    };    
+    };
 
     /**
      * Функция ищет вакансии по поисковому запросу.
@@ -155,7 +155,7 @@ export class CatalogVacancyComponent implements OnInit {
     };
 
     public async onLoadCatalogVacanciesAsync() {
-        await this.loadCatalogVacanciesAsync();        
+        await this.loadCatalogVacanciesAsync();
     };
 
     /**
@@ -163,7 +163,7 @@ export class CatalogVacancyComponent implements OnInit {
      * @param page - Номер страницы.
      * @returns - Список вакансий.
      */
-     public async onGetVacanciesPaginationAsync(event: any) {                
+     public async onGetVacanciesPaginationAsync(event: any) {
         console.log(event);
         (await this._vacancyService.getVacanciesPaginationAsync(event.page))
             .subscribe(_ => {
@@ -171,15 +171,15 @@ export class CatalogVacancyComponent implements OnInit {
                 this.setUrlParams(event.page + 1); // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
             });
     };
-    
+
     /**
      * Функция инициализации пагинации.
      */
-     private async initVacanciesPaginationAsync() {                
+     private async initVacanciesPaginationAsync() {
         (await this._vacancyService.getVacanciesPaginationAsync(0))
             .subscribe(_ => {
                 console.log("Пагинация: ", this.pagination$.value), "page: " + this.page;
-                this.setUrlParams(1);    
+                this.setUrlParams(1);
             });
     };
 }
