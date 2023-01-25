@@ -1,0 +1,64 @@
+<div class="d-flex block-profile space-top-50">
+  <div class="profile-left-menu col-lg-3">
+
+  </div>
+
+  <div>
+    <p-table [value]="userProjects$.value.userProjects" 
+            [(selection)]="selectedProjects" 
+            dataKey="projectId" 
+            [paginator]="true" 
+            [rows]="10"             
+            styleClass="p-datatable-gridlines" 
+            responsiveLayout="scroll"
+            (click)="onSelectProject()">
+      <ng-template pTemplate="caption">
+          <h3>Ваши проекты</h3>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+          <tr>
+            <!-- <th style="width: 4rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th> -->
+            <th>
+              
+            </th>
+              <th *ngFor="let item of projectColumns$.value">{{item.columnName}}</th>    
+              <th>Просмотр</th>        
+              <th>Редактирование</th>    
+              <th>Удаление</th>    
+          </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-project>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="project"></p-tableCheckbox>
+            </td>
+            <td>{{project.projectId}}</td>
+            <td>{{project.projectName}}</td>
+            <td>{{project.projectDetails}}</td>
+            <td>{{project.projectStatusName}}</td>
+            <td><button pButton type="button" 
+              label="Просмотр" 
+              class="p-button-outlined p-button-primaryproject.projectId" 
+              (click)="onRouteViewProject(project.projectId)">
+                </button>
+            </td>
+            <td><button pButton type="button" 
+                        label="Редактировать" 
+                        class="p-button-outlined p-button-primaryproject.projectId" 
+                        (click)="onRouteEditProject(project.projectId)">
+                </button>
+            </td>
+            <td><button pButton type="button" label="Удалить" class="p-button-outlined p-button-danger"></button></td>
+          </tr>
+      </ng-template>
+
+      <ng-template pTemplate="summary">
+          Всего: {{userProjects$.value.total}}
+      </ng-template>
+  </p-table>
+  </div>
+</div>

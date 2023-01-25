@@ -1,0 +1,40 @@
+.fon {
+  background-color: rgba(23, 52, 57, 0.95);
+  display: inline-block;
+  height: 100vh;
+  overflow: hidden;
+  overflow-x: hidden;
+  width: 100%;
+  margin-top: -5px;
+  padding-top: -5px;
+
+  img {
+    opacity: 0.1;
+  }
+}
+
+.fon-content {
+  position: absolute;
+  z-index: 2;
+  top: 100px;
+  padding: 190px 0 225px;
+
+  .fon-title {
+    color: #fff;
+  }
+
+  .fon-text {
+    color: rgba(255, 255, 255, .5);
+  }
+}
+
+.platform-offers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .offer-item {
+    width: 300px;
+    margin: 30px 20px 0px 0px;
+  }
+}

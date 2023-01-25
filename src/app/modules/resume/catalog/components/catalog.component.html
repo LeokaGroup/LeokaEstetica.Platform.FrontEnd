@@ -1,0 +1,50 @@
+<p-toast></p-toast>
+
+<div class="d-flex block-profile space-top-50">
+  <div class="col-lg-3">
+
+  </div>
+
+  <div class="col-lg-6 block-catalog-vacancies">
+    <div class="mb-3 block-search">
+      <span class="p-fluid control-search">
+        <p-autoComplete [(ngModel)]="searchText" 
+                        [suggestions]="aResumesCatalog" 
+                        [showEmptyMessage]="true" 
+                        emptyMessage="Результатов не найдено"
+                        field="vacancyName" 
+                        [minLength]="1"
+                        (completeMethod)="onSearchResumesAsync($event)"
+                        (onClear)="onLoadCatalogResumesAsync()"
+                        placeholder="Поиск по базе резюме...">
+        </p-autoComplete>
+      </span>
+    </div>
+    
+    <div class="catalog-vacancies-item" *ngFor="let item of aResumesCatalog">
+        <!-- <div class="d-flex">
+            <div>{{item.payment}}</div>
+            <div class="tag">{{item.workExperience}}</div>            
+            <div class="tag">{{item.employment}}</div>
+        </div> -->
+        <h3>{{item.lastName}} {{item.firstName}} {{item.patronymic ?? ''}}</h3>
+        <div>{{item.aboutme}}</div>
+    </div>
+
+     <!-- Пагинация. -->
+     <div>      
+      <p-paginator [rows]="20" 
+                  [totalRecords]="rowsCount"                  
+                  (onPageChange)="onGetResumesPaginationAsync($event)"
+                  *ngIf="rowsCount > 0">
+      </p-paginator>
+    </div>
+  </div>
+
+  <!-- <div class="col-lg-2"></div> -->
+
+  <!-- TODO: Пока решили не делать, подробности в задаче по фильтрам. -->
+  <!-- <div class="col-lg-3 block-catalog-filters">
+    <h3>Фильтры</h3>
+  </div> -->
+</div>

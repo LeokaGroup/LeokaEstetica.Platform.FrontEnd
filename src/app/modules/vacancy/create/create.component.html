@@ -1,0 +1,85 @@
+<p-toast></p-toast>
+
+<div class="d-flex block-profile space-top-50">
+  <div class="profile-left-menu col-lg-3">
+
+  </div>
+
+  <div class="block-worksheet">
+    <div class="worksheet-panel">
+      <p-panel header="Заполнение информации о вакансии" [toggleable]="true">   
+        <div class="d-flex">
+          <div class="control-input-text-worksheet">
+            <div>
+                <label>Название вакансии</label>
+            </div>
+            <div>
+                <input type="text" class="p-inputtext-sm input-control-worksheet control-project" placeholder="Название вакансии" pInputText
+              autocomplete="new-password" [(ngModel)]="vacancyName"/>    
+            </div>          
+          </div>         
+        </div>
+
+        <div class="d-flex">
+          <div class="control-input-text-worksheet mt-3">
+            <div>
+              <label>Опыт</label>
+            </div>
+            <div>
+              <input type="text" class="p-inputtext-sm input-control-worksheet control-vacancy" placeholder="1–3 года"
+                pInputText autocomplete="new-password" [(ngModel)]="workExperience" />
+            </div>
+          </div>
+
+          <div class="control-input-text-worksheet mt-3">
+            <div>
+              <label>Занятость</label>
+            </div>
+            <div>
+              <input type="text" class="p-inputtext-sm input-control-worksheet control-vacancy" placeholder="Полная занятость, удаленная работа"
+                pInputText autocomplete="new-password" [(ngModel)]="employment" />
+            </div>
+          </div>
+
+          <div class="control-input-text-worksheet mt-3">
+            <div>
+              <label>Оплата</label>
+            </div>
+            <div>
+              <input type="text" class="p-inputtext-sm input-control-worksheet control-vacancy"
+                placeholder="20 000 – 40 000 руб." pInputText autocomplete="new-password"
+                [(ngModel)]="payment" />
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex mt-3">
+            <div class="control-input-text-worksheet">
+                <div class="control-input-text-worksheet">
+                    <div class="d-flex worksheet-line">
+                        <div class="control-input-text-worksheet">
+                            <div>
+                                <label>Описание вакансии</label>
+                            </div>
+                            <div>
+                                <p-editor autocomplete="new-password" [(ngModel)]="vacancyText"  [style]="{'height':'320px'}"></p-editor>
+                            </div>
+                        </div>                         
+                    </div>
+                  </div>
+              </div>
+        </div>
+      </p-panel>
+    </div>
+
+    <div class="d-flex worksheet-line mt-3 mb-3">
+      <div class="control-input-text-worksheet">
+        <button type="button" 
+                class="btn btn-primary button-action-pur-control-worksheet" 
+                (click)="onCreateVacancyAsync()">
+          Сохранить
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
