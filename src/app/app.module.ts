@@ -18,7 +18,7 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 import { ToastModule } from 'primeng/toast';
 import { VacancyService } from './modules/vacancy/services/vacancy.service';
 import { ProjectService } from './modules/project/services/project.service';
-import {AvatarModule} from 'primeng/avatar';
+import { AvatarModule } from 'primeng/avatar';
 import { ChatMessagesService } from './modules/messages/chat/services/chat-messages.service';
 import { ModerationModule } from './modules/moderation/moderation.module';
 import { ModerationService } from './modules/moderation/services/moderation.service';

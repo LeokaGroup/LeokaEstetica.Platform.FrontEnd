@@ -41,9 +41,9 @@ export class LeftMenuComponent implements OnInit {
         private readonly _router: Router) {
     }
 
-    public async ngOnInit() {                 
+    public async ngOnInit() {
         if (localStorage["m_t"] == "1") {
-            await this.getProfileInfoAsync();      
+            await this.getProfileInfoAsync();
         }
 
         if (localStorage["m_t"] == "2") {
@@ -76,12 +76,13 @@ export class LeftMenuComponent implements OnInit {
     };
 
      /**
-     * Функция распределяет по роутам. 
+     * Функция распределяет по роутам.
      * @param event - Событие.
      */
     public async onSelectMenu(event: any) {
         console.log("event", event);
-        let text = event.target.textContent;
+      let text = event.target.textContent;
+      console.log('text', text);
 
         (await this._backOfficeService.selectProfileMenuAsync(text))
         .subscribe(_ => {
@@ -96,7 +97,7 @@ export class LeftMenuComponent implements OnInit {
                     }
                 });
             }
-            
+
             // Роут на изменение анкеты.
             if (this.aEditSysNames.includes(this.sysName)) {
                 this._router.navigate(["/profile/aboutme"], {
@@ -117,7 +118,7 @@ export class LeftMenuComponent implements OnInit {
             }
 
             // Роут на страницу создания вакансии.
-            if (this.aCreateVacanciesSysName.includes(this.sysName)) {
+            if (text.includes('Создать вакансию')) {
                 this._router.navigate(["/vacancies/create"]);
             }
         });
