@@ -38,6 +38,16 @@ export class BackOfficeService {
         );
     };   
 
+     /**
+     * Функция получает данные анкеты выбранного в базе резюме пользователя для просмотра.
+     * @returns - Данные обо мне.
+     */
+      public async getSelectedProfileInfoAsync(profileInfoId: number) {
+        return await this.http.get(API_URL.apiUrl + `/resumes/${profileInfoId}`).pipe(
+            tap(data => this.profileInfo$.next(data))
+        );
+    };  
+
     /**
      * Функция получает пункты меню профиля пользователя.
      * @returns Список меню.

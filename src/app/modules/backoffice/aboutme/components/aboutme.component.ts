@@ -201,11 +201,22 @@ export class AboutmeComponent implements OnInit, OnDestroy {
      * @returbs - Данные анкеты.
      */
     private async getProfileInfoAsync() {
-        (await this._backofficeService.getProfileInfoAsync())
-        .subscribe(_ => {
-            console.log("Данные анкеты: ", this.profileInfo$.value);
-            this.setEditFields();
-        });
+        // Если переходим из базы резюме.
+        if (+localStorage["p_i_i"] > 0) {
+            (await this._backofficeService.getSelectedProfileInfoAsync(localStorage["p_i_i"]))
+            .subscribe(_ => {
+                console.log("Данные анкеты: ", this.profileInfo$.value);
+                this.setEditFields();
+            });
+        }
+
+        else {
+            (await this._backofficeService.getProfileInfoAsync())
+                .subscribe(_ => {
+                    console.log("Данные анкеты: ", this.profileInfo$.value);
+                    this.setEditFields();
+                });
+        }
     };
 
     public async onSaveProfileUserSkillsAsync() {

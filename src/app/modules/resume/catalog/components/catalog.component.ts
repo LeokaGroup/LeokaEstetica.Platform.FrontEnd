@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
+import { BackOfficeService } from "src/app/modules/backoffice/services/backoffice.service";
 import { ResumeService } from "../services/resume.service";
 
 @Component({
@@ -15,7 +16,8 @@ import { ResumeService } from "../services/resume.service";
 export class CatalogResumeComponent implements OnInit {
     constructor(private readonly _router: Router,
         private readonly _resumeService: ResumeService,
-        private readonly _activatedRoute: ActivatedRoute) {
+        private readonly _activatedRoute: ActivatedRoute,
+        private readonly _backOfficeService: BackOfficeService) {
     }
 
     public readonly catalogResumes$ = this._resumeService.catalogResumes$;
@@ -104,5 +106,21 @@ export class CatalogResumeComponent implements OnInit {
                 console.log("Пагинация: ", this.pagination$.value), "page: " + this.page;
                 this.setUrlParams(1);    
             });
+    };
+
+    /**
+     * Функция переходит к анкете, который выбрали.
+     * @param profileInfoId - Id анкеты.
+     * @param userCode - Код пользователя.
+     */
+     public async onRouteSelectedResume(profileInfoId: number, userCode: string) {
+        localStorage["p_i_i"] = profileInfoId; // Записываем в кэш Id выбранной анкеты в базе резюме.
+
+        this._router.navigate(["/profile/aboutme"], {
+            queryParams: {
+                mode: "view",
+                uc: userCode
+            }
+        });
     };
 }
