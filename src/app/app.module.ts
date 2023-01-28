@@ -27,6 +27,7 @@ import { ResumeService } from './modules/resume/catalog/services/resume.service'
 import { FareRuleService } from './modules/fare-rule/services/fare-rule.service';
 import { PaymentService } from './modules/pay/services/pay.service';
 import { PayModule } from './modules/pay/pay.module';
+import { SubscriptionsService } from './modules/backoffice/subscriptions/services/subscriptions.service';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { PayModule } from './modules/pay/pay.module';
     SearchProjectService,
     ResumeService,
     FareRuleService,
-    PaymentService
+    PaymentService,
+    SubscriptionsService
   ],
 
   bootstrap: [AppComponent]
