@@ -34,6 +34,9 @@ export class LeftMenuComponent implements OnInit {
     aCreateVacanciesSysName: string[] = [
         "CreateVacancy"
     ];
+    aSubscriptionsSysNames: string[] = [
+        "Subscriptions"
+    ];
 
     manuItems: any[] = [];
 
@@ -119,6 +122,11 @@ export class LeftMenuComponent implements OnInit {
             // Роут на страницу создания вакансии.
             if (this.aCreateVacanciesSysName.includes(this.sysName)) {
                 this._router.navigate(["/vacancies/create"]);
+            }
+
+            // Роут на страницу создания вакансии.подписок
+            if (this.aSubscriptionsSysNames.includes(this.sysName)) {
+                this._router.navigate(["/subscriptions"]);
             }
         });
     };

@@ -23,13 +23,16 @@ import { CreateProjectComponent } from './project/create-project/components/crea
 import {EditorModule} from 'primeng/editor';
 import { ButtonModule } from 'primeng/button';
 import {DropdownModule} from 'primeng/dropdown';
+import { SubscriptionsComponent } from './subscriptions/components/subscriptions.component';
+import { CardModule } from 'primeng/card';
 
 
 @NgModule({
     declarations: [
         AboutmeComponent,
         MyProjectsComponent,
-        CreateProjectComponent
+        CreateProjectComponent,
+        SubscriptionsComponent
     ],
 
     imports: [
@@ -49,7 +52,8 @@ import {DropdownModule} from 'primeng/dropdown';
         TableModule,
         EditorModule,
         ButtonModule,
-        DropdownModule
+        DropdownModule,
+        CardModule
     ],
 
     exports: [],

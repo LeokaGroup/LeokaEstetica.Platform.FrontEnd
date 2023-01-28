@@ -1,0 +1,12 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+
+.block-subscriptions {
+    display: flex;
+    flex-wrap: wrap;
+
+    .subscription {
+        padding: 20px 20px;
+    }
+}

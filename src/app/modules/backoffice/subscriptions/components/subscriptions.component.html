@@ -1,0 +1,19 @@
+<p-toast></p-toast>
+
+<div class="d-flex block-profile space-top-50">
+  <div class="profile-left-menu col-lg-3">
+
+  </div>
+
+  <div class="block-worksheet block-subscriptions">
+    <div class="worksheet-panel subscription" *ngFor="let item of subscriptions$.value">
+        <p-card header="Подписка" subheader="{{item.subscriptionName}}" [style]="{width: '360px'}" styleClass="p-card-shadow">
+            <ng-template pTemplate="header">
+                
+            </ng-template>
+
+            <button pButton pRipple type="button" label="Что входит в подписку?" class="p-button-text p-button-plain"></button>          
+        </p-card>
+    </div>
+  </div>
+</div>

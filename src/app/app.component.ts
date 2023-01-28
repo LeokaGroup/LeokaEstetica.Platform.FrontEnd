@@ -16,7 +16,8 @@ export class AppComponent implements OnInit {
     "/profile/projects/my",
     "/profile/projects/create",
     "/vacancies",
-    "/projects/project?projectId"
+    "/projects/project?projectId",
+    "/subscriptions"
   ];
 
   private _aVisibleVacancyMenuRoutes: string[] = [
