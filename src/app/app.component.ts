@@ -75,10 +75,15 @@ export class AppComponent implements OnInit {
 
     this._activatedRoute.queryParams
       .subscribe(params => {
-        console.log("uc", params["uc"]);
+        // Для просмотра анкеты другого пользователя.
         if (params["uc"] !== null && params["uc"] !== undefined) {
           this.isVisibleMenu = true;
-        }       
+        }      
+        
+        // Для просмотра проекта.
+        if (params["projectId"] > 0 && params["mode"] == "view") {
+          this.isVisibleMenu = true;
+        }  
       });
   };
 }
