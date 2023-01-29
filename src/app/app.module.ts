@@ -28,12 +28,14 @@ import { FareRuleService } from './modules/fare-rule/services/fare-rule.service'
 import { PaymentService } from './modules/pay/services/pay.service';
 import { PayModule } from './modules/pay/pay.module';
 import { SubscriptionsService } from './modules/backoffice/subscriptions/services/subscriptions.service';
+import { FooterComponent } from './modules/footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    LeftMenuComponent
+    LeftMenuComponent,
+    FooterComponent
   ],
 
   imports: [
