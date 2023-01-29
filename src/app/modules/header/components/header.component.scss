@@ -8,13 +8,20 @@
    top: 0;
  }
 
- .menu-item {
-   padding: 0 10px;
-   position: relative;
-   z-index: 1;
-   cursor: pointer;
- }
+
 
  .navbar-brand {
    margin-right: 100px;
+ }
+ .ng-star-inserted {
+  margin-left: 15px;
+  position: relative;
+  border: 1px solid #212529;
+  cursor: pointer;
+  text-decoration: none;
+  background: #f8f9fa;
+  color: #403866;
+  padding: 7px;
+  font-family: arial;
+  border-radius: 5px;
  }
