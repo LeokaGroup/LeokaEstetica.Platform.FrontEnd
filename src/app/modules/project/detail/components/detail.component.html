@@ -221,7 +221,21 @@
                             <div class="col flex align-items-center justify-content-center" 
                                 *ngFor="let item of messages$.value">
                                 <div class="block-message" (click)="onGetDialogAsync(item.dialogId)">
-                                  <span class="message">{{item.lastMessage}}</span>
+                                  <div class="d-flex justify-content-between">
+                                    <div>
+                                      <div>
+                                        <strong>{{item.fullName}}</strong>
+                                      </div>
+                                      
+                                      <div>
+                                        <span class="message">{{item.lastMessage}}</span>
+                                      </div>                                    
+                                    </div>
+  
+                                    <div>
+                                      {{item.calcShortDate}}
+                                    </div>
+                                  </div>
                                 </div>
                             </div>
                         </ng-template>
