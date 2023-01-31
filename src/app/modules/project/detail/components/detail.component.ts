@@ -91,9 +91,9 @@ export class DetailProjectComponent implements OnInit {
         await this.getProjectVacanciesAsync(),
         await this.getProjectVacanciesColumnNamesAsync(),
         await this.getAvailableAttachVacanciesAsync(),
-        await this.getProjectMessagesAsync(),
+        await this.getProjectDialogsAsync(),
         await this.onWriteOwnerDialogAsync(),
-        await this.getProjectDialogMessages(),
+        // await this.getProjectDialogMessages(),
         await this.getProjectCommentsAsync(),
         await this.getProjectTeamColumnsNamesAsync(),
         await this.getProjectTeamAsync()
@@ -365,7 +365,12 @@ export class DetailProjectComponent implements OnInit {
             });
     };
 
-    private async getProjectMessagesAsync() {       
+    /**
+     * TODO: Эту функцию запускать при раскрытии чата, не надо на ините дергать ее.
+     * Функция получает список диалогов.
+     * @returns - Список диалогов.
+     */
+    private async getProjectDialogsAsync() {       
         (await this._messagesService.getProjectDialogsAsync())
         .subscribe(async _ => {
             console.log("Сообщения чата проекта: ", this.messages$.value);     
@@ -382,6 +387,11 @@ export class DetailProjectComponent implements OnInit {
         });
     };
 
+    /**
+     * Функция получает диалог и его сообщения.
+     * @param discussionTypeId - Id типа обсуждения.
+     * @returns - Диалог и его сообщения.
+     */
     private async getProjectDialogMessages() {
         (await this._messagesService.getProjectDialogAsync(this.projectId))
             .subscribe(_ => {

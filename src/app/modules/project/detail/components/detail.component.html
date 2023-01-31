@@ -209,19 +209,25 @@
         </ng-template>
         <ng-template pTemplate>
             <p-splitter layout="vertical" [panelSizes]="[15,85]">
-                <ng-template pTemplate>
+                <!-- <ng-template pTemplate>
                     <div class="col flex align-items-center justify-content-center">
                       
                     </div>
-                </ng-template>
+                </ng-template> -->
                 <ng-template pTemplate>
-                    <p-splitter [panelSizes]="[20,80]">
-                        <!-- <ng-template pTemplate>
-                            <div class="col flex align-items-center justify-content-center">
-                                Panel 3
+                    <p-splitter [panelSizes]="[20,80]" [style]="{'width': '800px'}">
+                      <!-- Левая область чата. -->
+                        <ng-template pTemplate>
+                            <div class="col flex align-items-center justify-content-center" 
+                                *ngFor="let item of messages$.value">
+                                <div class="block-message">
+                                  <span class="message">{{item.lastMessage}}</span>
+                                </div>
+                                <!-- <hr> -->
                             </div>
-                        </ng-template> -->
+                        </ng-template>
                         
+                        <!-- Основная область чата. -->
                         <ng-template pTemplate>
                             <div class="block-messages">
                               <div *ngFor="let item of dialog$.value.messages">
@@ -243,13 +249,13 @@
                               (keyup.enter)="onSendMessageAsync()" />    
                           </div>   
                 
-                            <div class="d-flex justify-content-end">
+                            <!-- <div class="d-flex justify-content-end">
                               <button pButton type="button" 
                                 label="Отправить"
                                 class="p-button-outlined"
                                 (click)="onSendMessageAsync()">
                               </button>
-                            </div>
+                            </div> -->
                         </ng-template>
                     </p-splitter>
                 </ng-template>
