@@ -47,6 +47,7 @@ export class SignInComponent implements OnInit {
             if (this.userData$.value.errors == null) {
                 localStorage["t_n"] = this.userData$.value.token;
                 localStorage["u_c"] = this.userData$.value.userCode;
+                
                 this._router.navigate(["/profile/aboutme"], {
                     queryParams: {
                         mode: "view"

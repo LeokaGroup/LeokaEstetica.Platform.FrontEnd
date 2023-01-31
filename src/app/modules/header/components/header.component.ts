@@ -25,6 +25,8 @@ export class HeaderComponent implements OnInit {
         await this.getHeaderItemsAsync();
         await this._headerService.refreshTokenAsync();
         this.checkUrlParams();
+
+        this.isHideAuthButtons = localStorage["t_n"] ? true : false;
     }
 
     /**
@@ -62,9 +64,7 @@ export class HeaderComponent implements OnInit {
         .subscribe(params => {
             let mode = params["mode"];
 
-            if (!mode || mode == "view") {
-                this.isHideAuthButtons = true;
-            }          
+                   
           });
     };
 
