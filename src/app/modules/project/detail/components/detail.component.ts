@@ -378,12 +378,12 @@ export class DetailProjectComponent implements OnInit {
             console.log("userName", this.userName);
             
             // Диалогов нет, создаем новый пустой диалог для начала общения.
-            if (!this.messages$.value.length) {
-                (await this._messagesService.getProjectDialogAsync(this.projectId))
-                    .subscribe(_ => {
-                        console.log("Получили диалог: ", this.dialog$.value);
-                    });
-            }
+            // if (!this.messages$.value.length) {
+            //     (await this._messagesService.getProjectDialogAsync(this.projectId))
+            //         .subscribe(_ => {
+            //             console.log("Получили диалог: ", this.dialog$.value);
+            //         });
+            // }
         });
     };
 
@@ -392,8 +392,10 @@ export class DetailProjectComponent implements OnInit {
      * @param discussionTypeId - Id типа обсуждения.
      * @returns - Диалог и его сообщения.
      */
-    private async getProjectDialogMessages() {
-        (await this._messagesService.getProjectDialogAsync(this.projectId))
+    public async onGetDialogAsync(dialogId: number) {
+        this.dialogId = dialogId;
+
+        (await this._messagesService.getProjectDialogAsync(this.projectId, dialogId))
             .subscribe(_ => {
                 console.log("Сообщения диалога: ", this.dialog$.value);
             });
@@ -424,7 +426,7 @@ export class DetailProjectComponent implements OnInit {
         .subscribe(async _ => {   
             console.log("Сообщения диалога: ", this.messages$.value);    
             this.message = "";     
-            await this.getProjectDialogMessages();  
+            await this.onGetDialogAsync(this.dialogId);  
         });
     };
 

@@ -202,11 +202,11 @@
                   [minSizes]="[10,0]" 
                   styleClass="mb-5" 
                   class="chat">
-        <ng-template pTemplate>
+        <!-- <ng-template pTemplate>
             <div class="col flex align-items-center justify-content-center">
                 {{userName}}
             </div>
-        </ng-template>
+        </ng-template> -->
         <ng-template pTemplate>
             <p-splitter layout="vertical" [panelSizes]="[15,85]">
                 <!-- <ng-template pTemplate>
@@ -220,10 +220,9 @@
                         <ng-template pTemplate>
                             <div class="col flex align-items-center justify-content-center" 
                                 *ngFor="let item of messages$.value">
-                                <div class="block-message">
+                                <div class="block-message" (click)="onGetDialogAsync(item.dialogId)">
                                   <span class="message">{{item.lastMessage}}</span>
                                 </div>
-                                <!-- <hr> -->
                             </div>
                         </ng-template>
                         
@@ -232,7 +231,6 @@
                             <div class="block-messages">
                               <div *ngFor="let item of dialog$.value.messages">
                                 <div>
-                                  <!-- <img src="/w3images/bandmember.jpg" alt="Avatar"> -->
                                   <p>{{item.message}}</p>
                                   <span class="time-right">{{item.created}}</span>
                                 </div>                             
@@ -247,7 +245,7 @@
                               autocomplete="new-password" 
                               [(ngModel)]="message"
                               (keyup.enter)="onSendMessageAsync()" />    
-                          </div>   
+                            </div>   
                 
                             <!-- <div class="d-flex justify-content-end">
                               <button pButton type="button" 
