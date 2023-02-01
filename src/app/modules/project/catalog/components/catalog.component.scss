@@ -1,3 +1,19 @@
 @use "/src/app/common/styles/spaces.scss";
 @use "/src/app/common/styles/control.scss";
 @use "/src/app/common/styles/styles.scss";
+
+.project-text-block {
+  padding: 10px 0;
+}
+
+.catalog-vacancies-item {
+  margin: 10px 0;
+}
+
+.block-catalog-filters {
+  margin: 0px 0px 10px 10px;
+}
+
+.block-profile {
+  overflow-x: hidden;
+}

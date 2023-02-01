@@ -22,6 +22,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { PaginatorModule } from 'primeng/paginator';
+import { TagModule } from 'primeng/tag';
 
 @NgModule({
     declarations: [
@@ -47,7 +48,8 @@ import { PaginatorModule } from 'primeng/paginator';
         DropdownModule,
         RadioButtonModule,
         AutoCompleteModule,
-        PaginatorModule
+        PaginatorModule,
+        TagModule
     ],
 
     exports: [],

@@ -27,8 +27,10 @@
             <div class="tag">{{item.workExperience}}</div>            
             <div class="tag">{{item.employment}}</div>
         </div> -->
-        <h3 (click)="onRouteSelectedProject(item.projectId)">{{item.projectName}}</h3>
-        <div>{{item.projectDetails}}</div>
+        <div class="project-text-block">
+          <h3 class="project-title" (click)="onRouteSelectedProject(item.projectId)">{{item.projectName}}</h3>
+          <div class="project-text">{{item.projectDetails}}</div>
+        </div>
     </div>
 
     <!-- Пагинация. -->

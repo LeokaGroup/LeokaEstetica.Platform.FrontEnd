@@ -23,12 +23,23 @@
 
     <div class="catalog-vacancies-item" *ngFor="let item of catalog$.value.catalogVacancies">
         <div class="d-flex">
-            <div>{{item.payment}}</div>
-            <div class="tag">{{item.workExperience}}</div>
-            <div class="tag">{{item.employment}}</div>
+            <div>              
+              <p-tag styleClass="mr-2" severity="warning" value="{{item.payment}}"></p-tag>
+            </div>
+
+            <div class="tag">
+              <p-tag styleClass="mr-2" severity="info" value="{{item.workExperience}}"></p-tag>
+            </div>          
+
+            <div class="tag">
+              <p-tag styleClass="mr-2" severity="success" value="{{item.employment}}"></p-tag>
+            </div>
         </div>
-        <h3 (click)="onRouteSelectedVacancy(item.vacancyId)">{{item.vacancyName}}</h3>
-        <div>{{item.vacancyText}}</div>
+        
+        <div class="vacancy-text-block">
+          <h3 class="vacancy-title" (click)="onRouteSelectedVacancy(item.vacancyId)">{{item.vacancyName}}</h3>
+          <div class="vacancy-text">{{item.vacancyText}}</div>
+        </div>
     </div>
 
     <!-- Пагинация. -->

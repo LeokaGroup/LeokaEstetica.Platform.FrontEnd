@@ -30,6 +30,10 @@ export class AppComponent implements OnInit {
     "/projects"
   ];
 
+  private resumeModeUrls = [
+    "/resumes"
+  ];
+
   constructor(public networkService: NetworkService,
     private readonly _router: Router,
     private readonly _activatedRoute: ActivatedRoute) { }
@@ -68,7 +72,8 @@ export class AppComponent implements OnInit {
       this.isVisibleMenu = true;
     }
 
-    if (this.projectModeUrls.includes(currentUrl)) {
+    if (this.projectModeUrls.includes(currentUrl) 
+    || this.resumeModeUrls.includes(currentUrl)) {
       this.isVisibleMenu = true;
       localStorage["m_t"] = 1;
     }
@@ -84,6 +89,10 @@ export class AppComponent implements OnInit {
         if (params["projectId"] > 0 && params["mode"] == "view") {
           this.isVisibleMenu = true;
         }  
+
+        if (params["page"]) {
+          this.isVisibleMenu = true;
+        }
       });
   };
 }
