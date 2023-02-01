@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NavigationStart, Router, Event as NavigationEvent, ActivatedRoute } from "@angular/router";
 import { NetworkService } from './core/interceptors/network.service';
 
@@ -33,24 +33,35 @@ export class AppComponent implements OnInit {
   private resumeModeUrls = [
     "/resumes"
   ];
+  counter: number = 0;
 
   constructor(public networkService: NetworkService,
     private readonly _router: Router,
-    private readonly _activatedRoute: ActivatedRoute) { }
+    private readonly _activatedRoute: ActivatedRoute,
+    private changeDetectorRef: ChangeDetectorRef) { }
 
   public ngOnInit() {
     this.checkCurrentRouteUrl();
   };
 
+  public rerender(): void {
+    console.log("reload");
+    this.isVisibleMenu = false;
+    this.changeDetectorRef.detectChanges();
+    this.isVisibleMenu = true;
+};
+
   /**
    * Функция проверяет текущий роут.
    */
-  private checkCurrentRouteUrl() {
+  private checkCurrentRouteUrl() {  
     this._router.events
       .subscribe(
         (event: NavigationEvent) => {
+          this.rerender();
+
           if (event instanceof NavigationStart) {
-            console.log(event.url);
+            console.log(event.url);          
             this.checkRoutes(event.url);
           }
         });

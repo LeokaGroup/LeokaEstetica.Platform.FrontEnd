@@ -25,7 +25,7 @@ import { UpdateProjectInput } from "../models/input/update-project-input";
 /**
  * Класс деталей проекта (используется для изменения и просмотра проекта).
  */
-export class DetailProjectComponent implements OnInit {
+export class DetailProjectComponent {
     constructor(private readonly _projectService: ProjectService,
         private readonly _activatedRoute: ActivatedRoute,
         private readonly _signalrService: SignalrService,

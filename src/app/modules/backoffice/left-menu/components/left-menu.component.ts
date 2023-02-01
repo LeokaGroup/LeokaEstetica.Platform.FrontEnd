@@ -38,7 +38,7 @@ export class LeftMenuComponent implements OnInit {
         "Subscriptions"
     ];
 
-    manuItems: any[] = [];
+    manuItems: any[] = [];    
 
     constructor(private readonly _backOfficeService: BackOfficeService,
         private readonly _router: Router) {
@@ -52,7 +52,7 @@ export class LeftMenuComponent implements OnInit {
         if (localStorage["m_t"] == "2") {
             await this.getVacancyInfoAsync();
         }
-    };
+    };   
 
     /**
      * Функция получает пункты меню профиля пользователя.
