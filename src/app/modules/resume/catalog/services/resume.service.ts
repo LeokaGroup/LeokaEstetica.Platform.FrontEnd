@@ -10,6 +10,7 @@ import { API_URL } from 'src/app/core/core-urls/api-urls';
 export class ResumeService {
     public catalogResumes$ = new BehaviorSubject<any>(null);
     public pagination$ = new BehaviorSubject<any>(null);
+    public access$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -45,6 +46,16 @@ export class ResumeService {
         // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
         return await this.http.get(API_URL.apiUrl + `/resumes/pagination/${page + 1}`).pipe(
             tap(data => this.pagination$.next(data))
+        );
+    };
+
+    /**
+     * Функция проверяет доступ к базе резюме.
+     * @returns - Доступ.
+     */
+     public async checkAvailableAccessResumesAsync() {
+        return await this.http.get(API_URL.apiUrl + `/resumes/access`).pipe(
+            tap(data => this.access$.next(data))
         );
     };
 }

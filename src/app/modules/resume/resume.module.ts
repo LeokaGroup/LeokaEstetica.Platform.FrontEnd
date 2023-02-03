@@ -24,6 +24,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CatalogResumeComponent } from './catalog/components/catalog.component';
 import { PaginatorModule } from 'primeng/paginator';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 
 @NgModule({
     declarations: [
@@ -51,7 +53,9 @@ import { PaginatorModule } from 'primeng/paginator';
         SplitterModule,
         OverlayPanelModule,
         AutoCompleteModule,
-        PaginatorModule
+        PaginatorModule,
+        MessagesModule,
+        MessageModule
     ],
 
     exports: [],
