@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
-import { BackOfficeService } from "src/app/modules/backoffice/services/backoffice.service";
 import { ResumeService } from "../services/resume.service";
 
 @Component({
@@ -16,23 +15,24 @@ import { ResumeService } from "../services/resume.service";
 export class CatalogResumeComponent implements OnInit {
     constructor(private readonly _router: Router,
         private readonly _resumeService: ResumeService,
-        private readonly _activatedRoute: ActivatedRoute,
-        private readonly _backOfficeService: BackOfficeService) {
+        private readonly _activatedRoute: ActivatedRoute) {
     }
 
     public readonly catalogResumes$ = this._resumeService.catalogResumes$;
     public readonly pagination$ = this._resumeService.pagination$;
+    public readonly access$ = this._resumeService.access$;
 
     aResumesCatalog: any[] = [];
     searchText: string = "";
     page: number = 0;
     rowsCount: number = 0;
+    availableText: string = "Для доступа к базе резюме Вам нужно приобрести один из платных тарифов \"Бизнес\" или \"Профессиональный\".";
+    isAvailable: boolean = false;
 
     public async ngOnInit() {
-        forkJoin([
-           await this.loadCatalogResumesAsync(),
+        forkJoin([          
            this.checkUrlParams(),
-           await this.initResumesPaginationAsync()
+           await this.checkAvailableAccessResumesAsync()
         ]).subscribe();
     };
 
@@ -122,5 +122,23 @@ export class CatalogResumeComponent implements OnInit {
                 uc: userCode
             }
         });
+    };
+
+     /**
+     * Функция проверяет доступ к базе резюме.
+     * @returns - Доступ.
+     */
+     private async checkAvailableAccessResumesAsync() {                
+        (await this._resumeService.checkAvailableAccessResumesAsync())
+            .subscribe(async (response: any) => {
+                console.log("Доступ: ", this.access$.value);
+                this.isAvailable = response.access > 2;
+
+                // Доступ к базе резюме даем.
+                if (this.isAvailable) {
+                    await this.loadCatalogResumesAsync();
+                    await this.initResumesPaginationAsync();
+                }                
+            });
     };
 }
