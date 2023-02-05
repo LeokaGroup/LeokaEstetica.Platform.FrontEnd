@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
     "/resumes"
   ];
   counter: number = 0;
+  currentUrl: string = "";
 
   constructor(public networkService: NetworkService,
     private readonly _router: Router,
@@ -57,12 +58,14 @@ export class AppComponent implements OnInit {
   private checkCurrentRouteUrl() {  
     this._router.events
       .subscribe(
-        (event: NavigationEvent) => {
-          this.rerender();
-
+        (event: NavigationEvent) => {          
           if (event instanceof NavigationStart) {
             console.log(event.url);          
             this.checkRoutes(event.url);
+
+            if (this.currentUrl == "/") {
+              this.isVisibleMenu = false;
+            }
           }
         });
   };
@@ -72,8 +75,11 @@ export class AppComponent implements OnInit {
    * @param currentUrl - Текущий роут.
    */
   private checkRoutes(currentUrl: string) {
+    this.currentUrl = currentUrl;
+    this.rerender();
+
     // Отображение левого меню профиля пользователя.
-    if (this._aVisibleProfileMenuRoutes.includes(currentUrl)) {
+    if (this._aVisibleProfileMenuRoutes.includes(currentUrl)) {      
       this.isVisibleMenu = true;
       localStorage["m_t"] = 1;
     }
@@ -87,6 +93,11 @@ export class AppComponent implements OnInit {
     || this.resumeModeUrls.includes(currentUrl)) {
       this.isVisibleMenu = true;
       localStorage["m_t"] = 1;
+    }
+
+    if (currentUrl.indexOf("projectId") > 0) {
+      this.rerender();
+      this.isVisibleMenu = true;
     }
 
     this._activatedRoute.queryParams
