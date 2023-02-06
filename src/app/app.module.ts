@@ -29,6 +29,8 @@ import { PaymentService } from './modules/pay/services/pay.service';
 import { PayModule } from './modules/pay/pay.module';
 import { SubscriptionsService } from './modules/backoffice/subscriptions/services/subscriptions.service';
 import { MenuModule } from 'primeng/menu';
+import { AdministrationModule } from './modules/administration/administration.module';
+import { AdministrationService } from './modules/administration/services/administration.service';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,8 @@ import { MenuModule } from 'primeng/menu';
     AvatarModule,
     ModerationModule,
     PayModule,
-    MenuModule
+    MenuModule,
+    AdministrationModule
   ],
 
   providers: [
@@ -76,7 +79,8 @@ import { MenuModule } from 'primeng/menu';
     ResumeService,
     FareRuleService,
     PaymentService,
-    SubscriptionsService
+    SubscriptionsService,
+    AdministrationService
   ],
 
   bootstrap: [AppComponent]
