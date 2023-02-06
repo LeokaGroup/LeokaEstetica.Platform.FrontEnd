@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from './components/header.component';
 import { HeaderRoutingModule } from './header-routing.module';
 import { HttpClientModule } from '@angular/common/http';
+import { MenuModule } from 'primeng/menu';
 
 @NgModule({
     declarations: [
@@ -14,13 +15,14 @@ import { HttpClientModule } from '@angular/common/http';
         CommonModule,
         FormsModule,
         HeaderRoutingModule,
-        HttpClientModule
+        HttpClientModule,
+        MenuModule
     ],
 
     exports: [],
 
     providers: [
-        
+
     ]
 })
 

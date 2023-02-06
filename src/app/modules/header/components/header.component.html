@@ -30,9 +30,13 @@
       </div>
     </div>
 
+   <div>
     <p-avatar label="P" 
-    shape="circle" 
-    *ngIf="isHideAuthButtons"
-    (click)="onRouteProfile()">
+              shape="circle" 
+              *ngIf="isHideAuthButtons"    
+              (click)="menu.toggle($event)">
     </p-avatar>
+    
+    <p-menu #menu [popup]="true" [model]="items"></p-menu>
+   </div>
   </nav>

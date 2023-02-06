@@ -15,6 +15,21 @@ export class HeaderComponent implements OnInit {
     public readonly headerData$ = this._headerService.headerData$;
 
     isHideAuthButtons: boolean = false;
+    items: any[] = [
+        {
+            label: 'Настройки',
+            command: () => {
+                
+            }
+        },
+        {
+            label: 'Выйти',
+            command: () => {
+                localStorage.clear();
+                this._router.navigate(["/user/signin"]);
+            }
+        }
+    ];
 
     constructor(private readonly _headerService: HeaderService,
         private readonly _router: Router,

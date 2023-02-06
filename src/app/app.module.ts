@@ -28,6 +28,7 @@ import { FareRuleService } from './modules/fare-rule/services/fare-rule.service'
 import { PaymentService } from './modules/pay/services/pay.service';
 import { PayModule } from './modules/pay/pay.module';
 import { SubscriptionsService } from './modules/backoffice/subscriptions/services/subscriptions.service';
+import { MenuModule } from 'primeng/menu';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { SubscriptionsService } from './modules/backoffice/subscriptions/service
     ToastModule,
     AvatarModule,
     ModerationModule,
-    PayModule
+    PayModule,
+    MenuModule
   ],
 
   providers: [
