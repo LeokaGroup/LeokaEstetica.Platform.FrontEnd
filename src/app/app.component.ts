@@ -100,6 +100,11 @@ export class AppComponent implements OnInit {
       this.isVisibleMenu = true;
     }
 
+    if (currentUrl.indexOf("moderation") > 0) {
+      this.rerender();
+      this.isVisibleMenu = false;
+    }
+
     this._activatedRoute.queryParams
       .subscribe(params => {
         // Для просмотра анкеты другого пользователя.
