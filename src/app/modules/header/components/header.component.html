@@ -30,10 +30,9 @@
       </div>
     </div>
 
-   <div>
+   <div [ngClass]="{invisible: !isHideAuthButtons}">
     <p-avatar label="P" 
-              shape="circle" 
-              *ngIf="isHideAuthButtons"    
+              shape="circle"               
               (click)="menu.toggle($event)">
     </p-avatar>
     
