@@ -1,18 +1,25 @@
-.block-catalog-vacancies {    
-    border: 1px solid #ededed;
-    border-radius: 4px;
-    line-height: 1.5;    
+.block-catalog-vacancies {
+  border: 1px solid #ededed;
+  border-radius: 4px;
+  line-height: 1.5;
 
-    .catalog-vacancies-item {        
-        color: #545454;
-        border-bottom: 1px solid #ededed;
+  .catalog-vacancies-item {
+    color: #545454;
+    border-bottom: 1px solid #ededed;
+    background: whitesmoke;
+
+    .project-text-item {
         padding: 20px;
-        background: whitesmoke;
     }
+
+    .selectedColor {
+        background: #F4F0FF;
+      }
+  }
 }
 
-.block-catalog-filters {    
-    background: whitesmoke;
-    padding: 20px;
-    border-left: 1px solid #ededed;
+.block-catalog-filters {
+  background: whitesmoke;
+  padding: 20px;
+  border-left: 1px solid #ededed;
 }
