@@ -64,7 +64,7 @@ export class VacancyService {
   // * @returns - Данные вакансии.
   */
     public async getVacancyByIdAsync(vacancyId: number) {
-        return await this.http.get(API_URL.apiUrl + "/vacancies/vacancy?vacancyId=" + vacancyId).pipe(
+        return await this.http.get(API_URL.apiUrl + `/vacancies/${vacancyId}`).pipe(
             tap(data => this.selectedVacancy$.next(data))
         );
     };
