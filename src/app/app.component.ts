@@ -55,12 +55,12 @@ export class AppComponent implements OnInit {
   /**
    * Функция проверяет текущий роут.
    */
-  private checkCurrentRouteUrl() {  
+  private checkCurrentRouteUrl() {
     this._router.events
       .subscribe(
-        (event: NavigationEvent) => {          
+        (event: NavigationEvent) => {
           if (event instanceof NavigationStart) {
-            console.log(event.url);          
+            console.log(event.url);
             this.checkRoutes(event.url);
 
             if (this.currentUrl == "/") {
@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
     this.rerender();
 
     // Отображение левого меню профиля пользователя.
-    if (this._aVisibleProfileMenuRoutes.includes(currentUrl)) {      
+    if (this._aVisibleProfileMenuRoutes.includes(currentUrl)) {
       this.isVisibleMenu = true;
       localStorage["m_t"] = 1;
     }
@@ -89,7 +89,7 @@ export class AppComponent implements OnInit {
       this.isVisibleMenu = true;
     }
 
-    if (this.projectModeUrls.includes(currentUrl) 
+    if (this.projectModeUrls.includes(currentUrl)
     || this.resumeModeUrls.includes(currentUrl)) {
       this.isVisibleMenu = true;
       localStorage["m_t"] = 1;
@@ -100,7 +100,7 @@ export class AppComponent implements OnInit {
       this.isVisibleMenu = true;
     }
 
-    if (currentUrl.indexOf("moderation") > 0 
+    if (currentUrl.indexOf("moderation") > 0
     || currentUrl.indexOf("administration") > 0) {
       this.rerender();
       this.isVisibleMenu = false;
@@ -111,12 +111,12 @@ export class AppComponent implements OnInit {
         // Для просмотра анкеты другого пользователя.
         if (params["uc"] !== null && params["uc"] !== undefined) {
           this.isVisibleMenu = true;
-        }      
-        
+        }
+
         // Для просмотра проекта.
         if (params["projectId"] > 0 && params["mode"] == "view") {
           this.isVisibleMenu = true;
-        }  
+        }
 
         if (params["page"]) {
           this.isVisibleMenu = true;

@@ -19,7 +19,7 @@ export class HeaderComponent implements OnInit {
         {
             label: 'Настройки',
             command: () => {
-                
+
             }
         },
         {
@@ -79,7 +79,7 @@ export class HeaderComponent implements OnInit {
         .subscribe(params => {
             let mode = params["mode"];
 
-                   
+
           });
     };
 

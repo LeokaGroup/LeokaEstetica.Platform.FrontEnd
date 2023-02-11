@@ -47,6 +47,6 @@ export class HeaderService {
             catch (e: any) {
                 throw new Error(e);
             }
-        }, 3600000); // Каждые 60 мин. 
-    }; 
+        }, 3600000); // Каждые 60 мин.
+    };
 }
