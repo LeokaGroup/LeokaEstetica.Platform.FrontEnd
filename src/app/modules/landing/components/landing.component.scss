@@ -1,12 +1,12 @@
 .fon {
   background-color: rgba(23, 52, 57, 0.95);
-  display: inline-block;
+  //display: inline-block;
   height: 100vh;
   overflow: hidden;
   overflow-x: hidden;
   width: 100%;
-  margin-top: -5px;
-  padding-top: -5px;
+  //margin-top: -5px;
+  //padding-top: -5px;
 
   img {
     opacity: 0.1;
@@ -16,15 +16,16 @@
 .fon-content {
   position: absolute;
   z-index: 2;
-  top: 100px;
-  padding: 190px 0 225px;
+  top: 40%;
+  text-align: center;
 
   .fon-title {
     color: #fff;
   }
 
   .fon-text {
-    color: rgba(255, 255, 255, .5);
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0 100px;
   }
 }
 
