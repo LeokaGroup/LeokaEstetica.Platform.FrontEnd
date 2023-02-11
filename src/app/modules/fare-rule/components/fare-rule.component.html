@@ -1,25 +1,25 @@
 <div class="tarifs">
 
-  <div class="tarifs__body" *ngFor="let fr of fareRules$.value">
+  <div class="tarifs-body" *ngFor="let fr of fareRules$.value">
     <!--    <p-card header="{{fr.name}}" >-->
     <p-card>
 
-      <div class="tarifs__header">
-        <h3 class="tarifs__header__title">
+      <div class="header">
+        <h3 class="title">
           {{fr.name}}
         </h3>
 
-        <h4 class="tarifs__header__price">
+        <h4 class="price">
           {{fr.price}} ₽
         </h4>
 
-        <h6 class="tarifs__header__label">
+        <h6 class="label">
           {{fr.label}}
         </h6>
       </div>
 
 
-      <div class="tarifs__footer">
+      <div class="footer">
         <strong style="text-align: center">Что входит в тариф:</strong>
         <ul *ngFor="let item of fr.fareRuleItems" class="tarifs__footer__discription">
           <li>{{item.name}} {{item.label}}</li>
