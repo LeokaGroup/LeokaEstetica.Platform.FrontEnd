@@ -25,6 +25,7 @@ import { ButtonModule } from 'primeng/button';
 import {DropdownModule} from 'primeng/dropdown';
 import { SubscriptionsComponent } from './subscriptions/components/subscriptions.component';
 import { CardModule } from 'primeng/card';
+import { DialogModule } from 'primeng/dialog';
 
 
 @NgModule({
@@ -53,7 +54,8 @@ import { CardModule } from 'primeng/card';
         EditorModule,
         ButtonModule,
         DropdownModule,
-        CardModule
+        CardModule,
+        DialogModule
     ],
 
     exports: [],

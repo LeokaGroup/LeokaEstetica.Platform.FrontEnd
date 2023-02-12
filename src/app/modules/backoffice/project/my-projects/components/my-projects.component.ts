@@ -4,6 +4,7 @@ import { SignalrService } from "src/app/modules/notifications/signalr/services/s
 import { MessageService } from "primeng/api";
 import { BackOfficeService } from "../../../services/backoffice.service";
 import { Router } from "@angular/router";
+import { ProjectService } from "src/app/modules/project/services/project.service";
 
 @Component({
     selector: "my-projects",
@@ -22,11 +23,15 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
     products: any[] = [];
     selectedProjects: any;
     isSelectionPageOnly: boolean = true;
+    isDeleteProject: boolean = false;
+    projectId: number = 0;
+    projectName: string = "";
 
     constructor(private readonly _backofficeService: BackOfficeService,
         private readonly _signalrService: SignalrService,
         private readonly _messageService: MessageService,
-        private readonly _router: Router) {
+        private readonly _router: Router,
+        private readonly _projectService: ProjectService) {
 
     }
 
@@ -115,5 +120,27 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
                 mode: "view"
             }
         });
+    };
+
+    /**
+     * Функция удаляет проект.
+     * @param projectId - Id проекта.
+     */
+     public async onDeleteProjectAsync() {
+        (await this._projectService.deleteProjectsAsync(this.projectId))
+        .subscribe(async (response: any) => {   
+            console.log("Удалили проект: ", response);    
+            this.isDeleteProject = false;
+            
+            setTimeout(() => {
+                this._router.navigate(["/profile/projects/my"]);
+            }, 4000);
+        });
+    };
+
+    public onBeforeDeleteProject(projectId: number, projectName: string) {
+        this.projectId = projectId;
+        this.projectName = projectName;
+        this.isDeleteProject = true;
     };
 }
