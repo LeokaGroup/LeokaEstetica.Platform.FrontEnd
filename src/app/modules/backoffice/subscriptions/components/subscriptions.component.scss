@@ -1,12 +1,17 @@
-@use "/src/app/common/styles/spaces.scss";
-@use "/src/app/common/styles/control.scss";
 @use "/src/app/common/styles/styles.scss";
 
 .block-subscriptions {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
 
-    .subscription {
-        padding: 20px 20px;
-    }
+  .subscription {
+    padding: 20px 20px;
+  }
+
+  .subscription.active{
+    outline: 3px solid #2d812d; /* Пунктирная рамка */
+    outline-offset: -23px; /* Выводим рамку внутри элемента */
+  }
+
 }
