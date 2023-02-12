@@ -28,6 +28,7 @@ export class ProjectService {
     public projectTeam$ = new BehaviorSubject<any>(null);    
     public invitedProjectTeamMember$ = new BehaviorSubject<any>(null);    
     public pagination$ = new BehaviorSubject<any>(null);    
+    public removedProject$ = new BehaviorSubject<any>(null);    
 
     constructor(private readonly http: HttpClient) {
 
@@ -210,6 +211,16 @@ export class ProjectService {
         // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
         return await this.http.get(API_URL.apiUrl + `/projects/pagination/${page + 1}`).pipe(
             tap(data => this.pagination$.next(data))
+        );
+    };
+
+    /**
+     * Функция удаляет проект.
+     * @param projectId - Id проекта.
+     */
+     public async deleteProjectsAsync(projectId: number) {
+        return await this.http.delete(API_URL.apiUrl + `/projects/${projectId}`).pipe(
+            tap(data => this.removedProject$.next(data))
         );
     };
 }
