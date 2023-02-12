@@ -7,7 +7,7 @@
 
   <div class="block-worksheet">
     <div class="worksheet-panel">
-      <p-panel header="Заполнение информации о проекте" [toggleable]="true">       
+      <p-panel header="Просмотр информации о вакансии" [toggleable]="true">       
         <div class="d-flex mt-3">
             <div class="control-input-text-worksheet">
               <div class="d-flex">
@@ -98,13 +98,36 @@
       </p-panel>
     </div>
 
-    <div class="d-flex worksheet-line mt-3">
+    <div class="d-flex worksheet-line mt-3 mb-3">
       <div class="control-input-text-worksheet">
         <button type="button" class="btn btn-primary button-action-pur-control-worksheet"
           *ngIf="isEdit">
           Сохранить
         </button>
       </div>
+
+      <div class="control-input-text-worksheet">
+        <button type="button" class="btn btn-danger button-action-red-control-worksheet"
+        *ngIf="selectedVacancy$.value.isVisibleControls"
+        (click)="isDeleteVacancy=true">
+          Удалить
+        </button>
+      </div>
     </div>
   </div>
 </div>
+
+<!-- Диалог удаления вакансии. -->
+<p-dialog  header="Удаление вакансии" 
+          [(visible)]="isDeleteVacancy" 
+          [breakpoints]="{'960px': '75vw'}" 
+          [style]="{width: '50vw'}"
+          [draggable]="false" 
+          [resizable]="false"
+          icon="pi pi-exclamation-triangle">
+        <p>Удалить вакансию {{selectedVacancy$.value.vacancyName}}?</p>
+        <ng-template pTemplate="footer">
+        <p-button (click)="isDeleteVacancy=false" label="Отмена" styleClass="p-button-text"></p-button>
+        <p-button (click)="onDeleteVacancyAsync()" label="Удалить" styleClass="p-button-text p-button-danger"></p-button>
+        </ng-template>
+</p-dialog>
