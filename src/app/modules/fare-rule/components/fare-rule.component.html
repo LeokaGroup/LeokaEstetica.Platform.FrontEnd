@@ -1,29 +1,39 @@
-<div class="mt-5 block-fare-rules">
-  <div class="" *ngFor="let fr of fareRules$.value">
-    <p-card header="{{fr.name}}">
-      <div>
-        {{fr.label}}
+<div class="tarifs">
+  <div class="tarifs-body" *ngFor="let fr of fareRules$.value">
+    <!--    <p-card header="{{fr.name}}" >-->
+    <p-card>
+
+      <div class="header">
+        <h3 class="title">
+          {{fr.name}}
+        </h3>
+
+        <h4 class="price">
+          {{fr.price}} ₽
+        </h4>
+
+        <h6 class="label">
+          {{fr.label}}
+        </h6>
       </div>
 
-      <div class="price">
-        {{fr.price}} ₽
-      </div>
 
-      <hr>
-
-      <div>
-        <strong>Что входит в тариф:</strong>
-       
-        <ul *ngFor="let item of fr.fareRuleItems">
-            <li>{{item.name}} {{item.label}}</li>
+      <div class="footer">
+        <strong style="text-align: center">Что входит в тариф:</strong>
+        <ul *ngFor="let item of fr.fareRuleItems" class="discription">
+          <li>{{item.name}} {{item.label}}</li>
         </ul>
       </div>
 
-      <button type="submit" 
-            class="btn btn-primary button-action-pur-control"
-            (click)="onCreateOrderAsync(fr.ruleId)">
+      <button type="submit"
+              class="btn btn-primary button-action-pur-control"
+              (click)="onCreateOrderAsync(fr.ruleId)">
         Выбрать
       </button>
+
     </p-card>
+
   </div>
 </div>
+
+

@@ -1,13 +1,42 @@
 @use "/src/app/common/styles/spaces.scss";
 @use "/src/app/common/styles/control.scss";
 @use "/src/app/common/styles/styles.scss";
-
-.block-fare-rules {
-    display: flex;
-    justify-content: space-evenly;
+.tarifs{
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap:10px;
+  margin: 10px 40px;
+  height: 100vh;
+}
+.tarifs-body{
+  height: 100vh;
+}
+.header{
+  height: 110px;
+  border-bottom: 1px solid #e79214;
+  margin: 10px 0;
+  text-align: center;
+}
+.title{
+  color:blue;
+}
+.label{
+  color: #2d812d;
+}
+.footer{
+  min-height: 70vh;
+  margin-top: 20px;
+  border-bottom: 1px solid #e79214;
+}
+.discription{
+  text-align: left;
+  margin-top: 10px;
+}
+.btn{
+  margin-top: 10px;
 }
 
-.price {
-    font-size: 30px;
-    font-weight: 600;
-}
+
+
+
+
