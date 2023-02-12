@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
@@ -18,7 +18,8 @@ export class DetailVacancyComponent implements OnInit {
     constructor(private readonly _activatedRoute: ActivatedRoute,
         private readonly _signalrService: SignalrService,
         private readonly _messageService: MessageService,
-        private readonly _vacancyService: VacancyService) {
+        private readonly _vacancyService: VacancyService,
+        private readonly _router: Router) {
     }
 
     public readonly selectedVacancy$ = this._vacancyService.selectedVacancy$;
@@ -113,6 +114,10 @@ export class DetailVacancyComponent implements OnInit {
             .subscribe(async _ => {
                 console.log("Удалили вакансию: ", this.deleteVacancy$.value);
                 this.isDeleteVacancy = false;
+
+                setTimeout(() => {
+                    this._router.navigate(["/vacancies"]);
+                }, 4000);
             });
     };
 }
