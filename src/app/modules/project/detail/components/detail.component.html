@@ -106,6 +106,15 @@
                           (click)="onWriteOwnerDialogAsync()">
                   </button>
                 </div>
+
+                <div>
+                  <button pButton 
+                          type="button" 
+                          label="Удалить проект"
+                          class="p-button-danger p-button-text"
+                          (click)="isDeleteProject=true">
+                  </button>
+                </div>
               </div>
             </div>                    
           </div>         
@@ -633,5 +642,23 @@
         <ng-template pTemplate="footer">
         <p-button (click)="isResponseNotVacancy=false" label="Нет" styleClass="p-button-text"></p-button>
         <p-button (click)="onProjectResponseAsync()" label="Да" styleClass="p-button-text"></p-button>
+        </ng-template>
+</p-dialog>
+
+<!-- Диалог удаления проекта. -->
+<p-dialog header="Удаление проекта" 
+          [(visible)]="isDeleteProject" 
+          [breakpoints]="{'960px': '75vw'}" 
+          [style]="{width: '50vw'}"
+          [draggable]="false" 
+          [resizable]="false">
+        <p>Удалить проект {{selectedProject$.value.projectName}}?</p>
+        <p>При удалении проекта будут удалены вакансии проекта, 
+          сообщения чата проекта, 
+          все участники команды проекта и 
+          комментарии к проекту.</p>
+        <ng-template pTemplate="footer">
+        <p-button (click)="isDeleteProject=false" label="Отменить" styleClass="p-button-text"></p-button>
+        <p-button (click)="onDeleteProjectAsync()" label="Удалить" styleClass="p-button-danger p-button-text"></p-button>
         </ng-template>
 </p-dialog>

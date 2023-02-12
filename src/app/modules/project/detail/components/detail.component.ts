@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
@@ -83,6 +83,7 @@ export class DetailProjectComponent {
     aSelectedProjectMembers: any[] = [];
     selectedInviteVacancy: any;
     selectedInviteUser: string = "";
+    isDeleteProject: boolean = false;
 
     public async ngOnInit() {
         forkJoin([
@@ -511,6 +512,22 @@ export class DetailProjectComponent {
         (await this._projectService.sendInviteProjectTeamAsync(inviteProjectTeamMemberInput))
         .subscribe(async (response: any) => {   
             console.log("Добавленный в команду пользователь: ", response);                
+        });
+    };
+
+    /**
+     * Функция удаляет проект.
+     * @param projectId - Id проекта.
+     */
+    public async onDeleteProjectAsync() {
+        (await this._projectService.deleteProjectsAsync(this.projectId))
+        .subscribe(async (response: any) => {   
+            console.log("Удалили проект: ", response);    
+            this.isDeleteProject = false;
+            
+            setTimeout(() => {
+                this._router.navigate(["/projects"]);
+            }, 4000);
         });
     };
 }

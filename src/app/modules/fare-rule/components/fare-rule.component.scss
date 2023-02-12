@@ -1,7 +1,6 @@
 @use "/src/app/common/styles/control.scss";
 @use "/src/app/common/styles/styles.scss";
 
-
 .tarifs{
   display: grid;
   grid-template-columns: repeat(4,1fr);
@@ -36,10 +35,5 @@
 .btn{
   margin-top: 10px;
 }
-
-
-
-
-
 
 
