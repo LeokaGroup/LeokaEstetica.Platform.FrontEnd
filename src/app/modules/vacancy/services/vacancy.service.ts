@@ -13,6 +13,7 @@ export class VacancyService {
     public catalog$ = new BehaviorSubject<any>(null);
     public selectedVacancy$ = new BehaviorSubject<any>(null);
     public pagination$ = new BehaviorSubject<any>(null);
+    public deleteVacancy$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -64,7 +65,7 @@ export class VacancyService {
   // * @returns - Данные вакансии.
   */
     public async getVacancyByIdAsync(vacancyId: number) {
-        return await this.http.get(API_URL.apiUrl + `/vacancies/${vacancyId}`).pipe(
+        return await this.http.get(API_URL.apiUrl + `/vacancies/vacancy/${vacancyId}`).pipe(
             tap(data => this.selectedVacancy$.next(data))
         );
     };
@@ -99,6 +100,16 @@ export class VacancyService {
         // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
         return await this.http.get(API_URL.apiUrl + `/vacancies/pagination/${page + 1}`).pipe(
             tap(data => this.pagination$.next(data))
+        );
+    };
+
+    /**
+     * Функция удаляет вакансию.
+     * @param vacancyId - Id вакансии.
+     */
+     public async deleteVacancyAsync(vacancyId: number) {
+        return await this.http.delete(API_URL.apiUrl + `/vacancies/${vacancyId}`).pipe(
+            tap(data => this.deleteVacancy$.next(data))
         );
     };
 }

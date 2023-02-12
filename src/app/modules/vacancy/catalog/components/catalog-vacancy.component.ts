@@ -106,8 +106,12 @@ export class CatalogVacancyComponent implements OnInit {
      * @param vacancyId - Id вакансии.
      */
     public onRouteSelectedVacancy(vacancyId: number) {
-        let mode = "view";
-        this._router.navigate(["/vacancies", vacancyId, mode]);
+        this._router.navigate(["/vacancies/vacancy"], {
+            queryParams: {
+                vacancyId,
+                mode: "view"
+            }
+        });
     };
 
     /**

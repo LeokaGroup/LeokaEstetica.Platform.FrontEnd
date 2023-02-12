@@ -14,7 +14,7 @@ const routes: Routes = [
     },
 
     {
-        path: ':vacancyId/:mode', component: DetailVacancyComponent
+        path: 'vacancy', component: DetailVacancyComponent
     }
 ];
 
