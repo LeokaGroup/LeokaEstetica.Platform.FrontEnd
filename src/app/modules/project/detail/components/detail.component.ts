@@ -524,6 +524,10 @@ export class DetailProjectComponent {
         .subscribe(async (response: any) => {   
             console.log("Удалили проект: ", response);    
             this.isDeleteProject = false;
+            
+            setTimeout(() => {
+                this._router.navigate(["/projects"]);
+            }, 4000);
         });
     };
 }
