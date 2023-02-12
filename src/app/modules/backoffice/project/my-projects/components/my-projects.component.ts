@@ -131,10 +131,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
         .subscribe(async (response: any) => {   
             console.log("Удалили проект: ", response);    
             this.isDeleteProject = false;
-            
-            setTimeout(() => {
-                this._router.navigate(["/profile/projects/my"]);
-            }, 4000);
+            await this.getUserProjectsAsync();        
         });
     };
 
