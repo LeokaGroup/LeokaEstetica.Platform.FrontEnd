@@ -18,11 +18,12 @@ export class DetailVacancyComponent implements OnInit {
     constructor(private readonly _activatedRoute: ActivatedRoute,
         private readonly _signalrService: SignalrService,
         private readonly _messageService: MessageService,
-        private readonly _router: Router,
-        private readonly _vacancyService: VacancyService) {
+        private readonly _vacancyService: VacancyService,
+        private readonly _router: Router) {
     }
 
     public readonly selectedVacancy$ = this._vacancyService.selectedVacancy$;
+    public readonly deleteVacancy$ = this._vacancyService.deleteVacancy$;
 
     projectName: string = "";
     projectDetails: string = "";
@@ -36,6 +37,8 @@ export class DetailVacancyComponent implements OnInit {
     employment: string = "";
     payment: string = "";
     vacancyId: number = 0;
+    isDeleteVacancy: boolean = false;
+
     public async ngOnInit() {
         forkJoin([
         this.checkUrlParams()      
@@ -99,6 +102,22 @@ export class DetailVacancyComponent implements OnInit {
                 this.workExperience = this.selectedVacancy$.value.workExperience;
                 this.employment = this.selectedVacancy$.value.employment;
                 this.payment = this.selectedVacancy$.value.payment;
+            });
+    };
+
+    /**
+     * Функция удаляет вакансию.
+     * @param vacancyId - Id вакансии.
+     */
+    public async onDeleteVacancyAsync() {
+        (await this._vacancyService.deleteVacancyAsync(this.vacancyId))
+            .subscribe(async _ => {
+                console.log("Удалили вакансию: ", this.deleteVacancy$.value);
+                this.isDeleteVacancy = false;
+
+                setTimeout(() => {
+                    this._router.navigate(["/vacancies"]);
+                }, 4000);
             });
     };
 }
