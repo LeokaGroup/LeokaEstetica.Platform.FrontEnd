@@ -1,3 +1,5 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
 @use "/src/app/common/styles/styles.scss";
 
 .block-subscriptions {
@@ -9,9 +11,9 @@
     padding: 20px 20px;
   }
 
-  .subscription.active{
-    outline: 3px solid #2d812d; /* Пунктирная рамка */
-    outline-offset: -23px; /* Выводим рамку внутри элемента */
+  .podpiska.active{
+    outline: 4px solid #4c944c;
+    outline-offset: -2px;
   }
 
 }
