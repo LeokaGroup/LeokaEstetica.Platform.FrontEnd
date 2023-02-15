@@ -111,7 +111,20 @@
                 [tableStyle]="{'min-width': '50rem'}"
                 class="scroll-table">
           <ng-template pTemplate="caption">
-            Пользователи в ЧС
+            <h5>Пользователи в ЧС</h5>
+            <hr>
+            
+            <div class="mt-3">
+              <button pButton 
+                    type="button" 
+                    label="Добавить в ЧС" 
+                    class="p-button-text p-button-plain"
+                    (click)="isShowUserBlackListModal=!isShowUserBlackListModal">
+              </button>
+            </div>
+
+            <hr>
+
           </ng-template>
           <ng-template pTemplate="header">
             <tr>
@@ -129,7 +142,7 @@
               <td><button pButton 
                           type="button" 
                           label="Удалить из ЧС" 
-                          class="p-button-text">
+                          class="p-button-danger p-button-text">
               </button>
               </td>
             </tr>
@@ -303,5 +316,65 @@
               label="Отклонить вакансию" 
               styleClass="p-button-danger p-button-text">
 </p-button>
+  </ng-template>
+</p-dialog>
+
+<!-- Диалог добавления пользователя в ЧС. -->
+<p-dialog header="Добавление пользователя в ЧС" 
+          [(visible)]="isShowUserBlackListModal" 
+          [modal]="true" 
+          [style]="{width: '50vw', height: '50vw'}"
+          [maximizable]="false" 
+          [draggable]="false" 
+          [resizable]="false">
+ 
+  <div class="mt-3">
+    <div class="control-input-text-worksheet">
+      <div>
+          <label>Id пользователя</label>
+      </div>
+      <div>
+          <input type="text" 
+                class="p-inputtext-sm input-control-worksheet control-project" 
+                placeholder="Id пользователя" 
+                pInputText
+                autocomplete="new-password" 
+                [(ngModel)]="userId" />    
+      </div>          
+    </div>         
+
+    <div class="control-input-text-worksheet mt-3">
+      <div class="control-input-text-worksheet">
+         <div>
+          <label>Email пользователя</label>
+        </div>
+        <input type="text" 
+                class="p-inputtext-sm input-control-worksheet control-project" 
+                placeholder="Email" 
+                pInputText
+                autocomplete="new-password" 
+                [(ngModel)]="email" />    
+      </div>          
+    </div>           
+    
+    <div class="control-input-text-worksheet mt-3">
+      <div class="control-input-text-worksheet">
+         <div>
+          <label>Номер телефона пользователя (не обязательно)</label>
+        </div>
+        <input type="text" 
+                class="p-inputtext-sm input-control-worksheet control-project" 
+                placeholder="Номер телефона" 
+                pInputText
+                autocomplete="new-password" 
+                [(ngModel)]="phoneNumber" />    
+      </div>          
+    </div>     
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button (click)="onAddUserBlackListAsync()" 
+              label="Заблокировать пользователя" 
+              styleClass="p-button-text p-button-plain">
+    </p-button>
   </ng-template>
 </p-dialog>

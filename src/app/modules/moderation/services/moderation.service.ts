@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { AccessModerationInput } from '../models/input/access-moderation-input';
+import { AddUserBlackListInput } from '../models/input/add-user-blacklist-input';
 import { ApproveProjectInput } from '../models/input/approve-project-input';
 import { ApproveVacancyInput } from '../models/input/approve-vacancy-input';
 import { RejectProjectInput } from '../models/input/reject-project-input';
@@ -23,6 +24,7 @@ export class ModerationService {
     public approveVacancyModeration$ = new BehaviorSubject<any>(null);
     public rejectVacancyModeration$ = new BehaviorSubject<any>(null);
     public userBlackList$ = new BehaviorSubject<any>(null);
+    public addUserBlackList$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -131,6 +133,15 @@ export class ModerationService {
      public async getUserBlackListAsync() {
         return await this.http.get(API_URL.apiUrl + `/moderation/blacklist`).pipe(
             tap(data => this.userBlackList$.next(data))
+        );
+    };
+
+     /**
+     * Функция добавляет пользователя в ЧС.
+     */
+      public async addUserBlackListAsync(addUserBlackListInput: AddUserBlackListInput) {
+        return await this.http.post(API_URL.apiUrl + "/moderation/blacklist", addUserBlackListInput).pipe(
+            tap(data => this.addUserBlackList$.next(data))
         );
     };
 }

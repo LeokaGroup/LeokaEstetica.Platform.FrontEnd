@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { forkJoin } from "rxjs";
 import { HeaderService } from "src/app/modules/header/services/header.service";
+import { AddUserBlackListInput } from "../../models/input/add-user-blacklist-input";
 import { ApproveProjectInput } from "../../models/input/approve-project-input";
 import { ApproveVacancyInput } from "../../models/input/approve-vacancy-input";
 import { RejectProjectInput } from "../../models/input/reject-project-input";
@@ -39,6 +40,10 @@ export class ModerationComponent implements OnInit {
     isShowPreviewModerationVacancyModal: boolean = false;
     vacancyId: number = 0;
     total: number = 0;
+    isShowUserBlackListModal: boolean = false;
+    userId: number = 0;
+    email: string = "";
+    phoneNumber: string = "";
 
     constructor(private readonly _headerService: HeaderService,
         private readonly _moderationService: ModerationService) {
@@ -227,6 +232,23 @@ export class ModerationComponent implements OnInit {
         .subscribe(_ => {
             console.log("Пользователи в ЧС: ", this.userBlackList$.value.usersBlackList);
             this.total = this.userBlackList$.value.count;
+        });
+    };
+
+    /**
+     * Функция добавляет пользователя в ЧС.
+     */
+    public async onAddUserBlackListAsync() {
+        let addUserBlackListInput = new AddUserBlackListInput();
+        addUserBlackListInput.UserId = this.userId;
+        addUserBlackListInput.Email = this.email;
+        addUserBlackListInput.PhoneNumber = this.phoneNumber;
+
+        (await this._moderationService.addUserBlackListAsync(addUserBlackListInput))
+        .subscribe(_ => {
+            console.log("Пользователь добавлен в ЧС: ");
+            this.getUserBlackListAsync();
+            this.isShowUserBlackListModal = false;
         });
     };
 }
