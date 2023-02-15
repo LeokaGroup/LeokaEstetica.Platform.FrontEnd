@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { forkJoin } from "rxjs";
 import { HeaderService } from "src/app/modules/header/services/header.service";
+import { AddUserBlackListInput } from "../../models/input/add-user-blacklist-input";
 import { ApproveProjectInput } from "../../models/input/approve-project-input";
 import { ApproveVacancyInput } from "../../models/input/approve-vacancy-input";
 import { RejectProjectInput } from "../../models/input/reject-project-input";
@@ -20,6 +21,7 @@ export class ModerationComponent implements OnInit {
     public readonly headerData$ = this._headerService.headerData$;
     public readonly projectsModeration$ = this._moderationService.projectsModeration$;
     public readonly projectModeration$ = this._moderationService.projectModeration$;
+    public readonly userBlackList$ = this._moderationService.userBlackList$;
 
     isHideAuthButtons: boolean = false;
     aProjects: any[] = [];
@@ -37,6 +39,11 @@ export class ModerationComponent implements OnInit {
     payment: string = "";
     isShowPreviewModerationVacancyModal: boolean = false;
     vacancyId: number = 0;
+    total: number = 0;
+    isShowUserBlackListModal: boolean = false;
+    userId: number = 0;
+    email: string = "";
+    phoneNumber: string = "";
 
     constructor(private readonly _headerService: HeaderService,
         private readonly _moderationService: ModerationService) {
@@ -46,7 +53,8 @@ export class ModerationComponent implements OnInit {
         forkJoin([
             await this.getHeaderItemsAsync(),
             await this._headerService.refreshTokenAsync(),
-            await this.getProjectsModerationAsync()
+            await this.getProjectsModerationAsync(),
+            await this.getUserBlackListAsync()
          ]).subscribe();
     }
 
@@ -212,6 +220,35 @@ export class ModerationComponent implements OnInit {
 
              // Подтянем вакансии для обновления таблицы.
              await this.getVacanciesModerationAsync();
+        });
+    };
+
+    /**
+     * Функция получает список пользователей для ЧС.
+     * @returns - Список пользователей.
+     */
+     private async getUserBlackListAsync() {
+        (await this._moderationService.getUserBlackListAsync())
+        .subscribe(_ => {
+            console.log("Пользователи в ЧС: ", this.userBlackList$.value.usersBlackList);
+            this.total = this.userBlackList$.value.count;
+        });
+    };
+
+    /**
+     * Функция добавляет пользователя в ЧС.
+     */
+    public async onAddUserBlackListAsync() {
+        let addUserBlackListInput = new AddUserBlackListInput();
+        addUserBlackListInput.UserId = this.userId;
+        addUserBlackListInput.Email = this.email;
+        addUserBlackListInput.PhoneNumber = this.phoneNumber;
+
+        (await this._moderationService.addUserBlackListAsync(addUserBlackListInput))
+        .subscribe(_ => {
+            console.log("Пользователь добавлен в ЧС: ");
+            this.getUserBlackListAsync();
+            this.isShowUserBlackListModal = false;
         });
     };
 }
