@@ -1,4 +1,4 @@
-<div class="block-moderation">
+<div class="block-moderation mt-5">
   <div>
     <!-- Список проектов. -->
     <p-tabView (onChange)="onSelectTabAsync($event)">
@@ -55,7 +55,7 @@
       <p-tabPanel header="Вакансии">
         <p-table [value]="aVacancies" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
           <ng-template pTemplate="caption">
-            Проекты на модерации
+            Вакансии на модерации
           </ng-template>
           <ng-template pTemplate="header">
             <tr>
@@ -103,6 +103,41 @@
 
       <p-tabPanel header="Комментарии к проектам">
         Content 3
+      </p-tabPanel>
+
+      <p-tabPanel header="Пользователи">
+        <p-table [value]="userBlackList$.value.usersBlackList" 
+                styleClass="p-datatable-gridlines" 
+                [tableStyle]="{'min-width': '50rem'}"
+                class="scroll-table">
+          <ng-template pTemplate="caption">
+            Пользователи в ЧС
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>ID</th>
+              <th>Email</th>
+              <th>Номер телефона</th>
+              <th>Удалить из ЧС</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-ub>
+            <tr>
+              <td>{{ub.userId}}</td>
+              <td>{{ub.email}}</td>
+              <td>{{ub.phoneNumber}}</td>
+              <td><button pButton 
+                          type="button" 
+                          label="Удалить из ЧС" 
+                          class="p-button-text">
+              </button>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="summary">
+            Всего: {{total}}
+          </ng-template>
+        </p-table>
       </p-tabPanel>
     </p-tabView>
   </div>

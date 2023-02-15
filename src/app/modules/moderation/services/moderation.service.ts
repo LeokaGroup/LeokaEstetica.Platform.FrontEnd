@@ -22,6 +22,7 @@ export class ModerationService {
     public vacancyModeration$ = new BehaviorSubject<any>(null);
     public approveVacancyModeration$ = new BehaviorSubject<any>(null);
     public rejectVacancyModeration$ = new BehaviorSubject<any>(null);
+    public userBlackList$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -120,6 +121,16 @@ export class ModerationService {
      public async rejectVacancyAsync(rejectVacancyInput: RejectVacancyInput) {
         return await this.http.patch(API_URL.apiUrl + `/moderation/vacancy/reject`, rejectVacancyInput).pipe(
             tap(data => this.rejectVacancyModeration$.next(data))
+        );
+    };
+
+    /**
+     * Функция получает список пользователей для ЧС.
+     * @returns - Список пользователей.
+     */
+     public async getUserBlackListAsync() {
+        return await this.http.get(API_URL.apiUrl + `/moderation/blacklist`).pipe(
+            tap(data => this.userBlackList$.next(data))
         );
     };
 }

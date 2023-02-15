@@ -20,6 +20,7 @@ export class ModerationComponent implements OnInit {
     public readonly headerData$ = this._headerService.headerData$;
     public readonly projectsModeration$ = this._moderationService.projectsModeration$;
     public readonly projectModeration$ = this._moderationService.projectModeration$;
+    public readonly userBlackList$ = this._moderationService.userBlackList$;
 
     isHideAuthButtons: boolean = false;
     aProjects: any[] = [];
@@ -37,6 +38,7 @@ export class ModerationComponent implements OnInit {
     payment: string = "";
     isShowPreviewModerationVacancyModal: boolean = false;
     vacancyId: number = 0;
+    total: number = 0;
 
     constructor(private readonly _headerService: HeaderService,
         private readonly _moderationService: ModerationService) {
@@ -46,7 +48,8 @@ export class ModerationComponent implements OnInit {
         forkJoin([
             await this.getHeaderItemsAsync(),
             await this._headerService.refreshTokenAsync(),
-            await this.getProjectsModerationAsync()
+            await this.getProjectsModerationAsync(),
+            await this.getUserBlackListAsync()
          ]).subscribe();
     }
 
@@ -212,6 +215,18 @@ export class ModerationComponent implements OnInit {
 
              // Подтянем вакансии для обновления таблицы.
              await this.getVacanciesModerationAsync();
+        });
+    };
+
+    /**
+     * Функция получает список пользователей для ЧС.
+     * @returns - Список пользователей.
+     */
+     private async getUserBlackListAsync() {
+        (await this._moderationService.getUserBlackListAsync())
+        .subscribe(_ => {
+            console.log("Пользователи в ЧС: ", this.userBlackList$.value.usersBlackList);
+            this.total = this.userBlackList$.value.count;
         });
     };
 }
