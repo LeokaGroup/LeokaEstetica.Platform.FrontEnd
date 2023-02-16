@@ -193,13 +193,15 @@
               <td>{{profile.otherLink}}</td>
               <td>
                 <p-button label="Одобрить анкету"
-                          styleClass="p-button-success p-button-text">
+                          styleClass="p-button-success p-button-text"
+                          (click)="onApproveResumeAsync(profile.profileInfoId)">
                 </p-button>
               </td>
 
               <td>
                 <p-button label="Отклонить анкету"
-                          styleClass="p-button-danger p-button-text">
+                          styleClass="p-button-danger p-button-text"
+                          (click)="onRejectResumeAsync(profile.profileInfoId)">
                 </p-button>
               </td>
             </tr>
