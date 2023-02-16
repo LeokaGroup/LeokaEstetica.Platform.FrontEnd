@@ -3,8 +3,10 @@ import { forkJoin } from "rxjs";
 import { HeaderService } from "src/app/modules/header/services/header.service";
 import { AddUserBlackListInput } from "../../models/input/add-user-blacklist-input";
 import { ApproveProjectInput } from "../../models/input/approve-project-input";
+import { ApproveResumeInput } from "../../models/input/approve-resume-input";
 import { ApproveVacancyInput } from "../../models/input/approve-vacancy-input";
 import { RejectProjectInput } from "../../models/input/reject-project-input";
+import { RejectResumeInput } from "../../models/input/reject-resume-input";
 import { RejectVacancyInput } from "../../models/input/reject-vacancy-input";
 import { ModerationService } from "../../services/moderation.service";
 
@@ -262,6 +264,36 @@ export class ModerationComponent implements OnInit {
         (await this._moderationService.getResumesAsync())
         .subscribe(_ => {
             console.log("Список анкет: ", this.resumesModeration$.value.resumes);
+        });
+    };
+
+     /**
+     * Функция одобряет анкету.
+     * @param profileInfoId - Id анкеты.
+     */
+      public async onApproveResumeAsync(profileInfoId: number) {
+        let approveResumeInput = new ApproveResumeInput();
+        approveResumeInput.ProfileInfoId = profileInfoId;
+
+        (await this._moderationService.approveResumeAsync(approveResumeInput))
+        .subscribe(async (response: any) => {
+            console.log("Апрув анкеты: ", response);
+            await this.getResumesAsync();
+        });
+    };
+
+     /**
+     * Функция отклоняет анкету.
+     * @param profileInfoId - Id анкеты.
+     */
+    public async onRejectResumeAsync(profileInfoId: number) {
+        let rejectVacancyInput = new RejectResumeInput();
+        rejectVacancyInput.ProfileInfoId = profileInfoId;
+
+        (await this._moderationService.rejectResumeAsync(rejectVacancyInput))
+        .subscribe(async (response: any) => {
+            console.log("Отклонение анкеты: ", response);
+             await this.getResumesAsync();
         });
     };
 }
