@@ -102,7 +102,7 @@
       </p-tabPanel>
 
       <p-tabPanel header="Комментарии к проектам">
-        Content 3
+        В разработке
       </p-tabPanel>
 
       <p-tabPanel header="Пользователи">
@@ -152,6 +152,63 @@
           </ng-template>
         </p-table>
       </p-tabPanel>
+
+      <p-tabPanel header="Анкеты">
+        <p-table [value]="userBlackList$.value.usersBlackList" styleClass="p-datatable-gridlines"
+          [tableStyle]="{'min-width': '50rem'}" class="scroll-table">
+          <ng-template pTemplate="caption">
+            <h5>Анкеты пользователей</h5>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>ID</th>
+              <th>Имя</th>
+              <th>Фамилия</th>
+              <th>Отчество</th>
+              <th>Email</th>
+              <th>Номер телефона</th>
+              <th>Telegram</th>
+              <th>WhatsApp</th>
+              <th>Ссылка ВКонтакте</th>
+              <th>Другая ссылка</th>
+              <th>Должность</th>
+              <th>Опыт (стаж)</th>
+              <th>Одобрение</th>
+              <th>Отклонение</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-profile>
+            <tr>
+              <td>{{profile.profileInfoId}}</td>
+              <td>{{profile.firstName}}</td>
+              <td>{{profile.lastName}}</td>
+              <td>{{profile.patronymic}}</td>
+              <td>{{profile.email}}</td>
+              <td>{{profile.phoneNumber}}</td>
+              <td>{{profile.telegram}}</td>
+              <td>{{profile.whatsApp}}</td>
+              <td>{{profile.vkontakte}}</td>
+              <td>{{profile.otherLink}}</td>
+              <td>{{profile.job}}</td>
+              <td>{{profile.otherLink}}</td>
+              <td>
+                <p-button label="Одобрить анкету"
+                          styleClass="p-button-success p-button-text">
+                </p-button>
+              </td>
+
+              <td>
+                <p-button label="Отклонить анкету"
+                          styleClass="p-button-danger p-button-text">
+                </p-button>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="summary">
+            Всего: {{resumesModeration$.value.total}}
+          </ng-template>
+        </p-table>
+        </p-tabPanel>
     </p-tabView>
   </div>
 </div>

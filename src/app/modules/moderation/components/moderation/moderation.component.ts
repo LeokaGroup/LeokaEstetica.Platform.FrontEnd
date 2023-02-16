@@ -22,6 +22,7 @@ export class ModerationComponent implements OnInit {
     public readonly projectsModeration$ = this._moderationService.projectsModeration$;
     public readonly projectModeration$ = this._moderationService.projectModeration$;
     public readonly userBlackList$ = this._moderationService.userBlackList$;
+    public readonly resumesModeration$ = this._moderationService.resumesModeration$;
 
     isHideAuthButtons: boolean = false;
     aProjects: any[] = [];
@@ -54,7 +55,8 @@ export class ModerationComponent implements OnInit {
             await this.getHeaderItemsAsync(),
             await this._headerService.refreshTokenAsync(),
             await this.getProjectsModerationAsync(),
-            await this.getUserBlackListAsync()
+            await this.getUserBlackListAsync(),
+            await this.getResumesAsync()
          ]).subscribe();
     }
 
@@ -249,6 +251,17 @@ export class ModerationComponent implements OnInit {
             console.log("Пользователь добавлен в ЧС: ");
             this.getUserBlackListAsync();
             this.isShowUserBlackListModal = false;
+        });
+    };
+
+     /**
+     * Функция получает список анкет пользователей.
+     * @returns - Список анкет.
+     */
+     private async getResumesAsync() {
+        (await this._moderationService.getResumesAsync())
+        .subscribe(_ => {
+            console.log("Список анкет: ", this.resumesModeration$.value.resumes);
         });
     };
 }

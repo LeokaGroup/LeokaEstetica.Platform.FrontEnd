@@ -25,6 +25,7 @@ export class ModerationService {
     public rejectVacancyModeration$ = new BehaviorSubject<any>(null);
     public userBlackList$ = new BehaviorSubject<any>(null);
     public addUserBlackList$ = new BehaviorSubject<any>(null);
+    public resumesModeration$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -142,6 +143,16 @@ export class ModerationService {
       public async addUserBlackListAsync(addUserBlackListInput: AddUserBlackListInput) {
         return await this.http.post(API_URL.apiUrl + "/moderation/blacklist", addUserBlackListInput).pipe(
             tap(data => this.addUserBlackList$.next(data))
+        );
+    };
+
+     /**
+     * Функция получает список анкет пользователей.
+     * @returns - Список анкет.
+     */
+      public async getResumesAsync() {
+        return await this.http.get(API_URL.apiUrl + "/moderation/resumes").pipe(
+            tap(data => this.resumesModeration$.next(data))
         );
     };
 }
