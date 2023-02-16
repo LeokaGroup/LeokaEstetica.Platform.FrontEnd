@@ -20,16 +20,16 @@ export class ProjectService {
     public projectStages$ = new BehaviorSubject<any>(null);
     public projectVacancies$ = new BehaviorSubject<any>(null);
     public projectVacanciesColumns$ = new BehaviorSubject<any>(null);
-    public availableAttachVacancies$ = new BehaviorSubject<any>(null);    
-    public projectResponse$ = new BehaviorSubject<any>(null);    
-    public createdProjectComment$ = new BehaviorSubject<any>(null);    
-    public projectComments$ = new BehaviorSubject<any>(null);    
-    public projectTeamColumns$ = new BehaviorSubject<any>(null);   
-    public projectTeam$ = new BehaviorSubject<any>(null);    
-    public invitedProjectTeamMember$ = new BehaviorSubject<any>(null);    
-    public pagination$ = new BehaviorSubject<any>(null);    
-    public removedProject$ = new BehaviorSubject<any>(null);    
-
+    public availableAttachVacancies$ = new BehaviorSubject<any>(null);
+    public projectResponse$ = new BehaviorSubject<any>(null);
+    public createdProjectComment$ = new BehaviorSubject<any>(null);
+    public projectComments$ = new BehaviorSubject<any>(null);
+    public projectTeamColumns$ = new BehaviorSubject<any>(null);
+    public projectTeam$ = new BehaviorSubject<any>(null);
+    public invitedProjectTeamMember$ = new BehaviorSubject<any>(null);
+    public pagination$ = new BehaviorSubject<any>(null);
+    public removedProject$ = new BehaviorSubject<any>(null);
+    public removedVacansyInProject$ = new BehaviorSubject<any>(null);
     constructor(private readonly http: HttpClient) {
 
     }
@@ -117,7 +117,7 @@ export class ProjectService {
         // .pipe(
         //     tap(data => this.availableAttachVacancies$.next(data))
         // );
-    };   
+    };
 
     /**
      * Функция записывает отклик на проект.
@@ -129,8 +129,8 @@ export class ProjectService {
         return await this.http.post(API_URL.apiUrl + "/projects/response", responseInput).pipe(
             tap(data => this.projectResponse$.next(data))
         );
-    };    
-    
+    };
+
     /**
      * Функция создает комментарий к проекту.
      * @param createProjectCommentInput - Входная модель.
@@ -139,7 +139,7 @@ export class ProjectService {
         return await this.http.post(API_URL.apiUrl + "/projects/project/comment", createProjectCommentInput).pipe(
             tap(data => this.createdProjectComment$.next(data))
         );
-    };    
+    };
 
     /**
      * Функция получает список комментариев к проекту.
@@ -149,7 +149,7 @@ export class ProjectService {
         return await this.http.get(API_URL.apiUrl + `/projects/comments/${commentId}`).pipe(
             tap(data => this.projectComments$.next(data))
         );
-    };  
+    };
 
     /**
      * Функция получает названия столбцов команды проекта.
@@ -159,7 +159,7 @@ export class ProjectService {
         return await this.http.get(API_URL.apiUrl + "/projects/config-project-team").pipe(
             tap(data => this.projectTeamColumns$.next(data))
         );
-    }; 
+    };
 
     /**
      * Функция получает данные для таблицы команда проекта
@@ -223,4 +223,18 @@ export class ProjectService {
             tap(data => this.removedProject$.next(data))
         );
     };
+
+
+
+
+
+  /** Mika 14/02/23
+   * Функция удаляет выбранную вакансию проекта реализовал .
+   */
+  public async deleteVacancyInProjectAsync(projectId:number, vacancyId:number) {
+    return await this.http.delete(API_URL.apiUrl + `/projects/projects/${projectId}/vacancies/${vacancyId}`).pipe(
+      tap(data => this.removedVacansyInProject$.next(data))
+    );
+  };
+
 }
