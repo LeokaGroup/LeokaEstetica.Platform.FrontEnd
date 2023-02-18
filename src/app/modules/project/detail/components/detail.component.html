@@ -113,7 +113,8 @@
                           type="button" 
                           label="Удалить проект"
                           class="p-button-danger p-button-text"
-                          (click)="isDeleteProject=true">
+                          (click)="isDeleteProject=true"
+                          *ngIf="isOwner">
                   </button>
                 </div>
               </div>
