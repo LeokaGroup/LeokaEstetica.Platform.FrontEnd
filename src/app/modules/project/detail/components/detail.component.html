@@ -52,11 +52,12 @@
                 <label>Стадия проекта</label>
             </div>
             <div>
-              <p-dropdown [options]="this.projectStages$.value" 
+              <p-dropdown [options]="projectStages$.value" 
                           [(ngModel)]="selectedStage" 
                           optionLabel="stageName"
                           (onChange)="onSelectProjectStage()"
-                          [disabled]="!isEditMode">
+                          [disabled]="!isEditMode"
+                          dataKey="stageName">
               </p-dropdown>
             </div>          
           </div>         
