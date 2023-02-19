@@ -10,26 +10,26 @@
 
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email</label>
-                <input type="email" 
-                        class="input-control" 
-                        aria-describedby="emailHelp" 
+                <input type="email"  id="exampleInputEmail1"
+                        class="input-control"
+                        aria-describedby="emailHelp"
                         formControlName="email">
               </div>
 
               <div class="mb-3">
                 <label for="exampleInputPassword1">Пароль</label><br>
-                <input type="password" 
-                        class="input-control" 
+                <input type="password"  id="exampleInputPassword1"
+                        class="input-control"
                         autocomplete="new-password"
                         formControlName="password">
               </div>
 
               <div class="mb-3 form-check">
-                <a href="" class="form-check-label" for="exampleCheck1">Забыли пароль?</a>
+                <a href="" class="form-check-label">Забыли пароль?</a>
               </div>
 
-              <button type="submit" 
-                      class="btn btn-primary button-action-pur-control" 
+              <button type="submit"
+                      class="btn btn-primary button-action-pur-control"
                       (click)="onSendFormSignInAsync()">
                 Войти
               </button>
