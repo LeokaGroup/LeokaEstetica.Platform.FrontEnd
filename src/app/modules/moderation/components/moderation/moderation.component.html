@@ -1,4 +1,4 @@
-<div class="block-moderation">
+<div class="block-moderation mt-5">
   <div>
     <!-- Список проектов. -->
     <p-tabView (onChange)="onSelectTabAsync($event)">
@@ -55,7 +55,7 @@
       <p-tabPanel header="Вакансии">
         <p-table [value]="aVacancies" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
           <ng-template pTemplate="caption">
-            Проекты на модерации
+            Вакансии на модерации
           </ng-template>
           <ng-template pTemplate="header">
             <tr>
@@ -102,8 +102,115 @@
       </p-tabPanel>
 
       <p-tabPanel header="Комментарии к проектам">
-        Content 3
+        В разработке
       </p-tabPanel>
+
+      <p-tabPanel header="Пользователи">
+        <p-table [value]="userBlackList$.value.usersBlackList" 
+                styleClass="p-datatable-gridlines" 
+                [tableStyle]="{'min-width': '50rem'}"
+                class="scroll-table">
+          <ng-template pTemplate="caption">
+            <h5>Пользователи в ЧС</h5>
+            <hr>
+            
+            <div class="mt-3">
+              <button pButton 
+                    type="button" 
+                    label="Добавить в ЧС" 
+                    class="p-button-text p-button-plain"
+                    (click)="isShowUserBlackListModal=!isShowUserBlackListModal">
+              </button>
+            </div>
+
+            <hr>
+
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>ID</th>
+              <th>Email</th>
+              <th>Номер телефона</th>
+              <th>Удалить из ЧС</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-ub>
+            <tr>
+              <td>{{ub.userId}}</td>
+              <td>{{ub.email}}</td>
+              <td>{{ub.phoneNumber}}</td>
+              <td><button pButton 
+                          type="button" 
+                          label="Удалить из ЧС" 
+                          class="p-button-danger p-button-text">
+              </button>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="summary">
+            Всего: {{total}}
+          </ng-template>
+        </p-table>
+      </p-tabPanel>
+
+      <p-tabPanel header="Анкеты">
+        <p-table [value]="userBlackList$.value.usersBlackList" styleClass="p-datatable-gridlines"
+          [tableStyle]="{'min-width': '50rem'}" class="scroll-table">
+          <ng-template pTemplate="caption">
+            <h5>Анкеты пользователей</h5>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>ID</th>
+              <th>Имя</th>
+              <th>Фамилия</th>
+              <th>Отчество</th>
+              <th>Email</th>
+              <th>Номер телефона</th>
+              <th>Telegram</th>
+              <th>WhatsApp</th>
+              <th>Ссылка ВКонтакте</th>
+              <th>Другая ссылка</th>
+              <th>Должность</th>
+              <th>Опыт (стаж)</th>
+              <th>Одобрение</th>
+              <th>Отклонение</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-profile>
+            <tr>
+              <td>{{profile.profileInfoId}}</td>
+              <td>{{profile.firstName}}</td>
+              <td>{{profile.lastName}}</td>
+              <td>{{profile.patronymic}}</td>
+              <td>{{profile.email}}</td>
+              <td>{{profile.phoneNumber}}</td>
+              <td>{{profile.telegram}}</td>
+              <td>{{profile.whatsApp}}</td>
+              <td>{{profile.vkontakte}}</td>
+              <td>{{profile.otherLink}}</td>
+              <td>{{profile.job}}</td>
+              <td>{{profile.otherLink}}</td>
+              <td>
+                <p-button label="Одобрить анкету"
+                          styleClass="p-button-success p-button-text"
+                          (click)="onApproveResumeAsync(profile.profileInfoId)">
+                </p-button>
+              </td>
+
+              <td>
+                <p-button label="Отклонить анкету"
+                          styleClass="p-button-danger p-button-text"
+                          (click)="onRejectResumeAsync(profile.profileInfoId)">
+                </p-button>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="summary">
+            Всего: {{resumesModeration$.value.total}}
+          </ng-template>
+        </p-table>
+        </p-tabPanel>
     </p-tabView>
   </div>
 </div>
@@ -268,5 +375,65 @@
               label="Отклонить вакансию" 
               styleClass="p-button-danger p-button-text">
 </p-button>
+  </ng-template>
+</p-dialog>
+
+<!-- Диалог добавления пользователя в ЧС. -->
+<p-dialog header="Добавление пользователя в ЧС" 
+          [(visible)]="isShowUserBlackListModal" 
+          [modal]="true" 
+          [style]="{width: '50vw', height: '50vw'}"
+          [maximizable]="false" 
+          [draggable]="false" 
+          [resizable]="false">
+ 
+  <div class="mt-3">
+    <div class="control-input-text-worksheet">
+      <div>
+          <label>Id пользователя</label>
+      </div>
+      <div>
+          <input type="text" 
+                class="p-inputtext-sm input-control-worksheet control-project" 
+                placeholder="Id пользователя" 
+                pInputText
+                autocomplete="new-password" 
+                [(ngModel)]="userId" />    
+      </div>          
+    </div>         
+
+    <div class="control-input-text-worksheet mt-3">
+      <div class="control-input-text-worksheet">
+         <div>
+          <label>Email пользователя</label>
+        </div>
+        <input type="text" 
+                class="p-inputtext-sm input-control-worksheet control-project" 
+                placeholder="Email" 
+                pInputText
+                autocomplete="new-password" 
+                [(ngModel)]="email" />    
+      </div>          
+    </div>           
+    
+    <div class="control-input-text-worksheet mt-3">
+      <div class="control-input-text-worksheet">
+         <div>
+          <label>Номер телефона пользователя (не обязательно)</label>
+        </div>
+        <input type="text" 
+                class="p-inputtext-sm input-control-worksheet control-project" 
+                placeholder="Номер телефона" 
+                pInputText
+                autocomplete="new-password" 
+                [(ngModel)]="phoneNumber" />    
+      </div>          
+    </div>     
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button (click)="onAddUserBlackListAsync()" 
+              label="Заблокировать пользователя" 
+              styleClass="p-button-text p-button-plain">
+    </p-button>
   </ng-template>
 </p-dialog>
