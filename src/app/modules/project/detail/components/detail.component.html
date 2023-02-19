@@ -86,7 +86,8 @@
                           type="button" 
                           label="Откликнуться на проект (без указания вакансии)"
                           class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onShowProjectResponseNotVacancyModal(true)">
+                          (click)="onShowProjectResponseNotVacancyModal(true)"
+                          *ngIf="IsVisibleActionProjectButtons">
                   </button>
                 </div>
 
@@ -95,7 +96,8 @@
                           type="button" 
                           label="Откликнуться на проект (с указанием вакансии)"
                           class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onShowProjectResponseWithVacancyModal(true)">
+                          (click)="onShowProjectResponseWithVacancyModal(true)"
+                          *ngIf="IsVisibleActionProjectButtons">
                   </button>
                 </div>
 
@@ -104,7 +106,8 @@
                           type="button" 
                           label="Написать владельцу"
                           class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onWriteOwnerDialogAsync()">
+                          (click)="onWriteOwnerDialogAsync()"
+                          *ngIf="IsVisibleActionProjectButtons">
                   </button>
                 </div>
 
@@ -114,7 +117,7 @@
                           label="Удалить проект"
                           class="p-button-danger p-button-text"
                           (click)="isDeleteProject=true"
-                          *ngIf="isOwner">
+                          *ngIf="isVisibleDeleteButton">
                   </button>
                 </div>
               </div>
