@@ -86,6 +86,7 @@ export class DetailProjectComponent {
     isDeleteProject: boolean = false;
     isVisibleDeleteButton: boolean = false;
     IsVisibleActionProjectButtons: boolean = false;
+    isVisibleActionVacancyButton: boolean = false;
 
     public async ngOnInit() {
         forkJoin([
@@ -203,6 +204,7 @@ export class DetailProjectComponent {
             .subscribe(_ => {
                 console.log("Вакансии проекта: ", this.projectVacancies$.value);
                 this.totalVacancies = this.projectVacancies$.value.total;
+                this.isVisibleActionVacancyButton = this.projectVacancies$.value.isVisibleActionVacancyButton;
             });
     };
 
