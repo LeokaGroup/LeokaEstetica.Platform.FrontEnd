@@ -52,14 +52,15 @@
                 <label>Стадия проекта</label>
             </div>
             <div>
-              <p-dropdown [options]="this.projectStages$.value"
-                          [(ngModel)]="selectedStage"
+              <p-dropdown [options]="projectStages$.value" 
+                          [(ngModel)]="selectedStage" 
                           optionLabel="stageName"
                           (onChange)="onSelectProjectStage()"
-                          [disabled]="!isEditMode">
+                          [disabled]="!isEditMode"
+                          dataKey="stageName">
               </p-dropdown>
-            </div>
-          </div>
+            </div>          
+          </div>         
         </div>
       </p-panel>
     </div>
@@ -112,7 +113,8 @@
                           type="button"
                           label="Удалить проект"
                           class="p-button-danger p-button-text"
-                          (click)="isDeleteProject=true">
+                          (click)="isDeleteProject=true"
+                          *ngIf="isOwner">
                   </button>
                 </div>
               </div>
