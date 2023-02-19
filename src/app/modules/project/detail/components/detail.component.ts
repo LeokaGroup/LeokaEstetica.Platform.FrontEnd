@@ -87,7 +87,9 @@ export class DetailProjectComponent {
     selectedInviteVacancy: any;
     selectedInviteUser: string = "";
     isDeleteProject: boolean = false;
+    isOwner: boolean = false;
     isDeleteVacancyInProject: boolean = false;
+
     public async ngOnInit() {
         forkJoin([
         this.checkUrlParams(),
@@ -160,6 +162,8 @@ export class DetailProjectComponent {
         (await this._projectService.getProjectAsync(projectId, mode))
         .subscribe(_ => {
             console.log("Получили проект: ", this.selectedProject$.value);
+            this.selectedStage = this.selectedProject$.value;
+            this.isOwner = this.selectedProject$.value.isVisibleAction;
         });
     };
 
