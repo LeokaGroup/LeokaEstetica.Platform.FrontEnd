@@ -555,23 +555,10 @@ export class DetailProjectComponent {
   public async onDeleteVacancyInProjectAsync() {
     (await this._projectService.deleteVacancyInProjectAsync(this.projectId,this.vacancyId))
       .subscribe(async (response: any) => {
-        console.log("Удалили проект: ", response);
         this.isDeleteVacancyInProject = false;
-        await this.getUserVacancyInProjectsAsync();
+        // await this.getUserVacancyInProjectsAsync();
+        await this.getProjectVacanciesAsync();
       });
   };
-  /**Функция получает список Вакансии пользователя.
-   * @returns вакансии */
-  private async getUserVacancyInProjectsAsync() {
-    (await this._backofficeService.getUserProjectsAsync())
-      .subscribe(_ => {
-        console.log("тут нужно вывести Вакансии проекта пользователя:");
-        this.getProjectVacanciesAsync(); //уже имеется Функция получает список вакансий проекта,вызываем что бы увидеть обновления
-      });
-  };
-
-
-
-
 
 }
