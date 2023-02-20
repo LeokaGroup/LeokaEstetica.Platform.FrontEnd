@@ -38,6 +38,8 @@ export class DetailVacancyComponent implements OnInit {
     payment: string = "";
     vacancyId: number = 0;
     isDeleteVacancy: boolean = false;
+    isVisibleSaveButton: boolean = false;
+    isVisibleDeleteButton: boolean = false;
 
     public async ngOnInit() {
         forkJoin([
@@ -102,6 +104,8 @@ export class DetailVacancyComponent implements OnInit {
                 this.workExperience = this.selectedVacancy$.value.workExperience;
                 this.employment = this.selectedVacancy$.value.employment;
                 this.payment = this.selectedVacancy$.value.payment;
+                this.isVisibleSaveButton = this.selectedVacancy$.value.isVisibleSaveButton;
+                this.isVisibleDeleteButton = this.selectedVacancy$.value.isVisibleDeleteButton;
             });
     };
 

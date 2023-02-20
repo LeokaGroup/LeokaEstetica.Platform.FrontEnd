@@ -108,6 +108,7 @@ export class CatalogProjectsComponent implements OnInit {
         (await this._projectService.filterProjectsAsync(filterProjectInput))
         .subscribe(_ => {
             console.log("Список проектов после фильтрации: ", this.catalog$.value);
+            this.aProjectsCatalog = this.catalog$.value;
         });
     };
 

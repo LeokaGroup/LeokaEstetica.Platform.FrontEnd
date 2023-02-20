@@ -52,11 +52,13 @@
                 <label>Стадия проекта</label>
             </div>
             <div>
-              <p-dropdown [options]="this.projectStages$.value"
-                          [(ngModel)]="selectedStage"
+
+              <p-dropdown [options]="projectStages$.value" 
+                          [(ngModel)]="selectedStage" 
                           optionLabel="stageName"
                           (onChange)="onSelectProjectStage()"
-                          [disabled]="!isEditMode">
+                          [disabled]="!isEditMode"
+                          dataKey="stageName">
               </p-dropdown>
             </div>
           </div>
@@ -85,7 +87,8 @@
                           type="button"
                           label="Откликнуться на проект (без указания вакансии)"
                           class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onShowProjectResponseNotVacancyModal(true)">
+                          (click)="onShowProjectResponseNotVacancyModal(true)"
+                          *ngIf="IsVisibleActionProjectButtons">
                   </button>
                 </div>
 
@@ -94,7 +97,8 @@
                           type="button"
                           label="Откликнуться на проект (с указанием вакансии)"
                           class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onShowProjectResponseWithVacancyModal(true)">
+                          (click)="onShowProjectResponseWithVacancyModal(true)"
+                          *ngIf="IsVisibleActionProjectButtons">
                   </button>
                 </div>
 
@@ -103,7 +107,8 @@
                           type="button"
                           label="Написать владельцу"
                           class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onWriteOwnerDialogAsync()">
+                          (click)="onWriteOwnerDialogAsync()"
+                          *ngIf="IsVisibleActionProjectButtons">
                   </button>
                 </div>
 
@@ -112,7 +117,8 @@
                           type="button"
                           label="Удалить проект"
                           class="p-button-danger p-button-text"
-                          (click)="isDeleteProject=true">
+                          (click)="isDeleteProject=true"
+                          *ngIf="isVisibleDeleteButton">
                   </button>
                 </div>
               </div>
@@ -135,18 +141,23 @@
             <ng-template pTemplate="caption">
              <div class="d-flex">
                <div>
-                 <button pButton type="button"
-                 label="Добавить"
-                 class="p-button-outlined"
-                 (click)="onRouteCreateProjectVacancy()">
+
+                 <button pButton type="button" 
+                        label="Добавить" 
+                        class="p-button-outlined"
+                        (click)="onRouteCreateProjectVacancy()"
+                        *ngIf="isVisibleActionVacancyButton">
                  </button>
                </div>
                &nbsp;&nbsp;&nbsp;
                <div>
-                 <button pButton type="button"
-                 label="Привязать"
-                 class="p-button-outlined p-button-secondary"
-                 (click)="onShowAttachModel()">
+
+                 <button pButton type="button" 
+                        label="Привязать" 
+                        class="p-button-outlined p-button-secondary"
+                        (click)="onShowAttachModel()"
+                        *ngIf="isVisibleActionVacancyButton">
+
                  </button>
                </div>
              </div>
