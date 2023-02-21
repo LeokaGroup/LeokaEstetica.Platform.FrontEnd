@@ -561,4 +561,5 @@ export class DetailProjectComponent {
       });
   };
 
+
 }
