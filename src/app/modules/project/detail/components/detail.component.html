@@ -207,7 +207,7 @@
                           [style]="{width: '50vw'}"
                           [draggable]="false"
                           [resizable]="false">
-                  <p>Вы уверены, что хотите удалить вакансию проекта {{vacancyId}}?</p>
+                  <p>Вы уверены, что хотите удалить вакансию проекта - "{{vacancy.userVacancy.vacancyName}}"?</p>
                   <ng-template pTemplate="footer">
                     <p-button (click)="isDeleteVacancyInProject=false" label="Отменить" styleClass="p-button-text"></p-button>
                     <p-button (click)="onDeleteVacancyInProjectAsync()" label="Удалить" styleClass="p-button-danger p-button-text"></p-button>
