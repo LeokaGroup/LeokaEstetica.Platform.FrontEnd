@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AdministrationRoutingModule } from './administration-routing.module';
+import { FormsModule } from '@angular/forms';
 import { PanelModule } from 'primeng/panel';
 import { MenuModule } from 'primeng/menu';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { PickListModule } from 'primeng/picklist';
 import { LoadingScriptService } from 'src/app/common/services/loading-scripts.service';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { ToastModule } from 'primeng/toast';
@@ -15,19 +17,18 @@ import {TableModule} from 'primeng/table';
 import {EditorModule} from 'primeng/editor';
 import { ButtonModule } from 'primeng/button';
 import {DropdownModule} from 'primeng/dropdown';
-import { TabViewModule } from 'primeng/tabview';
-import { AdministrationRoutingModule } from './administration-routing.module';
-import { AdministrationComponent } from './components/administration.component';
+import { CardModule } from 'primeng/card';
 
 
 @NgModule({
     declarations: [
-        AdministrationComponent
+        
     ],
 
     imports: [
         CommonModule,
         FormsModule,
+        AdministrationRoutingModule,
         HttpClientModule,
         PanelModule,
         MenuModule,
@@ -35,15 +36,14 @@ import { AdministrationComponent } from './components/administration.component';
         CheckboxModule,
         InputMaskModule,
         InputTextareaModule,
+        PickListModule,
         PanelMenuModule,
         ToastModule,
-        EditorModule,
-        DropdownModule,
         TableModule,
+        EditorModule,
         ButtonModule,
-        TabViewModule,
-        ReactiveFormsModule,
-        AdministrationRoutingModule
+        DropdownModule,
+        CardModule
     ],
 
     exports: [],

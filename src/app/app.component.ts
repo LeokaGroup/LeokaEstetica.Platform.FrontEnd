@@ -35,7 +35,6 @@ export class AppComponent implements OnInit {
   ];
   counter: number = 0;
   currentUrl: string = "";
-  isVisibleHeader: boolean = false;
 
   constructor(public networkService: NetworkService,
     private readonly _router: Router,
@@ -49,10 +48,8 @@ export class AppComponent implements OnInit {
   public rerender(): void {
     console.log("reload");
     this.isVisibleMenu = false;
-    this.isVisibleHeader = false;
     this.changeDetectorRef.detectChanges();
     this.isVisibleMenu = true;
-    this.isVisibleHeader = true;
 };
 
   /**
@@ -107,14 +104,6 @@ export class AppComponent implements OnInit {
     || currentUrl.indexOf("administration") > 0) {
       this.rerender();
       this.isVisibleMenu = false;
-    }
-
-    if (currentUrl.indexOf("profile/aboutme?mode=view") > 0) {
-      this.rerender();
-    }
-
-    if (currentUrl.indexOf("/") > 0) {
-      this.rerender();
     }
 
     this._activatedRoute.queryParams
