@@ -198,7 +198,7 @@
                             type="button"
                             label="Удалить"
                             class="p-button-outlined p-button-danger"
-                            (click)="onBeforeDeleteProjectVacancy(vacancy.vacancyId)">
+                            (click)="onBeforeDeleteProjectVacancy(vacancy.vacancyId, vacancy.userVacancy.vacancyName)">
                 </button></td>
                 <!-- Диалог удаления проекта. -->
                 <p-dialog header="Удаление вакансии проекта"
@@ -207,7 +207,7 @@
                           [style]="{width: '50vw'}"
                           [draggable]="false"
                           [resizable]="false">
-                  <p>Вы уверены, что хотите удалить вакансию проекта - "{{vacancy.userVacancy.vacancyName}}"?</p>
+                  <p>Вы уверены, что хотите удалить вакансию проекта - "{{vacancyNameForDelete}}" ?</p>
                   <ng-template pTemplate="footer">
                     <p-button (click)="isDeleteVacancyInProject=false" label="Отменить" styleClass="p-button-text"></p-button>
                     <p-button (click)="onDeleteVacancyInProjectAsync()" label="Удалить" styleClass="p-button-danger p-button-text"></p-button>

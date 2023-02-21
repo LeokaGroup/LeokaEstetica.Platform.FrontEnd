@@ -88,7 +88,9 @@ export class DetailProjectComponent {
     selectedInviteUser: string = "";
     isDeleteProject: boolean = false;
     isDeleteVacancyInProject: boolean = false;
-    public async ngOnInit() {
+    vacancyNameForDelete: any;
+
+  public async ngOnInit() {
         forkJoin([
         this.checkUrlParams(),
         await this.getProjectStagesAsync(),
@@ -547,16 +549,16 @@ export class DetailProjectComponent {
    * @param projectId - Id проекта; @param vacancyId = Id вакансии
    */
   /** при вервом нажатии на кнопку Удалить выскакивает диалог-удалить/отменить */
-  public onBeforeDeleteProjectVacancy(vacancyId: number) {
+  public onBeforeDeleteProjectVacancy(vacancyId: number, vacancyNameForDelete: any) {
     this.vacancyId = vacancyId;
     this.isDeleteVacancyInProject = true;
+    this.vacancyNameForDelete = vacancyNameForDelete;
   };
   /** реализация нажатия кнопки-удалить */
   public async onDeleteVacancyInProjectAsync() {
     (await this._projectService.deleteVacancyInProjectAsync(this.projectId,this.vacancyId))
       .subscribe(async (response: any) => {
         this.isDeleteVacancyInProject = false;
-        // await this.getUserVacancyInProjectsAsync();
         await this.getProjectVacanciesAsync();
       });
   };
