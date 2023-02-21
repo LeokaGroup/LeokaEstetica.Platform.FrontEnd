@@ -87,7 +87,9 @@ export class DetailProjectComponent {
     selectedInviteVacancy: any;
     selectedInviteUser: string = "";
     isDeleteProject: boolean = false;
-    isOwner: boolean = false;
+    isVisibleDeleteButton: boolean = false;
+    IsVisibleActionProjectButtons: boolean = false;
+    isVisibleActionVacancyButton: boolean = false;
     isDeleteVacancyInProject: boolean = false;
 
     public async ngOnInit() {
@@ -163,7 +165,8 @@ export class DetailProjectComponent {
         .subscribe(_ => {
             console.log("Получили проект: ", this.selectedProject$.value);
             this.selectedStage = this.selectedProject$.value;
-            this.isOwner = this.selectedProject$.value.isVisibleAction;
+            this.isVisibleDeleteButton = this.selectedProject$.value.isVisibleDeleteButton;
+            this.IsVisibleActionProjectButtons = this.selectedProject$.value.isVisibleActionProjectButtons;
         });
     };
 
@@ -207,6 +210,7 @@ export class DetailProjectComponent {
             .subscribe(_ => {
                 console.log("Вакансии проекта: ", this.projectVacancies$.value);
                 this.totalVacancies = this.projectVacancies$.value.total;
+                this.isVisibleActionVacancyButton = this.projectVacancies$.value.isVisibleActionVacancyButton;
             });
     };
 
