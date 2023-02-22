@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { forkJoin } from "rxjs";
-
 @Component({
     selector: "administration",
     templateUrl: "./administration.component.html",
@@ -33,8 +32,4 @@ export class AdministrationComponent implements OnInit {
     //             console.log("Список навыков для выбора: ", this.profileSkillsItems$.value);
     //         });
     // };
-
-    public onSelectTabAsync(e: any) {
-
-    };
 }

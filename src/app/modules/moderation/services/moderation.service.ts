@@ -3,12 +3,9 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { AccessModerationInput } from '../models/input/access-moderation-input';
-import { AddUserBlackListInput } from '../models/input/add-user-blacklist-input';
 import { ApproveProjectInput } from '../models/input/approve-project-input';
-import { ApproveResumeInput } from '../models/input/approve-resume-input';
 import { ApproveVacancyInput } from '../models/input/approve-vacancy-input';
 import { RejectProjectInput } from '../models/input/reject-project-input';
-import { RejectResumeInput } from '../models/input/reject-resume-input';
 import { RejectVacancyInput } from '../models/input/reject-vacancy-input';
 
 /**
@@ -25,11 +22,6 @@ export class ModerationService {
     public vacancyModeration$ = new BehaviorSubject<any>(null);
     public approveVacancyModeration$ = new BehaviorSubject<any>(null);
     public rejectVacancyModeration$ = new BehaviorSubject<any>(null);
-    public userBlackList$ = new BehaviorSubject<any>(null);
-    public addUserBlackList$ = new BehaviorSubject<any>(null);
-    public resumesModeration$ = new BehaviorSubject<any>(null);
-    public approveResumeModeration$ = new BehaviorSubject<any>(null);
-    public rejectResumeModeration$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -128,55 +120,6 @@ export class ModerationService {
      public async rejectVacancyAsync(rejectVacancyInput: RejectVacancyInput) {
         return await this.http.patch(API_URL.apiUrl + `/moderation/vacancy/reject`, rejectVacancyInput).pipe(
             tap(data => this.rejectVacancyModeration$.next(data))
-        );
-    };
-
-    /**
-     * Функция получает список пользователей для ЧС.
-     * @returns - Список пользователей.
-     */
-     public async getUserBlackListAsync() {
-        return await this.http.get(API_URL.apiUrl + `/moderation/blacklist`).pipe(
-            tap(data => this.userBlackList$.next(data))
-        );
-    };
-
-     /**
-     * Функция добавляет пользователя в ЧС.
-     */
-      public async addUserBlackListAsync(addUserBlackListInput: AddUserBlackListInput) {
-        return await this.http.post(API_URL.apiUrl + "/moderation/blacklist", addUserBlackListInput).pipe(
-            tap(data => this.addUserBlackList$.next(data))
-        );
-    };
-
-     /**
-     * Функция получает список анкет пользователей.
-     * @returns - Список анкет.
-     */
-      public async getResumesAsync() {
-        return await this.http.get(API_URL.apiUrl + "/moderation/resumes").pipe(
-            tap(data => this.resumesModeration$.next(data))
-        );
-    };
-
-    /**
-     * Функция одобряет анкету.
-     * @param approveResumeInput - Входная модель.
-     */
-     public async approveResumeAsync(approveResumeInput: ApproveResumeInput) {
-        return await this.http.patch(API_URL.apiUrl + `/moderation/resume/approve`, approveResumeInput).pipe(
-            tap(data => this.approveResumeModeration$.next(data))
-        );
-    };
-
-    /**
-     * Функция отклоняет анкету.
-     * @param rejectResumeInput - Входная модель.
-     */
-     public async rejectResumeAsync(rejectResumeInput: RejectResumeInput) {
-        return await this.http.patch(API_URL.apiUrl + `/moderation/resume/reject`, rejectResumeInput).pipe(
-            tap(data => this.rejectResumeModeration$.next(data))
         );
     };
 }
