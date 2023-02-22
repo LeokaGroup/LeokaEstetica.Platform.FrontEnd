@@ -87,12 +87,10 @@ export class DetailProjectComponent {
     selectedInviteVacancy: any;
     selectedInviteUser: string = "";
     isDeleteProject: boolean = false;
-    isVisibleDeleteButton: boolean = false;
-    IsVisibleActionProjectButtons: boolean = false;
-    isVisibleActionVacancyButton: boolean = false;
     isDeleteVacancyInProject: boolean = false;
+    vacancyNameForDelete: any;
 
-    public async ngOnInit() {
+  public async ngOnInit() {
         forkJoin([
         this.checkUrlParams(),
         await this.getProjectStagesAsync(),
@@ -164,9 +162,6 @@ export class DetailProjectComponent {
         (await this._projectService.getProjectAsync(projectId, mode))
         .subscribe(_ => {
             console.log("Получили проект: ", this.selectedProject$.value);
-            this.selectedStage = this.selectedProject$.value;
-            this.isVisibleDeleteButton = this.selectedProject$.value.isVisibleDeleteButton;
-            this.IsVisibleActionProjectButtons = this.selectedProject$.value.isVisibleActionProjectButtons;
         });
     };
 
@@ -210,7 +205,6 @@ export class DetailProjectComponent {
             .subscribe(_ => {
                 console.log("Вакансии проекта: ", this.projectVacancies$.value);
                 this.totalVacancies = this.projectVacancies$.value.total;
-                this.isVisibleActionVacancyButton = this.projectVacancies$.value.isVisibleActionVacancyButton;
             });
     };
 
@@ -555,31 +549,19 @@ export class DetailProjectComponent {
    * @param projectId - Id проекта; @param vacancyId = Id вакансии
    */
   /** при вервом нажатии на кнопку Удалить выскакивает диалог-удалить/отменить */
-  public onBeforeDeleteProjectVacancy(vacancyId: number) {
+  public onBeforeDeleteProjectVacancy(vacancyId: number, vacancyNameForDelete: any) {
     this.vacancyId = vacancyId;
     this.isDeleteVacancyInProject = true;
+    this.vacancyNameForDelete = vacancyNameForDelete;
   };
   /** реализация нажатия кнопки-удалить */
   public async onDeleteVacancyInProjectAsync() {
     (await this._projectService.deleteVacancyInProjectAsync(this.projectId,this.vacancyId))
       .subscribe(async (response: any) => {
-        console.log("Удалили проект: ", response);
         this.isDeleteVacancyInProject = false;
-        await this.getUserVacancyInProjectsAsync();
+        await this.getProjectVacanciesAsync();
       });
   };
-  /**Функция получает список Вакансии пользователя.
-   * @returns вакансии */
-  private async getUserVacancyInProjectsAsync() {
-    (await this._backofficeService.getUserProjectsAsync())
-      .subscribe(_ => {
-        console.log("тут нужно вывести Вакансии проекта пользователя:");
-        this.getProjectVacanciesAsync(); //уже имеется Функция получает список вакансий проекта,вызываем что бы увидеть обновления
-      });
-  };
-
-
-
 
 
 }

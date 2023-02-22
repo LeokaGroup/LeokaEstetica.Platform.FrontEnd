@@ -52,12 +52,11 @@
                 <label>Стадия проекта</label>
             </div>
             <div>
-              <p-dropdown [options]="projectStages$.value" 
-                          [(ngModel)]="selectedStage" 
+              <p-dropdown [options]="projectStages$.value"
+                          [(ngModel)]="selectedStage"
                           optionLabel="stageName"
                           (onChange)="onSelectProjectStage()"
-                          [disabled]="!isEditMode"
-                          dataKey="stageName">
+                          [disabled]="!isEditMode">
               </p-dropdown>
             </div>
           </div>
@@ -86,8 +85,7 @@
                           type="button"
                           label="Откликнуться на проект (без указания вакансии)"
                           class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onShowProjectResponseNotVacancyModal(true)"
-                          *ngIf="IsVisibleActionProjectButtons">
+                          (click)="onShowProjectResponseNotVacancyModal(true)">
                   </button>
                 </div>
 
@@ -96,8 +94,7 @@
                           type="button"
                           label="Откликнуться на проект (с указанием вакансии)"
                           class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onShowProjectResponseWithVacancyModal(true)"
-                          *ngIf="IsVisibleActionProjectButtons">
+                          (click)="onShowProjectResponseWithVacancyModal(true)">
                   </button>
                 </div>
 
@@ -106,8 +103,7 @@
                           type="button"
                           label="Написать владельцу"
                           class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onWriteOwnerDialogAsync()"
-                          *ngIf="IsVisibleActionProjectButtons">
+                          (click)="onWriteOwnerDialogAsync()">
                   </button>
                 </div>
 
@@ -116,8 +112,7 @@
                           type="button"
                           label="Удалить проект"
                           class="p-button-danger p-button-text"
-                          (click)="isDeleteProject=true"
-                          *ngIf="isVisibleDeleteButton">
+                          (click)="isDeleteProject=true">
                   </button>
                 </div>
               </div>
@@ -140,20 +135,18 @@
             <ng-template pTemplate="caption">
              <div class="d-flex">
                <div>
-                 <button pButton type="button" 
-                        label="Добавить" 
-                        class="p-button-outlined"
-                        (click)="onRouteCreateProjectVacancy()"
-                        *ngIf="isVisibleActionVacancyButton">
+                 <button pButton type="button"
+                 label="Добавить"
+                 class="p-button-outlined"
+                 (click)="onRouteCreateProjectVacancy()">
                  </button>
                </div>
                &nbsp;&nbsp;&nbsp;
                <div>
-                 <button pButton type="button" 
-                        label="Привязать" 
-                        class="p-button-outlined p-button-secondary"
-                        (click)="onShowAttachModel()"
-                        *ngIf="isVisibleActionVacancyButton">
+                 <button pButton type="button"
+                 label="Привязать"
+                 class="p-button-outlined p-button-secondary"
+                 (click)="onShowAttachModel()">
                  </button>
                </div>
              </div>
@@ -205,24 +198,22 @@
                             type="button"
                             label="Удалить"
                             class="p-button-outlined p-button-danger"
-                            (click)="onBeforeDeleteProjectVacancy(vacancy.vacancyId)">
+                            (click)="onBeforeDeleteProjectVacancy(vacancy.vacancyId, vacancy.userVacancy.vacancyName)">
                 </button></td>
                 <!-- Диалог удаления проекта. -->
-                <p-dialog header="Удаление вакансию проекта"
+                <p-dialog header="Удаление вакансии проекта"
                           [(visible)]="isDeleteVacancyInProject"
                           [breakpoints]="{'960px': '75vw'}"
                           [style]="{width: '50vw'}"
                           [draggable]="false"
                           [resizable]="false">
-                  <p>Удалить Вакансию проекта {{projectName}}?</p>
-                  <p>Текст исправить! Вы уверены, что хотите Удалить вакансию проекта?</p>
+                  <p>Вы уверены, что хотите удалить вакансию проекта <strong>{{vacancyNameForDelete}}</strong>?</p>
                   <ng-template pTemplate="footer">
                     <p-button (click)="isDeleteVacancyInProject=false" label="Отменить" styleClass="p-button-text"></p-button>
                     <p-button (click)="onDeleteVacancyInProjectAsync()" label="Удалить" styleClass="p-button-danger p-button-text"></p-button>
                   </ng-template>
                 </p-dialog>
 
-                <!--  старая кнопка  <td><button pButton type="button" label="Удалить" class="p-button-danger p-button-text"></button></td>-->
               </tr>
             </ng-template>
 
@@ -233,8 +224,6 @@
         </div>
       </p-panel>
     </div>
-
-
 
 
 
@@ -692,7 +681,7 @@
           <label>Выберите вакансию</label>
       </div>
       <div>
-        <p-dropdown [options]="this.availableAttachVacancies$.value.projectVacancies"
+        <p-dropdown [options]="availableAttachVacancies$.value.projectVacancies"
                     [(ngModel)]="selectedVacancy"
                     optionLabel="userVacancy.vacancyName"
                     (onChange)="onSelectVacancy()">
