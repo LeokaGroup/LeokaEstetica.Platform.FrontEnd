@@ -22,5 +22,4 @@ import { MenuModule } from 'primeng/menu';
 
     ]
 })
-export class HeaderModule {
-}
+export class HeaderModule {}
