@@ -19,7 +19,6 @@ export class HeaderComponent implements OnInit {
         {
             label: 'Настройки',
             command: () => {
-
             }
         },
         {
@@ -27,6 +26,7 @@ export class HeaderComponent implements OnInit {
             command: () => {
                 localStorage.clear();
                 this._router.navigate(["/user/signin"]);
+                this.isHideAuthButtons = localStorage["t_n"];
             }
         }
     ];
@@ -74,14 +74,15 @@ export class HeaderComponent implements OnInit {
         this._router.navigate([e.menuItemUrl]);
     };
 
-    private checkUrlParams() {
-        this._activatedRoute.queryParams
-        .subscribe(params => {
-            let mode = params["mode"];
-
-
-          });
-    };
+  private checkUrlParams() {
+    this._activatedRoute.queryParams
+      .subscribe(params => {
+        let mode = params["mode"];
+        if(mode == "view"){
+          this.isHideAuthButtons = localStorage["t_n"];
+        }
+      });
+  };
 
     /**
      * Функция переходит в профиль пользователя.
