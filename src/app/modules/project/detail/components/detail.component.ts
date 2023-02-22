@@ -203,10 +203,10 @@ export class DetailProjectComponent {
      */
     private async getProjectVacanciesAsync() {
         (await this._projectService.getProjectVacanciesAsync(this.projectId))
-            .subscribe(_ => {
+            .subscribe((response: any) => {
                 console.log("Вакансии проекта: ", this.projectVacancies$.value);
                 this.totalVacancies = this.projectVacancies$.value.total;
-                this.isVisibleActionVacancyButton = this.projectVacancies$.value.isVisibleActionVacancyButton;
+                this.isVisibleActionVacancyButton = response.isVisibleActionVacancyButton;
             });
     };
 
@@ -550,6 +550,7 @@ export class DetailProjectComponent {
   public onBeforeDeleteProjectVacancy(vacancyId: number, vacancyNameForDelete: any) {
     this.vacancyId = vacancyId;
     this.isDeleteVacancyInProject = true;
+    this.vacancyNameForDelete = vacancyNameForDelete;
     this.vacancyNameForDelete = vacancyNameForDelete;
   };
 
