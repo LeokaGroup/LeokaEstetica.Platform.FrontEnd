@@ -15,7 +15,6 @@ import { CreateProjectCommentInput } from "../models/input/create-project-commen
 import { InviteProjectTeamMemberInput } from "../models/input/invite-project-team-member-input";
 import { ProjectResponseInput } from "../models/input/project-response-input";
 import { UpdateProjectInput } from "../models/input/update-project-input";
-import {BackOfficeService} from "../../../backoffice/services/backoffice.service";
 
 @Component({
     selector: "detail",
@@ -34,9 +33,7 @@ export class DetailProjectComponent {
         private readonly _router: Router,
         private readonly _vacancyService: VacancyService,
         private readonly _messagesService: ChatMessagesService,
-        private readonly _searchProjectService: SearchProjectService,
-        //кнопка удалить - Вакансии проекта
-        private readonly _backofficeService: BackOfficeService) {
+        private readonly _searchProjectService: SearchProjectService) {
     }
 
     public readonly catalog$ = this._projectService.catalog$;
@@ -89,6 +86,7 @@ export class DetailProjectComponent {
     isDeleteProject: boolean = false;
     isDeleteVacancyInProject: boolean = false;
     vacancyNameForDelete: any;
+    isVisibleActionVacancyButton: boolean = false;
 
   public async ngOnInit() {
         forkJoin([
@@ -99,7 +97,6 @@ export class DetailProjectComponent {
         await this.getAvailableAttachVacanciesAsync(),
         await this.getProjectDialogsAsync(),
         await this.onWriteOwnerDialogAsync(),
-        // await this.getProjectDialogMessages(),
         await this.getProjectCommentsAsync(),
         await this.getProjectTeamColumnsNamesAsync(),
         await this.getProjectTeamAsync()
@@ -205,6 +202,7 @@ export class DetailProjectComponent {
             .subscribe(_ => {
                 console.log("Вакансии проекта: ", this.projectVacancies$.value);
                 this.totalVacancies = this.projectVacancies$.value.total;
+                this.isVisibleActionVacancyButton = this.projectVacancies$.value.isVisibleActionVacancyButton;
             });
     };
 
@@ -539,14 +537,10 @@ export class DetailProjectComponent {
     };
 
 
-
-
-
-
-
-  /**   Mika 14.02.23
+  /** 
    * Функция удаляет Вакансию из Вакансии проекта при нажатии Удалить.
-   * @param projectId - Id проекта; @param vacancyId = Id вакансии
+   * @param vacancyNameForDelete - Название вакансии. 
+   * @param vacancyId = Id вакансии
    */
   /** при вервом нажатии на кнопку Удалить выскакивает диалог-удалить/отменить */
   public onBeforeDeleteProjectVacancy(vacancyId: number, vacancyNameForDelete: any) {
@@ -554,10 +548,11 @@ export class DetailProjectComponent {
     this.isDeleteVacancyInProject = true;
     this.vacancyNameForDelete = vacancyNameForDelete;
   };
+
   /** реализация нажатия кнопки-удалить */
   public async onDeleteVacancyInProjectAsync() {
-    (await this._projectService.deleteVacancyInProjectAsync(this.projectId,this.vacancyId))
-      .subscribe(async (response: any) => {
+    (await this._projectService.deleteVacancyInProjectAsync(this.projectId, this.vacancyId))
+      .subscribe(async _ => {
         this.isDeleteVacancyInProject = false;
         await this.getProjectVacanciesAsync();
       });
