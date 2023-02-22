@@ -15,6 +15,7 @@ import { CreateProjectCommentInput } from "../models/input/create-project-commen
 import { InviteProjectTeamMemberInput } from "../models/input/invite-project-team-member-input";
 import { ProjectResponseInput } from "../models/input/project-response-input";
 import { UpdateProjectInput } from "../models/input/update-project-input";
+import {BackOfficeService} from "../../../backoffice/services/backoffice.service";
 
 @Component({
     selector: "detail",
@@ -33,7 +34,9 @@ export class DetailProjectComponent {
         private readonly _router: Router,
         private readonly _vacancyService: VacancyService,
         private readonly _messagesService: ChatMessagesService,
-        private readonly _searchProjectService: SearchProjectService) {
+        private readonly _searchProjectService: SearchProjectService,
+        //кнопка удалить - Вакансии проекта
+        private readonly _backofficeService: BackOfficeService) {
     }
 
     public readonly catalog$ = this._projectService.catalog$;
@@ -56,7 +59,7 @@ export class DetailProjectComponent {
     allFeedSubscription: any;
     isEditMode: boolean = false;
     selectedStage: any;
-    isEdit: any;    
+    isEdit: any;
     selectedProjectVacancy: any;
     totalVacancies: number = 0;
     isShowAttachVacancyModal: boolean = false;
@@ -84,11 +87,10 @@ export class DetailProjectComponent {
     selectedInviteVacancy: any;
     selectedInviteUser: string = "";
     isDeleteProject: boolean = false;
-    isVisibleDeleteButton: boolean = false;
-    IsVisibleActionProjectButtons: boolean = false;
-    isVisibleActionVacancyButton: boolean = false;
+    isDeleteVacancyInProject: boolean = false;
+    vacancyNameForDelete: any;
 
-    public async ngOnInit() {
+  public async ngOnInit() {
         forkJoin([
         this.checkUrlParams(),
         await this.getProjectStagesAsync(),
@@ -107,7 +109,7 @@ export class DetailProjectComponent {
          this._signalrService.startConnection().then(() => {
             console.log("Подключились");
 
-            this.listenAllHubsNotifications();            
+            this.listenAllHubsNotifications();
 
             // Подписываемся на получение всех сообщений.
             this.allFeedSubscription = this._signalrService.AllFeedObservable
@@ -127,6 +129,8 @@ export class DetailProjectComponent {
         this._signalrService.listenErrorDublicateAttachProjectVacancyInfo();
         this._signalrService.listenSuccessProjectResponseInfo();
         this._signalrService.listenWarningProjectResponseInfo();
+        this._signalrService.listenSuccessDeleteProjectVacancy();
+        this._signalrService.listenErrorDeleteProjectVacancy();
     };
 
     private checkUrlParams() {
@@ -135,13 +139,13 @@ export class DetailProjectComponent {
             let mode = params["mode"];
 
             if (mode == "view") {
-                this.getEditProjectAsync(params["projectId"], "View");  
+                this.getEditProjectAsync(params["projectId"], "View");
                 this.isEditMode = false;
             }
 
             if (mode == "edit") {
-                this.getEditProjectAsync(params["projectId"], "Edit");             
-                this.isEditMode = true;   
+                this.getEditProjectAsync(params["projectId"], "Edit");
+                this.isEditMode = true;
             }
 
             this.projectId = params["projectId"];
@@ -154,16 +158,13 @@ export class DetailProjectComponent {
      * @param mode - Режим. Чтение или изменение.
      * @returns - Список вакансий.
      */
-      private async getEditProjectAsync(projectId: number, mode: string) {    
+      private async getEditProjectAsync(projectId: number, mode: string) {
         (await this._projectService.getProjectAsync(projectId, mode))
         .subscribe(_ => {
             console.log("Получили проект: ", this.selectedProject$.value);
-            this.selectedStage = this.selectedProject$.value;
-            this.isVisibleDeleteButton = this.selectedProject$.value.isVisibleDeleteButton;
-            this.IsVisibleActionProjectButtons = this.selectedProject$.value.isVisibleActionProjectButtons;
         });
     };
-    
+
     /**
      * Функция обновляет проект.
      * @returns - Обновленные данные проекта.
@@ -204,7 +205,6 @@ export class DetailProjectComponent {
             .subscribe(_ => {
                 console.log("Вакансии проекта: ", this.projectVacancies$.value);
                 this.totalVacancies = this.projectVacancies$.value.total;
-                this.isVisibleActionVacancyButton = this.projectVacancies$.value.isVisibleActionVacancyButton;
             });
     };
 
@@ -215,7 +215,7 @@ export class DetailProjectComponent {
     private async getProjectVacanciesColumnNamesAsync() {
         (await this._projectService.getProjectVacanciesColumnNamesAsync())
             .subscribe(_ => {
-                console.log("Столбцы таблицы вакансий проектов пользователя: ", this.projectVacanciesColumns$.value);                
+                console.log("Столбцы таблицы вакансий проектов пользователя: ", this.projectVacanciesColumns$.value);
             });
     };
 
@@ -224,7 +224,7 @@ export class DetailProjectComponent {
      */
     public onRouteCreateProjectVacancy() {
         let projectId = this.projectId;
-        
+
         this._router.navigate(["/vacancies/create"], {
             queryParams: {
                 projectId
@@ -264,8 +264,8 @@ export class DetailProjectComponent {
 
         (await this._projectService.attachProjectVacancyAsync(attachModel))
         .subscribe(async _ => {
-            console.log("Прикрепили вакансию: ", this.selectedVacancy.vacancyId);       
-            this.isShowAttachVacancyModal = false;         
+            console.log("Прикрепили вакансию: ", this.selectedVacancy.vacancyId);
+            this.isShowAttachVacancyModal = false;
             await this.getProjectVacanciesAsync();
         });
     };
@@ -282,10 +282,10 @@ export class DetailProjectComponent {
         if (isEdit) {
             this.vacancyId = vacancyId;
         }
-        
+
         (await this._vacancyService.getVacancyByIdAsync(vacancyId))
         .subscribe(async _ => {
-            console.log("Получили вакансию: ", this.selectedVacancy$.value);       
+            console.log("Получили вакансию: ", this.selectedVacancy$.value);
             this.vacancyName = this.selectedVacancy$.value.vacancyName;
             this.vacancyText = this.selectedVacancy$.value.vacancyText;
             this.workExperience = this.selectedVacancy$.value.workExperience;
@@ -299,20 +299,20 @@ export class DetailProjectComponent {
      * @returns - Данные вакансии.
      */
       public async onUpdateVacancyAsync() {
-        let model = this.UpdateVacancyModel(); 
+        let model = this.UpdateVacancyModel();
         (await this._vacancyService.updateVacancyAsync(model))
-        .subscribe((response: any) => {       
+        .subscribe((response: any) => {
             if (response.errors !== null && response.errors.length > 0) {
                 response.errors.forEach((item: any) => {
                     this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item.errorMessage });
-                });  
+                });
             }
 
             // else {
             //     setTimeout(() => {
             //         this._router.navigate(["/vacancies"]);
             //     }, 4000);
-            // }   
+            // }
         });
     };
 
@@ -333,23 +333,23 @@ export class DetailProjectComponent {
     };
 
     /**
-     * Первичная обработка отклика на проект. 
+     * Первичная обработка отклика на проект.
      * С вакансией либо без нее.
      * @param isResponseVacancy - Признак отклика с вакансией либо без нее.
      */
     public onShowProjectResponseWithVacancyModal(isResponseVacancy: boolean) {
-        this.isResponseVacancy = isResponseVacancy;        
-    };    
+        this.isResponseVacancy = isResponseVacancy;
+    };
 
     /**
-     * Первичная обработка отклика на проект без вакансии. 
+     * Первичная обработка отклика на проект без вакансии.
      * С вакансией либо без нее.
      * @param isResponseVacancy - Признак отклика с вакансией либо без нее.
      */
      public onShowProjectResponseNotVacancyModal(isResponseNotVacancy: boolean) {
-        this.isResponseNotVacancy = isResponseNotVacancy;        
-    }; 
-    
+        this.isResponseNotVacancy = isResponseNotVacancy;
+    };
+
     /**
      * Функция записывает отклик на проект.
      * Запись происходит либо с указанием вакансии либо без нее.
@@ -378,13 +378,13 @@ export class DetailProjectComponent {
      * Функция получает список диалогов.
      * @returns - Список диалогов.
      */
-    private async getProjectDialogsAsync() {       
+    private async getProjectDialogsAsync() {
         (await this._messagesService.getProjectDialogsAsync())
         .subscribe(async _ => {
-            console.log("Сообщения чата проекта: ", this.messages$.value);     
+            console.log("Сообщения чата проекта: ", this.messages$.value);
             this.userName = this.messages$.value.fullName;
             console.log("userName", this.userName);
-            
+
             // Диалогов нет, создаем новый пустой диалог для начала общения.
             // if (!this.messages$.value.length) {
             //     (await this._messagesService.getProjectDialogAsync(this.projectId))
@@ -415,8 +415,8 @@ export class DetailProjectComponent {
         dialogInput.DiscussionType = "Project";
 
         (await this._messagesService.writeOwnerDialogAsync(dialogInput))
-        .subscribe(async _ => {   
-            console.log("Получили диалог: ", this.dialog$.value);           
+        .subscribe(async _ => {
+            console.log("Получили диалог: ", this.dialog$.value);
             if (this.dialog$.value.dialogId > 0) {
                 this.dialogId = this.dialog$.value.dialogId;
                 this.userName = this.dialog$.value.fullName;
@@ -431,10 +431,10 @@ export class DetailProjectComponent {
         dialogInput.DialogId = this.dialogId;
 
         (await this._messagesService.sendDialogMessageAsync(dialogInput))
-        .subscribe(async _ => {   
-            console.log("Сообщения диалога: ", this.messages$.value);    
-            this.message = "";     
-            await this.onGetDialogAsync(this.dialogId);  
+        .subscribe(async _ => {
+            console.log("Сообщения диалога: ", this.messages$.value);
+            this.message = "";
+            await this.onGetDialogAsync(this.dialogId);
         });
     };
 
@@ -444,12 +444,12 @@ export class DetailProjectComponent {
     public async onCreateProjectCommentAsync() {
         let createProjectCommentInput = new CreateProjectCommentInput();
         createProjectCommentInput.ProjectId = this.projectId;
-        createProjectCommentInput.Comment = this.projectComment;   
-        
+        createProjectCommentInput.Comment = this.projectComment;
+
         (await this._projectService.createProjectCommentAsync(createProjectCommentInput))
-        .subscribe(async _ => {   
-            console.log("Комментарий к проекту успешно добавлен.");    
-            this.projectComment = "";     
+        .subscribe(async _ => {
+            console.log("Комментарий к проекту успешно добавлен.");
+            this.projectComment = "";
             await this.getProjectCommentsAsync();
         });
     };
@@ -457,10 +457,10 @@ export class DetailProjectComponent {
     /**
      * Функция получает список комментариев к проекту.
      */
-     private async getProjectCommentsAsync() {    
+     private async getProjectCommentsAsync() {
         (await this._projectService.getProjectCommentsAsync(this.projectId))
-        .subscribe(async (response: any) => {   
-            console.log("Комментарии проекта: ", response);    
+        .subscribe(async (response: any) => {
+            console.log("Комментарии проекта: ", response);
             this.aProjectComments = response;
         });
     };
@@ -471,8 +471,8 @@ export class DetailProjectComponent {
      */
     private async getProjectTeamColumnsNamesAsync() {
         (await this._projectService.getProjectTeamColumnsNamesAsync())
-        .subscribe(async (response: any) => {   
-            console.log("Столбцы команды проекта: ", response);    
+        .subscribe(async (response: any) => {
+            console.log("Столбцы команды проекта: ", response);
             this.projectTeamColumns = response;
         });
     };
@@ -483,8 +483,8 @@ export class DetailProjectComponent {
      */
      private async getProjectTeamAsync() {
         (await this._projectService.getProjectTeamAsync(this.projectId))
-        .subscribe(async (response: any) => {   
-            console.log("Данные команды проекта: ", response);    
+        .subscribe(async (response: any) => {
+            console.log("Данные команды проекта: ", response);
             this.projectTeam = response;
         });
     };
@@ -496,8 +496,8 @@ export class DetailProjectComponent {
      */
      public async onSearchInviteProjectMembersAsync(event: any) {
         (await this._searchProjectService.searchInviteProjectMembersAsync(event.query))
-        .subscribe(async (response: any) => {   
-            console.log("Пользователи для добавления в команду проекта: ", response);    
+        .subscribe(async (response: any) => {
+            console.log("Пользователи для добавления в команду проекта: ", response);
             this.aProjectInvitesUsers = response;
         });
     };
@@ -517,8 +517,8 @@ export class DetailProjectComponent {
         inviteProjectTeamMemberInput.VacancyId = this.selectedInviteVacancy.vacancyId;
 
         (await this._projectService.sendInviteProjectTeamAsync(inviteProjectTeamMemberInput))
-        .subscribe(async (response: any) => {   
-            console.log("Добавленный в команду пользователь: ", response);                
+        .subscribe(async (response: any) => {
+            console.log("Добавленный в команду пользователь: ", response);
         });
     };
 
@@ -528,13 +528,40 @@ export class DetailProjectComponent {
      */
     public async onDeleteProjectAsync() {
         (await this._projectService.deleteProjectsAsync(this.projectId))
-        .subscribe(async (response: any) => {   
-            console.log("Удалили проект: ", response);    
+        .subscribe(async (response: any) => {
+            console.log("Удалили проект: ", response);
             this.isDeleteProject = false;
-            
+
             setTimeout(() => {
                 this._router.navigate(["/projects"]);
             }, 4000);
         });
     };
+
+
+
+
+
+
+
+  /**   Mika 14.02.23
+   * Функция удаляет Вакансию из Вакансии проекта при нажатии Удалить.
+   * @param projectId - Id проекта; @param vacancyId = Id вакансии
+   */
+  /** при вервом нажатии на кнопку Удалить выскакивает диалог-удалить/отменить */
+  public onBeforeDeleteProjectVacancy(vacancyId: number, vacancyNameForDelete: any) {
+    this.vacancyId = vacancyId;
+    this.isDeleteVacancyInProject = true;
+    this.vacancyNameForDelete = vacancyNameForDelete;
+  };
+  /** реализация нажатия кнопки-удалить */
+  public async onDeleteVacancyInProjectAsync() {
+    (await this._projectService.deleteVacancyInProjectAsync(this.projectId,this.vacancyId))
+      .subscribe(async (response: any) => {
+        this.isDeleteVacancyInProject = false;
+        await this.getProjectVacanciesAsync();
+      });
+  };
+
+
 }
