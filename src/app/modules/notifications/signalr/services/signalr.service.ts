@@ -6,17 +6,17 @@ import { API_URL } from 'src/app/core/core-urls/api-urls';
 @Injectable()
 export class SignalrService {
     private hubConnection: any;
-    private $allFeed: Subject<any> = new Subject<any>();
+    private $allFeed: Subject<any> = new Subject<any>();   
 
-    public async startConnection() {
+    public async startConnection() {               
         return await new Promise(async (resolve, reject) => {
-            this.hubConnection = new HubConnectionBuilder().withUrl(API_URL.apiUrl + "/notify", 4).build();
+            this.hubConnection = new HubConnectionBuilder().withUrl(API_URL.apiUrl + "/notify", 4).build();                
 
             this.hubConnection.start()
                 .then(async () => {
                     console.log("Соединение установлено");
-                    console.log("ConnectionId:", this.hubConnection.connectionId);
-
+                    console.log("ConnectionId:", this.hubConnection.connectionId);    
+                    
                     return resolve(true);
                 })
                 .catch((err: any) => {
@@ -128,23 +128,4 @@ export class SignalrService {
             this.$allFeed.next(data);
         });
     };
-
-
-
-
-  /** mika 15.02.23
-   * Функция слушает уведомления успешное Удаления  вакансии проекта из хаба.*/
-  public listenSuccessDeleteProjectVacancy () {
-    (<HubConnection>this.hubConnection).on("SendNotificationSuccessDeleteProjectVacancy", (data: any) => {
-      this.$allFeed.next(data);
-    });
-  };
-  /** mika 15.02.23
-   * Функция слушает уведомления Если была ошибка удаления вакансии проекта из хаба.*/
-  public listenErrorDeleteProjectVacancy () {
-    (<HubConnection>this.hubConnection).on("SendNotificationErrorDeleteProjectVacancy", (data: any) => {
-      this.$allFeed.next(data);
-    });
-  };
-
 };

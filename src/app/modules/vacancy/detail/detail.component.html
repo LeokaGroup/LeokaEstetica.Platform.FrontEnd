@@ -108,7 +108,8 @@
                   <button pButton 
                           type="button" 
                           label="Сохранить"
-                          class="p-button-outlined p-button-secondary p-button-text">
+                          class="p-button-outlined p-button-secondary p-button-text"
+                          *ngIf="isVisibleSaveButton">
                   </button>
                 </div>
 
@@ -118,7 +119,7 @@
                           label="Удалить вакансию"
                           class="p-button-danger p-button-text"
                           (click)="isDeleteVacancy=true"
-                          *ngIf="selectedVacancy$.value.isVisibleControls">
+                          *ngIf="isVisibleDeleteButton">
                   </button>
                 </div>
               </div>
