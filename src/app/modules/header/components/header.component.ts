@@ -19,7 +19,6 @@ export class HeaderComponent implements OnInit {
         {
             label: 'Настройки',
             command: () => {
-
             }
         },
         {
