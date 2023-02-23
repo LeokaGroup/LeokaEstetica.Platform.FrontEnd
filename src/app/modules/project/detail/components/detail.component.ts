@@ -297,11 +297,13 @@ export class DetailProjectComponent {
     };
 
      /**
-     * Функция создает вакансию вне проекта.
+      * TODO: Вынести куда-нибудь, а то дублируется с вакансиями вне проекта.
+     * Функция обновляет вакансию.
      * @returns - Данные вакансии.
      */
       public async onUpdateVacancyAsync() {
-        let model = this.UpdateVacancyModel();
+        let model = this.createUpdateVacancyModel();
+
         (await this._vacancyService.updateVacancyAsync(model))
         .subscribe((response: any) => {
             if (response.errors !== null && response.errors.length > 0) {
@@ -309,20 +311,15 @@ export class DetailProjectComponent {
                     this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item.errorMessage });
                 });
             }
-
-            // else {
-            //     setTimeout(() => {
-            //         this._router.navigate(["/vacancies"]);
-            //     }, 4000);
-            // }
         });
     };
 
     /**
+     * TODO: Вынести куда-нибудь, а то дублируется с вакансиями вне проекта.
      * Функция создает модель для обновления вакансии проекта.
      * @returns - Входная модель вакансии.
      */
-     private UpdateVacancyModel(): VacancyInput {
+     private createUpdateVacancyModel(): VacancyInput {
         let model = new VacancyInput();
         model.VacancyName = this.vacancyName;
         model.VacancyText = this.vacancyText;

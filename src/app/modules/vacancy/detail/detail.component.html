@@ -98,7 +98,7 @@
       </p-panel>
     </div>
 
-    <div class="worksheet-panel space-top-50 space-bottom-50 d-flex" *ngIf="!isEditMode">
+    <div class="worksheet-panel space-top-50 space-bottom-50 d-flex">
       <p-panel header="Действия" [toggleable]="true" [collapsed]="true">       
         <div class="d-flex">
           <div class="control-input-text-worksheet">
@@ -107,8 +107,20 @@
                 <div>
                   <button pButton 
                           type="button" 
-                          label="Сохранить"
-                          class="p-button-outlined p-button-secondary p-button-text">
+                          label="Сохранить изменения"
+                          class="p-button-outlined p-button-secondary p-button-text"
+                          *ngIf="isVisibleSaveButton && isEditMode"
+                          (click)="onUpdateVacancyAsync()">
+                  </button>
+                </div>
+
+                <div>
+                  <button pButton 
+                          type="button" 
+                          label="Изменить вакансию"
+                          class="p-button-outlined p-button-secondary p-button-text"
+                          *ngIf="isVisibleEditButton"
+                          (click)="onEditVacancy()">
                   </button>
                 </div>
 
@@ -118,7 +130,7 @@
                           label="Удалить вакансию"
                           class="p-button-danger p-button-text"
                           (click)="isDeleteVacancy=true"
-                          *ngIf="selectedVacancy$.value.isVisibleControls">
+                          *ngIf="isVisibleDeleteButton">
                   </button>
                 </div>
               </div>
@@ -127,23 +139,6 @@
         </div>
       </p-panel>
     </div>
-
-    <!-- <div class="d-flex worksheet-line mt-3 mb-3">
-      <div class="control-input-text-worksheet">
-        <button type="button" class="p-button-text"
-          *ngIf="isEdit">
-          Сохранить
-        </button>
-      </div>
-
-      <div class="control-input-text-worksheet">
-        <button type="button" class="p-button-danger p-button-text"
-        *ngIf="selectedVacancy$.value.isVisibleControls"
-        (click)="isDeleteVacancy=true">
-          Удалить
-        </button>
-      </div>
-    </div> -->
   </div>
 </div>
 
@@ -155,7 +150,7 @@
           [draggable]="false" 
           [resizable]="false"
           icon="pi pi-exclamation-triangle">
-        <p>Удалить вакансию {{selectedVacancy$.value.vacancyName}}?</p>
+        <p>Удалить вакансию <strong>{{selectedVacancy$.value.vacancyName}}?</strong></p>
         <ng-template pTemplate="footer">
         <p-button (click)="isDeleteVacancy=false" label="Отмена" styleClass="p-button-text"></p-button>
         <p-button (click)="onDeleteVacancyAsync()" label="Удалить" styleClass="p-button-text p-button-danger"></p-button>
