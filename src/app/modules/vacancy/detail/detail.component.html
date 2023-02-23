@@ -121,6 +121,15 @@
                           *ngIf="selectedVacancy$.value.isVisibleControls">
                   </button>
                 </div>
+
+                <div>
+                  <button pButton 
+                          type="button" 
+                          label="Откликнуться на вакансию"
+                          class="p-button-outlined p-button-secondary p-button-text"
+                          *ngIf="!selectedVacancy$.value.isVisibleControls">
+                  </button>
+                </div>
               </div>
             </div>                    
           </div>         
