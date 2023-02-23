@@ -198,7 +198,7 @@
                             class="p-button-outlined p-button-danger"
                             (click)="onBeforeDeleteProjectVacancy(vacancy.vacancyId, vacancy.userVacancy.vacancyName)"
                             *ngIf="isVisibleActionVacancyButton">
-                </button></td>                             
+                </button></td>
               </tr>
             </ng-template>
 
@@ -704,7 +704,7 @@
           [style]="{width: '50vw'}"
           [draggable]="false"
           [resizable]="false">
-        <p>Удалить проект {{selectedProject$.value.projectName}}?</p>
+        <p>Удалить проект <strong>{{selectedProject$.value.projectName}}</strong>?</p>
         <p>При удалении проекта будут удалены вакансии проекта,
           сообщения чата проекта,
           все участники команды проекта и

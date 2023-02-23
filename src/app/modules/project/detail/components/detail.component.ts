@@ -130,6 +130,8 @@ export class DetailProjectComponent {
         this._signalrService.listenWarningProjectResponseInfo();
         this._signalrService.listenSuccessDeleteProjectVacancy();
         this._signalrService.listenErrorDeleteProjectVacancy();
+        this._signalrService.listenSuccessDeleteProject();
+        this._signalrService.listenErrorDeleteProject();
     };
 
     private checkUrlParams() {
@@ -541,9 +543,9 @@ export class DetailProjectComponent {
     };
 
 
-  /** 
+  /**
    * Функция удаляет Вакансию из Вакансии проекта при нажатии Удалить.
-   * @param vacancyNameForDelete - Название вакансии. 
+   * @param vacancyNameForDelete - Название вакансии.
    * @param vacancyId = Id вакансии
    */
   /** при вервом нажатии на кнопку Удалить выскакивает диалог-удалить/отменить */

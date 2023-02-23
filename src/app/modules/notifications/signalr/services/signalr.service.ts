@@ -75,7 +75,23 @@ export class SignalrService {
         });
     };
 
-    /**
+  /** mika 23.02.23
+   * Функция слушает уведомления успешное Удаления Проекта из хаба.*/
+  public listenSuccessDeleteProject () {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessDeleteProject", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+  /** Функция слушает уведомления Если была ошибка удаления Проекта из хаба.*/
+  public listenErrorDeleteProject () {
+    (<HubConnection>this.hubConnection).on("SendNotificationErrorDeleteProject ", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+
+
+  /**
      * Функция слушает уведомления создания вакансии пользователя из хаба.
      */
      public listenSuccessCreatedUserVacancyInfo() {
@@ -131,7 +147,6 @@ export class SignalrService {
 
 
 
-
   /** mika 15.02.23
    * Функция слушает уведомления успешное Удаления  вакансии проекта из хаба.*/
   public listenSuccessDeleteProjectVacancy () {
@@ -139,8 +154,7 @@ export class SignalrService {
       this.$allFeed.next(data);
     });
   };
-  /** mika 15.02.23
-   * Функция слушает уведомления Если была ошибка удаления вакансии проекта из хаба.*/
+  /** Функция слушает уведомления Если была ошибка удаления вакансии проекта из хаба.*/
   public listenErrorDeleteProjectVacancy () {
     (<HubConnection>this.hubConnection).on("SendNotificationErrorDeleteProjectVacancy", (data: any) => {
       this.$allFeed.next(data);
