@@ -102,16 +102,19 @@ export class AboutmeComponent implements OnInit, OnDestroy {
             }
 
             if (mode == "edit") {
-                this.isModeEdit = true;
+                this.isModeEdit = true;                            
+            }
+
+            else {
+                this.isModeEdit = false;
+            }
+
+            if ((mode == "view" || mode == "edit") && !params["uc"]) {
                 (await this._backofficeService.getProfileInfoAsync())
                 .subscribe(_ => {
                     console.log("Данные анкеты: ", this.profileInfo$.value);
                     this.setEditFields();
                 });
-            }
-
-            else {
-                this.isModeEdit = false;
             }
           });
     };
@@ -218,14 +221,6 @@ export class AboutmeComponent implements OnInit, OnDestroy {
                 this.setEditFields();
             });
         }
-
-        // else {
-        //     (await this._backofficeService.getProfileInfoAsync())
-        //         .subscribe(_ => {
-        //             console.log("Данные анкеты: ", this.profileInfo$.value);
-        //             this.setEditFields();
-        //         });
-        // }
     };
 
     public async onSaveProfileUserSkillsAsync() {
