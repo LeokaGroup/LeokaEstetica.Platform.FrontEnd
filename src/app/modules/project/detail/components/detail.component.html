@@ -85,7 +85,8 @@
                           type="button"
                           label="Откликнуться на проект (без указания вакансии)"
                           class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onShowProjectResponseNotVacancyModal(true)">
+                          (click)="onShowProjectResponseNotVacancyModal(true)"
+                          *ngIf="isVisibleActionProjectButtons">
                   </button>
                 </div>
 
@@ -94,7 +95,8 @@
                           type="button"
                           label="Откликнуться на проект (с указанием вакансии)"
                           class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onShowProjectResponseWithVacancyModal(true)">
+                          (click)="onShowProjectResponseWithVacancyModal(true)"
+                          *ngIf="isVisibleActionProjectButtons">
                   </button>
                 </div>
 
@@ -103,7 +105,8 @@
                           type="button"
                           label="Написать владельцу"
                           class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onWriteOwnerDialogAsync()">
+                          (click)="onWriteOwnerDialogAsync()"
+                          *ngIf="isVisibleActionProjectButtons">
                   </button>
                 </div>
 
@@ -112,7 +115,8 @@
                           type="button"
                           label="Удалить проект"
                           class="p-button-danger p-button-text"
-                          (click)="isDeleteProject=true">
+                          (click)="isDeleteProject=true"
+                          *ngIf="isVisibleDeleteButton">
                   </button>
                 </div>
               </div>
@@ -165,10 +169,6 @@
                 </tr>
             </ng-template>
 
-
-
-
-            <!--    удаление из Вакансии проекта -->
             <ng-template pTemplate="body" let-vacancy>
               <tr>
                 <td>
@@ -177,7 +177,6 @@
                 <td>{{vacancy.vacancyId}}</td>
                 <td>{{vacancy.userVacancy.vacancyName}}</td>
                 <td>{{vacancy.userVacancy.vacancyText}}</td>
-                <!-- <td>{{vacancy.projectStatusName}}</td>              -->
                 <td>{{vacancy.userVacancy.vacancyStatusName}}</td>
                 <td><button pButton type="button"
                             label="Просмотр"
@@ -188,32 +187,18 @@
                 <td><button pButton type="button"
                             label="Редактировать"
                             class="p-button-secondary p-button-text"
-                            (click)="onShowVacancyModal(vacancy.vacancyId, true)">
+                            (click)="onShowVacancyModal(vacancy.vacancyId, true)"
+                            *ngIf="isVisibleActionVacancyButton">
                 </button>
                 </td>
 
-                <!--  ********-----------------**********-->
-                <!--  кнопка удалить - Вакансии проекта Mika 15.02.23-->
                 <td><button pButton
                             type="button"
                             label="Удалить"
                             class="p-button-outlined p-button-danger"
-                            (click)="onBeforeDeleteProjectVacancy(vacancy.vacancyId, vacancy.userVacancy.vacancyName)">
-                </button></td>
-                <!-- Диалог удаления проекта. -->
-                <p-dialog header="Удаление вакансии проекта"
-                          [(visible)]="isDeleteVacancyInProject"
-                          [breakpoints]="{'960px': '75vw'}"
-                          [style]="{width: '50vw'}"
-                          [draggable]="false"
-                          [resizable]="false">
-                  <p>Вы уверены, что хотите удалить вакансию проекта <strong>{{vacancyNameForDelete}}</strong>?</p>
-                  <ng-template pTemplate="footer">
-                    <p-button (click)="isDeleteVacancyInProject=false" label="Отменить" styleClass="p-button-text"></p-button>
-                    <p-button (click)="onDeleteVacancyInProjectAsync()" label="Удалить" styleClass="p-button-danger p-button-text"></p-button>
-                  </ng-template>
-                </p-dialog>
-
+                            (click)="onBeforeDeleteProjectVacancy(vacancy.vacancyId, vacancy.userVacancy.vacancyName)"
+                            *ngIf="isVisibleActionVacancyButton">
+                </button></td>                             
               </tr>
             </ng-template>
 
@@ -224,47 +209,6 @@
         </div>
       </p-panel>
     </div>
-
-
-
-
-
-
-
-
-<!--            <ng-template pTemplate="body" let-vacancy>-->
-<!--                <tr>-->
-<!--                  <td>-->
-<!--                    <p-tableCheckbox [value]="vacancy"></p-tableCheckbox>-->
-<!--                  </td>-->
-<!--                  <td>{{vacancy.vacancyId}}</td>-->
-<!--                  <td>{{vacancy.userVacancy.vacancyName}}</td>-->
-<!--                  <td>{{vacancy.userVacancy.vacancyText}}</td>-->
-<!--                  &lt;!&ndash; <td>{{vacancy.projectStatusName}}</td>              &ndash;&gt;-->
-<!--                  <td>{{vacancy.userVacancy.vacancyStatusName}}</td>-->
-<!--                  <td><button pButton type="button" -->
-<!--                              label="Просмотр" -->
-<!--                              class="p-button-text"-->
-<!--                              (click)="onShowVacancyModal(vacancy.vacancyId, false)">-->
-<!--                      </button>-->
-<!--                  </td>-->
-<!--                  <td><button pButton type="button" -->
-<!--                              label="Редактировать" -->
-<!--                              class="p-button-secondary p-button-text"-->
-<!--                              (click)="onShowVacancyModal(vacancy.vacancyId, true)">-->
-<!--                      </button>-->
-<!--                  </td>-->
-<!--                  <td><button pButton type="button" label="Удалить" class="p-button-danger p-button-text"></button></td>-->
-<!--                </tr>-->
-<!--            </ng-template>-->
-<!--      -->
-<!--            <ng-template pTemplate="summary">-->
-<!--                Всего: {{totalVacancies}}-->
-<!--            </ng-template>-->
-<!--        </p-table>-->
-<!--        </div>-->
-<!--      </p-panel>-->
-<!--    </div>   -->
 
     <!-- Область с чатом. -->
     <div class="worksheet-panel space-top-50 space-bottom-50 d-flex">
@@ -728,4 +672,18 @@
         <p-button (click)="isDeleteProject=false" label="Отменить" styleClass="p-button-text"></p-button>
         <p-button (click)="onDeleteProjectAsync()" label="Удалить" styleClass="p-button-danger p-button-text"></p-button>
         </ng-template>
+</p-dialog>
+
+<!-- Диалог удаления вакансии проекта. -->
+<p-dialog header="Удаление вакансии проекта"
+          [(visible)]="isDeleteVacancyInProject"
+          [breakpoints]="{'960px': '75vw'}"
+          [style]="{width: '50vw'}"
+          [draggable]="false"
+          [resizable]="false">
+<p>Вы уверены, что хотите удалить вакансию проекта <strong>{{vacancyNameForDelete}}</strong>?</p>
+<ng-template pTemplate="footer">
+<p-button (click)="isDeleteVacancyInProject=false" label="Отменить" styleClass="p-button-text"></p-button>
+<p-button (click)="onDeleteVacancyInProjectAsync()" label="Удалить" styleClass="p-button-danger p-button-text"></p-button>
+</ng-template>
 </p-dialog>

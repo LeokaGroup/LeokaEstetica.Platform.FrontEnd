@@ -90,7 +90,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
 
     private checkUrlParams() {
         this._activatedRoute.queryParams
-        .subscribe(params => {
+        .subscribe(async params => {
             let mode = params["mode"];
             console.log("mode: ", mode);
 
@@ -103,7 +103,11 @@ export class AboutmeComponent implements OnInit, OnDestroy {
 
             if (mode == "edit") {
                 this.isModeEdit = true;
-                this.setEditFields();
+                (await this._backofficeService.getProfileInfoAsync())
+                .subscribe(_ => {
+                    console.log("Данные анкеты: ", this.profileInfo$.value);
+                    this.setEditFields();
+                });
             }
 
             else {
@@ -215,13 +219,13 @@ export class AboutmeComponent implements OnInit, OnDestroy {
             });
         }
 
-        else {
-            (await this._backofficeService.getProfileInfoAsync())
-                .subscribe(_ => {
-                    console.log("Данные анкеты: ", this.profileInfo$.value);
-                    this.setEditFields();
-                });
-        }
+        // else {
+        //     (await this._backofficeService.getProfileInfoAsync())
+        //         .subscribe(_ => {
+        //             console.log("Данные анкеты: ", this.profileInfo$.value);
+        //             this.setEditFields();
+        //         });
+        // }
     };
 
     public async onSaveProfileUserSkillsAsync() {
