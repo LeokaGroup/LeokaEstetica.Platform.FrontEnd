@@ -31,6 +31,19 @@ export class CreateVacancyComponent implements OnInit {
     payment: string = "";
     allFeedSubscription: any;
     projectId: number = 0;
+    selectedExpirience: any[] = [];
+    selectedEmployments: any[] = []
+    expirienceVariants: any[] = [
+        { name: "Не имеет значения" },
+        { name: "От 3 до 6 лет" },
+        { name: "От 1 года до 3 лет" },
+        { name: "Более 6 лет" },
+        { name: "Нет опыта " }
+    ];
+    employmentsVariants: any[] = [
+        { name: "Полная занятость" },
+        { name: "Частичная занятость" }
+    ];
 
     public async ngOnInit() {
          // Подключаемся.
@@ -84,7 +97,7 @@ export class CreateVacancyComponent implements OnInit {
 
             if (response.errors !== null && response.errors.length > 0) {
                 response.errors.forEach((item: any) => {
-                    this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item.errorMessage });
+                    this._messageService.add({ severity: "error", summary: "Что то не так", detail: item.errorMessage });
                 });  
             }
 
@@ -108,7 +121,7 @@ export class CreateVacancyComponent implements OnInit {
 
             if (response.errors !== null && response.errors.length > 0) {
                 response.errors.forEach((item: any) => {
-                    this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item.errorMessage });
+                    this._messageService.add({ severity: "error", summary: "Что то не так", detail: item.errorMessage });
                 });  
             }
 

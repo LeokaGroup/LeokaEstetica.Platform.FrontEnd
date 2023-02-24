@@ -25,6 +25,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { ListboxModule } from 'primeng/listbox';
 
 @NgModule({
     declarations: [
@@ -53,7 +54,8 @@ import { DialogModule } from 'primeng/dialog';
         PaginatorModule,
         TagModule,
         ButtonModule,
-        DialogModule
+        DialogModule,
+        ListboxModule
     ],
 
     exports: [],
