@@ -83,8 +83,26 @@ export class SignalrService {
             this.$allFeed.next(data);
         });
     };
+  /** M
+   * Функция слушает уведомления в случае, если превышен лимит вакансий по тарифу у пользователя, из хаба.
+   */
+  public listenWarningLimitFareRuleVacancies() {
+    (<HubConnection>this.hubConnection).on("SendNotificationWarningLimitFareRuleVacancies", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+  /** M
+   * Функция слушает уведомления в случае ошибки создания вакансии, из хаба.
+   */
+  public listenErrorCreatedUserVacancy() {
+    (<HubConnection>this.hubConnection).on("SendNotificationErrorCreatedUserVacancy", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 
-    /**
+
+
+  /**
      * Функция слушает уведомления обновления проекта пользователя из хаба.
      */
      public listenSuccessUpdatedUserVacancyInfo() {
@@ -147,4 +165,4 @@ export class SignalrService {
     });
   };
 
-};
+}
