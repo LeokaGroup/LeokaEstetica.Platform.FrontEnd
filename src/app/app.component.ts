@@ -88,7 +88,7 @@ export class AppComponent implements OnInit {
     }
 
     if (this._aVisibleVacancyMenuRoutes.includes(currentUrl)) {
-      localStorage["m_t"] = 2;
+      localStorage["m_t"] = 1;
       this.isVisibleMenu = true;
     }
 
