@@ -140,17 +140,19 @@
              <div class="d-flex">
                <div>
                  <button pButton type="button"
-                 label="Добавить"
-                 class="p-button-outlined"
-                 (click)="onRouteCreateProjectVacancy()">
+                          label="Добавить"
+                          class="p-button-outlined"
+                          (click)="onRouteCreateProjectVacancy()"
+                          *ngIf="isVisibleActionVacancyButton">
                  </button>
                </div>
                &nbsp;&nbsp;&nbsp;
                <div>
                  <button pButton type="button"
-                 label="Привязать"
-                 class="p-button-outlined p-button-secondary"
-                 (click)="onShowAttachModel()">
+                          label="Привязать"
+                          class="p-button-outlined p-button-secondary"
+                          (click)="onShowAttachModel()"
+                          *ngIf="isVisibleActionVacancyButton">
                  </button>
                </div>
              </div>
