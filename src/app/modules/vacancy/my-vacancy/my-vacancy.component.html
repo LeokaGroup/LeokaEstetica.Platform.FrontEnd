@@ -1,0 +1,76 @@
+<div class="d-flex block-profile space-top-50">
+  <div class="profile-left-menu col-lg-3">
+  </div>
+  <div>
+    <p-table [value]="listVacancy$.value.vacancies"
+             [(selection)]="selectedVacancy"
+             dataKey="vacancyId"
+             [paginator]="true"
+             [rows]="10"
+             styleClass="p-datatable-gridlines"
+             responsiveLayout="scroll">
+<!--             (click)="onSelectProject()">-->
+
+      <ng-template pTemplate="caption">
+        <h3>Ваши вакансии</h3>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>
+
+          </th>
+<!--          <th *ngFor="let item of listVacancy$.value.vacancies">{{listVacancy$.value}}</th>-->
+          <th>ID вакансии</th>
+          <th>Название вакансии</th>
+          <th>Описание вакансии</th>
+          <th>Статус вакансии</th>
+          <th>Просмотр</th>
+          <th>Редактирование</th>
+          <th>Удаление</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-vacancy>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="vacancy"></p-tableCheckbox>
+          </td>
+          <td>{{vacancy.vacancyId}}</td>
+          <td>{{vacancy.vacancyName}}</td>
+          <td>{{vacancy.vacancyText}}</td>
+          <td>{{vacancy.vacancyStatusName}}</td>
+          <td><button pButton type="button"
+                      label="Просмотр"
+                      class="p-button-outlined p-button-primaryproject.projectId">
+<!--                      (click)="onRouteViewProject(project.projectId)">-->
+          </button>
+          </td>
+          <td><button pButton type="button"
+                      label="Редактировать"
+                      class="p-button-outlined p-button-primaryproject.projectId">
+<!--                      (click)="onRouteEditProject(project.projectId)">-->
+          </button>
+          </td>
+          <td><button pButton
+                      type="button"
+                      label="Удалить"
+                      class="p-button-outlined p-button-danger">
+<!--                      (click)="onBeforeDeleteProject(project.projectId, project.projectName)">-->
+          </button></td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="summary">
+        Всего: {{listVacancy$.value.total}}
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+
+
+
+<!--  <div *ngFor="let item of listVacancy$.value.vacancies">-->
+<!--    <div>{{item.vacancyName}}</div>-->
+<!--</div>-->

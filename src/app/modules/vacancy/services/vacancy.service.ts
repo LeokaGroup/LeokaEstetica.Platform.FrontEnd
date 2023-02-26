@@ -14,7 +14,7 @@ export class VacancyService {
     public selectedVacancy$ = new BehaviorSubject<any>(null);
     public pagination$ = new BehaviorSubject<any>(null);
     public deleteVacancy$ = new BehaviorSubject<any>(null);
-
+    public listVacancy$ = new BehaviorSubject<any>([]);
     constructor(private readonly http: HttpClient) {
 
     }
@@ -112,4 +112,17 @@ export class VacancyService {
             tap(data => this.deleteVacancy$.next(data))
         );
     };
+
+
+
+
+  /**
+   * Функция получает список(list) проектов пользователя.
+   * @returns Список проектов.
+   */
+  public async getUserVacancysAsync() {
+    return await this.http.get(API_URL.apiUrl + "/vacancies/user-vacancies").pipe(
+      tap(data => this.listVacancy$.next(data))
+    );
+  };
 }

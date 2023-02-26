@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Router, Event as NavigationEvent } from "@angular/router";
+import { Router } from "@angular/router";
 import { BackOfficeService } from "../../services/backoffice.service";
 
 @Component({
@@ -34,25 +34,28 @@ export class LeftMenuComponent implements OnInit {
     aCreateVacanciesSysName: string[] = [
         "CreateVacancy"
     ];
+    aVacanciesSysName: string[] = [
+        "MyVacanciesList"
+    ];
     aSubscriptionsSysNames: string[] = [
         "Subscriptions"
     ];
 
-    manuItems: any[] = [];    
+    manuItems: any[] = [];
 
     constructor(private readonly _backOfficeService: BackOfficeService,
         private readonly _router: Router) {
     }
 
-    public async ngOnInit() {                 
+    public async ngOnInit() {
         if (localStorage["m_t"] == "1") {
-            await this.getProfileInfoAsync();      
+            await this.getProfileInfoAsync();
         }
 
         if (localStorage["m_t"] == "2") {
             await this.getVacancyInfoAsync();
         }
-    };   
+    };
 
     /**
      * Функция получает пункты меню профиля пользователя.
@@ -79,7 +82,7 @@ export class LeftMenuComponent implements OnInit {
     };
 
      /**
-     * Функция распределяет по роутам. 
+     * Функция распределяет по роутам.
      * @param event - Событие.
      */
     public async onSelectMenu(event: any) {
@@ -99,7 +102,7 @@ export class LeftMenuComponent implements OnInit {
                     }
                 });
             }
-            
+
             // Роут на изменение анкеты.
             if (this.aEditSysNames.includes(this.sysName)) {
                 this._router.navigate(["/profile/aboutme"], {
@@ -123,6 +126,12 @@ export class LeftMenuComponent implements OnInit {
             if (this.aCreateVacanciesSysName.includes(this.sysName)) {
                 this._router.navigate(["/vacancies/create"]);
             }
+
+            // Роут на страницу списка вакансии.
+            if (this.aVacanciesSysName.includes(this.sysName)) {
+              this._router.navigate(["/vacancies/my"]);
+            }
+
 
             // Роут на страницу создания вакансии.подписок
             if (this.aSubscriptionsSysNames.includes(this.sysName)) {
