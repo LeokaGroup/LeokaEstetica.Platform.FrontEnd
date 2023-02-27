@@ -33,8 +33,8 @@ const routes: Routes = [
   },
 
   {
-    path: "pay",
-    loadChildren: () => import('./modules/pay/pay.module').then(m => m.PayModule)
+    path: "notifications",
+    loadChildren: () => import('./modules/backoffice/notification/notification.module').then(m => m.NotificationsModule)
   }
 ];
 
