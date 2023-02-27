@@ -31,6 +31,7 @@ import { SubscriptionsService } from './modules/backoffice/subscriptions/service
 import { MenuModule } from 'primeng/menu';
 import { AdministrationModule } from './modules/administration/administration.module';
 import { AdministrationService } from './modules/administration/services/administration.service';
+import { NotificationsService } from './modules/backoffice/notification/services/notifications.service';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { AdministrationService } from './modules/administration/services/adminis
     FareRuleService,
     PaymentService,
     SubscriptionsService,
-    AdministrationService
+    AdministrationService,
+    NotificationsService
   ],
 
   bootstrap: [AppComponent]

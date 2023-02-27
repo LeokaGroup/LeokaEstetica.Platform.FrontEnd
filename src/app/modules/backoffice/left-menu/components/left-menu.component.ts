@@ -40,6 +40,10 @@ export class LeftMenuComponent implements OnInit {
 
     manuItems: any[] = [];    
 
+    aNotificationsSysNames: string[] = [
+        "Invities"
+    ];
+
     constructor(private readonly _backOfficeService: BackOfficeService,
         private readonly _router: Router) {
     }
@@ -127,6 +131,11 @@ export class LeftMenuComponent implements OnInit {
             // Роут на страницу создания вакансии.подписок
             if (this.aSubscriptionsSysNames.includes(this.sysName)) {
                 this._router.navigate(["/subscriptions"]);
+            }
+
+            // Роут на страницу уведомлений пользователя.
+            if (this.aNotificationsSysNames.includes(this.sysName)) {
+                this._router.navigate(["/notifications"]);
             }
         });
     };

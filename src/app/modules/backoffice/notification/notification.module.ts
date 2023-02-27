@@ -11,11 +11,12 @@ import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { DialogModule } from 'primeng/dialog';
+import { NotificationsComponent } from './components/notifications.component';
 
 
 @NgModule({
     declarations: [
-       
+        NotificationsComponent
     ],
 
     imports: [
@@ -24,6 +25,7 @@ import { DialogModule } from 'primeng/dialog';
         NotificationsRoutingModule,
         HttpClientModule,
         PanelModule,
+        MenuModule,
         MenuModule,
         PanelMenuModule,
         ButtonModule,
