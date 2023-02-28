@@ -16,7 +16,7 @@
               <p>{{notify.notificationText}}</p>
             </div>
 
-            <div *ngIf="notify.isNeedAccepted && notify.isOwner">
+            <div *ngIf="notify.isNeedAccepted && notify.isVisibleNotificationsButtons">
               <button pButton 
                       type="button" 
                       label="Принять" 
