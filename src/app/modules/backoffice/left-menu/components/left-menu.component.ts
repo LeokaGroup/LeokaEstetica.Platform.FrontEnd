@@ -41,7 +41,7 @@ export class LeftMenuComponent implements OnInit {
     manuItems: any[] = [];    
 
     aNotificationsSysNames: string[] = [
-        "Invities"
+        "Notifications"
     ];
 
     constructor(private readonly _backOfficeService: BackOfficeService,
