@@ -113,9 +113,6 @@ export class VacancyService {
         );
     };
 
-
-
-
   /**
    * Функция получает список(list) проектов пользователя.
    * @returns Список проектов.
@@ -125,4 +122,5 @@ export class VacancyService {
       tap(data => this.listVacancy$.next(data))
     );
   };
+
 }

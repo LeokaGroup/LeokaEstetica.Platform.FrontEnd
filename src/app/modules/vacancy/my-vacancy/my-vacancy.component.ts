@@ -21,6 +21,9 @@ export class MyVacancyComponent implements OnInit {
 
   allFeedSubscription: any;
   selectedVacancy: any;
+  vacancyId: number = 0;
+  vacancyName: string = "";
+  isDeleteVacancy: boolean = false;
   constructor(
     private readonly _signalrService: SignalrService,
     private readonly _messageService: MessageService,
@@ -56,7 +59,7 @@ export class MyVacancyComponent implements OnInit {
 
 
   /**
-   mmmm
+   Получавем список(List) ваканции клиента
    */
   private async getUserVacancyAsync() {
     (await this._vacancyService.getUserVacancysAsync())
@@ -64,5 +67,51 @@ export class MyVacancyComponent implements OnInit {
         console.log("мой лист вакансии:", this.listVacancy$.value);
       });
   };
+
+  /**
+   * Функция переходит на страницу просмотра вакансии и подставляет в роут Id вакансии.
+   * @param vacancyId - Id вакансии.
+   */
+  public onRouteViewVacancy(vacancyId: number) {
+    this._router.navigate(["/vacancies/vacancy"], {
+      queryParams: {
+        vacancyId,
+        mode: "view"
+      }
+    });
+  };
+
+  /**
+   * Функция переходит на страницу редактирования вакансии и подставляет в роут Id вакансии.
+   * @param vacancyId - Id вакансии.
+   */
+  public onRouteEditVacancy(vacancyId: number) {
+    this._router.navigate(["/vacancies/vacancy"], {
+      queryParams: {
+        vacancyId,
+        mode: "edit"
+      }
+    });
+  };
+
+  /**
+   * Функция удаляет мои вакансии.
+   * @param vacancyId - Id вакансии.
+   */
+  public async onDeleteVacancyAsync() {
+    (await this._vacancyService.deleteVacancyAsync(this.vacancyId))
+      .subscribe(async (response: any) => {
+        console.log("Удалили вакансию: ", response);
+        this.isDeleteVacancy = false;
+        await this.getUserVacancyAsync();
+      });
+  };
+  public onBeforeDeleteVacancy(vacancyId: number, vacancyName: string) {
+    this.vacancyId = vacancyId;
+    this.vacancyName = vacancyName;
+    this.isDeleteVacancy = true;
+  };
+
+
 
 }
