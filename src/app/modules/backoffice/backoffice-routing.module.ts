@@ -4,6 +4,7 @@ import { AboutmeComponent } from './aboutme/components/aboutme.component';
 import { CreateProjectComponent } from './project/create-project/components/create-project.component';
 import { MyProjectsComponent } from './project/my-projects/components/my-projects.component';
 import { SubscriptionsComponent } from './subscriptions/components/subscriptions.component';
+import { MyVacancyComponent } from "./my-vacancy/my-vacancy.component";
 
 const routes: Routes = [
     {
@@ -20,7 +21,11 @@ const routes: Routes = [
 
     {
         path: 'subscriptions', component: SubscriptionsComponent
-    }
+    },
+    {
+      path: 'vacancies/my', component: MyVacancyComponent
+    },
+
 ];
 
 @NgModule({

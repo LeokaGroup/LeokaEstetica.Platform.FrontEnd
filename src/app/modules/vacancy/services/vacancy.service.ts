@@ -113,14 +113,4 @@ export class VacancyService {
         );
     };
 
-  /**
-   * Функция получает список(list) проектов пользователя.
-   * @returns Список проектов.
-   */
-  public async getUserVacancysAsync() {
-    return await this.http.get(API_URL.apiUrl + "/vacancies/user-vacancies").pipe(
-      tap(data => this.listVacancy$.next(data))
-    );
-  };
-
 }

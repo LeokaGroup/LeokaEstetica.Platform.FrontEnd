@@ -11,7 +11,6 @@ import { CreateProjectInput } from '../project/create-project/models/input/creat
  */
 @Injectable()
 export class BackOfficeService {
-    public profileInfoData$ = new BehaviorSubject<any>(null);
     public profileItems$ = new BehaviorSubject<any>([]);
     public vacancyItems$ = new BehaviorSubject<any>([]);
     public profileSkillsItems$ = new BehaviorSubject<any>([]);
@@ -23,7 +22,8 @@ export class BackOfficeService {
     public projectColumns$ = new BehaviorSubject<any>([]);
     public projectData$ = new BehaviorSubject<any>({});
     public userProjects$ = new BehaviorSubject<any>([]);
-
+    public listVacancy$ = new BehaviorSubject<any>([]);
+    public deleteVacancy$ = new BehaviorSubject<any>(null);
     constructor(private readonly http: HttpClient) {
 
     }
@@ -36,7 +36,7 @@ export class BackOfficeService {
         return await this.http.get(API_URL.apiUrl + "/profile/info").pipe(
             tap(data => this.profileInfo$.next(data))
         );
-    };   
+    };
 
      /**
      * Функция получает данные анкеты выбранного в базе резюме пользователя для просмотра.
@@ -46,7 +46,7 @@ export class BackOfficeService {
         return await this.http.get(API_URL.apiUrl + `/resumes/${profileInfoId}`).pipe(
             tap(data => this.profileInfo$.next(data))
         );
-    };  
+    };
 
     /**
      * Функция получает пункты меню профиля пользователя.
@@ -56,7 +56,7 @@ export class BackOfficeService {
         return await this.http.get(API_URL.apiUrl + "/profile/menu").pipe(
             tap(data => this.profileItems$.next(data))
         );
-    };  
+    };
 
     /**
      * Функция получает пункты меню вакансий.
@@ -66,7 +66,7 @@ export class BackOfficeService {
         return await this.http.get(API_URL.apiUrl + "/vacancies/menu").pipe(
             tap(data => this.vacancyItems$.next(data))
         );
-    }; 
+    };
 
     /**
      * Функция получает список навыков пользователя для выбора.
@@ -76,7 +76,7 @@ export class BackOfficeService {
         return await this.http.get(API_URL.apiUrl + "/profile/skills").pipe(
             tap(data => this.profileSkillsItems$.next(data))
         );
-    }; 
+    };
 
     /**
      * Функция получает список целей на платформе для выбора пользователем.
@@ -86,7 +86,7 @@ export class BackOfficeService {
         return await this.http.get(API_URL.apiUrl + "/profile/intents").pipe(
             tap(data => this.profileIntentsItems$.next(data))
         );
-    }; 
+    };
 
     /**
      * Функция создает входную модель для сохранения данных профиля пользователя.
@@ -96,7 +96,7 @@ export class BackOfficeService {
         return await this.http.post(API_URL.apiUrl + "/profile/info", profileInfoInput).pipe(
             tap(data => this.profileInfo$.next(data))
         );
-    }; 
+    };
 
      /**
      * Функция находит системное имя выбранного пункта меню.
@@ -110,7 +110,7 @@ export class BackOfficeService {
         return await this.http.post(API_URL.apiUrl + "/profile/select-menu", selectMenuInput).pipe(
             tap(data => this.selectMenu$.next(data))
         );
-    }; 
+    };
 
     /**
      * Функция получает список выбранных навыков пользователя.
@@ -120,7 +120,7 @@ export class BackOfficeService {
         return await this.http.get(API_URL.apiUrl + "/profile/selected-skills").pipe(
             tap(data => this.selectedSkillsItems$.next(data))
         );
-    }; 
+    };
 
     /**
      * Функция получает список выбранных целей пользователя.
@@ -161,4 +161,29 @@ export class BackOfficeService {
             tap(data => this.userProjects$.next(data))
         );
     };
+
+
+
+
+                             /**   Ваканси  */
+
+  /**
+   * Функция получает список(list) проектов пользователя.
+   * @returns Список проектов.
+   */
+  public async getUserVacancysAsync() {
+    return await this.http.get(API_URL.apiUrl + "/vacancies/user-vacancies").pipe(
+      tap(data => this.listVacancy$.next(data))
+    );
+  };
+
+  /**
+   * Функция удаляет вакансию.
+   * @param vacancyId - Id вакансии.
+   */
+  public async deleteVacancyAsync(vacancyId: number) {
+    return await this.http.delete(API_URL.apiUrl + `/vacancies/${vacancyId}`).pipe(
+      tap(data => this.deleteVacancy$.next(data))
+    );
+  };
 }

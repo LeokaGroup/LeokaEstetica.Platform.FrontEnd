@@ -3,7 +3,8 @@ import { forkJoin } from "rxjs";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { MessageService } from "primeng/api";
 import { Router } from "@angular/router";
-import { VacancyService } from "../services/vacancy.service";
+import { VacancyService } from "../../vacancy/services/vacancy.service";
+import {BackOfficeService} from "../services/backoffice.service";
 
 
 @Component({
@@ -17,7 +18,8 @@ import { VacancyService } from "../services/vacancy.service";
  */
 export class MyVacancyComponent implements OnInit {
 
-  public readonly listVacancy$ = this._vacancyService.listVacancy$;
+  public readonly listVacancy$ = this._backofficeService.listVacancy$;
+  public readonly deleteVacancy$ = this._backofficeService.deleteVacancy$;
 
   allFeedSubscription: any;
   selectedVacancy: any;
@@ -28,12 +30,13 @@ export class MyVacancyComponent implements OnInit {
     private readonly _signalrService: SignalrService,
     private readonly _messageService: MessageService,
     private readonly _router: Router,
-    private readonly _vacancyService:VacancyService) {
+    private readonly _backofficeService: BackOfficeService,
+    private readonly _vacancyService: VacancyService) {
   }
 
   public async ngOnInit() {
     forkJoin([
-       await this.getUserVacancyAsync()
+       await this.getUserVacanciesAsync()
     ]).subscribe();
 
     // Подключаемся.
@@ -51,18 +54,21 @@ export class MyVacancyComponent implements OnInit {
     });
   };
 
+
   /**
    * Функция слушает все хабы.
    */
   private listenAllHubsNotifications() {
+    this._signalrService.listenSuccessDeleteVacancy();
   };
+
 
 
   /**
    Получавем список(List) ваканции клиента
    */
-  private async getUserVacancyAsync() {
-    (await this._vacancyService.getUserVacancysAsync())
+  private async getUserVacanciesAsync () {
+    (await this._backofficeService.getUserVacancysAsync())
       .subscribe(_ => {
         console.log("мой лист вакансии:", this.listVacancy$.value);
       });
@@ -95,15 +101,15 @@ export class MyVacancyComponent implements OnInit {
   };
 
   /**
-   * Функция удаляет мои вакансии.
+   * Функция удаляет вакансию.
    * @param vacancyId - Id вакансии.
    */
-  public async onDeleteVacancyAsync() {
+  public async onDeleteVacancyInMenuAsync() {
     (await this._vacancyService.deleteVacancyAsync(this.vacancyId))
       .subscribe(async (response: any) => {
         console.log("Удалили вакансию: ", response);
         this.isDeleteVacancy = false;
-        await this.getUserVacancyAsync();
+        await this.getUserVacanciesAsync();
       });
   };
   public onBeforeDeleteVacancy(vacancyId: number, vacancyName: string) {

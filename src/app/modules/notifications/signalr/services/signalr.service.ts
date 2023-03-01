@@ -146,5 +146,13 @@ export class SignalrService {
       this.$allFeed.next(data);
     });
   };
+  /**
+   * Функция слушает уведомления успешное Удаления вакансии из раздела Мои Ваканси(левое меню) с хаба.*/
+  public listenSuccessDeleteVacancy () {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessDeleteVacancy", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 
-};
+  
+}

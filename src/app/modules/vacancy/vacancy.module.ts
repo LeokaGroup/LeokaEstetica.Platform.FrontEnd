@@ -26,15 +26,13 @@ import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { ListboxModule } from 'primeng/listbox';
-import { MyVacancyComponent } from "./my-vacancy/my-vacancy.component";
-import {TableModule} from "primeng/table";
+import { TableModule } from "primeng/table";
 
 @NgModule({
     declarations: [
         CatalogVacancyComponent,
         CreateVacancyComponent,
-        DetailVacancyComponent,
-        MyVacancyComponent
+        DetailVacancyComponent
     ],
 
   imports: [
