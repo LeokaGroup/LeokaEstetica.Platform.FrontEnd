@@ -3,6 +3,7 @@ import { forkJoin } from "rxjs";
 import { Router } from "@angular/router";
 import { NotificationsService } from "../services/notifications.service";
 import { ApproveProjectInviteInput } from "../models/input/approve-project-invite-input";
+import { RejectProjectInviteInput } from "../models/input/reject-project-invite-input";
 
 @Component({
     selector: "notifications",
@@ -39,13 +40,27 @@ export class NotificationsComponent implements OnInit {
     };
 
     public async onApproveProjectInviteAsync(notificationId: number) {
-        console.log(notificationId);
         let approveProjectInviteInput = new ApproveProjectInviteInput();
         approveProjectInviteInput.NotificationId = notificationId;
 
         (await this._notificationsService.approveProjectInviteAsync(approveProjectInviteInput))
         .subscribe(async _ => {
             console.log("Подтвердили инвайт: ");
+            await this.getUserNotificationsAsync();
+        });
+    };
+
+    /**
+     * Функция отклоняет инвайт в проект.
+     * @param notificationId - Id уведомления.
+     */
+     public async onRejectProjectInviteAsync(notificationId: number) {
+        let rejectProjectInviteInput = new RejectProjectInviteInput();
+        rejectProjectInviteInput.NotificationId = notificationId;
+
+        (await this._notificationsService.rejectProjectInviteAsync(rejectProjectInviteInput))
+        .subscribe(async _ => {
+            console.log("Отклонили инвайт: ");
             await this.getUserNotificationsAsync();
         });
     };
