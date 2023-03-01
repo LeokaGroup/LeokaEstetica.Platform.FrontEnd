@@ -16,11 +16,12 @@
               <p>{{notify.notificationText}}</p>
             </div>
 
-            <div *ngIf="notify.isNeedAccepted">
+            <div *ngIf="notify.isNeedAccepted && notify.isVisibleNotificationsButtons">
               <button pButton 
                       type="button" 
                       label="Принять" 
-                      class="p-button-success p-button-text">
+                      class="p-button-success p-button-text"
+                      (click)="onApproveProjectInviteAsync(notify.notificationId)">
               </button>
 
               <button pButton 
