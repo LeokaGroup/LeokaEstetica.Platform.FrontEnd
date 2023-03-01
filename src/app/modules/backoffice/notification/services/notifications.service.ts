@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
+import { ApproveProjectInviteInput } from '../models/input/approve-project-invite-input';
 
 /**
  * Класс сервиса уведомлений пользователя.
@@ -20,6 +21,16 @@ export class NotificationsService {
      */
     public async getUserNotificationsAsync() {
         return await this.http.get(API_URL.apiUrl + "/notifications").pipe(
+            tap(data => this.userNotifications$.next(data))
+        );
+    };
+
+    /**
+     * Функция подтверждает инвайт в проект.
+     */
+     public async approveProjectInviteAsync(approveProjectInviteInput: ApproveProjectInviteInput) {
+        return await this.http.patch(API_URL.apiUrl + "/notifications/approve-project-invite", 
+        approveProjectInviteInput).pipe(
             tap(data => this.userNotifications$.next(data))
         );
     };

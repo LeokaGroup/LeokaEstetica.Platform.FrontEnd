@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { forkJoin } from "rxjs";
 import { Router } from "@angular/router";
 import { NotificationsService } from "../services/notifications.service";
+import { ApproveProjectInviteInput } from "../models/input/approve-project-invite-input";
 
 @Component({
     selector: "notifications",
@@ -35,5 +36,17 @@ export class NotificationsComponent implements OnInit {
             .subscribe(_ => {
                 console.log("Уведомления пользователя: ", this.userNotifications$.value);
             });
+    };
+
+    public async onApproveProjectInviteAsync(notificationId: number) {
+        console.log(notificationId);
+        let approveProjectInviteInput = new ApproveProjectInviteInput();
+        approveProjectInviteInput.NotificationId = notificationId;
+
+        (await this._notificationsService.approveProjectInviteAsync(approveProjectInviteInput))
+        .subscribe(async _ => {
+            console.log("Подтвердили инвайт: ");
+            await this.getUserNotificationsAsync();
+        });
     };
 }
