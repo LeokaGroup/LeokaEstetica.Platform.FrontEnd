@@ -12,7 +12,6 @@ const routes: Routes = [
     {
         path: 'create', component: CreateVacancyComponent
     },
-
     {
         path: 'vacancy', component: DetailVacancyComponent
     }

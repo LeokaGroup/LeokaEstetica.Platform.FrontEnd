@@ -26,6 +26,7 @@ import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { ListboxModule } from 'primeng/listbox';
+import { TableModule } from "primeng/table";
 
 @NgModule({
     declarations: [
@@ -34,29 +35,30 @@ import { ListboxModule } from 'primeng/listbox';
         DetailVacancyComponent
     ],
 
-    imports: [
-        CommonModule,
-        FormsModule,
-        HttpClientModule,
-        PanelModule,
-        MenuModule,
-        InputTextModule,
-        CheckboxModule,
-        InputMaskModule,
-        InputTextareaModule,
-        PanelMenuModule,
-        ToastModule,
-        EditorModule,
-        VacancyRoutingModule,
-        DropdownModule,
-        RadioButtonModule,
-        AutoCompleteModule,
-        PaginatorModule,
-        TagModule,
-        ButtonModule,
-        DialogModule,
-        ListboxModule
-    ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    HttpClientModule,
+    PanelModule,
+    MenuModule,
+    InputTextModule,
+    CheckboxModule,
+    InputMaskModule,
+    InputTextareaModule,
+    PanelMenuModule,
+    ToastModule,
+    EditorModule,
+    VacancyRoutingModule,
+    DropdownModule,
+    RadioButtonModule,
+    AutoCompleteModule,
+    PaginatorModule,
+    TagModule,
+    ButtonModule,
+    DialogModule,
+    ListboxModule,
+    TableModule
+  ],
 
     exports: [],
 
