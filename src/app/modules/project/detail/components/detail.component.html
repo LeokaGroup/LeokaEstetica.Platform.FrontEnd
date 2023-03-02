@@ -113,12 +113,22 @@
                 <div>
                   <button pButton
                           type="button"
+                          label="Пригласить пользователя в проект"
+                          class="p-button-secondary p-button-text"
+                          (click)="isShowOwnerInviteModal=true"
+                          *ngIf="isVisibleDeleteButton">
+                  </button>
+                </div>
+
+                <div>
+                  <button pButton
+                          type="button"
                           label="Удалить проект"
                           class="p-button-danger p-button-text"
                           (click)="isDeleteProject=true"
                           *ngIf="isVisibleDeleteButton">
                   </button>
-                </div>
+                </div>                
               </div>
             </div>
           </div>
@@ -729,4 +739,30 @@
 <p-button (click)="isDeleteVacancyInProject=false" label="Отменить" styleClass="p-button-text"></p-button>
 <p-button (click)="onDeleteVacancyInProjectAsync()" label="Удалить" styleClass="p-button-danger p-button-text"></p-button>
 </ng-template>
+</p-dialog>
+
+<!-- Диалог приглашения владельцем в проект. -->
+<p-dialog header="Приглашение пользователя в проект" 
+          [(visible)]="isShowOwnerInviteModal"
+          [breakpoints]="{'960px': '75vw'}" 
+          [style]="{width: '50vw'}" 
+          [draggable]="false" 
+          [resizable]="false">
+  <strong>Выберите способ приглашения</strong>
+
+  <div *ngFor="let method of methodsInvites" class="field-checkbox">
+    <p-radioButton [inputId]="method.key" 
+                    name="method" 
+                    [value]="method" 
+                    [(ngModel)]="selectedMethod"
+                    (onClick)="onSendOwnerInviteProjectAsync()">
+    </p-radioButton>
+    <label [for]="method.key">{{method.name}}</label>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button (click)="isShowOwnerInviteModal=false" label="Отменить" styleClass="p-button-text"></p-button>
+    <p-button (click)="onSendOwnerInviteProjectAsync()" label="Пригласить" styleClass="p-button-text p-button-text">
+    </p-button>
+  </ng-template>
 </p-dialog>

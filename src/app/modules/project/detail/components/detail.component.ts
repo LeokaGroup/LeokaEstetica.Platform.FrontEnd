@@ -89,6 +89,15 @@ export class DetailProjectComponent {
     isVisibleActionVacancyButton: boolean = false;
     isVisibleActionProjectButtons: boolean = false;
     isVisibleDeleteButton: boolean = false;
+    isShowOwnerInviteModal: boolean = false;
+    selectedMethod: any;
+    methodsInvites: any[] =
+        [
+            { name: "По ссылке", key: "LinkInvite" },
+            { name: "По почте", key: "EmailInvite" },
+            { name: "По логину", key: "LoginInvite" },
+            { name: "По номеру телефона", key: "PhoneNumberInvite" }
+        ];
 
   public async ngOnInit() {
         forkJoin([
@@ -308,7 +317,7 @@ export class DetailProjectComponent {
         .subscribe((response: any) => {
             if (response.errors !== null && response.errors.length > 0) {
                 response.errors.forEach((item: any) => {
-                    this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item.errorMessage });
+                    this._messageService.add({ severity: "error", summary: "Что то не так", detail: item.errorMessage });
                 });
             }
         });
@@ -363,7 +372,7 @@ export class DetailProjectComponent {
             .subscribe((response: any) => {
                 if (response.errors !== null && response.errors.length > 0) {
                     response.errors.forEach((item: any) => {
-                        this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item.errorMessage });
+                        this._messageService.add({ severity: "error", summary: "Что то не так", detail: item.errorMessage });
                     });
                 }
 
@@ -560,5 +569,10 @@ export class DetailProjectComponent {
       });
   };
 
-
+  /**
+   * Функция отправляет приглашение в проект выбранным способом.
+   */
+  public async onSendOwnerInviteProjectAsync() {
+    console.log(this.selectedMethod);
+  };
 }
