@@ -26,21 +26,21 @@ export class CreateVacancyComponent implements OnInit {
 
     vacancyName: string = "";
     vacancyText: string = "";
-    workExperience: string = "";
-    employment: string = "";
+    // workExperience: string = "";
+    // employment: string = "";
     payment: string = "";
     allFeedSubscription: any;
     projectId: number = 0;
-    selectedExpirience: any[] = [];
-    selectedEmployments: any[] = []
-    expirienceVariants: any[] = [
+    selectedExpirience: any = "";
+    selectedEmployments: any = "";
+    expirienceVariants: any= [
         { name: "Не имеет значения" },
         { name: "От 3 до 6 лет" },
         { name: "От 1 года до 3 лет" },
         { name: "Более 6 лет" },
         { name: "Нет опыта " }
     ];
-    employmentsVariants: any[] = [
+    employmentsVariants: any= [
         { name: "Полная занятость" },
         { name: "Частичная занятость" }
     ];
@@ -50,13 +50,16 @@ export class CreateVacancyComponent implements OnInit {
          this._signalrService.startConnection().then(() => {
             console.log("Подключились");
 
-            this.listenAllHubsNotifications();            
+            console.log(this.expirienceVariants);
+
+
+            this.listenAllHubsNotifications();
 
             // Подписываемся на получение всех сообщений.
             this.allFeedSubscription = this._signalrService.AllFeedObservable
                 .subscribe((response: any) => {
-                    console.log("Подписались на сообщения", response);      
-                    this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });               
+                    console.log("Подписались на сообщения", response);
+                    this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
                 });
         });
 
@@ -72,13 +75,13 @@ export class CreateVacancyComponent implements OnInit {
 
 
    /**
-     * Функция создает вакансию отдельно либо вакансию проекта и прикрепляет ее спразу к нему.     
+     * Функция создает вакансию отдельно либо вакансию проекта и прикрепляет ее спразу к нему.
      * @returns - Данные вакансии.
      */
-    public async onCreateVacancyAsync() {  
+    public async onCreateVacancyAsync() {
         if (!this.projectId) {
             this.createVacancyAsync();
-        }                
+        }
 
         else {
             this.createProjectVacancyAsync();
@@ -90,22 +93,22 @@ export class CreateVacancyComponent implements OnInit {
      * @returns - Данные вакансии.
      */
     private async createVacancyAsync() {
-        let model = this.CreateVacancyModel(); 
+        let model = this.createVacancyModel();
         (await this._vacancyService.createVacancyAsync(model))
         .subscribe((response: any) => {
-            console.log("Новая вакансия: ", this.vacancy$.value);            
+            console.log("Новая вакансия: ", this.vacancy$.value);
 
             if (response.errors !== null && response.errors.length > 0) {
                 response.errors.forEach((item: any) => {
                     this._messageService.add({ severity: "error", summary: "Что то не так", detail: item.errorMessage });
-                });  
+                });
             }
 
             else {
                 setTimeout(() => {
                     this._router.navigate(["/vacancies"]);
                 }, 4000);
-            }   
+            }
         });
     };
 
@@ -114,15 +117,15 @@ export class CreateVacancyComponent implements OnInit {
      * @returns - Данные вакансии.
      */
      private async createProjectVacancyAsync() {
-        let model = this.CreateProjectVacancyModel(); 
+        let model = this.createProjectVacancyModel();
         (await this._vacancyService.createProjectVacancyAsync(model))
         .subscribe((response: any) => {
-            console.log("Новая вакансия проекта: ", this.vacancy$.value);            
+            console.log("Новая вакансия проекта: ", this.vacancy$.value);
 
             if (response.errors !== null && response.errors.length > 0) {
                 response.errors.forEach((item: any) => {
                     this._messageService.add({ severity: "error", summary: "Что то не так", detail: item.errorMessage });
-                });  
+                });
             }
 
             else {
@@ -135,7 +138,7 @@ export class CreateVacancyComponent implements OnInit {
                         }
                     });
                 }, 4000);
-            }   
+            }
         });
     };
 
@@ -143,14 +146,13 @@ export class CreateVacancyComponent implements OnInit {
      * Функция создает модель для создания вакансии вне проекта.
      * @returns - Входная модель вакансии.
      */
-    private CreateVacancyModel(): VacancyInput {
+    private createVacancyModel(): VacancyInput {
         let model = new VacancyInput();
         model.VacancyName = this.vacancyName;
         model.VacancyText = this.vacancyText;
-        model.Employment = this.employment;
+        model.WorkExperience = this.selectedExpirience.name;
+        model.Employment = this.selectedEmployments.name;
         model.Payment = this.payment;
-        model.WorkExperience = this.workExperience;
-
         return model;
     };
 
@@ -158,15 +160,14 @@ export class CreateVacancyComponent implements OnInit {
      * Функция создает модель для создания вакансии проекта.
      * @returns - Входная модель вакансии.
      */
-     private CreateProjectVacancyModel(): CreateProjectVacancyInput {
+     private createProjectVacancyModel(): CreateProjectVacancyInput {
         let model = new CreateProjectVacancyInput();
         model.VacancyName = this.vacancyName;
         model.VacancyText = this.vacancyText;
-        model.Employment = this.employment;
+        model.WorkExperience = this.selectedExpirience.name;
+        model.Employment = this.selectedEmployments.name;
         model.Payment = this.payment;
-        model.WorkExperience = this.workExperience;
         model.ProjectId = this.projectId;
-
         return model;
     };
 
