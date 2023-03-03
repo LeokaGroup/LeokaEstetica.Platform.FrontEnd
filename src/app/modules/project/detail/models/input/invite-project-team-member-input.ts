@@ -15,5 +15,10 @@ export class InviteProjectTeamMemberInput {
     /**
      * Пользователь.
      */
-    User: string = "";
+     InviteText: string = "";
+
+    /**
+     * Тип приглашения.
+     */
+    InviteType: string = "";
 }

@@ -113,6 +113,16 @@
                 <div>
                   <button pButton
                           type="button"
+                          label="Пригласить в проект"
+                          class="p-button-secondary p-button-text"
+                          (click)="isProjectInvite=true"
+                          *ngIf="isVisibleDeleteButton">
+                  </button>
+                </div>                
+
+                <div>
+                  <button pButton
+                          type="button"
                           label="Удалить проект"
                           class="p-button-danger p-button-text"
                           (click)="isDeleteProject=true"
@@ -357,12 +367,12 @@
                   <ng-template pTemplate="caption">
                     <div class="d-flex">
                       <div>
-                        <button pButton
+                        <!-- <button pButton
                                 type="button"
                                 label="Пригласить в проект"
                                 class="p-button-outlined"
                                 (click)="op.toggle($event)">
-                        </button>
+                        </button> -->
 
                         <p-overlayPanel #op>
                           <ng-template pTemplate>
@@ -374,7 +384,7 @@
                                     [(ngModel)]="searchText"
                                     (keyup.enter)="onSearchInviteProjectMembersAsync()" />     -->
 
-                            <div class="mb-3">
+                            <!-- <div class="mb-3">
                               <div>
                                 <label>Выберите вакансию для приглашения</label>
                             </div>
@@ -404,7 +414,7 @@
                                       class="p-button-text"
                                       (click)="onSendInviteProjectTeamAsync()">
                               </button>
-                            </div>
+                            </div> -->
                           </ng-template>
                       </p-overlayPanel>
 
@@ -728,5 +738,77 @@
 <ng-template pTemplate="footer">
 <p-button (click)="isDeleteVacancyInProject=false" label="Отменить" styleClass="p-button-text"></p-button>
 <p-button (click)="onDeleteVacancyInProjectAsync()" label="Удалить" styleClass="p-button-danger p-button-text"></p-button>
+</ng-template>
+</p-dialog>
+
+<!-- Диалог инвайта в проект. -->
+<p-dialog header="Приглашение пользователя в проект"
+          [(visible)]="isProjectInvite"
+          [breakpoints]="{'960px': '75vw'}"
+          [style]="{width: '60%', height: '60%'}"
+          [draggable]="false"
+          [resizable]="false">
+          <div class="d-flex justify-content-around">
+            <div>
+              <div *ngFor="let variant of aProjectInviteVarians" class="field-checkbox mb-3 mt-3">
+                <p-radioButton [inputId]="variant.key" 
+                                name="variant" 
+                                [value]="variant" 
+                                [(ngModel)]="selectedInviteVariant">
+    
+                </p-radioButton>
+                
+                <label [for]="variant.key">{{variant.name}}</label>
+              </div>
+    
+              
+            </div>
+  
+            <div>
+              <div>
+                <div class="mb-3 mt-3">
+                  <div>
+                    <label>Выберите вакансию для приглашения</label>
+                </div>
+                <div>
+                  <p-dropdown [options]="availableAttachVacancies$.value.projectVacancies"
+                              [(ngModel)]="selectedInviteVacancy"
+                              optionLabel="userVacancy.vacancyName"
+                              [disabled]="!selectedInviteVariant || isVacancyInvite">
+                  </p-dropdown>
+                </div>
+
+                <div class="field-checkbox mb-3">
+                  <p-checkbox [binary]="true" 
+                              inputId="binary"
+                              (onChange)="isVacancyInvite=!isVacancyInvite">
+                </p-checkbox>
+                  <label for="binary">
+                      <small>Пригласить без указания вакансии</small>
+                  </label>
+              </div>
+                </div>
+      
+                <div class="d-flex">
+                  <span class="p-fluid">
+                    <p-autoComplete [(ngModel)]="searchText"
+                                    [suggestions]="aProjectInvitesUsers"
+                                    (completeMethod)="onSearchInviteProjectMembersAsync($event)"
+                                    field="displayName"
+                                    [multiple]="false"
+                                    (onSelect)="onSelectProjectMember($event)"
+                                    placeholder="Введите для поиска пользователя"
+                                    [disabled]="!selectedInviteVariant">
+                    </p-autoComplete>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+<ng-template pTemplate="footer">
+<p-button (click)="isDeleteVacancyInProject=false" label="Отменить" styleClass="p-button-text"></p-button>
+<p-button (click)="onSendInviteProjectTeamAsync()" label="Отправить приглашение" styleClass="p-button-text p-button-text">
+  
+</p-button>
 </ng-template>
 </p-dialog>
