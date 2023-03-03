@@ -89,6 +89,15 @@ export class DetailProjectComponent {
     isVisibleActionVacancyButton: boolean = false;
     isVisibleActionProjectButtons: boolean = false;
     isVisibleDeleteButton: boolean = false;
+    isProjectInvite: boolean = false;
+    aProjectInviteVarians: any[] = [
+        { name: 'По ссылке', key: 'Link' },
+        { name: 'По почте', key: 'Email' },
+        { name: 'По номеру телефона', key: 'PhoneNumber' },
+        { name: 'По логину', key: 'Login' }
+    ];
+    selectedInviteVariant: any;
+    isVacancyInvite: boolean = false;
 
   public async ngOnInit() {
         forkJoin([
@@ -512,8 +521,9 @@ export class DetailProjectComponent {
     public async onSendInviteProjectTeamAsync() {
         let inviteProjectTeamMemberInput = new InviteProjectTeamMemberInput();
         inviteProjectTeamMemberInput.ProjectId = this.projectId;
-        inviteProjectTeamMemberInput.User = this.selectedInviteUser;
-        inviteProjectTeamMemberInput.VacancyId = this.selectedInviteVacancy.vacancyId;
+        inviteProjectTeamMemberInput.InviteText = this.selectedInviteUser;
+        inviteProjectTeamMemberInput.VacancyId = !this.isVacancyInvite ? this.selectedInviteVacancy : null;
+        inviteProjectTeamMemberInput.InviteType = this.selectedInviteVariant.key;
 
         (await this._projectService.sendInviteProjectTeamAsync(inviteProjectTeamMemberInput))
         .subscribe(async (response: any) => {
@@ -559,6 +569,4 @@ export class DetailProjectComponent {
         await this.getProjectVacanciesAsync();
       });
   };
-
-
 }
