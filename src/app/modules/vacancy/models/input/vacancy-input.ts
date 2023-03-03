@@ -15,12 +15,12 @@ export class VacancyInput {
     /**
      * Опыт работы.
      */
-    WorkExperience: string = "";
+    WorkExperience: any = "";
 
     /**
      * Занятость у вакансии.
      */
-    Employment: string = "";
+    Employment: any = "";
 
     /**
      * Оплата у вакансии.
@@ -31,4 +31,5 @@ export class VacancyInput {
      * Id вакансии.
      */
     VacancyId: number = 0;
+
 }
