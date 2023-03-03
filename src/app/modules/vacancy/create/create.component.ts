@@ -93,7 +93,7 @@ export class CreateVacancyComponent implements OnInit {
      * @returns - Данные вакансии.
      */
     private async createVacancyAsync() {
-        let model = this.CreateVacancyModel();
+        let model = this.createVacancyModel();
         (await this._vacancyService.createVacancyAsync(model))
         .subscribe((response: any) => {
             console.log("Новая вакансия: ", this.vacancy$.value);
@@ -146,12 +146,12 @@ export class CreateVacancyComponent implements OnInit {
      * Функция создает модель для создания вакансии вне проекта.
      * @returns - Входная модель вакансии.
      */
-    private CreateVacancyModel(): VacancyInput {
+    private createVacancyModel(): VacancyInput {
         let model = new VacancyInput();
         model.VacancyName = this.vacancyName;
         model.VacancyText = this.vacancyText;
-        model.WorkExperience = this.selectedExpirience;
-        model.Employment = this.selectedEmployments;
+        model.WorkExperience = this.selectedExpirience.name;
+        model.Employment = this.selectedEmployments.name;
         model.Payment = this.payment;
         return model;
     };
