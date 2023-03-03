@@ -367,12 +367,12 @@
                   <ng-template pTemplate="caption">
                     <div class="d-flex">
                       <div>
-                        <button pButton
+                        <!-- <button pButton
                                 type="button"
                                 label="Пригласить в проект"
                                 class="p-button-outlined"
                                 (click)="op.toggle($event)">
-                        </button>
+                        </button> -->
 
                         <p-overlayPanel #op>
                           <ng-template pTemplate>
@@ -384,7 +384,7 @@
                                     [(ngModel)]="searchText"
                                     (keyup.enter)="onSearchInviteProjectMembersAsync()" />     -->
 
-                            <div class="mb-3">
+                            <!-- <div class="mb-3">
                               <div>
                                 <label>Выберите вакансию для приглашения</label>
                             </div>
@@ -414,7 +414,7 @@
                                       class="p-button-text"
                                       (click)="onSendInviteProjectTeamAsync()">
                               </button>
-                            </div>
+                            </div> -->
                           </ng-template>
                       </p-overlayPanel>
 
@@ -745,7 +745,7 @@
 <p-dialog header="Приглашение пользователя в проект" 
           [(visible)]="isShowOwnerInviteModal"
           [breakpoints]="{'960px': '75vw'}" 
-          [style]="{width: '50vw'}" 
+          [style]="{width: '100%', height: '100%'}" 
           [draggable]="false" 
           [resizable]="false">
   <strong>Выберите способ приглашения</strong>
@@ -758,6 +758,38 @@
                     (onClick)="onSendOwnerInviteProjectAsync()">
     </p-radioButton>
     <label [for]="method.key">{{method.name}}</label>
+  </div>
+
+  <div class="mb-3">
+    <div>
+      <label>Выберите вакансию для приглашения</label>
+  </div>
+  <div>
+    <p-dropdown [options]="availableAttachVacancies$.value.projectVacancies"
+                [(ngModel)]="selectedInviteVacancy"
+                optionLabel="userVacancy.vacancyName">
+    </p-dropdown>
+  </div>
+  </div>
+
+  <div class="d-flex">
+    <span class="p-fluid">
+      <p-autoComplete [(ngModel)]="searchText"
+                      [suggestions]="aProjectInvitesUsers"
+                      (completeMethod)="onSearchInviteProjectMembersAsync($event)"
+                      field="displayName"
+                      [multiple]="false"
+                      (onSelect)="onSelectProjectMember($event)"
+                      placeholder="Логин или email пользователя">
+      </p-autoComplete>
+    </span>
+
+    <button pButton
+            type="button"
+            label="Отправить приглашение"
+            class="p-button-text"
+            (click)="onSendInviteProjectTeamAsync()">
+    </button>
   </div>
 
   <ng-template pTemplate="footer">
