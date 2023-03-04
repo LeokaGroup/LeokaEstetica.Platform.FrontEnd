@@ -114,7 +114,7 @@ export class DetailProjectComponent {
         ]).subscribe();
 
          // Подключаемся.
-         this._signalrService.startConnection().then(() => {
+         this._signalrService.startConnection().then(async () => {
             console.log("Подключились");
 
             this.listenAllHubsNotifications();

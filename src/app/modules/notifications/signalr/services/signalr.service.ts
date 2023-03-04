@@ -2,20 +2,30 @@ import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { Observable, Subject } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
+import { RedisService } from 'src/app/modules/redis/services/redis.service';
 
 @Injectable()
 export class SignalrService {
     private hubConnection: any;
     private $allFeed: Subject<any> = new Subject<any>();
 
-    public async startConnection() {
-        return await new Promise(async (resolve, reject) => {
-            this.hubConnection = new HubConnectionBuilder().withUrl(API_URL.apiUrl + "/notify", 4).build();
+    public constructor(private readonly _redisService: RedisService) {
+        this.hubConnection = new HubConnectionBuilder()
+        .withUrl(API_URL.apiUrl + "/notify", 4)
+        .build();   
+    }   
 
+    public async startConnection() {
+        return await new Promise(async (resolve, reject) => {            
             this.hubConnection.start()
                 .then(async () => {
                     console.log("Соединение установлено");
-                    console.log("ConnectionId:", this.hubConnection.connectionId);
+                    console.log("ConnectionId:", this.hubConnection.connectionId);        
+
+                    await (await this._redisService.addConnectionIdCacheAsync(this.hubConnection.connectionId))
+                    .subscribe((response: any) => {
+                        console.log("Записали ConnectionId: ", response);
+                    });
 
                     return resolve(true);
                 })
@@ -24,6 +34,8 @@ export class SignalrService {
                     reject(err);
                 });
         });
+
+        
     };
 
     public get AllFeedObservable(): Observable<any> {

@@ -1,8 +1,6 @@
 /**
  * Класс входной модели для сохранения ConnectionId в кэш.
  */
-export class ConnectionInput {
+export class CommitConnectionInput {
     ConnectionId: string = "";
-
-    UserCode: string = "";
 }

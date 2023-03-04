@@ -13,6 +13,7 @@ export class NotificationsService {
     public userNotifications$ = new BehaviorSubject<any>(null);
     public approveInviteNotifications$ = new BehaviorSubject<any>(null);
     public rejectInviteNotifications$ = new BehaviorSubject<any>(null);
+    public addConnectionId$ = new BehaviorSubject<any>([]);
 
     constructor(private readonly http: HttpClient) {
 
