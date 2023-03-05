@@ -139,6 +139,7 @@ export class DetailProjectComponent {
         this._signalrService.listenWarningProjectResponseInfo();
         this._signalrService.listenSuccessDeleteProjectVacancy();
         this._signalrService.listenErrorDeleteProjectVacancy();
+        this._signalrService.listenWarningProjectInviteTeam();
     };
 
     private checkUrlParams() {
@@ -522,7 +523,7 @@ export class DetailProjectComponent {
         let inviteProjectTeamMemberInput = new InviteProjectTeamMemberInput();
         inviteProjectTeamMemberInput.ProjectId = this.projectId;
         inviteProjectTeamMemberInput.InviteText = this.selectedInviteUser;
-        inviteProjectTeamMemberInput.VacancyId = !this.isVacancyInvite ? this.selectedInviteVacancy : null;
+        inviteProjectTeamMemberInput.VacancyId = !this.isVacancyInvite ? this.selectedInviteVacancy.vacancyId : null;
         inviteProjectTeamMemberInput.InviteType = this.selectedInviteVariant.key;
 
         (await this._projectService.sendInviteProjectTeamAsync(inviteProjectTeamMemberInput))

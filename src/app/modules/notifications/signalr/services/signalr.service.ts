@@ -144,20 +144,22 @@ export class SignalrService {
 
 
 
-  /** mika 15.02.23
+  /** 
    * Функция слушает уведомления успешное Удаления  вакансии проекта из хаба.*/
   public listenSuccessDeleteProjectVacancy () {
     (<HubConnection>this.hubConnection).on("SendNotificationSuccessDeleteProjectVacancy", (data: any) => {
       this.$allFeed.next(data);
     });
   };
-  /** mika 15.02.23
+
+  /** 
    * Функция слушает уведомления Если была ошибка удаления вакансии проекта из хаба.*/
   public listenErrorDeleteProjectVacancy () {
     (<HubConnection>this.hubConnection).on("SendNotificationErrorDeleteProjectVacancy", (data: any) => {
       this.$allFeed.next(data);
     });
   };
+  
   /**
    * Функция слушает уведомления успешное Удаления вакансии из раздела Мои Ваканси(левое меню) с хаба.*/
   public listenSuccessDeleteVacancy () {
@@ -166,5 +168,12 @@ export class SignalrService {
     });
   };
 
-  
+  /**
+   * Функция слушает уведомления предупреждения о инвайте в проект.
+   */
+   public listenWarningProjectInviteTeam () {
+    (<HubConnection>this.hubConnection).on("SendNotificationWarningProjectInviteTeam", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 }

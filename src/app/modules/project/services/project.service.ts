@@ -224,11 +224,7 @@ export class ProjectService {
         );
     };
 
-
-
-
-
-  /** Mika 14/02/23
+  /** 
    * Функция удаляет выбранную вакансию проекта реализовал .
    */
   public async deleteVacancyInProjectAsync(projectId:number, vacancyId:number) {
