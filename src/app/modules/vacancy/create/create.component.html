@@ -15,9 +15,9 @@
             </div>
             <div>
                 <input type="text" class="p-inputtext-sm input-control-worksheet control-project" placeholder="Название вакансии" pInputText
-              autocomplete="new-password" [(ngModel)]="vacancyName"/>
+              autocomplete="new-password" [(ngModel)]="vacancyName" [style]="{'width':'400px'}"/>
             </div>
-          </div>
+          </div>         
         </div>
 
         <div class="d-flex">
@@ -72,6 +72,21 @@
         </div>
 
         <div class="d-flex mt-3">
+          <div class="control-input-text-worksheet">
+            <div>
+                <label>Ваши проекты</label>
+            </div>
+            <div>
+              <p-dropdown [options]="userProjects$.value.userProjects" 
+                          [(ngModel)]="selectedProject" 
+                          optionLabel="projectName"
+                          class="control-project-stages">
+              </p-dropdown>
+            </div>          
+          </div>    
+        </div>
+
+        <div class="d-flex mt-3">
             <div class="control-input-text-worksheet">
                 <div class="control-input-text-worksheet">
                     <div class="d-flex worksheet-line">
@@ -80,13 +95,13 @@
                                 <label>Описание вакансии</label>
                             </div>
                             <div>
-                                <p-editor [(ngModel)]="vacancyText"  [style]="{'height':'320px'}"></p-editor>
+                                <p-editor [(ngModel)]="vacancyText" [style]="{'height':'320px'}"></p-editor>
                             </div>
                         </div>
                     </div>
                   </div>
               </div>
-        </div>
+        </div>        
       </p-panel>
     </div>
 

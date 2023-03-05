@@ -162,14 +162,9 @@ export class BackOfficeService {
         );
     };
 
-
-
-
-                             /**   Ваканси  */
-
   /**
-   * Функция получает список(list) проектов пользователя.
-   * @returns Список проектов.
+   * Функция получает список вакансий пользователя.
+   * @returns Список вакансий.
    */
   public async getUserVacancysAsync() {
     return await this.http.get(API_URL.apiUrl + "/vacancies/user-vacancies").pipe(
