@@ -23,8 +23,8 @@ export class SignalrService {
                     console.log("ConnectionId:", this.hubConnection.connectionId);        
 
                     await (await this._redisService.addConnectionIdCacheAsync(this.hubConnection.connectionId))
-                    .subscribe((response: any) => {
-                        console.log("Записали ConnectionId: ", response);
+                    .subscribe(_ => {
+                        console.log("Записали ConnectionId");
                     });
 
                     return resolve(true);
