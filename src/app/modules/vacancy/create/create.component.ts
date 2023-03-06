@@ -156,6 +156,8 @@ export class CreateVacancyComponent implements OnInit {
         model.WorkExperience = this.selectedExpirience.name;
         model.Employment = this.selectedEmployments.name;
         model.Payment = this.payment;
+        model.ProjectId = this.selectedProject.projectId;
+
         return model;
     };
 
@@ -171,6 +173,7 @@ export class CreateVacancyComponent implements OnInit {
         model.Employment = this.selectedEmployments.name;
         model.Payment = this.payment;
         model.ProjectId = this.projectId;
+
         return model;
     };
 
