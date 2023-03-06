@@ -96,7 +96,7 @@
                           label="Откликнуться на проект (с указанием вакансии)"
                           class="p-button-outlined p-button-secondary p-button-text"
                           (click)="onShowProjectResponseWithVacancyModal(true)"
-                          *ngIf="isVisibleActionProjectButtons">
+                          *ngIf="isVisibleActionProjectButtons && totalVacancies > 0">
                   </button>
                 </div>
 
