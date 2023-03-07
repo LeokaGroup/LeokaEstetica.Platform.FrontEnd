@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { Observable, Subject } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
@@ -9,7 +10,8 @@ export class SignalrService {
     private hubConnection: any;
     private $allFeed: Subject<any> = new Subject<any>();
 
-    public constructor(private readonly _redisService: RedisService) {
+    public constructor(private readonly _redisService: RedisService,
+        private readonly _router: Router) {
         this.hubConnection = new HubConnectionBuilder()
         .withUrl(API_URL.apiUrl + "/notify", 4)
         .build();   
@@ -20,12 +22,15 @@ export class SignalrService {
             this.hubConnection.start()
                 .then(async () => {
                     console.log("Соединение установлено");
-                    console.log("ConnectionId:", this.hubConnection.connectionId);        
-
-                    await (await this._redisService.addConnectionIdCacheAsync(this.hubConnection.connectionId))
-                    .subscribe(_ => {
-                        console.log("Записали ConnectionId");
-                    });
+                    console.log("ConnectionId:", this.hubConnection.connectionId);     
+                                        
+                    let route = this._router.url;
+                    if (route !== "/user/signin") {
+                        await (await this._redisService.addConnectionIdCacheAsync(this.hubConnection.connectionId))
+                            .subscribe(_ => {
+                                console.log("Записали ConnectionId");                                
+                            });
+                    }                 
 
                     return resolve(true);
                 })
@@ -173,6 +178,15 @@ export class SignalrService {
    */
    public listenWarningProjectInviteTeam () {
     (<HubConnection>this.hubConnection).on("SendNotificationWarningProjectInviteTeam", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает уведомления предупреждения о блокировке пользователя.
+   */
+   public listenWarningBlockedUser() {
+    (<HubConnection>this.hubConnection).on("SendNotificationWarningBlockedUser", (data: any) => {
       this.$allFeed.next(data);
     });
   };
