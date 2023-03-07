@@ -25,11 +25,13 @@
         </ul>
       </div>
 
-      <button type="submit"
-              class="btn btn-primary button-action-pur-control"
-              (click)="onCreateOrderAsync(fr.ruleId)">
+
+      <div *ngIf="fr.ruleId==1; else elseBlock"><span style="line-height:70px; border:1px solid white"></span></div>
+      <ng-template #elseBlock>
+        <button type="submit" class="btn btn-primary button-action-pur-control"
+                (click)="onCreateOrderAsync(fr.ruleId)">
         Выбрать
-      </button>
+      </button></ng-template>
 
     </p-card>
 
