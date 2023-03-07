@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { Subscription } from "rxjs";
+import { BackOfficeService } from "../../backoffice/services/backoffice.service";
 import { SignalrService } from "../../notifications/signalr/services/signalr.service";
 import { CreateProjectVacancyInput } from "../models/input/create-project-vacancy-input";
 import { VacancyInput } from "../models/input/vacancy-input";
@@ -21,13 +22,13 @@ export class CreateVacancyComponent implements OnInit {
         private readonly _vacancyService: VacancyService,
         private readonly _signalrService: SignalrService,
         private readonly _messageService: MessageService,
-        private readonly _activatedRoute: ActivatedRoute) { }
+        private readonly _activatedRoute: ActivatedRoute,
+        private readonly _backofficeService: BackOfficeService) { }
     public readonly vacancy$ = this._vacancyService.vacancy$;
+    public readonly userProjects$ = this._backofficeService.userProjects$;
 
     vacancyName: string = "";
     vacancyText: string = "";
-    // workExperience: string = "";
-    // employment: string = "";
     payment: string = "";
     allFeedSubscription: any;
     projectId: number = 0;
@@ -44,6 +45,7 @@ export class CreateVacancyComponent implements OnInit {
         { name: "Полная занятость" },
         { name: "Частичная занятость" }
     ];
+    selectedProject: any;
 
     public async ngOnInit() {
          // Подключаемся.
@@ -64,6 +66,7 @@ export class CreateVacancyComponent implements OnInit {
         });
 
         this.checkUrlParams();
+        await this.getUserProjectsAsync();
     };
 
     /**
@@ -153,6 +156,8 @@ export class CreateVacancyComponent implements OnInit {
         model.WorkExperience = this.selectedExpirience.name;
         model.Employment = this.selectedEmployments.name;
         model.Payment = this.payment;
+        model.ProjectId = this.selectedProject.projectId;
+
         return model;
     };
 
@@ -168,6 +173,7 @@ export class CreateVacancyComponent implements OnInit {
         model.Employment = this.selectedEmployments.name;
         model.Payment = this.payment;
         model.ProjectId = this.projectId;
+
         return model;
     };
 
@@ -183,5 +189,16 @@ export class CreateVacancyComponent implements OnInit {
                 this.projectId = params["projectId"];
             }
           });
+    };
+
+    /**
+     * Функция получает список проектов пользователя.
+     * @returns Список проектов.
+     */
+     private async getUserProjectsAsync() {        
+        (await this._backofficeService.getUserProjectsAsync())
+        .subscribe(_ => {
+            console.log("Проекты пользователя:", this.userProjects$.value);
+        });
     };
 }

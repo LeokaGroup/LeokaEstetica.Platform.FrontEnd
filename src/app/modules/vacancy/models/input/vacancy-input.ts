@@ -32,4 +32,8 @@ export class VacancyInput {
      */
     VacancyId: number = 0;
 
+    /**
+     * Id проекта.
+     */
+    ProjectId: number = 0;
 }
