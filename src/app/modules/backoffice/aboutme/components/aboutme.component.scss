@@ -28,6 +28,12 @@
     margin-top: 30px;
 }
 
+::ng-deep.input-phone-number {
+    border: none;
+    padding: 0;
+
+}
+
 // Стили для пиклиста.
 .product-item {
     display: flex;

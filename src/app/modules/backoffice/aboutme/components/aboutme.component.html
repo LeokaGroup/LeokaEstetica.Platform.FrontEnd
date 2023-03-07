@@ -107,7 +107,9 @@
                     <small>Номер телефона</small>
                   </label>
                 </div>
-                <span *ngIf="isModeView">{{profileInfo$.value.phoneNumber}}</span>
+              <p-inputMask styleClass="input-phone-number" *ngIf="isModeView" type="text"
+                           [(ngModel)]="profileInfo$.value.phoneNumber" [readonly]="true" mask="+9 (999) 999-99-99">
+              </p-inputMask>
             </div>
         </div>
 
@@ -335,7 +337,7 @@
           <ng-template #elseBlockIntents>
             <div *ngFor="let int of aSelectedIntents">
               {{int.intentName}}
-            </div>
+</div>
           </ng-template>
         </p-panel>
       </div>
