@@ -1,110 +1,106 @@
 <div class="block-moderation">
   <div>
-    <!-- Список проектов. -->
-    <p-tabView (onChange)="onSelectTabAsync($event)">
-      <p-tabPanel header="Проекты" [selected]="true">
-        <p-table [value]="aProjects" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
-          <ng-template pTemplate="caption">
-            Проекты на модерации
-          </ng-template>
-          <ng-template pTemplate="header">
-            <tr>
-              <th>ID</th>
-              <th>Название проекта</th>
-              <th>Дата модерации</th>
-              <th>Дата создания</th>
-              <th>Просмотр</th>
-              <th>Одобрение</th>
-              <th>Отклонение</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-prj>
-            <tr>
-              <td>{{prj.projectId}}</td>
-              <td>{{prj.projectName}}</td>
-              <td>{{prj.dateModeration}}</td>
-              <td>{{prj.dateCreated}}</td>
-              <td><button pButton 
-                          type="button" 
-                          label="Просмотр" 
-                          class="p-button-text"
-                          (click)="onPreviewProjectAsync(prj.projectId)">
-              </button>
-              </td>
-              <td><button pButton 
-                          type="button" 
-                          label="Одобрить" 
-                          class="p-button-success p-button-text" 
-                          (click)="onApproveProjectAsync(prj.projectId)">
-                </button>
-              </td>
-              <td><button pButton 
-                type="button" 
-                label="Отклонить" 
-                class="p-button-danger p-button-text"
-                (click)="onRejectProjectAsync(prj.projectId)"></button></td>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="summary">
-            Всего: {{totalProjects}}
-          </ng-template>
-        </p-table>
-      </p-tabPanel>
+    <p-megaMenu [model]="items"></p-megaMenu>
 
-      <!-- Список вакансий. -->
-      <p-tabPanel header="Вакансии">
-        <p-table [value]="aVacancies" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
-          <ng-template pTemplate="caption">
-            Проекты на модерации
-          </ng-template>
-          <ng-template pTemplate="header">
-            <tr>
-              <th>ID</th>
-              <th>Название вакансии</th>
-              <th>Дата модерации</th>
-              <th>Дата создания</th>
-              <th>Просмотр</th>
-              <th>Одобрение</th>
-              <th>Отклонение</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-vac>
-            <tr>
-              <td>{{vac.vacancyId}}</td>
-              <td>{{vac.vacancyName}}</td>
-              <td>{{vac.dateModeration}}</td>
-              <td>{{vac.dateCreated}}</td>
-              <td><button pButton 
-                          type="button" 
-                          label="Просмотр" 
-                          class="p-button-text"
-                          (click)="onPreviewVacancyAsync(vac.vacancyId)">
+    <!-- Проекты. -->
+    <div *ngIf="isProjectsModeration">
+      <p-table [value]="aProjects" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+        <ng-template pTemplate="caption">
+          Проекты на модерации
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID</th>
+            <th>Название проекта</th>
+            <th>Дата модерации</th>
+            <th>Дата создания</th>
+            <th>Просмотр</th>
+            <th>Одобрение</th>
+            <th>Отклонение</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-prj>
+          <tr>
+            <td>{{prj.projectId}}</td>
+            <td>{{prj.projectName}}</td>
+            <td>{{prj.dateModeration}}</td>
+            <td>{{prj.dateCreated}}</td>
+            <td><button pButton 
+                        type="button" 
+                        label="Просмотр" 
+                        class="p-button-text"
+                        (click)="onPreviewProjectAsync(prj.projectId)">
+            </button>
+            </td>
+            <td><button pButton 
+                        type="button" 
+                        label="Одобрить" 
+                        class="p-button-success p-button-text" 
+                        (click)="onApproveProjectAsync(prj.projectId)">
               </button>
-              </td>
-              <td><button pButton 
-                          type="button" 
-                          label="Одобрить" 
-                          class="p-button-success p-button-text" 
-                          (click)="onApproveVacancyAsync(vac.vacancyId)">
-                </button>
-              </td>
-              <td><button pButton 
-                type="button" 
-                label="Отклонить" 
-                class="p-button-danger p-button-text"
-                (click)="onRejectVacancyAsync(vac.vacancyId)"></button></td>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="summary">
-            Всего: {{totalVacancies}}
-          </ng-template>
-        </p-table>
-      </p-tabPanel>
+            </td>
+            <td><button pButton 
+              type="button" 
+              label="Отклонить" 
+              class="p-button-danger p-button-text"
+              (click)="onRejectProjectAsync(prj.projectId)"></button></td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          Всего: {{totalProjects}}
+        </ng-template>
+      </p-table>
+    </div>
 
-      <p-tabPanel header="Комментарии к проектам">
-        Content 3
-      </p-tabPanel>
-    </p-tabView>
+    <!-- Вакансии. -->
+    <div *ngIf="isVacanciesModeration">
+      <p-table [value]="aVacancies" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+        <ng-template pTemplate="caption">
+          Проекты на модерации
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID</th>
+            <th>Название вакансии</th>
+            <th>Дата модерации</th>
+            <th>Дата создания</th>
+            <th>Просмотр</th>
+            <th>Одобрение</th>
+            <th>Отклонение</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-vac>
+          <tr>
+            <td>{{vac.vacancyId}}</td>
+            <td>{{vac.vacancyName}}</td>
+            <td>{{vac.dateModeration}}</td>
+            <td>{{vac.dateCreated}}</td>
+            <td><button pButton 
+                        type="button" 
+                        label="Просмотр" 
+                        class="p-button-text"
+                        (click)="onPreviewVacancyAsync(vac.vacancyId)">
+            </button>
+            </td>
+            <td><button pButton 
+                        type="button" 
+                        label="Одобрить" 
+                        class="p-button-success p-button-text" 
+                        (click)="onApproveVacancyAsync(vac.vacancyId)">
+              </button>
+            </td>
+            <td><button pButton 
+              type="button" 
+              label="Отклонить" 
+              class="p-button-danger p-button-text"
+              (click)="onRejectVacancyAsync(vac.vacancyId)"></button></td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          Всего: {{totalVacancies}}
+        </ng-template>
+      </p-table>
+    </div>
   </div>
 </div>
 

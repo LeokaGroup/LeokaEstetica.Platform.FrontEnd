@@ -37,6 +37,60 @@ export class ModerationComponent implements OnInit {
     payment: string = "";
     isShowPreviewModerationVacancyModal: boolean = false;
     vacancyId: number = 0;
+    isProjectsModeration: boolean = false;
+    isVacanciesModeration: boolean = false;
+    items: any[] = [
+        {
+            label: 'Проекты',
+            items: [
+                [
+                    {
+                        label: 'Проекты на модерации',
+                        items: [{label: 'Список проектов', command: async () => {
+                            this.isProjectsModeration = true; // Отображаем область с проектами.
+                            this.isVacanciesModeration = false; // Скрываем область с вакансиями.
+
+                            await this.getProjectsModerationAsync();
+                        }}]
+                    }                   
+                ]
+            ]
+        },
+        {
+            label: 'Вакансии',
+            items: [
+                [
+                    {
+                        label: 'Вакансии на модерации',
+                        items: [{label: 'Список вакансий', command: async () => {
+                            this.isProjectsModeration = false; // Скрываем область с проектами.
+                            this.isVacanciesModeration = true; // Отображаем область с вакансиями.
+                            await this.getVacanciesModerationAsync();
+                        }}]
+                    }                   
+                ]
+            ]
+        },
+        {
+            label: 'Коммерция',
+            items: [
+                [
+                    {
+                        label: 'Платежи',
+                        items: [{label: 'Список платежей', command: async () => {
+                           
+                        }}]
+                    },
+                    {
+                        label: 'Возвраты',
+                        items: [{label: 'Список возвратов', command: async () => {
+                           
+                        }}]
+                    }                      
+                ]
+            ]
+        }
+    ];
 
     constructor(private readonly _headerService: HeaderService,
         private readonly _moderationService: ModerationService) {
@@ -45,8 +99,7 @@ export class ModerationComponent implements OnInit {
     public async ngOnInit() {
         forkJoin([
             await this.getHeaderItemsAsync(),
-            await this._headerService.refreshTokenAsync(),
-            await this.getProjectsModerationAsync()
+            await this._headerService.refreshTokenAsync()            
          ]).subscribe();
     }
 
@@ -71,7 +124,7 @@ export class ModerationComponent implements OnInit {
                 break;
 
             case 1:
-                await this.getVacanciesModerationAsync();
+                
                 break;
         }
     };
