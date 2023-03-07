@@ -22,6 +22,7 @@ import { ModerationRoutingModule } from './moderation-routing.module';
 import { SignInComponent } from './components/signin/signin.component';
 import { ModerationComponent } from './components/moderation/moderation.component';
 import {TabViewModule} from 'primeng/tabview';
+import { MegaMenuModule } from 'primeng/megamenu';
 
 @NgModule({
     declarations: [
@@ -48,7 +49,8 @@ import {TabViewModule} from 'primeng/tabview';
         DialogModule,
         ModerationRoutingModule,
         TabViewModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MegaMenuModule
     ],
 
     exports: [],
