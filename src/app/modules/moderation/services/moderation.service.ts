@@ -7,6 +7,8 @@ import { ApproveProjectInput } from '../models/input/approve-project-input';
 import { ApproveVacancyInput } from '../models/input/approve-vacancy-input';
 import { RejectProjectInput } from '../models/input/reject-project-input';
 import { RejectVacancyInput } from '../models/input/reject-vacancy-input';
+import { ApproveResumeInput } from "../models/input/approve-resume-input";
+import {RejectResumeInput} from "../models/input/reject-resume-input";
 
 /**
  * Класс сервиса модерации.
@@ -23,9 +25,11 @@ export class ModerationService {
     public approveVacancyModeration$ = new BehaviorSubject<any>(null);
     public rejectVacancyModeration$ = new BehaviorSubject<any>(null);
 
-    constructor(private readonly http: HttpClient) {
-
-    }
+    public resumesModeration$ = new BehaviorSubject<any>(null);
+    public resumeModeration$ = new BehaviorSubject<any>(null);
+    public rejectResumeModeration$ = new BehaviorSubject<any>(null);
+    public approveResumeModeration$ = new BehaviorSubject<any>(null);
+    constructor(private readonly http: HttpClient) {}
 
     /**
      * Функция првоеряет доступ пользователя к модерации.
@@ -122,4 +126,56 @@ export class ModerationService {
             tap(data => this.rejectVacancyModeration$.next(data))
         );
     };
+
+
+
+
+
+
+    /**
+     * Функция получает список анкет для модерации.
+     * @returns - Список вакансий.
+     */
+    public async getResumesModerationAsync() {
+      return await this.http.get(API_URL.apiUrl + "/moderation/resumes").pipe(
+        tap(data => this.resumesModeration$.next(data))
+      );
+    };
+  /**
+   * Функция получает анкету для просмотра модератором.
+   * @param profileInfoId - Id вакансии.
+   * @returns - Данные вакансии.
+   */
+  public async previewResumeAsync(profileInfoId: number) {
+    return await this.http.get(API_URL.apiUrl + `/moderation/resume/${profileInfoId}/preview`).pipe(
+      tap(data => console.log(this.resumeModeration$.next(data)))
+    );
+  };
+
+  /**
+   * Функция одобряет анкету.
+   * @param approveVacancyInput - Входная модель.
+   * @returns - Данные вакансии.
+   */
+  public async approveResumeAsync(approveResumeInput: ApproveResumeInput) {
+    return await this.http.patch(API_URL.apiUrl + `/moderation/resume/approve`, approveResumeInput).pipe(
+      tap(data => this.approveResumeModeration$.next(data))
+    );
+  };
+
+  /**
+   * Функция отклоняет анкету.
+   * @param rejectVacancyInput - Входная модель.
+   * @returns - Данные анкеты.
+   */
+  public async rejectResumeAsync(rejectResumeAsync: RejectResumeInput) {
+    return await this.http.patch(API_URL.apiUrl + `/moderation/resume/reject`, rejectResumeAsync).pipe(
+      tap(data => this.rejectResumeModeration$.next(data))
+    );
+  };
+
+
+
+
 }
+// https://leoka-estetica-dev.online/moderation/resume/11/preview
