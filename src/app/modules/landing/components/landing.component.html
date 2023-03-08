@@ -9,9 +9,9 @@
       <h1 class="fon-title">{{fonData$.value.title}}</h1>
     </div>
 
-   <div class="fon-text">
+    <div class="fon-text">
       {{fonData$.value.text}}
-   </div>
+    </div>
   </div>
 </div>
 
@@ -25,7 +25,14 @@
 
   <div class="platform-offers col-lg-12">
     <div *ngFor="let item of platformOffers$.value.platformOfferItems">
-      <div class="col-lg-4 offer-item">{{item.itemText}}</div>
+      <div class="offer-tag">
+        <p-divider align="center">
+          <p-tag *ngIf="item.isLater">Скоро</p-tag>
+          <span>&nbsp;</span>
+        </p-divider>
+  
+        <span class="d-flex offer-item text-center">{{item.itemText}}</span>
+      </div>
     </div>
   </div>
 </div>
@@ -39,4 +46,3 @@
     <fare-rule></fare-rule>
   </div>
 </div>
-
