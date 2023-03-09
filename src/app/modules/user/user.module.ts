@@ -28,8 +28,7 @@ import { ToastModule } from 'primeng/toast';
 
     providers: [
         UserService,
-        MessageService,
-        Document
+        MessageService
     ]
 })
 

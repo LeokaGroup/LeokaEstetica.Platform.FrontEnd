@@ -15,14 +15,11 @@ import { UserService } from "../../services/user.service";
 /**
  * Класс компонента формы авторизации пользователя.
  */
- @Inject(DOCUMENT)
 export class SignInComponent implements OnInit {
     constructor(private readonly _userService: UserService,
         private readonly _router: Router,
         private readonly _messageService: MessageService,
-        private readonly _signalrService: SignalrService,
-        private readonly _document: Document,
-        private readonly _renderer2: Renderer2) { }
+        private readonly _signalrService: SignalrService) { }
 
     formSignUp: FormGroup = new FormGroup({
         "email": new FormControl("", [
@@ -54,32 +51,32 @@ export class SignInComponent implements OnInit {
                 });
         });
 
-        const textScript = this._renderer2.createElement('script');
-        textScript.src = 'https://accounts.google.com/gsi/client';
-        textScript.setAttribute("async ", "async ");
-        textScript.setAttribute("defer", "defer");
-        this._renderer2.appendChild(this._document.body, textScript);
+        // const textScript = this._renderer2.createElement('script');
+        // textScript.src = 'https://accounts.google.com/gsi/client';
+        // textScript.setAttribute("async ", "async ");
+        // textScript.setAttribute("defer", "defer");
+        // this._renderer2.appendChild(this._document.body, textScript);
     
-        const srcScript = this._renderer2.createElement('script');
-        srcScript.type = 'text/javascript';
-        srcScript.text = `
-        function handleCredentialResponse(response) {
-            console.log("Encoded JWT ID token: " + response.credential);
-          }
+        // const srcScript = this._renderer2.createElement('script');
+        // srcScript.type = 'text/javascript';
+        // srcScript.text = `
+        // function handleCredentialResponse(response) {
+        //     console.log("Encoded JWT ID token: " + response.credential);
+        //   }
 
-          window.onload = function () {
-            google.accounts.id.initialize({
-              client_id: "418999951875-s1smtv8oitn579i8pd4na059pnbctf19.apps.googleusercontent.com",
-              callback: handleCredentialResponse
-            });
-            google.accounts.id.renderButton(
-              document.getElementById("buttonDiv"),
-              { theme: "outline", size: "large" } 
-            );
-            google.accounts.id.prompt(); 
-          }
-        `;
-        this._renderer2.appendChild(this._document.body, srcScript);
+        //   window.onload = function () {
+        //     google.accounts.id.initialize({
+        //       client_id: "418999951875-s1smtv8oitn579i8pd4na059pnbctf19.apps.googleusercontent.com",
+        //       callback: handleCredentialResponse
+        //     });
+        //     google.accounts.id.renderButton(
+        //       document.getElementById("buttonDiv"),
+        //       { theme: "outline", size: "large" } 
+        //     );
+        //     google.accounts.id.prompt(); 
+        //   }
+        // `;
+        // this._renderer2.appendChild(this._document.body, srcScript);
     };
 
     /**
