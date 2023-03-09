@@ -5,5 +5,5 @@ export class ApproveResumeInput {
   /**
    * Id проекта.
    */
-  ResumeId: number = 0;
+  ProfileInfoId: number = 0;
 }

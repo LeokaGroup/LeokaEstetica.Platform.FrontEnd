@@ -354,7 +354,7 @@
       <div class="control-input-text-worksheet mt-3">
         <div class="control-input-text-worksheet">
           <div>
-            <label>Описание вакансии</label>
+            <label>Описание aнкеты</label>
           </div>
           <textarea input-control-worksheet
                     rows="5"
@@ -363,7 +363,7 @@
                     [autoResize]="true"
                     autocomplete="new-password"
                     placeholder="Детали aнкеты"
-                    [(ngModel)]="resumeEmail"
+                    [(ngModel)]="profileInfoId"
                     class="control-textarea"
                     [disabled]="true">
         </textarea>
@@ -372,13 +372,13 @@
     </div>
   <ng-template pTemplate="footer">
     <p-button icon="pi pi-check"
-              (click)="onApproveResumeAsync(resumeId)"
+              (click)="onApproveResumeAsync(profileInfoId)"
               label="Одобрить aнкету"
               styleClass="p-button-success p-button-text">
     </p-button>
 
     <p-button icon="pi pi-check"
-              (click)="onRejectResumeAsync(resumeId)"
+              (click)="onRejectResumeAsync(profileInfoId)"
               label="Отклонить aнкету"
               styleClass="p-button-danger p-button-text">
     </p-button>

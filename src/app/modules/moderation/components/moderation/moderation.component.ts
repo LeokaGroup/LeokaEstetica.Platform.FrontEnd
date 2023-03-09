@@ -45,7 +45,7 @@ export class ModerationComponent implements OnInit {
     aResumes: any[] = [];
     totalResumes: number = 0;
     isResumesModeration: boolean = false;
-    resumeId: number = 0;
+    profileInfoId: number = 0;
     isShowPreviewModerationResumeModal: boolean = false;
     resumeEmail: string = "";
 
@@ -320,7 +320,7 @@ export class ModerationComponent implements OnInit {
    * @returns - Данные анкеты.
    */
   public async onPreviewResumeAsync(profileInfoId: number) {
-    this.resumeId = profileInfoId;
+    this.profileInfoId = profileInfoId;
     (await this._moderationService.previewResumeAsync(profileInfoId))
       .subscribe((response: any) => {
         console.log("Анкеты для просмотра: ", response);
@@ -335,12 +335,12 @@ export class ModerationComponent implements OnInit {
    */
   public async onApproveResumeAsync(profileInfoId: number) {
     let approveResumeInput = new ApproveResumeInput();
-    approveResumeInput.ResumeId = profileInfoId;
+    approveResumeInput.ProfileInfoId = profileInfoId;
     (await this._moderationService.approveResumeAsync(approveResumeInput))
       .subscribe(async (response: any) => {
         console.log("Апрув анкеты: ", response);
         this.isShowPreviewModerationResumeModal = false;
-        // Подтянем вакансии для обновления таблицы.
+        // Подтянем анкеты для обновления таблицы.
         await this.getResumesModerationAsync();
       });
   };
@@ -351,7 +351,7 @@ export class ModerationComponent implements OnInit {
    */
   public async onRejectResumeAsync(profileInfoId: number) {
     let rejectResumeInput = new RejectResumeInput();
-    rejectResumeInput.ResumeId = profileInfoId;
+    rejectResumeInput.ProfileInfoId = profileInfoId;
     (await this._moderationService.rejectResumeAsync(rejectResumeInput))
       .subscribe(async (response: any) => {
         console.log("Отклонение анкеты: ", response);

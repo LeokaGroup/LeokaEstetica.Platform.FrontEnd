@@ -5,6 +5,6 @@ export class RejectResumeInput {
   /**
    * Id проекта.
    */
-  ResumeId: number = 0;
+  ProfileInfoId: number = 0;
 }
 
