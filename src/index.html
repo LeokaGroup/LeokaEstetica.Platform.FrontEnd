@@ -14,6 +14,7 @@
   <script>
     function handleCredentialResponse(response) {
       console.log("Encoded JWT ID token: " + response.credential);
+      window.location.href = "https://leoka-estetica-dev.ru/profile/aboutme?mode=view";
     }
     window.onload = function () {
       google.accounts.id.initialize({
@@ -21,13 +22,14 @@
         callback: handleCredentialResponse
       });
       google.accounts.id.renderButton(
-        document.getElementById("buttonDiv"),
-        { theme: "outline", size: "large" } 
+        document.getElementById("buttonDiv"), {
+          theme: "outline",
+          size: "large"
+        }
       );
       google.accounts.id.prompt();
     }
-</script>
-<!-- <div id="buttonDiv"></div>  -->
+  </script>
 
   <app-root></app-root>
 </body>
