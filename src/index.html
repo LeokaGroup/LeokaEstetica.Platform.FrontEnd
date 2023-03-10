@@ -19,10 +19,9 @@
       $.ajax({
         url: 'https://leoka-estetica-dev.online/user/signin-google',
         type: 'POST',
+        dataType: 'json',
         contentType: 'application/json',
-        data: {
-          GoogleAuthToken: response.credential
-        },
+        data: JSON.stringify(response.credential),
         success: function (data) {
           console.log("Авторизовались через Google.");
         }
