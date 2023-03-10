@@ -28,6 +28,9 @@
         data: JSON.stringify(userSignInGoogleInput),
         success: function (data) {
           if (data.isSuccess) {
+            localStorage["t_n"] = data.token;
+            localStorage["u_c"] = data.userCode;
+            
             window.location.href = "https://leoka-estetica-dev.ru/profile/aboutme?mode=view";
           }
         }
