@@ -14,22 +14,22 @@
 
   <script>
     function handleCredentialResponse(response) {
-      console.log("Encoded JWT ID token: " + response.credential);
+      var userSignInGoogleInput = {
+        googleAuthToken: response.credential
+      };
 
       $.ajax({
         url: 'https://leoka-estetica-dev.online/user/signin-google',
         type: 'POST',
         dataType: 'json',
         contentType: 'application/json',
-        data: JSON.stringify(response.credential),
+        data: JSON.stringify(userSignInGoogleInput),
         success: function (data) {
-          console.log("Авторизовались через Google.");
+          if (response.isSuccess) {
+            window.location.href = "https://leoka-estetica-dev.ru/profile/aboutme?mode=view";
+          }
         }
       });
-
-      if (response.isSuccess) {
-        window.location.href = "https://leoka-estetica-dev.ru/profile/aboutme?mode=view";
-      }
     }
     window.onload = function () {
       google.accounts.id.initialize({
