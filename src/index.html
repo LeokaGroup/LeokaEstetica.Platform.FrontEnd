@@ -20,7 +20,9 @@
         url: 'https://leoka-estetica-dev.online/user/signin-google',
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify(response.credential),
+        data: {
+          GoogleAuthToken: response.credential
+        },
         success: function (data) {
           console.log("Авторизовались через Google.");
         }
