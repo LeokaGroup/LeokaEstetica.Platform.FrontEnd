@@ -11,31 +11,42 @@
 
 <body>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  
+
   <script>
     function handleCredentialResponse(response) {
-    console.log("Encoded JWT ID token: " + response.credential);
+      console.log("Encoded JWT ID token: " + response.credential);
 
-    if (response.isSuccess) {
-    window.location.href = "https://leoka-estetica-dev.ru/profile/aboutme?mode=view";
-    }
-  }
-  window.onload = function () {
-    google.accounts.id.initialize({
-      client_id: "418999951875-s1smtv8oitn579i8pd4na059pnbctf19.apps.googleusercontent.com",
-      callback: handleCredentialResponse,
-      login_uri: "https://leoka-estetica-dev.online/user/signin-google"
-    });
-    google.accounts.id.renderButton(
-      document.getElementById("buttonDiv"), {
-        theme: "outline",
-        size: "large"
+      $.ajax({
+        url: 'https://leoka-estetica-dev.online/user/signin-google',
+        method: 'POST',
+        dataType: 'json',
+        data: {
+          GoogleAuthToken: response.credential
+        },
+        success: function (data) {
+          console.log("Авторизовались через Google.");
+        }
+      });
+
+      if (response.isSuccess) {
+        window.location.href = "https://leoka-estetica-dev.ru/profile/aboutme?mode=view";
       }
-    );
-    google.accounts.id.prompt();
-  }
+    }
+    window.onload = function () {
+      google.accounts.id.initialize({
+        client_id: "418999951875-s1smtv8oitn579i8pd4na059pnbctf19.apps.googleusercontent.com",
+        callback: handleCredentialResponse
+      });
+      google.accounts.id.renderButton(
+        document.getElementById("buttonDiv"), {
+          theme: "outline",
+          size: "large"
+        }
+      );
+      google.accounts.id.prompt();
+    }
   </script>
-  
+
   <app-root></app-root>
 </body>
 
