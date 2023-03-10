@@ -25,7 +25,7 @@
         contentType: 'application/json',
         data: JSON.stringify(userSignInGoogleInput),
         success: function (data) {
-          if (response.isSuccess) {
+          if (data.isSuccess) {
             window.location.href = "https://leoka-estetica-dev.ru/profile/aboutme?mode=view";
           }
         }
