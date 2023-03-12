@@ -21,7 +21,7 @@
       };
 
       $.ajax({
-        url: 'https://leoka-estetica-dev.online/user/signin-google',
+        url: 'https://leoka-estetica-dev.online/user/signin-google', // TODO: Переделать на получение с бэка.
         type: 'POST',
         dataType: 'json',
         contentType: 'application/json',
@@ -31,6 +31,7 @@
             localStorage["t_n"] = data.token;
             localStorage["u_c"] = data.userCode;
             
+            // TODO: Переделать на получение с бэка.
             window.location.href = "https://leoka-estetica-dev.ru/profile/aboutme?mode=view";
           }
         }
@@ -67,14 +68,12 @@
 <script type="text/javascript">
   VK.Widgets.Auth("vk_auth", {
     "onAuth": function (response) {
-      // console.log('user ' + data['uid'] + ' authorized');
-
       let userSignInVkInput = {
         googleAuthToken: response.user
       };
 
       $.ajax({
-        url: 'https://leoka-estetica-dev.online/user/signin-vk',
+        url: 'https://leoka-estetica-dev.online/user/signin-vk', // TODO: Переделать на получение с бэка.
         type: 'POST',
         dataType: 'json',
         contentType: 'application/json',
@@ -84,6 +83,7 @@
             localStorage["t_n"] = data.token;
             localStorage["u_c"] = data.userCode;
             
+            // TODO: Переделать на получение с бэка.
             window.location.href = "https://leoka-estetica-dev.ru/profile/aboutme?mode=view";
           }
         }
