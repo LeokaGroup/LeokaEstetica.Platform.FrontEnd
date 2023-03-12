@@ -16,7 +16,7 @@
 
   <script>
     function handleCredentialResponse(response) {
-      var userSignInGoogleInput = {
+      let userSignInGoogleInput = {
         googleAuthToken: response.credential
       };
 
@@ -64,9 +64,32 @@
 </script>
 
 <!-- VK Widget -->
-<!-- <div id="vk_auth"></div> -->
 <script type="text/javascript">
-  VK.Widgets.Auth("vk_auth", {"onAuth":function(data) {console.log('user '+data['uid']+' authorized');}});
+  VK.Widgets.Auth("vk_auth", {
+    "onAuth": function (response) {
+      // console.log('user ' + data['uid'] + ' authorized');
+
+      let userSignInVkInput = {
+        googleAuthToken: response.user
+      };
+
+      $.ajax({
+        url: 'https://leoka-estetica-dev.online/user/signin-vk',
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(userSignInVkInput),
+        success: function (data) {
+          if (data.isSuccess) {
+            localStorage["t_n"] = data.token;
+            localStorage["u_c"] = data.userCode;
+            
+            // window.location.href = "https://leoka-estetica-dev.ru/profile/aboutme?mode=view";
+          }
+        }
+      });
+    }
+  });
 </script>
 
   <app-root></app-root>
