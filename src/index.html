@@ -69,7 +69,7 @@
   VK.Widgets.Auth("vk_auth", {
     "onAuth": function (response) {
       let userSignInVkInput = {
-        userId: response.uid,
+        vkUserId: response.uid,
         firstName: response.first_name,
         lastName: response.last_name
       };
