@@ -6,6 +6,8 @@ import { ApproveVacancyInput } from "../../models/input/approve-vacancy-input";
 import { RejectProjectInput } from "../../models/input/reject-project-input";
 import { RejectVacancyInput } from "../../models/input/reject-vacancy-input";
 import { ModerationService } from "../../services/moderation.service";
+import { ApproveResumeInput} from "../../models/input/approve-resume-input";
+import {RejectResumeInput} from "../../models/input/reject-resume-input";
 
 @Component({
     selector: "moderation",
@@ -39,6 +41,15 @@ export class ModerationComponent implements OnInit {
     vacancyId: number = 0;
     isProjectsModeration: boolean = false;
     isVacanciesModeration: boolean = false;
+
+    aResumes: any[] = [];
+    totalResumes: number = 0;
+    isResumesModeration: boolean = false;
+    profileInfoId: number = 0;
+    isShowPreviewModerationResumeModal: boolean = false;
+    resumeEmail: string = "";
+
+
     items: any[] = [
         {
             label: 'Проекты',
@@ -49,10 +60,10 @@ export class ModerationComponent implements OnInit {
                         items: [{label: 'Список проектов', command: async () => {
                             this.isProjectsModeration = true; // Отображаем область с проектами.
                             this.isVacanciesModeration = false; // Скрываем область с вакансиями.
-
+                            this.isResumesModeration = false; // Отображаем область с вакансиями.
                             await this.getProjectsModerationAsync();
                         }}]
-                    }                   
+                    }
                 ]
             ]
         },
@@ -65,9 +76,10 @@ export class ModerationComponent implements OnInit {
                         items: [{label: 'Список вакансий', command: async () => {
                             this.isProjectsModeration = false; // Скрываем область с проектами.
                             this.isVacanciesModeration = true; // Отображаем область с вакансиями.
+                            this.isResumesModeration = false; // Отображаем область с вакансиями.
                             await this.getVacanciesModerationAsync();
                         }}]
-                    }                   
+                    }
                 ]
             ]
         },
@@ -78,18 +90,33 @@ export class ModerationComponent implements OnInit {
                     {
                         label: 'Платежи',
                         items: [{label: 'Список платежей', command: async () => {
-                           
                         }}]
                     },
                     {
                         label: 'Возвраты',
                         items: [{label: 'Список возвратов', command: async () => {
-                           
                         }}]
-                    }                      
+                    }
                 ]
             ]
-        }
+        },
+      {
+        label: 'Анкеты',
+        items: [
+          [
+            {
+              label: 'Анкеты на модерации',
+              items: [{label: 'Список анкет', command: async () => {
+                  this.isProjectsModeration = false; // Скрываем область с проектами.
+                  this.isVacanciesModeration = false; // Отображаем область с вакансиями.
+                  this.isResumesModeration = true; // Отображаем область с вакансиями.
+                  await this.getResumesModerationAsync();
+                }}]
+            }
+          ]
+        ]
+      },
+
     ];
 
     constructor(private readonly _headerService: HeaderService,
@@ -99,7 +126,7 @@ export class ModerationComponent implements OnInit {
     public async ngOnInit() {
         forkJoin([
             await this.getHeaderItemsAsync(),
-            await this._headerService.refreshTokenAsync()            
+            await this._headerService.refreshTokenAsync()
          ]).subscribe();
     }
 
@@ -118,17 +145,17 @@ export class ModerationComponent implements OnInit {
         console.log(event);
 
         // В зависимости от индекса срабатывает логика нужного таба.
-        switch (event.index) {
-            case 0:
-                await this.getProjectsModerationAsync();
-                break;
-
-            case 1:
-                
-                break;
-        }
+        // switch (event.index) {
+        //     case 0:
+        //         await this.getProjectsModerationAsync();
+        //         break;
+        //
+        //     // case 1:
+        //     //
+        //     //     break;
+        // }
     };
-     
+
     /**
      * Функция получает список проектов для модерации.
      * @returns - Список проектов.
@@ -267,4 +294,72 @@ export class ModerationComponent implements OnInit {
              await this.getVacanciesModerationAsync();
         });
     };
+
+
+
+
+
+
+
+  /**
+   * Функция получает список анкет для модерации.
+   * @returns - Список анкеты.
+   */
+  private async getResumesModerationAsync() {
+    (await this._moderationService.getResumesModerationAsync())
+      .subscribe((response: any) => {
+        console.log("Анкеты для модерации: ", response);
+        this.aResumes = response.resumes;
+        this.totalResumes = response.total;
+      });
+  };
+
+  /**
+   * Функция получает анкету для просмотра модератором.
+   * @param resumeId - Id анкеты.
+   * @returns - Данные анкеты.
+   */
+  public async onPreviewResumeAsync(profileInfoId: number) {
+    this.profileInfoId = profileInfoId;
+    (await this._moderationService.previewResumeAsync(profileInfoId))
+      .subscribe((response: any) => {
+        console.log("Анкеты для просмотра: ", response);
+        this.isShowPreviewModerationResumeModal = true;
+        this.resumeEmail = response.email;
+      });
+  };
+  /**
+   * Функция одобряет анкеты.
+   * @param ResumeId - Id анкеты.
+   * @returns - Данные анкеты.
+   */
+  public async onApproveResumeAsync(profileInfoId: number) {
+    let approveResumeInput = new ApproveResumeInput();
+    approveResumeInput.ProfileInfoId = profileInfoId;
+    (await this._moderationService.approveResumeAsync(approveResumeInput))
+      .subscribe(async (response: any) => {
+        console.log("Апрув анкеты: ", response);
+        this.isShowPreviewModerationResumeModal = false;
+        // Подтянем анкеты для обновления таблицы.
+        await this.getResumesModerationAsync();
+      });
+  };
+  /**
+   * Функция отклоняет анкеты.
+   * @param profileInfoId - Id анкеты.
+   * @returns - Данные анкеты.
+   */
+  public async onRejectResumeAsync(profileInfoId: number) {
+    let rejectResumeInput = new RejectResumeInput();
+    rejectResumeInput.ProfileInfoId = profileInfoId;
+    (await this._moderationService.rejectResumeAsync(rejectResumeInput))
+      .subscribe(async (response: any) => {
+        console.log("Отклонение анкеты: ", response);
+        this.isShowPreviewModerationResumeModal = false;
+        // Подтянем анкеты для обновления таблицы.
+        await this.getResumesModerationAsync();
+      });
+  };
+
 }
+
