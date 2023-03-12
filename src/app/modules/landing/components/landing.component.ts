@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { PrimeIcons } from "primeng/api";
 import { forkJoin } from "rxjs";
 import { LandingService } from "../services/landing.service";
 
@@ -14,6 +15,13 @@ import { LandingService } from "../services/landing.service";
 export class LandingComponent implements OnInit {
     public readonly fonData$ = this._landingService.fonData$;
     public readonly platformOffers$ = this._landingService.platformOffers$;    
+
+    events: any[] = [
+        {status: 'Ordered'},
+        {status: 'Processing'},
+        {status: 'Shipped'},
+        {status: 'Delivered'}
+    ];
 
     constructor(private readonly _landingService: LandingService) {
     }

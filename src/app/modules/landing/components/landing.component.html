@@ -38,11 +38,37 @@
 </div>
 
 <!-- Тарифы. -->
-<div class="mt-5">
+<div class="mt-5 mb-5">
   <div class="col-lg-12 d-flex justify-content-center">
     <h3>Тарифы</h3>
   </div>
   <div>
     <fare-rule></fare-rule>
+  </div>
+</div>
+
+<div class="mt-5 mb-5">
+  <div class="col-lg-12 d-flex justify-content-center">
+    <h3 class="mt-5 mb-5">Создание проекта</h3>
+  </div>
+
+  <div class="mt-5 mb-5">
+    <div class="card">
+      <p-timeline [value]="events" align="alternate" styleClass="customized-timeline">
+        <ng-template pTemplate="marker" let-event>
+          <span class="custom-marker shadow-2" [style.backgroundColor]="event.color">
+            <i [ngClass]="event.icon"></i>
+          </span>
+        </ng-template>
+        <ng-template pTemplate="content" let-event>
+          <p-card [header]="event.status" [subheader]="event.date">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae
+              numquam deserunt
+              quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
+              quas!</p>
+          </p-card>
+        </ng-template>
+      </p-timeline>
+    </div>
   </div>
 </div>
