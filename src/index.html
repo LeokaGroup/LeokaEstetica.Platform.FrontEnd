@@ -69,7 +69,9 @@
   VK.Widgets.Auth("vk_auth", {
     "onAuth": function (response) {
       let userSignInVkInput = {
-        googleAuthToken: response.user
+        userId: response.uid,
+        firstName: response.first_name,
+        lastName: response.last_name
       };
 
       $.ajax({
