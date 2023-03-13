@@ -7,6 +7,7 @@ import { FareRuleComponent } from '../fare-rule/components/fare-rule.component';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { TagModule } from 'primeng/tag';
+import { TimelineModule } from 'primeng/timeline';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { TagModule } from 'primeng/tag';
         LandingRoutingModule,
         CardModule,
         DividerModule,
-        TagModule
+        TagModule,
+        TimelineModule
     ],
 
     exports: [],
