@@ -47,25 +47,109 @@
   </div>
 </div>
 
+<!-- Таймлайн поиск проекта. -->
 <div class="mt-5 mb-5">
   <div class="col-lg-12 d-flex justify-content-center">
-    <h3 class="mt-5 mb-5">Создание проекта</h3>
+    <h3 class="mt-5 mb-5">{{aSearchProject[0].timelineTypeName}}</h3>
   </div>
 
   <div class="mt-5 mb-5">
     <div class="card">
-      <p-timeline [value]="events" align="alternate" styleClass="customized-timeline">
+      <p-timeline [value]="aSearchProject" align="alternate" styleClass="customized-timeline">
         <ng-template pTemplate="marker" let-event>
-          <span class="custom-marker shadow-2" [style.backgroundColor]="event.color">
-            <i [ngClass]="event.icon"></i>
-          </span>
         </ng-template>
+
         <ng-template pTemplate="content" let-event>
-          <p-card [header]="event.status" [subheader]="event.date">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae
-              numquam deserunt
-              quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
-              quas!</p>
+          <p-card [header]="event.timelineTitle">
+            <p>{{event.timelineText}}</p>
+          </p-card>
+        </ng-template>
+      </p-timeline>
+    </div>
+  </div>
+</div>
+
+<!-- Таймлайн создание проекта. -->
+<div class="mt-5 mb-5">
+  <div class="col-lg-12 d-flex justify-content-center">
+    <h3 class="mt-5 mb-5">{{aCreateProject[0].timelineTypeName}}</h3>
+  </div>
+
+  <div class="mt-5 mb-5">
+    <div class="card">
+      <p-timeline [value]="aCreateProject" align="alternate" styleClass="customized-timeline">
+        <ng-template pTemplate="marker" let-event>
+        </ng-template>
+
+        <ng-template pTemplate="content" let-event>
+          <p-card [header]="event.timelineTitle">
+            <p>{{event.timelineText}}</p>
+          </p-card>
+        </ng-template>
+      </p-timeline>
+    </div>
+  </div>
+</div>
+
+<!-- Таймлайн поиск вакансии. -->
+<div class="mt-5 mb-5">
+  <div class="col-lg-12 d-flex justify-content-center">
+    <h3 class="mt-5 mb-5">{{aSearchVacancy[0].timelineTypeName}}</h3>
+  </div>
+
+  <div class="mt-5 mb-5">
+    <div class="card">
+      <p-timeline [value]="aSearchVacancy" align="alternate" styleClass="customized-timeline">
+        <ng-template pTemplate="marker" let-event>
+        </ng-template>
+
+        <ng-template pTemplate="content" let-event>
+          <p-card [header]="event.timelineTitle">
+            <p>{{event.timelineText}}</p>
+          </p-card>
+        </ng-template>
+      </p-timeline>
+    </div>
+  </div>
+</div>
+
+<!-- Таймлайн создание вакансии. -->
+<div class="mt-5 mb-5">
+  <div class="col-lg-12 d-flex justify-content-center">
+    <h3 class="mt-5 mb-5">{{aCreateVacancy[0].timelineTypeName}}</h3>
+  </div>
+
+  <div class="mt-5 mb-5">
+    <div class="card">
+      <p-timeline [value]="aCreateVacancy" align="alternate" styleClass="customized-timeline">
+        <ng-template pTemplate="marker" let-event>
+        </ng-template>
+
+        <ng-template pTemplate="content" let-event>
+          <p-card [header]="event.timelineTitle">
+            <p>{{event.timelineText}}</p>
+          </p-card>
+        </ng-template>
+      </p-timeline>
+    </div>
+  </div>
+</div>
+
+<!-- Таймлайн поиск команды. -->
+<div class="mt-5 mb-5">
+  <div class="col-lg-12 d-flex justify-content-center">
+    <h3 class="mt-5 mb-5">{{aSearchTeam[0].timelineTypeName}}</h3>
+  </div>
+
+  <div class="mt-5 mb-5">
+    <div class="card">
+      <p-timeline [value]="aSearchTeam" align="alternate" styleClass="customized-timeline">
+        <ng-template pTemplate="marker" let-event>
+        </ng-template>
+
+        <ng-template pTemplate="content" let-event>
+          <p-card [header]="event.timelineTitle">
+            <p>{{event.timelineText}}</p>
           </p-card>
         </ng-template>
       </p-timeline>

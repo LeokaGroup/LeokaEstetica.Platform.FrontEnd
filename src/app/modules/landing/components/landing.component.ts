@@ -15,13 +15,20 @@ import { LandingService } from "../services/landing.service";
 export class LandingComponent implements OnInit {
     public readonly fonData$ = this._landingService.fonData$;
     public readonly platformOffers$ = this._landingService.platformOffers$;    
+    public readonly timelines$ = this._landingService.timelines$;    
 
-    events: any[] = [
-        {status: 'Ordered'},
-        {status: 'Processing'},
-        {status: 'Shipped'},
-        {status: 'Delivered'}
-    ];
+    // events: any[] = [
+    //     {status: 'Ordered'},
+    //     {status: 'Processing'},
+    //     {status: 'Shipped'},
+    //     {status: 'Delivered'}
+    // ];
+
+    aCreateProject: any[] = [];
+    aSearchProject: any[] = [];
+    aCreateVacancy: any[] = [];
+    aSearchVacancy: any[] = [];
+    aSearchTeam: any[] = [];    
 
     constructor(private readonly _landingService: LandingService) {
     }
@@ -29,7 +36,8 @@ export class LandingComponent implements OnInit {
     public async ngOnInit() {
         forkJoin([
             await this.getFonLandingStartAsync(),
-            await this.getPlatformOffersAsync()
+            await this.getPlatformOffersAsync(),
+            await this.getTimelinesAsync()
         ]).subscribe();        
     };
 
@@ -54,4 +62,25 @@ export class LandingComponent implements OnInit {
             console.log("Список предложений платформы: ", this.platformOffers$.value);
         });
     };
+
+    /**
+     * Функция получает список таймлайнов.
+     * @returns - Список таймлайнов.
+     */
+     private async getTimelinesAsync() {
+        (await this._landingService.getTimelinesAsync())
+        .subscribe(_ => {
+            console.log("Список таймлайнов: ", this.timelines$.value);
+            this.fillTimelines();            
+        });
+    };
+
+    private fillTimelines(): void {
+        let timelines = this.timelines$.value;
+        this.aSearchProject = timelines.SearchProject;
+        this.aCreateProject = timelines.CreateProject;
+        this.aSearchVacancy = timelines.SearchVacancy;
+        this.aCreateVacancy = timelines.CreateVacancy;
+        this.aSearchTeam = timelines.SearchTeam;
+    }
 }
