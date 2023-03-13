@@ -1,15 +1,14 @@
 <div class="d-flex block-profile space-top-50">
-  <div class="profile-left-menu col-lg-3">
+  <div class="profile-left-menu col-lg-3"></div>
 
-  </div>
 
-  <div>
-    <p-table [value]="userProjects$.value.userProjects" 
-            [(selection)]="selectedProjects" 
-            dataKey="projectId" 
-            [paginator]="true" 
-            [rows]="10"             
-            styleClass="p-datatable-gridlines" 
+  <div *ngIf="userProjects$.value.total; else elseBlock">
+    <p-table [value]="userProjects$.value.userProjects"
+            [(selection)]="selectedProjects"
+            dataKey="projectId"
+            [paginator]="true"
+            [rows]="10"
+            styleClass="p-datatable-gridlines"
             responsiveLayout="scroll"
             (click)="onSelectProject()">
       <ng-template pTemplate="caption">
@@ -22,12 +21,12 @@
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th> -->
             <th>
-              
+
             </th>
-              <th *ngFor="let item of projectColumns$.value">{{item.columnName}}</th>    
-              <th>Просмотр</th>        
-              <th>Редактирование</th>    
-              <th>Удаление</th>    
+              <th *ngFor="let item of projectColumns$.value">{{item.columnName}}</th>
+              <th>Просмотр</th>
+              <th>Редактирование</th>
+              <th>Удаление</th>
           </tr>
       </ng-template>
 
@@ -40,21 +39,21 @@
             <td>{{project.projectName}}</td>
             <td>{{project.projectDetails}}</td>
             <td>{{project.projectStatusName}}</td>
-            <td><button pButton type="button" 
-              label="Просмотр" 
-              class="p-button-outlined p-button-primaryproject.projectId" 
+            <td><button pButton type="button"
+              label="Просмотр"
+              class="p-button-outlined p-button-primaryproject.projectId"
               (click)="onRouteViewProject(project.projectId)">
                 </button>
             </td>
-            <td><button pButton type="button" 
-                        label="Редактировать" 
-                        class="p-button-outlined p-button-primaryproject.projectId" 
+            <td><button pButton type="button"
+                        label="Редактировать"
+                        class="p-button-outlined p-button-primaryproject.projectId"
                         (click)="onRouteEditProject(project.projectId)">
                 </button>
             </td>
-            <td><button pButton 
-              type="button" 
-              label="Удалить" 
+            <td><button pButton
+              type="button"
+              label="Удалить"
               class="p-button-outlined p-button-danger"
               (click)="onBeforeDeleteProject(project.projectId, project.projectName)">
             </button></td>
@@ -67,21 +66,26 @@
   </p-table>
   </div>
 </div>
+<ng-template #elseBlock><h2>Ваш лист пуст, так как у вас еще нет созданых проектов</h2></ng-template>
+
 
 <!-- Диалог удаления проекта. -->
-<p-dialog header="Удаление проекта" 
-          [(visible)]="isDeleteProject" 
-          [breakpoints]="{'960px': '75vw'}" 
+<p-dialog header="Удаление проекта"
+          [(visible)]="isDeleteProject"
+          [breakpoints]="{'960px': '75vw'}"
           [style]="{width: '50vw'}"
-          [draggable]="false" 
+          [draggable]="false"
           [resizable]="false">
         <p>Удалить проект {{projectName}}?</p>
-        <p>При удалении проекта будут удалены вакансии проекта, 
-          сообщения чата проекта, 
-          все участники команды проекта и 
+        <p>При удалении проекта будут удалены вакансии проекта,
+          сообщения чата проекта,
+          все участники команды проекта и
           комментарии к проекту.</p>
         <ng-template pTemplate="footer">
         <p-button (click)="isDeleteProject=false" label="Отменить" styleClass="p-button-text"></p-button>
         <p-button (click)="onDeleteProjectAsync()" label="Удалить" styleClass="p-button-danger p-button-text"></p-button>
         </ng-template>
 </p-dialog>
+
+
+
