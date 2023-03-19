@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { PrimeIcons } from "primeng/api";
 import { forkJoin } from "rxjs";
 import { LandingService } from "../services/landing.service";
 
@@ -16,13 +15,7 @@ export class LandingComponent implements OnInit {
     public readonly fonData$ = this._landingService.fonData$;
     public readonly platformOffers$ = this._landingService.platformOffers$;    
     public readonly timelines$ = this._landingService.timelines$;    
-
-    // events: any[] = [
-    //     {status: 'Ordered'},
-    //     {status: 'Processing'},
-    //     {status: 'Shipped'},
-    //     {status: 'Delivered'}
-    // ];
+    public readonly knowledgeLanding$ = this._landingService.knowledgeLanding$;    
 
     aCreateProject: any[] = [];
     aSearchProject: any[] = [];
@@ -37,7 +30,8 @@ export class LandingComponent implements OnInit {
         forkJoin([
             await this.getFonLandingStartAsync(),
             await this.getPlatformOffersAsync(),
-            await this.getTimelinesAsync()
+            await this.getTimelinesAsync(),
+            await this.getKnowledgeLandingAsync()
         ]).subscribe();        
     };
 
@@ -82,5 +76,16 @@ export class LandingComponent implements OnInit {
         this.aSearchVacancy = timelines.SearchVacancy;
         this.aCreateVacancy = timelines.CreateVacancy;
         this.aSearchTeam = timelines.SearchTeam;
-    }
+    };
+
+     /**
+     * Функция получает список частых вопросов.
+     * @returns - Список частых вопросов.
+     */
+     private async getKnowledgeLandingAsync() {
+        (await this._landingService.getKnowledgeLandingAsync())
+        .subscribe(_ => {
+            console.log("Список частых вопросов: ", this.knowledgeLanding$.value);       
+        });
+    };
 }

@@ -8,6 +8,7 @@ import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { TagModule } from 'primeng/tag';
 import { TimelineModule } from 'primeng/timeline';
+import { AccordionModule } from 'primeng/accordion';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { TimelineModule } from 'primeng/timeline';
         CardModule,
         DividerModule,
         TagModule,
-        TimelineModule
+        TimelineModule,
+        AccordionModule
     ],
 
     exports: [],
