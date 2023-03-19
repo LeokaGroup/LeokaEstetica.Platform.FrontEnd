@@ -185,6 +185,7 @@ export class DetailProjectComponent {
         model.ProjectName = this.selectedProject$.value.projectName;
         model.ProjectDetails = this.selectedProject$.value.projectDetails;
         model.ProjectId = this.projectId;
+        model.ProjectStage = this.selectedStage.stageSysName;
 
         (await this._projectService.updateProjectAsync(model))
         .subscribe(_ => {

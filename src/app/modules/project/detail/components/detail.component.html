@@ -61,18 +61,18 @@
             </div>
           </div>
         </div>
-      </p-panel>
-    </div>
 
-    <div class="d-flex worksheet-line mt-3">
-      <div class="control-input-text-worksheet">
-        <button type="button" class="btn btn-primary button-action-pur-control-worksheet"
-          (click)="onUpdateProjectAsync()"
-          *ngIf="isEdit">
-          Сохранить
-        </button>
-      </div>
-    </div>
+        <div class="d-flex worksheet-line mt-3">
+          <div class="control-input-text-worksheet">
+            <button type="button" class="btn btn-primary button-action-pur-control-worksheet"
+              (click)="onUpdateProjectAsync()"
+              *ngIf="isEditMode">
+              Сохранить
+            </button>
+          </div>
+        </div>
+      </p-panel>
+    </div>    
 
     <div class="worksheet-panel space-top-50 space-bottom-50 d-flex" *ngIf="!isEditMode">
       <p-panel header="Действия" [toggleable]="true" [collapsed]="true">
