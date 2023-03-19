@@ -8,6 +8,7 @@ export class LandingService {
     public fonData$ = new BehaviorSubject<any>(null);
     public platformOffers$ = new BehaviorSubject<any>([]);
     public timelines$ = new BehaviorSubject<any>([]);
+    public knowledgeLanding$ = new BehaviorSubject<any>([]);
 
     constructor(private readonly http: HttpClient) {
 
@@ -40,6 +41,16 @@ export class LandingService {
       public async getTimelinesAsync() {
         return await this.http.get(API_URL.apiUrl + "/landing/timelines").pipe(
             tap(data => this.timelines$.next(data))
+        );
+    };
+
+    /**
+     * Функция получает список частых вопросов.
+     * @returns - Список частых вопросов.
+     */
+     public async getKnowledgeLandingAsync() {
+        return await this.http.get(API_URL.apiUrl + "/knowledge/landing").pipe(
+            tap(data => this.knowledgeLanding$.next(data))
         );
     };
 }
