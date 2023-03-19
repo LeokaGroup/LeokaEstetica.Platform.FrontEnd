@@ -32,12 +32,14 @@ import { MenuModule } from 'primeng/menu';
 import { AdministrationModule } from './modules/administration/administration.module';
 import { AdministrationService } from './modules/administration/services/administration.service';
 import { NotificationsService } from './modules/backoffice/notification/services/notifications.service';
+import { FooterComponent } from './modules/footer/components/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    LeftMenuComponent
+    LeftMenuComponent,
+    FooterComponent
   ],
 
   imports: [
