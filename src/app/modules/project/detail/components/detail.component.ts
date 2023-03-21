@@ -140,6 +140,7 @@ export class DetailProjectComponent {
         this._signalrService.listenSuccessDeleteProjectVacancy();
         this._signalrService.listenErrorDeleteProjectVacancy();
         this._signalrService.listenWarningProjectInviteTeam();
+        this._signalrService.listenWarningEmptyUserProfile();
     };
 
     private checkUrlParams() {

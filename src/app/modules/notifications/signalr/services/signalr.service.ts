@@ -190,4 +190,13 @@ export class SignalrService {
       this.$allFeed.next(data);
     });
   };
+
+   /**
+   * Функция слушает уведомления предупреждения не заполненной анкеты пользователя.
+   */
+    public listenWarningEmptyUserProfile() {
+        (<HubConnection>this.hubConnection).on("SendNotificationWarningEmptyUserProfile", (data: any) => {
+          this.$allFeed.next(data);
+        });
+      };
 }

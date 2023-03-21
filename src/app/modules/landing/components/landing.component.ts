@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
+import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
+import { SignalrService } from "../../notifications/signalr/services/signalr.service";
 import { LandingService } from "../services/landing.service";
 
 @Component({
@@ -22,8 +24,11 @@ export class LandingComponent implements OnInit {
     aCreateVacancy: any[] = [];
     aSearchVacancy: any[] = [];
     aSearchTeam: any[] = [];    
+    allFeedSubscription: any;
 
-    constructor(private readonly _landingService: LandingService) {
+    constructor(private readonly _landingService: LandingService,
+        private readonly _signalrService: SignalrService,
+        private readonly _messageService: MessageService) {
     }
 
     public async ngOnInit() {
@@ -33,6 +38,20 @@ export class LandingComponent implements OnInit {
             await this.getTimelinesAsync(),
             await this.getKnowledgeLandingAsync()
         ]).subscribe();        
+
+        // Подключаемся.
+        this._signalrService.startConnection().then(async () => {
+            console.log("Подключились");
+
+            this.listenAllHubsNotifications();
+
+            // Подписываемся на получение всех сообщений.
+            this.allFeedSubscription = this._signalrService.AllFeedObservable
+                .subscribe((response: any) => {
+                    console.log("Подписались на сообщения", response);
+                    this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
+                });
+        });
     };
 
     /**
@@ -87,5 +106,12 @@ export class LandingComponent implements OnInit {
         .subscribe(_ => {
             console.log("Список частых вопросов: ", this.knowledgeLanding$.value);       
         });
+    };
+
+    /**
+     * Функция слушает все хабы.
+     */
+     private listenAllHubsNotifications() {
+        this._signalrService.listenWarningEmptyUserProfile();
     };
 }

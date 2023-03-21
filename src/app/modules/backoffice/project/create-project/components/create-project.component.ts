@@ -60,6 +60,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
     private listenAllHubsNotifications() {
         this._signalrService.listenSuccessCreatedUserProjectInfo();
         this._signalrService.listenWarningDublicateUserProjectInfo();
+        this._signalrService.listenWarningEmptyUserProfile();
     };
 
     /**
