@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { API_URL } from "src/app/core/core-urls/api-urls";
 import { CommitConnectionInput } from "../models/input/connection-input";
@@ -20,7 +20,10 @@ export class RedisService {
         let commitConnectionInput = new CommitConnectionInput();
         commitConnectionInput.ConnectionId = connectionId;
 
-        return await this._http.post(API_URL.apiUrl + "/notifications/commit-connectionid", commitConnectionInput).pipe(
+        let headers = new HttpHeaders();
+        headers = headers.append('c_dt', connectionId + ":" + localStorage["u_e"]);
+
+        return await this._http.post(API_URL.apiUrl + "/notifications/commit-connectionid", commitConnectionInput, { headers }).pipe(
             tap(data => this.profileSignalrConnection$.next(data)
             )
         );
