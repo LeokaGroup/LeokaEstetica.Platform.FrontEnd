@@ -27,7 +27,8 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
     projectId: number = 0;
     projectName: string = "";
 
-    constructor(private readonly _backofficeService: BackOfficeService,
+
+  constructor(private readonly _backofficeService: BackOfficeService,
         private readonly _signalrService: SignalrService,
         private readonly _messageService: MessageService,
         private readonly _router: Router,
@@ -45,7 +46,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
         this._signalrService.startConnection().then(() => {
             console.log("Подключились");
 
-            this.listenAllHubsNotifications();            
+            this.listenAllHubsNotifications();
 
             // Подписываемся на получение всех сообщений.
             this.allFeedSubscription = this._signalrService.AllFeedObservable
@@ -55,6 +56,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
                 });
         });
     };
+
 
     /**
      * Функция слушает все хабы.
@@ -78,7 +80,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
      * Функция получает список проектов пользователя.
      * @returns Список проектов.
      */
-    private async getUserProjectsAsync() {        
+    private async getUserProjectsAsync() {
         (await this._backofficeService.getUserProjectsAsync())
         .subscribe(_ => {
             console.log("Проекты пользователя:", this.userProjects$.value);
@@ -128,10 +130,10 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
      */
      public async onDeleteProjectAsync() {
         (await this._projectService.deleteProjectsAsync(this.projectId))
-        .subscribe(async (response: any) => {   
-            console.log("Удалили проект: ", response);    
+        .subscribe(async (response: any) => {
+            console.log("Удалили проект: ", response);
             this.isDeleteProject = false;
-            await this.getUserProjectsAsync();        
+            await this.getUserProjectsAsync();
         });
     };
 

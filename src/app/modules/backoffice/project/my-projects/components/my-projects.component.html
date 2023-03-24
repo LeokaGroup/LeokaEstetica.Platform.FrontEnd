@@ -2,19 +2,18 @@
   <div class="profile-left-menu col-lg-3"></div>
 
 
-  <div *ngIf="userProjects$.value.total; else elseBlock">
     <p-table [value]="userProjects$.value.userProjects"
             [(selection)]="selectedProjects"
             dataKey="projectId"
-            [paginator]="true"
+            [paginator]="userProjects$.value.total>=1"
             [rows]="10"
             styleClass="p-datatable-gridlines"
             responsiveLayout="scroll"
             (click)="onSelectProject()">
+
       <ng-template pTemplate="caption">
           <h3>Ваши проекты</h3>
       </ng-template>
-
       <ng-template pTemplate="header">
           <tr>
             <!-- <th style="width: 4rem">
@@ -29,7 +28,6 @@
               <th>Удаление</th>
           </tr>
       </ng-template>
-
       <ng-template pTemplate="body" let-project>
           <tr>
             <td>
@@ -59,15 +57,18 @@
             </button></td>
           </tr>
       </ng-template>
-
       <ng-template pTemplate="summary">
           Всего: {{userProjects$.value.total}}
       </ng-template>
+
+      <ng-template pTemplate="emptymessage" let-project>
+        <h5 class="emptymessage">Вы не создали еще ни одного проекта</h5>
+      </ng-template>
+
+
+
   </p-table>
   </div>
-</div>
-<ng-template #elseBlock><h2>Ваш лист пуст, так как у вас еще нет созданых проектов</h2></ng-template>
-
 
 <!-- Диалог удаления проекта. -->
 <p-dialog header="Удаление проекта"
