@@ -16,6 +16,8 @@ import { VacancyInput } from "../models/input/vacancy-input";
  * Класс деталей вакансии (используется для изменения и просмотра вакансии).
  */
 export class DetailVacancyComponent implements OnInit {
+
+    isHideController: boolean = false;
     constructor(private readonly _activatedRoute: ActivatedRoute,
         private readonly _signalrService: SignalrService,
         private readonly _messageService: MessageService,
@@ -30,7 +32,7 @@ export class DetailVacancyComponent implements OnInit {
     projectDetails: string = "";
     allFeedSubscription: any;
     isEditMode: boolean = false;
-    isEdit: any;    
+    isEdit: any;
     selectedVacancy: any;
     vacancyName: string = "";
     vacancyText: string = "";
@@ -45,14 +47,14 @@ export class DetailVacancyComponent implements OnInit {
 
     public async ngOnInit() {
         forkJoin([
-        this.checkUrlParams()      
+        this.checkUrlParams()
         ]).subscribe();
 
          // Подключаемся.
          this._signalrService.startConnection().then(() => {
             console.log("Подключились");
 
-            this.listenAllHubsNotifications();            
+            this.listenAllHubsNotifications();
 
             // Подписываемся на получение всех сообщений.
             this.allFeedSubscription = this._signalrService.AllFeedObservable
@@ -66,7 +68,7 @@ export class DetailVacancyComponent implements OnInit {
      /**
      * Функция слушает все хабы.
      */
-      private listenAllHubsNotifications() {        
+      private listenAllHubsNotifications() {
         this._signalrService.listenSuccessCreatedUserVacancyInfo();
     };
 
@@ -76,13 +78,13 @@ export class DetailVacancyComponent implements OnInit {
             let mode = params["mode"];
 
             if (mode == "view") {
-                this.getVacancyByIdAsync(params["vacancyId"]);  
+                this.getVacancyByIdAsync(params["vacancyId"]);
                 this.isEditMode = false;
             }
 
             if (mode == "edit") {
-                this.getVacancyByIdAsync(params["vacancyId"]);             
-                this.isEditMode = true;   
+                this.getVacancyByIdAsync(params["vacancyId"]);
+                this.isEditMode = true;
             }
 
             this.vacancyId = params["vacancyId"];
