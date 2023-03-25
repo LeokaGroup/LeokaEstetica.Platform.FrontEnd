@@ -27,6 +27,7 @@ import { SubscriptionsComponent } from './subscriptions/components/subscriptions
 import { CardModule } from 'primeng/card';
 import { DialogModule } from 'primeng/dialog';
 import { MyVacancyComponent} from "./my-vacancy/my-vacancy.component";
+import { RedirectService } from 'src/app/common/services/redirect.service';
 
 
 
@@ -67,7 +68,8 @@ import { MyVacancyComponent} from "./my-vacancy/my-vacancy.component";
         LoadingScriptService,
         SignalrService,
         RedisService,
-        MessageService
+        MessageService,
+        RedirectService
     ]
 })
 

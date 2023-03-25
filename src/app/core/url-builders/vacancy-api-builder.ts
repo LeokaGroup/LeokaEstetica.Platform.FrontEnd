@@ -32,6 +32,6 @@ export abstract class VacancyApiBuilder {
             apiUrl.push(`&employmentsValues=${filterVacancyInput.EmploymentsValues}`);
         }
 
-        return apiUrl.join("");;
+        return apiUrl.join("");
     };
 }

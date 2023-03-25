@@ -60,6 +60,7 @@ export class MyVacancyComponent implements OnInit {
    */
   private listenAllHubsNotifications() {
     this._signalrService.listenSuccessDeleteVacancy();
+    this._signalrService.listenSendErrorDeleteVacancy();
   };
 
 

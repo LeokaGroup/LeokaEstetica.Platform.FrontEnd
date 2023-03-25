@@ -45,7 +45,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
         this._signalrService.startConnection().then(() => {
             console.log("Подключились");
 
-            this.listenAllHubsNotifications();            
+            this.listenAllHubsNotifications();
 
             // Подписываемся на получение всех сообщений.
             this.allFeedSubscription = this._signalrService.AllFeedObservable
@@ -59,8 +59,8 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
     /**
      * Функция слушает все хабы.
      */
-    private listenAllHubsNotifications() {
-
+    private listenAllHubsNotifications() {        
+        this._signalrService.listenSuccessDeleteProject();
     };
 
     /**

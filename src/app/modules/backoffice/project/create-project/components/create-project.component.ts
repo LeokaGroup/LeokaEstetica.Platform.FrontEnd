@@ -6,6 +6,7 @@ import { BackOfficeService } from "../../../services/backoffice.service";
 import { CreateProjectInput } from "../models/input/create-project-input";
 import { Router } from "@angular/router";
 import { ProjectService } from "src/app/modules/project/services/project.service";
+import { RedirectService } from "src/app/common/services/redirect.service";
 
 @Component({
     selector: "create-project",
@@ -30,7 +31,8 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
         private readonly _signalrService: SignalrService,
         private readonly _messageService: MessageService,
         private readonly _router: Router,
-        private readonly _projectService: ProjectService) {
+        private readonly _projectService: ProjectService,
+        private readonly _redirectService: RedirectService) {
     }
 
     public async ngOnInit() {
@@ -96,7 +98,10 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
 
                 else {
                     setTimeout(() => {
-                        this._router.navigate(["/profile/projects/my"]);
+                        this._router.navigate(["/profile/projects/my"])
+                            .then(() => {
+                                this._redirectService.redirect("profile/projects/my");      
+                            });
                     }, 4000);
                 }                           
             });

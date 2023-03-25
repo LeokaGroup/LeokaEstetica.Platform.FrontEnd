@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { RedirectService } from "src/app/common/services/redirect.service";
 import { BackOfficeService } from "../../services/backoffice.service";
 
 @Component({
@@ -48,7 +49,8 @@ export class LeftMenuComponent implements OnInit {
     ];
 
     constructor(private readonly _backOfficeService: BackOfficeService,
-        private readonly _router: Router) {
+        private readonly _router: Router,
+        private readonly _redirectService: RedirectService) {
     }
 
     public async ngOnInit() {
@@ -123,7 +125,9 @@ export class LeftMenuComponent implements OnInit {
 
             // Роут на страницу создания проекта.
             if (this.aCreateProjectsSysName.includes(this.sysName)) {
-                this._router.navigate(["/profile/projects/create"]);
+                this._router.navigate(["/profile/projects/create"]).then(() => {  
+                    this._redirectService.redirect("profile/projects/create");                
+                });
             }
 
             // Роут на страницу создания вакансии.

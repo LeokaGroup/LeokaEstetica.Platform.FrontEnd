@@ -146,8 +146,13 @@ export class SignalrService {
         });
     };
 
-
-
+/** 
+   * Функция слушает уведомления успешное Удаления  проекта из хаба.*/
+ public listenSuccessDeleteProject () {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessDeleteProject", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 
   /** 
    * Функция слушает уведомления успешное Удаления  вакансии проекта из хаба.*/
@@ -166,12 +171,20 @@ export class SignalrService {
   };
   
   /**
-   * Функция слушает уведомления успешное Удаления вакансии из раздела Мои Ваканси(левое меню) с хаба.*/
+   * Функция слушает уведомления успешное Удаления вакансии из раздела Мои Ваканси с хаба.*/
   public listenSuccessDeleteVacancy () {
     (<HubConnection>this.hubConnection).on("SendNotificationSuccessDeleteVacancy", (data: any) => {
       this.$allFeed.next(data);
     });
   };
+
+   /**
+   * Функция слушает уведомления ошибки удаления вакансии из раздела Мои Ваканси с хаба.*/
+    public listenSendErrorDeleteVacancy () {
+        (<HubConnection>this.hubConnection).on("SendNotificationErrorDeleteVacancy", (data: any) => {
+          this.$allFeed.next(data);
+        });
+      };
 
   /**
    * Функция слушает уведомления предупреждения о инвайте в проект.
