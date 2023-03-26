@@ -20,16 +20,10 @@
 
       <ng-template pTemplate="header">
           <tr>
-            <!-- <th style="width: 4rem">
-              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-            </th> -->
-            <th>
-              
-            </th>
-              <th *ngFor="let item of projectColumns$.value">{{item.columnName}}</th>    
-              <th>Просмотр</th>        
-              <th>Редактирование</th>    
-              <th>Удаление</th>    
+            <th *ngFor="let item of projectColumns$.value">{{item.columnName}}</th>
+            <th>Просмотр</th>
+            <th>Редактирование</th>
+            <th>Удаление</th>
           </tr>
       </ng-template>
 
@@ -66,6 +60,16 @@
       <ng-template pTemplate="summary">
           Всего: {{userProjects$.value.total}}
       </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="7">
+              <div class="empty-projects">
+                Вы не создали еще ни одного проекта.
+              </div>
+            </td>
+        </tr>
+    </ng-template>
   </p-table>
   </div>
 </div>

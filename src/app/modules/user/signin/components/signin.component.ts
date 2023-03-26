@@ -97,6 +97,7 @@ export class SignInComponent implements OnInit {
      */
     private checkVisibleProviderAuth() {
         let currentRoute = this._router.url;
+        console.log("checkVisibleProviderAuth");
 
         // Если есть токен, то не показывать.
         if (localStorage["t_n"] && currentRoute !== "/user/signin") {
@@ -108,5 +109,8 @@ export class SignInComponent implements OnInit {
             this.isAuthGoogle = true;
             this.isAuthVk = true;
         }
+
+        console.log("isAuthGoogle", this.isAuthGoogle);
+        console.log("isAuthVk", this.isAuthVk);
     };
 }
