@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NavigationStart, Router, Event as NavigationEvent, ActivatedRoute } from "@angular/router";
 import { NetworkService } from './core/interceptors/network.service';
-import * as $ from 'jquery';
 
 @Component({
   selector: 'app-root',
@@ -44,15 +43,7 @@ export class AppComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef) { }
 
   public ngOnInit() {
-    this.checkCurrentRouteUrl();
-
-    if (localStorage["p_g"]) {
-      $("#credentials-picker-container").hide();
-    }    
-
-    else {
-      $("#credentials-picker-container").show();
-    }
+    this.checkCurrentRouteUrl();    
   };
 
   public rerender(): void {

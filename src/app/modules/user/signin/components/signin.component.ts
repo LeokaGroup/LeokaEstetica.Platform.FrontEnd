@@ -51,8 +51,6 @@ export class SignInComponent implements OnInit {
                     this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
                 });
         });       
-
-        this.checkVisibleProviderAuth();
     };
 
     /**
@@ -90,23 +88,5 @@ export class SignInComponent implements OnInit {
                 });                
             }
         });
-    };
-
-    /**
-     * Функция настраивает видимость авторизации через провайдеров Google, VK.
-     */
-    private checkVisibleProviderAuth() {
-        let currentRoute = this._router.url;
-
-        // Если есть токен, то не показывать.
-        if (localStorage["t_n"] && currentRoute !== "/user/signin") {
-            localStorage["p_g"] = false;
-            localStorage["p_vk"] = false;
-        }
-
-        else if (!localStorage["t_n"] && currentRoute === "/user/signin") {           
-            localStorage["p_g"] = true;
-            localStorage["p_vk"] = true;
-        }        
     };
 }
