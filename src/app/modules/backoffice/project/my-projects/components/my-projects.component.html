@@ -20,10 +20,11 @@
 
       <ng-template pTemplate="header">
           <tr>
-            <th *ngFor="let item of projectColumns$.value">{{item.columnName}}</th>
-            <th>Просмотр</th>
-            <th>Редактирование</th>
-            <th>Удаление</th>
+            <th></th>
+              <th *ngFor="let item of projectColumns$.value">{{item.columnName}}</th>    
+              <th>Просмотр</th>        
+              <th>Редактирование</th>    
+              <th>Удаление</th>    
           </tr>
       </ng-template>
 
