@@ -38,7 +38,7 @@
       });
     }
     window.onload = function () {
-      if (!localStorage["p_g"]) {
+      if (localStorage["p_g"]) {
         google.accounts.id.initialize({
           client_id: "418999951875-s1smtv8oitn579i8pd4na059pnbctf19.apps.googleusercontent.com",
           callback: handleCredentialResponse
@@ -70,7 +70,7 @@
 
   <!-- VK Widget -->
   <script type="text/javascript">
-    if (!localStorage["p_vk"]) {
+    if (localStorage["p_vk"]) {
       VK.Widgets.Auth("vk_auth", {
         "onAuth": function (response) {
           let userSignInVkInput = {

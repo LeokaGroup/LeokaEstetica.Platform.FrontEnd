@@ -108,8 +108,5 @@ export class SignInComponent implements OnInit {
             localStorage["p_g"] = true;
             localStorage["p_vk"] = true;
         }        
-
-        console.log("isAuthGoogle", localStorage["p_g"]);
-        console.log("isAuthVk", localStorage["p_g"]);
     };
 }
