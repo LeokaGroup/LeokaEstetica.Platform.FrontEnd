@@ -96,13 +96,15 @@ export class SignInComponent implements OnInit {
      * Функция настраивает видимость авторизации через провайдеров Google, VK.
      */
     private checkVisibleProviderAuth() {
+        let currentRoute = this._router.url;
+
         // Если есть токен, то не показывать.
-        if (localStorage["t_n"]) {
+        if (localStorage["t_n"] && currentRoute !== "/user/signin") {
             this.isAuthGoogle = false;
             this.isAuthVk = false;
         }
 
-        else {
+        else if (!localStorage["t_n"] && currentRoute === "/user/signin") {
             this.isAuthGoogle = true;
             this.isAuthVk = true;
         }
