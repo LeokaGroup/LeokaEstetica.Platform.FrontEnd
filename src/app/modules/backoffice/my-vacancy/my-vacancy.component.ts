@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { forkJoin, Subscription } from "rxjs";
+import { forkJoin } from "rxjs";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { MessageService } from "primeng/api";
 import { Router } from "@angular/router";
@@ -119,8 +119,4 @@ export class MyVacancyComponent implements OnInit {
     this.vacancyName = vacancyName;
     this.isDeleteVacancy = true;
   };
-
-  public ngOnDestroy(): void {
-    (<Subscription>this.allFeedSubscription)?.unsubscribe();
-};
 }

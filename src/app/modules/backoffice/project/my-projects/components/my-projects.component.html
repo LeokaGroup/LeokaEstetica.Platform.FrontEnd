@@ -9,7 +9,7 @@
     <p-table [value]="userProjects$.value.userProjects" 
             [(selection)]="selectedProjects" 
             dataKey="projectId" 
-            [paginator]="true" 
+            [paginator]="userProjects$.value.total > 0" 
             [rows]="10"             
             styleClass="p-datatable-gridlines" 
             responsiveLayout="scroll"

@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { forkJoin, Subscription } from "rxjs";
+import { Component, OnInit } from "@angular/core";
+import { forkJoin } from "rxjs";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { MessageService } from "primeng/api";
 import { BackOfficeService } from "../../../services/backoffice.service";
@@ -17,7 +17,7 @@ import { RedirectService } from "src/app/common/services/redirect.service";
 /**
  * Класс проектов пользователя.
  */
-export class CreateProjectComponent implements OnInit, OnDestroy {
+export class CreateProjectComponent implements OnInit {
     public readonly projectColumns$ = this._backofficeService.projectColumns$;
     public readonly projectData$ = this._backofficeService.projectData$;
     public readonly projectStages$ = this._projectService.projectStages$;
@@ -105,10 +105,6 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
                     }, 4000);
                 }                           
             });
-    };
-
-    public ngOnDestroy(): void {        
-        (<Subscription>this.allFeedSubscription)?.unsubscribe();
     };
 
     /**

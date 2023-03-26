@@ -7,7 +7,7 @@
     <p-table [value]="listVacancy$.value.vacancies"
              [(selection)]="selectedVacancy"
              dataKey="vacancyId"
-             [paginator]="true"
+             [paginator]="listVacancy$.value.total > 0"
              [rows]="10"
              styleClass="p-datatable-gridlines"
              responsiveLayout="scroll">
