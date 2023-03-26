@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { forkJoin, Subscription } from "rxjs";
+import { Component, OnInit } from "@angular/core";
+import { forkJoin } from "rxjs";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { MessageService } from "primeng/api";
 import { BackOfficeService } from "../../../services/backoffice.service";
@@ -15,7 +15,7 @@ import { ProjectService } from "src/app/modules/project/services/project.service
 /**
  * Класс проектов пользователя.
  */
-export class MyProjectsComponent implements OnInit, OnDestroy {
+export class MyProjectsComponent implements OnInit {
     public readonly projectColumns$ = this._backofficeService.projectColumns$;
     public readonly userProjects$ = this._backofficeService.userProjects$;
 
@@ -59,7 +59,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
     /**
      * Функция слушает все хабы.
      */
-    private listenAllHubsNotifications() {        
+    private listenAllHubsNotifications() {
         this._signalrService.listenSuccessDeleteProject();
     };
 
@@ -78,7 +78,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
      * Функция получает список проектов пользователя.
      * @returns Список проектов.
      */
-    private async getUserProjectsAsync() {        
+    private async getUserProjectsAsync() {
         (await this._backofficeService.getUserProjectsAsync())
         .subscribe(_ => {
             console.log("Проекты пользователя:", this.userProjects$.value);
@@ -92,9 +92,10 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
         console.log(this.selectedProjects);
     };
 
-    public ngOnDestroy(): void {
-        (<Subscription>this.allFeedSubscription).unsubscribe();
-    };
+  /** из-за этого получаем бак с боковым меню!!!! */
+    // public ngOnDestroy(): void {
+    //     (<Subscription>this.allFeedSubscription).unsubscribe();
+    // };
 
     /**
      * Функция переходит на страницу редактирования проекта и подставляет в роут Id проекта.
@@ -128,10 +129,10 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
      */
      public async onDeleteProjectAsync() {
         (await this._projectService.deleteProjectsAsync(this.projectId))
-        .subscribe(async (response: any) => {   
-            console.log("Удалили проект: ", response);    
+        .subscribe(async (response: any) => {
+            console.log("Удалили проект: ", response);
             this.isDeleteProject = false;
-            await this.getUserProjectsAsync();        
+            await this.getUserProjectsAsync();
         });
     };
 
