@@ -32,6 +32,8 @@ export class SignInComponent implements OnInit {
         ])
     });
     allFeedSubscription: any;
+    isAuthGoogle: boolean = false;
+    isAuthVk: boolean = false;
 
     public readonly userData$ = this._userService.userData$;
 
@@ -49,6 +51,8 @@ export class SignInComponent implements OnInit {
                     this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
                 });
         });       
+
+        this.checkVisibleProviderAuth();
     };
 
     /**
@@ -86,5 +90,21 @@ export class SignInComponent implements OnInit {
                 });                
             }
         });
+    };
+
+    /**
+     * Функция настраивает видимость авторизации через провайдеров Google, VK.
+     */
+    private checkVisibleProviderAuth() {
+        // Если есть токен, то не показывать.
+        if (localStorage["t_n"]) {
+            this.isAuthGoogle = false;
+            this.isAuthVk = false;
+        }
+
+        else {
+            this.isAuthGoogle = true;
+            this.isAuthVk = true;
+        }
     };
 }
