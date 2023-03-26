@@ -93,7 +93,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
     };
 
     public ngOnDestroy(): void {
-        (<Subscription>this.allFeedSubscription).unsubscribe();
+        (<Subscription>this.allFeedSubscription)?.unsubscribe();
     };
 
     /**

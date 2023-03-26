@@ -107,8 +107,8 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
             });
     };
 
-    public ngOnDestroy(): void {
-        (<Subscription>this.allFeedSubscription).unsubscribe();
+    public ngOnDestroy(): void {        
+        (<Subscription>this.allFeedSubscription)?.unsubscribe();
     };
 
     /**
