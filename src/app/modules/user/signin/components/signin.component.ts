@@ -19,8 +19,7 @@ export class SignInComponent implements OnInit {
         private readonly _router: Router,
         private readonly _messageService: MessageService,
         private readonly _signalrService: SignalrService) { 
-            this.isAuthGoogle = localStorage["p_g"];
-            this.isAuthVk = localStorage["p_vk"];
+            
         }
 
     formSignUp: FormGroup = new FormGroup({
@@ -35,8 +34,6 @@ export class SignInComponent implements OnInit {
         ])
     });
     allFeedSubscription: any;
-    isAuthGoogle: boolean = false;
-    isAuthVk: boolean = false;
 
     public readonly userData$ = this._userService.userData$;
 
