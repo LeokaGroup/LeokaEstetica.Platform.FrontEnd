@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { RedirectService } from "src/app/common/services/redirect.service";
 import { UserService } from "../../services/user.service";
 
 @Component({
@@ -14,7 +15,8 @@ import { UserService } from "../../services/user.service";
  */
 export class SignUpComponent implements OnInit {
     constructor(private readonly _userService: UserService,
-        private readonly _router: Router) { }
+        private readonly _router: Router,
+        private readonly _redirectService: RedirectService) { }
 
     formSignUp: FormGroup = new FormGroup({
 
@@ -43,7 +45,9 @@ export class SignUpComponent implements OnInit {
         (await this._userService.signUpAsync(this.formSignUp.value.email, this.formSignUp.value.password))
         .subscribe(_ => {
             console.log("Новый пользователь: ", this.userData$.value);
-            this._router.navigate(["/user/signin"]);
+            this._router.navigate(["/user/signin"]).then(() => {  
+                this._redirectService.redirect("user/signin");                
+            });
         });
     };
 }
