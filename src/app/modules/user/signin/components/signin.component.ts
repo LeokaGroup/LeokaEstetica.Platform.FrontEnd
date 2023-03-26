@@ -18,7 +18,10 @@ export class SignInComponent implements OnInit {
     constructor(private readonly _userService: UserService,
         private readonly _router: Router,
         private readonly _messageService: MessageService,
-        private readonly _signalrService: SignalrService) { }
+        private readonly _signalrService: SignalrService) { 
+            this.isAuthGoogle = localStorage["p_g"];
+            this.isAuthVk = localStorage["p_vk"];
+        }
 
     formSignUp: FormGroup = new FormGroup({
         "email": new FormControl("", [
@@ -97,20 +100,19 @@ export class SignInComponent implements OnInit {
      */
     private checkVisibleProviderAuth() {
         let currentRoute = this._router.url;
-        console.log("checkVisibleProviderAuth");
 
         // Если есть токен, то не показывать.
         if (localStorage["t_n"] && currentRoute !== "/user/signin") {
-            this.isAuthGoogle = false;
-            this.isAuthVk = false;
+            localStorage["p_g"] = false;
+            localStorage["p_vk"] = false;
         }
 
-        else if (!localStorage["t_n"] && currentRoute === "/user/signin") {
-            this.isAuthGoogle = true;
-            this.isAuthVk = true;
-        }
+        else if (!localStorage["t_n"] && currentRoute === "/user/signin") {           
+            localStorage["p_g"] = true;
+            localStorage["p_vk"] = true;
+        }        
 
-        console.log("isAuthGoogle", this.isAuthGoogle);
-        console.log("isAuthVk", this.isAuthVk);
+        console.log("isAuthGoogle", localStorage["p_g"]);
+        console.log("isAuthVk", localStorage["p_g"]);
     };
 }
