@@ -21,7 +21,7 @@ export class RedisService {
         commitConnectionInput.ConnectionId = connectionId;
 
         let headers = new HttpHeaders();
-        headers = headers.append('c_dt', connectionId + ":" + localStorage["t_n"]);
+        headers = headers.append('c_dt', connectionId + ":" + localStorage["u_e"]);
 
         return await this._http.post(API_URL.apiUrl + "/notifications/commit-connectionid", commitConnectionInput, { headers }).pipe(
             tap(data => this.profileSignalrConnection$.next(data)
