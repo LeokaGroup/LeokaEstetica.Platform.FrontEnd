@@ -26,6 +26,6 @@ export abstract class ProjectApiBuilder {
 
         apiUrl.push(`&isAnyVacancies=${filterProjectInput.IsAnyVacancies}`);
 
-        return apiUrl.join("");;
+        return apiUrl.join("");
     };
 }

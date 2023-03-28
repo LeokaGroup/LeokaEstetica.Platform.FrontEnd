@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef) { }
 
   public ngOnInit() {
-    this.checkCurrentRouteUrl();
+    this.checkCurrentRouteUrl();    
   };
 
   public rerender(): void {

@@ -1,15 +1,17 @@
+<p-toast></p-toast>
+
 <div class="d-flex block-profile space-top-50">
   <div class="profile-left-menu col-lg-3">
 
   </div>
 
   <div>
-    <p-table [value]="userProjects$.value.userProjects"
-            [(selection)]="selectedProjects"
-            dataKey="projectId"
-            [paginator]="true"
-            [rows]="10"
-            styleClass="p-datatable-gridlines"
+    <p-table [value]="userProjects$.value.userProjects" 
+            [(selection)]="selectedProjects" 
+            dataKey="projectId" 
+            [paginator]="userProjects$.value.total > 0" 
+            [rows]="10"             
+            styleClass="p-datatable-gridlines" 
             responsiveLayout="scroll"
             (click)="onSelectProject()">
       <ng-template pTemplate="caption">
@@ -18,16 +20,11 @@
 
       <ng-template pTemplate="header">
           <tr>
-            <!-- <th style="width: 4rem">
-              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-            </th> -->
-            <th>
-
-            </th>
-              <th *ngFor="let item of projectColumns$.value">{{item.columnName}}</th>
-              <th>Просмотр</th>
-              <th>Редактирование</th>
-              <th>Удаление</th>
+            <th></th>
+              <th *ngFor="let item of projectColumns$.value">{{item.columnName}}</th>    
+              <th>Просмотр</th>        
+              <th>Редактирование</th>    
+              <th>Удаление</th>    
           </tr>
       </ng-template>
 
@@ -64,6 +61,16 @@
       <ng-template pTemplate="summary">
           Всего: {{userProjects$.value.total}}
       </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="7">
+              <div class="empty-projects">
+                Вы не создали еще ни одного проекта.
+              </div>
+            </td>
+        </tr>
+    </ng-template>
   </p-table>
   </div>
 </div>

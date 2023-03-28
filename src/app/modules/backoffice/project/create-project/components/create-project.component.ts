@@ -1,11 +1,12 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { forkJoin, Subscription } from "rxjs";
+import { Component, OnInit } from "@angular/core";
+import { forkJoin } from "rxjs";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { MessageService } from "primeng/api";
 import { BackOfficeService } from "../../../services/backoffice.service";
 import { CreateProjectInput } from "../models/input/create-project-input";
 import { Router } from "@angular/router";
 import { ProjectService } from "src/app/modules/project/services/project.service";
+import { RedirectService } from "src/app/common/services/redirect.service";
 
 @Component({
     selector: "create-project",
@@ -16,7 +17,7 @@ import { ProjectService } from "src/app/modules/project/services/project.service
 /**
  * Класс проектов пользователя.
  */
-export class CreateProjectComponent implements OnInit, OnDestroy {
+export class CreateProjectComponent implements OnInit {
     public readonly projectColumns$ = this._backofficeService.projectColumns$;
     public readonly projectData$ = this._backofficeService.projectData$;
     public readonly projectStages$ = this._projectService.projectStages$;
@@ -30,7 +31,8 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
         private readonly _signalrService: SignalrService,
         private readonly _messageService: MessageService,
         private readonly _router: Router,
-        private readonly _projectService: ProjectService) {
+        private readonly _projectService: ProjectService,
+        private readonly _redirectService: RedirectService) {
     }
 
     public async ngOnInit() {
@@ -96,14 +98,13 @@ export class CreateProjectComponent implements OnInit, OnDestroy {
 
                 else {
                     setTimeout(() => {
-                        this._router.navigate(["/profile/projects/my"]);
+                        this._router.navigate(["/profile/projects/my"])
+                            .then(() => {
+                                this._redirectService.redirect("profile/projects/my");      
+                            });
                     }, 4000);
                 }                           
             });
-    };
-
-    public ngOnDestroy(): void {
-        (<Subscription>this.allFeedSubscription).unsubscribe();
     };
 
     /**

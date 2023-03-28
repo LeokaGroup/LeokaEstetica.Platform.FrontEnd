@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { forkJoin, Subscription } from "rxjs";
+import { Component, OnInit } from "@angular/core";
+import { forkJoin } from "rxjs";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { MessageService } from "primeng/api";
 import { BackOfficeService } from "../../../services/backoffice.service";
@@ -15,7 +15,7 @@ import { ProjectService } from "src/app/modules/project/services/project.service
 /**
  * Класс проектов пользователя.
  */
-export class MyProjectsComponent implements OnInit, OnDestroy {
+export class MyProjectsComponent implements OnInit {
     public readonly projectColumns$ = this._backofficeService.projectColumns$;
     public readonly userProjects$ = this._backofficeService.userProjects$;
 
@@ -45,7 +45,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
         this._signalrService.startConnection().then(() => {
             console.log("Подключились");
 
-            this.listenAllHubsNotifications();            
+            this.listenAllHubsNotifications();
 
             // Подписываемся на получение всех сообщений.
             this.allFeedSubscription = this._signalrService.AllFeedObservable
@@ -59,8 +59,8 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
     /**
      * Функция слушает все хабы.
      */
-    private listenAllHubsNotifications() {
-
+    private listenAllHubsNotifications() {        
+        this._signalrService.listenSuccessDeleteProject();
     };
 
     /**
@@ -90,10 +90,6 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
      */
     public onSelectProject() {
         console.log(this.selectedProjects);
-    };
-
-    public ngOnDestroy(): void {
-        (<Subscription>this.allFeedSubscription).unsubscribe();
     };
 
     /**

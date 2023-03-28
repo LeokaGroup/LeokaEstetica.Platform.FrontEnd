@@ -3,13 +3,15 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable, throwError } from "rxjs";
 import { catchError, finalize } from "rxjs/operators";
+import { RedirectService } from "src/app/common/services/redirect.service";
 import { NetworkService } from "./network.service";
 
 // Класс перехватчика api-запросов.
 @Injectable()
 export class NetworkInterceptor implements HttpInterceptor {
     constructor(private readonly _loader: NetworkService,
-        private readonly _router: Router) {
+        private readonly _router: Router,
+        private readonly _redirectService :RedirectService) {
 
     }
 
@@ -36,7 +38,9 @@ export class NetworkInterceptor implements HttpInterceptor {
             catchError((response: HttpErrorResponse) => {
                 if (response.status == 403) {
                     localStorage.clear();
-                    this._router.navigate(["/user/signin"]);
+                    this._router.navigate(["/user/signin"]).then(() => {  
+                        this._redirectService.redirect("user/signin");                
+                    });
                 }
 
                 return throwError(response.message);

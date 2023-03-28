@@ -19,9 +19,8 @@ export class RedisService {
     public async addConnectionIdCacheAsync(connectionId: string) {
         let commitConnectionInput = new CommitConnectionInput();
         commitConnectionInput.ConnectionId = connectionId;
-
-        let headers = new HttpHeaders();
-        headers = headers.append('c_dt', connectionId + ":" + localStorage["u_e"]);
+        
+        let headers = new HttpHeaders().append('Authorization', localStorage["t_n"]);
 
         return await this._http.post(API_URL.apiUrl + "/notifications/commit-connectionid", commitConnectionInput, { headers }).pipe(
             tap(data => this.profileSignalrConnection$.next(data)

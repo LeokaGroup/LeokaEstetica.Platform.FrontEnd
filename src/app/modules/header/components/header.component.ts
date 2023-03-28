@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { RedirectService } from "src/app/common/services/redirect.service";
 import { HeaderService } from "../services/header.service";
 
 @Component({
@@ -26,14 +27,17 @@ export class HeaderComponent implements OnInit {
             label: 'Выйти',
             command: () => {
                 localStorage.clear();
-                this._router.navigate(["/user/signin"]);
+                this._router.navigate(["/user/signin"]).then(() => {  
+                    this._redirectService.redirect("user/signin");                
+                });
             }
         }
     ];
 
     constructor(private readonly _headerService: HeaderService,
         private readonly _router: Router,
-        private readonly _activatedRoute: ActivatedRoute) {
+        private readonly _activatedRoute: ActivatedRoute,
+        private readonly _redirectService: RedirectService) {
     }
 
     public async ngOnInit() {
@@ -66,7 +70,9 @@ export class HeaderComponent implements OnInit {
      * Функция редиректит на форму авторизации.
      */
     public onRouteSignIn() {
-        this._router.navigate(["/user/signin"]);
+        this._router.navigate(["/user/signin"]).then(() => {  
+            this._redirectService.redirect("user/signin");                
+        });
     };
 
     public onSelectHeaderItem(e: any) {

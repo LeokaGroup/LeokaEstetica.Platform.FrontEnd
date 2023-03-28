@@ -4,7 +4,7 @@ import { SignalrService } from "src/app/modules/notifications/signalr/services/s
 import { MessageService } from "primeng/api";
 import { Router } from "@angular/router";
 import { VacancyService } from "../../vacancy/services/vacancy.service";
-import {BackOfficeService} from "../services/backoffice.service";
+import { BackOfficeService } from "../services/backoffice.service";
 
 
 @Component({
@@ -26,6 +26,7 @@ export class MyVacancyComponent implements OnInit {
   vacancyId: number = 0;
   vacancyName: string = "";
   isDeleteVacancy: boolean = false;
+  
   constructor(
     private readonly _signalrService: SignalrService,
     private readonly _messageService: MessageService,
@@ -60,6 +61,7 @@ export class MyVacancyComponent implements OnInit {
    */
   private listenAllHubsNotifications() {
     this._signalrService.listenSuccessDeleteVacancy();
+    this._signalrService.listenSendErrorDeleteVacancy();
   };
 
 
@@ -117,7 +119,4 @@ export class MyVacancyComponent implements OnInit {
     this.vacancyName = vacancyName;
     this.isDeleteVacancy = true;
   };
-
-
-
 }
