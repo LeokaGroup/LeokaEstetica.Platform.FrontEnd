@@ -5,6 +5,7 @@ import { MessageService } from "primeng/api";
 import { Router } from "@angular/router";
 import { VacancyService } from "../../vacancy/services/vacancy.service";
 import { BackOfficeService } from "../services/backoffice.service";
+import { RedirectService } from "src/app/common/services/redirect.service";
 
 
 @Component({
@@ -32,7 +33,8 @@ export class MyVacancyComponent implements OnInit {
     private readonly _messageService: MessageService,
     private readonly _router: Router,
     private readonly _backofficeService: BackOfficeService,
-    private readonly _vacancyService: VacancyService) {
+    private readonly _vacancyService: VacancyService,
+    private readonly _redirectService: RedirectService) {
   }
 
   public async ngOnInit() {
@@ -111,9 +113,11 @@ export class MyVacancyComponent implements OnInit {
       .subscribe(async (response: any) => {
         console.log("Удалили вакансию: ", response);
         this.isDeleteVacancy = false;
+        
         await this.getUserVacanciesAsync();
       });
   };
+
   public onBeforeDeleteVacancy(vacancyId: number, vacancyName: string) {
     this.vacancyId = vacancyId;
     this.vacancyName = vacancyName;

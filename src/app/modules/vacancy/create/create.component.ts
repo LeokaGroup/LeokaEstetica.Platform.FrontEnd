@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { Subscription } from "rxjs";
+import { RedirectService } from "src/app/common/services/redirect.service";
 import { BackOfficeService } from "../../backoffice/services/backoffice.service";
 import { SignalrService } from "../../notifications/signalr/services/signalr.service";
 import { CreateProjectVacancyInput } from "../models/input/create-project-vacancy-input";
@@ -23,7 +24,8 @@ export class CreateVacancyComponent implements OnInit {
         private readonly _signalrService: SignalrService,
         private readonly _messageService: MessageService,
         private readonly _activatedRoute: ActivatedRoute,
-        private readonly _backofficeService: BackOfficeService) { }
+        private readonly _backofficeService: BackOfficeService,
+        private readonly _redirectService: RedirectService) { }
     public readonly vacancy$ = this._vacancyService.vacancy$;
     public readonly userProjects$ = this._backofficeService.userProjects$;
 
@@ -109,7 +111,9 @@ export class CreateVacancyComponent implements OnInit {
 
             else {
                 setTimeout(() => {
-                    this._router.navigate(["/vacancies"]);
+                    this._router.navigate(["/vacancies/my"]).then(() => {
+                        this._redirectService.redirect("vacancies/my");
+                      });
                 }, 4000);
             }
         });
