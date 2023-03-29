@@ -12,11 +12,12 @@
             <div class="control-input-text-worksheet">
               <div class="d-flex">
                 <div class="control-input-text-worksheet">
+
                   <div>
                       <label>Название вакансии</label>
                   </div>
 
-                  <div *ngIf="isEditMode; else elseBlock">
+                  <div *ngIf="isEditMode; else blockOne">
                       <input type="text"
                       class="p-inputtext-sm input-control-worksheet control-project"
                       placeholder="Название вакансии"
@@ -25,7 +26,7 @@
                       [(ngModel)]="vacancyName"
                       [disabled]="!isEditMode" />
                   </div>
-                  <ng-template #elseBlock>{{vacancyName}}</ng-template>
+                  <ng-template #blockOne>{{vacancyName}}</ng-template>
                 </div>
               </div>
 
@@ -34,7 +35,7 @@
                   <div>
                     <label>Опыт</label>
                   </div>
-                  <div *ngIf="isEditMode; else elseBlock">
+                  <div *ngIf="isEditMode; else blockTwo">
                     <input type="text"
                             class="p-inputtext-sm input-control-worksheet control-vacancy"
                             placeholder="1–3 года"
@@ -43,14 +44,14 @@
                             [(ngModel)]="workExperience"
                             [disabled]="!isEditMode" />
                   </div>
-                  <ng-template #elseBlock>{{workExperience}}</ng-template>
+                  <ng-template #blockTwo>{{workExperience}}</ng-template>
                 </div>
 
                 <div class="control-input-text-worksheet mt-3">
                   <div>
                     <label>Занятость</label>
                   </div>
-                  <div *ngIf="isEditMode; else elseBlock">
+                  <div *ngIf="isEditMode; else blockTree">
                     <input type="text"
                             class="p-inputtext-sm input-control-worksheet control-vacancy"
                             placeholder="Полная занятость, удаленная работа"
@@ -59,14 +60,14 @@
                             [(ngModel)]="employment"
                             [disabled]="!isEditMode" />
                   </div>
-                  <ng-template #elseBlock>{{employment}}</ng-template>
+                  <ng-template #blockTree>{{employment}}</ng-template>
                 </div>
 
                 <div class="control-input-text-worksheet mt-3">
                   <div>
                     <label>Оплата</label>
                   </div>
-                  <div *ngIf="isEditMode; else elseBlock">
+                  <div *ngIf="isEditMode; else blockFour">
                     <input type="text"
                             class="p-inputtext-sm input-control-worksheet control-vacancy"
                             placeholder="20 000 – 40 000 руб."
@@ -75,7 +76,7 @@
                             [(ngModel)]="payment"
                             [disabled]="!isEditMode" />
                   </div>
-                  <ng-template #elseBlock>{{payment}}</ng-template>
+                  <ng-template #blockFour>{{payment}}</ng-template>
                 </div>
               </div>
 
@@ -87,12 +88,15 @@
                                   <div>
                                       <label>Описание вакансии</label>
                                   </div>
-                                  <div>
+                                <div *ngIf="isEditMode; else blockFive">
                                       <p-editor
                                       [(ngModel)]="vacancyText"
                                       [style]="{'height':'320px'}"
                                       [readonly]="!isEditMode"></p-editor>
                                   </div>
+                                <ng-template #blockFive>
+                                  {{vacancyText}}
+                                </ng-template>
                               </div>
                           </div>
                         </div>
