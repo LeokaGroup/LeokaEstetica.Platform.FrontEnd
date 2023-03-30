@@ -20,7 +20,7 @@ export class FareRuleService {
      * @returns - Прафила тарифов.
      */
     public async getFareRulesAsync() {
-        return await this.http.get(API_URL.apiUrl + "/rules").pipe(
+        return await this.http.get(API_URL.apiUrl + "/rules/get-rules").pipe(
             tap(data => this.fareRules$.next(data))
         );
     };

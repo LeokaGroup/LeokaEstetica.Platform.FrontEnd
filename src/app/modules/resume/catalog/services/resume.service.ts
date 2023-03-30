@@ -21,7 +21,7 @@ export class ResumeService {
     * @returns - Список базы резюме.
     */
     public async loadCatalogResumesAsync() {
-        return await this.http.get(API_URL.apiUrl + "/resumes").pipe(
+        return await this.http.get(API_URL.apiUrl + "/resumes/catalog").pipe(
             tap(data => this.catalogResumes$.next(data))
         );
     };

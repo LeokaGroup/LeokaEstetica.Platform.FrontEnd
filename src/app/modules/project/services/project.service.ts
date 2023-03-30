@@ -39,7 +39,7 @@ export class ProjectService {
     * @returns - Список проектов каталога.
     */
     public async loadCatalogProjectsAsync() {
-        return await this.http.get(API_URL.apiUrl + "/projects").pipe(
+        return await this.http.get(API_URL.apiUrl + "/projects/catalog").pipe(
             tap(data => this.catalog$.next(data))
         );
     };

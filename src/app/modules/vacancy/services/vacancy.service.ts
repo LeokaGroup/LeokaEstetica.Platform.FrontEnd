@@ -54,7 +54,7 @@ export class VacancyService {
     * @returns - Данные вакансии.
     */
     public async loadCatalogVacanciesAsync() {
-        return await this.http.get(API_URL.apiUrl + "/vacancies").pipe(
+        return await this.http.get(API_URL.apiUrl + "/vacancies/catalog").pipe(
             tap(data => this.catalog$.next(data))
         );
     };
