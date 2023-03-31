@@ -127,7 +127,7 @@ export class DetailVacancyComponent implements OnInit {
                 setTimeout(() => {
                     this._router.navigate(["/vacancies"])
                     .then(() => {
-                        this._redirectService.redirect("profile/projects/my");      
+                        this._redirectService.redirect("/vacancies/my");      
                     });
                 }, 4000);
             });
