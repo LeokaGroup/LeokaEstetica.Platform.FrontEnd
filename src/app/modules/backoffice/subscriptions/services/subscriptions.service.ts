@@ -19,7 +19,7 @@ export class SubscriptionsService {
      * @returns - Список подписок.
      */
     public async getSubscriptionsAsync() {
-        return await this.http.get(API_URL.apiUrl + "/subscriptions").pipe(
+        return await this.http.get(API_URL.apiUrl + "/subscriptions/all-subscriptions").pipe(
             tap(data => this.subscriptions$.next(data))
         );
     };
