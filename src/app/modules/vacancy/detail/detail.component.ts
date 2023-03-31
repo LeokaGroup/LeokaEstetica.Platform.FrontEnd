@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
+import { RedirectService } from "src/app/common/services/redirect.service";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { VacancyService } from "src/app/modules/vacancy/services/vacancy.service";
 import { VacancyInput } from "../models/input/vacancy-input";
@@ -20,7 +21,8 @@ export class DetailVacancyComponent implements OnInit {
         private readonly _signalrService: SignalrService,
         private readonly _messageService: MessageService,
         private readonly _vacancyService: VacancyService,
-        private readonly _router: Router) {
+        private readonly _router: Router,
+        private readonly _redirectService: RedirectService) {
     }
 
     public readonly selectedVacancy$ = this._vacancyService.selectedVacancy$;
@@ -123,7 +125,10 @@ export class DetailVacancyComponent implements OnInit {
                 this.isDeleteVacancy = false;
 
                 setTimeout(() => {
-                    this._router.navigate(["/vacancies"]);
+                    this._router.navigate(["/vacancies"])
+                    .then(() => {
+                        this._redirectService.redirect("profile/projects/my");      
+                    });
                 }, 4000);
             });
     };

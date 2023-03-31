@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
+import { RedirectService } from "src/app/common/services/redirect.service";
 import { DialogInput } from "src/app/modules/messages/chat/models/input/dialog-input";
 import { DialogMessageInput } from "src/app/modules/messages/chat/models/input/dialog-message-input";
 import { ChatMessagesService } from "src/app/modules/messages/chat/services/chat-messages.service";
@@ -33,7 +34,8 @@ export class DetailProjectComponent {
         private readonly _router: Router,
         private readonly _vacancyService: VacancyService,
         private readonly _messagesService: ChatMessagesService,
-        private readonly _searchProjectService: SearchProjectService) {
+        private readonly _searchProjectService: SearchProjectService,
+        private readonly _redirectService: RedirectService) {
     }
 
     public readonly catalog$ = this._projectService.catalog$;
@@ -545,7 +547,10 @@ export class DetailProjectComponent {
             this.isDeleteProject = false;
 
             setTimeout(() => {
-                this._router.navigate(["/projects"]);
+                this._router.navigate(["/projects"])
+                .then(() => {
+                    this._redirectService.redirect("profile/projects/my");      
+                });
             }, 4000);
         });
     };
