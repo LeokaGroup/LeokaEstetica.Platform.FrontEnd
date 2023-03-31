@@ -23,17 +23,12 @@
     </div>
 
     <div class="catalog-vacancies-item" *ngFor="let item of aProjectsCatalog">
-        <!-- <div class="d-flex">
-            <div>{{item.payment}}</div>
-            <div class="tag">{{item.workExperience}}</div>
-            <div class="tag">{{item.employment}}</div>
-        </div> -->
-        <div class="project-text-block" [ngClass]="{selectedColor: item.isSelectedColor}">
-          <div class="project-text-item">
-            <h3 class="project-title" (click)="onRouteSelectedProject(item.projectId)">{{item.projectName}}</h3>
-            <div class="project-text">{{item.projectDetails}}</div>
-          </div>
+      <div class="project-text-block" [ngClass]="{selectedColor: item.isSelectedColor}">
+        <div class="project-text-item">
+          <h3 class="project-title" (click)="onRouteSelectedProject(item.projectId)">{{item.projectName}}</h3>
+          <div class="project-text">{{item.projectDetails}}</div>
         </div>
+      </div>
     </div>
 
     <!-- Пагинация. -->
