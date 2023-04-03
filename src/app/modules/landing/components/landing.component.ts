@@ -25,6 +25,7 @@ export class LandingComponent implements OnInit {
     aSearchVacancy: any[] = [];
     aSearchTeam: any[] = [];    
     allFeedSubscription: any;
+    responsiveOptions: boolean = true;
 
     constructor(private readonly _landingService: LandingService,
         private readonly _signalrService: SignalrService,

@@ -9,33 +9,36 @@
       <h1 class="fon-title">{{fonData$.value.title}}</h1>
     </div>
 
-    <div class="fon-text">
+    <div class="fon-text text-content">
       {{fonData$.value.text}}
     </div>
   </div>
 </div>
 
 <!-- Предложения платформы. -->
-<div class="mt-5">
-  <div class="col-lg-12 d-flex justify-content-center">
-    <h3>{{platformOffers$.value.offeTitle}}</h3>
-  </div>
+<div class="col-lg-12 d-flex justify-content-center mt-5">
+  <h3>{{platformOffers$.value.offeTitle}}</h3>
+</div>
 
-  <p class="col-lg-12 d-flex justify-content-center">{{platformOffers$.value.offerSubTitle}}</p>
+<p-carousel [value]="platformOffers$.value.platformOfferItems" [numVisible]="3" [numScroll]="3" [circular]="false"
+  [responsiveOptions]="platformOffers$.value.platformOfferItems">
+  <ng-template let-item pTemplate="item">
+    <div class="border-1 surface-border border-round m-2 text-center py-5 px-3">
+      <div class="mb-3">
+      </div>
+      <div>
+        <div class="offer-tag">
+          <p-divider align="center">
+            <p-tag *ngIf="item.isLater">Скоро</p-tag>
+            <span>&nbsp;</span>
+          </p-divider>
 
-  <div class="platform-offers col-lg-12">
-    <div *ngFor="let item of platformOffers$.value.platformOfferItems">
-      <div class="offer-tag">
-        <p-divider align="center">
-          <p-tag *ngIf="item.isLater">Скоро</p-tag>
-          <span>&nbsp;</span>
-        </p-divider>
-  
-        <span class="d-flex offer-item text-center">{{item.itemText}}</span>
+          <span class="d-flex offer-item text-center justify-content-center text-content">{{item.itemText}}</span>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+  </ng-template>
+</p-carousel>
 
 <!-- Тарифы. -->
 <div class="mt-5 mb-5">
@@ -61,7 +64,7 @@
 
         <ng-template pTemplate="content" let-event>
           <p-card [header]="event.timelineTitle">
-            <p>{{event.timelineText}}</p>
+            <p class="text-content">{{event.timelineText}}</p>
           </p-card>
         </ng-template>
       </p-timeline>
@@ -83,7 +86,7 @@
 
         <ng-template pTemplate="content" let-event>
           <p-card [header]="event.timelineTitle">
-            <p>{{event.timelineText}}</p>
+            <p class="text-content">{{event.timelineText}}</p>
           </p-card>
         </ng-template>
       </p-timeline>
@@ -105,7 +108,7 @@
 
         <ng-template pTemplate="content" let-event>
           <p-card [header]="event.timelineTitle">
-            <p>{{event.timelineText}}</p>
+            <p class="text-content">{{event.timelineText}}</p>
           </p-card>
         </ng-template>
       </p-timeline>
@@ -127,7 +130,7 @@
 
         <ng-template pTemplate="content" let-event>
           <p-card [header]="event.timelineTitle">
-            <p>{{event.timelineText}}</p>
+            <p class="text-content">{{event.timelineText}}</p>
           </p-card>
         </ng-template>
       </p-timeline>
@@ -149,7 +152,7 @@
 
         <ng-template pTemplate="content" let-event>
           <p-card [header]="event.timelineTitle">
-            <p>{{event.timelineText}}</p>
+            <p class="text-content">{{event.timelineText}}</p>
           </p-card>
         </ng-template>
       </p-timeline>
@@ -167,7 +170,7 @@
     <p-accordion>
       <div *ngFor="let item of knowledgeLanding$.value.knowledgeLanding">
         <p-accordionTab header="{{item.subCategoryThemeTitle}}">
-          <div>
+          <div class="text-content">
             {{item.subCategoryThemeText}}
           </div>
         </p-accordionTab>
