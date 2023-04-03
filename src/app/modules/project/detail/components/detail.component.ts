@@ -377,6 +377,11 @@ export class DetailProjectComponent {
     public async onProjectResponseAsync() {
         let model = new ProjectResponseInput();
         model.ProjectId = this.projectId;
+
+        if (this.vacancyId == 0 && this.isResponseVacancy) {
+            this.vacancyId = this.availableVacansiesResponse$.value[0].vacancyId;
+        }
+
         model.VacancyId = this.vacancyId == 0 ? null : this.vacancyId;
 
         (await this._projectService.writeProjectResponseAsync(model))
