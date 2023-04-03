@@ -7,73 +7,79 @@
 
   <div class="block-worksheet">
     <div class="worksheet-panel">
-      <p-panel header="Просмотр информации о вакансии" [toggleable]="true">       
+      <p-panel header="Просмотр информации о вакансии" [toggleable]="true">
         <div class="d-flex mt-3">
             <div class="control-input-text-worksheet">
               <div class="d-flex">
                 <div class="control-input-text-worksheet">
+
                   <div>
                       <label>Название вакансии</label>
                   </div>
-                  <div>
-                      <input type="text" 
-                      class="p-inputtext-sm input-control-worksheet control-project" 
-                      placeholder="Название вакансии" 
+
+                  <div *ngIf="isEditMode; else blockOne">
+                      <input type="text"
+                      class="p-inputtext-sm input-control-worksheet control-project"
+                      placeholder="Название вакансии"
                       pInputText
-                      autocomplete="new-password" 
+                      autocomplete="new-password"
                       [(ngModel)]="vacancyName"
-                      [disabled]="!isEditMode" />    
-                  </div>          
-                </div>         
+                      [disabled]="!isEditMode" />
+                  </div>
+                  <ng-template #blockOne>{{vacancyName}}</ng-template>
+                </div>
               </div>
-        
+
               <div class="d-flex">
                 <div class="control-input-text-worksheet mt-3">
                   <div>
                     <label>Опыт</label>
                   </div>
-                  <div>
-                    <input type="text" 
-                            class="p-inputtext-sm input-control-worksheet control-vacancy" 
+                  <div *ngIf="isEditMode; else blockTwo">
+                    <input type="text"
+                            class="p-inputtext-sm input-control-worksheet control-vacancy"
                             placeholder="1–3 года"
-                            pInputText 
-                            autocomplete="new-password" 
+                            pInputText
+                            autocomplete="new-password"
                             [(ngModel)]="workExperience"
                             [disabled]="!isEditMode" />
                   </div>
+                  <ng-template #blockTwo>{{workExperience}}</ng-template>
                 </div>
-        
+
                 <div class="control-input-text-worksheet mt-3">
                   <div>
                     <label>Занятость</label>
                   </div>
-                  <div>
-                    <input type="text" 
-                            class="p-inputtext-sm input-control-worksheet control-vacancy" 
+                  <div *ngIf="isEditMode; else blockTree">
+                    <input type="text"
+                            class="p-inputtext-sm input-control-worksheet control-vacancy"
                             placeholder="Полная занятость, удаленная работа"
-                            pInputText 
-                            autocomplete="new-password" 
+                            pInputText
+                            autocomplete="new-password"
                             [(ngModel)]="employment"
                             [disabled]="!isEditMode" />
                   </div>
+                  <ng-template #blockTree>{{employment}}</ng-template>
                 </div>
-        
+
                 <div class="control-input-text-worksheet mt-3">
                   <div>
                     <label>Оплата</label>
                   </div>
-                  <div>
-                    <input type="text" 
+                  <div *ngIf="isEditMode; else blockFour">
+                    <input type="text"
                             class="p-inputtext-sm input-control-worksheet control-vacancy"
-                            placeholder="20 000 – 40 000 руб." 
-                            pInputText 
+                            placeholder="20 000 – 40 000 руб."
+                            pInputText
                             autocomplete="new-password"
                             [(ngModel)]="payment"
                             [disabled]="!isEditMode" />
                   </div>
+                  <ng-template #blockFour>{{payment}}</ng-template>
                 </div>
               </div>
-        
+
               <div class="d-flex mt-3">
                   <div class="control-input-text-worksheet">
                       <div class="control-input-text-worksheet">
@@ -82,31 +88,34 @@
                                   <div>
                                       <label>Описание вакансии</label>
                                   </div>
-                                  <div>
-                                      <p-editor autocomplete="new-password" 
-                                      [(ngModel)]="vacancyText" 
+                                <div *ngIf="isEditMode; else blockFive">
+                                      <p-editor
+                                      [(ngModel)]="vacancyText"
                                       [style]="{'height':'320px'}"
                                       [readonly]="!isEditMode"></p-editor>
                                   </div>
-                              </div>                         
+                                <ng-template #blockFive>
+                                  {{vacancyText}}
+                                </ng-template>
+                              </div>
                           </div>
                         </div>
                     </div>
               </div>
-            </div>         
+            </div>
           </div>
       </p-panel>
     </div>
 
     <div class="worksheet-panel space-top-50 space-bottom-50 d-flex">
-      <p-panel header="Действия" [toggleable]="true" [collapsed]="true">       
+      <p-panel header="Действия" [toggleable]="true" [collapsed]="true">
         <div class="d-flex">
           <div class="control-input-text-worksheet">
             <div class="mb-3">
               <div>
                 <div>
-                  <button pButton 
-                          type="button" 
+                  <button pButton
+                          type="button"
                           label="Сохранить изменения"
                           class="p-button-outlined p-button-secondary p-button-text"
                           *ngIf="isVisibleSaveButton && isEditMode"
@@ -115,8 +124,8 @@
                 </div>
 
                 <div>
-                  <button pButton 
-                          type="button" 
+                  <button pButton
+                          type="button"
                           label="Изменить вакансию"
                           class="p-button-outlined p-button-secondary p-button-text"
                           *ngIf="isVisibleEditButton"
@@ -125,8 +134,8 @@
                 </div>
 
                 <div>
-                  <button pButton 
-                          type="button" 
+                  <button pButton
+                          type="button"
                           label="Удалить вакансию"
                           class="p-button-danger p-button-text"
                           (click)="isDeleteVacancy=true"
@@ -134,8 +143,8 @@
                   </button>
                 </div>
               </div>
-            </div>                    
-          </div>         
+            </div>
+          </div>
         </div>
       </p-panel>
     </div>
@@ -143,11 +152,11 @@
 </div>
 
 <!-- Диалог удаления вакансии. -->
-<p-dialog  header="Удаление вакансии" 
-          [(visible)]="isDeleteVacancy" 
-          [breakpoints]="{'960px': '75vw'}" 
+<p-dialog  header="Удаление вакансии"
+          [(visible)]="isDeleteVacancy"
+          [breakpoints]="{'960px': '75vw'}"
           [style]="{width: '50vw'}"
-          [draggable]="false" 
+          [draggable]="false"
           [resizable]="false"
           icon="pi pi-exclamation-triangle">
         <p>Удалить вакансию <strong>{{selectedVacancy$.value.vacancyName}}?</strong></p>
