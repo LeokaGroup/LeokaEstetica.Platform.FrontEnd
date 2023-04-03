@@ -678,7 +678,7 @@
           <label>Выберите вакансию</label>
       </div>
       <div>
-        <p-dropdown [options]="availableAttachVacancies$.value.projectVacancies"
+        <p-dropdown [options]="availableVacansiesResponse$.value"
                     [(ngModel)]="selectedVacancy"
                     optionLabel="userVacancy.vacancyName"
                     (onChange)="onSelectVacancy()">
@@ -704,7 +704,7 @@
           [resizable]="false">
         <p>Откликнуться без вакансии?</p>
         <ng-template pTemplate="footer">
-        <p-button (click)="isResponseNotVacancy=false" label="Нет" styleClass="p-button-text"></p-button>
+        <p-button (click)="isResponseNotVacancy=false" label="Нет" styleClass="p-button-text isResponseNotVacancy"></p-button>
         <p-button (click)="onProjectResponseAsync()" label="Да" styleClass="p-button-text"></p-button>
         </ng-template>
 </p-dialog>

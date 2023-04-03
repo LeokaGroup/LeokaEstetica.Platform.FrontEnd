@@ -30,6 +30,8 @@ export class ProjectService {
     public pagination$ = new BehaviorSubject<any>(null);
     public removedProject$ = new BehaviorSubject<any>(null);
     public removedVacansyInProject$ = new BehaviorSubject<any>(null);
+    public availableVacansiesResponse$ = new BehaviorSubject<any>(null);
+
     constructor(private readonly http: HttpClient) {
 
     }
@@ -233,4 +235,12 @@ export class ProjectService {
     );
   };
 
+  /** 
+   * Функция получает список вакансий доступных для отклика.
+   */
+   public async availableVacanciesProjectResponseAsync(projectId: number) {
+    return await this.http.get(API_URL.apiUrl + `/projects/available-response-vacancies?projectId=${projectId}`).pipe(
+      tap(data => this.availableVacansiesResponse$.next(data))
+    );
+  };
 }

@@ -51,6 +51,7 @@ export class DetailProjectComponent {
     public readonly projectTeamColumns$ = this._projectService.projectTeamColumns$;
     public readonly searchInviteMembers$ = this._searchProjectService.searchInviteMembers$;
     public readonly invitedProjectTeamMember$ = this._projectService.invitedProjectTeamMember$;
+    public readonly availableVacansiesResponse$ = this._projectService.availableVacansiesResponse$;
 
     projectName: string = "";
     projectDetails: string = "";
@@ -350,8 +351,13 @@ export class DetailProjectComponent {
      * С вакансией либо без нее.
      * @param isResponseVacancy - Признак отклика с вакансией либо без нее.
      */
-    public onShowProjectResponseWithVacancyModal(isResponseVacancy: boolean) {
+    public async onShowProjectResponseWithVacancyModal(isResponseVacancy: boolean) {
         this.isResponseVacancy = isResponseVacancy;
+
+        (await this._projectService.availableVacanciesProjectResponseAsync(this.projectId))
+            .subscribe(async _ => {
+                console.log("Доступные вакансии для отклика: ", this.availableVacansiesResponse$.value);
+            });
     };
 
     /**
