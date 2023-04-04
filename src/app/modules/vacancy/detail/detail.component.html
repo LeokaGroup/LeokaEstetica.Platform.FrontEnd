@@ -85,13 +85,13 @@
                                   <div *ngIf="isEditMode; else readOnlyMode">
                                       <p-editor autocomplete="new-password"
                                       [(ngModel)]="vacancyText"
-                                      [style]="{'height':'320px'}"
-                                      [readonly]="!isEditMode"></p-editor>
+                                      [style]="{'height':'320px'}">
+                                      </p-editor>
                                   </div>
                                   <ng-template #readOnlyMode>
                                     <div>
                                       <input type="text"
-                                         class="p-inputtext-sm input-control-worksheet control-vacancy"
+                                         class="p-inputtext-sm input-control-worksheet control-project"
                                          pInputText
                                          autocomplete="new-password"
                                          [(ngModel)]="vacancyText"
