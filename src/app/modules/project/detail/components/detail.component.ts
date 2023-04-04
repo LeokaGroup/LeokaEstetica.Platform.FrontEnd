@@ -144,6 +144,7 @@ export class DetailProjectComponent {
         this._signalrService.listenErrorDeleteProjectVacancy();
         this._signalrService.listenWarningProjectInviteTeam();
         this._signalrService.listenWarningEmptyUserProfile();
+        this._signalrService.listenWarningUserAlreadyProjectInvitedTeam();
     };
 
     private checkUrlParams() {
@@ -543,8 +544,10 @@ export class DetailProjectComponent {
 
         (await this._projectService.sendInviteProjectTeamAsync(inviteProjectTeamMemberInput))
         .subscribe(async (response: any) => {
-            console.log("Добавленный в команду пользователь: ", response);
+            console.log("Добавленный в команду пользователь: ", response);            
         });
+
+        this.isProjectInvite = false;
     };
 
     /**

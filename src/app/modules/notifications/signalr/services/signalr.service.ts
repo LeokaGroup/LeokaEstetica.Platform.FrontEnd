@@ -212,4 +212,13 @@ export class SignalrService {
           this.$allFeed.next(data);
         });
       };
+
+      /**
+   * Функция слушает уведомления предупреждения о приглашенном пользователе в команде проекта.
+   */
+    public listenWarningUserAlreadyProjectInvitedTeam() {
+      (<HubConnection>this.hubConnection).on("SendNotificationWarningUserAlreadyProjectInvitedTeam", (data: any) => {
+        this.$allFeed.next(data);
+      });
+    };
 }
