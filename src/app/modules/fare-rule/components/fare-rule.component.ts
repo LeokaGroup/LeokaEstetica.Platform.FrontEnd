@@ -15,26 +15,29 @@ import { FareRuleService } from "../services/fare-rule.service";
  * Класс каталога проектов.
  */
 export class FareRuleComponent implements OnInit {
+
+    responsiveOptions: any; //для карусели
     constructor(private readonly _router: Router,
         private readonly _activatedRoute: ActivatedRoute,
         private readonly _fareRuleService: FareRuleService,
         private readonly _paymentService: PaymentService) {
     }
 
-    public readonly fareRules$ = this._fareRuleService.fareRules$;  
-    public readonly createOrder$ = this._paymentService.createOrder$;       
+    public readonly fareRules$ = this._fareRuleService.fareRules$;
+    public readonly createOrder$ = this._paymentService.createOrder$;
+
 
     public async ngOnInit() {
         forkJoin([
            await this.getFareRulesAsync()
         ]).subscribe();
-    };   
+    };
 
      /**
      * Функция получает прафила тарифов.
      * @returns - Прафила тарифов.
      */
-      private async getFareRulesAsync() {    
+      private async getFareRulesAsync() {
         (await this._fareRuleService.getFareRulesAsync())
         .subscribe(_ => {
             console.log("Правила тарифов: ", this.fareRules$.value);
@@ -54,7 +57,7 @@ export class FareRuleComponent implements OnInit {
             console.log("Данные платежа: ", this.createOrder$.value);
             if (+response.paymentId > 0) {
                 window.location.href = response.url;
-            }   
+            }
         });
     };
 }
