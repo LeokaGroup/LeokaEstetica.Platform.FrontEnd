@@ -12,7 +12,7 @@ export class FooterService {
     }
 
     /**
-     * Функция получит список элементов хидера.
+     * Функция получит список элементов футера.
      * @returns - Список элементов футера.
      */
     public async getFooterItemsAsync() {
