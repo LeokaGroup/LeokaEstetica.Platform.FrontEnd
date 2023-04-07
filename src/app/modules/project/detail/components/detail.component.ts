@@ -144,6 +144,8 @@ export class DetailProjectComponent {
         this._signalrService.listenErrorDeleteProjectVacancy();
         this._signalrService.listenWarningProjectInviteTeam();
         this._signalrService.listenWarningEmptyUserProfile();
+        this._signalrService.listenWarningUserAlreadyProjectInvitedTeam();
+        this._signalrService.listenSuccessUserProjectInvitedTeam();
     };
 
     private checkUrlParams() {
@@ -543,8 +545,14 @@ export class DetailProjectComponent {
 
         (await this._projectService.sendInviteProjectTeamAsync(inviteProjectTeamMemberInput))
         .subscribe(async (response: any) => {
-            console.log("Добавленный в команду пользователь: ", response);
+            console.log("Добавленный в команду пользователь: ", response);     
+
+            // TODO: Костыль для бага ререндера уведомлений.
+            // TODO: Не можем отображать уведомления без обновления страницы после роута из проектов пользователя.
+            this._messageService.add({ severity: 'success', summary: "Все хорошо", detail: response.successMessage }); 
         });
+
+        this.isProjectInvite = false;
     };
 
     /**

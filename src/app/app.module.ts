@@ -33,6 +33,7 @@ import { AdministrationModule } from './modules/administration/administration.mo
 import { AdministrationService } from './modules/administration/services/administration.service';
 import { NotificationsService } from './modules/backoffice/notification/services/notifications.service';
 import { FooterComponent } from './modules/footer/components/footer.component';
+import { CarouselModule } from 'primeng/carousel';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { FooterComponent } from './modules/footer/components/footer.component';
     ModerationModule,
     PayModule,
     MenuModule,
-    AdministrationModule
+    AdministrationModule,
+    CarouselModule
   ],
 
   providers: [
