@@ -20,8 +20,7 @@ import { VacancyService } from './modules/vacancy/services/vacancy.service';
 import { ProjectService } from './modules/project/services/project.service';
 import {AvatarModule} from 'primeng/avatar';
 import { ChatMessagesService } from './modules/messages/chat/services/chat-messages.service';
-import { ModerationModule } from './modules/moderation/moderation.module';
-import { ModerationService } from './modules/moderation/services/moderation.service';
+import { CallCenterService } from './modules/moderation/services/callcenter.service';
 import { SearchProjectService } from './modules/search/services/search-project-service';
 import { ResumeService } from './modules/resume/catalog/services/resume.service';
 import { FareRuleService } from './modules/fare-rule/services/fare-rule.service';
@@ -34,6 +33,7 @@ import { AdministrationService } from './modules/administration/services/adminis
 import { NotificationsService } from './modules/backoffice/notification/services/notifications.service';
 import { FooterComponent } from './modules/footer/components/footer.component';
 import { CarouselModule } from 'primeng/carousel';
+import { CallCenterModule } from './modules/moderation/callcenter.module';
 
 @NgModule({
   declarations: [
@@ -59,7 +59,7 @@ import { CarouselModule } from 'primeng/carousel';
     PanelMenuModule,
     ToastModule,
     AvatarModule,
-    ModerationModule,
+    CallCenterModule,
     PayModule,
     MenuModule,
     AdministrationModule,
@@ -79,7 +79,7 @@ import { CarouselModule } from 'primeng/carousel';
     VacancyService,
     ProjectService,
     ChatMessagesService,
-    ModerationService,
+    CallCenterService,
     SearchProjectService,
     ResumeService,
     FareRuleService,

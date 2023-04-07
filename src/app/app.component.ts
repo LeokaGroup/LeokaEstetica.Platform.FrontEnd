@@ -103,7 +103,7 @@ export class AppComponent implements OnInit {
       this.isVisibleMenu = true;
     }
 
-    if (currentUrl.indexOf("moderation") > 0
+    if (currentUrl.indexOf("callcenter") > 0
     || currentUrl.indexOf("administration") > 0) {
       this.rerender();
       this.isVisibleMenu = false;
