@@ -1,77 +1,40 @@
-<p-carousel  [numVisible]="3" [numScroll]="3" [circular]="true"
-             [responsiveOptions]="responsiveOptions"
-             [value]="fareRules$.value">
+<p-carousel [numVisible]="3" [numScroll]="3" [circular]="true" [responsiveOptions]="responsiveOptions"
+  [value]="fareRules$.value">
   <ng-template let-fare pTemplate="item">
 
-<div class="tarifs">
-  <div class="tarifs-body" >
-    <p-card>
-      <div class="header">
-        <h3 class="title">
-          {{fare.name}}
-        </h3>
+    <div class="tarifs">
+      <div class="tarifs-body">
+        <p-card>
+          <div class="header">
+            <h3 class="title">
+              {{fare.name}}
+            </h3>
 
-        <h4 class="price">
-          {{fare.price}} ₽/мес.
-        </h4>
+            <h4 class="price">
+              {{fare.price}} ₽/мес.
+            </h4>
 
-        <h6 class="label">
-          {{fare.label}}
-        </h6>
-      </div>
+            <h6 class="label">
+              {{fare.label}}
+            </h6>
+          </div>
 
-      <div class="footer">
-        <strong style="text-align: center" class="text-content">Что входит в тариф:</strong>
-        <ul *ngFor="let item of fare.fareRuleItems" class="discription">
-          <li class="text-content">{{item.name}} {{item.label}}</li>
-        </ul>
-      </div>
+          <div class="footer">
+            <strong style="text-align: center" class="text-content">Что входит в тариф:</strong>
+            <ul *ngFor="let item of fare.fareRuleItems" class="discription">
+              <li class="text-content">{{item.name}} {{item.label}}</li>
+            </ul>
+          </div>
 
-            <div *ngIf="fare.ruleId==1; else elseBlock"><span style="line-height:70px; border:1px solid white"></span></div>
-            <ng-template #elseBlock>
-              <button type="submit" class="btn btn-primary button-action-pur-control"
-                      (click)="onCreateOrderAsync(fare.ruleId)">
+          <div *ngIf="fare.ruleId==1; else elseBlock"><span style="line-height:70px; border:1px solid white"></span>
+          </div>
+          <ng-template #elseBlock>
+            <button type="submit" class="btn btn-primary button-action-pur-control"
+              (click)="onCreateOrderAsync(fare.ruleId)">
               Выбрать
             </button></ng-template>
-    </p-card>
-
-
-
-<!--  <div class="tarifs-body" *ngFor="let fr of fareRules$.value">-->
-<!--    <p-card>-->
-<!--      <div class="header">-->
-<!--        <h3 class="title">-->
-<!--          {{fr.name}}-->
-<!--        </h3>-->
-
-<!--        <h4 class="price">-->
-<!--          {{fr.price}} ₽-->
-<!--        </h4>-->
-
-<!--        <h6 class="label">-->
-<!--          {{fr.label}}-->
-<!--        </h6>-->
-<!--      </div>-->
-
-
-<!--      <div class="footer">-->
-<!--        <strong style="text-align: center" class="text-content">Что входит в тариф:</strong>-->
-<!--        <ul *ngFor="let item of fr.fareRuleItems" class="discription">-->
-<!--          <li class="text-content">{{item.name}} {{item.label}}</li>-->
-<!--        </ul>-->
-<!--      </div>-->
-
-
-<!--      <div *ngIf="fr.ruleId==1; else elseBlock"><span style="line-height:70px; border:1px solid white"></span></div>-->
-<!--      <ng-template #elseBlock>-->
-<!--        <button type="submit" class="btn btn-primary button-action-pur-control"-->
-<!--                (click)="onCreateOrderAsync(fr.ruleId)">-->
-<!--        Выбрать-->
-<!--      </button></ng-template>-->
-
-<!--    </p-card>-->
-
-  </div>
-</div>
+        </p-card>
+      </div>
+    </div>
   </ng-template>
 </p-carousel>
