@@ -5,23 +5,23 @@ import { ApproveProjectInput } from "../../models/input/approve-project-input";
 import { ApproveVacancyInput } from "../../models/input/approve-vacancy-input";
 import { RejectProjectInput } from "../../models/input/reject-project-input";
 import { RejectVacancyInput } from "../../models/input/reject-vacancy-input";
-import { ModerationService } from "../../services/moderation.service";
-import { ApproveResumeInput} from "../../models/input/approve-resume-input";
-import {RejectResumeInput} from "../../models/input/reject-resume-input";
+import { ApproveResumeInput } from "../../models/input/approve-resume-input";
+import { RejectResumeInput } from "../../models/input/reject-resume-input";
+import { CallCenterService } from "../../services/callcenter.service";
 
 @Component({
-    selector: "moderation",
-    templateUrl: "./moderation.component.html",
-    styleUrls: ["./moderation.component.scss"]
+    selector: "callcenter",
+    templateUrl: "./callcenter.component.html",
+    styleUrls: ["./callcenter.component.scss"]
 })
 
 /**
- * Класс компонента модерации.
+ * Класс компонента КЦ.
  */
-export class ModerationComponent implements OnInit {
+export class CallCenterComponent implements OnInit {
     public readonly headerData$ = this._headerService.headerData$;
-    public readonly projectsModeration$ = this._moderationService.projectsModeration$;
-    public readonly projectModeration$ = this._moderationService.projectModeration$;
+    public readonly projectsModeration$ = this._callCenterService.projectsModeration$;
+    public readonly projectModeration$ = this._callCenterService.projectModeration$;
 
     isHideAuthButtons: boolean = false;
     aProjects: any[] = [];
@@ -120,7 +120,7 @@ export class ModerationComponent implements OnInit {
     ];
 
     constructor(private readonly _headerService: HeaderService,
-        private readonly _moderationService: ModerationService) {
+        private readonly _callCenterService: CallCenterService) {
     }
 
     public async ngOnInit() {
@@ -161,7 +161,7 @@ export class ModerationComponent implements OnInit {
      * @returns - Список проектов.
      */
       private async getProjectsModerationAsync() {
-        (await this._moderationService.getProjectsModerationAsync())
+        (await this._callCenterService.getProjectsModerationAsync())
         .subscribe((response: any) => {
             console.log("Проекты для модерации: ", response);
             this.aProjects = response.projects;
@@ -177,7 +177,7 @@ export class ModerationComponent implements OnInit {
     public async onPreviewProjectAsync(projectId: number) {
         this.projectId = projectId;
 
-        (await this._moderationService.previewProjectAsync(projectId))
+        (await this._callCenterService.previewProjectAsync(projectId))
         .subscribe((response: any) => {
             console.log("Проект для модерации: ", response);
             this.isShowPreviewModerationProjectModal = true;
@@ -195,7 +195,7 @@ export class ModerationComponent implements OnInit {
         let approveProjectInput = new ApproveProjectInput();
         approveProjectInput.ProjectId = projectId;
 
-        (await this._moderationService.approveProjectAsync(approveProjectInput))
+        (await this._callCenterService.approveProjectAsync(approveProjectInput))
         .subscribe(async (response: any) => {
             console.log("Апрув проекта: ", response);
             this.isShowPreviewModerationProjectModal = false;
@@ -214,7 +214,7 @@ export class ModerationComponent implements OnInit {
         let rejectProjectInput = new RejectProjectInput();
         rejectProjectInput.ProjectId = projectId;
 
-        (await this._moderationService.rejectProjectAsync(rejectProjectInput))
+        (await this._callCenterService.rejectProjectAsync(rejectProjectInput))
         .subscribe(async (response: any) => {
             console.log("Отклонение проекта: ", response);
             this.isShowPreviewModerationProjectModal = false;
@@ -229,7 +229,7 @@ export class ModerationComponent implements OnInit {
      * @returns - Список вакансий.
      */
      private async getVacanciesModerationAsync() {
-        (await this._moderationService.getVacanciesModerationAsync())
+        (await this._callCenterService.getVacanciesModerationAsync())
         .subscribe((response: any) => {
             console.log("Вакансии для модерации: ", response);
             this.aVacancies = response.vacancies;
@@ -245,7 +245,7 @@ export class ModerationComponent implements OnInit {
      public async onPreviewVacancyAsync(vacancyId: number) {
         this.vacancyId = vacancyId;
 
-        (await this._moderationService.previewVacancyAsync(vacancyId))
+        (await this._callCenterService.previewVacancyAsync(vacancyId))
         .subscribe((response: any) => {
             console.log("Вакансия для модерации: ", response);
             this.isShowPreviewModerationVacancyModal = true;
@@ -266,7 +266,7 @@ export class ModerationComponent implements OnInit {
         let approveVacancyInput = new ApproveVacancyInput();
         approveVacancyInput.VacancyId = vacancyId;
 
-        (await this._moderationService.approveVacancyAsync(approveVacancyInput))
+        (await this._callCenterService.approveVacancyAsync(approveVacancyInput))
         .subscribe(async (response: any) => {
             console.log("Апрув вакансии: ", response);
             this.isShowPreviewModerationVacancyModal = false;
@@ -285,7 +285,7 @@ export class ModerationComponent implements OnInit {
         let rejectVacancyInput = new RejectVacancyInput();
         rejectVacancyInput.VacancyId = vacancyId;
 
-        (await this._moderationService.rejectVacancyAsync(rejectVacancyInput))
+        (await this._callCenterService.rejectVacancyAsync(rejectVacancyInput))
         .subscribe(async (response: any) => {
             console.log("Отклонение вакансии: ", response);
             this.isShowPreviewModerationVacancyModal = false;
@@ -306,7 +306,7 @@ export class ModerationComponent implements OnInit {
    * @returns - Список анкеты.
    */
   private async getResumesModerationAsync() {
-    (await this._moderationService.getResumesModerationAsync())
+    (await this._callCenterService.getResumesModerationAsync())
       .subscribe((response: any) => {
         console.log("Анкеты для модерации: ", response);
         this.aResumes = response.resumes;
@@ -321,7 +321,7 @@ export class ModerationComponent implements OnInit {
    */
   public async onPreviewResumeAsync(profileInfoId: number) {
     this.profileInfoId = profileInfoId;
-    (await this._moderationService.previewResumeAsync(profileInfoId))
+    (await this._callCenterService.previewResumeAsync(profileInfoId))
       .subscribe((response: any) => {
         console.log("Анкеты для просмотра: ", response);
         this.isShowPreviewModerationResumeModal = true;
@@ -336,7 +336,7 @@ export class ModerationComponent implements OnInit {
   public async onApproveResumeAsync(profileInfoId: number) {
     let approveResumeInput = new ApproveResumeInput();
     approveResumeInput.ProfileInfoId = profileInfoId;
-    (await this._moderationService.approveResumeAsync(approveResumeInput))
+    (await this._callCenterService.approveResumeAsync(approveResumeInput))
       .subscribe(async (response: any) => {
         console.log("Апрув анкеты: ", response);
         this.isShowPreviewModerationResumeModal = false;
@@ -352,7 +352,7 @@ export class ModerationComponent implements OnInit {
   public async onRejectResumeAsync(profileInfoId: number) {
     let rejectResumeInput = new RejectResumeInput();
     rejectResumeInput.ProfileInfoId = profileInfoId;
-    (await this._moderationService.rejectResumeAsync(rejectResumeInput))
+    (await this._callCenterService.rejectResumeAsync(rejectResumeInput))
       .subscribe(async (response: any) => {
         console.log("Отклонение анкеты: ", response);
         this.isShowPreviewModerationResumeModal = false;

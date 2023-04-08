@@ -24,7 +24,7 @@ export class NotificationsService {
      * @returns - Список уведомлений.
      */
     public async getUserNotificationsAsync() {
-        return await this.http.get(API_URL.apiUrl + "/notifications").pipe(
+        return await this.http.get(API_URL.apiUrl + "/notifications/all-notifications").pipe(
             tap(data => this.userNotifications$.next(data))
         );
     };

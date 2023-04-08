@@ -14,7 +14,7 @@ import {RejectResumeInput} from "../models/input/reject-resume-input";
  * Класс сервиса модерации.
  */
 @Injectable()
-export class ModerationService {
+export class CallCenterService {
     public accessModeration$ = new BehaviorSubject<any>(null);
     public projectsModeration$ = new BehaviorSubject<any>(null);
     public projectModeration$ = new BehaviorSubject<any>(null);
