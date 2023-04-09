@@ -36,6 +36,10 @@
           <div class="tag">
             <p-tag styleClass="mr-2" severity="success" value="{{item.employment}}"></p-tag>
           </div>
+
+          <div class="tag" *ngIf="item.tagColor !== null && item.tagValue !== null">
+            <p-tag severity="{{item.tagColor}}" value="{{item.tagValue}}"></p-tag>
+          </div>
         </div>
 
         <div class="vacancy-text-block">
