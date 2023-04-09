@@ -21,8 +21,8 @@ import { DialogModule } from 'primeng/dialog';
 import { SignInComponent } from './components/signin/signin.component';
 import {TabViewModule} from 'primeng/tabview';
 import { MegaMenuModule } from 'primeng/megamenu';
-import { CallCenterComponent } from './components/moderation/callcenter.component';
 import { CallCenterRoutingModule } from './callcenter-routing.module';
+import { CallCenterComponent } from './components/callcenter/callcenter.component';
 
 @NgModule({
     declarations: [

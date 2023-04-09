@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CallCenterComponent } from './components/moderation/callcenter.component';
+import { CallCenterComponent } from './components/callcenter/callcenter.component';
 import { SignInComponent } from './components/signin/signin.component';
 
 const routes: Routes = [
