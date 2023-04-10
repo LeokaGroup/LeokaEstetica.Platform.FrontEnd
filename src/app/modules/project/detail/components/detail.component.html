@@ -61,6 +61,7 @@
               <p-dropdown [options]="projectStages$.value"
                           [(ngModel)]="selectedStage"
                           optionLabel="stageName"
+                          placeholder="{{selectedProject$.value.stageName}}"
                           (onChange)="onSelectProjectStage()"
                           [disabled]="!isEditMode">
               </p-dropdown>
