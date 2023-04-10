@@ -13,17 +13,20 @@
             <div>
                 <label>Название проекта</label>
             </div>
-            <div>
-                <input type="text"
-                        class="p-inputtext-sm input-control-worksheet control-project"
-                        placeholder="Название проекта"
-                        pInputText
-                        autocomplete="new-password"
-                        [(ngModel)]="selectedProject$.value.projectName"
-                        [disabled]="!isEditMode"/>
+            <div *ngIf="isEditMode; else blockOne">
+              <input type="text"
+                     class="p-inputtext-sm input-control-worksheet control-project"
+                     placeholder="Название проекта"
+                     pInputText
+                     autocomplete="new-password"
+                     [(ngModel)]="selectedProject$.value.projectName"
+                     [disabled]="!isEditMode"/>
             </div>
+            <ng-template #blockOne>{{selectedProject$.value.projectName}}</ng-template>
           </div>
         </div>
+
+
 
         <div class="d-flex mt-3">
             <div class="control-input-text-worksheet">
@@ -33,13 +36,16 @@
                             <div>
                                 <label>Описание проекта</label>
                             </div>
-                            <div>
-                              <p-editor autocomplete="new-password"
-                                        [(ngModel)]="selectedProject$.value.projectDetails"
-                                        [style]="{'height':'320px'}"
-                                        [readonly]="!isEditMode">
-                              </p-editor>
-                            </div>
+                          <div *ngIf="isEditMode; else blockTwo">
+                               <p-editor autocomplete="new-password"
+                                    [(ngModel)]="selectedProject$.value.projectDetails"
+                                    [style]="{'height':'320px'}"
+                                    [readonly]="!isEditMode">
+                               </p-editor>
+                          </div>
+                          <ng-template #blockTwo>
+                            {{selectedProject$.value.projectDetails}}
+                          </ng-template>
                         </div>
                     </div>
                   </div>
@@ -51,17 +57,20 @@
             <div>
                 <label>Стадия проекта</label>
             </div>
-            <div>
+            <div *ngIf="isEditMode; else blockTree">
               <p-dropdown [options]="projectStages$.value"
                           [(ngModel)]="selectedStage"
                           optionLabel="stageName"
+                          placeholder="{{selectedProject$.value.stageName}}"
                           (onChange)="onSelectProjectStage()"
                           [disabled]="!isEditMode">
               </p-dropdown>
             </div>
+            <ng-template #blockTree >
+                {{selectedProject$.value.stageName}}
+            </ng-template>
           </div>
         </div>
-
         <div class="d-flex worksheet-line mt-3">
           <div class="control-input-text-worksheet">
             <button type="button" class="btn btn-primary button-action-pur-control-worksheet"
@@ -72,7 +81,7 @@
           </div>
         </div>
       </p-panel>
-    </div>    
+    </div>
 
     <div class="worksheet-panel space-top-50 space-bottom-50 d-flex" *ngIf="!isEditMode">
       <p-panel header="Действия" [toggleable]="true" [collapsed]="true">
@@ -118,7 +127,7 @@
                           (click)="isProjectInvite=true"
                           *ngIf="isVisibleDeleteButton">
                   </button>
-                </div>                
+                </div>
 
                 <div>
                   <button pButton
@@ -210,7 +219,7 @@
                             class="p-button-outlined p-button-danger"
                             (click)="onBeforeDeleteProjectVacancy(vacancy.vacancyId, vacancy.userVacancy.vacancyName)"
                             *ngIf="isVisibleActionVacancyButton">
-                </button></td>                             
+                </button></td>
               </tr>
             </ng-template>
 
@@ -751,19 +760,19 @@
           <div class="d-flex justify-content-around">
             <div>
               <div *ngFor="let variant of aProjectInviteVarians" class="field-checkbox mb-3 mt-3">
-                <p-radioButton [inputId]="variant.key" 
-                                name="variant" 
-                                [value]="variant" 
+                <p-radioButton [inputId]="variant.key"
+                                name="variant"
+                                [value]="variant"
                                 [(ngModel)]="selectedInviteVariant">
-    
+
                 </p-radioButton>
-                
+
                 <label [for]="variant.key">{{variant.name}}</label>
               </div>
-    
-              
+
+
             </div>
-  
+
             <div>
               <div>
                 <div class="mb-3 mt-3">
@@ -779,7 +788,7 @@
                 </div>
 
                 <div class="field-checkbox mb-3">
-                  <p-checkbox [binary]="true" 
+                  <p-checkbox [binary]="true"
                               inputId="binary"
                               (onChange)="isVacancyInvite=!isVacancyInvite">
                 </p-checkbox>
@@ -788,7 +797,7 @@
                   </label>
               </div>
                 </div>
-      
+
                 <div class="d-flex">
                   <span class="p-fluid">
                     <p-autoComplete [(ngModel)]="searchText"
