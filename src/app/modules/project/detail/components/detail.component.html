@@ -57,7 +57,7 @@
             <div>
                 <label>Стадия проекта</label>
             </div>
-            <div>
+            <div *ngIf="isEditMode; else blockTree">
               <p-dropdown [options]="projectStages$.value"
                           [(ngModel)]="selectedStage"
                           optionLabel="stageName"
@@ -65,9 +65,11 @@
                           [disabled]="!isEditMode">
               </p-dropdown>
             </div>
+            <ng-template #blockTree >
+                {{selectedProject$.value.stageName}}
+            </ng-template>
           </div>
         </div>
-
         <div class="d-flex worksheet-line mt-3">
           <div class="control-input-text-worksheet">
             <button type="button" class="btn btn-primary button-action-pur-control-worksheet"
