@@ -11,7 +11,7 @@ import { ApproveResumeInput } from "../models/input/approve-resume-input";
 import {RejectResumeInput} from "../models/input/reject-resume-input";
 
 /**
- * Класс сервиса модерации.
+ * Класс сервиса КЦ.
  */
 @Injectable()
 export class CallCenterService {

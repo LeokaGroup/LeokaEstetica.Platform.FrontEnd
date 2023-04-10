@@ -60,6 +60,7 @@ export class SignInComponent implements OnInit {
     public async onCheckAvailableUserRoleModerationAsync() {
         let accessModerationInput = new AccessModerationInput();
         accessModerationInput.Email = this.formAccessModeration.value.emailModeration;
+        accessModerationInput.Password = this.formAccessModeration.value.passwordModeration;
 
         (await this._callCenterService.checkAvailableUserRoleModerationAsync(accessModerationInput))
         .subscribe((response: any) => {
