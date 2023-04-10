@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
-import { AccessModerationInput } from '../models/input/access-moderation-input';
 import { ApproveProjectInput } from '../models/input/approve-project-input';
 import { ApproveVacancyInput } from '../models/input/approve-vacancy-input';
 import { RejectProjectInput } from '../models/input/reject-project-input';
@@ -35,8 +34,8 @@ export class CallCenterService {
      * Функция првоеряет доступ пользователя к модерации.
      * @returns - Признак доступа к модерации.
      */
-    public async checkAvailableUserRoleModerationAsync(accessModerationInput: AccessModerationInput) {
-        return await this.http.post(API_URL.apiUrl + "/moderation/check", accessModerationInput).pipe(
+    public async checkAvailableUserRoleModerationAsync() {
+        return await this.http.post(API_URL.apiUrl + "/moderation/check", {}).pipe(
             tap(data => this.accessModeration$.next(data))
         );
     };

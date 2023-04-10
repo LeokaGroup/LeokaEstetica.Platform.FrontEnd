@@ -18,7 +18,6 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { SignInComponent } from './components/signin/signin.component';
 import {TabViewModule} from 'primeng/tabview';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { CallCenterRoutingModule } from './callcenter-routing.module';
@@ -26,7 +25,6 @@ import { CallCenterComponent } from './components/callcenter/callcenter.componen
 
 @NgModule({
     declarations: [
-        SignInComponent,
         CallCenterComponent
     ],
 

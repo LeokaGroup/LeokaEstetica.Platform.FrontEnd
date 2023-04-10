@@ -104,7 +104,8 @@ export class AppComponent implements OnInit {
     }
 
     if (currentUrl.indexOf("callcenter") > 0
-    || currentUrl.indexOf("administration") > 0) {
+    || currentUrl.indexOf("administration") > 0
+    || currentUrl.indexOf("user/signin") > 0) {
       this.rerender();
       this.isVisibleMenu = false;
     }
