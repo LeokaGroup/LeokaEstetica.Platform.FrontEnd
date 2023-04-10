@@ -18,16 +18,16 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { ModerationRoutingModule } from './moderation-routing.module';
 import { SignInComponent } from './components/signin/signin.component';
-import { ModerationComponent } from './components/moderation/moderation.component';
 import {TabViewModule} from 'primeng/tabview';
 import { MegaMenuModule } from 'primeng/megamenu';
+import { CallCenterComponent } from './components/moderation/callcenter.component';
+import { CallCenterRoutingModule } from './callcenter-routing.module';
 
 @NgModule({
     declarations: [
         SignInComponent,
-        ModerationComponent
+        CallCenterComponent
     ],
 
     imports: [
@@ -47,7 +47,7 @@ import { MegaMenuModule } from 'primeng/megamenu';
         TableModule,
         ButtonModule,
         DialogModule,
-        ModerationRoutingModule,
+        CallCenterRoutingModule,
         TabViewModule,
         ReactiveFormsModule,
         MegaMenuModule
@@ -62,4 +62,4 @@ import { MegaMenuModule } from 'primeng/megamenu';
     ]
 })
 
-export class ModerationModule { }
+export class CallCenterModule { }
