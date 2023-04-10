@@ -26,6 +26,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { PaginatorModule } from 'primeng/paginator';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { TagModule } from 'primeng/tag';
 
 
 @NgModule({
@@ -56,7 +57,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
         OverlayPanelModule,
         AutoCompleteModule,
         PaginatorModule,
-        RadioButtonModule
+        RadioButtonModule,
+        TagModule
     ],
 
     exports: [],

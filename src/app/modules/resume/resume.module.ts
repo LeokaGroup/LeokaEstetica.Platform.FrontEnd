@@ -26,6 +26,7 @@ import { CatalogResumeComponent } from './catalog/components/catalog.component';
 import { PaginatorModule } from 'primeng/paginator';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
+import { TagModule } from 'primeng/tag';
 
 @NgModule({
     declarations: [
@@ -55,7 +56,8 @@ import { MessageModule } from 'primeng/message';
         AutoCompleteModule,
         PaginatorModule,
         MessagesModule,
-        MessageModule
+        MessageModule,
+        TagModule
     ],
 
     exports: [],

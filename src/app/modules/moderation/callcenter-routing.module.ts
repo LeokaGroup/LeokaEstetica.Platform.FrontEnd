@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ModerationComponent } from './components/moderation/moderation.component';
+import { CallCenterComponent } from './components/callcenter/callcenter.component';
 import { SignInComponent } from './components/signin/signin.component';
 
 const routes: Routes = [
     {
-        path: 'moderation', component: ModerationComponent
+        path: 'callcenter', component: CallCenterComponent
     },
 
     {
-        path: 'moderation/signin', component: SignInComponent
+        path: 'callcenter/signin', component: SignInComponent
     }
 ];
 
@@ -18,4 +18,4 @@ const routes: Routes = [
     exports: [RouterModule]
 })
 
-export class ModerationRoutingModule { }
+export class CallCenterRoutingModule { }
