@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { forkJoin, Subscription } from "rxjs";
+import { Component, OnInit } from "@angular/core";
+import { forkJoin } from "rxjs";
 import { BackOfficeService } from "../../services/backoffice.service";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { ProfileInfoInput } from "../models/input/profile-info-input";
@@ -15,7 +15,7 @@ import { MessageService } from "primeng/api";
 /**
  * Класс страницы профиля пользователя (Обо мне).
  */
-export class AboutmeComponent implements OnInit, OnDestroy {
+export class AboutmeComponent implements OnInit {
     public readonly profileSkillsItems$ = this._backofficeService.profileSkillsItems$;
     public readonly profileIntentsItems$ = this._backofficeService.profileIntentsItems$;
     public readonly profileInfo$ = this._backofficeService.profileInfo$;
@@ -61,7 +61,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
         this._signalrService.startConnection().then(() => {
             console.log("Подключились");
 
-            this.listenAllHubsNotifications();            
+            this.listenAllHubsNotifications();
 
             // Подписываемся на получение всех сообщений.
             this.allFeedSubscription = this._signalrService.AllFeedObservable
@@ -102,7 +102,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
             }
 
             if (mode == "edit") {
-                this.isModeEdit = true;                            
+                this.isModeEdit = true;
             }
 
             else {
@@ -174,7 +174,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
             if (response.errors !== null && response.errors.length > 0) {
                 response.errors.forEach((item: any) => {
                     this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item.errorMessage });
-                });    
+                });
 
                 return;
             }
@@ -251,7 +251,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
             });
     };
 
-    public ngOnDestroy(): void {
-        (<Subscription>this.allFeedSubscription).unsubscribe();
-    };
+    // public ngOnDestroy(): void {
+    //     (<Subscription>this.allFeedSubscription).unsubscribe();
+    // };
 }
