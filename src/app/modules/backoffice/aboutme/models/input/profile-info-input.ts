@@ -74,4 +74,9 @@ export class ProfileInfoInput {
      * Список выбранных целей пользователя.
      */
     UserIntents: SaveUserIntentsInput[] = [];
+
+  /**
+   * Опыт работы.
+   */
+    workExperience!: string;
 }

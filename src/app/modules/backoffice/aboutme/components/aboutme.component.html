@@ -236,14 +236,14 @@
                         placeholder="Опыт (стаж)"
                         pInputText
                         autocomplete="new-password"
-                        [(ngModel)]="experience"
+                        [(ngModel)]="workExperience"
                         *ngIf="isModeEdit"  />
                 <div *ngIf="isModeView">
                   <label>
                     <small>Опыт (стаж)</small>
                   </label>
                 </div>
-                <span *ngIf="isModeView">{{profileInfo$.value.experience}}</span>
+                <span *ngIf="isModeView">{{profileInfo$.value.workExperience}}</span>
             </div>
         </div>
 
