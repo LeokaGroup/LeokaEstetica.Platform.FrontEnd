@@ -37,7 +37,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
     aboutme!: string;
     job!: string;
     email!: string;
-    experience!: string;
+    workExperience!: string;
     isModeView!: boolean;
     isModeEdit!: boolean;
 
@@ -61,7 +61,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
         this._signalrService.startConnection().then(() => {
             console.log("Подключились");
 
-            this.listenAllHubsNotifications();            
+            this.listenAllHubsNotifications();
 
             // Подписываемся на получение всех сообщений.
             this.allFeedSubscription = this._signalrService.AllFeedObservable
@@ -102,7 +102,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
             }
 
             if (mode == "edit") {
-                this.isModeEdit = true;                            
+                this.isModeEdit = true;
             }
 
             else {
@@ -135,6 +135,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
         this.whatsApp = this.profileInfo$.value.whatsApp;
         this.vkontakte = this.profileInfo$.value.vkontakte;
         this.otherLink = this.profileInfo$.value.otherLink;
+        this.workExperience = this.profileInfo$.value.workExperience;
     };
 
     /**
@@ -174,7 +175,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
             if (response.errors !== null && response.errors.length > 0) {
                 response.errors.forEach((item: any) => {
                     this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item.errorMessage });
-                });    
+                });
 
                 return;
             }
@@ -204,6 +205,7 @@ export class AboutmeComponent implements OnInit, OnDestroy {
         profileInfoInput.OtherLink = this.otherLink;
         profileInfoInput.UserSkills = this.aSelectedSkills;
         profileInfoInput.UserIntents = this.aSelectedIntents;
+        profileInfoInput.workExperience = this.workExperience;
 
         return profileInfoInput;
     };
