@@ -101,6 +101,7 @@ export class DetailProjectComponent {
     ];
     selectedInviteVariant: any;
     isVacancyInvite: boolean = false;
+    availableAttachVacancies: any[] = [];
 
   public async ngOnInit() {
         forkJoin([
@@ -266,6 +267,7 @@ export class DetailProjectComponent {
         (await this._projectService.getAvailableAttachVacanciesAsync(this.projectId))
             .subscribe(_ => {
                 console.log("Доступные к привязке вакансии: ", this.availableAttachVacancies$.value);
+                this.availableAttachVacancies = this.availableAttachVacancies$.value.projectVacancies;
             });
     };
 
@@ -355,11 +357,6 @@ export class DetailProjectComponent {
      */
     public async onShowProjectResponseWithVacancyModal(isResponseVacancy: boolean) {
         this.isResponseVacancy = isResponseVacancy;
-
-        (await this._projectService.availableVacanciesProjectResponseAsync(this.projectId))
-            .subscribe(async _ => {
-                console.log("Доступные вакансии для отклика: ", this.availableVacansiesResponse$.value);
-            });
     };
 
     /**

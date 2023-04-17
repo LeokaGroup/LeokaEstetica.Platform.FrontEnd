@@ -687,7 +687,7 @@
           <label>Выберите вакансию</label>
       </div>
       <div>
-        <p-dropdown [options]="availableVacansiesResponse$.value"
+        <p-dropdown [options]="availableAttachVacancies"
                     [(ngModel)]="selectedVacancy"
                     optionLabel="userVacancy.vacancyName"
                     (onChange)="onSelectVacancy()">
