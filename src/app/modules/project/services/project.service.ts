@@ -32,6 +32,7 @@ export class ProjectService {
     public removedVacansyInProject$ = new BehaviorSubject<any>(null);
     public availableVacansiesResponse$ = new BehaviorSubject<any>(null);
     public deletedProjectTeamMember$ = new BehaviorSubject<any>(null);
+    public leaveProjectTeamMember$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -245,9 +246,24 @@ export class ProjectService {
     );
   };
 
+  /**
+   * Функция удаляет пользователя из команды проекта.
+   * @param projectId - Id проекта.
+   * @param userId - Id участника проекта, которого будем удалять.
+   */
   public async deleteProjectTeamAsync(projectId: number, userId: number) {
     return await this.http.delete(API_URL.apiUrl + `/projects/${projectId}/team-member/${userId}`).pipe(
         tap(data => this.deletedProjectTeamMember$.next(data))
       );
   };
+
+   /**
+   * Функция покидания из команды проекта.
+   * @param projectId - Id проекта.
+   */
+    public async leaveProjectTeamAsync(projectId: number) {
+        return await this.http.delete(API_URL.apiUrl + `/projects/team-leave/${projectId}`).pipe(
+            tap(data => this.leaveProjectTeamMember$.next(data))
+          );
+      };
 }

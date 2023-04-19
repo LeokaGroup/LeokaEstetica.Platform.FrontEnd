@@ -104,6 +104,7 @@ export class DetailProjectComponent {
     availableAttachVacancies: any[] = [];
     deleteMember: string = "";
     isDeleteProjectTeamMember: boolean = false;
+    isLeaveProjectTeamMember: boolean = false;
     userId: number = 0;
 
   public async ngOnInit() {
@@ -604,6 +605,10 @@ export class DetailProjectComponent {
     this.userId = userId;
   };
 
+  public onShowLeaveProjectTeamMemberModal() {
+    this.isLeaveProjectTeamMember = true;
+  };
+
   /**
    * Функция удаляет пользователя из команды проекта.
    * @param userId - Id участника проекта, которого будем удалять.
@@ -612,6 +617,17 @@ export class DetailProjectComponent {
         (await this._projectService.deleteProjectTeamAsync(this.projectId, this.userId))
             .subscribe(async _ => {
                 this.isDeleteProjectTeamMember = false;
+                await this.getProjectTeamAsync();
+            });
+    };
+
+    /**
+   * Функция покидания команды проекта.
+   */
+     public async onLeaveProjectTeamAsync() {
+        (await this._projectService.leaveProjectTeamAsync(this.projectId))
+            .subscribe(async _ => {
+                this.isLeaveProjectTeamMember = false;
                 await this.getProjectTeamAsync();
             });
     };
