@@ -132,6 +132,15 @@
                 <div>
                   <button pButton
                           type="button"
+                          label="Покинуть проект"
+                          class="p-button-secondary p-button-text"
+                          (click)="onShowLeaveProjectTeamMemberModal()">
+                  </button>
+                </div>
+
+                <div>
+                  <button pButton
+                          type="button"
                           label="Удалить проект"
                           class="p-button-danger p-button-text"
                           (click)="isDeleteProject=true"
@@ -407,7 +416,7 @@
                         <p-button (click)="onShowDeleteProjectTeamMemberModal(team.member, team.userId)" 
                                   label="Исключить"
                                   styleClass="p-button-danger p-button-text">
-                        </p-button>
+                        </p-button>                       
                       </td>             
                     </tr>
                   </ng-template>
@@ -755,7 +764,7 @@
 </ng-template>
 </p-dialog>
 
-<!-- Диалог удаления вакансии проекта. -->
+<!-- Диалог исключения участника команды проекта. -->
 <p-dialog header="Исключение участника из команды проекта"
           [(visible)]="isDeleteProjectTeamMember"
           [breakpoints]="{'960px': '75vw'}"
@@ -766,5 +775,19 @@
 <ng-template pTemplate="footer">
 <p-button (click)="isDeleteProjectTeamMember=false" label="Отменить" styleClass="p-button-text"></p-button>
 <p-button (click)="onDeleteProjectTeamAsync()" label="Исключить" styleClass="p-button-danger p-button-text"></p-button>
+</ng-template>
+</p-dialog>
+
+<!-- Диалог покидания команды проекта. -->
+<p-dialog header="Покинуть проект"
+          [(visible)]="isLeaveProjectTeamMember"
+          [breakpoints]="{'960px': '75vw'}"
+          [style]="{width: '50vw'}"
+          [draggable]="false"
+          [resizable]="false">
+<p>Вы уверены, что хотите покинуть проект?</p>
+<ng-template pTemplate="footer">
+<p-button (click)="isLeaveProjectTeamMember=false" label="Отменить" styleClass="p-button-text"></p-button>
+<p-button (click)="onLeaveProjectTeamAsync()" label="Покинуть проект" styleClass="p-button-danger p-button-text"></p-button>
 </ng-template>
 </p-dialog>
