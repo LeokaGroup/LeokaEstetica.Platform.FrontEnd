@@ -376,65 +376,11 @@
                   <ng-template pTemplate="caption">
                     <div class="d-flex">
                       <div>
-                        <!-- <button pButton
-                                type="button"
-                                label="Пригласить в проект"
-                                class="p-button-outlined"
-                                (click)="op.toggle($event)">
-                        </button> -->
-
                         <p-overlayPanel #op>
                           <ng-template pTemplate>
-                            <!-- <input type="text"
-                                    class="p-inputtext-sm input-control-worksheet control-project"
-                                    placeholder="Логин или email пользователя"
-                                    pInputText
-                                    autocomplete="new-password"
-                                    [(ngModel)]="searchText"
-                                    (keyup.enter)="onSearchInviteProjectMembersAsync()" />     -->
-
-                            <!-- <div class="mb-3">
-                              <div>
-                                <label>Выберите вакансию для приглашения</label>
-                            </div>
-                            <div>
-                              <p-dropdown [options]="availableAttachVacancies$.value.projectVacancies"
-                                          [(ngModel)]="selectedInviteVacancy"
-                                          optionLabel="userVacancy.vacancyName">
-                              </p-dropdown>
-                            </div>
-                            </div>
-
-                            <div class="d-flex">
-                              <span class="p-fluid">
-                                <p-autoComplete [(ngModel)]="searchText"
-                                                [suggestions]="aProjectInvitesUsers"
-                                                (completeMethod)="onSearchInviteProjectMembersAsync($event)"
-                                                field="displayName"
-                                                [multiple]="false"
-                                                (onSelect)="onSelectProjectMember($event)"
-                                                placeholder="Логин или email пользователя">
-                                </p-autoComplete>
-                              </span>
-
-                              <button pButton
-                                      type="button"
-                                      label="Отправить приглашение"
-                                      class="p-button-text"
-                                      (click)="onSendInviteProjectTeamAsync()">
-                              </button>
-                            </div> -->
                           </ng-template>
-                      </p-overlayPanel>
-
-                      <!-- <button type="text" pButton label="Basic" (click)="op.toggle($event)"></button> -->
+                        </p-overlayPanel>
                       </div>
-                      <!-- &nbsp;&nbsp;&nbsp;
-                      <div>
-                        <button pButton type="button" label="Привязать" class="p-button-outlined p-button-secondary"
-                          (click)="onShowAttachModel()">
-                        </button>
-                      </div> -->
                     </div>
                   </ng-template>
 
@@ -445,9 +391,7 @@
                       </th>
                       <th *ngFor="let item of projectTeamColumns">
                         {{item.columnName}}</th>
-                      <!-- <th>Просмотр</th>
-                      <th>Редактирование</th>
-                      <th>Удаление</th> -->
+                        <th>Исключение</th>                      
                     </tr>
                   </ng-template>
 
@@ -459,27 +403,17 @@
                       <td>{{team.vacancyName}}</td>
                       <td>{{team.member}}</td>
                       <td>{{team.joined}}</td>
-                      <!-- <td>{{vacancy.projectStatusName}}</td>              -->
-                      <!-- <td>Надо вывести</td> -->
-                      <!-- <td><button
-                            pButton
-                            type="button"
-                            label="Покинуть проект"
-                            class="p-button-text">
-                        </button>
-                      </td>
-                      <td><button
-                            pButton
-                            type="button"
-                            label="Исключить из проекта"
-                            class="p-button-secondary p-button-text">
-                        </button>
-                      </td> -->
+                      <td>
+                        <p-button (click)="onShowDeleteProjectTeamMemberModal(team.member, team.userId)" 
+                                  label="Исключить"
+                                  styleClass="p-button-danger p-button-text">
+                        </p-button>
+                      </td>             
                     </tr>
                   </ng-template>
 
                   <ng-template pTemplate="summary">
-                    <!-- Всего: {{totalVacancies}} -->
+                    <!-- Всего: {{projectTeamColumns.total}} -->
                   </ng-template>
                 </p-table>
               </div>
@@ -818,5 +752,19 @@
 <p-button (click)="isProjectInvite=false" label="Отменить" styleClass="p-button-text p-button-danger"></p-button>
 <p-button (click)="onSendInviteProjectTeamAsync()" label="Отправить приглашение" styleClass="p-button-text p-button-text">
 </p-button>
+</ng-template>
+</p-dialog>
+
+<!-- Диалог удаления вакансии проекта. -->
+<p-dialog header="Исключение участника из команды проекта"
+          [(visible)]="isDeleteProjectTeamMember"
+          [breakpoints]="{'960px': '75vw'}"
+          [style]="{width: '50vw'}"
+          [draggable]="false"
+          [resizable]="false">
+<p>Вы уверены, что хотите исключить участника <strong>{{deleteMember}}</strong> из команды проекта?</p>
+<ng-template pTemplate="footer">
+<p-button (click)="isDeleteProjectTeamMember=false" label="Отменить" styleClass="p-button-text"></p-button>
+<p-button (click)="onDeleteProjectTeamAsync()" label="Исключить" styleClass="p-button-danger p-button-text"></p-button>
 </ng-template>
 </p-dialog>

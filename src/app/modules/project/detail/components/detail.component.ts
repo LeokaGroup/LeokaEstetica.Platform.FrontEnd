@@ -102,6 +102,9 @@ export class DetailProjectComponent {
     selectedInviteVariant: any;
     isVacancyInvite: boolean = false;
     availableAttachVacancies: any[] = [];
+    deleteMember: string = "";
+    isDeleteProjectTeamMember: boolean = false;
+    userId: number = 0;
 
   public async ngOnInit() {
         forkJoin([
@@ -147,6 +150,7 @@ export class DetailProjectComponent {
         this._signalrService.listenWarningEmptyUserProfile();
         this._signalrService.listenWarningUserAlreadyProjectInvitedTeam();
         this._signalrService.listenSuccessUserProjectInvitedTeam();
+        this._signalrService.listenSuccessDeleteProjectTeamMember();
     };
 
     private checkUrlParams() {
@@ -593,4 +597,22 @@ export class DetailProjectComponent {
         await this.getProjectVacanciesAsync();
       });
   };
+
+  public onShowDeleteProjectTeamMemberModal(member: string, userId: number) {
+    this.isDeleteProjectTeamMember = true;
+    this.deleteMember = member;
+    this.userId = userId;
+  };
+
+  /**
+   * Функция удаляет пользователя из команды проекта.
+   * @param userId - Id участника проекта, которого будем удалять.
+   */
+    public async onDeleteProjectTeamAsync() {
+        (await this._projectService.deleteProjectTeamAsync(this.projectId, this.userId))
+            .subscribe(async _ => {
+                this.isDeleteProjectTeamMember = false;
+                await this.getProjectTeamAsync();
+            });
+    };
 }

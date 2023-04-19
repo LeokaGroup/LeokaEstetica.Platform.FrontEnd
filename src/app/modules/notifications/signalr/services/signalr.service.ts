@@ -230,4 +230,13 @@ export class SignalrService {
       this.$allFeed.next(data);
     });
   };
+
+  /**
+* Функция слушает уведомления предупреждения о исключении пользователя из команды проекта.
+*/
+  public listenSuccessDeleteProjectTeamMember() {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessDeleteProjectTeamMember", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 }

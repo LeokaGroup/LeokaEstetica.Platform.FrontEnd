@@ -3,8 +3,8 @@
     line-height: 1.2;
     font-size: 18px;
     display: block; 
-    // background-color: #e6e6e6;
-    background: #FAFAFA;
+    background-color: #e6e6e6;
+    // background: #FAFAFA;
     height: 62px;
     padding: 0 20px 0 38px;
     outline: none;
@@ -128,6 +128,7 @@
 
 ::ng-deep .p-autocomplete-input {
     @include controlGrayForm();   
+    background: #FAFAFA;
    
     &:focus {
         box-shadow: none !important;

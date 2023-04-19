@@ -31,6 +31,7 @@ export class ProjectService {
     public removedProject$ = new BehaviorSubject<any>(null);
     public removedVacansyInProject$ = new BehaviorSubject<any>(null);
     public availableVacansiesResponse$ = new BehaviorSubject<any>(null);
+    public deletedProjectTeamMember$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -242,5 +243,11 @@ export class ProjectService {
     return await this.http.get(API_URL.apiUrl + `/projects/available-response-vacancies?projectId=${projectId}`).pipe(
       tap(data => this.availableVacansiesResponse$.next(data))
     );
+  };
+
+  public async deleteProjectTeamAsync(projectId: number, userId: number) {
+    return await this.http.delete(API_URL.apiUrl + `/projects/${projectId}/team-member/${userId}`).pipe(
+        tap(data => this.deletedProjectTeamMember$.next(data))
+      );
   };
 }
