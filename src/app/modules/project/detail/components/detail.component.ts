@@ -106,6 +106,8 @@ export class DetailProjectComponent {
     isDeleteProjectTeamMember: boolean = false;
     isLeaveProjectTeamMember: boolean = false;
     userId: number = 0;
+    isVisibleActionDeleteProjectTeamMember: boolean = false;
+    isVisibleActionLeaveProjectTeam: boolean = false;
 
   public async ngOnInit() {
         forkJoin([
@@ -185,6 +187,8 @@ export class DetailProjectComponent {
             console.log("Получили проект: ", this.selectedProject$.value);
             this.isVisibleDeleteButton = response.isVisibleDeleteButton;
             this.isVisibleActionProjectButtons = response.isVisibleActionProjectButtons;
+            this.isVisibleActionDeleteProjectTeamMember = response.isVisibleActionDeleteProjectTeamMember;
+            this.isVisibleActionLeaveProjectTeam = response.isVisibleActionLeaveProjectTeam;
         });
     };
 
@@ -628,6 +632,7 @@ export class DetailProjectComponent {
         (await this._projectService.leaveProjectTeamAsync(this.projectId))
             .subscribe(async _ => {
                 this.isLeaveProjectTeamMember = false;
+                this.isVisibleActionLeaveProjectTeam = false;
                 await this.getProjectTeamAsync();
             });
     };
