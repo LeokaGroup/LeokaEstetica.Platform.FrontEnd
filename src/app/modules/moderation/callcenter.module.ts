@@ -22,6 +22,7 @@ import {TabViewModule} from 'primeng/tabview';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { CallCenterRoutingModule } from './callcenter-routing.module';
 import { CallCenterComponent } from './components/callcenter/callcenter.component';
+import { SidebarModule } from 'primeng/sidebar';
 
 @NgModule({
     declarations: [
@@ -48,7 +49,8 @@ import { CallCenterComponent } from './components/callcenter/callcenter.componen
         CallCenterRoutingModule,
         TabViewModule,
         ReactiveFormsModule,
-        MegaMenuModule
+        MegaMenuModule,
+        SidebarModule
     ],
 
     exports: [],

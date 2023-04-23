@@ -43,6 +43,7 @@ export class CallCenterComponent implements OnInit {
     vacancyId: number = 0;
     isProjectsModeration: boolean = false;
     isVacanciesModeration: boolean = false;
+    stageName: string = '';
 
     aResumes: any[] = [];
     totalResumes: number = 0;
@@ -128,8 +129,9 @@ export class CallCenterComponent implements OnInit {
                 ]
             ]
         },
-
     ];
+
+    aRemarksProject: string[] = [];
 
     constructor(private readonly _headerService: HeaderService,
         private readonly _callCenterService: CallCenterService,
@@ -196,7 +198,8 @@ export class CallCenterComponent implements OnInit {
                 console.log("Проект для модерации: ", response);
                 this.isShowPreviewModerationProjectModal = true;
                 this.projectName = response.projectName;
-                this.projectDetails = response.projectDetails;
+                this.projectDetails = response.projectDetails;        
+                this.stageName = response.stageName;
             });
     };
 
