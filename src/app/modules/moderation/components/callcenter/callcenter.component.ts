@@ -9,6 +9,7 @@ import { ApproveResumeInput } from "../../models/input/approve-resume-input";
 import { RejectResumeInput } from "../../models/input/reject-resume-input";
 import { CallCenterService } from "../../services/callcenter.service";
 import { Router } from "@angular/router";
+import { ProjectRemarkInput } from "../../models/input/project-remark-input";
 
 @Component({
     selector: "callcenter",
@@ -51,7 +52,7 @@ export class CallCenterComponent implements OnInit {
     profileInfoId: number = 0;
     isShowPreviewModerationResumeModal: boolean = false;
     resumeEmail: string = "";
-    accessModeration: boolean = false;
+    accessModeration: boolean = false;    
 
     items: any[] = [
         {
@@ -131,7 +132,7 @@ export class CallCenterComponent implements OnInit {
         },
     ];
 
-    aRemarksProject: string[] = [];
+    aRemarksProject: ProjectRemarkInput[] = [];
 
     constructor(private readonly _headerService: HeaderService,
         private readonly _callCenterService: CallCenterService,
@@ -312,12 +313,6 @@ export class CallCenterComponent implements OnInit {
             });
     };
 
-
-
-
-
-
-
     /**
      * Функция получает список анкет для модерации.
      * @returns - Список анкеты.
@@ -404,6 +399,23 @@ export class CallCenterComponent implements OnInit {
          else {
             await this.checkAvailableUserRoleModerationAsync();
          }
+    };
+
+    /**
+     * Функция добавляет замечание.
+     * @param fieldName - Название поля.
+     * @param remarkText - Текст замечания.
+     */
+    public onSetProjectRemarks(fieldName: string, remarkText: string, russianName: string) {
+        let projectRemarkInput = new ProjectRemarkInput();
+        projectRemarkInput.projectId = this.projectId;
+        projectRemarkInput.fieldName = fieldName;
+        projectRemarkInput.remarkText = remarkText;
+        projectRemarkInput.russianName = russianName;
+        
+        this.aRemarksProject.push(projectRemarkInput);
+
+        console.log("aRemarksProject", this.aRemarksProject);
     };
 }
 
