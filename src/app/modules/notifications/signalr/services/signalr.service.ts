@@ -239,4 +239,13 @@ export class SignalrService {
       this.$allFeed.next(data);
     });
   };
+
+   /**
+* Функция слушает уведомления предупреждения об успешном сохранении замечаний проекта.
+*/
+public listenSuccessCreateProjectRemarks() {
+  (<HubConnection>this.hubConnection).on("SendNotificationSuccessCreateProjectRemarks", (data: any) => {
+    this.$allFeed.next(data);
+  });
+};
 }

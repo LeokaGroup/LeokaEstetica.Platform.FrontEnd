@@ -8,6 +8,7 @@ import { RejectProjectInput } from '../models/input/reject-project-input';
 import { RejectVacancyInput } from '../models/input/reject-vacancy-input';
 import { ApproveResumeInput } from "../models/input/approve-resume-input";
 import {RejectResumeInput} from "../models/input/reject-resume-input";
+import { CreateProjectRemarksInput, ProjectRemarkInput } from '../models/input/project-remark-input';
 
 /**
  * Класс сервиса КЦ.
@@ -28,6 +29,8 @@ export class CallCenterService {
     public resumeModeration$ = new BehaviorSubject<any>(null);
     public rejectResumeModeration$ = new BehaviorSubject<any>(null);
     public approveResumeModeration$ = new BehaviorSubject<any>(null);
+    public projectRemarksModeration$ = new BehaviorSubject<any>(null);
+
     constructor(private readonly http: HttpClient) {}
 
     /**
@@ -173,6 +176,14 @@ export class CallCenterService {
     );
   };
 
-
-
+  /**
+   * Функция сохраняет замечания проекта.
+   * @param createProjectRemarksInput - Входная модель.
+   * @returns - Список замечаний проекта.
+   */
+   public async createProjectRemarks(createProjectRemarksInput: CreateProjectRemarksInput) {
+    return await this.http.post(API_URL.apiUrl + `/moderation/project/remarks`, createProjectRemarksInput).pipe(
+      tap(data => this.projectRemarksModeration$.next(data))
+    );
+  };
 }

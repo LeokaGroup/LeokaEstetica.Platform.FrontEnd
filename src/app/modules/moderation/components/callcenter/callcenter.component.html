@@ -1,3 +1,5 @@
+<p-toast></p-toast>
+
 <div class="block-moderation">
   <div>
     <p-megaMenu [model]="items"></p-megaMenu>
@@ -174,9 +176,9 @@
       </div>
 
       <div>
-        <p-checkbox [(ngModel)]="aRemarksProject"
-                    inputId="remarkProjectName"
-                    [value]="'RemarkProjectName'">
+        <p-checkbox inputId="remarkProjectName"
+                    [value]="'RemarkProjectName'"
+                    (onChange)="onSetProjectRemarks('RemarkProjectName', '', 'Название проекта')">
 
         </p-checkbox>
         <label for="remarkProjectName">&nbsp;Есть замечание</label>
@@ -202,17 +204,16 @@
       </div>
 
       <div>
-        <p-checkbox [(ngModel)]="aRemarksProject"
-                    inputId="remarkProjectDetails"
-                    [value]="'RemarkProjectDetails'">
-
+        <p-checkbox inputId="remarkProjectDetails"
+                    [value]="'RemarkProjectDetails'"
+                    (onChange)="onSetProjectRemarks('RemarkProjectDetails', '', 'Описание проекта')">
         </p-checkbox>
-        <label for="remarkProjectName">&nbsp;Есть замечание</label>
+        <label for="remarkProjectDetails">&nbsp;Есть замечание</label>
       </div>
 
       <div class="control-input-text-worksheet mt-3">
         <div>
-            <label>Название проекта</label>
+            <label>Стадия проекта</label>
         </div>
         <div>
             <input type="text"
@@ -224,14 +225,52 @@
             [disabled]="true" />
         </div>
       </div>
+
+      <!-- Замечания проекта. -->
+    <div *ngIf="aRemarksProject.length > 0" class="mt-5">
+      <p-table [value]="aRemarksProject" styleClass="p-datatable-gridlines">
+        <ng-template pTemplate="caption">
+          Замечания к проекту
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID проекта</th>
+            <th>Название поля</th>
+            <th>Замечание</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-prj>
+          <tr>
+            <td>{{prj.projectId}}</td>
+            <td>{{prj.russianName}}</td>
+            <td>
+              <textarea input-control-worksheet
+                        rows="5"
+                        cols="100"
+                        pInputTextarea
+                        [autoResize]="true"
+                        autocomplete="new-password"
+                        placeholder="Введите замечание"
+                        [(ngModel)]="prj.remarkText"
+                        class="control-textarea">
+            </textarea>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <!-- Всего: {{totalProjects}} -->
+        </ng-template>
+      </p-table>
     </div>
+    </div>    
   </div>
   <ng-template pTemplate="footer">
     <div class="mt-3">
       <p-button icon="pi pi-check"
               (click)="onApproveProjectAsync(projectId)"
               label="Одобрить проект"
-              styleClass="p-button-success p-button-text">
+              styleClass="p-button-success p-button-text"
+              [disabled]="aRemarksProject.length > 0">
     </p-button>
 
     <p-button icon="pi pi-check"
@@ -240,10 +279,17 @@
               styleClass="p-button-danger p-button-text">
     </p-button>
 
-    <p-button icon="pi pi-check"
-              (click)="onRejectProjectAsync(projectId)"
+    <p-button icon="pi pi-check"              
               label="Внести замечания"
               styleClass="p-button-warning p-button-text"
+              [disabled]="aRemarksProject.length == 0"
+              (click)="onCreateProjectRemarksAsync()">
+    </p-button>
+
+    <p-button icon="pi pi-check"
+              (click)="onRejectProjectAsync(projectId)"
+              label="Отправить замечания"
+              styleClass="p-button-success p-button-text"
               [disabled]="aRemarksProject.length == 0">
     </p-button>
     </div>

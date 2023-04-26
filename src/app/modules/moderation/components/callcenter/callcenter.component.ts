@@ -9,6 +9,9 @@ import { ApproveResumeInput } from "../../models/input/approve-resume-input";
 import { RejectResumeInput } from "../../models/input/reject-resume-input";
 import { CallCenterService } from "../../services/callcenter.service";
 import { Router } from "@angular/router";
+import { CreateProjectRemarksInput, ProjectRemarkInput } from "../../models/input/project-remark-input";
+import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
+import { MessageService } from "primeng/api";
 
 @Component({
     selector: "callcenter",
@@ -24,6 +27,7 @@ export class CallCenterComponent implements OnInit {
     public readonly projectsModeration$ = this._callCenterService.projectsModeration$;
     public readonly projectModeration$ = this._callCenterService.projectModeration$;
     public readonly accessModeration$ = this._callCenterService.accessModeration$;
+    public readonly projectRemarksModeration$ = this._callCenterService.projectRemarksModeration$;
 
     isHideAuthButtons: boolean = false;
     aProjects: any[] = [];
@@ -44,14 +48,13 @@ export class CallCenterComponent implements OnInit {
     isProjectsModeration: boolean = false;
     isVacanciesModeration: boolean = false;
     stageName: string = '';
-
     aResumes: any[] = [];
     totalResumes: number = 0;
     isResumesModeration: boolean = false;
     profileInfoId: number = 0;
     isShowPreviewModerationResumeModal: boolean = false;
     resumeEmail: string = "";
-    accessModeration: boolean = false;
+    accessModeration: boolean = false;    
 
     items: any[] = [
         {
@@ -131,11 +134,14 @@ export class CallCenterComponent implements OnInit {
         },
     ];
 
-    aRemarksProject: string[] = [];
+    aRemarksProject: ProjectRemarkInput[] = [];
+    allFeedSubscription: any;
 
     constructor(private readonly _headerService: HeaderService,
         private readonly _callCenterService: CallCenterService,
-        private readonly _router: Router) {
+        private readonly _router: Router,
+        private readonly _signalrService: SignalrService,
+        private readonly _messageService: MessageService) {
     }
 
     public async ngOnInit() {
@@ -144,6 +150,27 @@ export class CallCenterComponent implements OnInit {
             await this._headerService.refreshTokenAsync(),
             await this.checkModerationUserRoleAsync()
         ]).subscribe();
+
+        // Подключаемся.
+        this._signalrService.startConnection().then(() => {
+            console.log("Подключились");
+
+            this.listenAllHubsNotifications();
+
+            // Подписываемся на получение всех сообщений.
+            this.allFeedSubscription = this._signalrService.AllFeedObservable
+                .subscribe((response: any) => {
+                    console.log("Подписались на сообщения", response);
+                    this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
+                });
+        });
+    };
+
+    /**
+     * Функция слушает все хабы.
+     */
+     private listenAllHubsNotifications() {        
+        this._signalrService.listenSuccessCreateProjectRemarks();
     };
 
     /**
@@ -312,12 +339,6 @@ export class CallCenterComponent implements OnInit {
             });
     };
 
-
-
-
-
-
-
     /**
      * Функция получает список анкет для модерации.
      * @returns - Список анкеты.
@@ -404,6 +425,39 @@ export class CallCenterComponent implements OnInit {
          else {
             await this.checkAvailableUserRoleModerationAsync();
          }
+    };
+
+    /**
+     * Функция записывает замечания проекта.
+     * @param fieldName - Название поля.
+     * @param remarkText - Текст замечания.
+     * @param russianName - Русское название поля.
+     * @returns - Список замечаний проекта.
+     */
+    public onSetProjectRemarks(fieldName: string, remarkText: string, russianName: string) {
+        let projectRemarkInput = new ProjectRemarkInput();
+        projectRemarkInput.projectId = this.projectId;
+        projectRemarkInput.fieldName = fieldName;
+        projectRemarkInput.remarkText = remarkText;
+        projectRemarkInput.russianName = russianName;
+        
+        this.aRemarksProject.push(projectRemarkInput);
+
+        console.log("aRemarksProject", this.aRemarksProject);
+    };
+
+    /**
+     * Функция сохраняет замечания проекта.
+     * @returns - Список замечаний проекта.
+     */
+    public async onCreateProjectRemarksAsync() {
+        let createProjectRemarksInput = new CreateProjectRemarksInput();
+        createProjectRemarksInput.ProjectRemarks = this.aRemarksProject;
+
+        (await this._callCenterService.createProjectRemarks(createProjectRemarksInput))
+        .subscribe(_ => {
+            console.log("Внесли замечания проекта: ", this.projectRemarksModeration$.value);
+        });
     };
 }
 
