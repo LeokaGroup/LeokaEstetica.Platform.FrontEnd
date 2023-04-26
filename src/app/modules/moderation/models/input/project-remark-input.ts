@@ -22,3 +22,7 @@ export class ProjectRemarkInput {
      */
     russianName: string = "";
 }
+
+export class CreateProjectRemarksInput {
+    ProjectRemarks: ProjectRemarkInput[] = [];
+}

@@ -1,3 +1,5 @@
+<p-toast></p-toast>
+
 <div class="block-moderation">
   <div>
     <p-megaMenu [model]="items"></p-megaMenu>
@@ -253,27 +255,6 @@
                         class="control-textarea">
             </textarea>
             </td>
-            <!-- <td><button pButton
-                        type="button"
-                        label="Просмотр"
-                        class="p-button-text"
-                        (click)="onPreviewProjectAsync(prj.projectId)">
-            </button>
-            </td>
-            <td><button pButton
-                        type="button"
-                        label="Одобрить"
-                        class="p-button-success p-button-text"
-                        (click)="onApproveProjectAsync(prj.projectId)">
-              </button>
-            </td>
-            <td><button pButton 
-                        type="button" 
-                        label="Отклонить" 
-                        class="p-button-danger p-button-text"
-                        (click)="onRejectProjectAsync(prj.projectId)">
-              </button>
-            </td> -->
           </tr>
         </ng-template>
         <ng-template pTemplate="summary">
@@ -298,11 +279,11 @@
               styleClass="p-button-danger p-button-text">
     </p-button>
 
-    <p-button icon="pi pi-check"
-              (click)="onRejectProjectAsync(projectId)"
+    <p-button icon="pi pi-check"              
               label="Внести замечания"
               styleClass="p-button-warning p-button-text"
-              [disabled]="aRemarksProject.length == 0">
+              [disabled]="aRemarksProject.length == 0"
+              (click)="onCreateProjectRemarksAsync()">
     </p-button>
 
     <p-button icon="pi pi-check"
