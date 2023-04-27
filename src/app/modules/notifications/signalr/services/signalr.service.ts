@@ -248,4 +248,22 @@ public listenSuccessCreateProjectRemarks() {
     this.$allFeed.next(data);
   });
 };
+
+  /**
+* Функция слушает уведомления предупреждения об успешной отправке замечаний проекта.
+*/
+public listenSuccessSendProjectRemarks() {
+  (<HubConnection>this.hubConnection).on("SendNotificationSuccessSendProjectRemarks", (data: any) => {
+    this.$allFeed.next(data);
+  });
+};
+
+ /**
+* Функция слушает уведомления предупреждения о внесении замечаний проекта.
+*/
+public listenWarningSendProjectRemarks() {
+  (<HubConnection>this.hubConnection).on("SendNotificationWarningSendProjectRemarks", (data: any) => {
+    this.$allFeed.next(data);
+  });
+};
 }

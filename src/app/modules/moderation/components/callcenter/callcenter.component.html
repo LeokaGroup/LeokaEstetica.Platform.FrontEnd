@@ -287,10 +287,9 @@
     </p-button>
 
     <p-button icon="pi pi-check"
-              (click)="onRejectProjectAsync(projectId)"
+              (click)="onSendProjectRemarksAsync()"
               label="Отправить замечания"
-              styleClass="p-button-success p-button-text"
-              [disabled]="aRemarksProject.length == 0">
+              styleClass="p-button-success p-button-text">
     </p-button>
     </div>
   </ng-template>

@@ -12,6 +12,7 @@ import { Router } from "@angular/router";
 import { CreateProjectRemarksInput, ProjectRemarkInput } from "../../models/input/project-remark-input";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { MessageService } from "primeng/api";
+import { SendProjectRemarkInput } from "../../models/input/send-project-remark-input";
 
 @Component({
     selector: "callcenter",
@@ -171,6 +172,8 @@ export class CallCenterComponent implements OnInit {
      */
      private listenAllHubsNotifications() {        
         this._signalrService.listenSuccessCreateProjectRemarks();
+        this._signalrService.listenSuccessSendProjectRemarks();
+        this._signalrService.listenWarningSendProjectRemarks();
     };
 
     /**
@@ -457,6 +460,19 @@ export class CallCenterComponent implements OnInit {
         (await this._callCenterService.createProjectRemarks(createProjectRemarksInput))
         .subscribe(_ => {
             console.log("Внесли замечания проекта: ", this.projectRemarksModeration$.value);
+        });
+    };
+
+    /**
+     * Функция отправляет замечания проекта.
+     */
+     public async onSendProjectRemarksAsync() {
+        let sendProjectRemarkInput = new SendProjectRemarkInput();
+        sendProjectRemarkInput.projectId = this.projectId;
+
+        (await this._callCenterService.sendProjectRemarks(sendProjectRemarkInput))
+        .subscribe(_ => {
+            console.log("Jnghfdbkb замечания проекта: ", this.projectRemarksModeration$.value);
         });
     };
 }

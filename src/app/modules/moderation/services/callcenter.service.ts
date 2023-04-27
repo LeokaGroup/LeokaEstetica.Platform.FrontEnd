@@ -9,6 +9,7 @@ import { RejectVacancyInput } from '../models/input/reject-vacancy-input';
 import { ApproveResumeInput } from "../models/input/approve-resume-input";
 import {RejectResumeInput} from "../models/input/reject-resume-input";
 import { CreateProjectRemarksInput, ProjectRemarkInput } from '../models/input/project-remark-input';
+import { SendProjectRemarkInput } from '../models/input/send-project-remark-input';
 
 /**
  * Класс сервиса КЦ.
@@ -182,7 +183,17 @@ export class CallCenterService {
    * @returns - Список замечаний проекта.
    */
    public async createProjectRemarks(createProjectRemarksInput: CreateProjectRemarksInput) {
-    return await this.http.post(API_URL.apiUrl + `/moderation/project/remarks`, createProjectRemarksInput).pipe(
+    return await this.http.post(API_URL.apiUrl + `/moderation/project-remarks`, createProjectRemarksInput).pipe(
+      tap(data => this.projectRemarksModeration$.next(data))
+    );
+  };
+
+  /**
+   * Функция отправляет замечания проекта.
+   * @param createProjectRemarksInput - Входная модель.
+   */
+   public async sendProjectRemarks(sendProjectRemarkInput: SendProjectRemarkInput) {
+    return await this.http.patch(API_URL.apiUrl + `/moderation/send-project-remarks`, sendProjectRemarkInput).pipe(
       tap(data => this.projectRemarksModeration$.next(data))
     );
   };
