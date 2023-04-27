@@ -53,21 +53,24 @@
   white-space: pre-line;
 }
 
-@media screen and (max-width: 900px) {
+@media (min-width:760px) and (max-width:1024px){
+  .fon{
+      max-height: 70vh;
+  }
   .fon-content {
     display: flex;
-    align-items: center;
-   .fon-text {
+    top:25%;
+    .fon-text {
      margin: 0 10px;
   }
   }
 
 
-  :host ::ng-deep.p-carousel-items-container{
-    display:inline;flex-direction:row;}
-
-  :host ::ng-deep.p-carousel-container button{
-    display: none;
-  }
+  //:host ::ng-deep.p-carousel-items-container{
+  //  display:inline;flex-direction:row;}
+  //
+  //:host ::ng-deep.p-carousel-container button{
+  //  display: none;
+  //}
 
 }
