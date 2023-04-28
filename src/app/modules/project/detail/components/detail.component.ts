@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { MessageService } from "primeng/api";
+import { Message, MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { DialogInput } from "src/app/modules/messages/chat/models/input/dialog-input";
@@ -52,6 +52,7 @@ export class DetailProjectComponent {
     public readonly searchInviteMembers$ = this._searchProjectService.searchInviteMembers$;
     public readonly invitedProjectTeamMember$ = this._projectService.invitedProjectTeamMember$;
     public readonly availableVacansiesResponse$ = this._projectService.availableVacansiesResponse$;
+    public readonly projectRemarks$ = this._projectService.projectRemarks$;
 
     projectName: string = "";
     projectDetails: string = "";
@@ -108,6 +109,7 @@ export class DetailProjectComponent {
     userId: number = 0;
     isVisibleActionDeleteProjectTeamMember: boolean = false;
     isVisibleActionLeaveProjectTeam: boolean = false;
+    aProjectRemarks: Message[] = [];
 
   public async ngOnInit() {
         forkJoin([
@@ -120,7 +122,8 @@ export class DetailProjectComponent {
         await this.onWriteOwnerDialogAsync(),
         await this.getProjectCommentsAsync(),
         await this.getProjectTeamColumnsNamesAsync(),
-        await this.getProjectTeamAsync()
+        await this.getProjectTeamAsync(),
+        await this.getProjectRemarksAsync()
         ]).subscribe();
 
          // Подключаемся.
@@ -634,6 +637,19 @@ export class DetailProjectComponent {
                 this.isLeaveProjectTeamMember = false;
                 this.isVisibleActionLeaveProjectTeam = false;
                 await this.getProjectTeamAsync();
+            });
+    };
+
+    /**
+ * Функция получает список замечаний проекта.
+ * @param projectId - Id проекта.
+ * @returns - Список замечаний проекта.
+ */
+    private async getProjectRemarksAsync() {
+        (await this._projectService.getProjectRemarksAsync(this.projectId))
+            .subscribe(async _ => {                
+                this.aProjectRemarks = this.projectRemarks$.value;
+                console.log("Список замечаний проекта: ", this.aProjectRemarks);
             });
     };
 }

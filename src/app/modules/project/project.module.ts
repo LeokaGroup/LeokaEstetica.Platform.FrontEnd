@@ -27,7 +27,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { PaginatorModule } from 'primeng/paginator';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { TagModule } from 'primeng/tag';
-
+import { MessagesModule } from 'primeng/messages';
 
 @NgModule({
     declarations: [
@@ -56,9 +56,10 @@ import { TagModule } from 'primeng/tag';
         SplitterModule,
         OverlayPanelModule,
         AutoCompleteModule,
-        PaginatorModule,
+        PaginatorModule,    
         RadioButtonModule,
-        TagModule
+        TagModule,
+        MessagesModule
     ],
 
     exports: [],
