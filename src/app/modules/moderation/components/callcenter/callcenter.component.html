@@ -297,14 +297,9 @@
 
 
 <!-- Диалог просмотра вакансии. -->
-<p-dialog header="Просмотр вакансии"
-          [(visible)]="isShowPreviewModerationVacancyModal"
-          [modal]="true"
-          [style]="{width: '50vw', height: '50vw'}"
-          [maximizable]="false"
-          [draggable]="false"
-          [resizable]="false">
-
+<p-sidebar class="p-sidebar-sm" 
+          [(visible)]="isShowPreviewModerationVacancyModal" 
+          [style]="{width: '100vw'}">
   <div class="mt-3">
     <div class="control-input-text-worksheet">
       <div>
@@ -319,9 +314,18 @@
           [(ngModel)]="vacancyName"
           [disabled]="true" />
       </div>
+
+      <div>
+        <p-checkbox inputId="remarkVacancyName"
+                    [value]="'RemarkVacancyName'"
+                    (onChange)="onSetVacancyRemarks('RemarkVacancyName', '', 'Название вакансии')">
+
+        </p-checkbox>
+        <label for="remarkVacancyName">&nbsp;Есть замечание</label>
+      </div>
     </div>
 
-    <div class="control-input-text-worksheet">
+    <div class="control-input-text-worksheet mt-3">
       <div>
           <label>Опыт</label>
       </div>
@@ -334,9 +338,18 @@
                   [(ngModel)]="workExperience"
                   [disabled]="true" />
       </div>
+
+      <div>
+        <p-checkbox inputId="remarkVacancyExperience"
+                    [value]="'RemarkVacancyExperience'"
+                    (onChange)="onSetVacancyRemarks('RemarkVacancyExperience', '', 'Опыт работы')">
+
+        </p-checkbox>
+        <label for="remarkVacancyExperience">&nbsp;Есть замечание</label>
+      </div>
     </div>
 
-    <div class="control-input-text-worksheet">
+    <div class="control-input-text-worksheet mt-3">
       <div>
           <label>Занятость</label>
       </div>
@@ -349,9 +362,18 @@
                   [(ngModel)]="employment"
                   [disabled]="true" />
       </div>
+
+      <div>
+        <p-checkbox inputId="remarkVacancyEmployment"
+                    [value]="'RemarkVacancyEmployment'"
+                    (onChange)="onSetVacancyRemarks('RemarkVacancyEmployment', '', 'Занятость')">
+
+        </p-checkbox>
+        <label for="remarkVacancyEmployment">&nbsp;Есть замечание</label>
+      </div>
     </div>
 
-    <div class="control-input-text-worksheet">
+    <div class="control-input-text-worksheet mt-3">
       <div>
           <label>Оплата</label>
       </div>
@@ -363,6 +385,15 @@
                   autocomplete="new-password"
                   [(ngModel)]="payment"
                   [disabled]="true" />
+      </div>
+
+      <div>
+        <p-checkbox inputId="remarkVacancyPayment"
+                    [value]="'RemarkVacancyPayment'"
+                    (onChange)="onSetVacancyRemarks('RemarkVacancyPayment', '', 'Оплата')">
+
+        </p-checkbox>
+        <label for="remarkVacancyPayment">&nbsp;Есть замечание</label>
       </div>
     </div>
 
@@ -382,11 +413,58 @@
                   class="control-textarea"
                   [disabled]="true">
         </textarea>
+
+        <div>
+          <p-checkbox inputId="remarkVacancyText"
+                      [value]="'RemarkVacancyText'"
+                      (onChange)="onSetVacancyRemarks('RemarkVacancyText', '', 'Описание вакансии')">
+  
+          </p-checkbox>
+          <label for="remarkVacancyText">&nbsp;Есть замечание</label>
+        </div>
       </div>
+
+       <!-- Замечания вакансии. -->
+    <div *ngIf="aRemarksVacancy.length > 0" class="mt-5">
+      <p-table [value]="aRemarksVacancy" styleClass="p-datatable-gridlines">
+        <ng-template pTemplate="caption">
+          Замечания к вакансии
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID вакансии</th>
+            <th>Название поля</th>
+            <th>Замечание</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-vac>
+          <tr>
+            <td>{{vac.vacancyId}}</td>
+            <td>{{vac.russianName}}</td>
+            <td>
+              <textarea input-control-worksheet
+                        rows="5"
+                        cols="100"
+                        pInputTextarea
+                        [autoResize]="true"
+                        autocomplete="new-password"
+                        placeholder="Введите замечание"
+                        [(ngModel)]="vac.remarkText"
+                        class="control-textarea">
+            </textarea>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <!-- Всего: {{totalProjects}} -->
+        </ng-template>
+      </p-table>
+    </div>
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <p-button icon="pi pi-check"
+    <div class="mt-3">
+      <p-button icon="pi pi-check"
               (click)="onApproveVacancyAsync(vacancyId)"
               label="Одобрить вакансию"
               styleClass="p-button-success p-button-text">
@@ -395,10 +473,25 @@
     <p-button icon="pi pi-check"
               (click)="onRejectVacancyAsync(vacancyId)"
               label="Отклонить вакансию"
-              styleClass="p-button-danger p-button-text">
-</p-button>
+              styleClass="p-button-danger p-button-text"
+              [disabled]="aRemarksVacancy.length > 0">
+    </p-button>
+
+    <p-button icon="pi pi-check"              
+              label="Внести замечания"
+              styleClass="p-button-warning p-button-text"
+              [disabled]="aRemarksVacancy.length == 0"
+              (click)="onCreateVacancyRemarksAsync()">
+    </p-button>
+
+    <p-button icon="pi pi-check"
+              (click)="onSendVacancyRemarksAsync()"
+              label="Отправить замечания"
+              styleClass="p-button-success p-button-text">
+    </p-button>
+    </div>
   </ng-template>
-</p-dialog>
+</p-sidebar>
 
 <!-- Диалог просмотра Анкеты. -->
 <p-dialog header="Просмотр aнкеты"

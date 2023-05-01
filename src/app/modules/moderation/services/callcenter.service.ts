@@ -10,6 +10,8 @@ import { ApproveResumeInput } from "../models/input/approve-resume-input";
 import {RejectResumeInput} from "../models/input/reject-resume-input";
 import { CreateProjectRemarksInput, ProjectRemarkInput } from '../models/input/project-remark-input';
 import { SendProjectRemarkInput } from '../models/input/send-project-remark-input';
+import { CreateVacancyRemarksInput } from '../models/input/vacancy-remark-input';
+import { SendVacancyRemarkInput } from '../models/input/send-vacancy-remark-input';
 
 /**
  * Класс сервиса КЦ.
@@ -31,6 +33,7 @@ export class CallCenterService {
     public rejectResumeModeration$ = new BehaviorSubject<any>(null);
     public approveResumeModeration$ = new BehaviorSubject<any>(null);
     public projectRemarksModeration$ = new BehaviorSubject<any>(null);
+    public vacancyRemarksModeration$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {}
 
@@ -195,6 +198,27 @@ export class CallCenterService {
    public async sendProjectRemarks(sendProjectRemarkInput: SendProjectRemarkInput) {
     return await this.http.patch(API_URL.apiUrl + `/callcenter/send-project-remarks`, sendProjectRemarkInput).pipe(
       tap(data => this.projectRemarksModeration$.next(data))
+    );
+  };
+
+   /**
+   * Функция сохраняет замечания вакансии.
+   * @param createVacancyRemarksInput - Входная модель.
+   * @returns - Список замечаний вакансии.
+   */
+    public async createVacancyRemarks(createVacancyRemarksInput: CreateVacancyRemarksInput) {
+      return await this.http.post(API_URL.apiUrl + `/callcenter/vacancy-remarks`, createVacancyRemarksInput).pipe(
+        tap(data => this.vacancyRemarksModeration$.next(data))
+      );
+    };
+
+     /**
+   * Функция отправляет замечания вакансии.
+   * @param createProjectRemarksInput - Входная модель.
+   */
+   public async sendVacancyRemarks(sendVacancyRemarkInput: SendVacancyRemarkInput) {
+    return await this.http.patch(API_URL.apiUrl + `/callcenter/send-vacancy-remarks`, sendVacancyRemarkInput).pipe(
+      tap(data => this.vacancyRemarksModeration$.next(data))
     );
   };
 }

@@ -13,6 +13,8 @@ import { CreateProjectRemarksInput, ProjectRemarkInput } from "../../models/inpu
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { MessageService } from "primeng/api";
 import { SendProjectRemarkInput } from "../../models/input/send-project-remark-input";
+import { CreateVacancyRemarksInput, VacancyRemarkInput } from "../../models/input/vacancy-remark-input";
+import { SendVacancyRemarkInput } from "../../models/input/send-vacancy-remark-input";
 
 @Component({
     selector: "callcenter",
@@ -29,6 +31,7 @@ export class CallCenterComponent implements OnInit {
     public readonly projectModeration$ = this._callCenterService.projectModeration$;
     public readonly accessModeration$ = this._callCenterService.accessModeration$;
     public readonly projectRemarksModeration$ = this._callCenterService.projectRemarksModeration$;
+    public readonly vacancyRemarksModeration$ = this._callCenterService.vacancyRemarksModeration$;
 
     isHideAuthButtons: boolean = false;
     aProjects: any[] = [];
@@ -137,6 +140,7 @@ export class CallCenterComponent implements OnInit {
 
     aRemarksProject: ProjectRemarkInput[] = [];
     allFeedSubscription: any;
+    aRemarksVacancy: VacancyRemarkInput[] = [];
 
     constructor(private readonly _headerService: HeaderService,
         private readonly _callCenterService: CallCenterService,
@@ -174,6 +178,9 @@ export class CallCenterComponent implements OnInit {
         this._signalrService.listenSuccessCreateProjectRemarks();
         this._signalrService.listenSuccessSendProjectRemarks();
         this._signalrService.listenWarningSendProjectRemarks();
+        this._signalrService.listenSuccessCreateVacancyRemarks();
+        this._signalrService.listenSuccessSendVacancyRemarks();
+        this._signalrService.listenWarningSendVacancyRemarks();
     };
 
     /**
@@ -472,7 +479,53 @@ export class CallCenterComponent implements OnInit {
 
         (await this._callCenterService.sendProjectRemarks(sendProjectRemarkInput))
         .subscribe(_ => {
-            console.log("Jnghfdbkb замечания проекта: ", this.projectRemarksModeration$.value);
+            console.log("Отправили замечания проекта: ", this.projectRemarksModeration$.value);
+        });
+    };
+
+    /**
+     * Функция записывает замечания вакансии.
+     * @param fieldName - Название поля.
+     * @param remarkText - Текст замечания.
+     * @param russianName - Русское название поля.
+     * @returns - Список замечаний вакансии.
+     */
+     public onSetVacancyRemarks(fieldName: string, remarkText: string, russianName: string) {
+        let vacancyRemarkInput = new VacancyRemarkInput();
+        vacancyRemarkInput.vacancyId = this.vacancyId;
+        vacancyRemarkInput.fieldName = fieldName;
+        vacancyRemarkInput.remarkText = remarkText;
+        vacancyRemarkInput.russianName = russianName;
+        
+        this.aRemarksVacancy.push(vacancyRemarkInput);
+
+        console.log("aRemarksVacancy", this.aRemarksVacancy);
+    };
+
+    /**
+     * Функция сохраняет замечания вакансии.
+     * @returns - Список замечаний вакансии.
+     */
+     public async onCreateVacancyRemarksAsync() {
+        let createVacancyRemarksInput = new CreateVacancyRemarksInput();
+        createVacancyRemarksInput.VacanciesRemarks = this.aRemarksVacancy;
+
+        (await this._callCenterService.createVacancyRemarks(createVacancyRemarksInput))
+        .subscribe(_ => {
+            console.log("Внесли замечания вакансии: ", this.vacancyRemarksModeration$.value);
+        });
+    };
+
+    /**
+     * Функция отправляет замечания вакансии.
+     */
+     public async onSendVacancyRemarksAsync() {
+        let sendVacancyRemarkInput = new SendVacancyRemarkInput();
+        sendVacancyRemarkInput.vacancyId = this.vacancyId;
+
+        (await this._callCenterService.sendVacancyRemarks(sendVacancyRemarkInput))
+        .subscribe(_ => {
+            console.log("Отправили замечания вакансии: ", this.vacancyRemarksModeration$.value);
         });
     };
 }
