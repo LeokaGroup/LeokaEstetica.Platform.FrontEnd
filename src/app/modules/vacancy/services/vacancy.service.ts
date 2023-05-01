@@ -15,6 +15,8 @@ export class VacancyService {
     public pagination$ = new BehaviorSubject<any>(null);
     public deleteVacancy$ = new BehaviorSubject<any>(null);
     public listVacancy$ = new BehaviorSubject<any>([]);
+    public vacancyRemarks$ = new BehaviorSubject<any>([]);
+
     constructor(private readonly http: HttpClient) {
 
     }
@@ -85,7 +87,7 @@ export class VacancyService {
      * @param searchText - Поисковая строка.
      * @returns - Список вакансий после поиска.
      */
-     public async searchVacanciesAsync(searchText: string) {
+    public async searchVacanciesAsync(searchText: string) {
         return await this.http.get(API_URL.apiUrl + "/vacancies/search?searchText=" + searchText).pipe(
             tap(data => this.catalog$.next(data))
         );
@@ -96,7 +98,7 @@ export class VacancyService {
      * @param page - Номер страницы.
      * @returns - Список вакансий.
      */
-     public async getVacanciesPaginationAsync(page: number) {
+    public async getVacanciesPaginationAsync(page: number) {
         // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
         return await this.http.get(API_URL.apiUrl + `/vacancies/pagination/${page + 1}`).pipe(
             tap(data => this.pagination$.next(data))
@@ -107,10 +109,20 @@ export class VacancyService {
      * Функция удаляет вакансию.
      * @param vacancyId - Id вакансии.
      */
-     public async deleteVacancyAsync(vacancyId: number) {
+    public async deleteVacancyAsync(vacancyId: number) {
         return await this.http.delete(API_URL.apiUrl + `/vacancies/${vacancyId}`).pipe(
             tap(data => this.deleteVacancy$.next(data))
         );
     };
 
+    /**
+* Функция получает список замечаний вакансии.
+* @param vacancyId - Id вакансии.
+* @returns - Список замечаний вакансии.
+*/
+    public async getVacancyRemarksAsync(vacancyId: number) {
+        return await this.http.get(API_URL.apiUrl + `/vacancies/${vacancyId}/remarks`).pipe(
+            tap(data => this.vacancyRemarks$.next(data))
+        );
+    };
 }

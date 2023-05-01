@@ -10,6 +10,8 @@ import { ApproveResumeInput } from "../models/input/approve-resume-input";
 import {RejectResumeInput} from "../models/input/reject-resume-input";
 import { CreateProjectRemarksInput, ProjectRemarkInput } from '../models/input/project-remark-input';
 import { SendProjectRemarkInput } from '../models/input/send-project-remark-input';
+import { CreateVacancyRemarksInput } from '../models/input/vacancy-remark-input';
+import { SendVacancyRemarkInput } from '../models/input/send-vacancy-remark-input';
 
 /**
  * Класс сервиса КЦ.
@@ -31,6 +33,7 @@ export class CallCenterService {
     public rejectResumeModeration$ = new BehaviorSubject<any>(null);
     public approveResumeModeration$ = new BehaviorSubject<any>(null);
     public projectRemarksModeration$ = new BehaviorSubject<any>(null);
+    public vacancyRemarksModeration$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {}
 
@@ -39,7 +42,7 @@ export class CallCenterService {
      * @returns - Признак доступа к модерации.
      */
     public async checkAvailableUserRoleModerationAsync() {
-        return await this.http.post(API_URL.apiUrl + "/moderation/check", {}).pipe(
+        return await this.http.post(API_URL.apiUrl + "/callcenter/check", {}).pipe(
             tap(data => this.accessModeration$.next(data))
         );
     };
@@ -49,7 +52,7 @@ export class CallCenterService {
      * @returns - Список проектов.
      */
      public async getProjectsModerationAsync() {
-        return await this.http.get(API_URL.apiUrl + "/moderation/projects").pipe(
+        return await this.http.get(API_URL.apiUrl + "/callcenter/projects").pipe(
             tap(data => this.projectsModeration$.next(data))
         );
     };
@@ -60,7 +63,7 @@ export class CallCenterService {
      * @returns - Данные проекта.
      */
      public async previewProjectAsync(projectId: number) {
-        return await this.http.get(API_URL.apiUrl + `/moderation/project/${projectId}/preview`).pipe(
+        return await this.http.get(API_URL.apiUrl + `/callcenter/project/${projectId}/preview`).pipe(
             tap(data => this.projectModeration$.next(data))
         );
     };
@@ -71,7 +74,7 @@ export class CallCenterService {
      * @returns - Данные проекта.
      */
      public async approveProjectAsync(approveProjectInput: ApproveProjectInput) {
-        return await this.http.patch(API_URL.apiUrl + `/moderation/project/approve`, approveProjectInput).pipe(
+        return await this.http.patch(API_URL.apiUrl + `/callcenter/project/approve`, approveProjectInput).pipe(
             tap(data => this.approveProjectModeration$.next(data))
         );
     };
@@ -82,7 +85,7 @@ export class CallCenterService {
      * @returns - Данные проекта.
      */
      public async rejectProjectAsync(rejectProjectInput: RejectProjectInput) {
-        return await this.http.patch(API_URL.apiUrl + `/moderation/project/reject`, rejectProjectInput).pipe(
+        return await this.http.patch(API_URL.apiUrl + `/callcenter/project/reject`, rejectProjectInput).pipe(
             tap(data => this.rejectProjectModeration$.next(data))
         );
     };
@@ -92,7 +95,7 @@ export class CallCenterService {
      * @returns - Список вакансий.
      */
      public async getVacanciesModerationAsync() {
-        return await this.http.get(API_URL.apiUrl + "/moderation/vacancies").pipe(
+        return await this.http.get(API_URL.apiUrl + "/callcenter/vacancies").pipe(
             tap(data => this.vacanciesModeration$.next(data))
         );
     };
@@ -103,7 +106,7 @@ export class CallCenterService {
      * @returns - Данные вакансии.
      */
      public async previewVacancyAsync(vacancyId: number) {
-        return await this.http.get(API_URL.apiUrl + `/moderation/vacancy/${vacancyId}/preview`).pipe(
+        return await this.http.get(API_URL.apiUrl + `/callcenter/vacancy/${vacancyId}/preview`).pipe(
             tap(data => this.vacancyModeration$.next(data))
         );
     };
@@ -114,7 +117,7 @@ export class CallCenterService {
      * @returns - Данные вакансии.
      */
      public async approveVacancyAsync(approveVacancyInput: ApproveVacancyInput) {
-        return await this.http.patch(API_URL.apiUrl + `/moderation/vacancy/approve`, approveVacancyInput).pipe(
+        return await this.http.patch(API_URL.apiUrl + `/callcenter/vacancy/approve`, approveVacancyInput).pipe(
             tap(data => this.approveVacancyModeration$.next(data))
         );
     };
@@ -125,7 +128,7 @@ export class CallCenterService {
      * @returns - Данные вакансии.
      */
      public async rejectVacancyAsync(rejectVacancyInput: RejectVacancyInput) {
-        return await this.http.patch(API_URL.apiUrl + `/moderation/vacancy/reject`, rejectVacancyInput).pipe(
+        return await this.http.patch(API_URL.apiUrl + `/callcenter/vacancy/reject`, rejectVacancyInput).pipe(
             tap(data => this.rejectVacancyModeration$.next(data))
         );
     };
@@ -140,7 +143,7 @@ export class CallCenterService {
      * @returns - Список вакансий.
      */
     public async getResumesModerationAsync() {
-      return await this.http.get(API_URL.apiUrl + "/moderation/resumes").pipe(
+      return await this.http.get(API_URL.apiUrl + "/callcenter/resumes").pipe(
         tap(data => this.resumesModeration$.next(data))
       );
     };
@@ -150,7 +153,7 @@ export class CallCenterService {
    * @returns - Данные вакансии.
    */
   public async previewResumeAsync(profileInfoId: number) {
-    return await this.http.get(API_URL.apiUrl + `/moderation/resume/${profileInfoId}/preview`).pipe(
+    return await this.http.get(API_URL.apiUrl + `/callcenter/resume/${profileInfoId}/preview`).pipe(
       tap(data => console.log(this.resumeModeration$.next(data)))
     );
   };
@@ -161,7 +164,7 @@ export class CallCenterService {
    * @returns - Данные вакансии.
    */
   public async approveResumeAsync(approveResumeInput: ApproveResumeInput) {
-    return await this.http.patch(API_URL.apiUrl + `/moderation/resume/approve`, approveResumeInput).pipe(
+    return await this.http.patch(API_URL.apiUrl + `/callcenter/resume/approve`, approveResumeInput).pipe(
       tap(data => this.approveResumeModeration$.next(data))
     );
   };
@@ -172,7 +175,7 @@ export class CallCenterService {
    * @returns - Данные анкеты.
    */
   public async rejectResumeAsync(rejectResumeAsync: RejectResumeInput) {
-    return await this.http.patch(API_URL.apiUrl + `/moderation/resume/reject`, rejectResumeAsync).pipe(
+    return await this.http.patch(API_URL.apiUrl + `/callcenter/resume/reject`, rejectResumeAsync).pipe(
       tap(data => this.rejectResumeModeration$.next(data))
     );
   };
@@ -183,7 +186,7 @@ export class CallCenterService {
    * @returns - Список замечаний проекта.
    */
    public async createProjectRemarks(createProjectRemarksInput: CreateProjectRemarksInput) {
-    return await this.http.post(API_URL.apiUrl + `/moderation/project-remarks`, createProjectRemarksInput).pipe(
+    return await this.http.post(API_URL.apiUrl + `/callcenter/project-remarks`, createProjectRemarksInput).pipe(
       tap(data => this.projectRemarksModeration$.next(data))
     );
   };
@@ -193,8 +196,29 @@ export class CallCenterService {
    * @param createProjectRemarksInput - Входная модель.
    */
    public async sendProjectRemarks(sendProjectRemarkInput: SendProjectRemarkInput) {
-    return await this.http.patch(API_URL.apiUrl + `/moderation/send-project-remarks`, sendProjectRemarkInput).pipe(
+    return await this.http.patch(API_URL.apiUrl + `/callcenter/send-project-remarks`, sendProjectRemarkInput).pipe(
       tap(data => this.projectRemarksModeration$.next(data))
+    );
+  };
+
+   /**
+   * Функция сохраняет замечания вакансии.
+   * @param createVacancyRemarksInput - Входная модель.
+   * @returns - Список замечаний вакансии.
+   */
+    public async createVacancyRemarks(createVacancyRemarksInput: CreateVacancyRemarksInput) {
+      return await this.http.post(API_URL.apiUrl + `/callcenter/vacancy-remarks`, createVacancyRemarksInput).pipe(
+        tap(data => this.vacancyRemarksModeration$.next(data))
+      );
+    };
+
+     /**
+   * Функция отправляет замечания вакансии.
+   * @param createProjectRemarksInput - Входная модель.
+   */
+   public async sendVacancyRemarks(sendVacancyRemarkInput: SendVacancyRemarkInput) {
+    return await this.http.patch(API_URL.apiUrl + `/callcenter/send-vacancy-remarks`, sendVacancyRemarkInput).pipe(
+      tap(data => this.vacancyRemarksModeration$.next(data))
     );
   };
 }

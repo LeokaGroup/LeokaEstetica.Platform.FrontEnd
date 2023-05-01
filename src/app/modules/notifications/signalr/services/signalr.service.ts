@@ -266,4 +266,32 @@ public listenWarningSendProjectRemarks() {
     this.$allFeed.next(data);
   });
 };
+
+ /**
+* Функция слушает уведомления успеха о внесении замечаний вакансии.
+*/
+public listenSuccessCreateVacancyRemarks() {
+  (<HubConnection>this.hubConnection).on("SendNotificationSuccessCreateVacancyRemarks", (data: any) => {
+    this.$allFeed.next(data);
+  });
+};
+
+
+ /**
+* Функция слушает уведомления успеха о отправке замечаний вакансии.
+*/
+public listenSuccessSendVacancyRemarks() {
+  (<HubConnection>this.hubConnection).on("SendNotificationSuccessSendVacancyRemarks", (data: any) => {
+    this.$allFeed.next(data);
+  });
+};
+
+ /**
+* Функция слушает уведомления предупреждения о отправке замечаний вакансии.
+*/
+public listenWarningSendVacancyRemarks() {
+  (<HubConnection>this.hubConnection).on("SendNotificationWarningSendVacancyRemarks", (data: any) => {
+    this.$allFeed.next(data);
+  });
+};
 }
