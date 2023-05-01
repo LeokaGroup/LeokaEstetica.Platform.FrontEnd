@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { MessageService } from "primeng/api";
+import { Message, MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
@@ -27,6 +27,7 @@ export class DetailVacancyComponent implements OnInit {
 
     public readonly selectedVacancy$ = this._vacancyService.selectedVacancy$;
     public readonly deleteVacancy$ = this._vacancyService.deleteVacancy$;
+    public readonly vacancyRemarks$ = this._vacancyService.vacancyRemarks$;
 
     projectName: string = "";
     projectDetails: string = "";
@@ -44,10 +45,12 @@ export class DetailVacancyComponent implements OnInit {
     isVisibleDeleteButton: boolean = false;
     isVisibleSaveButton: boolean = false;
     isVisibleEditButton: boolean = false;
+    aVacancyRemarks: Message[] = [];
 
     public async ngOnInit() {
         forkJoin([
-        this.checkUrlParams()      
+        this.checkUrlParams(),
+        await this.getVacancyRemarksAsync()      
         ]).subscribe();
 
          // Подключаемся.
@@ -177,5 +180,18 @@ export class DetailVacancyComponent implements OnInit {
         model.VacancyId = this.vacancyId;
 
         return model;
+    };
+
+    /**
+ * Функция получает список замечаний вакансии.
+ * @param vacancyId - Id вакансии.
+ * @returns - Список замечаний вакансии.
+ */
+    private async getVacancyRemarksAsync() {
+        (await this._vacancyService.getVacancyRemarksAsync(this.vacancyId))
+            .subscribe(async _ => {
+                this.aVacancyRemarks = this.vacancyRemarks$.value;
+                console.log("Список замечаний вакансии: ", this.aVacancyRemarks);
+            });
     };
 }

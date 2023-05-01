@@ -27,6 +27,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { ListboxModule } from 'primeng/listbox';
 import { TableModule } from "primeng/table";
+import { MessagesModule } from 'primeng/messages';
 
 @NgModule({
     declarations: [
@@ -57,7 +58,8 @@ import { TableModule } from "primeng/table";
     ButtonModule,
     DialogModule,
     ListboxModule,
-    TableModule
+    TableModule,
+    MessagesModule
   ],
 
     exports: [],
