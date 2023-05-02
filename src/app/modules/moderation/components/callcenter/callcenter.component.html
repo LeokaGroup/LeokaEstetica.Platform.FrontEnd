@@ -494,13 +494,9 @@
 </p-sidebar>
 
 <!-- Диалог просмотра Анкеты. -->
-<p-dialog header="Просмотр aнкеты"
-          [(visible)]="isShowPreviewModerationResumeModal"
-          [modal]="true"
-          [style]="{width: '50vw', height: '50vw'}"
-          [maximizable]="false"
-          [draggable]="false"
-          [resizable]="false">
+<p-sidebar class="p-sidebar-sm" 
+          [(visible)]="isShowPreviewModerationVacancyModal" 
+          [style]="{width: '100vw'}">
 
     <div class="mt-3">
       <div class="control-input-text-worksheet mt-3">
@@ -535,4 +531,4 @@
               styleClass="p-button-danger p-button-text">
     </p-button>
   </ng-template>
-</p-dialog>
+</p-sidebar>

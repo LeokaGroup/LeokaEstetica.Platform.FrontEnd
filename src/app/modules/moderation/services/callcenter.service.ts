@@ -213,7 +213,7 @@ export class CallCenterService {
     };
 
      /**
-   * Функция отправляет замечания вакансии.
+   * Функция отправляет замеpreviewчания вакансии.
    * @param createProjectRemarksInput - Входная модель.
    */
    public async sendVacancyRemarks(sendVacancyRemarkInput: SendVacancyRemarkInput) {
