@@ -15,6 +15,7 @@ import { MessageService } from "primeng/api";
 import { SendProjectRemarkInput } from "../../models/input/send-project-remark-input";
 import { CreateVacancyRemarksInput, VacancyRemarkInput } from "../../models/input/vacancy-remark-input";
 import { SendVacancyRemarkInput } from "../../models/input/send-vacancy-remark-input";
+import { ResumeRemarkInput } from "../../models/input/resume-remark-input";
 
 @Component({
     selector: "callcenter",
@@ -141,6 +142,11 @@ export class CallCenterComponent implements OnInit {
     aRemarksProject: ProjectRemarkInput[] = [];
     allFeedSubscription: any;
     aRemarksVacancy: VacancyRemarkInput[] = [];
+    aProfileComposite: any;
+    aProfile: any = {};
+    aIntents: any[] = [];
+    aSkills: any[] = [];
+    aRemarksResume: ResumeRemarkInput[] = [];
 
     constructor(private readonly _headerService: HeaderService,
         private readonly _callCenterService: CallCenterService,
@@ -369,11 +375,18 @@ export class CallCenterComponent implements OnInit {
      */
     public async onPreviewResumeAsync(profileInfoId: number) {
         this.profileInfoId = profileInfoId;
+
         (await this._callCenterService.previewResumeAsync(profileInfoId))
-            .subscribe((response: any) => {
-                console.log("Анкеты для просмотра: ", response);
+            .subscribe((response: any) => {                
                 this.isShowPreviewModerationResumeModal = true;
                 this.resumeEmail = response.email;
+                this.aProfileComposite = response;
+                this.aProfile = this.aProfileComposite.profileInfo;
+                this.aIntents = this.aProfileComposite.intents;
+                this.aSkills = this.aProfileComposite.skills;
+
+                console.log("Анкеты для просмотра (композитные данные): ", this.aProfileComposite);
+                console.log("Данные анкеты: ", this.aProfile);
             });
     };
     /**
@@ -527,6 +540,25 @@ export class CallCenterComponent implements OnInit {
         .subscribe(_ => {
             console.log("Отправили замечания вакансии: ", this.vacancyRemarksModeration$.value);
         });
+    };
+
+    /**
+     * Функция записывает замечания анкеты.
+     * @param fieldName - Название поля.
+     * @param remarkText - Текст замечания.
+     * @param russianName - Русское название поля.
+     * @returns - Список замечаний анкеты.
+     */
+     public onSetResumeRemarks(fieldName: string, remarkText: string, russianName: string) {
+        let projectRemarkInput = new ProjectRemarkInput();
+        projectRemarkInput.projectId = this.projectId;
+        projectRemarkInput.fieldName = fieldName;
+        projectRemarkInput.remarkText = remarkText;
+        projectRemarkInput.russianName = russianName;
+        
+        this.aRemarksProject.push(projectRemarkInput);
+
+        console.log("aRemarksResume", this.aRemarksResume);
     };
 }
 
