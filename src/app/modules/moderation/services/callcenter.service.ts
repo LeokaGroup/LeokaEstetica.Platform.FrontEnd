@@ -12,6 +12,8 @@ import { CreateProjectRemarksInput, ProjectRemarkInput } from '../models/input/p
 import { SendProjectRemarkInput } from '../models/input/send-project-remark-input';
 import { CreateVacancyRemarksInput } from '../models/input/vacancy-remark-input';
 import { SendVacancyRemarkInput } from '../models/input/send-vacancy-remark-input';
+import { CreateResumeRemarksInput } from '../models/input/resume-remark-input';
+import { SendResumeRemarkInput } from '../models/input/send-resume-remark-input';
 
 /**
  * Класс сервиса КЦ.
@@ -34,6 +36,7 @@ export class CallCenterService {
     public approveResumeModeration$ = new BehaviorSubject<any>(null);
     public projectRemarksModeration$ = new BehaviorSubject<any>(null);
     public vacancyRemarksModeration$ = new BehaviorSubject<any>(null);
+    public resumeRemarksModeration$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {}
 
@@ -221,4 +224,25 @@ export class CallCenterService {
       tap(data => this.vacancyRemarksModeration$.next(data))
     );
   };
+
+  /**
+   * Функция сохраняет замечания анкеты.
+   * @param createResumeRemarksInput - Входная модель.
+   * @returns - Список замечаний анкеты.
+   */
+   public async createResumeRemarks(createResumeRemarksInput: CreateResumeRemarksInput) {
+    return await this.http.post(API_URL.apiUrl + `/callcenter/resume-remarks`, createResumeRemarksInput).pipe(
+      tap(data => this.resumeRemarksModeration$.next(data))
+    );
+  };
+
+    /**
+   * Функция отправляет замеpreviewчания анкеты.
+   * @param createResumeRemarksInput - Входная модель.
+   */
+     public async sendResumeRemarks(sendResumeRemarkInput: SendResumeRemarkInput) {
+      return await this.http.patch(API_URL.apiUrl + `/callcenter/send-resume-remarks`, sendResumeRemarkInput).pipe(
+        tap(data => this.resumeRemarksModeration$.next(data))
+      );
+    };
 }

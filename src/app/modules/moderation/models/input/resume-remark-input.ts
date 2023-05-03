@@ -24,5 +24,5 @@
 }
 
 export class CreateResumeRemarksInput {
-    VacanciesRemarks: ResumeRemarkInput[] = [];
+    ResumesRemarks: ResumeRemarkInput[] = [];
 }

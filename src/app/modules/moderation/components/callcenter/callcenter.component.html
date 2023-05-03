@@ -493,7 +493,7 @@
   </ng-template>
 </p-sidebar>
 
-<!-- Диалог просмотра Анкеты. -->
+<!-- Диалог просмотра анкеты. -->
 <p-sidebar class="p-sidebar-sm" 
           [(visible)]="isShowPreviewModerationResumeModal" 
           [style]="{width: '100vw'}">
@@ -517,7 +517,7 @@
           <div>
             <p-checkbox inputId="remarkResumeFio"
                         [value]="'RemarkResumeFio'"
-                        (onChange)="onSetResumeRemarks('RemarkResumeFio', '', 'Фамилия')">
+                        (onChange)="onSetResumeRemarks('RemarkResumeFio', '', 'Фамилия', profileInfoId)">
     
             </p-checkbox>
             <label for="remarkResumeFio">&nbsp;Есть замечание</label>
@@ -541,7 +541,7 @@
           <div>
             <p-checkbox inputId="remarkResumeFirstName"
                         [value]="'RemarkResumeFirstName'"
-                        (onChange)="onSetResumeRemarks('RemarkResumeFirstName', '', 'Имя')">
+                        (onChange)="onSetResumeRemarks('RemarkResumeFirstName', '', 'Имя', profileInfoId)">
     
             </p-checkbox>
             <label for="remarkResumeFirstName">&nbsp;Есть замечание</label>
@@ -565,7 +565,7 @@
           <div>
             <p-checkbox inputId="remarkResumePatronymic"
                         [value]="'RemarkResumePatronymic'"
-                        (onChange)="onSetResumeRemarks('RemarkResumePatronymic', '', 'Отчество')">
+                        (onChange)="onSetResumeRemarks('RemarkResumePatronymic', '', 'Отчество', profileInfoId)">
     
             </p-checkbox>
             <label for="remarkResumePatronymic">&nbsp;Есть замечание</label>
@@ -589,7 +589,7 @@
           <div>
             <p-checkbox inputId="remarkResumeEmail"
                         [value]="'RemarkResumeEmail'"
-                        (onChange)="onSetResumeRemarks('RemarkResumeEmail', '', 'Email')">
+                        (onChange)="onSetResumeRemarks('RemarkResumeEmail', '', 'Email', profileInfoId)">
     
             </p-checkbox>
             <label for="remarkResumeEmail">&nbsp;Есть замечание</label>
@@ -613,7 +613,7 @@
           <div>
             <p-checkbox inputId="remarkResumePhoneNumber"
                         [value]="'RemarkResumePhoneNumber'"
-                        (onChange)="onSetResumeRemarks('RemarkResumePhoneNumber', '', 'Номер телефона')">
+                        (onChange)="onSetResumeRemarks('RemarkResumePhoneNumber', '', 'Номер телефона', profileInfoId)">
     
             </p-checkbox>
             <label for="remarkResumePhoneNumber">&nbsp;Есть замечание</label>
@@ -637,7 +637,7 @@
           <div>
             <p-checkbox inputId="remarkResumeJob"
                         [value]="'RemarkResumeJob'"
-                        (onChange)="onSetResumeRemarks('RemarkResumeJob', '', 'Опыт работы')">
+                        (onChange)="onSetResumeRemarks('RemarkResumeJob', '', 'Опыт работы', profileInfoId)">
     
             </p-checkbox>
             <label for="remarkResumeJob">&nbsp;Есть замечание</label>
@@ -663,11 +663,80 @@
         <div>
           <p-checkbox inputId="remarkResumeDetails"
                       [value]="'RemarkResumeDetails'"
-                      (onChange)="onSetResumeRemarks('RemarkResumeDetails', '', 'Описание анкеты')">
+                      (onChange)="onSetResumeRemarks('RemarkResumeDetails', '', 'Описание анкеты', profileInfoId)">
   
           </p-checkbox>
           <label for="remarkResumeDetails">&nbsp;Есть замечание</label>
         </div>
+        </div>
+
+        <div class="control-input-text-worksheet mt-3">
+          <p-panel header="Навыки">
+            <div *ngFor="let s of aSkills">
+              {{s.skillName}}
+            </div>
+        </p-panel>          
+        <div>
+          <p-checkbox inputId="remarkResumeSkills"
+                      [value]="'RemarkResumeSkills'"
+                      (onChange)="onSetResumeRemarks('RemarkResumeSkills', '', 'Навыки', profileInfoId)">
+  
+          </p-checkbox>
+          <label for="remarkResumeSkills">&nbsp;Есть замечание</label>
+        </div>
+        </div>
+
+        <div class="control-input-text-worksheet mt-3">
+          <p-panel header="Цели">
+            <div *ngFor="let i of aIntents">
+              {{i.intentName}}
+            </div>
+        </p-panel>          
+        <div>
+          <p-checkbox inputId="remarkResumeIntents"
+                      [value]="'RemarkResumeIntents'"
+                      (onChange)="onSetResumeRemarks('RemarkResumeIntents', '', 'Цели', profileInfoId)">
+  
+          </p-checkbox>
+          <label for="remarkResumeIntents">&nbsp;Есть замечание</label>
+        </div>
+        </div>
+
+        <!-- Замечания анкеты. -->
+        <div *ngIf="aRemarksResume.length > 0" class="mt-5">
+          <p-table [value]="aRemarksResume" styleClass="p-datatable-gridlines">
+            <ng-template pTemplate="caption">
+              Замечания к анкете
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th>ID анкеты</th>
+                <th>Название поля</th>
+                <th>Замечание</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-r>
+              <tr>
+                <td>{{r.projectId}}</td>
+                <td>{{r.russianName}}</td>
+                <td>
+                  <textarea input-control-worksheet
+                            rows="5"
+                            cols="100"
+                            pInputTextarea
+                            [autoResize]="true"
+                            autocomplete="new-password"
+                            placeholder="Введите замечание"
+                            [(ngModel)]="r.remarkText"
+                            class="control-textarea">
+                </textarea>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+              <!-- Всего: {{totalProjects}} -->
+            </ng-template>
+          </p-table>
         </div>
       </div>
     </div>
@@ -683,6 +752,19 @@
               (click)="onRejectResumeAsync(profileInfoId)"
               label="Отклонить aнкету"
               styleClass="p-button-danger p-button-text">
+    </p-button>
+
+    <p-button icon="pi pi-check"              
+              label="Внести замечания"
+              styleClass="p-button-warning p-button-text"
+              [disabled]="aRemarksResume.length == 0"
+              (click)="onCreateResumeRemarksAsync()">
+    </p-button>
+
+    <p-button icon="pi pi-check"
+              (click)="onSendResumeRemarksAsync(profileInfoId)"
+              label="Отправить замечания"
+              styleClass="p-button-success p-button-text">
     </p-button>
     </div>
   </ng-template>
