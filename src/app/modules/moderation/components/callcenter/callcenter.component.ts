@@ -15,6 +15,8 @@ import { MessageService } from "primeng/api";
 import { SendProjectRemarkInput } from "../../models/input/send-project-remark-input";
 import { CreateVacancyRemarksInput, VacancyRemarkInput } from "../../models/input/vacancy-remark-input";
 import { SendVacancyRemarkInput } from "../../models/input/send-vacancy-remark-input";
+import { CreateResumeRemarksInput, ResumeRemarkInput } from "../../models/input/resume-remark-input";
+import { SendResumeRemarkInput } from "../../models/input/send-resume-remark-input";
 
 @Component({
     selector: "callcenter",
@@ -32,6 +34,7 @@ export class CallCenterComponent implements OnInit {
     public readonly accessModeration$ = this._callCenterService.accessModeration$;
     public readonly projectRemarksModeration$ = this._callCenterService.projectRemarksModeration$;
     public readonly vacancyRemarksModeration$ = this._callCenterService.vacancyRemarksModeration$;
+    public readonly resumeRemarksModeration$ = this._callCenterService.resumeRemarksModeration$;
 
     isHideAuthButtons: boolean = false;
     aProjects: any[] = [];
@@ -141,6 +144,11 @@ export class CallCenterComponent implements OnInit {
     aRemarksProject: ProjectRemarkInput[] = [];
     allFeedSubscription: any;
     aRemarksVacancy: VacancyRemarkInput[] = [];
+    aProfileComposite: any;
+    aProfile: any = {};
+    aIntents: any[] = [];
+    aSkills: any[] = [];
+    aRemarksResume: ResumeRemarkInput[] = [];
 
     constructor(private readonly _headerService: HeaderService,
         private readonly _callCenterService: CallCenterService,
@@ -181,6 +189,9 @@ export class CallCenterComponent implements OnInit {
         this._signalrService.listenSuccessCreateVacancyRemarks();
         this._signalrService.listenSuccessSendVacancyRemarks();
         this._signalrService.listenWarningSendVacancyRemarks();
+        this._signalrService.listenSuccessCreateResumeRemarks();
+        this._signalrService.listenWarningSendResumeRemarks();
+        this._signalrService.listenSuccessSendResumeRemarks();
     };
 
     /**
@@ -369,11 +380,18 @@ export class CallCenterComponent implements OnInit {
      */
     public async onPreviewResumeAsync(profileInfoId: number) {
         this.profileInfoId = profileInfoId;
+
         (await this._callCenterService.previewResumeAsync(profileInfoId))
-            .subscribe((response: any) => {
-                console.log("Анкеты для просмотра: ", response);
+            .subscribe((response: any) => {                
                 this.isShowPreviewModerationResumeModal = true;
                 this.resumeEmail = response.email;
+                this.aProfileComposite = response;
+                this.aProfile = this.aProfileComposite.profileInfo;
+                this.aIntents = this.aProfileComposite.intents;
+                this.aSkills = this.aProfileComposite.skills;
+
+                console.log("Анкеты для просмотра (композитные данные): ", this.aProfileComposite);
+                console.log("Данные анкеты: ", this.aProfile);
             });
     };
     /**
@@ -526,6 +544,53 @@ export class CallCenterComponent implements OnInit {
         (await this._callCenterService.sendVacancyRemarks(sendVacancyRemarkInput))
         .subscribe(_ => {
             console.log("Отправили замечания вакансии: ", this.vacancyRemarksModeration$.value);
+        });
+    };
+
+    /**
+     * Функция записывает замечания анкеты.
+     * @param fieldName - Название поля.
+     * @param remarkText - Текст замечания.
+     * @param russianName - Русское название поля.
+     * @returns - Список замечаний анкеты.
+     */
+     public onSetResumeRemarks(fieldName: string, remarkText: string, russianName: string, profileInfoId: number) {
+        let resumeRemarkInput = new ResumeRemarkInput();
+        resumeRemarkInput.profileInfoId = profileInfoId;
+        resumeRemarkInput.fieldName = fieldName;
+        resumeRemarkInput.remarkText = remarkText;
+        resumeRemarkInput.russianName = russianName;
+        
+        this.aRemarksResume.push(resumeRemarkInput);
+
+        console.log("aRemarksResume", this.aRemarksResume);
+    };
+
+    /**
+     * Функция сохраняет замечания анкеты.
+     * @returns - Список замечаний анкеты.
+     */
+     public async onCreateResumeRemarksAsync() {
+        let createResumeRemarksInput = new CreateResumeRemarksInput();
+        createResumeRemarksInput.ResumesRemarks = this.aRemarksResume;
+
+        (await this._callCenterService.createResumeRemarks(createResumeRemarksInput))
+        .subscribe(_ => {
+            console.log("Внесли замечания анкеты: ", this.resumeRemarksModeration$.value);
+        });
+    };
+
+    /**
+     * Функция отправляет замечания анкеты.
+     @param profileInfoId - Id анкеты.
+     */
+     public async onSendResumeRemarksAsync(profileInfoId: number) {
+        let sendResumeRemarkInput = new SendResumeRemarkInput();
+        sendResumeRemarkInput.profileInfoId = profileInfoId;
+
+        (await this._callCenterService.sendResumeRemarks(sendResumeRemarkInput))
+        .subscribe(_ => {
+            console.log("Отправили замечания анкеты: ", this.resumeRemarksModeration$.value);
         });
     };
 }
