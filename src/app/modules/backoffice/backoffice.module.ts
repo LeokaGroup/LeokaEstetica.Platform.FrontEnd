@@ -28,7 +28,7 @@ import { CardModule } from 'primeng/card';
 import { DialogModule } from 'primeng/dialog';
 import { MyVacancyComponent} from "./my-vacancy/my-vacancy.component";
 import { RedirectService } from 'src/app/common/services/redirect.service';
-
+import { MessagesModule } from 'primeng/messages';
 
 
 @NgModule({
@@ -60,6 +60,7 @@ import { RedirectService } from 'src/app/common/services/redirect.service';
         DropdownModule,
         CardModule,
         DialogModule,
+        MessagesModule
     ],
 
     exports: [],

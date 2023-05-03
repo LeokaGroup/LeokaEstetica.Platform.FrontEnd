@@ -647,7 +647,7 @@ export class DetailProjectComponent {
  */
     private async getProjectRemarksAsync() {
         (await this._projectService.getProjectRemarksAsync(this.projectId))
-            .subscribe(async _ => {                
+            .subscribe(async _ => {
                 this.aProjectRemarks = this.projectRemarks$.value;
                 console.log("Список замечаний проекта: ", this.aProjectRemarks);
             });

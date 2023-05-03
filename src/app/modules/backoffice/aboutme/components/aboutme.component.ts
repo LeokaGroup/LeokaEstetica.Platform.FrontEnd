@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { forkJoin, Subscription } from "rxjs";
+import { Component, OnInit } from "@angular/core";
+import { forkJoin } from "rxjs";
 import { BackOfficeService } from "../../services/backoffice.service";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { ProfileInfoInput } from "../models/input/profile-info-input";
@@ -13,33 +13,35 @@ import { MessageService } from "primeng/api";
 })
 
 /**
- * Класс страницы профиля пользователя (Обо мне).
+ * Класс компонента профиля пользователя (Обо мне).
  */
-export class AboutmeComponent implements OnInit, OnDestroy {
+export class AboutmeComponent implements OnInit {
     public readonly profileSkillsItems$ = this._backofficeService.profileSkillsItems$;
     public readonly profileIntentsItems$ = this._backofficeService.profileIntentsItems$;
     public readonly profileInfo$ = this._backofficeService.profileInfo$;
     public readonly selectedSkillsItems$ = this._backofficeService.selectedSkillsItems$;
     public readonly selectedIntentsItems$ = this._backofficeService.selectedIntentsItems$;
+    public readonly resumeRemarks$ = this._backofficeService.resumeRemarks$;
 
     isShortFirstName: boolean = false;
-    phoneNumber!: string;
+    phoneNumber: string = "";
     aSelectedSkills: any[] = [];
     aSelectedIntents: any[] = [];
     allFeedSubscription: any;
-    lastName!: string;
-    firstName!: string;
-    patronymic!: string;
-    telegram!: string;
-    whatsApp!: string;
-    vkontakte!: string;
-    otherLink!: string;
-    aboutme!: string;
-    job!: string;
-    email!: string;
-    workExperience!: string;
-    isModeView!: boolean;
-    isModeEdit!: boolean;
+    lastName: string = "";
+    firstName: string = "";
+    patronymic: string = "";
+    telegram: string = "";
+    whatsApp: string = "";
+    vkontakte: string = "";
+    otherLink: string = "";
+    aboutme: string = "";
+    job: string = "";
+    email: string = "";
+    workExperience: string = "";
+    isModeView: boolean = false;
+    isModeEdit: boolean = false;
+    aResumeRemarks: any[] = [];
 
     constructor(private readonly _backofficeService: BackOfficeService,
         private readonly _signalrService: SignalrService,
@@ -54,7 +56,8 @@ export class AboutmeComponent implements OnInit, OnDestroy {
             await this.getProfileIntentsAsync(),
             await this.getProfileInfoAsync(),
             await this.getSelectedUserSkillsAsync(),
-            await this.getSelectedUserIntentsAsync()
+            await this.getSelectedUserIntentsAsync(),
+            await this.getResumeRemarksAsync()
         ]).subscribe();
 
         // Подключаемся.
@@ -253,7 +256,16 @@ export class AboutmeComponent implements OnInit, OnDestroy {
             });
     };
 
-    public ngOnDestroy(): void {
-        (<Subscription>this.allFeedSubscription).unsubscribe();
+    /**
+    * Функция получает список замечаний анкеты.
+    * @param projectId - Id проекта.
+    * @returns - Список замечаний проекта.
+    */
+    private async getResumeRemarksAsync() {
+        (await this._backofficeService.getResumesRemarksAsync())
+            .subscribe(async _ => {
+                this.aResumeRemarks = this.resumeRemarks$.value;
+                console.log("Список замечаний анкеты: ", this.aResumeRemarks);
+            });
     };
 }

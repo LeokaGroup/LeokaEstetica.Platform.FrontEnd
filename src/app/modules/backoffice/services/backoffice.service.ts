@@ -7,7 +7,7 @@ import { SelectMenuInput } from '../left-menu/models/input/select-menu-input';
 import { CreateProjectInput } from '../project/create-project/models/input/create-project-input';
 
 /**
- * Класс сервиса профиля пользователя.
+ * Класс компонента профиля пользователя.
  */
 @Injectable()
 export class BackOfficeService {
@@ -24,6 +24,8 @@ export class BackOfficeService {
     public userProjects$ = new BehaviorSubject<any>([]);
     public listVacancy$ = new BehaviorSubject<any>([]);
     public deleteVacancy$ = new BehaviorSubject<any>(null);
+    public resumeRemarks$ = new BehaviorSubject<any>(null);
+
     constructor(private readonly http: HttpClient) {
 
     }
@@ -181,4 +183,14 @@ export class BackOfficeService {
       tap(data => this.deleteVacancy$.next(data))
     );
   };
+
+   /**
+ * Функция получает список замечаний анкеты.
+ * @returns - Список замечаний анкеты.
+ */
+    public async getResumesRemarksAsync() {
+        return await this.http.get(API_URL.apiUrl + `/resumes/remarks`).pipe(
+            tap(data => this.resumeRemarks$.next(data))
+          );
+      };
 }
