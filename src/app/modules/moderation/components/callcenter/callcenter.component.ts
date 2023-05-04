@@ -74,7 +74,7 @@ export class CallCenterComponent implements OnInit {
                             label: 'Список проектов', command: async () => {
                                 this.isProjectsModeration = true; // Отображаем область с проектами.
                                 this.isVacanciesModeration = false; // Скрываем область с вакансиями.
-                                this.isResumesModeration = false; // Отображаем область с вакансиями.
+                                this.isResumesModeration = false; // Отображаем область с анкетами.
                                 await this.getProjectsModerationAsync();
                             }
                         }]
@@ -92,7 +92,7 @@ export class CallCenterComponent implements OnInit {
                             label: 'Список вакансий', command: async () => {
                                 this.isProjectsModeration = false; // Скрываем область с проектами.
                                 this.isVacanciesModeration = true; // Отображаем область с вакансиями.
-                                this.isResumesModeration = false; // Отображаем область с вакансиями.
+                                this.isResumesModeration = false; // Отображаем область с анкетами.
                                 await this.getVacanciesModerationAsync();
                             }
                         }]
@@ -131,7 +131,7 @@ export class CallCenterComponent implements OnInit {
                             label: 'Список анкет', command: async () => {
                                 this.isProjectsModeration = false; // Скрываем область с проектами.
                                 this.isVacanciesModeration = false; // Отображаем область с вакансиями.
-                                this.isResumesModeration = true; // Отображаем область с вакансиями.
+                                this.isResumesModeration = true; // Отображаем область с анкетами.
                                 await this.getResumesModerationAsync();
                             }
                         }]
@@ -139,6 +139,46 @@ export class CallCenterComponent implements OnInit {
                 ]
             ]
         },
+        {
+            label: 'Журнал модерации',
+            items: [
+                [
+                    {
+                        label: 'Замечания проектов',
+                        items: [{
+                            label: 'Не отправленные замечания', command: async () => {
+                                this.isProjectsModeration = false; // Скрываем область с проектами.
+                                this.isVacanciesModeration = false; // Отображаем область с вакансиями.
+                                this.isResumesModeration = false; // Отображаем область с анкетами.
+                                // await this.getResumesModerationAsync();
+                            }
+                        }]
+                    },
+                    {
+                        label: 'Замечания вакансий',
+                        items: [{
+                            label: 'Не отправленные замечания', command: async () => {
+                                this.isProjectsModeration = false; // Скрываем область с проектами.
+                                this.isVacanciesModeration = false; // Отображаем область с вакансиями.
+                                this.isResumesModeration = false; // Отображаем область с анкетами.
+                                // await this.getResumesModerationAsync();
+                            }
+                        }]
+                    },
+                    {
+                        label: 'Замечания анкет',
+                        items: [{
+                            label: 'Не отправленные замечания', command: async () => {
+                                this.isProjectsModeration = false; // Скрываем область с проектами.
+                                this.isVacanciesModeration = false; // Отображаем область с вакансиями.
+                                this.isResumesModeration = false; // Отображаем область с анкетами.
+                                // await this.getResumesModerationAsync();
+                            }
+                        }]
+                    }
+                ]
+            ]
+        }
     ];
 
     aRemarksProject: ProjectRemarkInput[] = [];
