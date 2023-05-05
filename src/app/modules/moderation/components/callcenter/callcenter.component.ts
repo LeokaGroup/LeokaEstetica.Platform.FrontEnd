@@ -35,6 +35,7 @@ export class CallCenterComponent implements OnInit {
     public readonly projectRemarksModeration$ = this._callCenterService.projectRemarksModeration$;
     public readonly vacancyRemarksModeration$ = this._callCenterService.vacancyRemarksModeration$;
     public readonly resumeRemarksModeration$ = this._callCenterService.resumeRemarksModeration$;
+    public readonly unShippedProjectRemarks$ = this._callCenterService.unShippedProjectRemarks$;
 
     isHideAuthButtons: boolean = false;
     aProjects: any[] = [];
@@ -150,7 +151,7 @@ export class CallCenterComponent implements OnInit {
                                 this.isProjectsModeration = false; // Скрываем область с проектами.
                                 this.isVacanciesModeration = false; // Отображаем область с вакансиями.
                                 this.isResumesModeration = false; // Отображаем область с анкетами.
-                                // await this.getResumesModerationAsync();
+                                await this.getProjectUnShippedRemarksAsync();
                             }
                         }]
                     },
@@ -631,6 +632,16 @@ export class CallCenterComponent implements OnInit {
         (await this._callCenterService.sendResumeRemarks(sendResumeRemarkInput))
         .subscribe(_ => {
             console.log("Отправили замечания анкеты: ", this.resumeRemarksModeration$.value);
+        });
+    };
+
+     /**
+     * Функция получает список замечаний проектов (не отправленные).
+     */
+      private async getProjectUnShippedRemarksAsync() {
+        (await this._callCenterService.getProjectUnShippedRemarksAsync(this.projectId))
+        .subscribe(_ => {
+            console.log("Замечания проекта (не отправленные): ", this.unShippedProjectRemarks$.value);
         });
     };
 }

@@ -8,7 +8,7 @@ import { RejectProjectInput } from '../models/input/reject-project-input';
 import { RejectVacancyInput } from '../models/input/reject-vacancy-input';
 import { ApproveResumeInput } from "../models/input/approve-resume-input";
 import {RejectResumeInput} from "../models/input/reject-resume-input";
-import { CreateProjectRemarksInput, ProjectRemarkInput } from '../models/input/project-remark-input';
+import { CreateProjectRemarksInput } from '../models/input/project-remark-input';
 import { SendProjectRemarkInput } from '../models/input/send-project-remark-input';
 import { CreateVacancyRemarksInput } from '../models/input/vacancy-remark-input';
 import { SendVacancyRemarkInput } from '../models/input/send-vacancy-remark-input';
@@ -37,6 +37,7 @@ export class CallCenterService {
     public projectRemarksModeration$ = new BehaviorSubject<any>(null);
     public vacancyRemarksModeration$ = new BehaviorSubject<any>(null);
     public resumeRemarksModeration$ = new BehaviorSubject<any>(null);
+    public unShippedProjectRemarks$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {}
 
@@ -237,12 +238,23 @@ export class CallCenterService {
   };
 
     /**
-   * Функция отправляет замеpreviewчания анкеты.
+   * Функция отправляет замечания анкеты.
    * @param createResumeRemarksInput - Входная модель.
    */
      public async sendResumeRemarks(sendResumeRemarkInput: SendResumeRemarkInput) {
       return await this.http.patch(API_URL.apiUrl + `/callcenter/send-resume-remarks`, sendResumeRemarkInput).pipe(
         tap(data => this.resumeRemarksModeration$.next(data))
+      );
+    };
+
+    /**
+   * Функция получает анкеты (не отправленные).
+   * @param projectId - Id проекта.
+   * @returns - Список замечаний (не отправленные).
+   */
+     public async getProjectUnShippedRemarksAsync(projectId: number) {
+      return await this.http.get(API_URL.apiUrl + `/callcenter/${projectId}/remarks/unshipped`).pipe(
+        tap(data => this.unShippedProjectRemarks$.next(data))
       );
     };
 }
