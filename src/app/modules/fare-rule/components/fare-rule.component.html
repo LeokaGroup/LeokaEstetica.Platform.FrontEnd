@@ -4,7 +4,7 @@
 
     <div class="tarifs">
       <div class="tarifs-body">
-        <p-card>
+        <p-card [style]="{ height: '1000px' }">
           <div class="header">
             <h3 class="title">
               {{fare.name}}
@@ -26,13 +26,12 @@
             </ul>
           </div>
 
-          <div *ngIf="fare.ruleId==1; else elseBlock"><span style="line-height:70px; border:1px solid white"></span>
-          </div>
-          <ng-template #elseBlock>
-            <button type="submit" class="btn btn-primary button-action-pur-control"
+          <!-- <div *ngIf="fare.ruleId==1;"><span style="line-height:70px; border:1px solid white"></span>
+          </div> -->
+          <button type="submit" class="btn btn-primary button-action-pur-control"
               (click)="onCreateOrderAsync(fare.ruleId)">
               Выбрать
-            </button></ng-template>
+            </button>
         </p-card>
       </div>
     </div>
