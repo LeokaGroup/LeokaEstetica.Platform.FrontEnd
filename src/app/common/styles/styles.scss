@@ -10,13 +10,13 @@
     background: #FAFAFA;
 
     .project-text-item {
-        padding: 20px;       
+      padding: 20px;
     }
 
     .selectedColor {
-        // background: #F1F5F9;
-        background: #E8F4FF;
-      }
+      // background: #F1F5F9;
+      background: #E8F4FF;
+    }
   }
 }
 
@@ -28,8 +28,11 @@
 }
 
 .text-content {
-  font-family: 'Proxima Nova', sans-serif;
-  font-size: 16px;
+  // font-family: 'Proxima Nova', sans-serif;
+  // font-size: 16px;
   // color: #333333;
-  font-weight: normal;
+  // font-weight: normal;
+  font-size: 16px;
+  line-height: 1.65;
+  color: #212121;
 }
