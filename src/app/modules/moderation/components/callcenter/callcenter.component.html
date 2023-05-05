@@ -5,7 +5,7 @@
     <p-megaMenu [model]="items"></p-megaMenu>
 
     <!-- Проекты. -->
-    <div *ngIf="isProjectsModeration">
+    <div *ngIf="isProjectsModeration" class="mt-5">
       <p-table [value]="aProjects" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
         <ng-template pTemplate="caption">
           Проекты на модерации
@@ -57,7 +57,7 @@
     </div>
 
     <!-- Вакансии. -->
-    <div *ngIf="isVacanciesModeration">
+    <div *ngIf="isVacanciesModeration" class="mt-5">
       <p-table [value]="aVacancies" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
         <ng-template pTemplate="caption">
           Вакансии на модерации
@@ -107,7 +107,7 @@
     </div>
 
 <!-- Анкеты. -->
-<div *ngIf="isResumesModeration">
+<div *ngIf="isResumesModeration" class="mt-5">
   <p-table [value]="aResumes" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
     <ng-template pTemplate="caption">
       Анкеты на модерации
@@ -151,6 +151,52 @@
     </ng-template>
     <ng-template pTemplate="summary">
       Всего: {{totalResumes}}
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Замечания проектов (не отправленные). -->
+<div *ngIf="isProjectsUnShippedRemarks" class="mt-5">
+  <p-table [value]="projectsRemarks$.value" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="caption">
+      Не отправленные замечания проектов
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Название проекта</th>
+        <th>Получение замечания</th>
+        <th>Отправка замечаний</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-prj>
+      <tr>
+        <td>{{prj.projectId}}</td>
+        <td>
+          <p-button label="{{prj.projectName}}" 
+                    styleClass="p-button-link"
+                    (click)="getProjectUnShippedRemarksAsync(prj.projectId)">
+
+          </p-button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Получить"
+                    class="p-button-text"
+                    (click)="getProjectUnShippedRemarksAsync(prj.projectId)">
+        </button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Отправить"
+                    class="p-button-success p-button-text"
+                    (click)="onSendProjectRemarksAsync(prj.projectId)">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <!-- Всего: {{totalProjects}} -->
     </ng-template>
   </p-table>
 </div>

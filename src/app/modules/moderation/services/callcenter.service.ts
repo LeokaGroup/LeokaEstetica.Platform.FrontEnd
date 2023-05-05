@@ -38,6 +38,7 @@ export class CallCenterService {
     public vacancyRemarksModeration$ = new BehaviorSubject<any>(null);
     public resumeRemarksModeration$ = new BehaviorSubject<any>(null);
     public unShippedProjectRemarks$ = new BehaviorSubject<any>(null);
+    public projectsRemarks$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {}
 
@@ -253,8 +254,18 @@ export class CallCenterService {
    * @returns - Список замечаний (не отправленные).
    */
      public async getProjectUnShippedRemarksAsync(projectId: number) {
-      return await this.http.get(API_URL.apiUrl + `/callcenter/${projectId}/remarks/unshipped`).pipe(
+      return await this.http.get(API_URL.apiUrl + `/callcenter/project/${projectId}/remarks/unshipped`).pipe(
         tap(data => this.unShippedProjectRemarks$.next(data))
       );
     };
+
+    /**
+   * Функция получает список проектов, которые имеют замечания.
+   * @returns - Список проектов, которые имеют замечания.
+   */
+  public async getProjectUnShippedRemarksTableAsync() {
+    return await this.http.get(API_URL.apiUrl + "/callcenter/projects/remarks/unshipped-table").pipe(
+      tap(data => this.projectsRemarks$.next(data))
+    );
+  };
 }
