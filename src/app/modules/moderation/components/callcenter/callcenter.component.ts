@@ -77,7 +77,8 @@ export class CallCenterComponent implements OnInit {
                                 this.isProjectsModeration = true; 
                                 this.isVacanciesModeration = false;
                                 this.isResumesModeration = false; 
-                                this.isProjectsUnShippedRemarks = false;
+                                this.isProjectsUnShippedRemarks = false;                                
+                                this.clearRemarksProject();
                                 await this.getProjectsModerationAsync();
                             }
                         }]
@@ -97,6 +98,7 @@ export class CallCenterComponent implements OnInit {
                                 this.isVacanciesModeration = true; 
                                 this.isResumesModeration = false;
                                 this.isProjectsUnShippedRemarks = false;
+                                this.clearRemarksProject();
                                 await this.getVacanciesModerationAsync();
                             }
                         }]
@@ -137,6 +139,7 @@ export class CallCenterComponent implements OnInit {
                                 this.isVacanciesModeration = false; 
                                 this.isResumesModeration = true; 
                                 this.isProjectsUnShippedRemarks = false;
+                                this.clearRemarksProject();
                                 await this.getResumesModerationAsync();
                             }
                         }]
@@ -168,6 +171,7 @@ export class CallCenterComponent implements OnInit {
                                 this.isVacanciesModeration = false;
                                 this.isResumesModeration = false; 
                                 this.isProjectsUnShippedRemarks = false;
+                                this.clearRemarksProject();
                                 // await this.getResumesModerationAsync();
                             }
                         }]
@@ -180,6 +184,7 @@ export class CallCenterComponent implements OnInit {
                                 this.isVacanciesModeration = false;
                                 this.isResumesModeration = false;
                                 this.isProjectsUnShippedRemarks = false;
+                                this.clearRemarksProject();
                                 // await this.getResumesModerationAsync();
                             }
                         }]
@@ -293,6 +298,9 @@ export class CallCenterComponent implements OnInit {
         (await this._callCenterService.previewProjectAsync(projectId))
             .subscribe((response: any) => {
                 console.log("Проект для модерации: ", response);
+
+                this.clearRemarksProject();
+
                 this.isShowPreviewModerationProjectModal = true;
                 this.projectName = response.projectName;
                 this.projectDetails = response.projectDetails;        
@@ -362,6 +370,9 @@ export class CallCenterComponent implements OnInit {
         (await this._callCenterService.previewVacancyAsync(vacancyId))
             .subscribe((response: any) => {
                 console.log("Вакансия для модерации: ", response);
+
+                this.clearRemarksProject();
+
                 this.isShowPreviewModerationVacancyModal = true;
                 this.vacancyName = response.vacancyName;
                 this.vacancyText = response.vacancyText;
@@ -432,6 +443,7 @@ export class CallCenterComponent implements OnInit {
 
         (await this._callCenterService.previewResumeAsync(profileInfoId))
             .subscribe((response: any) => {                
+                this.clearRemarksProject();
                 this.isShowPreviewModerationResumeModal = true;
                 this.resumeEmail = response.email;
                 this.aProfileComposite = response;
@@ -660,6 +672,8 @@ export class CallCenterComponent implements OnInit {
         (await this._callCenterService.getProjectUnShippedRemarksAsync(this.projectId))
         .subscribe(_ => {
             console.log("Замечания проекта (не отправленные): ", this.unShippedProjectRemarks$.value);
+            this.aRemarksProject = this.unShippedProjectRemarks$.value;
+            this.isShowPreviewModerationProjectModal = true;
         });
     };
 
@@ -672,5 +686,9 @@ export class CallCenterComponent implements OnInit {
             console.log("Проекты с замечаниями: ", this.projectsRemarks$.value);
         });
     };    
+
+    private clearRemarksProject() {
+        this.aRemarksProject = [];
+    };
 }
 
