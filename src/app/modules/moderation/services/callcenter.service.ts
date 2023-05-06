@@ -39,6 +39,8 @@ export class CallCenterService {
     public resumeRemarksModeration$ = new BehaviorSubject<any>(null);
     public unShippedProjectRemarks$ = new BehaviorSubject<any>(null);
     public projectsRemarks$ = new BehaviorSubject<any>(null);
+    public vacanciesRemarks$ = new BehaviorSubject<any>(null);
+    public unShippedVacancyRemarks$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {}
 
@@ -259,13 +261,34 @@ export class CallCenterService {
       );
     };
 
-    /**
-   * Функция получает список проектов, которые имеют замечания.
-   * @returns - Список проектов, которые имеют замечания.
-   */
+  /**
+ * Функция получает список проектов, которые имеют замечания.
+ * @returns - Список проектов, которые имеют замечания.
+ */
   public async getProjectUnShippedRemarksTableAsync() {
     return await this.http.get(API_URL.apiUrl + "/callcenter/projects/remarks/unshipped-table").pipe(
       tap(data => this.projectsRemarks$.next(data))
+    );
+  };
+
+  /**
+ * Функция получает список вакансий, которые имеют замечания.
+ * @returns - Список вакансий, которые имеют замечания.
+ */
+  public async getVacanciesUnShippedRemarksTableAsync() {
+    return await this.http.get(API_URL.apiUrl + "/callcenter/vacancies/remarks/unshipped-table").pipe(
+      tap(data => this.vacanciesRemarks$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает вакансии (не отправленные).
+   * @param vacancyId - Id вакансии.
+   * @returns - Список замечаний (не отправленные).
+   */
+   public async getVacancyUnShippedRemarksAsync(vacancyId: number) {
+    return await this.http.get(API_URL.apiUrl + `/callcenter/vacancy/${vacancyId}/remarks/unshipped`).pipe(
+      tap(data => this.unShippedVacancyRemarks$.next(data))
     );
   };
 }

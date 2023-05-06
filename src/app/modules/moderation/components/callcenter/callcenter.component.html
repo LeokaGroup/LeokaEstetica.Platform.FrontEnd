@@ -201,6 +201,51 @@
   </p-table>
 </div>
 
+<!-- Замечания вакансий (не отправленные). -->
+<div *ngIf="isVacanciesUnShippedRemarks" class="mt-5">
+  <p-table [value]="vacanciesRemarks$.value" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="caption">
+      Не отправленные замечания вакансий
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Название вакансии</th>
+        <th>Получение замечания</th>
+        <th>Отправка замечаний</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-vac>
+      <tr>
+        <td>{{vac.vacancyId}}</td>
+        <td>
+          <p-button label="{{vac.vacancyName}}" 
+                    styleClass="p-button-link">
+
+          </p-button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Просмотр"
+                    class="p-button-text"
+                    (click)="getVacancyUnShippedRemarksAsync(vac.vacancyId)">
+        </button>
+        </td>
+        <!-- <td><button pButton
+                    type="button"
+                    label="Отправить"
+                    class="p-button-success p-button-text"
+                    (click)="onSendProjectRemarksAsync(vac.projectId)">
+          </button>
+        </td> -->
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <!-- Всего: {{totalProjects}} -->
+    </ng-template>
+  </p-table>
+</div>
+
 </div>
 </div>
 
