@@ -246,6 +246,51 @@
   </p-table>
 </div>
 
+<!-- Замечания анкет (не отправленные). -->
+<div *ngIf="isResumesUnShippedRemarks" class="mt-5">
+  <p-table [value]="resumesRemarks$.value" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="caption">
+      Не отправленные замечания анкет
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Название анкеты</th>
+        <th>Получение замечания</th>
+        <th>Отправка замечаний</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-pi>
+      <tr>
+        <td>{{pi.profileInfoId}}</td>
+        <td>
+          <p-button label="{{pi.profileName}}" 
+                    styleClass="p-button-link">
+
+          </p-button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Просмотр"
+                    class="p-button-text"
+                    (click)="getResumeUnShippedRemarksAsync(pi.profileInfoId)">
+        </button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Отправить"
+                    class="p-button-success p-button-text"
+                    (click)="onSendResumeRemarksAsync(pi.profileInfoId)">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <!-- Всего: {{totalProjects}} -->
+    </ng-template>
+  </p-table>
+</div>
+
 </div>
 </div>
 
@@ -680,7 +725,7 @@
           <div>
             <p-checkbox inputId="remarkResumeEmail"
                         [value]="'RemarkResumeEmail'"
-                        (onChange)="onSetResumeRemarks('RemarkResumeEmail', '', 'Email', profileInfoId)">
+                        (onChange)="onSetResumeRemarks('RemarkResumeEmail', '', 'Почта', profileInfoId)">
     
             </p-checkbox>
             <label for="remarkResumeEmail">&nbsp;Есть замечание</label>
@@ -808,7 +853,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-r>
               <tr>
-                <td>{{r.projectId}}</td>
+                <td>{{r.profileInfoId}}</td>
                 <td>{{r.russianName}}</td>
                 <td>
                   <textarea input-control-worksheet

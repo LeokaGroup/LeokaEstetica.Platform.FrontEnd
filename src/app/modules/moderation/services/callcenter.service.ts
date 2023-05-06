@@ -41,6 +41,8 @@ export class CallCenterService {
     public projectsRemarks$ = new BehaviorSubject<any>(null);
     public vacanciesRemarks$ = new BehaviorSubject<any>(null);
     public unShippedVacancyRemarks$ = new BehaviorSubject<any>(null);
+    public unShippedResumeRemarks$ = new BehaviorSubject<any>(null);
+    public resumesRemarks$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {}
 
@@ -282,8 +284,29 @@ export class CallCenterService {
   };
 
   /**
-   * Функция получает вакансии (не отправленные).
-   * @param vacancyId - Id вакансии.
+* Функция получает список анкет, которые имеют замечания.
+* @returns - Список анкет, которые имеют замечания.
+*/
+  public async getResumesUnShippedRemarksTableAsync() {
+    return await this.http.get(API_URL.apiUrl + `/callcenter/profile/remarks/unshipped-table`).pipe(
+      tap(data => this.resumesRemarks$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает анкеты (не отправленные).
+   * @param profileInfoId - Id анкеты.
+   * @returns - Список замечаний (не отправленные).
+   */
+   public async getResumeUnShippedRemarksAsync(profileInfoId: number) {
+    return await this.http.get(API_URL.apiUrl + `/callcenter/profile/${profileInfoId}/remarks/unshipped`).pipe(
+      tap(data => this.unShippedResumeRemarks$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает замечания вакансии (не отправленные).
+   * @param projectId - Id вакансии.
    * @returns - Список замечаний (не отправленные).
    */
    public async getVacancyUnShippedRemarksAsync(vacancyId: number) {
