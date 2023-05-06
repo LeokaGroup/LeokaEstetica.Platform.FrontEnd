@@ -8,7 +8,7 @@ import { RejectProjectInput } from '../models/input/reject-project-input';
 import { RejectVacancyInput } from '../models/input/reject-vacancy-input';
 import { ApproveResumeInput } from "../models/input/approve-resume-input";
 import {RejectResumeInput} from "../models/input/reject-resume-input";
-import { CreateProjectRemarksInput, ProjectRemarkInput } from '../models/input/project-remark-input';
+import { CreateProjectRemarksInput } from '../models/input/project-remark-input';
 import { SendProjectRemarkInput } from '../models/input/send-project-remark-input';
 import { CreateVacancyRemarksInput } from '../models/input/vacancy-remark-input';
 import { SendVacancyRemarkInput } from '../models/input/send-vacancy-remark-input';
@@ -37,6 +37,12 @@ export class CallCenterService {
     public projectRemarksModeration$ = new BehaviorSubject<any>(null);
     public vacancyRemarksModeration$ = new BehaviorSubject<any>(null);
     public resumeRemarksModeration$ = new BehaviorSubject<any>(null);
+    public unShippedProjectRemarks$ = new BehaviorSubject<any>(null);
+    public projectsRemarks$ = new BehaviorSubject<any>(null);
+    public vacanciesRemarks$ = new BehaviorSubject<any>(null);
+    public unShippedVacancyRemarks$ = new BehaviorSubject<any>(null);
+    public unShippedResumeRemarks$ = new BehaviorSubject<any>(null);
+    public resumesRemarks$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {}
 
@@ -237,7 +243,7 @@ export class CallCenterService {
   };
 
     /**
-   * Функция отправляет замеpreviewчания анкеты.
+   * Функция отправляет замечания анкеты.
    * @param createResumeRemarksInput - Входная модель.
    */
      public async sendResumeRemarks(sendResumeRemarkInput: SendResumeRemarkInput) {
@@ -245,4 +251,67 @@ export class CallCenterService {
         tap(data => this.resumeRemarksModeration$.next(data))
       );
     };
+
+    /**
+   * Функция получает анкеты (не отправленные).
+   * @param projectId - Id проекта.
+   * @returns - Список замечаний (не отправленные).
+   */
+     public async getProjectUnShippedRemarksAsync(projectId: number) {
+      return await this.http.get(API_URL.apiUrl + `/callcenter/project/${projectId}/remarks/unshipped`).pipe(
+        tap(data => this.unShippedProjectRemarks$.next(data))
+      );
+    };
+
+  /**
+ * Функция получает список проектов, которые имеют замечания.
+ * @returns - Список проектов, которые имеют замечания.
+ */
+  public async getProjectUnShippedRemarksTableAsync() {
+    return await this.http.get(API_URL.apiUrl + "/callcenter/projects/remarks/unshipped-table").pipe(
+      tap(data => this.projectsRemarks$.next(data))
+    );
+  };
+
+  /**
+ * Функция получает список вакансий, которые имеют замечания.
+ * @returns - Список вакансий, которые имеют замечания.
+ */
+  public async getVacanciesUnShippedRemarksTableAsync() {
+    return await this.http.get(API_URL.apiUrl + "/callcenter/vacancies/remarks/unshipped-table").pipe(
+      tap(data => this.vacanciesRemarks$.next(data))
+    );
+  };
+
+  /**
+* Функция получает список анкет, которые имеют замечания.
+* @returns - Список анкет, которые имеют замечания.
+*/
+  public async getResumesUnShippedRemarksTableAsync() {
+    return await this.http.get(API_URL.apiUrl + `/callcenter/profile/remarks/unshipped-table`).pipe(
+      tap(data => this.resumesRemarks$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает анкеты (не отправленные).
+   * @param profileInfoId - Id анкеты.
+   * @returns - Список замечаний (не отправленные).
+   */
+   public async getResumeUnShippedRemarksAsync(profileInfoId: number) {
+    return await this.http.get(API_URL.apiUrl + `/callcenter/profile/${profileInfoId}/remarks/unshipped`).pipe(
+      tap(data => this.unShippedResumeRemarks$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает замечания вакансии (не отправленные).
+   * @param projectId - Id вакансии.
+   * @returns - Список замечаний (не отправленные).
+   */
+   public async getVacancyUnShippedRemarksAsync(vacancyId: number) {
+    return await this.http.get(API_URL.apiUrl + `/callcenter/vacancy/${vacancyId}/remarks/unshipped`).pipe(
+      tap(data => this.unShippedVacancyRemarks$.next(data))
+    );
+  };
 }

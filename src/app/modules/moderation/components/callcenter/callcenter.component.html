@@ -5,7 +5,7 @@
     <p-megaMenu [model]="items"></p-megaMenu>
 
     <!-- Проекты. -->
-    <div *ngIf="isProjectsModeration">
+    <div *ngIf="isProjectsModeration" class="mt-5">
       <p-table [value]="aProjects" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
         <ng-template pTemplate="caption">
           Проекты на модерации
@@ -57,7 +57,7 @@
     </div>
 
     <!-- Вакансии. -->
-    <div *ngIf="isVacanciesModeration">
+    <div *ngIf="isVacanciesModeration" class="mt-5">
       <p-table [value]="aVacancies" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
         <ng-template pTemplate="caption">
           Вакансии на модерации
@@ -107,7 +107,7 @@
     </div>
 
 <!-- Анкеты. -->
-<div *ngIf="isResumesModeration">
+<div *ngIf="isResumesModeration" class="mt-5">
   <p-table [value]="aResumes" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
     <ng-template pTemplate="caption">
       Анкеты на модерации
@@ -151,6 +151,142 @@
     </ng-template>
     <ng-template pTemplate="summary">
       Всего: {{totalResumes}}
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Замечания проектов (не отправленные). -->
+<div *ngIf="isProjectsUnShippedRemarks" class="mt-5">
+  <p-table [value]="projectsRemarks$.value" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="caption">
+      Не отправленные замечания проектов
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Название проекта</th>
+        <th>Получение замечания</th>
+        <th>Отправка замечаний</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-prj>
+      <tr>
+        <td>{{prj.projectId}}</td>
+        <td>
+          <p-button label="{{prj.projectName}}" 
+                    styleClass="p-button-link"
+                    (click)="getProjectUnShippedRemarksAsync(prj.projectId)">
+
+          </p-button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Просмотр"
+                    class="p-button-text"
+                    (click)="getProjectUnShippedRemarksAsync(prj.projectId)">
+        </button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Отправить"
+                    class="p-button-success p-button-text"
+                    (click)="onSendProjectRemarksAsync(prj.projectId)">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <!-- Всего: {{totalProjects}} -->
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Замечания вакансий (не отправленные). -->
+<div *ngIf="isVacanciesUnShippedRemarks" class="mt-5">
+  <p-table [value]="vacanciesRemarks$.value" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="caption">
+      Не отправленные замечания вакансий
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Название вакансии</th>
+        <th>Получение замечания</th>
+        <th>Отправка замечаний</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-vac>
+      <tr>
+        <td>{{vac.vacancyId}}</td>
+        <td>
+          <p-button label="{{vac.vacancyName}}" 
+                    styleClass="p-button-link">
+
+          </p-button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Просмотр"
+                    class="p-button-text"
+                    (click)="getVacancyUnShippedRemarksAsync(vac.vacancyId)">
+        </button>
+        </td>
+        <!-- <td><button pButton
+                    type="button"
+                    label="Отправить"
+                    class="p-button-success p-button-text"
+                    (click)="onSendProjectRemarksAsync(vac.projectId)">
+          </button>
+        </td> -->
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <!-- Всего: {{totalProjects}} -->
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Замечания анкет (не отправленные). -->
+<div *ngIf="isResumesUnShippedRemarks" class="mt-5">
+  <p-table [value]="resumesRemarks$.value" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="caption">
+      Не отправленные замечания анкет
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Название анкеты</th>
+        <th>Получение замечания</th>
+        <th>Отправка замечаний</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-pi>
+      <tr>
+        <td>{{pi.profileInfoId}}</td>
+        <td>
+          <p-button label="{{pi.profileName}}" 
+                    styleClass="p-button-link">
+
+          </p-button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Просмотр"
+                    class="p-button-text"
+                    (click)="getResumeUnShippedRemarksAsync(pi.profileInfoId)">
+        </button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Отправить"
+                    class="p-button-success p-button-text"
+                    (click)="onSendResumeRemarksAsync(pi.profileInfoId)">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <!-- Всего: {{totalProjects}} -->
     </ng-template>
   </p-table>
 </div>
@@ -589,7 +725,7 @@
           <div>
             <p-checkbox inputId="remarkResumeEmail"
                         [value]="'RemarkResumeEmail'"
-                        (onChange)="onSetResumeRemarks('RemarkResumeEmail', '', 'Email', profileInfoId)">
+                        (onChange)="onSetResumeRemarks('RemarkResumeEmail', '', 'Почта', profileInfoId)">
     
             </p-checkbox>
             <label for="remarkResumeEmail">&nbsp;Есть замечание</label>
@@ -717,7 +853,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-r>
               <tr>
-                <td>{{r.projectId}}</td>
+                <td>{{r.profileInfoId}}</td>
                 <td>{{r.russianName}}</td>
                 <td>
                   <textarea input-control-worksheet
