@@ -48,11 +48,12 @@ export class AppComponent implements OnInit {
 
   public rerender(): void {
     console.log("reload");
-    this.isVisibleMenu = false;
-    this.isVisibleHeader = false;
+    this.isVisibleMenu = false; 
     this.changeDetectorRef.detectChanges();
     this.isVisibleMenu = true;
+    this.isVisibleHeader = false;
     this.isVisibleHeader = true;
+    console.log("isVisibleHeader", this.isVisibleHeader);
 };
 
   /**
