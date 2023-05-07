@@ -50,6 +50,7 @@ export class CatalogVacancyComponent implements OnInit {
     searchText: string = "";
     rowsCount: number = 0;
     page: number = 0;
+    aCatalogVacancies: any[] = [];
 
     // TODO: этот тип фильтра будем использовать при поиске. Вне поиска решили не делать.
     // aKeywords: any[] = [
@@ -98,6 +99,7 @@ export class CatalogVacancyComponent implements OnInit {
         .subscribe(_ => {
             console.log("Список вакансий: ", this.catalog$.value);
             this.rowsCount = this.catalog$.value.total;
+            this.aCatalogVacancies = this.catalog$.value.catalogVacancies;
         });
     };
 
@@ -168,6 +170,7 @@ export class CatalogVacancyComponent implements OnInit {
         (await this._vacancyService.getVacanciesPaginationAsync(event.page))
             .subscribe(_ => {
                 console.log("Пагинация: ", this.pagination$.value), "page: " ;
+                this.aCatalogVacancies = this.pagination$.value.vacancies;
                 this.setUrlParams(event.page + 1); // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
             });
     };
