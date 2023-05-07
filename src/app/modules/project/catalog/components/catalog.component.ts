@@ -156,6 +156,7 @@ export class CatalogProjectsComponent implements OnInit {
             .subscribe(_ => {
                 console.log("Пагинация: ", this.pagination$.value), "page: " ;
                 this.setUrlParams(event.page + 1); // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
+                this.aProjectsCatalog = this.pagination$.value.projects;
             });
     };
     
