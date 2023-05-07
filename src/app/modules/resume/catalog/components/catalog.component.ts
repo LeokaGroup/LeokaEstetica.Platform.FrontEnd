@@ -104,6 +104,7 @@ export class CatalogResumeComponent implements OnInit {
         (await this._resumeService.getResumesPaginationAsync(0))
             .subscribe(_ => {
                 console.log("Пагинация: ", this.pagination$.value), "page: " + this.page;
+                this.aResumesCatalog = this.pagination$.value.resumes;
                 this.setUrlParams(1);    
             });
     };
