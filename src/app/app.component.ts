@@ -43,16 +43,17 @@ export class AppComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef) { }
 
   public ngOnInit() {
-    this.checkCurrentRouteUrl();    
+    this.checkCurrentRouteUrl();     
+    this.isVisibleHeader = true;      
   };
 
   public rerender(): void {
     console.log("reload");
     this.isVisibleMenu = false; 
+    // this.isVisibleHeader = false;    
     this.changeDetectorRef.detectChanges();
-    this.isVisibleMenu = true;
-    this.isVisibleHeader = false;
-    this.isVisibleHeader = true;
+    this.isVisibleMenu = true;    
+    // this.isVisibleHeader = true;
     console.log("isVisibleHeader", this.isVisibleHeader);
 };
 
@@ -104,18 +105,18 @@ export class AppComponent implements OnInit {
       this.isVisibleMenu = true;
     }
 
-    if (currentUrl.indexOf("callcenter") > 0
-    || currentUrl.indexOf("administration") > 0
-    || currentUrl.indexOf("user/signin") > 0) {
+    if (currentUrl.indexOf("callcenter") >= 0
+    || currentUrl.indexOf("administration") >= 0
+    || currentUrl.indexOf("user/signin") >= 0) {
       this.rerender();
       this.isVisibleMenu = false;
     }
 
-    if (currentUrl.indexOf("profile/aboutme?mode=view") > 0) {
+    if (currentUrl.indexOf("profile/aboutme?mode=view") >= 0) {
       this.rerender();
     }
 
-    if (currentUrl.indexOf("/") > 0) {
+    if (currentUrl.indexOf("/") >= 0) {
       this.rerender();
     }
 

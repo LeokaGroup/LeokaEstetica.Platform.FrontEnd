@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { HeaderService } from "../services/header.service";
@@ -37,7 +37,8 @@ export class HeaderComponent implements OnInit {
     constructor(private readonly _headerService: HeaderService,
         private readonly _router: Router,
         private readonly _activatedRoute: ActivatedRoute,
-        private readonly _redirectService: RedirectService) {
+        private readonly _redirectService: RedirectService,
+        private changeDetectorRef: ChangeDetectorRef) {
     }
 
     public async ngOnInit() {
@@ -45,7 +46,7 @@ export class HeaderComponent implements OnInit {
         await this._headerService.refreshTokenAsync();
         this.checkUrlParams();
 
-        this.isHideAuthButtons = localStorage["t_n"] ? true : false;
+        this.isHideAuthButtons = localStorage["t_n"] ? true : false;        
     }
 
     /**
@@ -82,10 +83,8 @@ export class HeaderComponent implements OnInit {
 
     private checkUrlParams() {
         this._activatedRoute.queryParams
-        .subscribe(params => {
-            let mode = params["mode"];
-
-
+        .subscribe(_ => {
+            this.rerenderAuthButtons();
           });
     };
 
@@ -98,5 +97,11 @@ export class HeaderComponent implements OnInit {
                 mode: "view"
             }
         });
+    };
+
+    private rerenderAuthButtons() {
+        this.isHideAuthButtons = false;
+        this.changeDetectorRef.detectChanges();
+        this.isHideAuthButtons = true;
     };
 }
