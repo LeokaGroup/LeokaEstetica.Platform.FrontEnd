@@ -28,7 +28,7 @@
             <div class="d-flex justify-content-center">
               <div class="control-fare-rule" *ngIf="fare.ruleId > 1">
                 <button type="submit" class="btn btn-primary button-action-pur-control"
-                  (click)="onCreateOrderAsync(fare.ruleId)">
+                  (click)="onRouteOrderInfoAsync(fare.publicId)">
                   Оформить
                 </button>
               </div>  

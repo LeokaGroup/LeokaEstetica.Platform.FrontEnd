@@ -34,6 +34,8 @@ import { NotificationsService } from './modules/backoffice/notification/services
 import { FooterComponent } from './modules/footer/components/footer.component';
 import { CarouselModule } from 'primeng/carousel';
 import { CallCenterModule } from './modules/moderation/callcenter.module';
+import { OrderFormModule } from './modules/order-form/order-form.module';
+import { OrderFormService } from './modules/order-form/order-form-info/services/order-form.service';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,8 @@ import { CallCenterModule } from './modules/moderation/callcenter.module';
     PayModule,
     MenuModule,
     AdministrationModule,
-    CarouselModule
+    CarouselModule,
+    OrderFormModule
   ],
 
   providers: [
@@ -86,7 +89,8 @@ import { CallCenterModule } from './modules/moderation/callcenter.module';
     PaymentService,
     SubscriptionsService,
     AdministrationService,
-    NotificationsService
+    NotificationsService,
+    OrderFormService
   ],
 
   bootstrap: [AppComponent]

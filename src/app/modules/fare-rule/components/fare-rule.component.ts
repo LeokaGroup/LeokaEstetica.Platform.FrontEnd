@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { forkJoin } from "rxjs";
-import { CreateOrderInput } from "../../pay/models/create-order-input";
 import { PaymentService } from "../../pay/services/pay.service";
 import { FareRuleService } from "../services/fare-rule.service";
 
@@ -12,19 +11,18 @@ import { FareRuleService } from "../services/fare-rule.service";
 })
 
 /**
- * Класс каталога проектов.
+ * Класс компонента правил тарифа.
  */
-export class FareRuleComponent implements OnInit {
-
-    responsiveOptions: any; //для карусели
+export class FareRuleComponent implements OnInit {    
     constructor(private readonly _router: Router,
-        private readonly _activatedRoute: ActivatedRoute,
         private readonly _fareRuleService: FareRuleService,
         private readonly _paymentService: PaymentService) {
     }
 
     public readonly fareRules$ = this._fareRuleService.fareRules$;
     public readonly createOrder$ = this._paymentService.createOrder$;
+
+    responsiveOptions: any;
 
 
     public async ngOnInit() {
@@ -42,21 +40,17 @@ export class FareRuleComponent implements OnInit {
         .subscribe(_ => {
             console.log("Правила тарифов: ", this.fareRules$.value);
         });
-    };
+    };    
 
     /**
-     * Функция создает заказ.
-     * @returns - Данные заказа.
+     * Функция переходит на ФЗ.
+     * @param publicId - Публмичный ключ тарифа.
      */
-     public async onCreateOrderAsync(fareRuleId: number) {
-        let createOrderInput = new CreateOrderInput();
-        createOrderInput.FareRuleId = fareRuleId;
-
-        (await this._paymentService.createOrderAsync(createOrderInput))
-        .subscribe((response: any) => {
-            console.log("Данные платежа: ", this.createOrder$.value);
-            if (+response.paymentId > 0) {
-                window.location.href = response.url;
+    public async onRouteOrderInfoAsync(publicId: string) {
+        this._router.navigate(["/order-form/info"], {
+            queryParams: {
+                publicId,
+                step: 1
             }
         });
     };
