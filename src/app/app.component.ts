@@ -87,52 +87,37 @@ export class AppComponent implements OnInit {
     if (this._aVisibleProfileMenuRoutes.includes(currentUrl)) {
       this.isVisibleMenu = true;
       localStorage["m_t"] = 1;
-
-      return;
     }
 
     if (this._aVisibleVacancyMenuRoutes.includes(currentUrl)) {
       localStorage["m_t"] = 1;
       this.isVisibleMenu = true;
-
-      return;
     }
 
     if (this.projectModeUrls.includes(currentUrl)
     || this.resumeModeUrls.includes(currentUrl)) {
       this.isVisibleMenu = true;
       localStorage["m_t"] = 1;
-
-      return;
     }
 
     if (currentUrl.indexOf("projectId") > 0) {
       this.rerender();
       this.isVisibleMenu = true;
-
-      return;
     }
 
     if (currentUrl.indexOf("callcenter") >= 0
     || currentUrl.indexOf("administration") >= 0
-    || currentUrl.indexOf("user/signin") >= 0
-    || currentUrl.includes("/order-form")) {
+    || currentUrl.indexOf("user/signin") >= 0) {
       this.rerender();
       this.isVisibleMenu = true;
-
-      return;
     }
 
     if (currentUrl.indexOf("profile/aboutme?mode=view") >= 0) {
       this.rerender();
-
-      return;
     }
 
     if (currentUrl.indexOf("/") >= 0) {
       this.rerender();
-
-      return;
     }
 
     this._activatedRoute.queryParams

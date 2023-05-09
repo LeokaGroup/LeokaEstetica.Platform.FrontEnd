@@ -21,13 +21,17 @@ import { DialogModule } from 'primeng/dialog';
 import {TabViewModule} from 'primeng/tabview';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { SidebarModule } from 'primeng/sidebar';
-import { OrderFormInfoComponent } from './order-form-info/components/order-form-info.component';
 import { OrderFormRoutingModule } from './order-form-routing.module';
 import { StepsModule } from 'primeng/steps';
+import { OrderFormInfoComponent } from './order-form-info/components/order-form-info.component';
+import { OrderFormStepsComponent } from './order-form-steps/order-form-steps.component';
+import { OrderFormSelectSubscriptionPlanComponent } from './select-subscription-plan/select-subscription-plan.component';
 
 @NgModule({
     declarations: [
-        OrderFormInfoComponent
+        OrderFormInfoComponent,
+        OrderFormStepsComponent,
+        OrderFormSelectSubscriptionPlanComponent
     ],
 
     imports: [
