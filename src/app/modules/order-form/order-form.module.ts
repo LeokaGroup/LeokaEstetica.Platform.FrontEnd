@@ -26,6 +26,7 @@ import { StepsModule } from 'primeng/steps';
 import { OrderFormInfoComponent } from './order-form-info/components/order-form-info.component';
 import { OrderFormStepsComponent } from './order-form-steps/order-form-steps.component';
 import { OrderFormSelectSubscriptionPlanComponent } from './select-subscription-plan/select-subscription-plan.component';
+import { SliderModule } from 'primeng/slider';
 
 @NgModule({
     declarations: [
@@ -56,7 +57,8 @@ import { OrderFormSelectSubscriptionPlanComponent } from './select-subscription-
         ReactiveFormsModule,
         MegaMenuModule,
         SidebarModule,
-        StepsModule
+        StepsModule,
+        SliderModule
     ],
 
     exports: [],

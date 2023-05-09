@@ -16,6 +16,8 @@ export class OrderFormSelectSubscriptionPlanComponent implements OnInit {
         private readonly _activatedRoute: ActivatedRoute) {
     }   
 
+    paymentMonth: number = 0;
+
     public async ngOnInit() {
         forkJoin([
            
