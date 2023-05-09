@@ -21,24 +21,6 @@ export class OrderFormInfoComponent implements OnInit {
     public readonly fareRuleInfo$ = this._orderFormService.fareRuleInfo$;    
 
     publicId: string = "";
-    selectedStep: number = 0;
-    items: any[] = [
-        {
-            label: "Выбор тарифа"
-        },
-        {
-            label: "Выбор плана подписки"
-        },
-        {
-            label: "Услуги и сервисы"
-        },
-        {
-            label: "Оплата тарифа"
-        },
-        {
-            label: "Завершение оплаты"
-        }
-    ];
 
     public async ngOnInit() {
         forkJoin([
@@ -61,7 +43,12 @@ export class OrderFormInfoComponent implements OnInit {
         });
     };
 
-    public onActiveStepIndexChange(event: any) {
-
+    public onRouteNextStep() {
+        this._router.navigate(["/order-form/subscription-plan"], {
+            queryParams: {
+                publicId: this.publicId,
+                step: 2
+            }
+        });
     };
 }

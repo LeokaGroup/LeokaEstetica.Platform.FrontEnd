@@ -10,7 +10,7 @@ import { OrderFormService } from "../order-form-info/services/order-form.service
 })
 
 /**
- * Класс компонента ФЗ (информация о тарифе).
+ * Класс компонента ФЗ (список этапов).
  */
 export class OrderFormStepsComponent implements OnInit {
     constructor(private readonly _router: Router,
@@ -49,16 +49,9 @@ export class OrderFormStepsComponent implements OnInit {
     private async checkUrlParams() {
         this._activatedRoute.queryParams
         .subscribe(async params => {
-            this.publicId = params["publicId"];   
-            await this.getFareRuleInfoAsync();      
+            this.publicId = params["publicId"];
+            this.selectedStep = params["step"] - 1; // Вычитаем 1, потому что стипсы считаются от 0.
           });
-    };
-
-    private async getFareRuleInfoAsync() {
-        (await this._orderFormService.getFareRuleInfoAsync(this.publicId))
-        .subscribe(_ => {
-            console.log("Информация о тарифе: ", this.fareRuleInfo$.value);
-        });
     };
 
     public onActiveStepIndexChange(event: any) {
