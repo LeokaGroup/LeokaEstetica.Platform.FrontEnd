@@ -27,12 +27,14 @@ import { OrderFormInfoComponent } from './order-form-info/components/order-form-
 import { OrderFormStepsComponent } from './order-form-steps/order-form-steps.component';
 import { OrderFormSelectSubscriptionPlanComponent } from './select-subscription-plan/select-subscription-plan.component';
 import { SliderModule } from 'primeng/slider';
+import { OrderFormProductsComponent } from './products/products.component';
 
 @NgModule({
     declarations: [
         OrderFormInfoComponent,
         OrderFormStepsComponent,
-        OrderFormSelectSubscriptionPlanComponent
+        OrderFormSelectSubscriptionPlanComponent,
+        OrderFormProductsComponent
     ],
 
     imports: [

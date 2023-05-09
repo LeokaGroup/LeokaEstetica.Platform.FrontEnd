@@ -17,10 +17,20 @@ export class OrderFormSelectSubscriptionPlanComponent implements OnInit {
     }   
 
     paymentMonth: number = 0;
+    publicId: string = "";
 
     public async ngOnInit() {
         forkJoin([
            
         ]).subscribe();
+    };
+
+    public onRouteNextStep() {
+        this._router.navigate(["/order-form/products"], {
+            queryParams: {
+                publicId: this.publicId,
+                step: 3
+            }
+        });
     };
 }
