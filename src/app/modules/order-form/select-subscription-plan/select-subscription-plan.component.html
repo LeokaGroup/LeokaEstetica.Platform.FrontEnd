@@ -14,11 +14,40 @@
           <strong>Выбор плана подписки:</strong>
           <div class="mt-3">
             <p>Количество месяцев: {{paymentMonth}}</p>
-            <p-slider [(ngModel)]="paymentMonth" [step]="1" [min]="1" [max]="12"></p-slider>
+            <p-slider [(ngModel)]="paymentMonth" 
+                      [step]="1" 
+                      [min]="1" 
+                      [max]="12" 
+                      (onChange)="onChangePaymentMonth()">
+            </p-slider>
+
+            <div class="mt-3">
+              <button type="button" 
+                      class="btn btn-primary button-action-pur-short-control"
+                      (click)="onCreateOrderCacheAsync()">
+                Рассчитать цену
+              </button>
+            </div>
           </div>
 
           <div class="mt-3">
             <small>Все скидки, пакеты и акции учитываются на этапе услуг и сервисов (если тариф подразумевает это).</small>
+          </div>
+
+          <div class="mt-3" *ngIf="orderForm.price > 0 && paymentMonth > 1">
+            <strong>Цена со скидкой:</strong>
+            <p>{{orderForm.price > 0 ? orderForm.price + ' ₽' : ''}}</p>
+
+            <strong>Скидка за оплату сразу нескольких месяцев:</strong>
+            <p>{{orderForm.price > 0 ? orderForm.percent + '%' : ''}}</p>
+          </div>
+
+          <div class="mt-3" *ngIf="disableDiscount">
+            <strong>Цена:</strong>
+            <p>{{orderForm.price + ' ₽'}}</p>
+            <div>
+              <small>При оплате на месяц скидка не предоставляется.</small>
+            </div>
           </div>
         </p-panel>
 

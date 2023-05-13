@@ -36,6 +36,7 @@ import { CarouselModule } from 'primeng/carousel';
 import { CallCenterModule } from './modules/moderation/callcenter.module';
 import { OrderFormModule } from './modules/order-form/order-form.module';
 import { OrderFormService } from './modules/order-form/order-form-info/services/order-form.service';
+import { OrderService } from './modules/order-form/services/order.service';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { OrderFormService } from './modules/order-form/order-form-info/services/
     SubscriptionsService,
     AdministrationService,
     NotificationsService,
-    OrderFormService
+    OrderFormService,
+    OrderService
   ],
 
   bootstrap: [AppComponent]

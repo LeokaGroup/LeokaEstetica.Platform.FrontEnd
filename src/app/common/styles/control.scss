@@ -70,6 +70,12 @@
     @include purButton();
 }
 
+.button-action-pur-short-control {
+    width: 30%;
+    height: 42px;
+    @include purButton();
+}
+
 .button-action-pur-control-worksheet {
     width: 150px;
     height: 40px;
