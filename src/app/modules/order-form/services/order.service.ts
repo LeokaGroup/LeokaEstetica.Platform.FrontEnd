@@ -21,7 +21,7 @@ export class OrderService {
      * @returns - Данные заказа.
      */
     public async createOrderCacheAsync(createOrderCacheInput: CreateOrderCacheInput) {
-        return await this.http.post(API_URL.apiUrl + "/commercial/orders/pre", createOrderCacheInput).pipe(
+        return await this.http.post(API_URL.apiUrl + "/commercial/fare-rule/order-form/pre", createOrderCacheInput).pipe(
             tap(data => this.orderForm$.next(data))
         );
     };
