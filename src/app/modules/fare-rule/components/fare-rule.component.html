@@ -16,7 +16,7 @@
 
             <h6 class="label">
               {{fare.label}}
-            </h6>
+            </h6>            
           </div>
 
           <div class="footer">
@@ -24,14 +24,16 @@
             <ul *ngFor="let item of fare.fareRuleItems" class="discription">
               <li class="text-content">{{item.name}} {{item.label}}</li>
             </ul>
-          </div>
 
-          <!-- <div *ngIf="fare.ruleId==1;"><span style="line-height:70px; border:1px solid white"></span>
-          </div> -->
-          <button type="submit" class="btn btn-primary button-action-pur-control"
-              (click)="onCreateOrderAsync(fare.ruleId)">
-              Выбрать
-            </button>
+            <div class="d-flex justify-content-center">
+              <div class="control-fare-rule" *ngIf="fare.ruleId > 1">
+                <button type="submit" class="btn btn-primary button-action-pur-control"
+                  (click)="onRouteOrderInfoAsync(fare.publicId)">
+                  Оформить
+                </button>
+              </div>  
+            </div>   
+          </div>         
         </p-card>
       </div>
     </div>

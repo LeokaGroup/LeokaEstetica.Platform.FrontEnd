@@ -109,7 +109,7 @@ export class AppComponent implements OnInit {
     || currentUrl.indexOf("administration") >= 0
     || currentUrl.indexOf("user/signin") >= 0) {
       this.rerender();
-      this.isVisibleMenu = false;
+      this.isVisibleMenu = true;
     }
 
     if (currentUrl.indexOf("profile/aboutme?mode=view") >= 0) {

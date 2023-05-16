@@ -24,8 +24,6 @@ import { CallCenterService } from './modules/moderation/services/callcenter.serv
 import { SearchProjectService } from './modules/search/services/search-project-service';
 import { ResumeService } from './modules/resume/catalog/services/resume.service';
 import { FareRuleService } from './modules/fare-rule/services/fare-rule.service';
-import { PaymentService } from './modules/pay/services/pay.service';
-import { PayModule } from './modules/pay/pay.module';
 import { SubscriptionsService } from './modules/backoffice/subscriptions/services/subscriptions.service';
 import { MenuModule } from 'primeng/menu';
 import { AdministrationModule } from './modules/administration/administration.module';
@@ -34,6 +32,9 @@ import { NotificationsService } from './modules/backoffice/notification/services
 import { FooterComponent } from './modules/footer/components/footer.component';
 import { CarouselModule } from 'primeng/carousel';
 import { CallCenterModule } from './modules/moderation/callcenter.module';
+import { OrderFormModule } from './modules/order-form/order-form.module';
+import { OrderFormService } from './modules/order-form/order-form-info/services/order-form.service';
+import { OrderService } from './modules/order-form/services/order.service';
 
 @NgModule({
   declarations: [
@@ -60,10 +61,10 @@ import { CallCenterModule } from './modules/moderation/callcenter.module';
     ToastModule,
     AvatarModule,
     CallCenterModule,
-    PayModule,
     MenuModule,
     AdministrationModule,
-    CarouselModule
+    CarouselModule,
+    OrderFormModule
   ],
 
   providers: [
@@ -83,10 +84,11 @@ import { CallCenterModule } from './modules/moderation/callcenter.module';
     SearchProjectService,
     ResumeService,
     FareRuleService,
-    PaymentService,
     SubscriptionsService,
     AdministrationService,
-    NotificationsService
+    NotificationsService,
+    OrderFormService,
+    OrderService
   ],
 
   bootstrap: [AppComponent]

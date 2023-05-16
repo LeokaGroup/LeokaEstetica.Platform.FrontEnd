@@ -35,6 +35,11 @@ const routes: Routes = [
   {
     path: "notifications",
     loadChildren: () => import('./modules/backoffice/notification/notification.module').then(m => m.NotificationsModule)
+  },
+
+  {
+    path: "order-form",
+    loadChildren: () => import('./modules/order-form/order-form.module').then(m => m.OrderFormModule)
   }
 ];
 
