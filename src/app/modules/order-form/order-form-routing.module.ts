@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { OrderFormInfoComponent } from './order-form-info/components/order-form-info.component';
 import { OrderFormStepsComponent } from './order-form-steps/order-form-steps.component';
+import { PayComponent } from './pay/pay.component';
 import { OrderFormProductsComponent } from './products/products.component';
 import { OrderFormSelectSubscriptionPlanComponent } from './select-subscription-plan/select-subscription-plan.component';
 
@@ -20,6 +21,10 @@ const routes: Routes = [
 
     {
         path: 'products', component: OrderFormProductsComponent
+    },
+
+    {
+        path: 'pay', component: PayComponent
     }
 ];
 

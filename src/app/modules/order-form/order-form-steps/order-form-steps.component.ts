@@ -24,7 +24,7 @@ export class OrderFormStepsComponent implements OnInit {
     selectedStep: number = 0;
     items: any[] = [
         {
-            label: "Выбор тарифа"
+            label: "Выбранный тариф"
         },
         {
             label: "Выбор плана подписки"
@@ -34,10 +34,10 @@ export class OrderFormStepsComponent implements OnInit {
         },
         {
             label: "Оплата тарифа"
-        },
-        {
-            label: "Завершение оплаты"
         }
+        // {
+        //     label: "Завершение оплаты"
+        // }
     ];
 
     public async ngOnInit() {

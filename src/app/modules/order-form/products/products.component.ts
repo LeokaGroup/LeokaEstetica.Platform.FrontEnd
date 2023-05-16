@@ -40,7 +40,7 @@ export class OrderFormProductsComponent implements OnInit {
     };
 
     public onRouteNextStep() {
-        this._router.navigate(["/order-form/subscription-plan"], {
+        this._router.navigate(["/order-form/pay"], {
             queryParams: {
                 publicId: this.publicId,
                 step: 4
@@ -48,6 +48,10 @@ export class OrderFormProductsComponent implements OnInit {
         });
     };
 
+    /**
+     * Функция получает заказ из кэша.
+     * @returns - Данные заказа.
+    */
     private async getOrderProductsCacheAsync() {
         (await this._orderService.getOrderProductsCacheAsync(this.publicId))
         .subscribe(_ => {
