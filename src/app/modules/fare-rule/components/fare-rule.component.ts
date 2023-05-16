@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { forkJoin } from "rxjs";
-import { PaymentService } from "../../pay/services/pay.service";
 import { FareRuleService } from "../services/fare-rule.service";
 
 @Component({
@@ -15,12 +14,10 @@ import { FareRuleService } from "../services/fare-rule.service";
  */
 export class FareRuleComponent implements OnInit {    
     constructor(private readonly _router: Router,
-        private readonly _fareRuleService: FareRuleService,
-        private readonly _paymentService: PaymentService) {
+        private readonly _fareRuleService: FareRuleService) {
     }
 
     public readonly fareRules$ = this._fareRuleService.fareRules$;
-    public readonly createOrder$ = this._paymentService.createOrder$;
 
     responsiveOptions: any;
 

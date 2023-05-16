@@ -24,8 +24,6 @@ import { CallCenterService } from './modules/moderation/services/callcenter.serv
 import { SearchProjectService } from './modules/search/services/search-project-service';
 import { ResumeService } from './modules/resume/catalog/services/resume.service';
 import { FareRuleService } from './modules/fare-rule/services/fare-rule.service';
-import { PaymentService } from './modules/pay/services/pay.service';
-import { PayModule } from './modules/pay/pay.module';
 import { SubscriptionsService } from './modules/backoffice/subscriptions/services/subscriptions.service';
 import { MenuModule } from 'primeng/menu';
 import { AdministrationModule } from './modules/administration/administration.module';
@@ -63,7 +61,6 @@ import { OrderService } from './modules/order-form/services/order.service';
     ToastModule,
     AvatarModule,
     CallCenterModule,
-    PayModule,
     MenuModule,
     AdministrationModule,
     CarouselModule,
@@ -87,7 +84,6 @@ import { OrderService } from './modules/order-form/services/order.service';
     SearchProjectService,
     ResumeService,
     FareRuleService,
-    PaymentService,
     SubscriptionsService,
     AdministrationService,
     NotificationsService,
