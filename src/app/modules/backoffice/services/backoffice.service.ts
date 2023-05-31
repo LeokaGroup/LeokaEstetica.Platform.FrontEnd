@@ -25,6 +25,7 @@ export class BackOfficeService {
     public listVacancy$ = new BehaviorSubject<any>([]);
     public deleteVacancy$ = new BehaviorSubject<any>(null);
     public resumeRemarks$ = new BehaviorSubject<any>(null);
+    public userOrders$ = new BehaviorSubject<any>([]);
 
     constructor(private readonly http: HttpClient) {
 
@@ -40,11 +41,11 @@ export class BackOfficeService {
         );
     };
 
-     /**
-     * Функция получает данные анкеты выбранного в базе резюме пользователя для просмотра.
-     * @returns - Данные обо мне.
-     */
-      public async getSelectedProfileInfoAsync(profileInfoId: number) {
+    /**
+    * Функция получает данные анкеты выбранного в базе резюме пользователя для просмотра.
+    * @returns - Данные обо мне.
+    */
+    public async getSelectedProfileInfoAsync(profileInfoId: number) {
         return await this.http.get(API_URL.apiUrl + `/resumes/${profileInfoId}`).pipe(
             tap(data => this.profileInfo$.next(data))
         );
@@ -64,7 +65,7 @@ export class BackOfficeService {
      * Функция получает пункты меню вакансий.
      * @returns Список меню.
      */
-     public async getVacancyItemsAsync() {
+    public async getVacancyItemsAsync() {
         return await this.http.get(API_URL.apiUrl + "/vacancies/menu").pipe(
             tap(data => this.vacancyItems$.next(data))
         );
@@ -100,12 +101,12 @@ export class BackOfficeService {
         );
     };
 
-     /**
-     * Функция находит системное имя выбранного пункта меню.
-     * @param text - Название пункта меню.
-     * @returns - Системное имя выбранного пункта меню.
-     */
-      public async selectProfileMenuAsync(text: string) {
+    /**
+    * Функция находит системное имя выбранного пункта меню.
+    * @param text - Название пункта меню.
+    * @returns - Системное имя выбранного пункта меню.
+    */
+    public async selectProfileMenuAsync(text: string) {
         let selectMenuInput = new SelectMenuInput();
         selectMenuInput.Text = text;
 
@@ -118,7 +119,7 @@ export class BackOfficeService {
      * Функция получает список выбранных навыков пользователя.
      * @returns - Список навыков.
      */
-     public async getSelectedUserSkillsAsync() {
+    public async getSelectedUserSkillsAsync() {
         return await this.http.get(API_URL.apiUrl + "/profile/selected-skills").pipe(
             tap(data => this.selectedSkillsItems$.next(data))
         );
@@ -128,69 +129,79 @@ export class BackOfficeService {
      * Функция получает список выбранных целей пользователя.
      * @returns - Список навыков.
      */
-     public async getSelectedUserIntentsAsync() {
+    public async getSelectedUserIntentsAsync() {
         return await this.http.get(API_URL.apiUrl + "/profile/selected-intents").pipe(
             tap(data => this.selectedIntentsItems$.next(data))
         );
     };
 
-     /**
-    // * Функция получает поля таблицы проектов пользователя.
-    // * @returns - Список полей.
-    */
+    /**
+   // * Функция получает поля таблицы проектов пользователя.
+   // * @returns - Список полей.
+   */
     public async getProjectsColumnNamesAsync() {
         return await this.http.get(API_URL.apiUrl + "/projects/config-user-projects").pipe(
             tap(data => this.projectColumns$.next(data))
         );
     };
 
-     /**
-     * Функция создает новый проект пользователя.
-     * @returns Данные проекта.
-     */
+    /**
+    * Функция создает новый проект пользователя.
+    * @returns Данные проекта.
+    */
     public async createProjectAsync(createProjectInput: CreateProjectInput) {
         return await this.http.post(API_URL.apiUrl + "/projects/project", createProjectInput).pipe(
             tap(data => this.projectData$.next(data))
         );
     };
 
-     /**
-     * Функция получает список проектов пользователя.
-     * @returns Список проектов.
-     */
+    /**
+    * Функция получает список проектов пользователя.
+    * @returns Список проектов.
+    */
     public async getUserProjectsAsync() {
         return await this.http.get(API_URL.apiUrl + "/projects/user-projects").pipe(
             tap(data => this.userProjects$.next(data))
         );
     };
 
-  /**
-   * Функция получает список вакансий пользователя.
-   * @returns Список вакансий.
-   */
-  public async getUserVacancysAsync() {
-    return await this.http.get(API_URL.apiUrl + "/vacancies/user-vacancies").pipe(
-      tap(data => this.listVacancy$.next(data))
-    );
-  };
+    /**
+     * Функция получает список вакансий пользователя.
+     * @returns Список вакансий.
+     */
+    public async getUserVacancysAsync() {
+        return await this.http.get(API_URL.apiUrl + "/vacancies/user-vacancies").pipe(
+            tap(data => this.listVacancy$.next(data))
+        );
+    };
 
-  /**
-   * Функция удаляет вакансию.
-   * @param vacancyId - Id вакансии.
-   */
-  public async deleteVacancyAsync(vacancyId: number) {
-    return await this.http.delete(API_URL.apiUrl + `/vacancies/${vacancyId}`).pipe(
-      tap(data => this.deleteVacancy$.next(data))
-    );
-  };
+    /**
+     * Функция удаляет вакансию.
+     * @param vacancyId - Id вакансии.
+     */
+    public async deleteVacancyAsync(vacancyId: number) {
+        return await this.http.delete(API_URL.apiUrl + `/vacancies/${vacancyId}`).pipe(
+            tap(data => this.deleteVacancy$.next(data))
+        );
+    };
 
-   /**
- * Функция получает список замечаний анкеты.
- * @returns - Список замечаний анкеты.
- */
+    /**
+  * Функция получает список замечаний анкеты.
+  * @returns - Список замечаний анкеты.
+  */
     public async getResumesRemarksAsync() {
         return await this.http.get(API_URL.apiUrl + `/resumes/remarks`).pipe(
             tap(data => this.resumeRemarks$.next(data))
-          );
-      };
+        );
+    };
+
+    /**
+     * Функция получает список заказов пользователя.
+     * @returns - Список заказов пользователя.
+     */
+    public async getUserOrdersAsync() {
+        return await this.http.get(API_URL.apiUrl + `/orders/all`).pipe(
+            tap(data => this.userOrders$.next(data))
+        );
+    };
 }
