@@ -5,6 +5,7 @@ import { CreateProjectComponent } from './project/create-project/components/crea
 import { MyProjectsComponent } from './project/my-projects/components/my-projects.component';
 import { SubscriptionsComponent } from './subscriptions/components/subscriptions.component';
 import { MyVacancyComponent } from "./my-vacancy/my-vacancy.component";
+import { OrdersComponent } from './orders/components/orders.component';
 
 const routes: Routes = [
     {
@@ -22,9 +23,14 @@ const routes: Routes = [
     {
         path: 'subscriptions', component: SubscriptionsComponent
     },
+
     {
       path: 'vacancies/my', component: MyVacancyComponent
     },
+
+    {
+        path: 'orders', component: OrdersComponent
+      },
 
 ];
 

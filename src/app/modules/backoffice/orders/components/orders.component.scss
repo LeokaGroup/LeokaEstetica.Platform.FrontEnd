@@ -1,0 +1,9 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+
+// TODO: Отрефачить, есть дубли с .empty-vacancies. Вынести в общие стили.
+.empty-orders {
+    display: flex;
+    justify-content: center;
+}

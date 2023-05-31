@@ -18,11 +18,17 @@ export class HeaderComponent implements OnInit {
     isHideAuthButtons: boolean = false;
     items: any[] = [
         {
+            label: 'Заказы',
+            command: () => {
+                this._router.navigate(["/profile/orders"]);
+            }
+        },
+        {
             label: 'Настройки',
             command: () => {
 
             }
-        },
+        },        
         {
             label: 'Выйти',
             command: () => {
