@@ -29,7 +29,8 @@ import { DialogModule } from 'primeng/dialog';
 import { MyVacancyComponent} from "./my-vacancy/my-vacancy.component";
 import { RedirectService } from 'src/app/common/services/redirect.service';
 import { MessagesModule } from 'primeng/messages';
-import { OrdersComponent } from './orders/components/orders.component';
+import { OrdersComponent } from './orders/orders-list/components/orders.component';
+import { OrderDetailsComponent } from './orders/order-details/components/order-details.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { OrdersComponent } from './orders/components/orders.component';
         CreateProjectComponent,
         SubscriptionsComponent,
         MyVacancyComponent,
-        OrdersComponent
+        OrdersComponent,
+        OrderDetailsComponent
     ],
 
     imports: [

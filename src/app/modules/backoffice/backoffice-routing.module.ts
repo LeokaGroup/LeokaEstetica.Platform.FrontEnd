@@ -5,7 +5,8 @@ import { CreateProjectComponent } from './project/create-project/components/crea
 import { MyProjectsComponent } from './project/my-projects/components/my-projects.component';
 import { SubscriptionsComponent } from './subscriptions/components/subscriptions.component';
 import { MyVacancyComponent } from "./my-vacancy/my-vacancy.component";
-import { OrdersComponent } from './orders/components/orders.component';
+import { OrdersComponent } from './orders/orders-list/components/orders.component';
+import { OrderDetailsComponent } from './orders/order-details/components/order-details.component';
 
 const routes: Routes = [
     {
@@ -25,13 +26,16 @@ const routes: Routes = [
     },
 
     {
-      path: 'vacancies/my', component: MyVacancyComponent
+        path: 'vacancies/my', component: MyVacancyComponent
     },
 
     {
         path: 'orders', component: OrdersComponent
-      },
+    },
 
+    {
+        path: 'orders/details', component: OrderDetailsComponent
+    }
 ];
 
 @NgModule({

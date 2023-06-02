@@ -24,9 +24,9 @@
           <th>Описание заказа</th>
           <th>Дата создания заказа</th>
           <th>Статус заказа</th>
-          <!-- <th>Просмотр</th>
-          <th>Редактирование</th>
-          <th>Удаление</th> -->
+          <th>Подробнее</th>
+          <!-- <th>Редактирование</th> -->
+          <!-- <th>Удаление</th> -->
         </tr>
       </ng-template>
 
@@ -40,12 +40,12 @@
           <td>{{order.orderDetails}}</td>
           <td>{{order.dateCreated}}</td>
           <td>{{order.statusName}}</td>
-          <!-- <td><button pButton type="button"
-                      label="Просмотр"
+          <td><button pButton type="button"
+                      label="Подробнее"
                       class="p-button-outlined p-button-primaryproject.projectId"
-                      (click)="onRouteViewVacancy(vacancy.vacancyId)">
+                      (click)="onRouteViewOrder(order.orderId)">
           </button>
-          </td> -->
+          </td>
           <!-- <td><button pButton type="button"
                       label="Редактировать"
                       class="p-button-outlined p-button-primaryproject.projectId"

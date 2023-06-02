@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { forkJoin } from "rxjs";
-import { BackOfficeService } from "../../services/backoffice.service";
+import { BackOfficeService } from "../../../services/backoffice.service";
 
 @Component({
     selector: "orders",
@@ -14,7 +15,8 @@ import { BackOfficeService } from "../../services/backoffice.service";
 export class OrdersComponent implements OnInit {
     public readonly userOrders$ = this._backofficeService.userOrders$;
 
-    constructor(private readonly _backofficeService: BackOfficeService) {
+    constructor(private readonly _backofficeService: BackOfficeService,
+        private readonly _router: Router) {
     }
 
     selectedOrder: any;
@@ -34,5 +36,17 @@ export class OrdersComponent implements OnInit {
             .subscribe(_ => {
                 console.log("Заказы пользователя: ", this.userOrders$.value);
             });
+    };
+
+    /**
+     * Функция переходит на страницу деталей заказа.
+     * @param orderId - Id заказа.
+     */
+    public onRouteViewOrder(orderId: number) {
+        this._router.navigate(["/profile/orders/details"], {
+            queryParams: {
+                orderId
+            }
+        });
     };
 }
