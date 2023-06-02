@@ -26,6 +26,7 @@ export class BackOfficeService {
     public deleteVacancy$ = new BehaviorSubject<any>(null);
     public resumeRemarks$ = new BehaviorSubject<any>(null);
     public userOrders$ = new BehaviorSubject<any>([]);
+    public orderDetails$ = new BehaviorSubject<any>([]);
 
     constructor(private readonly http: HttpClient) {
 
@@ -202,6 +203,16 @@ export class BackOfficeService {
     public async getUserOrdersAsync() {
         return await this.http.get(API_URL.apiUrl + `/orders/all`).pipe(
             tap(data => this.userOrders$.next(data))
+        );
+    };
+
+    /**
+     * Функция получает детали заказа по его Id.
+     * @returns - Детали заказа.
+     */
+     public async getOrderDetailsAsync(orderId: number) {
+        return await this.http.get(API_URL.apiUrl + `/orders/details?orderId=${orderId}`).pipe(
+            tap(data => this.orderDetails$.next(data))
         );
     };
 }
