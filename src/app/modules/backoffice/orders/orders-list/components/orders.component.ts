@@ -14,6 +14,7 @@ import { BackOfficeService } from "../../../services/backoffice.service";
  */
 export class OrdersComponent implements OnInit {
     public readonly userOrders$ = this._backofficeService.userOrders$;
+    public readonly histories$ = this._backofficeService.histories$;
 
     constructor(private readonly _backofficeService: BackOfficeService,
         private readonly _router: Router) {
@@ -23,7 +24,8 @@ export class OrdersComponent implements OnInit {
 
     public async ngOnInit() {
         forkJoin([
-           await this.getUserOrdersAsync()
+           await this.getUserOrdersAsync(),
+           await this.getHistoriesAsync()
         ]).subscribe();
     };
 
@@ -48,5 +50,16 @@ export class OrdersComponent implements OnInit {
                 orderId
             }
         });
+    };
+
+    /**
+     * Функция получает список транзакций по заказам пользователя.
+     * @returns - Список транзакций.
+     */
+     private async getHistoriesAsync() {
+        (await this._backofficeService.getHistoriesAsync())
+            .subscribe(_ => {
+                console.log("Транзакции пользователя: ", this.histories$.value);
+            });
     };
 }
