@@ -91,6 +91,8 @@ export class CreateProjectComponent implements OnInit {
     createProjectInput.ProjectName = this.projectName;
     createProjectInput.ProjectDetails = this.projectDetails;
     createProjectInput.ProjectStage = this.selectedStage.stageSysName;
+    createProjectInput.Conditions = this.conditions;
+    createProjectInput.Demands = this.demands;
 
     (await this._backofficeService.createProjectAsync(createProjectInput))
       .subscribe((response: any) => {
