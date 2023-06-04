@@ -38,7 +38,6 @@ export class DetailProjectComponent {
         private readonly _redirectService: RedirectService) {
     }
 
-    public readonly catalog$ = this._projectService.catalog$;
     public readonly selectedProject$ = this._projectService.selectedProject$;
     public readonly projectStages$ = this._projectService.projectStages$;
     public readonly projectVacancies$ = this._projectService.projectVacancies$;
@@ -47,10 +46,6 @@ export class DetailProjectComponent {
     public readonly selectedVacancy$ = this._vacancyService.selectedVacancy$;
     public readonly messages$ = this._messagesService.messages$;
     public readonly dialog$ = this._messagesService.dialog$;
-    public readonly createdProjectComment$ = this._projectService.createdProjectComment$;
-    public readonly projectTeamColumns$ = this._projectService.projectTeamColumns$;
-    public readonly searchInviteMembers$ = this._searchProjectService.searchInviteMembers$;
-    public readonly invitedProjectTeamMember$ = this._projectService.invitedProjectTeamMember$;
     public readonly availableVacansiesResponse$ = this._projectService.availableVacansiesResponse$;
     public readonly projectRemarks$ = this._projectService.projectRemarks$;
 
@@ -60,7 +55,6 @@ export class DetailProjectComponent {
     allFeedSubscription: any;
     isEditMode: boolean = false;
     selectedStage: any;
-    isEdit: any;
     selectedProjectVacancy: any;
     totalVacancies: number = 0;
     isShowAttachVacancyModal: boolean = false;
@@ -81,10 +75,8 @@ export class DetailProjectComponent {
     aProjectComments: any[] = [];
     projectTeamColumns: any[] = [];
     projectTeam: any;
-    selectedProjectMember: any;
     searchText: string = "";
     aProjectInvitesUsers: any[] = [];
-    aSelectedProjectMembers: any[] = [];
     selectedInviteVacancy: any;
     selectedInviteUser: string = "";
     isDeleteProject: boolean = false;
@@ -205,6 +197,8 @@ export class DetailProjectComponent {
         model.ProjectDetails = this.selectedProject$.value.projectDetails;
         model.ProjectId = this.projectId;
         model.ProjectStage = this.selectedStage.stageSysName;
+        model.Conditions = this.selectedStage.conditions;
+        model.Demands = this.selectedStage.demands;
 
         (await this._projectService.updateProjectAsync(model))
         .subscribe(_ => {
@@ -554,11 +548,11 @@ export class DetailProjectComponent {
 
         (await this._projectService.sendInviteProjectTeamAsync(inviteProjectTeamMemberInput))
         .subscribe(async (response: any) => {
-            console.log("Добавленный в команду пользователь: ", response);     
+            console.log("Добавленный в команду пользователь: ", response);
 
             // TODO: Костыль для бага ререндера уведомлений.
             // TODO: Не можем отображать уведомления без обновления страницы после роута из проектов пользователя.
-            this._messageService.add({ severity: 'success', summary: "Все хорошо", detail: response.successMessage }); 
+            this._messageService.add({ severity: 'success', summary: "Все хорошо", detail: response.successMessage });
         });
 
         this.isProjectInvite = false;
@@ -577,16 +571,16 @@ export class DetailProjectComponent {
             setTimeout(() => {
                 this._router.navigate(["/projects"])
                 .then(() => {
-                    this._redirectService.redirect("profile/projects/my");      
+                    this._redirectService.redirect("profile/projects/my");
                 });
             }, 4000);
         });
     };
 
 
-  /** 
+  /**
    * Функция удаляет Вакансию из Вакансии проекта при нажатии Удалить.
-   * @param vacancyNameForDelete - Название вакансии. 
+   * @param vacancyNameForDelete - Название вакансии.
    * @param vacancyId = Id вакансии
    */
   /** при вервом нажатии на кнопку Удалить выскакивает диалог-удалить/отменить */

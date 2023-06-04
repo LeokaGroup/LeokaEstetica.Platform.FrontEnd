@@ -7,7 +7,7 @@
 
   <div class="block-worksheet">
     <p-messages [(value)]="aProjectRemarks" [enableService]="false" [closable]="false"></p-messages>
-    
+
     <div class="worksheet-panel">
       <p-panel header="Заполнение информации о проекте" [toggleable]="true" [collapsed]="true">
         <div class="d-flex">
@@ -27,8 +27,6 @@
             <ng-template #blockOne>{{selectedProject$.value.projectName}}</ng-template>
           </div>
         </div>
-
-
 
         <div class="d-flex mt-3">
             <div class="control-input-text-worksheet">
@@ -73,6 +71,55 @@
             </ng-template>
           </div>
         </div>
+
+        <div class="d-flex mt-3">
+          <div class="control-input-text-worksheet">
+            <div class="control-input-text-worksheet">
+              <div class="d-flex worksheet-line">
+                <div class="control-input-text-worksheet">
+                  <div>
+                    <label>Требования</label>
+                  </div>
+                  <div *ngIf="isEditMode">
+                    <p-editor autocomplete="new-password"
+                              [(ngModel)]="selectedProject$.value.demands"
+                              [style]="{'height':'320px'}"
+                              [readonly]="!isEditMode">
+                    </p-editor>
+                  </div>
+                  <div *ngIf="!isEditMode">
+                    {{selectedProject$.value.demands}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex mt-3">
+          <div class="control-input-text-worksheet">
+            <div class="control-input-text-worksheet">
+              <div class="d-flex worksheet-line">
+                <div class="control-input-text-worksheet">
+                  <div>
+                    <label>Условия</label>
+                  </div>
+                  <div *ngIf="isEditMode">
+                    <p-editor autocomplete="new-password"
+                              [(ngModel)]="selectedProject$.value.demands"
+                              [style]="{'height':'320px'}"
+                              [readonly]="!isEditMode">
+                    </p-editor>
+                  </div>
+                  <div *ngIf="!isEditMode">
+                    {{selectedProject$.value.conditions}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="d-flex worksheet-line mt-3">
           <div class="control-input-text-worksheet">
             <button type="button" class="btn btn-primary button-action-pur-control-worksheet"
@@ -354,7 +401,7 @@
                       </th>
                       <th *ngFor="let item of projectTeamColumns">
                         {{item.columnName}}</th>
-                        <th>Исключение</th>                      
+                        <th>Исключение</th>
                     </tr>
                   </ng-template>
 
@@ -367,12 +414,12 @@
                       <td>{{team.member}}</td>
                       <td>{{team.joined}}</td>
                       <td>
-                        <p-button (click)="onShowDeleteProjectTeamMemberModal(team.member, team.userId)" 
+                        <p-button (click)="onShowDeleteProjectTeamMemberModal(team.member, team.userId)"
                                   label="Исключить"
                                   styleClass="p-button-danger p-button-text"
                                   *ngIf="isVisibleActionDeleteProjectTeamMember">
-                        </p-button>                       
-                      </td>             
+                        </p-button>
+                      </td>
                     </tr>
                   </ng-template>
 

@@ -15,9 +15,9 @@
             </div>
             <div>
                 <input type="text" class="p-inputtext-sm input-control-worksheet control-project" placeholder="Название проекта" pInputText
-              autocomplete="new-password" [(ngModel)]="projectName"/>    
-            </div>          
-          </div>         
+              autocomplete="new-password" [(ngModel)]="projectName"/>
+            </div>
+          </div>
         </div>
 
         <div class="d-flex mt-3">
@@ -31,7 +31,7 @@
                             <div>
                                 <p-editor autocomplete="new-password" [(ngModel)]="projectDetails"  [style]="{'height':'320px'}"></p-editor>
                             </div>
-                        </div>                         
+                        </div>
                     </div>
                   </div>
               </div>
@@ -43,14 +43,48 @@
                 <label>Стадия проекта</label>
             </div>
             <div>
-              <p-dropdown [options]="this.projectStages$.value" 
-                          [(ngModel)]="selectedStage" 
+              <p-dropdown [options]="this.projectStages$.value"
+                          [(ngModel)]="selectedStage"
                           optionLabel="stageName"
                           class="control-project-stages"
                           (onChange)="onSelectProjectStage()">
               </p-dropdown>
-            </div>          
-          </div>         
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex mt-3">
+          <div class="control-input-text-worksheet">
+            <div class="control-input-text-worksheet">
+              <div class="d-flex worksheet-line">
+                <div class="control-input-text-worksheet">
+                  <div>
+                    <label>Условия</label>
+                  </div>
+                  <div>
+                    <p-editor autocomplete="new-password" [(ngModel)]="conditions" [style]="{'height':'320px'}"></p-editor>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex mt-3">
+          <div class="control-input-text-worksheet">
+            <div class="control-input-text-worksheet">
+              <div class="d-flex worksheet-line">
+                <div class="control-input-text-worksheet">
+                  <div>
+                    <label>Требования</label>
+                  </div>
+                  <div>
+                    <p-editor autocomplete="new-password" [(ngModel)]="demands" [style]="{'height':'320px'}"></p-editor>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </p-panel>
     </div>
