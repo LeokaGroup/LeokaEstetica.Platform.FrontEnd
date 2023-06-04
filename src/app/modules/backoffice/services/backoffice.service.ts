@@ -27,6 +27,7 @@ export class BackOfficeService {
     public resumeRemarks$ = new BehaviorSubject<any>(null);
     public userOrders$ = new BehaviorSubject<any>([]);
     public orderDetails$ = new BehaviorSubject<any>([]);
+    public histories$ = new BehaviorSubject<any>([]);
 
     constructor(private readonly http: HttpClient) {
 
@@ -213,6 +214,16 @@ export class BackOfficeService {
      public async getOrderDetailsAsync(orderId: number) {
         return await this.http.get(API_URL.apiUrl + `/orders/details?orderId=${orderId}`).pipe(
             tap(data => this.orderDetails$.next(data))
+        );
+    };
+
+    /**
+     * Функция получает список транзакций по заказам пользователя.
+     * @returns - Список транзакций.
+     */
+     public async getHistoriesAsync() {
+        return await this.http.get(API_URL.apiUrl + "/orders/history").pipe(
+            tap(data => this.histories$.next(data))
         );
     };
 }
