@@ -104,6 +104,54 @@
                         </div>
                     </div>
               </div>
+
+              <div class="d-flex mt-3">
+                <div class="control-input-text-worksheet">
+                    <div class="control-input-text-worksheet">
+                        <div class="d-flex worksheet-line">
+                            <div class="control-input-text-worksheet">
+                                <div>
+                                    <label>Условия</label>
+                                </div>
+                              <div *ngIf="isEditMode">
+                                    <p-editor
+                                    [(ngModel)]="conditions"
+                                    [style]="{'height':'320px'}"
+                                    [readonly]="!isEditMode"></p-editor>
+                                </div>
+                             
+                                <div *ngIf="!isEditMode">
+                                  {{conditions}}
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+            </div>
+
+            <div class="d-flex mt-3">
+              <div class="control-input-text-worksheet">
+                  <div class="control-input-text-worksheet">
+                      <div class="d-flex worksheet-line">
+                          <div class="control-input-text-worksheet">
+                              <div>
+                                  <label>Требования</label>
+                              </div>
+                            <div *ngIf="isEditMode">
+                                  <p-editor
+                                  [(ngModel)]="demands"
+                                  [style]="{'height':'320px'}"
+                                  [readonly]="!isEditMode"></p-editor>
+                              </div>
+                           
+                              <div *ngIf="!isEditMode">
+                                {{demands}}
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+          </div>
             </div>
           </div>
       </p-panel>

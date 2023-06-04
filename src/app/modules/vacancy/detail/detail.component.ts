@@ -46,6 +46,8 @@ export class DetailVacancyComponent implements OnInit {
     isVisibleSaveButton: boolean = false;
     isVisibleEditButton: boolean = false;
     aVacancyRemarks: Message[] = [];
+    demands: string = "";
+    conditions: string = "";
 
     public async ngOnInit() {
         forkJoin([
@@ -111,6 +113,8 @@ export class DetailVacancyComponent implements OnInit {
                 this.workExperience = this.selectedVacancy$.value.workExperience;
                 this.employment = this.selectedVacancy$.value.employment;
                 this.payment = this.selectedVacancy$.value.payment;
+                this.conditions = this.selectedVacancy$.value.conditions;
+                this.demands = this.selectedVacancy$.value.demands;
                 this.isVisibleDeleteButton = this.selectedVacancy$.value.isVisibleDeleteButton;
                 this.isVisibleSaveButton = this.selectedVacancy$.value.isVisibleSaveButton;
                 this.isVisibleEditButton = this.selectedVacancy$.value.isVisibleEditButton;
@@ -178,6 +182,8 @@ export class DetailVacancyComponent implements OnInit {
         model.Payment = this.payment;
         model.WorkExperience = this.workExperience;
         model.VacancyId = this.vacancyId;
+        model.Conditions = this.conditions;
+        model.Demands = this.demands;
 
         return model;
     };

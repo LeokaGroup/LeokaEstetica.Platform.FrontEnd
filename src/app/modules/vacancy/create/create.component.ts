@@ -48,6 +48,8 @@ export class CreateVacancyComponent implements OnInit {
         { name: "Частичная занятость" }
     ];
     selectedProject: any;
+    demands: string = "";
+    conditions: string = "";
 
     public async ngOnInit() {
          // Подключаемся.
@@ -161,6 +163,8 @@ export class CreateVacancyComponent implements OnInit {
         model.Employment = this.selectedEmployments.name;
         model.Payment = this.payment;
         model.ProjectId = this.selectedProject.projectId;
+        model.Conditions = this.conditions;
+        model.Demands = this.demands;
 
         return model;
     };

@@ -36,4 +36,14 @@ export class VacancyInput {
      * Id проекта.
      */
     ProjectId: number = 0;
+
+    /**
+     * Условия.
+     */
+    Conditions: string = "";
+
+    /**
+     * Требования.
+     */
+    Demands: string = "";
 }
