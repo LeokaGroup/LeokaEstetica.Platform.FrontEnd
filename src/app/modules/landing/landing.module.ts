@@ -10,6 +10,9 @@ import { TagModule } from 'primeng/tag';
 import { TimelineModule } from 'primeng/timeline';
 import { AccordionModule } from 'primeng/accordion';
 import { CarouselModule } from 'primeng/carousel';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { SplitterModule } from 'primeng/splitter';
+import { ScrollTopModule } from 'primeng/scrolltop';
 
 
 @NgModule({
@@ -27,7 +30,10 @@ import { CarouselModule } from 'primeng/carousel';
         TagModule,
         TimelineModule,
         AccordionModule,
-        CarouselModule
+        CarouselModule,
+        ScrollPanelModule,
+        SplitterModule,
+        ScrollTopModule
     ],
 
     exports: [],
