@@ -9,6 +9,7 @@ export class LandingService {
     public platformOffers$ = new BehaviorSubject<any>([]);
     public timelines$ = new BehaviorSubject<any>([]);
     public knowledgeLanding$ = new BehaviorSubject<any>([]);
+    public newUsers$ = new BehaviorSubject<any>([]);
 
     constructor(private readonly http: HttpClient) {
 
@@ -51,6 +52,16 @@ export class LandingService {
      public async getKnowledgeLandingAsync() {
         return await this.http.get(API_URL.apiUrl + "/knowledge/landing").pipe(
             tap(data => this.knowledgeLanding$.next(data))
+        );
+    };
+
+    /**
+     * Функция получает список новых пользователей.
+     * @returns - Список новых пользователей.
+     */
+     public async getNewUsersAsync() {
+        return await this.http.get(API_URL.apiUrl + "/metrics/new-users").pipe(
+            tap(data => this.newUsers$.next(data))
         );
     };
 }

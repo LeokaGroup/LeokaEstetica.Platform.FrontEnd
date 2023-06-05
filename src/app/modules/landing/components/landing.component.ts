@@ -11,13 +11,14 @@ import { LandingService } from "../services/landing.service";
 })
 
 /**
- * Класс календаря пользователя.
+ * Класс компонента лендоса.
  */
 export class LandingComponent implements OnInit {
     public readonly fonData$ = this._landingService.fonData$;
     public readonly platformOffers$ = this._landingService.platformOffers$;    
     public readonly timelines$ = this._landingService.timelines$;    
     public readonly knowledgeLanding$ = this._landingService.knowledgeLanding$;    
+    public readonly newUsers$ = this._landingService.newUsers$;    
 
     aCreateProject: any[] = [];
     aSearchProject: any[] = [];
@@ -26,6 +27,7 @@ export class LandingComponent implements OnInit {
     aSearchTeam: any[] = [];    
     allFeedSubscription: any;
     responsiveOptions: boolean = true;
+    aNewUsers: any[] = [];
 
     constructor(private readonly _landingService: LandingService,
         private readonly _signalrService: SignalrService,
@@ -37,7 +39,8 @@ export class LandingComponent implements OnInit {
             await this.getFonLandingStartAsync(),
             await this.getPlatformOffersAsync(),
             await this.getTimelinesAsync(),
-            await this.getKnowledgeLandingAsync()
+            await this.getKnowledgeLandingAsync(),
+            await this.getNewUsersAsync()
         ]).subscribe();        
 
         // Подключаемся.
@@ -114,5 +117,17 @@ export class LandingComponent implements OnInit {
      */
      private listenAllHubsNotifications() {
         this._signalrService.listenWarningEmptyUserProfile();
+    };
+
+    /**
+     * Функция получает список частых вопросов.
+     * @returns - Список частых вопросов.
+     */
+     private async getNewUsersAsync() {
+        (await this._landingService.getNewUsersAsync())
+        .subscribe(_ => {
+            console.log("Список новых пользователей: ", this.newUsers$.value);
+            this.aNewUsers = this.newUsers$.value.newUsers;
+        });
     };
 }
