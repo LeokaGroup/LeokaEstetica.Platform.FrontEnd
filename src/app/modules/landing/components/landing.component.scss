@@ -51,3 +51,17 @@
 .block-knowledge {
   white-space: pre-line;
 }
+
+.block-new-users {
+  box-shadow: 0 0 12px 0 rgba(0,0,0,.18);
+  height: 350px;
+  overflow-x: hidden;
+  overflow-y: overlay;
+  padding: 16px 16px;
+  line-height: 1.5rem;
+}
+
+.block-statistics {
+  margin-left: 50px;
+  margin-right: 50px;
+}
