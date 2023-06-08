@@ -17,6 +17,9 @@ export class SubscriptionsComponent implements OnInit {
     public readonly subscriptions$ = this._subscriptionsService.subscriptions$;  
     public readonly refund$ = this._subscriptionsService.refund$;  
 
+    refundPrice: number = 0;
+    isRefund: boolean = false;
+
     public async ngOnInit() {
         forkJoin([
            await this.getSubscriptionsAsync()
@@ -42,6 +45,12 @@ export class SubscriptionsComponent implements OnInit {
         (await this._subscriptionsService.calculateRefundAsync())
         .subscribe(_ => {
             console.log("Вычисление возврата: ", this.refund$.value);
+            this.refundPrice = this.refund$.value.price;
+            this.isRefund = true;
         });
+    };
+
+    public onRefundAsync() {
+
     };
 }
