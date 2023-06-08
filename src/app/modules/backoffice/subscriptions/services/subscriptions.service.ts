@@ -9,8 +9,9 @@ import { API_URL } from 'src/app/core/core-urls/api-urls';
 @Injectable()
 export class SubscriptionsService {
     public subscriptions$ = new BehaviorSubject<any>(null);
+    public refund$ = new BehaviorSubject<any>(null);
 
-    constructor(private readonly http: HttpClient) {
+    constructor(private readonly _http: HttpClient) {
 
     }
 
@@ -19,8 +20,18 @@ export class SubscriptionsService {
      * @returns - Список подписок.
      */
     public async getSubscriptionsAsync() {
-        return await this.http.get(API_URL.apiUrl + "/subscriptions/all-subscriptions").pipe(
+        return await this._http.get(API_URL.apiUrl + "/subscriptions/all-subscriptions").pipe(
             tap(data => this.subscriptions$.next(data))
+        );
+    };
+
+    /**
+     * Функция вычисляет сумму возврата.
+     * @returns - Данные возврата.
+     */
+    public async calculateRefundAsync(orderId: number) {
+        return await this._http.get(API_URL.apiUrl + `/refunds/calculate?orderId=${orderId}`).pipe(
+            tap(data => this.refund$.next(data))
         );
     };
 }
