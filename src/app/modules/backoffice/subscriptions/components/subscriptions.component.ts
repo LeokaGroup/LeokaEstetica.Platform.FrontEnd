@@ -39,7 +39,7 @@ export class SubscriptionsComponent implements OnInit {
      * @returns - Данные возврата.
      */
      public async onCalculateRefundAsync() {    
-        (await this._subscriptionsService.getSubscriptionsAsync())
+        (await this._subscriptionsService.calculateRefundAsync())
         .subscribe(_ => {
             console.log("Вычисление возврата: ", this.refund$.value);
         });
