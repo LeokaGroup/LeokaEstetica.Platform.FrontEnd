@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
+import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
+import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { SubscriptionsService } from "../services/subscriptions.service";
 
 @Component({
@@ -12,19 +14,43 @@ import { SubscriptionsService } from "../services/subscriptions.service";
  * Класс компонента подписок пользователя.
  */
 export class SubscriptionsComponent implements OnInit {
-    constructor(private readonly _subscriptionsService: SubscriptionsService) { }
+    constructor(private readonly _subscriptionsService: SubscriptionsService,
+        private readonly _signalrService: SignalrService,
+        private readonly _messageService: MessageService) { }
 
     public readonly subscriptions$ = this._subscriptionsService.subscriptions$;  
     public readonly refund$ = this._subscriptionsService.refund$;  
 
     refundPrice: number = 0;
     isRefund: boolean = false;
+    allFeedSubscription: any;
 
     public async ngOnInit() {
         forkJoin([
            await this.getSubscriptionsAsync()
         ]).subscribe();
+
+        // Подключаемся.
+    this._signalrService.startConnection().then(() => {
+        console.log("Подключились");
+  
+        this.listenAllHubsNotifications();
+  
+        // Подписываемся на получение всех сообщений.
+        this.allFeedSubscription = this._signalrService.AllFeedObservable
+          .subscribe((response: any) => {
+            console.log("Подписались на сообщения", response);
+            this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
+          });
+      });
     };   
+
+    /**
+   * Функция слушает все хабы.
+   */
+  private listenAllHubsNotifications() {
+    this._signalrService.listenErrorCalculateRefund();
+  };
 
      /**
      * Функция получает прафила тарифов.

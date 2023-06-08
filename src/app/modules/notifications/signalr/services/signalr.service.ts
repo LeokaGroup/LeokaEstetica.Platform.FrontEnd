@@ -240,84 +240,93 @@ export class SignalrService {
     });
   };
 
-   /**
+  /**
 * Функция слушает уведомления предупреждения об успешном сохранении замечаний проекта.
 */
-public listenSuccessCreateProjectRemarks() {
-  (<HubConnection>this.hubConnection).on("SendNotificationSuccessCreateProjectRemarks", (data: any) => {
-    this.$allFeed.next(data);
-  });
-};
+  public listenSuccessCreateProjectRemarks() {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessCreateProjectRemarks", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 
   /**
 * Функция слушает уведомления предупреждения об успешной отправке замечаний проекта.
 */
-public listenSuccessSendProjectRemarks() {
-  (<HubConnection>this.hubConnection).on("SendNotificationSuccessSendProjectRemarks", (data: any) => {
-    this.$allFeed.next(data);
-  });
-};
+  public listenSuccessSendProjectRemarks() {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessSendProjectRemarks", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 
- /**
-* Функция слушает уведомления предупреждения о внесении замечаний проекта.
-*/
-public listenWarningSendProjectRemarks() {
-  (<HubConnection>this.hubConnection).on("SendNotificationWarningSendProjectRemarks", (data: any) => {
-    this.$allFeed.next(data);
-  });
-};
+  /**
+ * Функция слушает уведомления предупреждения о внесении замечаний проекта.
+ */
+  public listenWarningSendProjectRemarks() {
+    (<HubConnection>this.hubConnection).on("SendNotificationWarningSendProjectRemarks", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 
- /**
-* Функция слушает уведомления успеха о внесении замечаний вакансии.
-*/
-public listenSuccessCreateVacancyRemarks() {
-  (<HubConnection>this.hubConnection).on("SendNotificationSuccessCreateVacancyRemarks", (data: any) => {
-    this.$allFeed.next(data);
-  });
-};
+  /**
+ * Функция слушает уведомления успеха о внесении замечаний вакансии.
+ */
+  public listenSuccessCreateVacancyRemarks() {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessCreateVacancyRemarks", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 
- /**
-* Функция слушает уведомления успеха о отправке замечаний вакансии.
-*/
-public listenSuccessSendVacancyRemarks() {
-  (<HubConnection>this.hubConnection).on("SendNotificationSuccessSendVacancyRemarks", (data: any) => {
-    this.$allFeed.next(data);
-  });
-};
+  /**
+ * Функция слушает уведомления успеха о отправке замечаний вакансии.
+ */
+  public listenSuccessSendVacancyRemarks() {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessSendVacancyRemarks", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 
- /**
-* Функция слушает уведомления предупреждения о отправке замечаний вакансии.
-*/
-public listenWarningSendVacancyRemarks() {
-  (<HubConnection>this.hubConnection).on("SendNotificationWarningSendVacancyRemarks", (data: any) => {
-    this.$allFeed.next(data);
-  });
-};
+  /**
+ * Функция слушает уведомления предупреждения о отправке замечаний вакансии.
+ */
+  public listenWarningSendVacancyRemarks() {
+    (<HubConnection>this.hubConnection).on("SendNotificationWarningSendVacancyRemarks", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 
- /**
-* Функция слушает уведомления успеха о внесении замечаний анкеты.
-*/
-public listenSuccessCreateResumeRemarks() {
-  (<HubConnection>this.hubConnection).on("SendNotificationSuccessCreateResumeRemarks", (data: any) => {
-    this.$allFeed.next(data);
-  });
-};
+  /**
+ * Функция слушает уведомления успеха о внесении замечаний анкеты.
+ */
+  public listenSuccessCreateResumeRemarks() {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessCreateResumeRemarks", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 
- /**
-* Функция слушает уведомления предупреждения о отправке замечаний анкеты.
-*/
-public listenWarningSendResumeRemarks() {
-  (<HubConnection>this.hubConnection).on("SendNotificationWarningSendResumeRemarks", (data: any) => {
-    this.$allFeed.next(data);
-  });
-};
+  /**
+ * Функция слушает уведомления предупреждения о отправке замечаний анкеты.
+ */
+  public listenWarningSendResumeRemarks() {
+    (<HubConnection>this.hubConnection).on("SendNotificationWarningSendResumeRemarks", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 
- /**
-* Функция слушает уведомления успеха о отправке замечаний анкеты.
-*/
-public listenSuccessSendResumeRemarks() {
-  (<HubConnection>this.hubConnection).on("SendNotificationSuccessSendResumeRemarks", (data: any) => {
-    this.$allFeed.next(data);
-  });
-};
+  /**
+ * Функция слушает уведомления успеха о отправке замечаний анкеты.
+ */
+  public listenSuccessSendResumeRemarks() {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessSendResumeRemarks", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает уведомления ошибки ошибки вычисления суммы возврата.
+   */
+  public listenErrorCalculateRefund() {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessCalculateRefund", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 }
