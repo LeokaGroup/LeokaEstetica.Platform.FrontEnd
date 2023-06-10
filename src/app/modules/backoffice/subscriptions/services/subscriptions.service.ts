@@ -29,8 +29,8 @@ export class SubscriptionsService {
      * Функция вычисляет сумму возврата.
      * @returns - Данные возврата.
      */
-    public async calculateRefundAsync(orderId: number) {
-        return await this._http.get(API_URL.apiUrl + `/refunds/calculate?orderId=${orderId}`).pipe(
+    public async calculateRefundAsync() {
+        return await this._http.get(API_URL.apiUrl + "/refunds/calculate").pipe(
             tap(data => this.refund$.next(data))
         );
     };
