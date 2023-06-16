@@ -81,7 +81,8 @@ export class OrderFormSelectSubscriptionPlanComponent implements OnInit {
             this.freePrice = this.freePrice$.value.freePrice;
 
             // Отображаем модалку апрува с новой ценой от пользователя.
-            if (this.freePrice$.value.price !== this.freePrice$.value.freePrice && !this.isContinueCreateOrderCache) {
+            if (this.freePrice$.value.price !== this.freePrice$.value.freePrice
+                && !this.isContinueCreateOrderCache) {
                 this.isShowNeedContinueModal = true;
             }
 
@@ -90,7 +91,8 @@ export class OrderFormSelectSubscriptionPlanComponent implements OnInit {
             }
 
             // Если пользователь дал согласие с новой ценой либо модалку не показывали и тогда оформляем как обычно.
-            if (this.isContinueCreateOrderCache || !this.isShowNeedContinueModal) {
+            if (this.isContinueCreateOrderCache 
+                || !this.isShowNeedContinueModal) {
                 (await this._orderService.createOrderCacheAsync(this.orderCacheInput))
                 .subscribe(async _ => {
                     console.log("Заказ в кэше: ", this.orderForm$.value);
