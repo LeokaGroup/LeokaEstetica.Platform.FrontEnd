@@ -20,12 +20,16 @@ export class OrderFormSelectSubscriptionPlanComponent implements OnInit {
     }   
 
     public readonly orderForm$ = this._orderService.orderForm$;    
+    public readonly freePrice$ = this._orderService.freePrice$;    
 
     paymentMonth: number = 0;
     publicId: string = "";
     orderCacheInput: CreateOrderCacheInput = new CreateOrderCacheInput();
     orderForm: any = {};
     disableDiscount: boolean = false;
+    freePrice: number = 0;
+    isContinueCreateOrderCache: boolean = false;
+    isShowNeedContinueModal: boolean = false;
 
     public async ngOnInit() {
         forkJoin([
@@ -55,19 +59,65 @@ export class OrderFormSelectSubscriptionPlanComponent implements OnInit {
         console.log("CreateOrderCacheInput", this.orderCacheInput);        
     };
 
+    /**
+     * Функция создает заказ в кэше.
+     */
     public async onCreateOrderCacheAsync() {
-        (await this._orderService.createOrderCacheAsync(this.orderCacheInput))
-        .subscribe(_ => {
-            console.log("Заказ в кэше: ", this.orderForm$.value);
-            this.orderForm = this.orderForm$.value;
+        if (this.paymentMonth > 0) {
+            await this.calculateFreePriceAsync();
+        }        
+    };
 
-            if (this.paymentMonth == 1) {
-                this.disableDiscount = true;
+     /**
+     * Функция вычисляет остаток с текущей активной подписки пользователя.
+     * @param publidId - Публичный ключ тарифа.
+     * @param month - Кол-во месяцев подписки.
+     * @returns - Сумма остатка, если она есть.
+    */
+    private async calculateFreePriceAsync() {
+        (await this._orderService.calculateFreePriceAsync(this.publicId, this.paymentMonth))
+        .subscribe(async _ => {
+            console.log("Сумма остатка: ", this.freePrice$.value);  
+            this.freePrice = this.freePrice$.value.freePrice;
+
+            // Отображаем модалку апрува с новой ценой от пользователя.
+            if (this.freePrice$.value.price !== this.freePrice$.value.freePrice
+                && !this.isContinueCreateOrderCache) {
+                this.isShowNeedContinueModal = true;
             }
 
             else {
-                this.disableDiscount = false;
+                this.isShowNeedContinueModal = false;
             }
+
+            // Если пользователь дал согласие с новой ценой либо модалку не показывали и тогда оформляем как обычно.
+            if (this.isContinueCreateOrderCache 
+                || !this.isShowNeedContinueModal) {
+                (await this._orderService.createOrderCacheAsync(this.orderCacheInput))
+                .subscribe(async _ => {
+                    console.log("Заказ в кэше: ", this.orderForm$.value);
+                    this.orderForm = this.orderForm$.value;
+    
+                    if (this.paymentMonth == 1) {
+                        this.disableDiscount = true;
+                    }
+    
+                    else {
+                        this.disableDiscount = false;
+                    }
+                });
+            }            
         });
+    };
+
+    /**
+     * Функция апрува с новой ценой.
+     */
+    public async onApproveCalculatedPriceAsync() {
+        this.isContinueCreateOrderCache = true;
+        
+        await this.calculateFreePriceAsync();
+
+        this.isShowNeedContinueModal = false;
     };
 }
