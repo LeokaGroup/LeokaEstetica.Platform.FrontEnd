@@ -13,6 +13,7 @@ export class OrderService {
     public orderForm$ = new BehaviorSubject<any>(null);
     public orderProducts$ = new BehaviorSubject<any>(null);
     public orderPay$ = new BehaviorSubject<any>(null);
+    public freePrice$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -48,6 +49,18 @@ export class OrderService {
      public async payOrderAsync(paymentOrderInput: PaymentOrderInput) {
         return await this.http.post(API_URL.apiUrl + "/commercial/payments", paymentOrderInput).pipe(
             tap(data => this.orderPay$.next(data))
+        );
+    };
+
+    /**
+     * Функция вычисляет остаток с текущей активной подписки пользователя.
+     * @param publidId - Публичный ключ тарифа.
+     * @param month - Кол-во месяцев подписки.
+     * @returns - Сумма остатка, если она есть.
+    */
+    public async calculateFreePriceAsync(publidId: string, month: number) {
+        return await this.http.get(API_URL.apiUrl + `/commercial/check-free?publicId=${publidId}&month=${month}`).pipe(
+            tap(data => this.freePrice$.next(data))
         );
     };
 }
