@@ -113,19 +113,13 @@ export class OrderFormSelectSubscriptionPlanComponent implements OnInit {
 
               if (this.orderForm$.value.reductionSubscriptionLimits == "Project") {
                 this.reductionSubscriptionLimits = "Количество проектов превышающих лимит: ";
-              }
-
-              else {
-                this.reductionSubscriptionLimits = "Количество вакансий превышающих лимит: "
-              }
-
-              if (this.orderForm$.value.reductionSubscriptionLimits == "Project") {
                 this.reductionSubscriptionLimitsType = "проекты";
               }
 
               else {
+                this.reductionSubscriptionLimits = "Количество вакансий превышающих лимит: ";
                 this.reductionSubscriptionLimitsType = "вакансии";
-              }
+              }              
             });
         }
       });

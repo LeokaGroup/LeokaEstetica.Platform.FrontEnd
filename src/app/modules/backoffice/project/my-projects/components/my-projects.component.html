@@ -55,6 +55,7 @@
               <button pButton type="button"
                       label="В архив"
                       class="p-button-outlined p-button-warning"
+                      [disabled]="project.projectStatusSysName == 'Archived'"
                       (click)="onAddArchiveProjectAsync(project.projectId)">
               </button>
             </td>

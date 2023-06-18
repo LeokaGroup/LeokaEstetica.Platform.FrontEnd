@@ -6,7 +6,6 @@ import { BackOfficeService } from "../../../services/backoffice.service";
 import { Router } from "@angular/router";
 import { ProjectService } from "src/app/modules/project/services/project.service";
 import {AddProjectArchiveInput} from "../../../models/input/project/add-project-archive-input.ts";
-import { RedirectService } from "src/app/common/services/redirect.service";
 
 @Component({
     selector: "my-projects",
@@ -34,8 +33,7 @@ export class MyProjectsComponent implements OnInit {
         private readonly _signalrService: SignalrService,
         private readonly _messageService: MessageService,
         private readonly _router: Router,
-        private readonly _projectService: ProjectService,
-        private readonly _redirectService: RedirectService) {
+        private readonly _projectService: ProjectService) {
 
     }
 
@@ -157,14 +155,8 @@ export class MyProjectsComponent implements OnInit {
 
     (await this._backofficeService.addArchiveProjectAsync(projectArchiveInput))
       .subscribe(async _ => {
-        console.log("Проект добавлен в архив", this.archivedProject.value);    
-
-        setTimeout(() => {
-            this._router.navigate(["/profile/projects/my"])
-            .then(() => {
-                this._redirectService.redirect("/profile/projects/my");      
-            });
-        }, 4000);
+        console.log("Проект добавлен в архив", this.archivedProject.value);  
+        await this.getUserProjectsAsync();  
       });
   };
 }
