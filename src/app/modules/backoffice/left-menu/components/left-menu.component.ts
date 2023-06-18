@@ -92,6 +92,7 @@ export class LeftMenuComponent implements OnInit {
      * @param event - Событие.
      */
     public async onSelectMenu(event: any) {
+      debugger;
         console.log("event", event);
         let text = event.target.textContent;
 
@@ -125,8 +126,8 @@ export class LeftMenuComponent implements OnInit {
 
             // Роут на страницу создания проекта.
             if (this.aCreateProjectsSysName.includes(this.sysName)) {
-                this._router.navigate(["/profile/projects/create"]).then(() => {  
-                    this._redirectService.redirect("profile/projects/create");                
+                this._router.navigate(["/profile/projects/create"]).then(() => {
+                    this._redirectService.redirect("profile/projects/create");
                 });
             }
 

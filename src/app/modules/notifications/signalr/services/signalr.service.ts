@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
-import { Observable, Subject } from 'rxjs';
-import { API_URL } from 'src/app/core/core-urls/api-urls';
-import { RedisService } from 'src/app/modules/redis/services/redis.service';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
+import {Observable, Subject} from 'rxjs';
+import {API_URL} from 'src/app/core/core-urls/api-urls';
+import {RedisService} from 'src/app/modules/redis/services/redis.service';
 
 @Injectable()
 export class SignalrService {
@@ -11,7 +11,7 @@ export class SignalrService {
   private $allFeed: Subject<any> = new Subject<any>();
 
   public constructor(private readonly _redisService: RedisService,
-    private readonly _router: Router) {
+                     private readonly _router: Router) {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(API_URL.apiUrl + "/notify", 4)
       .build();
@@ -66,8 +66,8 @@ export class SignalrService {
   };
 
   /**
-  * Функция слушает уведомления предупреждения о целях пользователя из хаба.
-  */
+   * Функция слушает уведомления предупреждения о целях пользователя из хаба.
+   */
   public listenWarningUserIntentsInfo() {
     (<HubConnection>this.hubConnection).on("SendNotificationWarningSaveUserIntents", (data: any) => {
       this.$allFeed.next(data);
@@ -75,8 +75,8 @@ export class SignalrService {
   };
 
   /**
-  * Функция слушает уведомления создания проекта пользователя из хаба.
-  */
+   * Функция слушает уведомления создания проекта пользователя из хаба.
+   */
   public listenSuccessCreatedUserProjectInfo() {
     (<HubConnection>this.hubConnection).on("SendNotificationSuccessCreatedUserProject", (data: any) => {
       this.$allFeed.next(data);
@@ -146,15 +146,15 @@ export class SignalrService {
     });
   };
 
-  /** 
-     * Функция слушает уведомления успешное Удаления  проекта из хаба.*/
+  /**
+   * Функция слушает уведомления успешное Удаления  проекта из хаба.*/
   public listenSuccessDeleteProject() {
     (<HubConnection>this.hubConnection).on("SendNotificationSuccessDeleteProject", (data: any) => {
       this.$allFeed.next(data);
     });
   };
 
-  /** 
+  /**
    * Функция слушает уведомления успешное Удаления  вакансии проекта из хаба.*/
   public listenSuccessDeleteProjectVacancy() {
     (<HubConnection>this.hubConnection).on("SendNotificationSuccessDeleteProjectVacancy", (data: any) => {
@@ -162,7 +162,7 @@ export class SignalrService {
     });
   };
 
-  /** 
+  /**
    * Функция слушает уведомления Если была ошибка удаления вакансии проекта из хаба.*/
   public listenErrorDeleteProjectVacancy() {
     (<HubConnection>this.hubConnection).on("SendNotificationErrorDeleteProjectVacancy", (data: any) => {
@@ -179,7 +179,7 @@ export class SignalrService {
   };
 
   /**
-  * Функция слушает уведомления ошибки удаления вакансии из раздела Мои Ваканси с хаба.*/
+   * Функция слушает уведомления ошибки удаления вакансии из раздела Мои Ваканси с хаба.*/
   public listenSendErrorDeleteVacancy() {
     (<HubConnection>this.hubConnection).on("SendNotificationErrorDeleteVacancy", (data: any) => {
       this.$allFeed.next(data);
@@ -205,8 +205,8 @@ export class SignalrService {
   };
 
   /**
-  * Функция слушает уведомления предупреждения не заполненной анкеты пользователя.
-  */
+   * Функция слушает уведомления предупреждения не заполненной анкеты пользователя.
+   */
   public listenWarningEmptyUserProfile() {
     (<HubConnection>this.hubConnection).on("SendNotificationWarningEmptyUserProfile", (data: any) => {
       this.$allFeed.next(data);
@@ -214,8 +214,8 @@ export class SignalrService {
   };
 
   /**
-* Функция слушает уведомления предупреждения о приглашенном пользователе в команде проекта.
-*/
+   * Функция слушает уведомления предупреждения о приглашенном пользователе в команде проекта.
+   */
   public listenWarningUserAlreadyProjectInvitedTeam() {
     (<HubConnection>this.hubConnection).on("SendNotificationWarningUserAlreadyProjectInvitedTeam", (data: any) => {
       this.$allFeed.next(data);
@@ -223,8 +223,8 @@ export class SignalrService {
   };
 
   /**
-* Функция слушает уведомления предупреждения о приглашенном пользователе в команде проекта.
-*/
+   * Функция слушает уведомления предупреждения о приглашенном пользователе в команде проекта.
+   */
   public listenSuccessUserProjectInvitedTeam() {
     (<HubConnection>this.hubConnection).on("SendNotificationSuccessUserProjectInvitedTeam", (data: any) => {
       this.$allFeed.next(data);
@@ -232,8 +232,8 @@ export class SignalrService {
   };
 
   /**
-* Функция слушает уведомления предупреждения о исключении пользователя из команды проекта.
-*/
+   * Функция слушает уведомления предупреждения о исключении пользователя из команды проекта.
+   */
   public listenSuccessDeleteProjectTeamMember() {
     (<HubConnection>this.hubConnection).on("SendNotificationSuccessDeleteProjectTeamMember", (data: any) => {
       this.$allFeed.next(data);
@@ -241,8 +241,8 @@ export class SignalrService {
   };
 
   /**
-* Функция слушает уведомления предупреждения об успешном сохранении замечаний проекта.
-*/
+   * Функция слушает уведомления предупреждения об успешном сохранении замечаний проекта.
+   */
   public listenSuccessCreateProjectRemarks() {
     (<HubConnection>this.hubConnection).on("SendNotificationSuccessCreateProjectRemarks", (data: any) => {
       this.$allFeed.next(data);
@@ -250,8 +250,8 @@ export class SignalrService {
   };
 
   /**
-* Функция слушает уведомления предупреждения об успешной отправке замечаний проекта.
-*/
+   * Функция слушает уведомления предупреждения об успешной отправке замечаний проекта.
+   */
   public listenSuccessSendProjectRemarks() {
     (<HubConnection>this.hubConnection).on("SendNotificationSuccessSendProjectRemarks", (data: any) => {
       this.$allFeed.next(data);
@@ -259,8 +259,8 @@ export class SignalrService {
   };
 
   /**
- * Функция слушает уведомления предупреждения о внесении замечаний проекта.
- */
+   * Функция слушает уведомления предупреждения о внесении замечаний проекта.
+   */
   public listenWarningSendProjectRemarks() {
     (<HubConnection>this.hubConnection).on("SendNotificationWarningSendProjectRemarks", (data: any) => {
       this.$allFeed.next(data);
@@ -268,8 +268,8 @@ export class SignalrService {
   };
 
   /**
- * Функция слушает уведомления успеха о внесении замечаний вакансии.
- */
+   * Функция слушает уведомления успеха о внесении замечаний вакансии.
+   */
   public listenSuccessCreateVacancyRemarks() {
     (<HubConnection>this.hubConnection).on("SendNotificationSuccessCreateVacancyRemarks", (data: any) => {
       this.$allFeed.next(data);
@@ -277,8 +277,8 @@ export class SignalrService {
   };
 
   /**
- * Функция слушает уведомления успеха о отправке замечаний вакансии.
- */
+   * Функция слушает уведомления успеха о отправке замечаний вакансии.
+   */
   public listenSuccessSendVacancyRemarks() {
     (<HubConnection>this.hubConnection).on("SendNotificationSuccessSendVacancyRemarks", (data: any) => {
       this.$allFeed.next(data);
@@ -286,8 +286,8 @@ export class SignalrService {
   };
 
   /**
- * Функция слушает уведомления предупреждения о отправке замечаний вакансии.
- */
+   * Функция слушает уведомления предупреждения о отправке замечаний вакансии.
+   */
   public listenWarningSendVacancyRemarks() {
     (<HubConnection>this.hubConnection).on("SendNotificationWarningSendVacancyRemarks", (data: any) => {
       this.$allFeed.next(data);
@@ -295,8 +295,8 @@ export class SignalrService {
   };
 
   /**
- * Функция слушает уведомления успеха о внесении замечаний анкеты.
- */
+   * Функция слушает уведомления успеха о внесении замечаний анкеты.
+   */
   public listenSuccessCreateResumeRemarks() {
     (<HubConnection>this.hubConnection).on("SendNotificationSuccessCreateResumeRemarks", (data: any) => {
       this.$allFeed.next(data);
@@ -304,8 +304,8 @@ export class SignalrService {
   };
 
   /**
- * Функция слушает уведомления предупреждения о отправке замечаний анкеты.
- */
+   * Функция слушает уведомления предупреждения о отправке замечаний анкеты.
+   */
   public listenWarningSendResumeRemarks() {
     (<HubConnection>this.hubConnection).on("SendNotificationWarningSendResumeRemarks", (data: any) => {
       this.$allFeed.next(data);
@@ -313,8 +313,8 @@ export class SignalrService {
   };
 
   /**
- * Функция слушает уведомления успеха о отправке замечаний анкеты.
- */
+   * Функция слушает уведомления успеха о отправке замечаний анкеты.
+   */
   public listenSuccessSendResumeRemarks() {
     (<HubConnection>this.hubConnection).on("SendNotificationSuccessSendResumeRemarks", (data: any) => {
       this.$allFeed.next(data);
@@ -326,6 +326,33 @@ export class SignalrService {
    */
   public listenErrorCalculateRefund() {
     (<HubConnection>this.hubConnection).on("SendNotificationSuccessCalculateRefund", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает уведомления успешное добавление проекта в архив.
+   */
+  public listenSuccessAddArchiveProject() {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessAddProjectArchive", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает уведомления ошибки добавление проекта в архив.
+   */
+  public listenErrorAddArchiveProject() {
+    (<HubConnection>this.hubConnection).on("SendNotificationErrorAddProjectArchive", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает уведомления предупреждения о добавленном проекте в архив.
+   */
+  public listenWarningAddArchiveProject() {
+    (<HubConnection>this.hubConnection).on("SendNotificationWarningAddProjectArchive", (data: any) => {
       this.$allFeed.next(data);
     });
   };
