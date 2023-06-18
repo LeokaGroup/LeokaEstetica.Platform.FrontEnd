@@ -5,7 +5,7 @@ import { MessageService } from "primeng/api";
 import { BackOfficeService } from "../../../services/backoffice.service";
 import { Router } from "@angular/router";
 import { ProjectService } from "src/app/modules/project/services/project.service";
-import {AddProjectArchiveInput} from "../../../models/input/project/add-project-archive-input.ts";
+import {AddProjectArchiveInput} from "../../../models/input/project/add-project-archive-input";
 
 @Component({
     selector: "my-projects",
