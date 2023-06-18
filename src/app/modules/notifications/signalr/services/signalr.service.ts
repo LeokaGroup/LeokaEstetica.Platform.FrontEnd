@@ -356,4 +356,31 @@ export class SignalrService {
       this.$allFeed.next(data);
     });
   };
+
+  /**
+   * Функция слушает уведомления успешное добавление вакансии в архив.
+   */
+   public listenSuccessAddArchiveVacancy() {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessAddVacancyArchive", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает уведомления ошибки добавление вакансии в архив.
+   */
+  public listenErrorAddArchiveVacancy() {
+    (<HubConnection>this.hubConnection).on("SendNotificationErrorAddVacancyArchive", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает уведомления предупреждения о добавленной вакансии в архив.
+   */
+  public listenWarningAddArchiveVacancy() {
+    (<HubConnection>this.hubConnection).on("SendNotificationWarningAddVacancyArchive", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 }

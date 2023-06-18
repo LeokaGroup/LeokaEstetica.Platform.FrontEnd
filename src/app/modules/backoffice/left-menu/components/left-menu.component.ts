@@ -92,7 +92,6 @@ export class LeftMenuComponent implements OnInit {
      * @param event - Событие.
      */
     public async onSelectMenu(event: any) {
-      debugger;
         console.log("event", event);
         let text = event.target.textContent;
 

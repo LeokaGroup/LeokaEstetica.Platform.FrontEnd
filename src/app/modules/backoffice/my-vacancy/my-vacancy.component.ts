@@ -5,7 +5,7 @@ import { MessageService } from "primeng/api";
 import { Router } from "@angular/router";
 import { VacancyService } from "../../vacancy/services/vacancy.service";
 import { BackOfficeService } from "../services/backoffice.service";
-import { RedirectService } from "src/app/common/services/redirect.service";
+import { AddVacancyArchiveInput } from "../models/input/vacancy/add-vacancy-archive-input";
 
 
 @Component({
@@ -21,6 +21,7 @@ export class MyVacancyComponent implements OnInit {
 
   public readonly listVacancy$ = this._backofficeService.listVacancy$;
   public readonly deleteVacancy$ = this._backofficeService.deleteVacancy$;
+  public readonly archivedVacancy = this._backofficeService.archivedVacancy;
 
   allFeedSubscription: any;
   selectedVacancy: any;
@@ -33,8 +34,7 @@ export class MyVacancyComponent implements OnInit {
     private readonly _messageService: MessageService,
     private readonly _router: Router,
     private readonly _backofficeService: BackOfficeService,
-    private readonly _vacancyService: VacancyService,
-    private readonly _redirectService: RedirectService) {
+    private readonly _vacancyService: VacancyService) {
   }
 
   public async ngOnInit() {
@@ -64,17 +64,20 @@ export class MyVacancyComponent implements OnInit {
   private listenAllHubsNotifications() {
     this._signalrService.listenSuccessDeleteVacancy();
     this._signalrService.listenSendErrorDeleteVacancy();
+    this._signalrService.listenSuccessAddArchiveVacancy();
+    this._signalrService.listenErrorAddArchiveVacancy();
+    this._signalrService.listenWarningAddArchiveVacancy();
   };
 
 
 
   /**
-   Получавем список(List) ваканции клиента
+   Получавем список ваканций.
    */
   private async getUserVacanciesAsync () {
     (await this._backofficeService.getUserVacancysAsync())
       .subscribe(_ => {
-        console.log("мой лист вакансии:", this.listVacancy$.value);
+        console.log("Список вакансий:", this.listVacancy$.value);
       });
   };
 
@@ -122,5 +125,21 @@ export class MyVacancyComponent implements OnInit {
     this.vacancyId = vacancyId;
     this.vacancyName = vacancyName;
     this.isDeleteVacancy = true;
+  };
+
+  /**
+   * Функция добавляет вакансию в архив.
+   * @param vacancyId - Id вакансии.
+   */
+   public async onAddArchiveVacancyAsync(vacancyId: number) {
+    let vacancyArchiveInput = new AddVacancyArchiveInput();
+    vacancyArchiveInput.vacancyId = vacancyId;
+
+    (await this._backofficeService.addArchiveVacancyAsync(vacancyArchiveInput))
+      .subscribe(async _ => {1
+
+        console.log("Вакансия добавлена в архив", this.archivedVacancy.value);  
+        await this.getUserVacanciesAsync();  
+      });
   };
 }

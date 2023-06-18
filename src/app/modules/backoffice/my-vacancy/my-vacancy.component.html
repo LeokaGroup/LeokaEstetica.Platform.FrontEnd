@@ -25,6 +25,7 @@
           <th>Статус вакансии</th>
           <th>Просмотр</th>
           <th>Редактирование</th>
+          <th>Архивирование</th>
           <th>Удаление</th>
         </tr>
       </ng-template>
@@ -49,6 +50,14 @@
                       class="p-button-outlined p-button-primaryproject.projectId"
                       (click)="onRouteEditVacancy(vacancy.vacancyId)">
           </button>
+          </td>
+          <td>
+            <button pButton type="button"
+                    label="В архив"
+                    class="p-button-outlined p-button-warning"
+                    [disabled]="vacancy.vacancyStatusSysName == 'Archived'"
+                    (click)="onAddArchiveVacancyAsync(vacancy.vacancyId)">
+            </button>
           </td>
           <td><button pButton
                       type="button"
