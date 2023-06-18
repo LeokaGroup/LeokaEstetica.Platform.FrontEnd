@@ -6,12 +6,12 @@
   </div>
 
   <div>
-    <p-table [value]="userProjects$.value.userProjects" 
-            [(selection)]="selectedProjects" 
-            dataKey="projectId" 
-            [paginator]="userProjects$.value.total > 0" 
-            [rows]="10"             
-            styleClass="p-datatable-gridlines" 
+    <p-table [value]="userProjects$.value.userProjects"
+            [(selection)]="selectedProjects"
+            dataKey="projectId"
+            [paginator]="userProjects$.value.total > 0"
+            [rows]="10"
+            styleClass="p-datatable-gridlines"
             responsiveLayout="scroll"
             (click)="onSelectProject()">
       <ng-template pTemplate="caption">
@@ -19,13 +19,14 @@
       </ng-template>
 
       <ng-template pTemplate="header">
-          <tr>
-            <th></th>
-              <th *ngFor="let item of projectColumns$.value">{{item.columnName}}</th>    
-              <th>Просмотр</th>        
-              <th>Редактирование</th>    
-              <th>Удаление</th>    
-          </tr>
+        <tr>
+          <th></th>
+          <th *ngFor="let item of projectColumns$.value">{{item.columnName}}</th>
+          <th>Просмотр</th>
+          <th>Редактирование</th>
+          <th>Архивирование</th>
+          <th>Удаление</th>
+        </tr>
       </ng-template>
 
       <ng-template pTemplate="body" let-project>
@@ -45,16 +46,26 @@
             </td>
             <td><button pButton type="button"
                         label="Редактировать"
-                        class="p-button-outlined p-button-primaryproject.projectId"
+                        class="p-button-outlined p-button-primary"
                         (click)="onRouteEditProject(project.projectId)">
                 </button>
             </td>
-            <td><button pButton
-              type="button"
-              label="Удалить"
-              class="p-button-outlined p-button-danger"
-              (click)="onBeforeDeleteProject(project.projectId, project.projectName)">
-            </button></td>
+
+            <td>
+              <button pButton type="button"
+                      label="В архив"
+                      class="p-button-outlined p-button-warning"
+                      (click)="onAddArchiveProjectAsync(project.projectId)">
+              </button>
+            </td>
+            <td>
+              <button pButton
+                      type="button"
+                      label="Удалить"
+                      class="p-button-outlined p-button-danger"
+                      (click)="onBeforeDeleteProject(project.projectId, project.projectName)">
+              </button>
+            </td>
           </tr>
       </ng-template>
 
