@@ -30,8 +30,9 @@ export class BackOfficeService {
   public userOrders$ = new BehaviorSubject<any>([]);
   public orderDetails$ = new BehaviorSubject<any>([]);
   public histories$ = new BehaviorSubject<any>([]);
-  public archivedProject = new BehaviorSubject<any>(null);
-  public archivedVacancy = new BehaviorSubject<any>(null);
+  public archivedVacancy$ = new BehaviorSubject<any>(null);
+  public archivedProject$ = new BehaviorSubject<any>(null);
+  public archivedProjects$ = new BehaviorSubject<any>([]);
 
   constructor(private readonly http: HttpClient) {
 
@@ -231,13 +232,13 @@ export class BackOfficeService {
     );
   };
 
-  /**
-   * Функция добавляет проект в архив.
-   * @param archiveInput - Входная модель.
-   */
+  // /**
+  //  * Функция добавляет проект в архив.
+  //  * @param archiveInput - Входная модель.
+  //  */
   public async addArchiveProjectAsync(archiveInput: AddProjectArchiveInput) {
     return await this.http.post(API_URL.apiUrl + "/projects/archive", archiveInput).pipe(
-      tap(data => this.archivedProject.next(data))
+      tap(data => this.archivedProject$.next(data))
     );
   };
 
@@ -247,7 +248,17 @@ export class BackOfficeService {
    */
    public async addArchiveVacancyAsync(archiveInput: AddVacancyArchiveInput) {
     return await this.http.post(API_URL.apiUrl + "/vacancies/archive", archiveInput).pipe(
-      tap(data => this.archivedVacancy.next(data))
+      tap(data => this.archivedVacancy$.next(data))
+    );
+  };
+
+   /**
+     * Функция получает список проектов в архиве.
+     * @returns Список проектов.
+     */
+   public async getProjectsArchiveAsync() {
+    return await this.http.get(API_URL.apiUrl + "/projects/archive").pipe(
+      tap(data => this.archivedProjects$.next(data))
     );
   };
 }

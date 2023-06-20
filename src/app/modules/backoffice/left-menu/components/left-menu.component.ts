@@ -48,6 +48,10 @@ export class LeftMenuComponent implements OnInit {
         "Notifications"
     ];
 
+    aArchivedSysNames: string[] = [
+        "ArchiveProjects"
+    ];
+
     constructor(private readonly _backOfficeService: BackOfficeService,
         private readonly _router: Router,
         private readonly _redirectService: RedirectService) {
@@ -149,6 +153,11 @@ export class LeftMenuComponent implements OnInit {
             // Роут на страницу уведомлений пользователя.
             if (this.aNotificationsSysNames.includes(this.sysName)) {
                 this._router.navigate(["/notifications"]);
+            }
+
+            // Роут на страницу архива проектов пользователя.
+            if (this.aArchivedSysNames.includes(this.sysName)) {
+                this._router.navigate(["/projects/archive"]);
             }
         });
     };
