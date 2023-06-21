@@ -21,7 +21,7 @@ export class MyVacancyComponent implements OnInit {
 
   public readonly listVacancy$ = this._backofficeService.listVacancy$;
   public readonly deleteVacancy$ = this._backofficeService.deleteVacancy$;
-  public readonly archivedVacancy = this._backofficeService.archivedVacancy;
+  public readonly archivedVacancy$ = this._backofficeService.archivedVacancy$;
 
   allFeedSubscription: any;
   selectedVacancy: any;
@@ -136,9 +136,9 @@ export class MyVacancyComponent implements OnInit {
     vacancyArchiveInput.vacancyId = vacancyId;
 
     (await this._backofficeService.addArchiveVacancyAsync(vacancyArchiveInput))
-      .subscribe(async _ => {1
+      .subscribe(async _ => {
 
-        console.log("Вакансия добавлена в архив", this.archivedVacancy.value);  
+        console.log("Вакансия добавлена в архив", this.archivedVacancy$.value);  
         await this.getUserVacanciesAsync();  
       });
   };

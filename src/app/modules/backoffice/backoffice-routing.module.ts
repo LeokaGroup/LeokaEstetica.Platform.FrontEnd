@@ -7,6 +7,7 @@ import { SubscriptionsComponent } from './subscriptions/components/subscriptions
 import { MyVacancyComponent } from "./my-vacancy/my-vacancy.component";
 import { OrdersComponent } from './orders/orders-list/components/orders.component';
 import { OrderDetailsComponent } from './orders/order-details/components/order-details.component';
+import { ProjectsArchiveComponent } from './project/archive/components/archive.component';
 
 const routes: Routes = [
     {
@@ -35,6 +36,10 @@ const routes: Routes = [
 
     {
         path: 'orders/details', component: OrderDetailsComponent
+    },
+
+    {
+        path: 'projects/archive', component: ProjectsArchiveComponent
     }
 ];
 

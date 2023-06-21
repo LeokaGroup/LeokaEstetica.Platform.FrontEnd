@@ -19,7 +19,7 @@ import {AddProjectArchiveInput} from "../../../models/input/project/add-project-
 export class MyProjectsComponent implements OnInit {
     public readonly projectColumns$ = this._backofficeService.projectColumns$;
     public readonly userProjects$ = this._backofficeService.userProjects$;
-  public readonly archivedProject = this._backofficeService.archivedProject;
+  public readonly archivedProject$ = this._backofficeService.archivedProject$;
 
     allFeedSubscription: any;
     products: any[] = [];
@@ -155,7 +155,7 @@ export class MyProjectsComponent implements OnInit {
 
     (await this._backofficeService.addArchiveProjectAsync(projectArchiveInput))
       .subscribe(async _ => {
-        console.log("Проект добавлен в архив", this.archivedProject.value);  
+        console.log("Проект добавлен в архив", this.archivedProject$.value);  
         await this.getUserProjectsAsync();  
       });
   };

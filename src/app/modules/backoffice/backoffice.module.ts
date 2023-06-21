@@ -31,6 +31,7 @@ import { RedirectService } from 'src/app/common/services/redirect.service';
 import { MessagesModule } from 'primeng/messages';
 import { OrdersComponent } from './orders/orders-list/components/orders.component';
 import { OrderDetailsComponent } from './orders/order-details/components/order-details.component';
+import { ProjectsArchiveComponent } from './project/archive/components/archive.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { OrderDetailsComponent } from './orders/order-details/components/order-d
         SubscriptionsComponent,
         MyVacancyComponent,
         OrdersComponent,
-        OrderDetailsComponent
+        OrderDetailsComponent,
+        ProjectsArchiveComponent
     ],
 
     imports: [
