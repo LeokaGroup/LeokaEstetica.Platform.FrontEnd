@@ -21,7 +21,9 @@
       <ng-template pTemplate="header">
         <tr>
           <th></th>
-          <th *ngFor="let item of projectColumns$.value">{{item.columnName}}</th>
+          <th>ID</th>
+          <th>Название проекта</th>
+          <th>Дата архивации</th>
           <!-- <th>Просмотр</th>
           <th>Редактирование</th>
           <th>Архивирование</th>
@@ -37,7 +39,6 @@
             <td>{{project.projectId}}</td>
             <td>{{project.projectName}}</td>
             <td>{{project.dateArchived}}</td>
-            <td>{{project.projectStatusName}}</td>
             <!-- <td><button pButton type="button"
               label="Просмотр"
               class="p-button-outlined p-button-primaryproject.projectId">
