@@ -17,6 +17,7 @@ import { ProjectService } from "src/app/modules/project/services/project.service
  */
 export class ProjectsArchiveComponent implements OnInit {
     public readonly archivedProjects$ = this._backofficeService.archivedProjects$;
+    public readonly deleteProjectArchive$ = this._backofficeService.deleteProjectArchive$;
 
     allFeedSubscription: any;
 
@@ -32,13 +33,31 @@ export class ProjectsArchiveComponent implements OnInit {
         forkJoin([
            await this.getProjectsArchiveAsync()
         ]).subscribe();
+
+        // Подключаемся.
+        this._signalrService.startConnection().then(() => {
+            console.log("Подключились");
+
+            this.listenAllHubsNotifications();
+
+            // Подписываемся на получение всех сообщений.
+          this.allFeedSubscription = this._signalrService.AllFeedObservable
+            .subscribe((response: any) => {
+              console.log("Подписались на сообщения", response);
+              this._messageService.add({
+                severity: response.notificationLevel,
+                summary: response.title,
+                detail: response.message
+              });
+            });
+        });
     };
 
     /**
      * Функция слушает все хабы.
      */
     private listenAllHubsNotifications() {
-      
+        this._signalrService.listenSuccessDeleteProjectArchive();
     };
 
     /**
@@ -53,14 +72,13 @@ export class ProjectsArchiveComponent implements OnInit {
     };
 
     /**
-     * Функция удаляет проект.
+     * Функция удаляет проект из архива.
      */
-    //  public async onDeleteProjectAsync() {
-    //     (await this._projectService.deleteProjectsAsync(this.projectId))
-    //     .subscribe(async (response: any) => {
-    //         console.log("Удалили проект: ", response);
-    //         this.isDeleteProject = false;
-    //         await this.getUserProjectsAsync();
-    //     });
-    // };
+     public async onDeleteProjectArchiveAsync(projectId: number) {
+        (await this._backofficeService.deleteProjectArchiveAsync(projectId))
+        .subscribe(async _ => {
+            console.log("Удалили проект из архива: ", this.deleteProjectArchive$.value);  
+            await this.getProjectsArchiveAsync();
+        });
+    };
 }

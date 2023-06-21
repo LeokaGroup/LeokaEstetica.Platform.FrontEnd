@@ -32,6 +32,8 @@ export class BackOfficeService {
   public archivedProject$ = new BehaviorSubject<any>(null);
   public archivedProjects$ = new BehaviorSubject<any>([]);
   public archivedVacancies$ = new BehaviorSubject<any>([]);
+  public deleteVacancyArchive$ = new BehaviorSubject<any>(null);
+  public deleteProjectArchive$ = new BehaviorSubject<any>(null);
 
   constructor(private readonly http: HttpClient) {
 
@@ -250,4 +252,24 @@ export class BackOfficeService {
       tap(data => this.archivedVacancies$.next(data))
     );
   };
+
+    /**
+     * Функция удаляет проект из архива.
+     * @param projectId - Id проекта.
+     */
+    public async deleteProjectArchiveAsync(projectId: number) {
+      return await this.http.delete(API_URL.apiUrl + `/projects/archive/${projectId}`).pipe(
+        tap(data => this.deleteProjectArchive$.next(data))
+      );
+    };
+
+     /**
+     * Функция удаляет вакансию из архива.
+     * @param vacancyId - Id вакансии.
+     */
+      public async deleteVacancyArchiveAsync(vacancyId: number) {
+        return await this.http.delete(API_URL.apiUrl + `/vacancies/archive/${vacancyId}`).pipe(
+          tap(data => this.deleteVacancyArchive$.next(data))
+        );
+      };
 }

@@ -383,4 +383,22 @@ export class SignalrService {
       this.$allFeed.next(data);
     });
   };
+
+  /**
+   * Функция слушает уведомления успешного удаления проекта из архива из хаба.
+   */
+   public listenSuccessDeleteProjectArchive() {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessDeleteProjectArchive", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает уведомления успешного удаления вакансии из архива из хаба.
+   */
+   public listenSuccessDeleteVacancyArchive() {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessDeleteVacancyArchive", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 }

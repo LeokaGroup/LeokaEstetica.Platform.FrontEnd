@@ -17,6 +17,7 @@ import { ProjectService } from "src/app/modules/project/services/project.service
  */
 export class VacanciesArchiveComponent implements OnInit {
     public readonly archivedVacancies$ = this._backofficeService.archivedVacancies$;
+    public readonly deleteVacancyArchive$ = this._backofficeService.deleteProjectArchive$;
 
     allFeedSubscription: any;
 
@@ -32,13 +33,31 @@ export class VacanciesArchiveComponent implements OnInit {
         forkJoin([
            await this.getVacanciesArchiveAsync()
         ]).subscribe();
+
+        // Подключаемся.
+        this._signalrService.startConnection().then(() => {
+            console.log("Подключились");
+
+            this.listenAllHubsNotifications();
+
+            // Подписываемся на получение всех сообщений.
+          this.allFeedSubscription = this._signalrService.AllFeedObservable
+            .subscribe((response: any) => {
+              console.log("Подписались на сообщения", response);
+              this._messageService.add({
+                severity: response.notificationLevel,
+                summary: response.title,
+                detail: response.message
+              });
+            });
+        });
     };
 
     /**
      * Функция слушает все хабы.
      */
     private listenAllHubsNotifications() {
-      
+        this._signalrService.listenSuccessDeleteVacancyArchive();
     };
 
     /**
@@ -53,14 +72,13 @@ export class VacanciesArchiveComponent implements OnInit {
     };
 
     /**
-     * Функция удаляет проект.
+     * Функция удаляет вакансию из архива.
      */
-    //  public async onDeleteProjectAsync() {
-    //     (await this._projectService.deleteProjectsAsync(this.projectId))
-    //     .subscribe(async (response: any) => {
-    //         console.log("Удалили проект: ", response);
-    //         this.isDeleteProject = false;
-    //         await this.getUserProjectsAsync();
-    //     });
-    // };
+     public async onDeleteVacancyArchiveAsync(vacancyId: number) {
+        (await this._backofficeService.deleteVacancyArchiveAsync(vacancyId))
+        .subscribe(async _ => {
+            console.log("Удалили вакансию из архива: ", this.deleteVacancyArchive$.value);  
+            await this.getVacanciesArchiveAsync();
+        });
+    };
 }

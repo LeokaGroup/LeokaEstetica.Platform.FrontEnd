@@ -24,10 +24,7 @@
           <th>ID</th>
           <th>Название проекта</th>
           <th>Дата архивации</th>
-          <!-- <th>Просмотр</th>
-          <th>Редактирование</th>
-          <th>Архивирование</th>
-          <th>Удаление</th> -->
+          <th>Удаление</th>
         </tr>
       </ng-template>
 
@@ -39,34 +36,12 @@
             <td>{{project.projectId}}</td>
             <td>{{project.projectName}}</td>
             <td>{{project.dateArchived}}</td>
-            <!-- <td><button pButton type="button"
-              label="Просмотр"
-              class="p-button-outlined p-button-primaryproject.projectId">
-                </button>
-            </td> -->
-            <!-- <td><button pButton type="button"
-                        label="Редактировать"
-                        class="p-button-outlined p-button-primary"
-                        (click)="onRouteEditProject(project.projectId)">
-                </button>
-            </td>
-
-            <td>
-              <button pButton type="button"
-                      label="В архив"
-                      class="p-button-outlined p-button-warning"
-                      [disabled]="project.projectStatusSysName == 'Archived'"
-                      (click)="onAddArchiveProjectAsync(project.projectId)">
+            <td><button pButton type="button" 
+                        label="Удалить из архива" 
+                        class="p-button-outlined p-button-success"
+                        (click)="project.projectId">
               </button>
             </td>
-            <td>
-              <button pButton
-                      type="button"
-                      label="Удалить"
-                      class="p-button-outlined p-button-danger"
-                      (click)="onBeforeDeleteProject(project.projectId, project.projectName)">
-              </button>
-            </td> -->
           </tr>
       </ng-template>
 
@@ -86,21 +61,3 @@
   </p-table>
   </div>
 </div>
-
-<!-- Диалог удаления проекта. -->
-<!-- <p-dialog header="Удаление проекта"
-          [(visible)]="isDeleteProject"
-          [breakpoints]="{'960px': '75vw'}"
-          [style]="{width: '50vw'}"
-          [draggable]="false"
-          [resizable]="false">
-  <p>Удалить проект <strong>{{projectName}}</strong>?</p>
-        <p>При удалении проекта будут удалены привязанные к проекту вакансии,
-          сообщения чата проекта,
-          все участники команды проекта и
-          комментарии к проекту.</p>
-        <ng-template pTemplate="footer">
-        <p-button (click)="isDeleteProject=false" label="Отменить" styleClass="p-button-text"></p-button>
-        <p-button (click)="onDeleteProjectAsync()" label="Удалить" styleClass="p-button-danger p-button-text"></p-button>
-        </ng-template>
-</p-dialog> -->
