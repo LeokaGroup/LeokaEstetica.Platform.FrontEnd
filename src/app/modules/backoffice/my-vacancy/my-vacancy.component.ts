@@ -135,7 +135,7 @@ export class MyVacancyComponent implements OnInit {
     let vacancyArchiveInput = new AddVacancyArchiveInput();
     vacancyArchiveInput.vacancyId = vacancyId;
 
-    (await this._backofficeService.addArchiveVacancyAsync(vacancyArchiveInput))
+    (await this._vacancyService.addArchiveVacancyAsync(vacancyArchiveInput))
       .subscribe(async _ => {
 
         console.log("Вакансия добавлена в архив", this.archivedVacancy$.value);  

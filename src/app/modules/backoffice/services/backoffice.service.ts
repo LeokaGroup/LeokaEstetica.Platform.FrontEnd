@@ -5,8 +5,6 @@ import {API_URL} from 'src/app/core/core-urls/api-urls';
 import {ProfileInfoInput} from '../aboutme/models/input/profile-info-input';
 import {SelectMenuInput} from '../left-menu/models/input/select-menu-input';
 import {CreateProjectInput} from '../project/create-project/models/input/create-project-input';
-import {AddProjectArchiveInput} from "../models/input/project/add-project-archive-input";
-import { AddVacancyArchiveInput } from '../models/input/vacancy/add-vacancy-archive-input';
 
 /**
  * Класс компонента профиля пользователя.
@@ -231,27 +229,7 @@ export class BackOfficeService {
     return await this.http.get(API_URL.apiUrl + "/orders/history").pipe(
       tap(data => this.histories$.next(data))
     );
-  };
-
-  // /**
-  //  * Функция добавляет проект в архив.
-  //  * @param archiveInput - Входная модель.
-  //  */
-  public async addArchiveProjectAsync(archiveInput: AddProjectArchiveInput) {
-    return await this.http.post(API_URL.apiUrl + "/projects/archive", archiveInput).pipe(
-      tap(data => this.archivedProject$.next(data))
-    );
-  };
-
-  /**
-   * Функция добавляет вакансию в архив.
-   * @param archiveInput - Входная модель.
-   */
-   public async addArchiveVacancyAsync(archiveInput: AddVacancyArchiveInput) {
-    return await this.http.post(API_URL.apiUrl + "/vacancies/archive", archiveInput).pipe(
-      tap(data => this.archivedVacancy$.next(data))
-    );
-  };
+  };  
 
    /**
      * Функция получает список проектов в архиве.

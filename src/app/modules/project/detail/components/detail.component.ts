@@ -16,6 +16,7 @@ import { CreateProjectCommentInput } from "../models/input/create-project-commen
 import { InviteProjectTeamMemberInput } from "../models/input/invite-project-team-member-input";
 import { ProjectResponseInput } from "../models/input/project-response-input";
 import { UpdateProjectInput } from "../models/input/update-project-input";
+import { AddProjectArchiveInput } from "src/app/modules/backoffice/models/input/project/add-project-archive-input";
 
 @Component({
     selector: "detail",
@@ -48,6 +49,7 @@ export class DetailProjectComponent {
     public readonly dialog$ = this._messagesService.dialog$;
     public readonly availableVacansiesResponse$ = this._projectService.availableVacansiesResponse$;
     public readonly projectRemarks$ = this._projectService.projectRemarks$;
+    public readonly archivedProject$ = this._projectService.archivedProject$;
 
     projectName: string = "";
     projectDetails: string = "";
@@ -84,6 +86,7 @@ export class DetailProjectComponent {
     vacancyNameForDelete: any;
     isVisibleActionVacancyButton: boolean = false;
     isVisibleActionProjectButtons: boolean = false;
+    isVisibleActionAddProjectArchive: boolean = false;
     isVisibleDeleteButton: boolean = false;
     isProjectInvite: boolean = false;
     aProjectInviteVarians: any[] = [
@@ -136,7 +139,7 @@ export class DetailProjectComponent {
      /**
      * Функция слушает все хабы.
      */
-      private listenAllHubsNotifications() {
+    private listenAllHubsNotifications() {
         this._signalrService.listenSuccessUpdatedUserVacancyInfo();
         this._signalrService.listenSuccessAttachProjectVacancyInfo();
         this._signalrService.listenErrorDublicateAttachProjectVacancyInfo();
@@ -149,6 +152,10 @@ export class DetailProjectComponent {
         this._signalrService.listenWarningUserAlreadyProjectInvitedTeam();
         this._signalrService.listenSuccessUserProjectInvitedTeam();
         this._signalrService.listenSuccessDeleteProjectTeamMember();
+        this._signalrService.listenSuccessDeleteProject();
+        this._signalrService.listenSuccessAddArchiveProject();
+        this._signalrService.listenErrorAddArchiveProject();
+        this._signalrService.listenWarningAddArchiveProject();
     };
 
     private checkUrlParams() {
@@ -184,6 +191,7 @@ export class DetailProjectComponent {
             this.isVisibleActionProjectButtons = response.isVisibleActionProjectButtons;
             this.isVisibleActionDeleteProjectTeamMember = response.isVisibleActionDeleteProjectTeamMember;
             this.isVisibleActionLeaveProjectTeam = response.isVisibleActionLeaveProjectTeam;
+            this.isVisibleActionAddProjectArchive = response.isVisibleActionAddProjectArchive;
         });
     };
 
@@ -644,6 +652,21 @@ export class DetailProjectComponent {
             .subscribe(async _ => {
                 this.aProjectRemarks = this.projectRemarks$.value;
                 console.log("Список замечаний проекта: ", this.aProjectRemarks);
+            });
+    };
+
+    // /**
+    //  * Функция добавляет проект в архив.
+    //  * @param archiveInput - Входная модель.
+    //  */
+    public async onAddArchiveProjectAsync() {
+        let addArchiveInput = new AddProjectArchiveInput();
+        addArchiveInput.projectId = this.projectId;
+
+        (await this._projectService.addArchiveProjectAsync(addArchiveInput))
+            .subscribe(async _ => {
+                this.aProjectRemarks = this.archivedProject$.value;
+                console.log("Добавили проект в архив: ", this.archivedProject$.value);
             });
     };
 }

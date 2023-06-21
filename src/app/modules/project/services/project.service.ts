@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { ProjectApiBuilder } from 'src/app/core/url-builders/project-api-builder';
+import { AddProjectArchiveInput } from '../../backoffice/models/input/project/add-project-archive-input';
 import { AttachProjectVacancyInput } from '../detail/models/input/attach-project-vacancy-input';
 import { CreateProjectCommentInput } from '../detail/models/input/create-project-comment-input';
 import { FilterProjectInput } from '../detail/models/input/filter-project-input';
@@ -34,9 +35,10 @@ export class ProjectService {
     public deletedProjectTeamMember$ = new BehaviorSubject<any>(null);
     public leaveProjectTeamMember$ = new BehaviorSubject<any>(null);
     public projectRemarks$ = new BehaviorSubject<any>(null);
+    public archivedProject$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
-
+        
     }
 
     /**
@@ -278,4 +280,14 @@ export class ProjectService {
             tap(data => this.projectRemarks$.next(data))
           );
       };
+
+    // /**
+    //  * Функция добавляет проект в архив.
+    //  * @param archiveInput - Входная модель.
+    //  */
+    public async addArchiveProjectAsync(archiveInput: AddProjectArchiveInput) {
+        return await this.http.post(API_URL.apiUrl + "/projects/archive", archiveInput).pipe(
+            tap(data => this.archivedProject$.next(data))
+        );
+    };
 }

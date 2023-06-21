@@ -153,7 +153,7 @@ export class MyProjectsComponent implements OnInit {
     let projectArchiveInput = new AddProjectArchiveInput();
     projectArchiveInput.projectId = projectId;
 
-    (await this._backofficeService.addArchiveProjectAsync(projectArchiveInput))
+    (await this._projectService.addArchiveProjectAsync(projectArchiveInput))
       .subscribe(async _ => {
         console.log("Проект добавлен в архив", this.archivedProject$.value);  
         await this.getUserProjectsAsync();  

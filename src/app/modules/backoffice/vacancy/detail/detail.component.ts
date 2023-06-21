@@ -48,6 +48,7 @@ export class DetailVacancyComponent implements OnInit {
     aVacancyRemarks: Message[] = [];
     demands: string = "";
     conditions: string = "";
+    isVisibleActionAddVacancyArchive: boolean = false;
 
     public async ngOnInit() {
         forkJoin([
@@ -73,8 +74,11 @@ export class DetailVacancyComponent implements OnInit {
      /**
      * Функция слушает все хабы.
      */
-      private listenAllHubsNotifications() {        
+    private listenAllHubsNotifications() {
         this._signalrService.listenSuccessCreatedUserVacancyInfo();
+        this._signalrService.listenSuccessAddArchiveVacancy();
+        this._signalrService.listenErrorAddArchiveVacancy();
+        this._signalrService.listenWarningAddArchiveVacancy();
     };
 
     private checkUrlParams() {
@@ -118,6 +122,7 @@ export class DetailVacancyComponent implements OnInit {
                 this.isVisibleDeleteButton = this.selectedVacancy$.value.isVisibleDeleteButton;
                 this.isVisibleSaveButton = this.selectedVacancy$.value.isVisibleSaveButton;
                 this.isVisibleEditButton = this.selectedVacancy$.value.isVisibleEditButton;
+                this.isVisibleActionAddVacancyArchive = this.selectedVacancy$.value.isVisibleActionAddVacancyArchive;
             });
     };
 

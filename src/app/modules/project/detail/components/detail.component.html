@@ -191,6 +191,16 @@
                 <div>
                   <button pButton
                           type="button"
+                          label="Добавить проект в архив"
+                          class="p-button-warning p-button-text"
+                          (click)="onAddArchiveProjectAsync()"
+                          *ngIf="isVisibleActionAddProjectArchive">
+                  </button>
+                </div>
+
+                <div>
+                  <button pButton
+                          type="button"
                           label="Удалить проект"
                           class="p-button-danger p-button-text"
                           (click)="isDeleteProject=true"

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { VacancyApiBuilder } from 'src/app/core/url-builders/vacancy-api-builder';
+import { AddVacancyArchiveInput } from '../../models/input/vacancy/add-vacancy-archive-input';
 import { CreateProjectVacancyInput } from '../models/input/create-project-vacancy-input';
 import { FilterVacancyInput } from '../models/input/filter-vacancy-input';
 import { VacancyInput } from '../models/input/vacancy-input';
@@ -16,6 +17,7 @@ export class VacancyService {
     public deleteVacancy$ = new BehaviorSubject<any>(null);
     public listVacancy$ = new BehaviorSubject<any>([]);
     public vacancyRemarks$ = new BehaviorSubject<any>([]);
+    public archivedVacancy$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -125,4 +127,14 @@ export class VacancyService {
             tap(data => this.vacancyRemarks$.next(data))
         );
     };
+
+      /**
+   * Функция добавляет вакансию в архив.
+   * @param archiveInput - Входная модель.
+   */
+   public async addArchiveVacancyAsync(archiveInput: AddVacancyArchiveInput) {
+    return await this.http.post(API_URL.apiUrl + "/vacancies/archive", archiveInput).pipe(
+      tap(data => this.archivedVacancy$.next(data))
+    );
+  };
 }
