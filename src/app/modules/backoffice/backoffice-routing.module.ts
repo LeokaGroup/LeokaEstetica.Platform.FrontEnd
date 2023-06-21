@@ -8,6 +8,7 @@ import { MyVacancyComponent } from "./my-vacancy/my-vacancy.component";
 import { OrdersComponent } from './orders/orders-list/components/orders.component';
 import { OrderDetailsComponent } from './orders/order-details/components/order-details.component';
 import { ProjectsArchiveComponent } from './project/archive/components/archive.component';
+import { VacanciesArchiveComponent } from './vacancy/archive/components/archive.component';
 
 const routes: Routes = [
     {
@@ -40,6 +41,10 @@ const routes: Routes = [
 
     {
         path: 'projects/archive', component: ProjectsArchiveComponent
+    },
+
+    {
+        path: 'vacancies/archive', component: VacanciesArchiveComponent
     }
 ];
 

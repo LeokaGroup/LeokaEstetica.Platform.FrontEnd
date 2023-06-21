@@ -13,10 +13,10 @@ import { ProjectService } from "src/app/modules/project/services/project.service
 })
 
 /**
- * Класс компонента проектов в архиве.
+ * Класс компонента вакансий в архиве.
  */
-export class ProjectsArchiveComponent implements OnInit {
-    public readonly archivedProjects$ = this._backofficeService.archivedProjects$;
+export class VacanciesArchiveComponent implements OnInit {
+    public readonly archivedVacancies$ = this._backofficeService.archivedVacancies$;
 
     allFeedSubscription: any;
 
@@ -30,7 +30,7 @@ export class ProjectsArchiveComponent implements OnInit {
 
     public async ngOnInit() {
         forkJoin([
-           await this.getProjectsArchiveAsync()
+           await this.getVacanciesArchiveAsync()
         ]).subscribe();
     };
 
@@ -42,13 +42,13 @@ export class ProjectsArchiveComponent implements OnInit {
     };
 
     /**
-     * Функция получает список проектов в архиве.
-     * @returns Список проектов.
+     * Функция получает список вакансий в архиве.
+     * @returns Список вакансий.
      */
-    private async getProjectsArchiveAsync() {
-        (await this._backofficeService.getProjectsArchiveAsync())
+    private async getVacanciesArchiveAsync() {
+        (await this._backofficeService.getVacanciesArchiveAsync())
         .subscribe(_ => {
-            console.log("Проекты в архиве:", this.archivedProjects$.value);
+            console.log("Вакансии в архиве:", this.archivedVacancies$.value);
         });
     };
 

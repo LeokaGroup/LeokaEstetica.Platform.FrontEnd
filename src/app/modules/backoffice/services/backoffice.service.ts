@@ -33,6 +33,7 @@ export class BackOfficeService {
   public archivedVacancy$ = new BehaviorSubject<any>(null);
   public archivedProject$ = new BehaviorSubject<any>(null);
   public archivedProjects$ = new BehaviorSubject<any>([]);
+  public archivedVacancies$ = new BehaviorSubject<any>([]);
 
   constructor(private readonly http: HttpClient) {
 
@@ -259,6 +260,16 @@ export class BackOfficeService {
    public async getProjectsArchiveAsync() {
     return await this.http.get(API_URL.apiUrl + "/projects/archive").pipe(
       tap(data => this.archivedProjects$.next(data))
+    );
+  };
+
+  /**
+     * Функция получает список вакансий в архиве.
+     * @returns Список вакансий.
+     */
+   public async getVacanciesArchiveAsync() {
+    return await this.http.get(API_URL.apiUrl + "/vacancies/archive").pipe(
+      tap(data => this.archivedVacancies$.next(data))
     );
   };
 }

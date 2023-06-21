@@ -4,7 +4,7 @@ import { Message, MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
-import { VacancyService } from "src/app/modules/vacancy/services/vacancy.service";
+import { VacancyService } from "src/app/modules/backoffice/vacancy/services/vacancy.service";
 import { VacancyInput } from "../models/input/vacancy-input";
 
 @Component({

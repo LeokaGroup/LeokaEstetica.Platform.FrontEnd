@@ -48,9 +48,8 @@ export class LeftMenuComponent implements OnInit {
         "Notifications"
     ];
 
-    aArchivedSysNames: string[] = [
-        "ArchiveProjects"
-    ];
+    archivedProjectsSysNames: string = "ArchiveProjects";
+    archivedVacanciesSysNames: string = "ArchiveVacancies";
 
     constructor(private readonly _backOfficeService: BackOfficeService,
         private readonly _router: Router,
@@ -156,8 +155,13 @@ export class LeftMenuComponent implements OnInit {
             }
 
             // Роут на страницу архива проектов пользователя.
-            if (this.aArchivedSysNames.includes(this.sysName)) {
+            if (this.archivedProjectsSysNames == this.sysName) {
                 this._router.navigate(["/projects/archive"]);
+            }
+
+             // Роут на страницу архива вакансий пользователя.
+             if (this.archivedVacanciesSysNames == this.sysName) {
+                this._router.navigate(["/vacancies/archive"]);
             }
         });
     };
