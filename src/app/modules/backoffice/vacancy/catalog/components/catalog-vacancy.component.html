@@ -45,6 +45,10 @@
         <div class="vacancy-text-block">
           <h3 class="vacancy-title" (click)="onRouteSelectedVacancy(item.vacancyId)">{{item.vacancyName}}</h3>
           <div class="vacancy-text">{{item.vacancyText}}</div>
+
+          <div>
+            <i class="pi pi-clock">&nbsp;{{item.dateCreated}}</i>
+          </div>
         </div>
        </div>
       </div>

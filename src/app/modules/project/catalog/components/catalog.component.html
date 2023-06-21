@@ -31,9 +31,16 @@
         </div>
 
         <div class="project-text-item">
-          <h3 class="project-title" (click)="onRouteSelectedProject(item.projectId)">{{item.projectName}}</h3>
+          <h3 class="project-title" (click)="onRouteSelectedProject(item.projectId)">
+            {{item.projectName}}
+          </h3>
+
           <div class="project-text">            
             {{item.projectDetails}}
+          </div>
+
+          <div>
+            <i class="pi pi-clock">&nbsp;{{item.dateCreated}}</i>
           </div>
         </div>
       </div>
