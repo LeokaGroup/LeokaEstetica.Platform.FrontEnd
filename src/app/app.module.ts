@@ -16,7 +16,7 @@ import { HeaderService } from './modules/header/services/header.service';
 import { LandingService } from './modules/landing/services/landing.service';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { ToastModule } from 'primeng/toast';
-import { VacancyService } from './modules/vacancy/services/vacancy.service';
+import { VacancyService } from './modules/backoffice/vacancy/services/vacancy.service';
 import { ProjectService } from './modules/project/services/project.service';
 import {AvatarModule} from 'primeng/avatar';
 import { ChatMessagesService } from './modules/messages/chat/services/chat-messages.service';

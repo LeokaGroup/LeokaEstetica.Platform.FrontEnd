@@ -8,8 +8,8 @@ import { DialogMessageInput } from "src/app/modules/messages/chat/models/input/d
 import { ChatMessagesService } from "src/app/modules/messages/chat/services/chat-messages.service";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { SearchProjectService } from "src/app/modules/search/services/search-project-service";
-import { VacancyInput } from "src/app/modules/vacancy/models/input/vacancy-input";
-import { VacancyService } from "src/app/modules/vacancy/services/vacancy.service";
+import { VacancyInput } from "src/app/modules/backoffice/vacancy/models/input/vacancy-input";
+import { VacancyService } from "src/app/modules/backoffice/vacancy/services/vacancy.service";
 import { ProjectService } from "../../services/project.service";
 import { AttachProjectVacancyInput } from "../models/input/attach-project-vacancy-input";
 import { CreateProjectCommentInput } from "../models/input/create-project-comment-input";

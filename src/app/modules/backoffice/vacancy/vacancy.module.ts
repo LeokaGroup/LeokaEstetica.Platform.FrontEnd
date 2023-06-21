@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { VacancyRoutingModule } from './vacancy-routing.module';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import { UserService } from '../user/services/user.service';
+import { UserService } from '../../user/services/user.service';
 import { CatalogVacancyComponent } from './catalog/components/catalog-vacancy.component';
 import { CreateVacancyComponent } from './create/create.component';
 import { PanelMenuModule } from 'primeng/panelmenu';
@@ -16,7 +16,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
 import { HttpClientModule } from '@angular/common/http';
-import { SignalrService } from '../notifications/signalr/services/signalr.service';
+import { SignalrService } from '../../notifications/signalr/services/signalr.service';
 import { DetailVacancyComponent } from './detail/detail.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -28,12 +28,14 @@ import { DialogModule } from 'primeng/dialog';
 import { ListboxModule } from 'primeng/listbox';
 import { TableModule } from "primeng/table";
 import { MessagesModule } from 'primeng/messages';
+import { VacanciesArchiveComponent } from './archive/components/archive.component';
 
 @NgModule({
     declarations: [
         CatalogVacancyComponent,
         CreateVacancyComponent,
-        DetailVacancyComponent
+        DetailVacancyComponent,
+        VacanciesArchiveComponent
     ],
 
   imports: [

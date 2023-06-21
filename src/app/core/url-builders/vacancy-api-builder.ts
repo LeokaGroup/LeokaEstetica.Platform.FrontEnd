@@ -1,4 +1,4 @@
-import { FilterVacancyInput } from "src/app/modules/vacancy/models/input/filter-vacancy-input";
+import { FilterVacancyInput } from "src/app/modules/backoffice/vacancy/models/input/filter-vacancy-input";
 import { API_URL } from "../core-urls/api-urls";
 
 /**

@@ -3,7 +3,7 @@ import { forkJoin } from "rxjs";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { MessageService } from "primeng/api";
 import { Router } from "@angular/router";
-import { VacancyService } from "../../vacancy/services/vacancy.service";
+import { VacancyService } from "../vacancy/services/vacancy.service";
 import { BackOfficeService } from "../services/backoffice.service";
 import { AddVacancyArchiveInput } from "../models/input/vacancy/add-vacancy-archive-input";
 

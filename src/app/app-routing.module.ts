@@ -19,7 +19,7 @@ const routes: Routes = [
 
   {
     path: "vacancies",
-    loadChildren: () => import('./modules/vacancy/vacancy.module').then(m => m.VacancyModule)
+    loadChildren: () => import('./modules/backoffice/vacancy/vacancy.module').then(m => m.VacancyModule)
   },
 
   {
