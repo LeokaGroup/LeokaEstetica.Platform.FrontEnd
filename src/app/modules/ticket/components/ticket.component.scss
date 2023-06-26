@@ -1,0 +1,18 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+
+.input-control-worksheet {
+    width: 300px;
+    outline: none;
+
+    &:focus {
+        outline: none;
+        border: 1px solid #403866;
+        box-shadow: none;
+    }
+
+    &:hover {
+        border-color: #403866;
+    }
+}

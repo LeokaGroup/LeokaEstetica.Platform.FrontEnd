@@ -13,12 +13,16 @@ import { CarouselModule } from 'primeng/carousel';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { SplitterModule } from 'primeng/splitter';
 import { ScrollTopModule } from 'primeng/scrolltop';
+import { TicketComponent } from '../ticket/components/ticket.component';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 
 @NgModule({
     declarations: [
         LandingComponent,
-        FareRuleComponent
+        FareRuleComponent,
+        TicketComponent
     ],
 
     imports: [
@@ -33,7 +37,9 @@ import { ScrollTopModule } from 'primeng/scrolltop';
         CarouselModule,
         ScrollPanelModule,
         SplitterModule,
-        ScrollTopModule
+        ScrollTopModule,
+        DropdownModule,
+        InputTextareaModule
     ],
 
     exports: [],

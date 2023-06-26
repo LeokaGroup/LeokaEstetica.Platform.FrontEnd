@@ -35,6 +35,7 @@ import { CallCenterModule } from './modules/moderation/callcenter.module';
 import { OrderFormModule } from './modules/order-form/order-form.module';
 import { OrderFormService } from './modules/order-form/order-form-info/services/order-form.service';
 import { OrderService } from './modules/order-form/services/order.service';
+import { TicketService } from './modules/ticket/services/ticket.service';
 
 @NgModule({
   declarations: [
@@ -88,7 +89,8 @@ import { OrderService } from './modules/order-form/services/order.service';
     AdministrationService,
     NotificationsService,
     OrderFormService,
-    OrderService
+    OrderService,
+    TicketService
   ],
 
   bootstrap: [AppComponent]
