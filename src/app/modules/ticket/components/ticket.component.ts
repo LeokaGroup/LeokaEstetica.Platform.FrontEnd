@@ -21,11 +21,16 @@ export class TicketComponent implements OnInit {
     public readonly ticketCategories$ = this._ticketService.ticketCategories$;
     selectedCategory: any;
     ticketMessage: string = "";
+    isAvailableTicket: boolean = false;
 
     public async ngOnInit() {
         forkJoin([
             await this.getTicketCategoriesAsync()
         ]).subscribe();
+
+        if (localStorage["t_n"]) {
+            this.isAvailableTicket = true;
+        }
     };
 
     /**

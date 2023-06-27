@@ -30,9 +30,13 @@
     
                   <button type="submit" 
                           class="btn btn-primary button-action-pur-short-control"
-                          (click)="onCreateTicketAsync()">
+                          (click)="onCreateTicketAsync()"
+                          [disabled]="!isAvailableTicket">
                     Отправить заявку
-                  </button>              
+                  </button>           
+                  <div class="d-flex justify-content-center">
+                    <small>Для отправки обращения нужно быть авторизованными.</small>   
+                  </div>
                 </div>
               </div>
             </div>
