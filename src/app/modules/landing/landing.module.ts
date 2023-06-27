@@ -16,6 +16,7 @@ import { ScrollTopModule } from 'primeng/scrolltop';
 import { TicketComponent } from '../ticket/components/ticket.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ToastModule } from 'primeng/toast';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
         SplitterModule,
         ScrollTopModule,
         DropdownModule,
-        InputTextareaModule
+        InputTextareaModule,
+        ToastModule
     ],
 
     exports: [],

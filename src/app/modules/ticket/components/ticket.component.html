@@ -1,10 +1,12 @@
+<p-toast></p-toast>
+
 <div class="space-top-50">
   <div class="col-lg-12 d-flex justify-content-center">
     <h3 class="mt-5 mb-5">Есть вопросы/пожелания? Напишите нам!</h3>
   </div>
 
   <p-card header="">
-    <form class="section-1-container section-container">
+    <div class="section-1-container section-container">
         <div class="container">
           <div class="row">
             <div class="col-10 offset-1 col-lg-8 offset-lg-2 div-wrapper d-flex justify-content-center align-items-center">
@@ -27,7 +29,8 @@
                   </div>
     
                   <button type="submit" 
-                          class="btn btn-primary button-action-pur-short-control">
+                          class="btn btn-primary button-action-pur-short-control"
+                          (click)="onCreateTicketAsync()">
                     Отправить заявку
                   </button>              
                 </div>
@@ -35,6 +38,6 @@
             </div>
           </div>
         </div>
-      </form>
+      </div>
   </p-card>
 </div>
