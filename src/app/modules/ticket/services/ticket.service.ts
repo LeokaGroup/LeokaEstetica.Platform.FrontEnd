@@ -35,4 +35,14 @@ export class TicketService {
             tap(data => this.createdTicket$.next(data))
         );
     };
+
+    /**
+    * Функция получает тикеты пользователя.
+    * @returns - Список тикетов.
+    */
+     public async getUserTicketsAsync() {
+        return await this._http.get(API_URL.apiUrl + "/tickets/profile").pipe(
+            tap(data => this.createdTicket$.next(data))
+        );
+    };
 }
