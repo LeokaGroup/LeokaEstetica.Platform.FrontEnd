@@ -17,6 +17,7 @@ import { CreateVacancyRemarksInput, VacancyRemarkInput } from "../../models/inpu
 import { SendVacancyRemarkInput } from "../../models/input/send-vacancy-remark-input";
 import { CreateResumeRemarksInput, ResumeRemarkInput } from "../../models/input/resume-remark-input";
 import { SendResumeRemarkInput } from "../../models/input/send-resume-remark-input";
+import { TicketService } from "src/app/modules/ticket/services/ticket.service";
 
 @Component({
     selector: "callcenter",
@@ -41,6 +42,7 @@ export class CallCenterComponent implements OnInit {
     public readonly unShippedVacancyRemarks$ = this._callCenterService.unShippedVacancyRemarks$;
     public readonly resumesRemarks$ = this._callCenterService.resumesRemarks$;
     public readonly unShippedResumeRemarks$ = this._callCenterService.unShippedResumeRemarks$;
+    public readonly tickets$ = this._ticketService.callcenterTickets$;
 
     isHideAuthButtons: boolean = false;
     aProjects: any[] = [];
@@ -68,6 +70,8 @@ export class CallCenterComponent implements OnInit {
     isShowPreviewModerationResumeModal: boolean = false;
     resumeEmail: string = "";
     accessModeration: boolean = false;    
+    aTickets: any[] = [];
+    isShowTIckets: boolean = false;   
 
     items: any[] = [
         {
@@ -210,10 +214,34 @@ export class CallCenterComponent implements OnInit {
                                 await this.getResumesUnShippedRemarksTableAsync();
                             }
                         }]
-                    }
+                    }                    
                 ]
             ]
-        }
+        },
+        {
+            label: 'Тикеты',
+            items: [
+                [
+                    {
+                        label: 'Все тикеты',
+                        items: [{
+                            label: 'Просмотр', command: async () => {
+                                this.isProjectsModeration = false;
+                                this.isVacanciesModeration = false;
+                                this.isResumesModeration = false;
+                                this.clearRemarksProject();
+                                this.clearRemarksVacancy();
+                                this.clearRemarksResume();
+                                this.isProjectsUnShippedRemarks = false;
+                                this.isVacanciesUnShippedRemarks = false;
+                                this.isResumesUnShippedRemarks = false;
+                                await this.getCallCenterTicketsAsync();
+                            }
+                        }]
+                    }                 
+                ]
+            ]
+        },
     ];
 
     aRemarksProject: ProjectRemarkInput[] = [];
@@ -232,14 +260,15 @@ export class CallCenterComponent implements OnInit {
         private readonly _callCenterService: CallCenterService,
         private readonly _router: Router,
         private readonly _signalrService: SignalrService,
-        private readonly _messageService: MessageService) {
+        private readonly _messageService: MessageService,
+        private readonly _ticketService: TicketService) {
     }
 
     public async ngOnInit() {
         forkJoin([
             await this.getHeaderItemsAsync(),
             await this._headerService.refreshTokenAsync(),
-            await this.checkModerationUserRoleAsync()
+            await this.checkModerationUserRoleAsync()            
         ]).subscribe();
 
         // Подключаемся.
@@ -768,5 +797,21 @@ export class CallCenterComponent implements OnInit {
             console.log("Анкеты с замечаниями: ", this.resumesRemarks$.value);
         });
     };   
+
+    /**
+    * Функция получает тикеты пользователя.
+    * @returns - Список тикетов.
+    */
+     private async getCallCenterTicketsAsync() {
+        (await this._ticketService.getCallCenterTicketsAsync())
+        .subscribe(_ => {
+            console.log("Тикеты: ", this.tickets$.value);
+            this.aTickets = this.tickets$.value;
+
+            if (this.aTickets.length > 0) {
+                this.isShowTIckets = true;
+            }
+        });
+    };
 }
 

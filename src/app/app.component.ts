@@ -105,11 +105,9 @@ export class AppComponent implements OnInit {
       this.isVisibleMenu = true;
     }
 
-    if (currentUrl.indexOf("callcenter") >= 0
-    || currentUrl.indexOf("administration") >= 0
-    || currentUrl.indexOf("user/signin") >= 0) {
+    if (currentUrl.indexOf("user/signin") >= 0) {
       this.rerender();
-      this.isVisibleMenu = true;
+      this.isVisibleMenu = false;
     }
 
     if (currentUrl.indexOf("profile/aboutme?mode=view") >= 0) {
@@ -118,6 +116,10 @@ export class AppComponent implements OnInit {
 
     if (currentUrl.indexOf("/") >= 0) {
       this.rerender();
+    }
+
+    if (currentUrl.indexOf("callcenter") >= 0) {
+      this.isVisibleMenu = false;
     }
 
     this._activatedRoute.queryParams
@@ -134,7 +136,7 @@ export class AppComponent implements OnInit {
 
         if (params["page"]) {
           this.isVisibleMenu = true;
-        }
+        }        
       });
   };
 }
