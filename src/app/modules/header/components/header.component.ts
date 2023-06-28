@@ -28,7 +28,13 @@ export class HeaderComponent implements OnInit {
             command: () => {
 
             }
-        },        
+        },       
+        {
+            label: 'Заявки в поддержку',
+            command: () => {
+                this._router.navigate(["/profile/tickets"])
+            }
+        },   
         {
             label: 'Выйти',
             command: () => {

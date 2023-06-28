@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
-import { CreateTicketInput } from "../models/input/create-ticket-input";
-import { TicketService } from "../services/ticket.service";
+import { CreateTicketInput } from "../../models/input/create-ticket-input";
+import { TicketService } from "../../services/ticket.service";
 
 @Component({
     selector: "ticket",

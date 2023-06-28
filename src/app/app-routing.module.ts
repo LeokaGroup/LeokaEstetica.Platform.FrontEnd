@@ -40,6 +40,11 @@ const routes: Routes = [
   {
     path: "order-form",
     loadChildren: () => import('./modules/order-form/order-form.module').then(m => m.OrderFormModule)
+  },
+
+  {
+    path: "profile",
+    loadChildren: () => import('./modules/ticket/ticket.module').then(m => m.TicketModule)
   }
 ];
 

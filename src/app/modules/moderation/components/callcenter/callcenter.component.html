@@ -291,6 +291,32 @@
   </p-table>
 </div>
 
+<!-- Тикеты. -->
+<div *ngIf="isShowTIckets" class="mt-5">
+  <p-table [value]="aTickets" styleClass="p-datatable-gridlines">
+    <ng-template pTemplate="caption">
+      Список тикетов (Все)
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID тикета</th>
+        <th>Название тикета</th>
+        <th>Статус тикета</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-t>
+      <tr>
+        <td>{{t.ticketId}}</td>
+        <td>{{t.ticketName}}</td>
+        <td>{{t.statusName}}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <!-- Всего: {{totalProjects}} -->
+    </ng-template>
+  </p-table>
+</div>
+
 </div>
 </div>
 
@@ -873,7 +899,7 @@
               <!-- Всего: {{totalProjects}} -->
             </ng-template>
           </p-table>
-        </div>
+        </div>                
       </div>
     </div>
   <ng-template pTemplate="footer">

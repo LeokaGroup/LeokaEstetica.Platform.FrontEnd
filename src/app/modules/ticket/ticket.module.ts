@@ -26,11 +26,12 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { TagModule } from 'primeng/tag';
 import { TicketRoutingModule } from './ticket-routing.module';
-import { TicketComponent } from './components/ticket.component';
+import { ProfileTicketComponent } from './components/profile/profile-ticket.component';
+import { CardModule } from 'primeng/card';
 
 @NgModule({
     declarations: [
-        TicketComponent
+        ProfileTicketComponent
     ],
 
     imports: [
@@ -57,7 +58,8 @@ import { TicketComponent } from './components/ticket.component';
         PaginatorModule,
         MessagesModule,
         MessageModule,
-        TagModule
+        TagModule,
+        CardModule
     ],
 
     exports: [],
