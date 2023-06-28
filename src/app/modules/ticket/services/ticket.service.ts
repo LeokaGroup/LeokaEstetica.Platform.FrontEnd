@@ -11,6 +11,7 @@ import { CreateTicketInput } from '../models/input/create-ticket-input';
 export class TicketService {
     public ticketCategories$ = new BehaviorSubject<any>(null);
     public createdTicket$ = new BehaviorSubject<any>(null);
+    public profileTickets$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient) {
 
@@ -40,9 +41,9 @@ export class TicketService {
     * Функция получает тикеты пользователя.
     * @returns - Список тикетов.
     */
-     public async getUserTicketsAsync() {
+     public async getProfileTicketsAsync() {
         return await this._http.get(API_URL.apiUrl + "/tickets/profile").pipe(
-            tap(data => this.createdTicket$.next(data))
+            tap(data => this.profileTickets$.next(data))
         );
     };
 }

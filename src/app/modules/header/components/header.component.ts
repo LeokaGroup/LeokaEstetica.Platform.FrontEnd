@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit {
         {
             label: 'Заявки в поддержку',
             command: () => {
-                // this._router.navigate(["/user/signin"])
+                this._router.navigate(["/profile/tickets"])
             }
         },   
         {
