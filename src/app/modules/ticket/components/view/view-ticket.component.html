@@ -1,0 +1,40 @@
+<div class="d-flex block-profile space-top-50">
+  <div class="col-lg-3">
+
+  </div>
+
+  <div class="col-lg-6 text-content">
+    <h3>Заявка #{{selectedTicket$.value.ticketId}} - {{selectedTicket$.value.ticketName}} ({{selectedTicket$.value.statusName}})</h3>
+    <div>
+      <div class="mt-4" *ngFor="let item of selectedTicket$.value.messages">
+        <p-card header="" [ngClass]="{blockMessage: item.isMyMessage}">
+          <div>
+            <div class="block-message">
+              <p>{{item.message}}</p>
+              <span class="time-right">{{item.dateCreated}}</span>
+            </div>
+          </div>
+        </p-card>
+      </div>
+
+      <div class="mt-4">
+        <p-card header="">
+          <textarea rows="5" pInputTextarea [autoResize]="true"
+            autocomplete="new-password" placeholder="Введите сообщение" [(ngModel)]="ticketMessage"
+            class="control-textarea textarea-ticket">
+          </textarea>
+          <div>
+            <button type="submit" 
+                      class="btn btn-primary button-action-pur-control">
+                Отправить
+              </button>
+          </div>
+        </p-card>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-3">
+
+  </div>
+</div>

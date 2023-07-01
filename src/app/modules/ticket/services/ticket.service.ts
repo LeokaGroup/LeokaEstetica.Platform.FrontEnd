@@ -13,6 +13,7 @@ export class TicketService {
     public createdTicket$ = new BehaviorSubject<any>(null);
     public profileTickets$ = new BehaviorSubject<any>(null);
     public callcenterTickets$ = new BehaviorSubject<any>(null);
+    public selectedTicket$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient) {
 
@@ -55,6 +56,17 @@ export class TicketService {
      public async getCallCenterTicketsAsync() {
         return await this._http.get(API_URL.apiUrl + "/tickets/callcenter").pipe(
             tap(data => this.callcenterTickets$.next(data))
+        );
+    };
+
+    /**
+    * Функция получает тикет пользователя по его Id.
+    * @param ticketId - Id тикета.
+    * @returns - Данные тикета.
+    */
+     public async getSelectedCallCenterTicketsAsync(ticketId: number) {
+        return await this._http.get(API_URL.apiUrl + "/tickets/ticket?ticketId=" + ticketId).pipe(
+            tap(data => this.selectedTicket$.next(data))
         );
     };
 }
