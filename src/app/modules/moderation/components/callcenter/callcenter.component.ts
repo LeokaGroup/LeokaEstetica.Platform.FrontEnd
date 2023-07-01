@@ -813,5 +813,13 @@ export class CallCenterComponent implements OnInit {
             }
         });
     };
+
+    public onViewTicket(ticketId: number) {
+        this._router.navigate(["/tickets/ticket"], {
+            queryParams: {
+                ticketId
+            }
+        });
+    };
 }
 

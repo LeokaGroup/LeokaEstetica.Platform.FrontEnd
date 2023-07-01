@@ -28,10 +28,12 @@ import { TagModule } from 'primeng/tag';
 import { TicketRoutingModule } from './ticket-routing.module';
 import { ProfileTicketComponent } from './components/profile/profile-ticket.component';
 import { CardModule } from 'primeng/card';
+import { ViewTicketComponent } from './components/view/view-ticket.component';
 
 @NgModule({
     declarations: [
-        ProfileTicketComponent
+        ProfileTicketComponent,
+        ViewTicketComponent
     ],
 
     imports: [

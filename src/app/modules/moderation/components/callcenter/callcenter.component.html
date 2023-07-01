@@ -302,6 +302,7 @@
         <th>ID тикета</th>
         <th>Название тикета</th>
         <th>Статус тикета</th>
+        <th>Просмотр</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-t>
@@ -309,6 +310,10 @@
         <td>{{t.ticketId}}</td>
         <td>{{t.ticketName}}</td>
         <td>{{t.statusName}}</td>
+        <td><button pButton type="button" label="Просмотр" class="p-button-text"
+            (click)="onViewTicket(t.ticketId)">
+          </button>
+        </td>
       </tr>
     </ng-template>
     <ng-template pTemplate="summary">
