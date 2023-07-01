@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { TicketService } from "../../services/ticket.service";
 
@@ -12,7 +13,8 @@ import { TicketService } from "../../services/ticket.service";
  * Класс компонента тикетов в ЛК.
  */
 export class ProfileTicketComponent implements OnInit {
-    constructor(private readonly _ticketService: TicketService) {
+    constructor(private readonly _ticketService: TicketService,
+        private readonly _router: Router) {
     }
 
     public readonly profileTickets$ = this._ticketService.profileTickets$;
@@ -21,6 +23,14 @@ export class ProfileTicketComponent implements OnInit {
         forkJoin([
             await this.getProfileTicketsAsync()
         ]).subscribe();
+    };
+
+    public onViewTicket(ticketId: number) {
+        this._router.navigate(["/tickets/ticket"], {
+            queryParams: {
+                ticketId
+            }
+        });
     };
 
     /**

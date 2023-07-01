@@ -9,7 +9,7 @@ const routes: Routes = [
     },
 
     {
-        path: 'callcenter/tickets/:ticketId', component: ViewTicketComponent
+        path: 'tickets/:ticketId', component: ViewTicketComponent
     }
 ];
 
