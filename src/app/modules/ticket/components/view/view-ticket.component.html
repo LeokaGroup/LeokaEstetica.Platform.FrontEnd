@@ -6,7 +6,7 @@
   <div class="col-lg-6 text-content">
     <h3>Заявка #{{selectedTicket$.value.ticketId}} - {{selectedTicket$.value.ticketName}} ({{selectedTicket$.value.statusName}})</h3>
     <div>
-      <div class="mt-4" *ngFor="let item of selectedTicket$.value.messages">
+      <div class="mt-4" *ngFor="let item of aMessages">
         <p-card header="" [ngClass]="{blockMessage: item.isMyMessage}">
           <div>
             <div class="block-message">
@@ -19,13 +19,18 @@
 
       <div class="mt-4">
         <p-card header="">
-          <textarea rows="5" pInputTextarea [autoResize]="true"
-            autocomplete="new-password" placeholder="Введите сообщение" [(ngModel)]="ticketMessage"
-            class="control-textarea textarea-ticket">
+          <textarea rows="5" 
+                    pInputTextarea 
+                    [autoResize]="true"
+                    autocomplete="new-password" 
+                    placeholder="Введите сообщение" 
+                    [(ngModel)]="ticketMessage"
+                    class="control-textarea textarea-ticket">
           </textarea>
           <div>
             <button type="submit" 
-                      class="btn btn-primary button-action-pur-control">
+                    class="btn btn-primary button-action-pur-control"
+                    (click)="onCreateTicketMessageAsync()">
                 Отправить
               </button>
           </div>

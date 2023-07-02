@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { forkJoin } from "rxjs";
+import { CreateTicketMessageInput } from "../../models/input/create-ticket-message-input";
 import { TicketService } from "../../services/ticket.service";
 
 @Component({
@@ -19,10 +20,11 @@ export class ViewTicketComponent implements OnInit {
 
     public readonly profileTickets$ = this._ticketService.profileTickets$;
     public readonly selectedTicket$ = this._ticketService.selectedTicket$;
+    public readonly ticketMessages$ = this._ticketService.ticketMessages$;
 
     ticketId: number = 0;
-    message: string = "";
     ticketMessage: string = "";
+    aMessages: any[] = [];
 
     public async ngOnInit() {
         forkJoin([
@@ -45,7 +47,26 @@ export class ViewTicketComponent implements OnInit {
     private async getSelectedCallCenterTicketsAsync(ticketId: number) {
         (await this._ticketService.getSelectedCallCenterTicketsAsync(ticketId))
             .subscribe(_ => {
-                console.log("Тикеты ЛК: ", this.selectedTicket$.value);
+                console.log("Выбранный тикет: ", this.selectedTicket$.value);
+                this.aMessages = this.selectedTicket$.value.messages;
+            });
+    };
+
+    /**
+    * Функция создает сообщение тикета.
+    * @param createTicketMessageInput - Входная модель.
+    * @returns - Список сообщений тикета.
+    */
+     public async onCreateTicketMessageAsync() {
+        let createTicketMessageInput = new CreateTicketMessageInput();
+        createTicketMessageInput.ticketId = this.ticketId;
+        createTicketMessageInput.message = this.ticketMessage;
+
+        (await this._ticketService.createTicketMessageAsync(createTicketMessageInput))
+            .subscribe(async _ => {
+                console.log("Сообщения тикета: ", this.ticketMessages$.value);
+                this.ticketMessage = "";
+                this.aMessages = this.ticketMessages$.value.messages;
             });
     };
 }

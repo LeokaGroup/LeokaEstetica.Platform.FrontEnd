@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { CreateTicketInput } from '../models/input/create-ticket-input';
+import { CreateTicketMessageInput } from '../models/input/create-ticket-message-input';
 
 /**
  * Класс сервиса тикетов.
@@ -14,6 +15,7 @@ export class TicketService {
     public profileTickets$ = new BehaviorSubject<any>(null);
     public callcenterTickets$ = new BehaviorSubject<any>(null);
     public selectedTicket$ = new BehaviorSubject<any>(null);
+    public ticketMessages$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient) {
 
@@ -67,6 +69,17 @@ export class TicketService {
      public async getSelectedCallCenterTicketsAsync(ticketId: number) {
         return await this._http.get(API_URL.apiUrl + "/tickets/ticket?ticketId=" + ticketId).pipe(
             tap(data => this.selectedTicket$.next(data))
+        );
+    };
+
+    /**
+    * Функция создает сообщение тикета.
+    * @param createTicketMessageInput - Входная модель.
+    * @returns - Список сообщений тикета.
+    */
+     public async createTicketMessageAsync(createTicketMessageInput: CreateTicketMessageInput) {
+        return await this._http.post(API_URL.apiUrl + "/tickets/message", createTicketMessageInput).pipe(
+            tap(data => this.ticketMessages$.next(data))
         );
     };
 }
