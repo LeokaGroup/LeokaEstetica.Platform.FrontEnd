@@ -51,7 +51,7 @@ export class CallCenterService {
      * @returns - Признак доступа к модерации.
      */
     public async checkAvailableUserRoleModerationAsync() {
-        return await this.http.post(API_URL.apiUrl + "/callcenter/check", {}).pipe(
+        return await this.http.get(API_URL.apiUrl + "/callcenter/check").pipe(
             tap(data => this.accessModeration$.next(data))
         );
     };
