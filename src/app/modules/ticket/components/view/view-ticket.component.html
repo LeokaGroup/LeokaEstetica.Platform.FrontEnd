@@ -27,11 +27,20 @@
                     [(ngModel)]="ticketMessage"
                     class="control-textarea textarea-ticket">
           </textarea>
-          <div>
+          <div class="d-flex block-ticket-control">
             <button type="submit" 
-                    class="btn btn-primary button-action-pur-control"
-                    (click)="onCreateTicketMessageAsync()">
-                Отправить
+                      class="btn btn-primary button-action-pur-short-control"
+                      (click)="onCreateTicketMessageAsync()">
+                  Отправить
+                </button>
+
+                &nbsp;&nbsp;&nbsp;
+
+                <button pButton 
+                        type="button" 
+                        label="Закрыть тикет" 
+                        class="button-action-pur-short-control p-button-danger p-button-text pl-3"
+                        (click)="isCloseTicket = true">                      
               </button>
           </div>
         </p-card>
@@ -43,3 +52,17 @@
 
   </div>
 </div>
+
+<!-- Диалог закрытия тикета. -->
+<p-dialog header="Закрытие тикета"
+          [(visible)]="isCloseTicket"
+          [breakpoints]="{'960px': '75vw'}"
+          [style]="{width: '50vw'}"
+          [draggable]="false"
+          [resizable]="false">
+  <p>Закрыть тикет <strong>{{selectedTicketName}}</strong>?</p>
+        <ng-template pTemplate="footer">
+        <p-button (click)="isCloseTicket=false" label="Отменить" styleClass="p-button-text"></p-button>
+        <p-button (click)="onCloseTicketAsyic()" label="Закрыть тикет" styleClass="p-button-danger p-button-text"></p-button>
+        </ng-template>
+</p-dialog>
