@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { forkJoin } from "rxjs";
+import { CloseTicketInput } from "../../models/input/close-ticket-input";
 import { CreateTicketMessageInput } from "../../models/input/create-ticket-message-input";
 import { TicketService } from "../../services/ticket.service";
 
@@ -21,10 +22,13 @@ export class ViewTicketComponent implements OnInit {
     public readonly profileTickets$ = this._ticketService.profileTickets$;
     public readonly selectedTicket$ = this._ticketService.selectedTicket$;
     public readonly ticketMessages$ = this._ticketService.ticketMessages$;
+    public readonly closedTicket$ = this._ticketService.closedTicket$;    
 
     ticketId: number = 0;
     ticketMessage: string = "";
     aMessages: any[] = [];
+    selectedTicketName: string = "";
+    isCloseTicket: boolean = false;
 
     public async ngOnInit() {
         forkJoin([
@@ -49,6 +53,7 @@ export class ViewTicketComponent implements OnInit {
             .subscribe(_ => {
                 console.log("Выбранный тикет: ", this.selectedTicket$.value);
                 this.aMessages = this.selectedTicket$.value.messages;
+                this.selectedTicketName = this.selectedTicket$.value.ticketName;
             });
     };
 
@@ -67,6 +72,19 @@ export class ViewTicketComponent implements OnInit {
                 console.log("Сообщения тикета: ", this.ticketMessages$.value);
                 this.ticketMessage = "";
                 this.aMessages = this.ticketMessages$.value.messages;
+            });
+    };
+
+     /**
+    * Функция закрывает тикет.
+    */
+    public async onCloseTicketAsyic() {
+        let closeTicketInput = new CloseTicketInput();
+        closeTicketInput.ticketId = this.ticketId;
+
+        (await this._ticketService.closeTicketAsync(closeTicketInput))
+            .subscribe(_ => {
+                console.log("Закрыли тикет: ", this.closedTicket$.value);
             });
     };
 }

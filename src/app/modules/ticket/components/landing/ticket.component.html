@@ -34,7 +34,7 @@
                           [disabled]="!isAvailableTicket">
                     Отправить заявку
                   </button>           
-                  <div class="d-flex justify-content-center">
+                  <div class="d-flex justify-content-center" *ngIf="!isAvailableTicket">
                     <small>Для отправки обращения нужно быть авторизованными.</small>   
                   </div>
                 </div>

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
+import { CloseTicketInput } from '../models/input/close-ticket-input';
 import { CreateTicketInput } from '../models/input/create-ticket-input';
 import { CreateTicketMessageInput } from '../models/input/create-ticket-message-input';
 
@@ -16,6 +17,7 @@ export class TicketService {
     public callcenterTickets$ = new BehaviorSubject<any>(null);
     public selectedTicket$ = new BehaviorSubject<any>(null);
     public ticketMessages$ = new BehaviorSubject<any>(null);
+    public closedTicket$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient) {
 
@@ -80,6 +82,16 @@ export class TicketService {
      public async createTicketMessageAsync(createTicketMessageInput: CreateTicketMessageInput) {
         return await this._http.post(API_URL.apiUrl + "/tickets/message", createTicketMessageInput).pipe(
             tap(data => this.ticketMessages$.next(data))
+        );
+    };
+
+    /**
+    * Функция закрывает тикет.
+    * @param createTicketMessageInput - Входная модель.
+    */
+     public async closeTicketAsync(closeTicketInput: CloseTicketInput) {
+        return await this._http.patch(API_URL.apiUrl + "/tickets/close", closeTicketInput).pipe(
+            tap(data => this.closedTicket$.next(data))
         );
     };
 }
