@@ -19,6 +19,7 @@ export class LandingComponent implements OnInit {
     public readonly timelines$ = this._landingService.timelines$;    
     public readonly knowledgeLanding$ = this._landingService.knowledgeLanding$;    
     public readonly newUsers$ = this._landingService.newUsers$;    
+    public readonly lastProjectComments$ = this._landingService.lastProjectComments$;    
 
     aCreateProject: any[] = [];
     aSearchProject: any[] = [];
@@ -40,7 +41,8 @@ export class LandingComponent implements OnInit {
             await this.getPlatformOffersAsync(),
             await this.getTimelinesAsync(),
             await this.getKnowledgeLandingAsync(),
-            await this.getNewUsersAsync()
+            await this.getNewUsersAsync(),
+            await this.getLastProjectCommentsAsync()
         ]).subscribe();        
 
         // Подключаемся.
@@ -128,6 +130,18 @@ export class LandingComponent implements OnInit {
         .subscribe(_ => {
             console.log("Список новых пользователей: ", this.newUsers$.value);
             this.aNewUsers = this.newUsers$.value.newUsers;
+        });
+    };
+
+    /**
+     * Функция получает последние 5 комментариев к проектам.
+     * Проекты не повторяются.
+     * @returns - Список комментариев.
+     */
+     private async getLastProjectCommentsAsync() {
+        (await this._landingService.getLastProjectCommentsAsync())
+        .subscribe(_ => {
+            console.log("Последние комментарии к проектам: ", this.lastProjectComments$.value);
         });
     };
 }
