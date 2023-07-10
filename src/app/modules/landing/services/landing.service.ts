@@ -10,6 +10,7 @@ export class LandingService {
     public timelines$ = new BehaviorSubject<any>([]);
     public knowledgeLanding$ = new BehaviorSubject<any>([]);
     public newUsers$ = new BehaviorSubject<any>([]);
+    public lastProjectComments$ = new BehaviorSubject<any>([]);
 
     constructor(private readonly http: HttpClient) {
 
@@ -62,6 +63,17 @@ export class LandingService {
      public async getNewUsersAsync() {
         return await this.http.get(API_URL.apiUrl + "/metrics/new-users").pipe(
             tap(data => this.newUsers$.next(data))
+        );
+    };
+
+    /**
+     * Функция получает последние 5 комментариев к проектам.
+     * Проекты не повторяются.
+     * @returns - Список комментариев.
+     */
+     public async getLastProjectCommentsAsync() {
+        return await this.http.get(API_URL.apiUrl + "/metrics/last-project-comments").pipe(
+            tap(data => this.lastProjectComments$.next(data))
         );
     };
 }

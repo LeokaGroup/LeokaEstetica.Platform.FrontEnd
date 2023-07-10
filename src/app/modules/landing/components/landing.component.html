@@ -185,10 +185,11 @@
     <div class="block-new-users">
       <p-card header="Последние комментарии">
         <p-scrollPanel class="" [style]="{ width: '100%', height: '350px'}">
-          <p class="text-content" *ngFor="let item of aNewUsers">
-            <!-- {{item.displayText}} -->
+          <div *ngFor="let item of lastProjectComments$.value">
+            <div class="text-content">{{item.comment}} ({{item.projectName}})</div>
             <br>
-          </p>
+            
+          </div>         
         </p-scrollPanel>      
     </p-card>
     </div>    
