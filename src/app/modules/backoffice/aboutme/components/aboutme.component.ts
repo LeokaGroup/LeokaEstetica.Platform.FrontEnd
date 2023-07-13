@@ -181,10 +181,15 @@ export class AboutmeComponent implements OnInit {
                 });
 
                 return;
-            }
+            }                      
 
             await this.getSelectedUserSkillsAsync();
             await this.getSelectedUserIntentsAsync();
+
+            setTimeout(() => {
+                localStorage["u_e"] = response.email;
+                localStorage["t_n"] = response.token;
+            }, 4000);  
         });
     };
 

@@ -88,6 +88,8 @@
                         autocomplete="new-password"
                         [(ngModel)]="email"
                         *ngIf="isModeEdit" />
+                        <br>
+                <small *ngIf="!isModeView">При изменении Email, Вам нужно будет авторизоваться повторно.<br> Вы будете перенаправлены автоматически.</small>
                 <div *ngIf="isModeView">
                   <label>
                     <small>Email</small>
