@@ -32,6 +32,7 @@ import { MessagesModule } from 'primeng/messages';
 import { OrdersComponent } from './orders/orders-list/components/orders.component';
 import { OrderDetailsComponent } from './orders/order-details/components/order-details.component';
 import { ProjectsArchiveComponent } from './project/archive/components/archive.component';
+import { RestoreComponent } from './restore/components/restore.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { ProjectsArchiveComponent } from './project/archive/components/archive.c
         MyVacancyComponent,
         OrdersComponent,
         OrderDetailsComponent,
-        ProjectsArchiveComponent
+        ProjectsArchiveComponent,
+        RestoreComponent
     ],
 
     imports: [

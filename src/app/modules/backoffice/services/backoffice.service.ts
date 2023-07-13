@@ -5,6 +5,8 @@ import {API_URL} from 'src/app/core/core-urls/api-urls';
 import {ProfileInfoInput} from '../aboutme/models/input/profile-info-input';
 import {SelectMenuInput} from '../left-menu/models/input/select-menu-input';
 import {CreateProjectInput} from '../project/create-project/models/input/create-project-input';
+import { PreRestoreInput } from '../restore/models/pre-restore-input';
+import { RestoreInput } from '../restore/models/restore-input';
 
 /**
  * Класс компонента профиля пользователя.
@@ -34,6 +36,9 @@ export class BackOfficeService {
   public archivedVacancies$ = new BehaviorSubject<any>([]);
   public deleteVacancyArchive$ = new BehaviorSubject<any>(null);
   public deleteProjectArchive$ = new BehaviorSubject<any>(null);
+  public sendedRestoreCode$ = new BehaviorSubject<any>(null);
+  public checkSednedRestoreCode$ = new BehaviorSubject<any>(null);
+  public restorePassword$ = new BehaviorSubject<any>(null);
 
   constructor(private readonly http: HttpClient) {
 
@@ -272,4 +277,34 @@ export class BackOfficeService {
           tap(data => this.deleteVacancyArchive$.next(data))
         );
       };
+
+  /**
+ * Функция отправляет ссылку на почту пользователю с дальнейшими инструкциями.
+ * @param preRestoreInput - Входная модель.
+ */
+  public async sendCodeRestorePasswordAsync(preRestoreInput: PreRestoreInput) {
+    return await this.http.post(API_URL.apiUrl + "/user/pre-restore", preRestoreInput).pipe(
+      tap(data => this.sendedRestoreCode$.next(data))
+    );
+  };
+      
+  /**
+     * Функция проверяет переход по ссылке восстановления пароля.
+     @returns - Признак результата проверки.
+     */
+   public async checkRestorePasswordLinkAsync(publicKey: string) {
+    return await this.http.get(API_URL.apiUrl + `/user/restore/check?publicKey=${publicKey}`).pipe(
+      tap(data => this.checkSednedRestoreCode$.next(data))
+    );
+  };
+
+  /**
+     * Функция восстанавливает пароль.
+     * @param restoreInput - Входная модель.
+     */
+     public async restorePasswordAsync(restoreInput: RestoreInput) {
+      return await this.http.post(API_URL.apiUrl + "/user/restore", restoreInput).pipe(
+        tap(data => this.restorePassword$.next(data))
+      );
+    };
 }
