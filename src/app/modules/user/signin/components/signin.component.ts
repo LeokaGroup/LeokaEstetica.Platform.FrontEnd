@@ -89,4 +89,8 @@ export class SignInComponent implements OnInit {
             }
         });
     };
+
+    public onRouteRestorePassword() {
+        this._router.navigate(["/profile/restore"]);
+    };
 }

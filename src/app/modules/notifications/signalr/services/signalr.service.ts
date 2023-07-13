@@ -401,4 +401,31 @@ export class SignalrService {
       this.$allFeed.next(data);
     });
   };
+
+  /**
+   * Функция слушает уведомления предупреждения о блокировке аккаунта.
+   */
+   public listenSendNotificationWarningBlockedUserProfile() {
+    (<HubConnection>this.hubConnection).on("SendNotificationWarningBlockedUserProfile", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает уведомления успеха при отправке ссылки для восстановления пароля.
+   */
+   public listenSendNotificationSuccessLinkRestoreUserPassword() {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessLinkRestoreUserPassword", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает уведомления успеха при восстановлении пароля.
+   */
+   public listenSendNotifySuccessRestoreUserPassword() {
+    (<HubConnection>this.hubConnection).on("SendNotifySuccessRestoreUserPassword", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 }

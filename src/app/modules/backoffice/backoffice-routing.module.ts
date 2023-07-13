@@ -9,6 +9,7 @@ import { OrdersComponent } from './orders/orders-list/components/orders.componen
 import { OrderDetailsComponent } from './orders/order-details/components/order-details.component';
 import { ProjectsArchiveComponent } from './project/archive/components/archive.component';
 import { VacanciesArchiveComponent } from './vacancy/archive/components/archive.component';
+import { RestoreComponent } from './restore/components/restore.component';
 
 const routes: Routes = [
     {
@@ -45,6 +46,10 @@ const routes: Routes = [
 
     {
         path: 'vacancies/archive', component: VacanciesArchiveComponent
+    },
+
+    {
+        path: 'restore', component: RestoreComponent
     }
 ];
 
