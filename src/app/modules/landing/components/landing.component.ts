@@ -19,7 +19,8 @@ export class LandingComponent implements OnInit {
     public readonly timelines$ = this._landingService.timelines$;    
     public readonly knowledgeLanding$ = this._landingService.knowledgeLanding$;    
     public readonly newUsers$ = this._landingService.newUsers$;    
-    public readonly lastProjectComments$ = this._landingService.lastProjectComments$;    
+    public readonly lastProjectComments$ = this._landingService.lastProjectComments$; 
+    public readonly platformCondituions$ = this._landingService.platformCondituions$;    
 
     aCreateProject: any[] = [];
     aSearchProject: any[] = [];
@@ -42,7 +43,8 @@ export class LandingComponent implements OnInit {
             await this.getTimelinesAsync(),
             await this.getKnowledgeLandingAsync(),
             await this.getNewUsersAsync(),
-            await this.getLastProjectCommentsAsync()
+            await this.getLastProjectCommentsAsync(),
+            await this.getPlatformConditionsAsync()
         ]).subscribe();        
 
         // Подключаемся.
@@ -142,6 +144,17 @@ export class LandingComponent implements OnInit {
         (await this._landingService.getLastProjectCommentsAsync())
         .subscribe(_ => {
             console.log("Последние комментарии к проектам: ", this.lastProjectComments$.value);
+        });
+    };
+
+     /**
+     * Функция получает преимущества платформы.
+     * @returns - Преимущества платформы.
+     */
+      private async getPlatformConditionsAsync() {
+        (await this._landingService.getPlatformConditionsAsync())
+        .subscribe(_ => {
+            console.log("Преимущества платформы: ", this.platformCondituions$.value);
         });
     };
 }
