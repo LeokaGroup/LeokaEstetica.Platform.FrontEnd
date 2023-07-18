@@ -17,13 +17,15 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ToastModule } from 'primeng/toast';
 import { TicketComponent } from '../ticket/components/landing/ticket.component';
+import { WisheOfferComponent } from '../ticket/components/wishe-offer/wishe-offer.component';
 
 
 @NgModule({
     declarations: [
         LandingComponent,
         FareRuleComponent,
-        TicketComponent
+        TicketComponent,
+        WisheOfferComponent
     ],
 
     imports: [

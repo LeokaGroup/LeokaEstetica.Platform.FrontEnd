@@ -5,6 +5,7 @@ import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { CloseTicketInput } from '../models/input/close-ticket-input';
 import { CreateTicketInput } from '../models/input/create-ticket-input';
 import { CreateTicketMessageInput } from '../models/input/create-ticket-message-input';
+import { WisheOfferInput } from '../models/input/wishe-offer-input';
 
 /**
  * Класс сервиса тикетов.
@@ -18,6 +19,7 @@ export class TicketService {
     public selectedTicket$ = new BehaviorSubject<any>(null);
     public ticketMessages$ = new BehaviorSubject<any>(null);
     public closedTicket$ = new BehaviorSubject<any>(null);
+    public createdWisheOffer$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient) {
 
@@ -92,6 +94,16 @@ export class TicketService {
      public async closeTicketAsync(closeTicketInput: CloseTicketInput) {
         return await this._http.patch(API_URL.apiUrl + "/tickets/close", closeTicketInput).pipe(
             tap(data => this.closedTicket$.next(data))
+        );
+    };
+
+    /**
+    * Функция создает пожелание/предложение.
+    * @param wisheOfferInput - Входная модель.
+    */
+     public async createWisheOfferAsync(wisheOfferInput: WisheOfferInput) {
+        return await this._http.post(API_URL.apiUrl + "/tickets/wishes-offers", wisheOfferInput).pipe(
+            tap(data => this.createdWisheOffer$.next(data))
         );
     };
 }
