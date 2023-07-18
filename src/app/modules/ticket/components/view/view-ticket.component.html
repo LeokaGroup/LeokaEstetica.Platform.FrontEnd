@@ -29,10 +29,11 @@
           </textarea>
           <div class="d-flex block-ticket-control">
             <button type="submit" 
-                      class="btn btn-primary button-action-pur-short-control"
-                      (click)="onCreateTicketMessageAsync()">
+                    class="btn btn-primary button-action-pur-short-control"
+                    (click)="onCreateTicketMessageAsync()"
+                    [disabled]="selectedTicket$.value.isDisableSendButton">
                   Отправить
-                </button>
+            </button>
 
                 &nbsp;&nbsp;&nbsp;
 
@@ -40,7 +41,8 @@
                         type="button" 
                         label="Закрыть тикет" 
                         class="button-action-pur-short-control p-button-danger p-button-text pl-3"
-                        (click)="isCloseTicket = true">                      
+                        (click)="isCloseTicket = true"
+                        *ngIf="!selectedTicket$.value.isDisableCloseTicketButton">                      
               </button>
           </div>
         </p-card>
