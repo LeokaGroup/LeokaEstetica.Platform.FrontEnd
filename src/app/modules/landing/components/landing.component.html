@@ -40,6 +40,31 @@
   </ng-template>
 </p-carousel>
 
+<!-- Преимущества платформы. -->
+<div class="col-lg-12 d-flex justify-content-center mt-5">
+  <h3>{{platformCondituions$.value[0].platformConditionTitle}}</h3>
+</div>
+
+<p-carousel [value]="platformCondituions$.value" [numVisible]="3" [numScroll]="3" [circular]="false"
+  [responsiveOptions]="platformCondituions$.value">
+  <ng-template let-item pTemplate="item">
+    <div class="border-1 surface-border border-round m-2 text-center py-5 px-3">
+      <div class="mb-3">
+      </div>
+      <div>
+        <div class="offer-tag">
+          <p-divider align="center">
+            <p-tag *ngIf="item.isLater">Скоро</p-tag>
+            <span>&nbsp;</span>
+          </p-divider>
+
+          <span class="d-flex offer-item text-center justify-content-center text-content">{{item.platformConditionSubTitle}}</span>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-carousel>
+
 <!-- Тарифы. -->
 <div class="mt-5 mb-5">
   <div class="col-lg-12 d-flex justify-content-center">

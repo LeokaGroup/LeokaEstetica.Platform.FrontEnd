@@ -11,6 +11,7 @@ export class LandingService {
     public knowledgeLanding$ = new BehaviorSubject<any>([]);
     public newUsers$ = new BehaviorSubject<any>([]);
     public lastProjectComments$ = new BehaviorSubject<any>([]);
+    public platformCondituions$ = new BehaviorSubject<any>([]);
 
     constructor(private readonly http: HttpClient) {
 
@@ -74,6 +75,16 @@ export class LandingService {
      public async getLastProjectCommentsAsync() {
         return await this.http.get(API_URL.apiUrl + "/metrics/last-project-comments").pipe(
             tap(data => this.lastProjectComments$.next(data))
+        );
+    };
+
+    /**
+     * Функция получает преимущества платформы.
+     * @returns - Преимущества платформы.
+     */
+     public async getPlatformConditionsAsync() {
+        return await this.http.get(API_URL.apiUrl + "/landing/conditions").pipe(
+            tap(data => this.platformCondituions$.next(data))
         );
     };
 }
