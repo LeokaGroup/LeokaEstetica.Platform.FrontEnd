@@ -295,6 +295,55 @@
   </p-table>
 </div>
 
+<!-- Проекты с неисправленными замечаниями. -->
+<div *ngIf="isAwaitingCorrectionVacanciesRemarks" class="mt-5">
+  <p-table [value]="aAwaitingCorrectionVacanciesRemarks" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="caption">
+      Неисправленные замечания проектов
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID замечания</th>
+        <th>Название замечания</th>
+        <th>Текст замечания</th>
+        <th>Статус замечания</th>
+        <th>Принятие замечания</th>
+        <th>Не принятие замечаний</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-prj>
+      <tr>
+        <td>{{prj.vacancyId}}</td>
+        <td>{{prj.russianName}}</td>
+        <td>{{prj.remarkText}}</td>
+        <td>{{prj.remarkStatusId}}</td>
+        <!-- <td>
+          <p-button label="{{prj.projectName}}" 
+                    styleClass="p-button-link"
+                    (click)="getProjectUnShippedRemarksAsync(prj.projectId)">
+
+          </p-button>
+        </td> -->
+        <td><button pButton
+                    type="button"
+                    label="Принять"
+                    class="p-button-text p-button-success">
+        </button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Не принять"
+                    class="p-button-danger p-button-text">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <!-- Всего: {{totalProjects}} -->
+    </ng-template>
+  </p-table>
+</div>
+
 <!-- Замечания анкет (не отправленные). -->
 <div *ngIf="isResumesUnShippedRemarks" class="mt-5">
   <p-table [value]="resumesRemarks$.value" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
