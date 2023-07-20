@@ -11,7 +11,7 @@ import { CallCenterService } from "../../services/callcenter.service";
 import { Router } from "@angular/router";
 import { CreateProjectRemarksInput, ProjectRemarkInput } from "../../models/input/project-remark-input";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
-import { MessageService } from "primeng/api";
+import { MessageService, TreeNode } from "primeng/api";
 import { SendProjectRemarkInput } from "../../models/input/send-project-remark-input";
 import { CreateVacancyRemarksInput, VacancyRemarkInput } from "../../models/input/vacancy-remark-input";
 import { SendVacancyRemarkInput } from "../../models/input/send-vacancy-remark-input";
@@ -43,6 +43,7 @@ export class CallCenterComponent implements OnInit {
     public readonly resumesRemarks$ = this._callCenterService.resumesRemarks$;
     public readonly unShippedResumeRemarks$ = this._callCenterService.unShippedResumeRemarks$;
     public readonly tickets$ = this._ticketService.callcenterTickets$;
+    public readonly awaitingCorrectionProjects$ = this._callCenterService.awaitingCorrectionProjects$;
 
     isHideAuthButtons: boolean = false;
     aProjects: any[] = [];
@@ -72,6 +73,8 @@ export class CallCenterComponent implements OnInit {
     accessModeration: boolean = false;    
     aTickets: any[] = [];
     isShowTIckets: boolean = false;   
+    isAwaitingCorrectionProjectRemarks: boolean = false;   
+    aAwaitingCorrectionProjectRemarks: TreeNode[] = [];
 
     items: any[] = [
         {
@@ -89,6 +92,7 @@ export class CallCenterComponent implements OnInit {
                                 this.clearRemarksProject();
                                 this.clearRemarksVacancy();
                                 this.clearRemarksResume();
+                                this.isAwaitingCorrectionProjectRemarks = false;
                                 await this.getProjectsModerationAsync();
                             }
                         }]
@@ -111,6 +115,7 @@ export class CallCenterComponent implements OnInit {
                                 this.clearRemarksProject();
                                 this.clearRemarksVacancy();
                                 this.clearRemarksResume();
+                                this.isAwaitingCorrectionProjectRemarks = false;
                                 await this.getVacanciesModerationAsync();
                             }
                         }]
@@ -154,6 +159,7 @@ export class CallCenterComponent implements OnInit {
                                 this.clearRemarksProject();
                                 this.clearRemarksVacancy();
                                 this.clearRemarksResume();
+                                this.isAwaitingCorrectionProjectRemarks = false;
                                 await this.getResumesModerationAsync();
                             }
                         }]
@@ -167,19 +173,36 @@ export class CallCenterComponent implements OnInit {
                 [
                     {
                         label: 'Замечания проектов',
-                        items: [{
-                            label: 'Не отправленные замечания', command: async () => {
-                                this.isProjectsModeration = false; 
-                                this.isVacanciesModeration = false; 
-                                this.isResumesModeration = false; 
-                                this.isProjectsUnShippedRemarks = true;
-                                this.isVacanciesUnShippedRemarks = false;
-                                this.isResumesUnShippedRemarks = false;
-                                this.clearRemarksVacancy();
-                                this.clearRemarksResume();
-                                await this.getProjectUnShippedRemarksTableAsync();
+                        items: [
+                            {
+                                label: 'Не отправленные замечания', command: async () => {
+                                    this.isProjectsModeration = false;
+                                    this.isVacanciesModeration = false;
+                                    this.isResumesModeration = false;
+                                    this.isProjectsUnShippedRemarks = true;
+                                    this.isVacanciesUnShippedRemarks = false;
+                                    this.isResumesUnShippedRemarks = false;
+                                    this.clearRemarksVacancy();
+                                    this.clearRemarksResume();
+                                    this.isAwaitingCorrectionProjectRemarks = false;
+                                    await this.getProjectUnShippedRemarksTableAsync();
+                                }
+                            },
+                            {
+                                label: 'Неисправленные замечания', command: async () => {
+                                    this.isProjectsModeration = false;
+                                    this.isVacanciesModeration = false;
+                                    this.isResumesModeration = false;
+                                    this.isVacanciesUnShippedRemarks = false;
+                                    this.isResumesUnShippedRemarks = false;
+                                    this.isProjectsUnShippedRemarks = false;
+                                    this.clearRemarksVacancy();
+                                    this.clearRemarksResume();
+                                    this.isAwaitingCorrectionProjectRemarks = true;
+                                    await this.getAwaitingCorrectionProjectsAsync();
+                                }
                             }
-                        }]
+                        ],
                     },
                     {
                         label: 'Замечания вакансий',
@@ -194,6 +217,7 @@ export class CallCenterComponent implements OnInit {
                                 this.clearRemarksProject();
                                 this.clearRemarksVacancy();
                                 this.clearRemarksResume();
+                                this.isAwaitingCorrectionProjectRemarks = false;
                                 await this.getVacanciesUnShippedRemarksTableAsync();
                             }
                         }]
@@ -211,6 +235,7 @@ export class CallCenterComponent implements OnInit {
                                 this.isProjectsUnShippedRemarks = false;
                                 this.isVacanciesUnShippedRemarks = false;
                                 this.isResumesUnShippedRemarks = true;
+                                this.isAwaitingCorrectionProjectRemarks = false;
                                 await this.getResumesUnShippedRemarksTableAsync();
                             }
                         }]
@@ -235,6 +260,7 @@ export class CallCenterComponent implements OnInit {
                                 this.isProjectsUnShippedRemarks = false;
                                 this.isVacanciesUnShippedRemarks = false;
                                 this.isResumesUnShippedRemarks = false;
+                                this.isAwaitingCorrectionProjectRemarks = false;
                                 await this.getCallCenterTicketsAsync();
                             }
                         }]
@@ -819,6 +845,18 @@ export class CallCenterComponent implements OnInit {
             queryParams: {
                 ticketId
             }
+        });
+    };
+
+    /**
+   * Функция получает проекты, у которых есть неисправленные замечания.
+   * @returns - Список проектов.
+   */
+    private async getAwaitingCorrectionProjectsAsync() {
+        (await this._callCenterService.getAwaitingCorrectionProjectsAsync())
+        .subscribe(_ => {
+            console.log("Проекты с неисправленными замечаниями: ", this.awaitingCorrectionProjects$.value);
+            this.aAwaitingCorrectionProjectRemarks = this.awaitingCorrectionProjects$.value.awaitingCorrectionProjects;
         });
     };
 }

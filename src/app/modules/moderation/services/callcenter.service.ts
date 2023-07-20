@@ -29,7 +29,6 @@ export class CallCenterService {
     public vacancyModeration$ = new BehaviorSubject<any>(null);
     public approveVacancyModeration$ = new BehaviorSubject<any>(null);
     public rejectVacancyModeration$ = new BehaviorSubject<any>(null);
-
     public resumesModeration$ = new BehaviorSubject<any>(null);
     public resumeModeration$ = new BehaviorSubject<any>(null);
     public rejectResumeModeration$ = new BehaviorSubject<any>(null);
@@ -43,6 +42,7 @@ export class CallCenterService {
     public unShippedVacancyRemarks$ = new BehaviorSubject<any>(null);
     public unShippedResumeRemarks$ = new BehaviorSubject<any>(null);
     public resumesRemarks$ = new BehaviorSubject<any>(null);
+    public awaitingCorrectionProjects$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {}
 
@@ -312,6 +312,16 @@ export class CallCenterService {
    public async getVacancyUnShippedRemarksAsync(vacancyId: number) {
     return await this.http.get(API_URL.apiUrl + `/callcenter/vacancy/${vacancyId}/remarks/unshipped`).pipe(
       tap(data => this.unShippedVacancyRemarks$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает проекты, у которых есть неисправленные замечания.
+   * @returns - Список проектов.
+   */
+   public async getAwaitingCorrectionProjectsAsync() {
+    return await this.http.get(API_URL.apiUrl + "/callcenter/awaiting-correction/projects").pipe(
+      tap(data => this.awaitingCorrectionProjects$.next(data))
     );
   };
 }
