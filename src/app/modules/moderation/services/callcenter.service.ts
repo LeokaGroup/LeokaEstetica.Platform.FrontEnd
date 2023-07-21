@@ -43,6 +43,7 @@ export class CallCenterService {
     public unShippedResumeRemarks$ = new BehaviorSubject<any>(null);
     public resumesRemarks$ = new BehaviorSubject<any>(null);
     public awaitingCorrectionProjects$ = new BehaviorSubject<any>(null);
+    public awaitingCorrectionResumes$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {}
 
@@ -322,6 +323,16 @@ export class CallCenterService {
    public async getAwaitingCorrectionProjectsAsync() {
     return await this.http.get(API_URL.apiUrl + "/callcenter/awaiting-correction/projects").pipe(
       tap(data => this.awaitingCorrectionProjects$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает анкеты, у которых есть неисправленные замечания.
+   * @returns - Список анкет.
+   */
+   public async getAwaitingCorrectionResumesAsync() {
+    return await this.http.get(API_URL.apiUrl + "/callcenter/awaiting-correction/resumes").pipe(
+      tap(data => this.awaitingCorrectionResumes$.next(data))
     );
   };
 }
