@@ -79,6 +79,8 @@ export class CallCenterComponent implements OnInit {
     aAwaitingCorrectionProjectRemarks: any[] = [];
     isAwaitingCorrectionResumesRemarks: boolean = false;   
     aAwaitingCorrectionResumesRemarks: any[] = [];
+    isAwaitingCorrectionVacanciesRemarks: boolean = false; 
+    aAwaitingCorrectionVacanciesRemarks: any[] = [];
 
     items: any[] = [
         {
