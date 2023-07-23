@@ -5,8 +5,16 @@
 
   </div>
 
-  <div class="block-worksheet">
-    <p-messages [(value)]="aProjectRemarks" [enableService]="false" [closable]="false"></p-messages>
+  <div class="block-worksheet">    
+    <div *ngIf="isShowRemarks" class="mb-1">
+      <strong>Имеются замечания. Проект не будет опубликован, пока замечания не будут исправлены и приняты модератором.</strong>
+    </div>
+
+    <div class="mb-5" *ngFor="let r of this.selectedProject$.value.projectRemarks">
+      <div class="mb-1">
+        <p-message severity="warn" text="{{r.remarkText}}"></p-message>
+      </div>
+    </div>
 
     <div class="worksheet-panel">
       <p-panel header="Заполнение информации о проекте" [toggleable]="true" [collapsed]="true">

@@ -28,6 +28,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { TagModule } from 'primeng/tag';
 import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 
 @NgModule({
     declarations: [
@@ -59,7 +60,8 @@ import { MessagesModule } from 'primeng/messages';
         PaginatorModule,    
         RadioButtonModule,
         TagModule,
-        MessagesModule
+        MessagesModule,
+        MessageModule
     ],
 
     exports: [],
