@@ -6,7 +6,15 @@
   </div>
 
   <div class="block-worksheet">
-    <p-messages [(value)]="aVacancyRemarks" [enableService]="false" [closable]="false"></p-messages>
+    <div *ngIf="isShowRemarks" class="mb-1">
+      <strong>Имеются замечания. Вакансия не будет опубликована, пока замечания не будут исправлены и приняты модератором.</strong>
+    </div>
+
+    <div class="mb-1" *ngFor="let r of selectedVacancy$.value.vacancyRemarks">
+      <div>
+        <p-message severity="warn" text="{{r.remarkText}}"></p-message>
+      </div>
+    </div>
 
     <div class="worksheet-panel">
       <p-panel header="Просмотр информации о вакансии" [toggleable]="true">
