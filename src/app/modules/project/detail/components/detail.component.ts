@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Message, MessageService } from "primeng/api";
+import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { DialogInput } from "src/app/modules/messages/chat/models/input/dialog-input";
@@ -104,7 +104,8 @@ export class DetailProjectComponent {
     userId: number = 0;
     isVisibleActionDeleteProjectTeamMember: boolean = false;
     isVisibleActionLeaveProjectTeam: boolean = false;
-    aProjectRemarks: Message[] = [];
+    aProjectRemarks: string[] = [];
+    isShowRemarks: boolean = false;
 
   public async ngOnInit() {
         forkJoin([
@@ -192,6 +193,7 @@ export class DetailProjectComponent {
             this.isVisibleActionDeleteProjectTeamMember = response.isVisibleActionDeleteProjectTeamMember;
             this.isVisibleActionLeaveProjectTeam = response.isVisibleActionLeaveProjectTeam;
             this.isVisibleActionAddProjectArchive = response.isVisibleActionAddProjectArchive;
+            this.isShowRemarks = this.selectedProject$.value.projectRemarks.length > 0;
         });
     };
 
