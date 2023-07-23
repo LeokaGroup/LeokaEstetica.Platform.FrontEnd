@@ -45,10 +45,11 @@ export class DetailVacancyComponent implements OnInit {
     isVisibleDeleteButton: boolean = false;
     isVisibleSaveButton: boolean = false;
     isVisibleEditButton: boolean = false;
-    aVacancyRemarks: Message[] = [];
     demands: string = "";
     conditions: string = "";
     isVisibleActionAddVacancyArchive: boolean = false;
+    isShowRemarks: boolean = false;
+    aVacancyRemarks: any[] = [];
 
     public async ngOnInit() {
         forkJoin([
@@ -123,6 +124,7 @@ export class DetailVacancyComponent implements OnInit {
                 this.isVisibleSaveButton = this.selectedVacancy$.value.isVisibleSaveButton;
                 this.isVisibleEditButton = this.selectedVacancy$.value.isVisibleEditButton;
                 this.isVisibleActionAddVacancyArchive = this.selectedVacancy$.value.isVisibleActionAddVacancyArchive;
+                this.isShowRemarks = this.selectedVacancy$.value.vacancyRemarks.length > 0;
             });
     };
 

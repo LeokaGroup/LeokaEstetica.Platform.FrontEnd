@@ -29,6 +29,7 @@ import { ListboxModule } from 'primeng/listbox';
 import { TableModule } from "primeng/table";
 import { MessagesModule } from 'primeng/messages';
 import { VacanciesArchiveComponent } from './archive/components/archive.component';
+import { MessageModule } from 'primeng/message';
 
 @NgModule({
     declarations: [
@@ -61,7 +62,8 @@ import { VacanciesArchiveComponent } from './archive/components/archive.componen
     DialogModule,
     ListboxModule,
     TableModule,
-    MessagesModule
+    MessagesModule,
+    MessageModule
   ],
 
     exports: [],
