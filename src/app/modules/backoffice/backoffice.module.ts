@@ -33,6 +33,7 @@ import { OrdersComponent } from './orders/orders-list/components/orders.componen
 import { OrderDetailsComponent } from './orders/order-details/components/order-details.component';
 import { ProjectsArchiveComponent } from './project/archive/components/archive.component';
 import { RestoreComponent } from './restore/components/restore.component';
+import { MessageModule } from 'primeng/message';
 
 
 @NgModule({
@@ -68,7 +69,8 @@ import { RestoreComponent } from './restore/components/restore.component';
         DropdownModule,
         CardModule,
         DialogModule,
-        MessagesModule
+        MessagesModule,
+        MessageModule
     ],
 
     exports: [],
