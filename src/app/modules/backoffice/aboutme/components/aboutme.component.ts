@@ -42,6 +42,7 @@ export class AboutmeComponent implements OnInit {
     isModeView: boolean = false;
     isModeEdit: boolean = false;
     aResumeRemarks: any[] = [];
+    isShowRemarks: boolean = false;
 
     constructor(private readonly _backofficeService: BackOfficeService,
         private readonly _signalrService: SignalrService,
@@ -229,6 +230,8 @@ export class AboutmeComponent implements OnInit {
             .subscribe(_ => {
                 console.log("Данные анкеты: ", this.profileInfo$.value);
                 this.setEditFields();
+
+                this.isShowRemarks = this.profileInfo$.value.resumeRemarks.length > 0;
             });
         }
     };

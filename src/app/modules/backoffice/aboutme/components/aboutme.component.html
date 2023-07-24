@@ -6,7 +6,16 @@
   </div>
 
   <div class="block-worksheet col-lg-7">
-    <p-messages [(value)]="aResumeRemarks" [enableService]="false" [closable]="false"></p-messages>
+    <div *ngIf="isShowRemarks" class="mb-1">
+      <strong>Имеются замечания. Анкета не будет опубликована, пока замечания не будут исправлены и приняты модератором.</strong>
+    </div>
+
+    <div class="mb-1" *ngFor="let r of profileInfo$.value.resumeRemarks">
+      <div>
+        <p-message severity="warn" text="{{r.remarkText}}"></p-message>
+      </div>
+    </div>
+
 
     <div class="worksheet-panel">
       <p-panel header="Контактная информация" [toggleable]="true">
