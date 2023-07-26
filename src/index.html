@@ -1,13 +1,106 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
-  <title>LeokaEstetica.Platform.FrontEnd</title>
+  <title>Leoka Estetica - Платформа для бизнеса</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/x-icon" href="favicon.png" />
 </head>
+
 <body>
+  <!-- TODO: Все это надо будет отрефачить и вынести отдельно куда-нибудь. -->
+  <!-- TODO: Также в идеале строку ендпоинта получать с бэка надо, для этого делать запрос до получения из Google данных аккаунта. -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <script>
+    function handleCredentialResponse(response) {
+      let userSignInGoogleInput = {
+        googleAuthToken: response.credential
+      };
+
+      $.ajax({
+        url: 'https://leoka-estetica-dev.online/user/signin-google', // TODO: Переделать на получение с бэка.
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(userSignInGoogleInput),
+        success: function (data) {
+          if (data.isSuccess) {
+            localStorage["t_n"] = data.token;
+            localStorage["u_c"] = data.userCode;
+
+            // TODO: Переделать на получение с бэка.
+            window.location.href = "https://leoka-estetica-dev.ru/profile/aboutme?mode=view";
+          }
+        }
+      });
+    }
+    window.onload = function () {
+      if (!localStorage["t_n"] && window.location.pathname !== "/") {
+        google.accounts.id.initialize({
+          client_id: "418999951875-s1smtv8oitn579i8pd4na059pnbctf19.apps.googleusercontent.com",
+          callback: handleCredentialResponse
+        });
+        google.accounts.id.renderButton(
+          document.getElementById("buttonDiv"), {
+            theme: "outline",
+            size: "large"
+          }
+        );
+        google.accounts.id.prompt();
+      }
+    }
+  </script>
+
+  <script src="https://vk.com/js/api/openapi.js?169" type="text/javascript"></script>
+  <script type="text/javascript">
+    VK.init({
+      apiId: 51577951
+    });
+  </script>
+
+  <script type="text/javascript" src="https://vk.com/js/api/openapi.js?169"></script>
+  <script type="text/javascript">
+    VK.init({
+      apiId: 51577951
+    });
+  </script>
+
+  <!-- VK Widget -->
+  <script type="text/javascript">
+    if (!localStorage["t_n"] && window.location.pathname !== "/") {
+      VK.Widgets.Auth("vk_auth", {
+        "onAuth": function (response) {
+          let userSignInVkInput = {
+            vkUserId: response.uid,
+            firstName: response.first_name,
+            lastName: response.last_name
+          };
+
+          $.ajax({
+            url: 'https://leoka-estetica-dev.online/user/signin-vk', // TODO: Переделать на получение с бэка.
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(userSignInVkInput),
+            success: function (data) {
+              if (data.isSuccess) {
+                localStorage["t_n"] = data.token;
+                localStorage["u_c"] = data.userCode;
+
+                // TODO: Переделать на получение с бэка.
+                window.location.href = "https://leoka-estetica-dev.ru/profile/aboutme?mode=view";
+              }
+            }
+          });
+        }
+      });
+    }
+  </script>
+
   <app-root></app-root>
 </body>
+
 </html>

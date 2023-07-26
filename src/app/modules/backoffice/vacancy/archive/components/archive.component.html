@@ -1,0 +1,64 @@
+<p-toast></p-toast>
+
+<div class="d-flex block-profile space-top-50">
+  <div class="profile-left-menu col-lg-3">
+
+  </div>
+
+  <div>
+    <p-table [value]="archivedVacancies$.value.vacanciesArchive"
+            
+            dataKey="vacancyId"
+            [paginator]="archivedVacancies$.value.total > 0"
+            [rows]="10"
+            styleClass="p-datatable-gridlines"
+            responsiveLayout="scroll"
+            >
+      <ng-template pTemplate="caption">
+          <h3>Ваши вакансии в архиве</h3>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th></th>
+          <th>ID</th>
+          <th>Название вакансии</th>
+          <th>Дата архивации</th>
+          <th>Удаление</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-vacancy>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="vacancy"></p-tableCheckbox>
+            </td>
+            <td>{{vacancy.vacancyId}}</td>
+            <td>{{vacancy.vacancyName}}</td>
+            <td>{{vacancy.dateArchived}}</td>
+            <td><button pButton 
+                        type="button" 
+                        label="Удалить из архива" 
+                        class="p-button-outlined p-button-success"
+                        (click)="vacancy.vacancyId">
+              </button>
+            </td>
+          </tr>
+      </ng-template>
+
+      <ng-template pTemplate="summary">
+          Всего: {{archivedVacancies$.value.total}}
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="7">
+              <div class="empty-projects">
+                У вас пока нет вакансий, находящихся в архиве.
+              </div>
+            </td>
+        </tr>
+    </ng-template>
+  </p-table>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+@use "/src/app/common/styles/styles.scss";
+
+.block-subscriptions {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+
+  .subscription {
+    padding: 20px 20px;
+  }
+
+  .podpiska.active{
+    outline: 4px solid #4c944c;
+    outline-offset: -2px;
+
+  }
+
+}

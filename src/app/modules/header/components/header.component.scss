@@ -1,0 +1,35 @@
+@use "/src/app/common/styles/control.scss";
+
+ .header {
+   padding: 10px;
+   align-items: center;
+   position: absolute;
+   z-index: 2;
+   top: 0;
+ }
+
+ .menu-item {
+   padding: 0 10px;
+   position: relative;
+   z-index: 1;
+   cursor: pointer;
+ }
+
+ .navbar-brand {
+   margin-right: 100px;
+ }
+
+ .logo {
+  width: 150px;
+ }
+
+ .invisible {
+   display: none;
+ }
+ .avatar-client{
+   cursor: grab;
+ }
+
+.navbar-light {
+  background: #FAFAFA;
+}

@@ -1,0 +1,106 @@
+<p-toast></p-toast>
+
+<div class="d-flex block-profile space-top-50">
+  <div class="profile-left-menu col-lg-3">
+
+  </div>
+
+  <div>
+    <p-table [value]="userProjects$.value.userProjects"
+            [(selection)]="selectedProjects"
+            dataKey="projectId"
+            [paginator]="userProjects$.value.total > 0"
+            [rows]="10"
+            styleClass="p-datatable-gridlines"
+            responsiveLayout="scroll"
+            (click)="onSelectProject()">
+      <ng-template pTemplate="caption">
+          <h3>Ваши проекты</h3>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th></th>
+          <th *ngFor="let item of projectColumns$.value">{{item.columnName}}</th>
+          <th>Просмотр</th>
+          <th>Редактирование</th>
+          <th>Архивирование</th>
+          <th>Удаление</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-project>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="project"></p-tableCheckbox>
+            </td>
+            <td>{{project.projectId}}</td>
+            <td>{{project.projectName}}</td>
+            <td>{{project.projectDetails}}</td>
+            <td>{{project.projectStatusName}}</td>
+            <td><button pButton type="button"
+              label="Просмотр"
+              class="p-button-outlined p-button-primaryproject.projectId"
+              (click)="onRouteViewProject(project.projectId)">
+                </button>
+            </td>
+            <td><button pButton type="button"
+                        label="Редактировать"
+                        class="p-button-outlined p-button-primary"
+                        (click)="onRouteEditProject(project.projectId)">
+                </button>
+            </td>
+
+            <td>
+              <button pButton type="button"
+                      label="В архив"
+                      class="p-button-outlined p-button-warning"
+                      [disabled]="project.projectStatusSysName == 'Archived'"
+                      (click)="onAddArchiveProjectAsync(project.projectId)">
+              </button>
+            </td>
+            <td>
+              <button pButton
+                      type="button"
+                      label="Удалить"
+                      class="p-button-outlined p-button-danger"
+                      (click)="onBeforeDeleteProject(project.projectId, project.projectName)">
+              </button>
+            </td>
+          </tr>
+      </ng-template>
+
+      <ng-template pTemplate="summary">
+          Всего: {{userProjects$.value.total}}
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="7">
+              <div class="empty-projects">
+                Вы не создали еще ни одного проекта.
+              </div>
+            </td>
+        </tr>
+    </ng-template>
+  </p-table>
+  </div>
+</div>
+
+<!-- Диалог удаления проекта. -->
+<p-dialog header="Удаление проекта"
+          [(visible)]="isDeleteProject"
+          [breakpoints]="{'960px': '75vw'}"
+          [style]="{width: '50vw'}"
+          [draggable]="false"
+          [resizable]="false">
+  <p>Удалить проект <strong>{{projectName}}</strong>?</p>
+        <p>При удалении проекта будут удалены привязанные к проекту вакансии,
+          сообщения чата проекта,
+          все участники команды проекта и
+          комментарии к проекту.</p>
+        <ng-template pTemplate="footer">
+        <p-button (click)="isDeleteProject=false" label="Отменить" styleClass="p-button-text"></p-button>
+        <p-button (click)="onDeleteProjectAsync()" label="Удалить" styleClass="p-button-danger p-button-text"></p-button>
+        </ng-template>
+</p-dialog>

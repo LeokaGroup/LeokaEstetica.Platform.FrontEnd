@@ -1,0 +1,41 @@
+<div class="d-flex block-profile space-top-50">
+  <div class="profile-left-menu col-lg-3">
+
+  </div>
+
+  <div>
+    <div class="worksheet-panel space-top text-center">
+      <p-panel header="Уведомления" [toggleable]="false">
+        <div *ngFor="let notify of userNotifications$.value.notifications">
+          <div class="block-notify-item">
+            <div class="mb-1">
+              <strong>{{notify.notificationName}}</strong>
+            </div>
+
+            <div>
+              <p>{{notify.notificationText}}</p>
+            </div>
+
+            <div *ngIf="notify.isNeedAccepted && notify.isVisibleNotificationsButtons">
+              <button pButton 
+                      type="button" 
+                      label="Принять" 
+                      class="p-button-success p-button-text"
+                      (click)="onApproveProjectInviteAsync(notify.notificationId)">
+              </button>
+
+              <button pButton 
+                      type="button" 
+                      label="Отклонить" 
+                      class="p-button-danger p-button-text"
+                      (click)="onRejectProjectInviteAsync(notify.notificationId)">
+              </button>
+            </div>
+          </div>
+
+          <hr>
+        </div>
+      </p-panel>
+    </div>
+  </div>
+</div>

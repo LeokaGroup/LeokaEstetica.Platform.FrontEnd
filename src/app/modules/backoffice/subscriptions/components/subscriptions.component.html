@@ -1,0 +1,60 @@
+<p-toast></p-toast>
+
+<div class="d-flex block-profile space-top-50">
+  <div class="profile-left-menu col-lg-3">
+  </div>
+
+  <div class="block-worksheet block-subscriptions">
+    <div *ngFor="let item of subscriptions$.value"  class="worksheet-panel subscription">
+      <div *ngIf="item.isActive; else elseBlock" [class.active]="item.isActive" class="podpiska">
+        <p-card header="Подписка оформлена"  subheader="{{item.subscriptionName}}"
+                [style]="{width: '360px',height:'200px', color:'#4c944c'}"  styleClass="p-card-shadow" >
+          <button pButton  
+                  type="button" 
+                  label="Что входит в подписку?"
+                  class="p-button-text p-button-plain">
+          </button>
+
+          <button pButton  
+                  type="button" 
+                  label="Отключить подписку"
+                  class="p-button-text p-button-plain"
+                  (click)="onCalculateRefundAsync()">
+          </button>
+        </p-card>
+      </div>
+
+      <ng-template #elseBlock class="podpiska">
+        <p-card  header="Подписка" subheader="{{item.subscriptionName}}"
+                 [style]="{width: '360px',height:'200px'}"  styleClass="p-card-shadow" >
+          <button pButton  
+                 type="button" 
+                 label="Что входит в подписку?"
+                 class="p-button-text p-button-plain">
+         </button>
+
+         <button pButton  
+                  type="button" 
+                  label="Отключить подписку"
+                  class="p-button-text p-button-plain"
+                  (click)="onCalculateRefundAsync()">
+          </button>
+        </p-card>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<!-- Диалог с суммой возврата до начала выполнения возврата. -->
+<p-dialog header="Отключение подписки"
+          [(visible)]="isRefund"
+          [breakpoints]="{'960px': '75vw'}"
+          [style]="{width: '50vw'}"
+          [draggable]="false"
+          [resizable]="false">
+  <p>Сумма к возврату за неиспользованный период будет <strong>{{refundPrice > 0 ? refundPrice + ' руб.' : refundPrice}}</strong></p>
+  <ng-template pTemplate="footer">
+    <p-button (click)="isRefund=false" label="Отменить" styleClass="p-button-text"></p-button>
+    <p-button (click)="onRefundAsync()" label="Отключить подписку" styleClass="p-button-secondary p-button-text"></p-button>
+  </ng-template>
+</p-dialog>

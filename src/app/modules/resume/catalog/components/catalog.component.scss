@@ -1,0 +1,27 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+
+.block-catalog-vacancies {
+    margin: 0 0 10px 10px;
+}
+
+.resume-count {
+  margin-top: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.catalog-vacancies-item {
+  margin: 10px 0;
+}
+
+.project-text-block {
+  padding: 10px 0;
+}
+
+.tag {
+  margin-left: 20px;
+}

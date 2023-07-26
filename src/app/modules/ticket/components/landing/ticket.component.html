@@ -1,0 +1,47 @@
+<p-toast></p-toast>
+
+<div class="space-top-50">
+  <div class="col-lg-12 d-flex justify-content-center">
+    <h3 class="mt-5 mb-5">Есть вопросы? Напишите нам!</h3>
+  </div>
+
+  <p-card header="">
+    <div class="section-1-container section-container">
+        <div class="container">
+          <div class="row">
+            <div class="col-10 offset-1 col-lg-8 offset-lg-2 div-wrapper d-flex justify-content-center align-items-center">
+              <div class="div-to-align">
+                <div class="row justify-content-center form-signin">
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1">Тема обращения</label><br>
+                    <p-dropdown [options]="ticketCategories$.value"
+                                [(ngModel)]="selectedCategory" 
+                                optionLabel="categoryName">
+                    </p-dropdown>
+                  </div>
+    
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1">Текст обращения</label><br>
+                    <textarea input-control-worksheet rows="5" cols="100" pInputTextarea [autoResize]="true"
+                      autocomplete="new-password" placeholder="" [(ngModel)]="ticketMessage"
+                      class="control-textarea">
+                    </textarea>
+                  </div>
+    
+                  <button type="submit" 
+                          class="btn btn-primary button-action-pur-short-control"
+                          (click)="onCreateTicketAsync()"
+                          [disabled]="!isAvailableTicket">
+                    Отправить заявку
+                  </button>           
+                  <div class="d-flex justify-content-center" *ngIf="!isAvailableTicket">
+                    <small>Для отправки обращения нужно быть авторизованными.</small>   
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </p-card>
+</div>

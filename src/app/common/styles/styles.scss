@@ -1,0 +1,48 @@
+.block-catalog-vacancies {
+  border: 1px solid #ededed;
+  border-radius: 4px;
+  line-height: 1.5;
+
+  .catalog-vacancies-item {
+    color: #545454;
+    border-bottom: 1px solid #ededed;
+    // background: whitesmoke;
+    background: #FAFAFA;
+
+    .project-text-item {
+      padding: 20px;
+    }
+
+    .selectedColor {
+      // background: #F1F5F9;
+      background: #E8F4FF;
+    }
+  }
+}
+
+.block-catalog-filters {
+  // background: whitesmoke;
+  background: #FAFAFA;
+  padding: 20px;
+  border-left: 1px solid #ededed;
+}
+
+.text-content {
+  // font-family: 'Proxima Nova', sans-serif;
+  // font-size: 16px;
+  color: #333333;
+  // font-weight: normal;
+  // font-size: 16px;
+  // line-height: 1.65;
+  // color: #212121;
+
+  // color: #000;
+  // display: block;
+  // font-size: 1.1rem;
+  // font-weight: 400;
+  // line-height: 1.55;
+  // margin-bottom: 20px;
+
+  font-size: 16px;
+  line-height: 1.65;
+}
