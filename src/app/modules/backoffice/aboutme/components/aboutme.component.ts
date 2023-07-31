@@ -22,6 +22,7 @@ export class AboutmeComponent implements OnInit {
     public readonly selectedSkillsItems$ = this._backofficeService.selectedSkillsItems$;
     public readonly selectedIntentsItems$ = this._backofficeService.selectedIntentsItems$;
     public readonly resumeRemarks$ = this._backofficeService.resumeRemarks$;
+    public readonly inviteTelegramLink$ = this._backofficeService.inviteTelegramLink$;
 
     isShortFirstName: boolean = false;
     phoneNumber: string = "";
@@ -274,6 +275,17 @@ export class AboutmeComponent implements OnInit {
             .subscribe(async _ => {
                 this.aResumeRemarks = this.resumeRemarks$.value;
                 console.log("Список замечаний анкеты: ", this.aResumeRemarks);
+            });
+    };
+
+     /**
+     * Функция получает ссылку для инвайта в канал телеграма.
+     */
+      public async onCreateInviteLinkTelegramAsync() {
+        (await this._backofficeService.createInviteLinkTelegramAsync())
+            .subscribe((response: any) => {
+                console.log("Ссылка приглашения в канал телеграма: ", this.inviteTelegramLink$.value);
+                window.location.href = response.url;
             });
     };
 }
