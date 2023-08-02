@@ -18,7 +18,7 @@
                         (onClear)="onLoadCatalogProjectsAsync()"
                         placeholder="Поиск по проектам...">
         </p-autoComplete>
-    <p class="project-count">Найдено проектов: {{this.catalog$.value.total}}</p>
+    <p class="project-count">Найдено проектов: {{catalog$.value.total ?? rowsCount}}</p>
       </span>
     </div>
 
