@@ -39,6 +39,7 @@ export class BackOfficeService {
   public sendedRestoreCode$ = new BehaviorSubject<any>(null);
   public checkSednedRestoreCode$ = new BehaviorSubject<any>(null);
   public restorePassword$ = new BehaviorSubject<any>(null);
+  public inviteTelegramLink$ = new BehaviorSubject<any>(null);
 
   constructor(private readonly http: HttpClient) {
 
@@ -307,4 +308,13 @@ export class BackOfficeService {
         tap(data => this.restorePassword$.next(data))
       );
     };
+
+     /**
+     * Функция получает ссылку для инвайта в канал телеграма.
+     */
+      public async createInviteLinkTelegramAsync() {
+        return await this.http.get(API_URL.apiUrl + "/telegram/invite").pipe(
+          tap(data => this.inviteTelegramLink$.next(data))
+        );
+      };
 }
