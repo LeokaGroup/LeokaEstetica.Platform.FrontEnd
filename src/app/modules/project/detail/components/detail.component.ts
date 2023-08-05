@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
-import { forkJoin } from "rxjs";
+import { BehaviorSubject, forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { DialogInput } from "src/app/modules/messages/chat/models/input/dialog-input";
 import { DialogMessageInput } from "src/app/modules/messages/chat/models/input/dialog-message-input";
@@ -37,6 +37,7 @@ export class DetailProjectComponent {
         private readonly _messagesService: ChatMessagesService,
         private readonly _searchProjectService: SearchProjectService,
         private readonly _redirectService: RedirectService) {
+            
     }
 
     public readonly selectedProject$ = this._projectService.selectedProject$;
@@ -45,7 +46,7 @@ export class DetailProjectComponent {
     public readonly projectVacanciesColumns$ = this._projectService.projectVacanciesColumns$;
     public readonly availableAttachVacancies$ = this._projectService.availableAttachVacancies$;
     public readonly selectedVacancy$ = this._vacancyService.selectedVacancy$;
-    public readonly messages$ = this._messagesService.messages$;
+    public messages$ = this._messagesService.messages$;
     public readonly dialog$ = this._messagesService.dialog$;
     public readonly availableVacansiesResponse$ = this._projectService.availableVacansiesResponse$;
     public readonly projectRemarks$ = this._projectService.projectRemarks$;
@@ -106,6 +107,8 @@ export class DetailProjectComponent {
     isVisibleActionLeaveProjectTeam: boolean = false;
     aProjectRemarks: string[] = [];
     isShowRemarks: boolean = false;
+    aMessages: any[] = [];
+    aDialogs: any[] = [];
 
   public async ngOnInit() {
         forkJoin([
@@ -423,14 +426,9 @@ export class DetailProjectComponent {
             console.log("Сообщения чата проекта: ", this.messages$.value);
             this.userName = this.messages$.value.fullName;
             console.log("userName", this.userName);
-
-            // Диалогов нет, создаем новый пустой диалог для начала общения.
-            // if (!this.messages$.value.length) {
-            //     (await this._messagesService.getProjectDialogAsync(this.projectId))
-            //         .subscribe(_ => {
-            //             console.log("Получили диалог: ", this.dialog$.value);
-            //         });
-            // }
+            let dialogs = this.messages$.value;
+            this.aDialogs = dialogs;     
+            this.aMessages = this.messages$.value.messages;                
         });
     };
 
@@ -443,8 +441,11 @@ export class DetailProjectComponent {
         this.dialogId = dialogId;
 
         (await this._messagesService.getProjectDialogAsync(this.projectId, dialogId))
-            .subscribe(_ => {
-                console.log("Сообщения диалога: ", this.dialog$.value);
+            .subscribe(_ => {                
+                console.log("Сообщения диалога: ", this.dialog$.value);                               
+                this.aMessages = this.dialog$.value.messages;       
+                let a1 = this.dialog$.value.messages.getValue();         
+                a1.push(this.dialog$.value.messages[this.dialog$.value.messages.length - 1]);            
             });
     };
 
@@ -467,13 +468,14 @@ export class DetailProjectComponent {
     public async onSendMessageAsync() {
         let dialogInput = new DialogMessageInput();
         dialogInput.Message = this.message;
-        dialogInput.DialogId = this.dialogId;
+        dialogInput.DialogId = this.dialogId;        
 
         (await this._messagesService.sendDialogMessageAsync(dialogInput))
         .subscribe(async _ => {
             console.log("Сообщения диалога: ", this.messages$.value);
-            this.message = "";
-            await this.onGetDialogAsync(this.dialogId);
+            this.message = "";               
+            this.messages$ = new BehaviorSubject([]);            
+            await this.onGetDialogAsync(this.dialogId);          
         });
     };
 

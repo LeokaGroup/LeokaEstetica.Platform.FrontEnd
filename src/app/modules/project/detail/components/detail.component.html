@@ -337,7 +337,7 @@
                       <!-- Левая область чата. -->
                         <ng-template pTemplate>
                             <div class="col flex align-items-center justify-content-center"
-                                *ngFor="let item of messages$.value">
+                                *ngFor="let item of aDialogs">
                                 <div class="block-message" (click)="onGetDialogAsync(item.dialogId)">
                                   <div class="d-flex justify-content-between">
                                     <div>
@@ -361,7 +361,7 @@
                         <!-- Основная область чата. -->
                         <ng-template pTemplate>
                             <div class="block-messages">
-                              <div *ngFor="let item of dialog$.value.messages">
+                              <div *ngFor="let item of aMessages">
                                 <div>
                                   <p>{{item.message}}</p>
                                   <span class="time-right">{{item.created}}</span>
