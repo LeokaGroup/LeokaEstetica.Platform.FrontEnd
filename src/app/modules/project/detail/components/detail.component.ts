@@ -109,6 +109,7 @@ export class DetailProjectComponent {
     isShowRemarks: boolean = false;
     aMessages: any[] = [];
     aDialogs: any[] = [];
+    lastMessage: any;
 
   public async ngOnInit() {
         forkJoin([
@@ -440,12 +441,15 @@ export class DetailProjectComponent {
     public async onGetDialogAsync(dialogId: number) {
         this.dialogId = dialogId;
 
-        (await this._messagesService.getProjectDialogAsync(this.projectId, dialogId))
-            .subscribe(_ => {                
+        await this._messagesService.getProjectDialogAsync(this.projectId, dialogId)
+            .then((response: any) => {                
                 console.log("Сообщения диалога: ", this.dialog$.value);                               
-                this.aMessages = this.dialog$.value.messages;       
-                let a1 = this.dialog$.value.messages.getValue();         
-                a1.push(this.dialog$.value.messages[this.dialog$.value.messages.length - 1]);            
+                this.aMessages = response.messages;                     
+                debugger;
+                let lastMessage = response.messages[response.messages.length - 1];   
+                this.lastMessage = lastMessage;  
+                // let a1 = this.dialog$.value.messages.getValue();                
+                // a1.push(lastMessage);                                
             });
     };
 
@@ -474,8 +478,17 @@ export class DetailProjectComponent {
         .subscribe(async _ => {
             console.log("Сообщения диалога: ", this.messages$.value);
             this.message = "";               
-            this.messages$ = new BehaviorSubject([]);            
-            await this.onGetDialogAsync(this.dialogId);          
+            this.messages$ = new BehaviorSubject([]);
+
+            new Promise(async (resolve, reject) => {
+                debugger;
+                await this.onGetDialogAsync(this.dialogId);
+                resolve(1);
+            }).then(() => {
+                debugger;
+                let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
+                this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
+            });         
         });
     };
 

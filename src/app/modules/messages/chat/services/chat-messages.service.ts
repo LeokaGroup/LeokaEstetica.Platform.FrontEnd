@@ -33,11 +33,26 @@ export class ChatMessagesService {
      * @param dialogId - Id диалога.
      * @returns - Диалог и его сообщения.
      */
+    // public async getProjectDialogAsync(discussionTypeId: number, dialogId: number) {
+    //     return await this._http.get(API_URL.apiUrl + `/chat/dialog?dialogId=${dialogId}&discussionType=Project&discussionTypeId=${discussionTypeId}`).pipe(
+    //         tap(data => this.dialog$.next(data))
+    //     );
+    // };
+
     public async getProjectDialogAsync(discussionTypeId: number, dialogId: number) {
-        return await this._http.get(API_URL.apiUrl + `/chat/dialog?dialogId=${dialogId}&discussionType=Project&discussionTypeId=${discussionTypeId}`).pipe(
-            tap(data => this.dialog$.next(data))
-        );
-    };
+        return new Promise(async resolve => {
+            await this._http.get(API_URL.apiUrl + `/chat/dialog?dialogId=${dialogId}&discussionType=Project&discussionTypeId=${discussionTypeId}`)
+                .subscribe({
+                    next: (response: any) => {
+                        resolve(response);
+                    },
+    
+                    error: (err) => {
+                        throw new Error(err);
+                    }
+                });
+        })  
+    };   
 
     /**
      * Функция создает диалог с владельцем проекта, если он еще не создан.
