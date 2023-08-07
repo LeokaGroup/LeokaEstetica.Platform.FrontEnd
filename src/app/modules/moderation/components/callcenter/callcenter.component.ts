@@ -11,7 +11,7 @@ import { CallCenterService } from "../../services/callcenter.service";
 import { Router } from "@angular/router";
 import { CreateProjectRemarksInput, ProjectRemarkInput } from "../../models/input/project-remark-input";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
-import { MessageService, TreeNode } from "primeng/api";
+import { MessageService } from "primeng/api";
 import { SendProjectRemarkInput } from "../../models/input/send-project-remark-input";
 import { CreateVacancyRemarksInput, VacancyRemarkInput } from "../../models/input/vacancy-remark-input";
 import { SendVacancyRemarkInput } from "../../models/input/send-vacancy-remark-input";
@@ -46,6 +46,7 @@ export class CallCenterComponent implements OnInit {
     public readonly awaitingCorrectionProjects$ = this._callCenterService.awaitingCorrectionProjects$;
     public readonly awaitingCorrectionVacancies$ = this._callCenterService.awaitingCorrectionVacancies$;
     public readonly awaitingCorrectionResumes$ = this._callCenterService.awaitingCorrectionResumes$;
+    public readonly projectCommentsModeration$ = this._callCenterService.projectCommentsModeration$;
 
     isHideAuthButtons: boolean = false;
     aProjects: any[] = [];
@@ -81,6 +82,8 @@ export class CallCenterComponent implements OnInit {
     aAwaitingCorrectionResumesRemarks: any[] = [];
     isAwaitingCorrectionVacanciesRemarks: boolean = false; 
     aAwaitingCorrectionVacanciesRemarks: any[] = [];
+    aProjectComments: any[] = [];
+    isShowProjectComments: boolean = false;   
 
     items: any[] = [
         {
@@ -308,6 +311,31 @@ export class CallCenterComponent implements OnInit {
                 ]
             ]
         },
+        {
+            label: 'Комментарии',
+            items: [
+                [
+                    {
+                        label: 'Комментарии проектов на модерации',
+                        items: [{
+                            label: 'Просмотр', command: async () => {
+                                this.isProjectsModeration = false;
+                                this.isVacanciesModeration = false;
+                                this.isResumesModeration = false;
+                                this.clearRemarksProject();
+                                this.clearRemarksVacancy();
+                                this.clearRemarksResume();
+                                this.isProjectsUnShippedRemarks = false;
+                                this.isVacanciesUnShippedRemarks = false;
+                                this.isResumesUnShippedRemarks = false;
+                                this.isAwaitingCorrectionProjectRemarks = false;                                
+                                await this.getProjectCommentsModerationAsync();                                
+                            }
+                        }]
+                    }                 
+                ]
+            ]
+        }
     ];
 
     aRemarksProject: ProjectRemarkInput[] = [];
@@ -921,6 +949,19 @@ export class CallCenterComponent implements OnInit {
         .subscribe(_ => {
             console.log("Проекты с неисправленными замечаниями: ", this.awaitingCorrectionProjects$.value);
             this.aAwaitingCorrectionResumesRemarks = this.awaitingCorrectionResumes$.value.awaitingCorrectionResumes;
+        });
+    };
+
+    /**
+   * Функция получает комментарии проектов на модерации.
+   * @returns - Комментарии проектов на модерации.
+   */
+     private async getProjectCommentsModerationAsync() {
+        (await this._callCenterService.getProjectCommentsModerationAsync())
+        .subscribe(_ => {
+            console.log("Комментарии проектов на модерации: ", this.projectCommentsModeration$.value);
+            this.aProjectComments = this.projectCommentsModeration$.value;
+            this.isShowProjectComments = true;
         });
     };
 }
