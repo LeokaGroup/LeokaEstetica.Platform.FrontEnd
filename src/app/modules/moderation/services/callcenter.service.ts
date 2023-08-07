@@ -45,6 +45,7 @@ export class CallCenterService {
     public awaitingCorrectionProjects$ = new BehaviorSubject<any>(null);
     public awaitingCorrectionVacancies$ = new BehaviorSubject<any>(null);
     public awaitingCorrectionResumes$ = new BehaviorSubject<any>(null);
+    public projectCommentsModeration$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {}
 
@@ -346,4 +347,14 @@ export class CallCenterService {
       tap(data => this.awaitingCorrectionResumes$.next(data))
     );
   };
+
+   /**
+   * Функция получает комментарии проектов на модерации.
+   * @returns - Комментарии проектов на модерации.
+   */
+    public async getProjectCommentsModerationAsync() {
+      return await this.http.get(API_URL.apiUrl + "/callcenter/project-comments").pipe(
+        tap(data => this.projectCommentsModeration$.next(data))
+      );
+    };
 }

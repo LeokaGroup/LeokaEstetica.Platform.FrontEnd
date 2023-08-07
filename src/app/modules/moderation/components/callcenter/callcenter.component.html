@@ -155,6 +155,55 @@
   </p-table>
 </div>
 
+ <!-- Комментарии проектов. -->
+ <div *ngIf="isShowProjectComments" class="mt-5">
+  <p-table [value]="aProjectComments" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="caption">
+      Комментарии проектов на модерации
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Название комментария</th>
+        <th>Дата модерации</th>
+        <th>Дата создания</th>
+        <th>Просмотр</th>
+        <th>Одобрение</th>
+        <th>Отклонение</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-comment>
+      <tr>
+        <td>{{comment.commentId}}</td>
+        <td>{{comment.projectComment.comment}}</td>
+        <td>{{comment.dateModeration}}</td>
+        <td>{{comment.created}}</td>
+        <td><button pButton
+                    type="button"
+                    label="Просмотр"
+                    class="p-button-text">
+        </button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Одобрить"
+                    class="p-button-success p-button-text">
+          </button>
+        </td>
+        <td><button pButton 
+                    type="button" 
+                    label="Отклонить" 
+                    class="p-button-danger p-button-text">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <!-- Всего: {{totalProjects}} -->
+    </ng-template>
+  </p-table>
+</div>
+
 <!-- Замечания проектов (не отправленные). -->
 <div *ngIf="isProjectsUnShippedRemarks" class="mt-5">
   <p-table [value]="projectsRemarks$.value" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
