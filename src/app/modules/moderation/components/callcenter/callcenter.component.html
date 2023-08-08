@@ -181,7 +181,8 @@
         <td><button pButton
                     type="button"
                     label="Просмотр"
-                    class="p-button-text">
+                    class="p-button-text"
+                    (click)="onPreviewProjectComment(comment.projectComment)">
         </button>
         </td>
         <td><button pButton
@@ -1101,6 +1102,68 @@
             </ng-template>
           </p-table>
         </div>                
+      </div>
+    </div>
+  <ng-template pTemplate="footer">
+    <div class="mt-3">
+      <p-button icon="pi pi-check"
+              (click)="onApproveResumeAsync(profileInfoId)"
+              label="Одобрить aнкету"
+              styleClass="p-button-success p-button-text">
+    </p-button>
+
+    <p-button icon="pi pi-check"
+              (click)="onRejectResumeAsync(profileInfoId)"
+              label="Отклонить aнкету"
+              styleClass="p-button-danger p-button-text">
+    </p-button>
+
+    <p-button icon="pi pi-check"              
+              label="Внести замечания"
+              styleClass="p-button-warning p-button-text"
+              [disabled]="aRemarksResume.length == 0"
+              (click)="onCreateResumeRemarksAsync()">
+    </p-button>
+
+    <p-button icon="pi pi-check"
+              (click)="onSendResumeRemarksAsync(profileInfoId)"
+              label="Отправить замечания"
+              styleClass="p-button-success p-button-text">
+    </p-button>
+    </div>
+  </ng-template>
+</p-sidebar>
+
+<!-- Диалог просмотра комментария проекта. -->
+<p-sidebar class="p-sidebar-sm" 
+          [(visible)]="isShowPreviewModerationProjectCommentModal" 
+          [style]="{width: '100vw'}">
+
+    <div class="mt-3">
+      <div class="control-input-text-worksheet mt-3">
+        <div>
+          <label>Текст комментария проекта</label>
+        </div>
+        <textarea input-control-worksheet
+                  rows="5"
+                  cols="100"
+                  pInputTextarea
+                  [autoResize]="true"
+                  autocomplete="new-password"
+                  placeholder="Текст комментария"
+                  [(ngModel)]="viewTextComment"
+                  class="control-textarea"
+                  [disabled]="true">
+      </textarea>
+
+      <div>
+        <p-checkbox inputId="remarkResumeDetails"
+                    [value]="'RemarkResumeDetails'"
+                    (onChange)="onSetResumeRemarks('RemarkResumeDetails', '', 'Текст комментария', viewProjectComment.commentId)">
+
+        </p-checkbox>
+        <label for="remarkComment">&nbsp;Есть замечание</label>
+      </div>       
       </div>
     </div>
   <ng-template pTemplate="footer">

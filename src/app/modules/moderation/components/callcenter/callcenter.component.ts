@@ -349,6 +349,10 @@ export class CallCenterComponent implements OnInit {
     isProjectsUnShippedRemarks: boolean = false;
     isVacanciesUnShippedRemarks: boolean = false;
     isResumesUnShippedRemarks: boolean = false;
+    isShowPreviewModerationProjectCommentModal: boolean = false;
+    viewProjectComment: any;
+    viewTextComment: string = "";
+    viewcommentId: number = 0;
 
     constructor(private readonly _headerService: HeaderService,
         private readonly _callCenterService: CallCenterService,
@@ -963,6 +967,18 @@ export class CallCenterComponent implements OnInit {
             this.aProjectComments = this.projectCommentsModeration$.value;
             this.isShowProjectComments = true;
         });
+    };
+
+    /**
+     * Функция получает к просмотру комментарий проекта.
+     * @param commentId - Id комментария.
+     * @param comment - Текст комментария.
+     */
+    public onPreviewProjectComment(projectComment: any) {
+        this.viewProjectComment = projectComment;
+        this.viewTextComment = projectComment.comment;
+        this.viewcommentId = projectComment.commentId;
+        this.isShowPreviewModerationProjectCommentModal = true;
     };
 }
 
