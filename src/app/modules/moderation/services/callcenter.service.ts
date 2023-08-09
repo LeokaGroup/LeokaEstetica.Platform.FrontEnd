@@ -14,6 +14,7 @@ import { CreateVacancyRemarksInput } from '../models/input/vacancy-remark-input'
 import { SendVacancyRemarkInput } from '../models/input/send-vacancy-remark-input';
 import { CreateResumeRemarksInput } from '../models/input/resume-remark-input';
 import { SendResumeRemarkInput } from '../models/input/send-resume-remark-input';
+import { ProjectCommentModerationInput } from '../models/input/approve-project-comment';
 
 /**
  * Класс сервиса КЦ.
@@ -46,6 +47,7 @@ export class CallCenterService {
     public awaitingCorrectionVacancies$ = new BehaviorSubject<any>(null);
     public awaitingCorrectionResumes$ = new BehaviorSubject<any>(null);
     public projectCommentsModeration$ = new BehaviorSubject<any>(null);
+    public approveProjectCommentsModeration$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {}
 
@@ -355,6 +357,16 @@ export class CallCenterService {
     public async getProjectCommentsModerationAsync() {
       return await this.http.get(API_URL.apiUrl + "/callcenter/project-comments").pipe(
         tap(data => this.projectCommentsModeration$.next(data))
+      );
+    };
+
+    /**
+   * Функция одобряет комментарий проекта.
+   * @returns - Комментарии проекта на модерации.
+   */
+     public async approveProjectCommentsAsync(approveProjectCommentInput: ProjectCommentModerationInput) {
+      return await this.http.patch(API_URL.apiUrl + "/callcenter/project/comment/approve", approveProjectCommentInput).pipe(
+        tap(data => this.approveProjectCommentsModeration$.next(data))
       );
     };
 }

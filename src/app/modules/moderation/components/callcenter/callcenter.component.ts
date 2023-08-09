@@ -18,6 +18,7 @@ import { SendVacancyRemarkInput } from "../../models/input/send-vacancy-remark-i
 import { CreateResumeRemarksInput, ResumeRemarkInput } from "../../models/input/resume-remark-input";
 import { SendResumeRemarkInput } from "../../models/input/send-resume-remark-input";
 import { TicketService } from "src/app/modules/ticket/services/ticket.service";
+import { ProjectCommentModerationInput } from "../../models/input/approve-project-comment";
 
 @Component({
     selector: "callcenter",
@@ -47,6 +48,7 @@ export class CallCenterComponent implements OnInit {
     public readonly awaitingCorrectionVacancies$ = this._callCenterService.awaitingCorrectionVacancies$;
     public readonly awaitingCorrectionResumes$ = this._callCenterService.awaitingCorrectionResumes$;
     public readonly projectCommentsModeration$ = this._callCenterService.projectCommentsModeration$;
+    public readonly approveProjectCommentsModeration$ = this._callCenterService.approveProjectCommentsModeration$;
 
     isHideAuthButtons: boolean = false;
     aProjects: any[] = [];
@@ -979,6 +981,21 @@ export class CallCenterComponent implements OnInit {
         this.viewTextComment = projectComment.comment;
         this.viewcommentId = projectComment.commentId;
         this.isShowPreviewModerationProjectCommentModal = true;
+    };
+
+    /**
+   * Функция одобряет комментарий проекта.
+   * @returns - Комментарии проекта на модерации.
+   */
+      public async onApproveProjectCommentsAsync() {
+        let approveProjectCommentInput = new ProjectCommentModerationInput();
+        approveProjectCommentInput.commentId = this.viewcommentId;
+
+        (await this._callCenterService.approveProjectCommentsAsync(approveProjectCommentInput))
+        .subscribe(async _ => {
+            console.log("Одобрили комментарий проекта: ", this.approveProjectCommentsModeration$.value);
+            await this.getProjectCommentsModerationAsync();
+        });
     };
 }
 
