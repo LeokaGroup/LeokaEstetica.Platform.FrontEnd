@@ -264,7 +264,7 @@ export class BackOfficeService {
      * @param projectId - Id проекта.
      */
     public async deleteProjectArchiveAsync(projectId: number) {
-      return await this.http.delete(API_URL.apiUrl + `/projects/archive/${projectId}`).pipe(
+      return await this.http.delete(API_URL.apiUrl + `/projects/archive?projectId=${projectId}`).pipe(
         tap(data => this.deleteProjectArchive$.next(data))
       );
     };
