@@ -48,6 +48,7 @@ export class CallCenterService {
     public awaitingCorrectionResumes$ = new BehaviorSubject<any>(null);
     public projectCommentsModeration$ = new BehaviorSubject<any>(null);
     public approveProjectCommentsModeration$ = new BehaviorSubject<any>(null);
+    public rejectProjectCommentsModeration$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {}
 
@@ -367,6 +368,16 @@ export class CallCenterService {
      public async approveProjectCommentsAsync(approveProjectCommentInput: ProjectCommentModerationInput) {
       return await this.http.patch(API_URL.apiUrl + "/callcenter/project/comment/approve", approveProjectCommentInput).pipe(
         tap(data => this.approveProjectCommentsModeration$.next(data))
+      );
+    };
+
+    /**
+   * Функция отклоняет комментарий проекта.
+   * @returns - Комментарии проекта на модерации.
+   */
+     public async rejectProjectCommentsAsync(approveProjectCommentInput: ProjectCommentModerationInput) {
+      return await this.http.patch(API_URL.apiUrl + "/callcenter/project/comment/reject", approveProjectCommentInput).pipe(
+        tap(data => this.rejectProjectCommentsModeration$.next(data))
       );
     };
 }

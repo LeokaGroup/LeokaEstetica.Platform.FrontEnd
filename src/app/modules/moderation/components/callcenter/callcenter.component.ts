@@ -997,5 +997,20 @@ export class CallCenterComponent implements OnInit {
             await this.getProjectCommentsModerationAsync();
         });
     };
+
+    /**
+   * Функция одобряет комментарий проекта.
+   * @returns - Комментарии проекта на модерации.
+   */
+     public async onRejectProjectCommentsAsync() {
+        let approveProjectCommentInput = new ProjectCommentModerationInput();
+        approveProjectCommentInput.commentId = this.viewcommentId;
+
+        (await this._callCenterService.rejectProjectCommentsAsync(approveProjectCommentInput))
+        .subscribe(async _ => {
+            console.log("Отклонили комментарий проекта: ", this.approveProjectCommentsModeration$.value);
+            await this.getProjectCommentsModerationAsync();
+        });
+    };
 }
 
