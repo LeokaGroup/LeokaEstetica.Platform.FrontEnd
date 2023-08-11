@@ -274,7 +274,7 @@ export class BackOfficeService {
      * @param vacancyId - Id вакансии.
      */
       public async deleteVacancyArchiveAsync(vacancyId: number) {
-        return await this.http.delete(API_URL.apiUrl + `/vacancies/archive/${vacancyId}`).pipe(
+        return await this.http.delete(API_URL.apiUrl + `/vacancies/archive?vacancyId=${vacancyId}`).pipe(
           tap(data => this.deleteVacancyArchive$.next(data))
         );
       };
