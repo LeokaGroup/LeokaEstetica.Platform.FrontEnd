@@ -29,6 +29,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { TagModule } from 'primeng/tag';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
+import { CardModule } from 'primeng/card';
 
 @NgModule({
     declarations: [
@@ -61,7 +62,8 @@ import { MessageModule } from 'primeng/message';
         RadioButtonModule,
         TagModule,
         MessagesModule,
-        MessageModule
+        MessageModule,
+        CardModule
     ],
 
     exports: [],

@@ -127,6 +127,8 @@ export class CatalogVacancyComponent implements OnInit {
         (await this._vacancyService.filterVacanciesAsync(filterVacancyInput))
         .subscribe(_ => {
             console.log("Список вакансий после фильтрации: ", this.catalog$.value);
+            this.rowsCount = this.catalog$.value.total;
+            this.aCatalogVacancies = this.catalog$.value.catalogVacancies;
         });
     };
 
@@ -135,11 +137,16 @@ export class CatalogVacancyComponent implements OnInit {
      * @returns - Входная модель.
      */
     private createFilterVacancyResult(): FilterVacancyInput {
+        debugger;
         let model = new FilterVacancyInput();
         model.Salary = this.selectedSalary ? this.selectedSalary.key : "None";
-        model.EmploymentsValues = this.selectedEmployment.map((u : any) => u.key).join(',');
-        model.Experience = this.selectedExperience ? this.selectedExperience.key : "None";
-        model.Pay = this.selectedPay ? this.selectedPay.key : "None";
+
+            if (this.selectedEmployment != undefined) {
+                model.EmploymentsValues = this.selectedEmployment.map((u: any) => u.key).join(',');
+            }
+            
+            model.Experience = this.selectedExperience ? this.selectedExperience.key : "None";
+            model.Pay = this.selectedPay ? this.selectedPay.key : "None";
 
         return model;
     };

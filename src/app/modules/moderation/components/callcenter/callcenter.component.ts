@@ -11,13 +11,14 @@ import { CallCenterService } from "../../services/callcenter.service";
 import { Router } from "@angular/router";
 import { CreateProjectRemarksInput, ProjectRemarkInput } from "../../models/input/project-remark-input";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
-import { MessageService, TreeNode } from "primeng/api";
+import { MessageService } from "primeng/api";
 import { SendProjectRemarkInput } from "../../models/input/send-project-remark-input";
 import { CreateVacancyRemarksInput, VacancyRemarkInput } from "../../models/input/vacancy-remark-input";
 import { SendVacancyRemarkInput } from "../../models/input/send-vacancy-remark-input";
 import { CreateResumeRemarksInput, ResumeRemarkInput } from "../../models/input/resume-remark-input";
 import { SendResumeRemarkInput } from "../../models/input/send-resume-remark-input";
 import { TicketService } from "src/app/modules/ticket/services/ticket.service";
+import { ProjectCommentModerationInput } from "../../models/input/approve-project-comment";
 
 @Component({
     selector: "callcenter",
@@ -46,6 +47,8 @@ export class CallCenterComponent implements OnInit {
     public readonly awaitingCorrectionProjects$ = this._callCenterService.awaitingCorrectionProjects$;
     public readonly awaitingCorrectionVacancies$ = this._callCenterService.awaitingCorrectionVacancies$;
     public readonly awaitingCorrectionResumes$ = this._callCenterService.awaitingCorrectionResumes$;
+    public readonly projectCommentsModeration$ = this._callCenterService.projectCommentsModeration$;
+    public readonly approveProjectCommentsModeration$ = this._callCenterService.approveProjectCommentsModeration$;
 
     isHideAuthButtons: boolean = false;
     aProjects: any[] = [];
@@ -81,6 +84,8 @@ export class CallCenterComponent implements OnInit {
     aAwaitingCorrectionResumesRemarks: any[] = [];
     isAwaitingCorrectionVacanciesRemarks: boolean = false; 
     aAwaitingCorrectionVacanciesRemarks: any[] = [];
+    aProjectComments: any[] = [];
+    isShowProjectComments: boolean = false;   
 
     items: any[] = [
         {
@@ -308,6 +313,31 @@ export class CallCenterComponent implements OnInit {
                 ]
             ]
         },
+        {
+            label: 'Комментарии',
+            items: [
+                [
+                    {
+                        label: 'Комментарии проектов на модерации',
+                        items: [{
+                            label: 'Просмотр', command: async () => {
+                                this.isProjectsModeration = false;
+                                this.isVacanciesModeration = false;
+                                this.isResumesModeration = false;
+                                this.clearRemarksProject();
+                                this.clearRemarksVacancy();
+                                this.clearRemarksResume();
+                                this.isProjectsUnShippedRemarks = false;
+                                this.isVacanciesUnShippedRemarks = false;
+                                this.isResumesUnShippedRemarks = false;
+                                this.isAwaitingCorrectionProjectRemarks = false;                                
+                                await this.getProjectCommentsModerationAsync();                                
+                            }
+                        }]
+                    }                 
+                ]
+            ]
+        }
     ];
 
     aRemarksProject: ProjectRemarkInput[] = [];
@@ -321,6 +351,10 @@ export class CallCenterComponent implements OnInit {
     isProjectsUnShippedRemarks: boolean = false;
     isVacanciesUnShippedRemarks: boolean = false;
     isResumesUnShippedRemarks: boolean = false;
+    isShowPreviewModerationProjectCommentModal: boolean = false;
+    viewProjectComment: any;
+    viewTextComment: string = "";
+    viewcommentId: number = 0;
 
     constructor(private readonly _headerService: HeaderService,
         private readonly _callCenterService: CallCenterService,
@@ -921,6 +955,61 @@ export class CallCenterComponent implements OnInit {
         .subscribe(_ => {
             console.log("Проекты с неисправленными замечаниями: ", this.awaitingCorrectionProjects$.value);
             this.aAwaitingCorrectionResumesRemarks = this.awaitingCorrectionResumes$.value.awaitingCorrectionResumes;
+        });
+    };
+
+    /**
+   * Функция получает комментарии проектов на модерации.
+   * @returns - Комментарии проектов на модерации.
+   */
+     private async getProjectCommentsModerationAsync() {
+        (await this._callCenterService.getProjectCommentsModerationAsync())
+        .subscribe(_ => {
+            console.log("Комментарии проектов на модерации: ", this.projectCommentsModeration$.value);
+            this.aProjectComments = this.projectCommentsModeration$.value;
+            this.isShowProjectComments = true;
+        });
+    };
+
+    /**
+     * Функция получает к просмотру комментарий проекта.
+     * @param commentId - Id комментария.
+     * @param comment - Текст комментария.
+     */
+    public onPreviewProjectComment(projectComment: any) {
+        this.viewProjectComment = projectComment;
+        this.viewTextComment = projectComment.comment;
+        this.viewcommentId = projectComment.commentId;
+        this.isShowPreviewModerationProjectCommentModal = true;
+    };
+
+    /**
+   * Функция одобряет комментарий проекта.
+   * @returns - Комментарии проекта на модерации.
+   */
+      public async onApproveProjectCommentsAsync() {
+        let approveProjectCommentInput = new ProjectCommentModerationInput();
+        approveProjectCommentInput.commentId = this.viewcommentId;
+
+        (await this._callCenterService.approveProjectCommentsAsync(approveProjectCommentInput))
+        .subscribe(async _ => {
+            console.log("Одобрили комментарий проекта: ", this.approveProjectCommentsModeration$.value);
+            await this.getProjectCommentsModerationAsync();
+        });
+    };
+
+    /**
+   * Функция одобряет комментарий проекта.
+   * @returns - Комментарии проекта на модерации.
+   */
+     public async onRejectProjectCommentsAsync() {
+        let approveProjectCommentInput = new ProjectCommentModerationInput();
+        approveProjectCommentInput.commentId = this.viewcommentId;
+
+        (await this._callCenterService.rejectProjectCommentsAsync(approveProjectCommentInput))
+        .subscribe(async _ => {
+            console.log("Отклонили комментарий проекта: ", this.approveProjectCommentsModeration$.value);
+            await this.getProjectCommentsModerationAsync();
         });
     };
 }

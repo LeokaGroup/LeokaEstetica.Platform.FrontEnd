@@ -428,4 +428,13 @@ export class SignalrService {
       this.$allFeed.next(data);
     });
   };
+
+  /**
+   * Функция слушает уведомления ошибки при удалении вакансии из архива.
+   */
+   public listenSendNotificationErrorDeleteVacancyArchive() {
+    (<HubConnection>this.hubConnection).on("SendNotificationErrorDeleteVacancyArchive", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 }
