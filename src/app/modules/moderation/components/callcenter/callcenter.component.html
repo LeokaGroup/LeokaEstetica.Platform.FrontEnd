@@ -259,17 +259,19 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
+        <th>ID проекта</th>
         <th>ID замечания</th>
         <th>Название замечания</th>
         <th>Текст замечания</th>
         <th>Статус замечания</th>
         <th>Принятие замечания</th>
-        <th>Не принятие замечаний</th>
+        <th>Не принятие Замечания</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-prj>
       <tr>
         <td>{{prj.projectId}}</td>
+        <td>{{prj.remarkId}}</td>
         <td>{{prj.russianName}}</td>
         <td>{{prj.remarkText}}</td>
         <td>{{prj.remarkStatusId}}</td>
@@ -349,21 +351,23 @@
 <div *ngIf="isAwaitingCorrectionVacanciesRemarks" class="mt-5">
   <p-table [value]="aAwaitingCorrectionVacanciesRemarks" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
     <ng-template pTemplate="caption">
-      Неисправленные замечания проектов
+      Неисправленные замечания вакансий
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
+        <th>ID вакансии</th>
         <th>ID замечания</th>
         <th>Название замечания</th>
         <th>Текст замечания</th>
         <th>Статус замечания</th>
         <th>Принятие замечания</th>
-        <th>Не принятие замечаний</th>
+        <th>Не принятие замечания</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-prj>
       <tr>
         <td>{{prj.vacancyId}}</td>
+        <td>{{prj.remarkId}}</td>
         <td>{{prj.russianName}}</td>
         <td>{{prj.remarkText}}</td>
         <td>{{prj.remarkStatusId}}</td>
