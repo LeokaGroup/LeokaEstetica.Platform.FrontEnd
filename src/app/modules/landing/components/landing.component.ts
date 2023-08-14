@@ -30,6 +30,7 @@ export class LandingComponent implements OnInit {
     allFeedSubscription: any;
     responsiveOptions: boolean = true;
     aNewUsers: any[] = [];
+    carouselType: string = "";
 
     constructor(private readonly _landingService: LandingService,
         private readonly _signalrService: SignalrService,
@@ -60,6 +61,11 @@ export class LandingComponent implements OnInit {
                     this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
                 });
         });
+
+        // Планшеты.
+        if (window.matchMedia('screen and (min-width: 600px) and (max-width: 992px)').matches) {
+            this.carouselType = "vertical";
+        }
     };
 
     /**

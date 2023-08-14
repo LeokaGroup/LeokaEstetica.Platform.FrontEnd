@@ -16,7 +16,7 @@
  }
 
  .navbar-brand {
-   margin-right: 100px;
+  //  margin-right: 100px;
  }
 
  .logo {
@@ -33,3 +33,20 @@
 .navbar-light {
   background: #FAFAFA;
 }
+
+// Медиа-запросы.
+// Малые девайсы («ландшафтные телефоны», >= 576px)
+@media (min-width: 576px) {}
+
+// Средние девайсы («таблетки», >= 768px)
+@media (min-width: 768px) {
+  .button-action-auth-control {
+    font-size: 14px;
+  }
+}
+
+// Большие девайсы (десктопы, >= 992px)
+@media (min-width: 992px) {}
+
+// Экстрабольшие девайсы (большие десктопы, >= 1200px)
+@media (min-width: 1200px) {}

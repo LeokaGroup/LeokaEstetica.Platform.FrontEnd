@@ -20,12 +20,19 @@ export class FareRuleComponent implements OnInit {
     public readonly fareRules$ = this._fareRuleService.fareRules$;
 
     responsiveOptions: any;
-
+    numVisible: number = 3;
+    numScroll: number = 3;
 
     public async ngOnInit() {
         forkJoin([
            await this.getFareRulesAsync()
         ]).subscribe();
+
+        // Планшеты.
+        if (window.matchMedia('screen and (min-width: 600px) and (max-width: 992px)').matches) {
+            this.numVisible = 1;
+            this.numScroll = 1;
+        }
     };
 
      /**
