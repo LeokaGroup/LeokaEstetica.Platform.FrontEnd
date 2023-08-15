@@ -22,6 +22,7 @@ export class FareRuleComponent implements OnInit {
     responsiveOptions: any;
     numVisible: number = 3;
     numScroll: number = 3;
+    carouselType: string = "";
 
     public async ngOnInit() {
         forkJoin([
@@ -32,6 +33,7 @@ export class FareRuleComponent implements OnInit {
         if (window.matchMedia('screen and (min-width: 600px) and (max-width: 992px)').matches) {
             this.numVisible = 1;
             this.numScroll = 1;
+            this.carouselType = "vertical";
         }
     };
 
