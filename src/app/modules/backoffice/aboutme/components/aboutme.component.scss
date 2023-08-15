@@ -96,3 +96,30 @@
     justify-content: center;
     padding: 5px;
 }
+
+// Медиа-запросы.
+// Малые девайсы («ландшафтные телефоны», >= 576px)
+@media (min-width: 576px) {}
+
+// Средние девайсы («таблетки», >= 768px)
+@media (min-width: 768px) {
+  
+}
+
+// Большие девайсы (десктопы, >= 992px)
+@media (min-width: 992px) {}
+
+// Экстрабольшие девайсы (большие десктопы, >= 1200px)
+@media (min-width: 1200px) {
+    // .profile-left-menu {
+    //     width: 30%;
+    //     margin-left: 10px;
+    //     width: 200px;
+    //   }
+    // .worksheet-panel {
+    //     margin-left: 50px;
+    // }
+    .block-worksheet {
+        margin-left: 50px;
+    }
+}
