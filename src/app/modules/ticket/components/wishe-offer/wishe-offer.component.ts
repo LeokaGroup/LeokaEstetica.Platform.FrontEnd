@@ -24,11 +24,17 @@ export class WisheOfferComponent implements OnInit {
 
     contactEmail: string = "";
     wisheOfferText: string = "";
+    ticketMessageCols: number = 100;
 
     public async ngOnInit() {
         forkJoin([
             
         ]).subscribe();
+
+        // Планшеты.
+        if (window.matchMedia('screen and (min-width: 600px) and (max-width: 992px)').matches) {
+            this.ticketMessageCols = 50;
+        }
     };
 
     /**

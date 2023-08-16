@@ -25,7 +25,7 @@
     
                   <div class="mb-3">
                     <label for="exampleInputPassword1">Описание</label><br>
-                    <textarea input-control-worksheet rows="5" cols="100" pInputTextarea [autoResize]="true"
+                    <textarea input-control-worksheet rows="5" cols="{{ticketMessageCols}}" pInputTextarea [autoResize]="true"
                       autocomplete="new-password" placeholder="" [(ngModel)]="wisheOfferText"
                       class="control-textarea">
                     </textarea>

@@ -22,6 +22,7 @@ export class TicketComponent implements OnInit {
     selectedCategory: any;
     ticketMessage: string = "";
     isAvailableTicket: boolean = false;
+    ticketMessageCols: number = 100;
 
     public async ngOnInit() {
         forkJoin([
@@ -30,6 +31,11 @@ export class TicketComponent implements OnInit {
 
         if (localStorage["t_n"]) {
             this.isAvailableTicket = true;
+        }
+
+         // Планшеты.
+         if (window.matchMedia('screen and (min-width: 600px) and (max-width: 992px)').matches) {
+            this.ticketMessageCols = 50;
         }
     };
 
