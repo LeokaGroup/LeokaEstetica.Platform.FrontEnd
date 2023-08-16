@@ -27,6 +27,7 @@
 
 .worksheet-line {
     margin-top: 30px;
+    justify-content: space-between;
 }
 
 // Стили для пиклиста.
@@ -98,28 +99,27 @@
 }
 
 // Медиа-запросы.
-// Малые девайсы («ландшафтные телефоны», >= 576px)
-@media (min-width: 576px) {}
+@media (max-width: 575px) {}
 
-// Средние девайсы («таблетки», >= 768px)
-@media (min-width: 768px) {
-  
+/* sm (>=576 и <=767) */
+@media (min-width: 576px) and (max-width: 767px) {
+  .block-worksheet {
+    margin-left: 200px;
+    margin-right: 10px;
+  }
 }
 
-// Большие девайсы (десктопы, >= 992px)
-@media (min-width: 992px) {}
+/* md (>=768 и <=991) */
+@media (min-width: 768px) and (max-width: 991px) {
+ .worksheet-panel {
+    margin-left: 250px;
+ }
+}
 
-// Экстрабольшие девайсы (большие десктопы, >= 1200px)
+/* lg (>=992 и <=1199) */
+@media (min-width: 992px) and (max-width: 1199px) {}
+
+/* xl (>=1200) */
 @media (min-width: 1200px) {
-    // .profile-left-menu {
-    //     width: 30%;
-    //     margin-left: 10px;
-    //     width: 200px;
-    //   }
-    // .worksheet-panel {
-    //     margin-left: 50px;
-    // }
-    .block-worksheet {
-        margin-left: 50px;
-    }
+ 
 }
