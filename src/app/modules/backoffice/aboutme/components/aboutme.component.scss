@@ -10,8 +10,13 @@
     margin-top: 50px;
 }
 
+.block-contact {
+    display: flex;
+    justify-content: space-between;
+}
+
 .input-control-worksheet {
-    width: 300px;
+    width: 200px;
     outline: none;
 
     &:focus {
@@ -107,12 +112,40 @@
     margin-left: 200px;
     margin-right: 10px;
   }
+
+  .block-contact {
+    flex-direction: column;
+ }
+
+ .worksheet-line {
+    flex-direction: column;
+ }
+
+ .control-input-text-worksheet {
+    margin: 20px 10px 0 0px;
+ }
 }
 
 /* md (>=768 и <=991) */
 @media (min-width: 768px) and (max-width: 991px) {
  .worksheet-panel {
     margin-left: 250px;
+ }
+
+ .block-contact {
+    flex-direction: column;
+ }
+
+ .worksheet-line {
+    flex-direction: column;
+ }
+
+ .control-input-text-worksheet {
+    margin: 20px 10px 0 0px;
+ }
+
+ .input-about-me {
+    width: 400px;
  }
 }
 
@@ -121,5 +154,5 @@
 
 /* xl (>=1200) */
 @media (min-width: 1200px) {
- 
+
 }
