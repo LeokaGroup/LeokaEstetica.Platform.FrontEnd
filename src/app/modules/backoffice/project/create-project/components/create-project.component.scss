@@ -1,11 +1,6 @@
 @use "/src/app/common/styles/spaces.scss";
 @use "/src/app/common/styles/control.scss";
 
-.block-worksheet {
-    margin-right: 50px;
-    margin-left: 50px;
-}
-
 // Медиа-запросы.
 @media (max-width: 575px) {}
 
@@ -57,5 +52,7 @@
 
 /* xl (>=1200) */
 @media (min-width: 1200px) {
-
+    .worksheet-panel {
+        margin-left: 10px;
+     }
 }
