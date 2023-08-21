@@ -37,11 +37,14 @@
 }
 
 /* lg (>=992 и <=1199) */
-@media (min-width: 992px) and (max-width: 1199px) {}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .profile-left-menu {
+    margin-left: 10px;
+    width: 170px;
+  }
+}
 
 /* xl (>=1200) */
 @media (min-width: 1200px) {
-  .block-worksheet {
-    margin-left: 50px;
-  }
+ 
 }
