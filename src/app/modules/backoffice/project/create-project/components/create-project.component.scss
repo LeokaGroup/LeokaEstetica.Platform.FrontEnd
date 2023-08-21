@@ -13,38 +13,38 @@
 
   .block-contact {
     flex-direction: column;
- }
+  }
 
- .worksheet-line {
+  .worksheet-line {
     flex-direction: column;
- }
+  }
 
- .control-input-text-worksheet {
+  .control-input-text-worksheet {
     margin: 20px 10px 0 0px;
- }
+  }
 }
 
 /* md (>=768 и <=991) */
 @media (min-width: 768px) and (max-width: 991px) {
- .worksheet-panel {
+  .worksheet-panel {
     margin-left: 250px;
- }
+  }
 
- .block-contact {
+  .block-contact {
     flex-direction: column;
- }
+  }
 
- .worksheet-line {
+  .worksheet-line {
     flex-direction: column;
- }
+  }
 
- .control-input-text-worksheet {
+  .control-input-text-worksheet {
     margin: 20px 10px 0 0px;
- }
+  }
 
- .input-about-me {
+  .input-about-me {
     width: 400px;
- }
+  }
 }
 
 /* lg (>=992 и <=1199) */
@@ -52,7 +52,7 @@
 
 /* xl (>=1200) */
 @media (min-width: 1200px) {
-    .worksheet-panel {
-        margin-left: 10px;
-     }
+  .worksheet-panel {
+    margin-left: 10px;
+  } 
 }
