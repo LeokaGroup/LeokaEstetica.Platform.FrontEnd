@@ -3,7 +3,7 @@
 <div class="d-flex block-profile space-top-80">
   <div class="profile-left-menu col-lg-3">
   </div>
-  <div>
+  <div class="profile-table">
     <p-table [value]="listVacancy$.value.vacancies"
              [(selection)]="selectedVacancy"
              dataKey="vacancyId"
@@ -41,13 +41,13 @@
           <td>{{vacancy.vacancyStatusName}}</td>
           <td><button pButton type="button"
                       label="Просмотр"
-                      class="p-button-outlined p-button-primaryproject.projectId"
+                      class="p-button-outlined p-button-primary"
                       (click)="onRouteViewVacancy(vacancy.vacancyId)">
           </button>
           </td>
           <td><button pButton type="button"
                       label="Редактировать"
-                      class="p-button-outlined p-button-primaryproject.projectId"
+                      class="p-button-outlined p-button-primary"
                       (click)="onRouteEditVacancy(vacancy.vacancyId)">
           </button>
           </td>
