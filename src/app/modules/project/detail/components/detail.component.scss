@@ -76,3 +76,63 @@
     padding: 10px;
     margin: 10px 0;
   }
+
+  // Медиа-запросы.
+@media (max-width: 575px) {}
+
+/* sm (>=576 и <=767) */
+@media (min-width: 576px) and (max-width: 767px) {
+  .block-worksheet {
+    margin-left: 200px;
+    margin-right: 10px;
+  }
+
+  .block-contact {
+    flex-direction: column;
+ }
+
+ .worksheet-line {
+    flex-direction: column;
+ }
+
+ .control-input-text-worksheet {
+    margin: 20px 10px 0 0px;
+ }
+}
+
+/* md (>=768 и <=991) */
+@media (min-width: 768px) and (max-width: 991px) {
+ .worksheet-panel {
+    margin-left: 250px;
+ }
+
+ .block-contact {
+    flex-direction: column;
+ }
+
+ .worksheet-line {
+    flex-direction: column;
+ }
+
+ .control-input-text-worksheet {
+    margin: 20px 10px 0 0px;
+ }
+
+ .input-about-me {
+    width: 400px;
+ }
+}
+
+/* lg (>=992 и <=1199) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .worksheet-panel {
+        width: 400px;
+    }
+}
+
+/* xl (>=1200) */
+@media (min-width: 1200px) {
+    .worksheet-panel {
+        margin-left: 10px;
+     }
+}

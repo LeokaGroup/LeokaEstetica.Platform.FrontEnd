@@ -32,7 +32,7 @@
 
     <div class="worksheet-panel">
       <p-panel header="Контактная информация" [toggleable]="true">
-        <div class="d-flex justify-content-between">
+        <div class="block-contact">
             <div class="control-input-text-worksheet">
                 <input type="text"
                         class="p-inputtext-sm input-control-worksheet"
@@ -228,7 +228,8 @@
                             autocomplete="new-password"
                             placeholder="Напишите о себе"
                             [(ngModel)]="aboutme"
-                            *ngIf="isModeEdit"></textarea>
+                            *ngIf="isModeEdit"
+                            class="input-about-me"></textarea>
                 <div *ngIf="isModeView">
                   <label>
                     <small>О себе</small>

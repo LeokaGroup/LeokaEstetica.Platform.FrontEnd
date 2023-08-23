@@ -1,11 +1,11 @@
 <p-toast></p-toast>
 
 <div class="d-flex block-profile space-top-50">
-  <div class="profile-left-menu col-lg-3">
+  <div class="profile-left-menu col-lg-3 col-xl-3 col-xxl-3">
 
   </div>
 
-  <div>
+  <div class="worksheet-panel block-worksheet profile-table">
     <p-table [value]="userProjects$.value.userProjects"
             [(selection)]="selectedProjects"
             dataKey="projectId"
@@ -22,10 +22,10 @@
         <tr>
           <th></th>
           <th *ngFor="let item of projectColumns$.value">{{item.columnName}}</th>
-          <th>Просмотр</th>
-          <th>Редактирование</th>
-          <th>Архивирование</th>
-          <th>Удаление</th>
+          <th class="table-header-item">Просмотр</th>
+          <th class="table-header-item">Изменить</th>
+          <th class="table-header-item">Архив</th>
+          <th class="table-header-item">Удалить</th>
         </tr>
       </ng-template>
 
@@ -34,13 +34,13 @@
             <td>
               <p-tableCheckbox [value]="project"></p-tableCheckbox>
             </td>
-            <td>{{project.projectId}}</td>
-            <td>{{project.projectName}}</td>
-            <td>{{project.projectDetails}}</td>
-            <td>{{project.projectStatusName}}</td>
+            <td class="table-header-item">{{project.projectId}}</td>
+            <td class="table-header-item">{{project.projectName}}</td>
+            <td class="table-header-item">{{project.projectDetails}}</td>
+            <td class="table-header-item">{{project.projectStatusName}}</td>
             <td><button pButton type="button"
               label="Просмотр"
-              class="p-button-outlined p-button-primaryproject.projectId"
+              class="p-button-outlined p-button-primary"
               (click)="onRouteViewProject(project.projectId)">
                 </button>
             </td>
