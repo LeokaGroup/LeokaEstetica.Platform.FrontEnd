@@ -28,8 +28,8 @@
           <div class="mt-3" *ngIf="disableDiscount">
             <strong>Цена:</strong>
             <p>{{orderForm.price + ' ₽'}}</p>
-            <div>
-              <small>При оплате на месяц скидка не предоставляется.</small>
+            <div *ngIf="paymentMonth == 1">
+              <small>При оплате на месяц скидка не предоставляется (но учитывается остаток по тарифу).</small>
             </div>
           </div>          
           </div>
