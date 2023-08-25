@@ -188,10 +188,12 @@ export class AboutmeComponent implements OnInit {
             await this.getSelectedUserSkillsAsync();
             await this.getSelectedUserIntentsAsync();
 
-            setTimeout(() => {
-                localStorage["u_e"] = response.email;
-                localStorage["t_n"] = response.token;
-            }, 4000);  
+            if (response.isEmailChanged) {
+                setTimeout(() => {
+                    localStorage["u_e"] = response.email;
+                    localStorage["t_n"] = response.token;
+                }, 4000);  
+            }
         });
     };
 
