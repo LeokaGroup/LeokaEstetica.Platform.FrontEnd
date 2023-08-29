@@ -14,5 +14,8 @@
     outline-offset: -2px;
 
   }
+}
 
+::ng-deep .p-button:focus {
+  box-shadow: none;
 }

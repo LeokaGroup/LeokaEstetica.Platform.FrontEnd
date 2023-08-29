@@ -30,7 +30,8 @@
           <button pButton  
                  type="button" 
                  label="Что входит в подписку?"
-                 class="p-button-text p-button-plain">
+                 class="p-button-text p-button-plain btn-subscription"
+                 (click)="onShowFareRuleDetailsAsync(item.objectId)">
          </button>
 
          <button pButton  
@@ -56,5 +57,29 @@
   <ng-template pTemplate="footer">
     <p-button (click)="isRefund=false" label="Отменить" styleClass="p-button-text"></p-button>
     <p-button (click)="onRefundAsync()" label="Отключить подписку" styleClass="p-button-secondary p-button-text"></p-button>
+  </ng-template>
+</p-dialog>
+
+<!-- Диалог с данными тарифа. -->
+<p-dialog header="Описание и условия тарифа"
+          [(visible)]="isFareRuleDetails"
+          [breakpoints]="{'960px': '75vw'}"
+          [style]="{width: '50vw'}"
+          [draggable]="false"
+          [resizable]="false">
+  <div>
+    <strong>Название тарифа:</strong>
+          <p>{{fareRuleInfo.name}}</p>
+
+          <strong>Условия:</strong>
+          <ul *ngFor="let fr of fareRuleInfo.fareRuleItems">
+            <li>{{fr.name}} {{fr.label}}</li>
+          </ul>
+
+          <strong>Цена:</strong>
+          <p>{{fareRuleInfo.price + ' ' + '₽/мес.'}}</p>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button (click)="isFareRuleDetails=false" label="Понятно" styleClass="p-button-text"></p-button>
   </ng-template>
 </p-dialog>
