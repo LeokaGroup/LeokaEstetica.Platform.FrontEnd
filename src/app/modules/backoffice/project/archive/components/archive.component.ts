@@ -58,6 +58,7 @@ export class ProjectsArchiveComponent implements OnInit {
      */
     private listenAllHubsNotifications() {
         this._signalrService.listenSuccessDeleteProjectArchive();
+        this._signalrService.listenSendNotificationWarningDeleteProjectArchive();
     };
 
     /**
