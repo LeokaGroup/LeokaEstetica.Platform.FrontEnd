@@ -55,6 +55,7 @@ export class VacanciesArchiveComponent implements OnInit {
     private listenAllHubsNotifications() {
         this._signalrService.listenSuccessDeleteVacancyArchive();
         this._signalrService.listenSendNotificationErrorDeleteVacancyArchive();
+        this._signalrService.listenSendNotificationWarningDeleteVacancyArchive();
     };
 
     /**
