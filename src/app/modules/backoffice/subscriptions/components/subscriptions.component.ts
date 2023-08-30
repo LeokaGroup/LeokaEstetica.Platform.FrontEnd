@@ -20,10 +20,13 @@ export class SubscriptionsComponent implements OnInit {
 
     public readonly subscriptions$ = this._subscriptionsService.subscriptions$;  
     public readonly refund$ = this._subscriptionsService.refund$;  
+    public readonly fareRuleInfo$ = this._subscriptionsService.fareRuleInfo$;    
 
     refundPrice: number = 0;
     isRefund: boolean = false;
     allFeedSubscription: any;
+    isFareRuleDetails: boolean = false;
+    fareRuleInfo: any = {};
 
     public async ngOnInit() {
         forkJoin([
@@ -78,5 +81,18 @@ export class SubscriptionsComponent implements OnInit {
 
     public onRefundAsync() {
 
+    };
+
+    /**
+     * Функция получает детали тарифа.
+     * @param objectId - Id тарифа.
+     */
+    public async onShowFareRuleDetailsAsync(objectId: number) {
+        (await this._subscriptionsService.getFareRuleDetailsAsync(objectId))
+        .subscribe(_ => {
+            console.log("Информация о тарифе: ", this.fareRuleInfo$.value);
+            this.fareRuleInfo = this.fareRuleInfo$.value;
+            this.isFareRuleDetails = true;
+        });
     };
 }

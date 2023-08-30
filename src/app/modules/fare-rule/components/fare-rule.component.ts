@@ -23,6 +23,7 @@ export class FareRuleComponent implements OnInit {
     numVisible: number = 3;
     numScroll: number = 3;
     carouselType: string = "";
+    isAvailableFareRule: boolean = false;
 
     public async ngOnInit() {
         forkJoin([
@@ -34,6 +35,10 @@ export class FareRuleComponent implements OnInit {
             this.numVisible = 1;
             this.numScroll = 1;
             this.carouselType = "vertical";
+        }
+
+        if (localStorage["t_n"]) {
+            this.isAvailableFareRule = true;
         }
     };
 

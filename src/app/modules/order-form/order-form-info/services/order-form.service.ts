@@ -9,6 +9,7 @@ import { API_URL } from 'src/app/core/core-urls/api-urls';
 @Injectable()
 export class OrderFormService {
     public fareRuleInfo$ = new BehaviorSubject<any>(null);
+    public isEmptyProfile$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -22,6 +23,16 @@ export class OrderFormService {
     public async getFareRuleInfoAsync(publicId: string) {
         return await this.http.get(API_URL.apiUrl + `/commercial/fare-rule/order-form/${publicId}/info`).pipe(
             tap(data => this.fareRuleInfo$.next(data))
+        );
+    };
+
+    /**
+    * Функция проверяет заполнение анкеты.
+    * @returns - Признак проверки заполнения анкеты.
+    */
+     public async isProfileEmptyAsync() {
+        return await this.http.get(API_URL.apiUrl + `/commercial/check-profile`).pipe(
+            tap(data => this.isEmptyProfile$.next(data))
         );
     };
 }

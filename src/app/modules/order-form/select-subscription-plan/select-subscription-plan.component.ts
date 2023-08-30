@@ -63,6 +63,11 @@ export class OrderFormSelectSubscriptionPlanComponent implements OnInit {
     this.orderCacheInput.publicId = this.publicId;
     this.orderCacheInput.paymentMonth = this.paymentMonth;
     console.log("CreateOrderCacheInput", this.orderCacheInput);
+
+    // Ставим небольшую задержку, чтобы не пулять сразу много запросов по скролу.
+    setTimeout(async () => {
+      await this.onCreateOrderCacheAsync();
+    }, 500);
   };
 
   /**

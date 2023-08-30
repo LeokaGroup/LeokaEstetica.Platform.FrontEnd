@@ -28,9 +28,13 @@
             <div class="d-flex justify-content-center">
               <div class="control-fare-rule" *ngIf="fare.ruleId > 1">
                 <button type="submit" class="btn btn-primary button-action-pur-control"
-                  (click)="onRouteOrderInfoAsync(fare.publicId)">
+                  (click)="onRouteOrderInfoAsync(fare.publicId)"
+                  [disabled]="!isAvailableFareRule">
                   Оформить
                 </button>
+                <div class="d-flex justify-content-center" *ngIf="!isAvailableFareRule">
+                  <small>Для оформления тарифа нужно быть авторизованными.</small>   
+                </div>
               </div>  
             </div>   
           </div>         

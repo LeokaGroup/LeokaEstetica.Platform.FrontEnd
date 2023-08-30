@@ -437,4 +437,22 @@ export class SignalrService {
       this.$allFeed.next(data);
     });
   };
+
+  /**
+   * Функция слушает уведомления ошибки при удалении проекта из архива.
+   */
+   public listenSendNotificationWarningDeleteProjectArchive() {
+    (<HubConnection>this.hubConnection).on("SendNotificationWarningDeleteProjectArchive", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает уведомления ошибки при удалении вакансии из архива.
+   */
+   public listenSendNotificationWarningDeleteVacancyArchive() {
+    (<HubConnection>this.hubConnection).on("SendNotificationWarningDeleteVacancyArchive", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 }
