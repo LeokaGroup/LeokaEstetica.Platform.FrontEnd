@@ -10,6 +10,7 @@ import { OrderDetailsComponent } from './orders/order-details/components/order-d
 import { ProjectsArchiveComponent } from './project/archive/components/archive.component';
 import { VacanciesArchiveComponent } from './vacancy/archive/components/archive.component';
 import { RestoreComponent } from './restore/components/restore.component';
+import { MessagesComponent } from './messages/messages.component';
 
 const routes: Routes = [
     {
@@ -50,6 +51,10 @@ const routes: Routes = [
 
     {
         path: 'restore', component: RestoreComponent
+    },
+
+    {
+        path: 'messages', component: MessagesComponent
     }
 ];
 

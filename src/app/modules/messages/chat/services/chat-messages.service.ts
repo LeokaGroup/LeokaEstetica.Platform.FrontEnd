@@ -16,6 +16,7 @@ export class ChatMessagesService {
 
     public messages$ = new BehaviorSubject<any>(null);  
     public dialog$ = new BehaviorSubject<any>(null);  
+    public profileMessages$ = new BehaviorSubject<any>(null);  
 
     /**
      * Функция получает список диалогов.
@@ -24,6 +25,16 @@ export class ChatMessagesService {
     public async getProjectDialogsAsync() {
         return await this._http.get(API_URL.apiUrl + `/chat/dialogs`).pipe(
             tap(data => this.messages$.next(data))
+        );
+    };
+
+    /**
+     * Функция получает список диалогов для ЛК.
+     * @returns - Список диалогов.
+     */
+     public async getProfileDialogsAsync() {
+        return await this._http.get(API_URL.apiUrl + `/chat/profile-messages`).pipe(
+            tap(data => this.profileMessages$.next(data))
         );
     };
 
