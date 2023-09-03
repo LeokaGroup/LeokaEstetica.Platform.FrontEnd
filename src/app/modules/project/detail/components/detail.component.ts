@@ -192,6 +192,13 @@ export class DetailProjectComponent {
         (await this._projectService.getProjectAsync(projectId, mode))
         .subscribe((response: any) => {
             console.log("Получили проект: ", this.selectedProject$.value);
+
+            // Нет доступа к проекту.
+            if (!this.selectedProject$.value.isAccess) {
+                this._router.navigate(["/forbidden"]);
+                return;
+            }
+
             this.isVisibleDeleteButton = response.isVisibleDeleteButton;
             this.isVisibleActionProjectButtons = response.isVisibleActionProjectButtons;
             this.isVisibleActionDeleteProjectTeamMember = response.isVisibleActionDeleteProjectTeamMember;
@@ -318,13 +325,15 @@ export class DetailProjectComponent {
     public async onShowVacancyModal(vacancyId: number, isEdit: boolean) {
         console.log(this.isShowVacancyModal);
         this.isShowVacancyModal = true;
+        let mode = "View";
         this.isEditMode = isEdit;
 
         if (isEdit) {
             this.vacancyId = vacancyId;
+            mode = "Edit";
         }
 
-        (await this._vacancyService.getVacancyByIdAsync(vacancyId))
+        (await this._vacancyService.getVacancyByIdAsync(vacancyId, mode))
         .subscribe(async _ => {
             console.log("Получили вакансию: ", this.selectedVacancy$.value);
             this.vacancyName = this.selectedVacancy$.value.vacancyName;

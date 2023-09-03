@@ -36,13 +36,15 @@ import { OrderFormModule } from './modules/order-form/order-form.module';
 import { OrderFormService } from './modules/order-form/order-form-info/services/order-form.service';
 import { OrderService } from './modules/order-form/services/order.service';
 import { TicketService } from './modules/ticket/services/ticket.service';
+import { ForbiddenComponent } from './modules/forbidden/forbidden.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     LeftMenuComponent,
-    FooterComponent
+    FooterComponent,
+    ForbiddenComponent
   ],
 
   imports: [

@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Message, MessageService } from "primeng/api";
+import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
@@ -88,12 +88,12 @@ export class DetailVacancyComponent implements OnInit {
             let mode = params["mode"];
 
             if (mode == "view") {
-                this.getVacancyByIdAsync(params["vacancyId"]);  
+                this.getVacancyByIdAsync(params["vacancyId"], "View");  
                 this.isEditMode = false;
             }
 
             if (mode == "edit") {
-                this.getVacancyByIdAsync(params["vacancyId"]);             
+                this.getVacancyByIdAsync(params["vacancyId"], "Edit");             
                 this.isEditMode = true;   
             }
 
@@ -109,10 +109,17 @@ export class DetailVacancyComponent implements OnInit {
      * Функция получает вакансию.
      * @param vacancyId - Id вакансии.
      */
-    private async getVacancyByIdAsync(vacancyId: number) {
-        (await this._vacancyService.getVacancyByIdAsync(vacancyId))
+    private async getVacancyByIdAsync(vacancyId: number, mode: string) {
+        (await this._vacancyService.getVacancyByIdAsync(vacancyId, mode))
             .subscribe(async _ => {
                 console.log("Получили вакансию: ", this.selectedVacancy$.value);
+
+                // Нет доступа к вакансии.
+                if (!this.selectedVacancy$.value.isAccess) {
+                    this._router.navigate(["/forbidden"]);
+                    return;
+                }
+
                 this.vacancyName = this.selectedVacancy$.value.vacancyName;
                 this.vacancyText = this.selectedVacancy$.value.vacancyText;
                 this.workExperience = this.selectedVacancy$.value.workExperience;
