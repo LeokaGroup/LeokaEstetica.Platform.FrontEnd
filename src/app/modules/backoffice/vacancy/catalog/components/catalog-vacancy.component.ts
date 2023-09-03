@@ -137,7 +137,6 @@ export class CatalogVacancyComponent implements OnInit {
      * @returns - Входная модель.
      */
     private createFilterVacancyResult(): FilterVacancyInput {
-        debugger;
         let model = new FilterVacancyInput();
         model.Salary = this.selectedSalary ? this.selectedSalary.key : "None";
 

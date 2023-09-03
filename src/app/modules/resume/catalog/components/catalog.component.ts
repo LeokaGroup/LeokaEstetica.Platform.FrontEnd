@@ -76,6 +76,7 @@ export class CatalogResumeComponent implements OnInit {
     .subscribe(_ => {
         console.log("Результаты поиска: ", this.catalogResumes$.value);
         this.aResumesCatalog = this.catalogResumes$.value.catalogResumes;
+        this.rowsCount = this.catalogResumes$.value.total;
     });
    };
 
@@ -105,6 +106,7 @@ export class CatalogResumeComponent implements OnInit {
             .subscribe(_ => {
                 console.log("Пагинация: ", this.pagination$.value), "page: " + this.page;
                 this.aResumesCatalog = this.pagination$.value.resumes;
+                this.rowsCount = this.pagination$.value.total;
                 this.setUrlParams(1);    
             });
     };
