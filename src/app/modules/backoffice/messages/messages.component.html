@@ -1,0 +1,90 @@
+<div class="d-flex block-profile space-top-80">
+    <div class="profile-left-menu col-lg-3">
+  
+    </div>
+  
+    <div>
+      <div class="worksheet-panel space-top text-center">
+        <p-panel header="Чат с владельцем проекта" [toggleable]="true" [collapsed]="false">
+          <div class="d-flex">
+            <div class="control-input-text-worksheet">
+              <div class="mb-3">
+                <div>
+                  <p-splitter [style]="{'height': '500px'}"
+                      [panelSizes]="[20,80]"
+                      [minSizes]="[10,0]"
+                      styleClass="mb-5"
+                      class="chat">
+            <!-- <ng-template pTemplate>
+                <div class="col flex align-items-center justify-content-center">
+                    {{userName}}
+                </div>
+            </ng-template> -->
+            <ng-template pTemplate>
+                <p-splitter layout="vertical" [panelSizes]="[15,85]">
+                    <!-- <ng-template pTemplate>
+                        <div class="col flex align-items-center justify-content-center">
+    
+                        </div>
+                    </ng-template> -->
+                    <ng-template pTemplate>
+                        <p-splitter [panelSizes]="[20,80]" [style]="{'width': '800px'}">
+                          <!-- Левая область чата. -->
+                            <ng-template pTemplate>
+                                <div class="col flex align-items-center justify-content-center"
+                                    *ngFor="let item of aDialogs">
+                                    <div class="block-message" (click)="onGetDialogAsync(item.dialogId, item.projectId)">
+                                      <div class="d-flex justify-content-between">
+                                        <div>
+                                          <div>
+                                            <strong>{{item.fullName}}</strong>
+                                          </div>
+    
+                                          <div>
+                                            <span class="message">{{item.lastMessage}}</span>
+                                          </div>
+                                        </div>
+    
+                                        <div>
+                                          {{item.calcShortDate}}
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+    
+                            <!-- Основная область чата. -->
+                            <ng-template pTemplate>
+                                <div class="block-messages">
+                                  <div *ngFor="let item of aMessages">
+                                    <div class="d-flex justify-content-between">
+                                      <p>{{item.message}}</p>
+                                      <span class="time-right">{{item.created}}</span>
+                                    </div>
+                                  </div>
+                                </div>
+    
+                                <div>
+                                  <input type="text"
+                                  class="p-inputtext-sm input-control-worksheet control-project"
+                                  placeholder="Введите сообщение"
+                                  pInputText
+                                  autocomplete="new-password"
+                                  [(ngModel)]="message"
+                                  (keyup.enter)="onSendMessageAsync()" />
+                                </div>
+                            </ng-template>
+                        </p-splitter>
+                    </ng-template>
+                </p-splitter>
+            </ng-template>
+        </p-splitter>
+                </div>
+              </div>
+            </div>
+          </div>
+        </p-panel>
+      </div>
+    </div>
+  </div>
+  

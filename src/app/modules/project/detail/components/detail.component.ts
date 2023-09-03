@@ -417,7 +417,6 @@ export class DetailProjectComponent {
     };
 
     /**
-     * TODO: Эту функцию запускать при раскрытии чата, не надо на ините дергать ее.
      * Функция получает список диалогов.
      * @returns - Список диалогов.
      */
@@ -445,7 +444,6 @@ export class DetailProjectComponent {
             .then((response: any) => {                
                 console.log("Сообщения диалога: ", this.dialog$.value);                               
                 this.aMessages = response.messages;                     
-                debugger;
                 let lastMessage = response.messages[response.messages.length - 1];   
                 this.lastMessage = lastMessage;  
                 // let a1 = this.dialog$.value.messages.getValue();                
@@ -481,11 +479,9 @@ export class DetailProjectComponent {
             this.messages$ = new BehaviorSubject([]);
 
             new Promise(async (resolve, reject) => {
-                debugger;
                 await this.onGetDialogAsync(this.dialogId);
                 resolve(1);
             }).then(() => {
-                debugger;
                 let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
                 this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
             });         
