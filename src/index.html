@@ -10,18 +10,47 @@
 </head>
 
 <body>
-  <!-- TODO: Все это надо будет отрефачить и вынести отдельно куда-нибудь. -->
-  <!-- TODO: Также в идеале строку ендпоинта получать с бэка надо, для этого делать запрос до получения из Google данных аккаунта. -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <script>
+    var vkReference;
+    var vkRedirectReference;
+    var googleReference;
+    var googleRedirectReference;
+
+    window.addEventListener('load', () => {
+    if (window.location.pathname == "/user/signin") {
+    $.ajax({
+    url: window.location.href.includes("https://leoka-estetica-dev.ru") ||
+    window.location.href.includes("http://localhost:4200/")
+    ? "https://leoka-estetica-dev.online/user/providers-config"
+    // ? "http://localhost:9992/user/providers-config"
+    : window.location.href.includes("https://leoka-estetica-test.ru")
+    ? "https://leoka-estetica-test.online/user/providers-config"
+    : "https://leoka-estetica.online/user/providers-config",
+    dataType: 'json',
+    contentType: 'application/json',
+    type: 'GET',    
+    success: function (response) {
+    vkReference = response.vkReference;
+    vkRedirectReference = response.vkRedirectReference;
+    googleReference = response.googleReference;
+    googleRedirectReference = response.googleRedirectReference;
+    }
+    });
+    }
+    });
+  </script>
+
+  <!-- TODO: Все это надо будет отрефачить и вынести отдельно куда-нибудь. -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script>      
     function handleCredentialResponse(response) {
       let userSignInGoogleInput = {
         googleAuthToken: response.credential
       };
 
       $.ajax({
-        url: 'https://leoka-estetica-dev.online/user/signin-google', // TODO: Переделать на получение с бэка.
+        url: googleReference,
         type: 'POST',
         dataType: 'json',
         contentType: 'application/json',
@@ -31,8 +60,7 @@
             localStorage["t_n"] = data.token;
             localStorage["u_c"] = data.userCode;
 
-            // TODO: Переделать на получение с бэка.
-            window.location.href = "https://leoka-estetica-dev.ru/profile/aboutme?mode=view";
+            window.location.href = googleRedirectReference;
           }
         }
       });
@@ -55,18 +83,13 @@
   </script>
 
   <script src="https://vk.com/js/api/openapi.js?169" type="text/javascript"></script>
-  <script type="text/javascript">
-    VK.init({
-      apiId: 51577951
-    });
-  </script>
-
   <script type="text/javascript" src="https://vk.com/js/api/openapi.js?169"></script>
   <script type="text/javascript">
     VK.init({
       apiId: 51577951
     });
   </script>
+
 
   <!-- VK Widget -->
   <script type="text/javascript">
@@ -80,7 +103,7 @@
           };
 
           $.ajax({
-            url: 'https://leoka-estetica-dev.online/user/signin-vk', // TODO: Переделать на получение с бэка.
+            url: vkReference,
             type: 'POST',
             dataType: 'json',
             contentType: 'application/json',
@@ -90,8 +113,7 @@
                 localStorage["t_n"] = data.token;
                 localStorage["u_c"] = data.userCode;
 
-                // TODO: Переделать на получение с бэка.
-                window.location.href = "https://leoka-estetica-dev.ru/profile/aboutme?mode=view";
+                window.location.href = vkRedirectReference;
               }
             }
           });
