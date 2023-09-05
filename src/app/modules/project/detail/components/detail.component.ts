@@ -192,6 +192,13 @@ export class DetailProjectComponent {
         (await this._projectService.getProjectAsync(projectId, mode))
         .subscribe((response: any) => {
             console.log("Получили проект: ", this.selectedProject$.value);
+
+            // Нет доступа к проекту.
+            if (!this.selectedProject$.value.isAccess) {
+                this._router.navigate(["/forbidden"]);
+                return;
+            }
+
             this.isVisibleDeleteButton = response.isVisibleDeleteButton;
             this.isVisibleActionProjectButtons = response.isVisibleActionProjectButtons;
             this.isVisibleActionDeleteProjectTeamMember = response.isVisibleActionDeleteProjectTeamMember;
@@ -318,13 +325,15 @@ export class DetailProjectComponent {
     public async onShowVacancyModal(vacancyId: number, isEdit: boolean) {
         console.log(this.isShowVacancyModal);
         this.isShowVacancyModal = true;
+        let mode = "View";
         this.isEditMode = isEdit;
 
         if (isEdit) {
             this.vacancyId = vacancyId;
+            mode = "Edit";
         }
 
-        (await this._vacancyService.getVacancyByIdAsync(vacancyId))
+        (await this._vacancyService.getVacancyByIdAsync(vacancyId, mode))
         .subscribe(async _ => {
             console.log("Получили вакансию: ", this.selectedVacancy$.value);
             this.vacancyName = this.selectedVacancy$.value.vacancyName;
@@ -417,7 +426,6 @@ export class DetailProjectComponent {
     };
 
     /**
-     * TODO: Эту функцию запускать при раскрытии чата, не надо на ините дергать ее.
      * Функция получает список диалогов.
      * @returns - Список диалогов.
      */
@@ -445,7 +453,6 @@ export class DetailProjectComponent {
             .then((response: any) => {                
                 console.log("Сообщения диалога: ", this.dialog$.value);                               
                 this.aMessages = response.messages;                     
-                debugger;
                 let lastMessage = response.messages[response.messages.length - 1];   
                 this.lastMessage = lastMessage;  
                 // let a1 = this.dialog$.value.messages.getValue();                
@@ -481,11 +488,9 @@ export class DetailProjectComponent {
             this.messages$ = new BehaviorSubject([]);
 
             new Promise(async (resolve, reject) => {
-                debugger;
                 await this.onGetDialogAsync(this.dialogId);
                 resolve(1);
             }).then(() => {
-                debugger;
                 let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
                 this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
             });         

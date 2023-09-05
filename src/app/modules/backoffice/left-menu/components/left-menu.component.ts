@@ -50,6 +50,7 @@ export class LeftMenuComponent implements OnInit {
 
     archivedProjectsSysNames: string = "ArchiveProjects";
     archivedVacanciesSysNames: string = "ArchiveVacancies";
+    profileMessages: string = "Messages"
 
     constructor(private readonly _backOfficeService: BackOfficeService,
         private readonly _router: Router,
@@ -162,6 +163,11 @@ export class LeftMenuComponent implements OnInit {
              // Роут на страницу архива вакансий пользователя.
              if (this.archivedVacanciesSysNames == this.sysName) {
                 this._router.navigate(["/vacancies/archive"]);
+            }
+
+             // Роут на страницу сообщений ЛК пользователя.
+             if (this.profileMessages == this.sysName) {
+                this._router.navigate(["/profile/messages"]);
             }
         });
     };

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ForbiddenComponent } from './modules/forbidden/forbidden.component';
 
 const routes: Routes = [
   {
@@ -45,6 +46,10 @@ const routes: Routes = [
   {
     path: "profile",
     loadChildren: () => import('./modules/ticket/ticket.module').then(m => m.TicketModule)
+  },
+
+  {
+    path: 'forbidden', component: ForbiddenComponent
   }
 ];
 

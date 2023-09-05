@@ -30,7 +30,7 @@ export class NetworkInterceptor implements HttpInterceptor {
         // req = req.clone({ headers: req.headers.set('Content-Type', 'multipart/form-data') });
         // req = req.clone({ headers: req.headers.set('Content-Type', 'multipart/form-data;boundary="boundary"') });
 
-        let loadTimeout = setTimeout(()=>{
+        let loadTimeout = setTimeout(()=> {
             this._loader.setBusy(true);
         }, 1000)
 

@@ -50,10 +50,8 @@ export class AppComponent implements OnInit {
   public rerender(): void {
     console.log("reload");
     this.isVisibleMenu = false; 
-    // this.isVisibleHeader = false;    
     this.changeDetectorRef.detectChanges();
     this.isVisibleMenu = true;    
-    // this.isVisibleHeader = true;
     console.log("isVisibleHeader", this.isVisibleHeader);
 };
 
@@ -71,6 +69,10 @@ export class AppComponent implements OnInit {
             if (this.currentUrl == "/") {
               this.isVisibleMenu = false;
             }
+
+            if (this.currentUrl == "/forbidden") {
+              this.isVisibleMenu = false;
+            }
           }
         });
   };
@@ -82,6 +84,10 @@ export class AppComponent implements OnInit {
   private checkRoutes(currentUrl: string) {
     this.currentUrl = currentUrl;
     this.rerender();
+
+    if (currentUrl == "forbidden") {
+      this.isVisibleMenu = false;
+    }
 
     // Отображение левого меню профиля пользователя.
     if (this._aVisibleProfileMenuRoutes.includes(currentUrl)) {

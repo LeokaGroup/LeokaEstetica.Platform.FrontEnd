@@ -34,6 +34,8 @@ import { OrderDetailsComponent } from './orders/order-details/components/order-d
 import { ProjectsArchiveComponent } from './project/archive/components/archive.component';
 import { RestoreComponent } from './restore/components/restore.component';
 import { MessageModule } from 'primeng/message';
+import { MessagesComponent } from './messages/messages.component';
+import { SplitterModule } from 'primeng/splitter';
 
 
 @NgModule({
@@ -46,7 +48,8 @@ import { MessageModule } from 'primeng/message';
         OrdersComponent,
         OrderDetailsComponent,
         ProjectsArchiveComponent,
-        RestoreComponent
+        RestoreComponent,
+        MessagesComponent
     ],
 
     imports: [
@@ -70,7 +73,8 @@ import { MessageModule } from 'primeng/message';
         CardModule,
         DialogModule,
         MessagesModule,
-        MessageModule
+        MessageModule,
+        SplitterModule
     ],
 
     exports: [],
