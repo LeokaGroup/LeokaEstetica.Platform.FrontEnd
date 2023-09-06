@@ -20,10 +20,11 @@ export class ChatMessagesService {
 
     /**
      * Функция получает список диалогов.
+     * @param projectId - Id проекта. Если не передали, то получает все диалоги.
      * @returns - Список диалогов.
      */
-    public async getProjectDialogsAsync() {
-        return await this._http.get(API_URL.apiUrl + `/chat/dialogs`).pipe(
+    public async getProjectDialogsAsync(projectId: number | null) {
+        return await this._http.get(API_URL.apiUrl + `/chat/dialogs?projectId=${projectId}`).pipe(
             tap(data => this.messages$.next(data))
         );
     };
