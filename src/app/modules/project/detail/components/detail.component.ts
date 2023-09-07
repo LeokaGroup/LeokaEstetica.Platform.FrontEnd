@@ -118,7 +118,7 @@ export class DetailProjectComponent {
         await this.getProjectVacanciesAsync(),
         await this.getProjectVacanciesColumnNamesAsync(),
         await this.getAvailableAttachVacanciesAsync(),
-        await this.getProjectDialogsAsync(),
+        await this.getProjectDialogsAsync(this.projectId),
         await this.onWriteOwnerDialogAsync(),
         await this.getProjectCommentsAsync(),
         await this.getProjectTeamColumnsNamesAsync(),
@@ -427,10 +427,11 @@ export class DetailProjectComponent {
 
     /**
      * Функция получает список диалогов.
+     * @param projectId - Id проекта. Если не передали, то получает все диалоги.
      * @returns - Список диалогов.
      */
-    private async getProjectDialogsAsync() {
-        (await this._messagesService.getProjectDialogsAsync())
+    private async getProjectDialogsAsync(projectId: number | null) {
+        (await this._messagesService.getProjectDialogsAsync(projectId))
         .subscribe(async _ => {
             console.log("Сообщения чата проекта: ", this.messages$.value);
             this.userName = this.messages$.value.fullName;
@@ -455,8 +456,16 @@ export class DetailProjectComponent {
                 this.aMessages = response.messages;                     
                 let lastMessage = response.messages[response.messages.length - 1];   
                 this.lastMessage = lastMessage;  
-                // let a1 = this.dialog$.value.messages.getValue();                
-                // a1.push(lastMessage);                                
+
+                // Делаем небольшую задержку, чтобы диалог успел открыться, прежде чем будем скролить к низу.
+                setTimeout(() => {
+                    let block = document.getElementById("#idMessages");
+                    block!.scrollBy({
+                        left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
+                        top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
+                        behavior: 'smooth' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
+                    });
+                }, 1);
             });
     };
 
