@@ -455,4 +455,13 @@ export class SignalrService {
       this.$allFeed.next(data);
     });
   };
+
+  /**
+   * Функция слушает уведомления предупреждения о лимите кол-ва проектов при создании проекта.
+   */
+   public listenWarningLimitFareRuleProjects() {
+    (<HubConnection>this.hubConnection).on("SendNotificationWarningLimitFareRuleProjects", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 }

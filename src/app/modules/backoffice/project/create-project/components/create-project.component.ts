@@ -69,6 +69,7 @@ export class CreateProjectComponent implements OnInit {
     this._signalrService.listenSuccessCreatedUserProjectInfo();
     this._signalrService.listenWarningDublicateUserProjectInfo();
     this._signalrService.listenWarningEmptyUserProfile();
+    this._signalrService.listenWarningLimitFareRuleProjects();
   };
 
   /**
