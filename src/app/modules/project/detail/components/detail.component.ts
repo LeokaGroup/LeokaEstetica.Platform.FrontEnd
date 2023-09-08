@@ -386,6 +386,11 @@ export class DetailProjectComponent {
      */
     public async onShowProjectResponseWithVacancyModal(isResponseVacancy: boolean) {
         this.isResponseVacancy = isResponseVacancy;
+        
+        (await this._projectService.availableVacanciesProjectResponseAsync(this.projectId))
+        .subscribe((response: any) => {
+            this.availableAttachVacancies = response;
+        });
     };
 
     /**
