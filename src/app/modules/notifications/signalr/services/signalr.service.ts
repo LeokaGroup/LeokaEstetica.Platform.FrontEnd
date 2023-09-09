@@ -464,4 +464,17 @@ export class SignalrService {
       this.$allFeed.next(data);
     });
   };
+
+  public getDialogsAsync(projectId: number | null) {
+    <HubConnection>this.hubConnection.invoke("GetDialogsAsync", localStorage["u_e"], localStorage["t_n"], +projectId!)
+    .catch((err: any) => {
+      console.error(err);
+    });
+  };
+
+  public listenGetProjectDialogs() {
+    (<HubConnection>this.hubConnection).on("listenGetProjectDialogs", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 }

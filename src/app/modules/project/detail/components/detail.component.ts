@@ -118,7 +118,7 @@ export class DetailProjectComponent {
         await this.getProjectVacanciesAsync(),
         await this.getProjectVacanciesColumnNamesAsync(),
         await this.getAvailableAttachVacanciesAsync(),
-        await this.getProjectDialogsAsync(this.projectId),
+        // await this.getProjectDialogsAsync(this.projectId),
         await this.onWriteOwnerDialogAsync(),
         await this.getProjectCommentsAsync(),
         await this.getProjectTeamColumnsNamesAsync(),
@@ -136,7 +136,18 @@ export class DetailProjectComponent {
             this.allFeedSubscription = this._signalrService.AllFeedObservable
                 .subscribe((response: any) => {
                     console.log("Подписались на сообщения", response);
-                    this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
+                    
+                    // Если пришел тип уведомления, то просто показываем его.
+                    if (response.notificationLevel !== undefined) {
+                        this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
+                    }
+
+                    // Иначе работаем с чатом.
+                    else {
+                        console.log("Сообщения чата проекта: ", response);
+                        this.aDialogs = response;     
+                        this.aMessages = response;    
+                    }
                 });
         });
     };
@@ -161,6 +172,9 @@ export class DetailProjectComponent {
         this._signalrService.listenSuccessAddArchiveProject();
         this._signalrService.listenErrorAddArchiveProject();
         this._signalrService.listenWarningAddArchiveProject();
+
+        this._signalrService.getDialogsAsync(this.projectId);
+        this._signalrService.listenGetProjectDialogs();
     };
 
     private checkUrlParams() {
@@ -435,17 +449,12 @@ export class DetailProjectComponent {
      * @param projectId - Id проекта. Если не передали, то получает все диалоги.
      * @returns - Список диалогов.
      */
-    private async getProjectDialogsAsync(projectId: number | null) {
-        (await this._messagesService.getProjectDialogsAsync(projectId))
-        .subscribe(async _ => {
-            console.log("Сообщения чата проекта: ", this.messages$.value);
-            this.userName = this.messages$.value.fullName;
-            console.log("userName", this.userName);
-            let dialogs = this.messages$.value;
-            this.aDialogs = dialogs;     
-            this.aMessages = this.messages$.value.messages;                
-        });
-    };
+    // private async getProjectDialogsAsync(projectId: number | null) {
+    //     (await this._messagesService.getProjectDialogsAsync(projectId))
+    //     .subscribe(async _ => {
+                       
+    //     });
+    // };
 
     /**
      * Функция получает диалог и его сообщения.
