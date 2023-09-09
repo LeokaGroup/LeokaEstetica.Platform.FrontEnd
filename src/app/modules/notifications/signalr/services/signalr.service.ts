@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
 import {Observable, Subject} from 'rxjs';
 import {API_URL} from 'src/app/core/core-urls/api-urls';
+import { DialogInput } from 'src/app/modules/messages/chat/models/input/dialog-input';
 import {RedisService} from 'src/app/modules/redis/services/redis.service';
 
 @Injectable()
@@ -465,6 +466,10 @@ export class SignalrService {
     });
   };
 
+  /**
+   * Функция получает диалоги проекта.
+   * @param projectId - Id проекта.
+   */
   public getDialogsAsync(projectId: number | null) {
     <HubConnection>this.hubConnection.invoke("GetDialogsAsync", localStorage["u_e"], localStorage["t_n"], +projectId!)
     .catch((err: any) => {
@@ -472,9 +477,32 @@ export class SignalrService {
     });
   };
 
+  /**
+   * Функция слушает получение диалогов проекта.
+   */
   public listenGetProjectDialogs() {
-    (<HubConnection>this.hubConnection).on("listenGetProjectDialogs", (data: any) => {
-      this.$allFeed.next(data);
+    (<HubConnection>this.hubConnection).on("listenGetProjectDialogs", (response: any) => {
+      this.$allFeed.next(response);
     });
   };
+
+   /**
+   * Функция получает диалог проекта.
+   * @param diaalogId - Id диалога.
+   */
+    public getDialogAsync(dialogInput: DialogInput) {
+      <HubConnection>this.hubConnection.invoke("GetDialogAsync", localStorage["u_e"], localStorage["t_n"], JSON.stringify(dialogInput))
+      .catch((err: any) => {
+        console.error(err);
+      });
+    };
+  
+    /**
+     * Функция слушает получение диалога проекта.
+     */
+    public listenGetDialog() {
+      (<HubConnection>this.hubConnection).on("listenGetDialog", (response: any) => {
+        this.$allFeed.next(response);
+      });
+    };
 }

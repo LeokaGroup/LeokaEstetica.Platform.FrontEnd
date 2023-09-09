@@ -46,18 +46,18 @@ export class ChatMessagesService {
      * @returns - Диалог и его сообщения.
      */
     public async getProjectDialogAsync(discussionTypeId: number, dialogId: number) {
-        return new Promise(async resolve => {
-            await this._http.get(API_URL.apiUrl + `/chat/dialog?dialogId=${dialogId}&discussionType=Project&discussionTypeId=${discussionTypeId}`)
-                .subscribe({
-                    next: (response: any) => {
-                        resolve(response);
-                    },
+        // return new Promise(async resolve => {
+        //     await this._http.get(API_URL.apiUrl + `/chat/dialog?dialogId=${dialogId}&discussionType=Project&discussionTypeId=${discussionTypeId}`)
+        //         .subscribe({
+        //             next: (response: any) => {
+        //                 resolve(response);
+        //             },
     
-                    error: (err) => {
-                        throw new Error(err);
-                    }
-                });
-        })  
+        //             error: (err) => {
+        //                 throw new Error(err);
+        //             }
+        //         });
+        // })  
     };   
 
     /**
