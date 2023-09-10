@@ -35,6 +35,7 @@ export class MessagesComponent implements OnInit {
     };
     
     /**
+     * TODO: Изменил на сокеты. Убрать.
      * Функция получает диалог и его сообщения.
      * @param discussionTypeId - Id типа обсуждения.
      * @returns - Диалог и его сообщения.
@@ -42,15 +43,15 @@ export class MessagesComponent implements OnInit {
      public async onGetDialogAsync(dialogId: number, projectId: number) {
         this.dialogId = dialogId;
 
-        await this._messagesService.getProjectDialogAsync(projectId, dialogId)
-            .then((response: any) => {                
-                console.log("Сообщения диалога: ", this.dialog$.value);                               
-                this.aMessages = response.messages;                     
-                let lastMessage = response.messages[response.messages.length - 1];   
-                this.lastMessage = lastMessage;  
-                // let a1 = this.dialog$.value.messages.getValue();                
-                // a1.push(lastMessage);                                
-            });
+        // await this._messagesService.getProjectDialogAsync(projectId, dialogId)
+        //     .then((response: any) => {                
+        //         console.log("Сообщения диалога: ", this.dialog$.value);                               
+        //         this.aMessages = response.messages;                     
+        //         let lastMessage = response.messages[response.messages.length - 1];   
+        //         this.lastMessage = lastMessage;  
+        //         // let a1 = this.dialog$.value.messages.getValue();                
+        //         // a1.push(lastMessage);                                
+        //     });
     };
 
     /**
@@ -69,24 +70,25 @@ export class MessagesComponent implements OnInit {
         });
     };
 
+    // * TODO: Изменил на сокеты. Убрать.
     public async onSendMessageAsync() {
         let dialogInput = new DialogMessageInput();
         dialogInput.Message = this.message;
         dialogInput.DialogId = this.dialogId;        
 
-        (await this._messagesService.sendDialogMessageAsync(dialogInput))
-        .subscribe(async _ => {
-            console.log("Сообщения диалога: ", this.profileMessages$.value);
-            this.message = "";               
-            this.profileMessages$ = new BehaviorSubject([]);
+        // (await this._messagesService.sendDialogMessageAsync(dialogInput))
+        // .subscribe(async _ => {
+        //     console.log("Сообщения диалога: ", this.profileMessages$.value);
+        //     this.message = "";               
+        //     this.profileMessages$ = new BehaviorSubject([]);
 
-            new Promise(async (resolve, reject) => {
-                await this.onGetDialogAsync(this.dialogId, this.projectId);
-                resolve(1);
-            }).then(() => {
-                let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
-                this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
-            });         
-        });
+        //     new Promise(async (resolve, reject) => {
+        //         await this.onGetDialogAsync(this.dialogId, this.projectId);
+        //         resolve(1);
+        //     }).then(() => {
+        //         let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
+        //         this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
+        //     });         
+        // });
     };
 }

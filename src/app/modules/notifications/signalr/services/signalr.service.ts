@@ -501,7 +501,26 @@ export class SignalrService {
      * Функция слушает получение диалога проекта.
      */
     public listenGetDialog() {
-      (<HubConnection>this.hubConnection).on("listenGetDialog", (response: any) => {
+      (<HubConnection>this.hubConnection).on("listenGetDialog", (response: any) => {1
+        this.$allFeed.next(response);
+      });
+    };
+
+    /**
+   * Функция отправляет сообщение.
+   */
+     public sendMessageAsync(message: string, dialogId: number) {
+      <HubConnection>this.hubConnection.invoke("SendMessageAsync", message, dialogId, localStorage["u_e"], localStorage["t_n"])
+      .catch((err: any) => {
+        console.error(err);
+      });
+    };
+  
+    /**
+     * Функция слушает отправку сообщений.
+     */
+    public listenSendMessage() {
+      (<HubConnection>this.hubConnection).on("listenSendMessage", (response: any) => {
         this.$allFeed.next(response);
       });
     };

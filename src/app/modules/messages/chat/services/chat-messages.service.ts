@@ -23,11 +23,11 @@ export class ChatMessagesService {
      * @param projectId - Id проекта. Если не передали, то получает все диалоги.
      * @returns - Список диалогов.
      */
-    public async getProjectDialogsAsync(projectId: number | null) {
-        return await this._http.get(API_URL.apiUrl + `/chat/dialogs?projectId=${projectId}`).pipe(
-            tap(data => this.messages$.next(data))
-        );
-    };
+    // public async getProjectDialogsAsync(projectId: number | null) {
+    //     return await this._http.get(API_URL.apiUrl + `/chat/dialogs?projectId=${projectId}`).pipe(
+    //         tap(data => this.messages$.next(data))
+    //     );
+    // };
 
     /**
      * Функция получает список диалогов для ЛК.
@@ -45,20 +45,20 @@ export class ChatMessagesService {
      * @param dialogId - Id диалога.
      * @returns - Диалог и его сообщения.
      */
-    public async getProjectDialogAsync(discussionTypeId: number, dialogId: number) {
-        // return new Promise(async resolve => {
-        //     await this._http.get(API_URL.apiUrl + `/chat/dialog?dialogId=${dialogId}&discussionType=Project&discussionTypeId=${discussionTypeId}`)
-        //         .subscribe({
-        //             next: (response: any) => {
-        //                 resolve(response);
-        //             },
+    // public async getProjectDialogAsync(discussionTypeId: number, dialogId: number) {
+    //     // return new Promise(async resolve => {
+    //     //     await this._http.get(API_URL.apiUrl + `/chat/dialog?dialogId=${dialogId}&discussionType=Project&discussionTypeId=${discussionTypeId}`)
+    //     //         .subscribe({
+    //     //             next: (response: any) => {
+    //     //                 resolve(response);
+    //     //             },
     
-        //             error: (err) => {
-        //                 throw new Error(err);
-        //             }
-        //         });
-        // })  
-    };   
+    //     //             error: (err) => {
+    //     //                 throw new Error(err);
+    //     //             }
+    //     //         });
+    //     // })  
+    // };   
 
     /**
      * Функция создает диалог с владельцем проекта, если он еще не создан.
@@ -79,10 +79,10 @@ export class ChatMessagesService {
      * то ничего не происходит и диалог считается открытым для общения.
      * @param dialogMessageInput - Входная модель.
      * @returns - Данные диалога.
-     */
-      public async sendDialogMessageAsync(dialogMessageInput: DialogMessageInput) {
-        return await this._http.post(API_URL.apiUrl + "/chat/message", dialogMessageInput).pipe(
-            tap(data => this.messages$.next(data))
-        );
-    };
+    //  */
+    //   public async sendDialogMessageAsync(dialogMessageInput: DialogMessageInput) {
+    //     return await this._http.post(API_URL.apiUrl + "/chat/message", dialogMessageInput).pipe(
+    //         tap(data => this.messages$.next(data))
+    //     );
+    // };
 };

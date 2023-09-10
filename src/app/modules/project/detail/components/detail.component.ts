@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
-import { BehaviorSubject, forkJoin } from "rxjs";
+import { forkJoin, ReplaySubject } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { DialogMessageInput } from "src/app/modules/messages/chat/models/input/dialog-message-input";
 import { ChatMessagesService } from "src/app/modules/messages/chat/services/chat-messages.service";
@@ -110,6 +110,7 @@ export class DetailProjectComponent {
     aMessages: any[] = [];
     aDialogs: any[] = [];
     lastMessage: any;
+    chatFeed: ReplaySubject<any> = new ReplaySubject<any>();
 
   public async ngOnInit() {
         forkJoin([
@@ -118,7 +119,6 @@ export class DetailProjectComponent {
         await this.getProjectVacanciesAsync(),
         await this.getProjectVacanciesColumnNamesAsync(),
         await this.getAvailableAttachVacanciesAsync(),
-        // await this.getProjectDialogsAsync(this.projectId),
         await this.onWriteOwnerDialogAsync(),
         await this.getProjectCommentsAsync(),
         await this.getProjectTeamColumnsNamesAsync(),
@@ -165,6 +165,25 @@ export class DetailProjectComponent {
                             });
                         }, 1);
                     }
+
+                    else if (response.actionType == "Message") {
+                        console.log("Сообщения диалога: ", this.aMessages);
+                        this.message = ""; 
+                        let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
+                        let lastMessage = response.messages[response.messages.length - 1];   
+                        this.lastMessage = lastMessage;  
+                        this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
+                        this.aMessages = response.messages;    
+                        
+                        setTimeout(() => {
+                            let block = document.getElementById("#idMessages");
+                            block!.scrollBy({
+                                left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
+                                top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
+                                behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
+                            });
+                        }, 1);
+                    }
                 });
         });
     };
@@ -194,6 +213,7 @@ export class DetailProjectComponent {
         this._signalrService.listenGetProjectDialogs();
 
         this._signalrService.listenGetDialog();
+        this._signalrService.listenSendMessage();
     };
 
     private checkUrlParams() {
@@ -469,31 +489,12 @@ export class DetailProjectComponent {
      * @returns - Диалог и его сообщения.
      */
     public async onGetDialogAsync(dialogId: number) {
-        // this.dialogId = dialogId;
         let dialogInput = new DialogInput();
         dialogInput.DialogId = dialogId;
         dialogInput.DiscussionType = "Project";
         dialogInput.DiscussionTypeId = this.projectId;
 
         this._signalrService.getDialogAsync(dialogInput);
-
-        // await this._messagesService.getProjectDialogAsync(this.projectId, dialogId)
-        //     .then((response: any) => {                
-        //         console.log("Сообщения диалога: ", this.dialog$.value);                               
-        //         this.aMessages = response.messages;                     
-        //         let lastMessage = response.messages[response.messages.length - 1];   
-        //         this.lastMessage = lastMessage;  
-
-        //         // Делаем небольшую задержку, чтобы диалог успел открыться, прежде чем будем скролить к низу.
-        //         setTimeout(() => {
-        //             let block = document.getElementById("#idMessages");
-        //             block!.scrollBy({
-        //                 left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
-        //                 top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
-        //                 behavior: 'smooth' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
-        //             });
-        //         }, 1);
-        //     });
     };
 
     public async onWriteOwnerDialogAsync() {
@@ -515,22 +516,9 @@ export class DetailProjectComponent {
     public async onSendMessageAsync() {
         let dialogInput = new DialogMessageInput();
         dialogInput.Message = this.message;
-        dialogInput.DialogId = this.dialogId;        
-
-        (await this._messagesService.sendDialogMessageAsync(dialogInput))
-        .subscribe(async _ => {
-            console.log("Сообщения диалога: ", this.messages$.value);
-            this.message = "";               
-            this.messages$ = new BehaviorSubject([]);
-
-            new Promise(async (resolve, reject) => {
-                await this.onGetDialogAsync(this.dialogId);
-                resolve(1);
-            }).then(() => {
-                let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
-                this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
-            });         
-        });
+        dialogInput.DialogId = this.dialogId;       
+        
+        this._signalrService.sendMessageAsync(this.message, this.dialogId);
     };
 
     /**
