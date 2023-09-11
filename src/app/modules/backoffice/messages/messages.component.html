@@ -59,9 +59,9 @@
                             <ng-template pTemplate>
                                 <div id="#idMessages" class="block-messages">
                                   <div *ngFor="let item of aMessages">
-                                    <div class="d-flex justify-content-between">
+                                    <div class="d-flex justify-content-between" [ngClass]="{blockMessage: item.isMyMessage}">
                                       <p>{{item.message}}</p>
-                                      <span class="time-right">{{item.created}}</span>
+                                        <span class="time-right">{{item.created}}</span>
                                     </div>
                                   </div>
                                 </div>
