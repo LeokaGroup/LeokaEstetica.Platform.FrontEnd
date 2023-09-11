@@ -496,6 +496,8 @@ export class DetailProjectComponent {
         dialogInput.DiscussionTypeId = this.projectId;
 
         this._signalrService.getDialogAsync(dialogInput);
+
+        this.dialogId = dialogId;
     };
 
     public async onWriteOwnerDialogAsync() {
