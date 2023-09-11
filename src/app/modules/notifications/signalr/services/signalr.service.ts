@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {Router} from '@angular/router';
-import {HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
-import {Observable, Subject} from 'rxjs';
-import {API_URL} from 'src/app/core/core-urls/api-urls';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import { Observable, Subject } from 'rxjs';
+import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { DialogInput } from 'src/app/modules/messages/chat/models/input/dialog-input';
-import {RedisService} from 'src/app/modules/redis/services/redis.service';
+import { RedisService } from 'src/app/modules/redis/services/redis.service';
 
 @Injectable()
 export class SignalrService {
@@ -12,36 +12,36 @@ export class SignalrService {
   private $allFeed: Subject<any> = new Subject<any>();
 
   public constructor(private readonly _redisService: RedisService,
-                     private readonly _router: Router) {
+    private readonly _router: Router) {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(API_URL.apiUrl + "/notify", 4)
       .build();
   }
 
   public async startConnection() {
-    return await new Promise(async (resolve, reject) => {
-      this.hubConnection.start()
-        .then(async () => {
-          console.log("Соединение установлено");
-          console.log("ConnectionId:", this.hubConnection.connectionId);
+    if (this.hubConnection.state !== "Connected") {
+      return await new Promise(async (resolve, reject) => {
+        this.hubConnection.start()
+          .then(async () => {
+            console.log("Соединение установлено");
+            console.log("ConnectionId:", this.hubConnection.connectionId);
 
-          let route = this._router.url;
-          if (route !== "/user/signin") {
-            await (await this._redisService.addConnectionIdCacheAsync(this.hubConnection.connectionId))
-              .subscribe(_ => {
-                console.log("Записали ConnectionId");
-              });
-          }
+            let route = this._router.url;
+            if (route !== "/user/signin") {
+              await (await this._redisService.addConnectionIdCacheAsync(this.hubConnection.connectionId))
+                .subscribe(_ => {
+                  console.log("Записали ConnectionId");
+                });
+            }
 
-          return resolve(true);
-        })
-        .catch((err: any) => {
-          console.log("Ошибка соединения: " + err);
-          reject(err);
-        });
-    });
-
-
+            return resolve(true);
+          })
+          .catch((err: any) => {
+            console.log("Ошибка соединения: " + err);
+            reject(err);
+          });
+      });
+    }
   };
 
   public get AllFeedObservable(): Observable<any> {
@@ -361,7 +361,7 @@ export class SignalrService {
   /**
    * Функция слушает уведомления успешное добавление вакансии в архив.
    */
-   public listenSuccessAddArchiveVacancy() {
+  public listenSuccessAddArchiveVacancy() {
     (<HubConnection>this.hubConnection).on("SendNotificationSuccessAddVacancyArchive", (data: any) => {
       this.$allFeed.next(data);
     });
@@ -388,7 +388,7 @@ export class SignalrService {
   /**
    * Функция слушает уведомления успешного удаления проекта из архива из хаба.
    */
-   public listenSuccessDeleteProjectArchive() {
+  public listenSuccessDeleteProjectArchive() {
     (<HubConnection>this.hubConnection).on("SendNotificationSuccessDeleteProjectArchive", (data: any) => {
       this.$allFeed.next(data);
     });
@@ -397,7 +397,7 @@ export class SignalrService {
   /**
    * Функция слушает уведомления успешного удаления вакансии из архива из хаба.
    */
-   public listenSuccessDeleteVacancyArchive() {
+  public listenSuccessDeleteVacancyArchive() {
     (<HubConnection>this.hubConnection).on("SendNotificationSuccessDeleteVacancyArchive", (data: any) => {
       this.$allFeed.next(data);
     });
@@ -406,7 +406,7 @@ export class SignalrService {
   /**
    * Функция слушает уведомления предупреждения о блокировке аккаунта.
    */
-   public listenSendNotificationWarningBlockedUserProfile() {
+  public listenSendNotificationWarningBlockedUserProfile() {
     (<HubConnection>this.hubConnection).on("SendNotificationWarningBlockedUserProfile", (data: any) => {
       this.$allFeed.next(data);
     });
@@ -415,7 +415,7 @@ export class SignalrService {
   /**
    * Функция слушает уведомления успеха при отправке ссылки для восстановления пароля.
    */
-   public listenSendNotificationSuccessLinkRestoreUserPassword() {
+  public listenSendNotificationSuccessLinkRestoreUserPassword() {
     (<HubConnection>this.hubConnection).on("SendNotificationSuccessLinkRestoreUserPassword", (data: any) => {
       this.$allFeed.next(data);
     });
@@ -424,7 +424,7 @@ export class SignalrService {
   /**
    * Функция слушает уведомления успеха при восстановлении пароля.
    */
-   public listenSendNotifySuccessRestoreUserPassword() {
+  public listenSendNotifySuccessRestoreUserPassword() {
     (<HubConnection>this.hubConnection).on("SendNotifySuccessRestoreUserPassword", (data: any) => {
       this.$allFeed.next(data);
     });
@@ -433,7 +433,7 @@ export class SignalrService {
   /**
    * Функция слушает уведомления ошибки при удалении вакансии из архива.
    */
-   public listenSendNotificationErrorDeleteVacancyArchive() {
+  public listenSendNotificationErrorDeleteVacancyArchive() {
     (<HubConnection>this.hubConnection).on("SendNotificationErrorDeleteVacancyArchive", (data: any) => {
       this.$allFeed.next(data);
     });
@@ -442,7 +442,7 @@ export class SignalrService {
   /**
    * Функция слушает уведомления ошибки при удалении проекта из архива.
    */
-   public listenSendNotificationWarningDeleteProjectArchive() {
+  public listenSendNotificationWarningDeleteProjectArchive() {
     (<HubConnection>this.hubConnection).on("SendNotificationWarningDeleteProjectArchive", (data: any) => {
       this.$allFeed.next(data);
     });
@@ -451,7 +451,7 @@ export class SignalrService {
   /**
    * Функция слушает уведомления ошибки при удалении вакансии из архива.
    */
-   public listenSendNotificationWarningDeleteVacancyArchive() {
+  public listenSendNotificationWarningDeleteVacancyArchive() {
     (<HubConnection>this.hubConnection).on("SendNotificationWarningDeleteVacancyArchive", (data: any) => {
       this.$allFeed.next(data);
     });
@@ -460,7 +460,7 @@ export class SignalrService {
   /**
    * Функция слушает уведомления предупреждения о лимите кол-ва проектов при создании проекта.
    */
-   public listenWarningLimitFareRuleProjects() {
+  public listenWarningLimitFareRuleProjects() {
     (<HubConnection>this.hubConnection).on("SendNotificationWarningLimitFareRuleProjects", (data: any) => {
       this.$allFeed.next(data);
     });
@@ -472,9 +472,9 @@ export class SignalrService {
    */
   public getDialogsAsync(projectId: number | null) {
     <HubConnection>this.hubConnection.invoke("GetDialogsAsync", localStorage["u_e"], localStorage["t_n"], +projectId!)
-    .catch((err: any) => {
-      console.error(err);
-    });
+      .catch((err: any) => {
+        console.error(err);
+      });
   };
 
   /**
@@ -486,54 +486,55 @@ export class SignalrService {
     });
   };
 
-   /**
-   * Функция получает диалог проекта.
-   * @param diaalogId - Id диалога.
-   */
-    public getDialogAsync(dialogInput: DialogInput) {
-      <HubConnection>this.hubConnection.invoke("GetDialogAsync", localStorage["u_e"], localStorage["t_n"], JSON.stringify(dialogInput))
+  /**
+  * Функция получает диалог проекта.
+  * @param diaalogId - Id диалога.
+  */
+  public getDialogAsync(dialogInput: DialogInput) {
+    <HubConnection>this.hubConnection.invoke("GetDialogAsync", localStorage["u_e"], localStorage["t_n"], JSON.stringify(dialogInput))
       .catch((err: any) => {
         console.error(err);
       });
-    };
-  
-    /**
-     * Функция слушает получение диалога проекта.
-     */
-    public listenGetDialog() {
-      (<HubConnection>this.hubConnection).on("listenGetDialog", (response: any) => {1
-        this.$allFeed.next(response);
-      });
-    };
+  };
 
-    /**
-   * Функция отправляет сообщение.
+  /**
+   * Функция слушает получение диалога проекта.
    */
-     public sendMessageAsync(message: string, dialogId: number) {
-      <HubConnection>this.hubConnection.invoke("SendMessageAsync", message, dialogId, localStorage["u_e"], localStorage["t_n"])
+  public listenGetDialog() {
+    (<HubConnection>this.hubConnection).on("listenGetDialog", (response: any) => {
+      1
+      this.$allFeed.next(response);
+    });
+  };
+
+  /**
+ * Функция отправляет сообщение.
+ */
+  public sendMessageAsync(message: string, dialogId: number) {
+    <HubConnection>this.hubConnection.invoke("SendMessageAsync", message, dialogId, localStorage["u_e"], localStorage["t_n"])
       .catch((err: any) => {
         console.error(err);
       });
-    };
-  
-    /**
-     * Функция слушает отправку сообщений.
-     */
-    public listenSendMessage() {
-      (<HubConnection>this.hubConnection).on("listenSendMessage", (response: any) => {
-        this.$allFeed.next(response);
-      });
-    };
+  };
 
-     /**
-   * Функция получает диалоги ЛК.
-   * @param projectId - Id проекта.
+  /**
+   * Функция слушает отправку сообщений.
    */
+  public listenSendMessage() {
+    (<HubConnection>this.hubConnection).on("listenSendMessage", (response: any) => {
+      this.$allFeed.next(response);
+    });
+  };
+
+  /**
+* Функция получает диалоги ЛК.
+* @param projectId - Id проекта.
+*/
   public getProfileDialogsAsync() {
     <HubConnection>this.hubConnection.invoke("GetProfileDialogsAsync", localStorage["u_e"], localStorage["t_n"])
-    .catch((err: any) => {
-      console.error(err);
-    });
+      .catch((err: any) => {
+        console.error(err);
+      });
   };
 
   /**
