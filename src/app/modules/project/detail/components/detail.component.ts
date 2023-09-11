@@ -25,6 +25,7 @@ import { DialogInput } from "src/app/modules/messages/chat/models/input/dialog-i
 })
 
 /**
+ * * TODO: Логика чатов дублируется с логикой в диалогах ЛК. Отрефачить и унифицировать в одном месте где-то.
  * Класс деталей проекта (используется для изменения и просмотра проекта).
  */
 export class DetailProjectComponent {

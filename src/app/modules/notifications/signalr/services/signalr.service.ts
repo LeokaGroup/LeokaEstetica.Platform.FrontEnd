@@ -524,4 +524,24 @@ export class SignalrService {
         this.$allFeed.next(response);
       });
     };
+
+     /**
+   * Функция получает диалоги ЛК.
+   * @param projectId - Id проекта.
+   */
+  public getProfileDialogsAsync() {
+    <HubConnection>this.hubConnection.invoke("GetProfileDialogsAsync", localStorage["u_e"], localStorage["t_n"])
+    .catch((err: any) => {
+      console.error(err);
+    });
+  };
+
+  /**
+   * Функция слушает получение диалогов ЛК.
+   */
+  public listenProfileDialogs() {
+    (<HubConnection>this.hubConnection).on("listenProfileDialogs", (response: any) => {
+      this.$allFeed.next(response);
+    });
+  };
 }
