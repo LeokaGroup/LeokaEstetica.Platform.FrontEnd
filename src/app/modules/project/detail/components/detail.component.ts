@@ -174,7 +174,17 @@ export class DetailProjectComponent {
                         let lastMessage = response.messages[response.messages.length - 1];   
                         this.lastMessage = lastMessage;  
                         this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
+
                         this.aMessages = response.messages;    
+
+                        this.aMessages.forEach((msg: any) => {
+                            if (msg.userCode !== localStorage["u_c"]) {
+                                msg.isMyMessage = false;
+                            }
+                            else {
+                                msg.isMyMessage = true;
+                            }
+                        });
                         
                         setTimeout(() => {
                             let block = document.getElementById("#idMessages");
