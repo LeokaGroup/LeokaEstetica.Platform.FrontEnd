@@ -15,6 +15,7 @@
       line-height: 20px;
     //   color: #FFFFFF;
       margin: 15px 0px;
+      cursor: pointer;
     }
   
     .block-footers {
@@ -66,7 +67,15 @@
       letter-spacing: 0.4px;
     //   color: #D1D5DB;
       padding-bottom: 32px;
-      padding-top: 50px;
+      // padding-top: 50px;
     }
   }
   
+  .block-sub-footer {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .payment-system-logos {
+    margin-left: 50px;
+  }
