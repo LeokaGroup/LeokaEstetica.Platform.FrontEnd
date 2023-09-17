@@ -9,6 +9,7 @@ import { API_URL } from 'src/app/core/core-urls/api-urls';
 @Injectable()
 export class PressService {
     public contacts$ = new BehaviorSubject<any>(null);
+    public publicOffer$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
         
@@ -21,6 +22,16 @@ export class PressService {
     public async getContactsAsync() {
         return await this.http.get(API_URL.apiUrl + "/press/contacts").pipe(
             tap(data => this.contacts$.next(data))
+        );
+    };
+
+    /**
+    * Функция получает данные публичной оферты.
+    * @returns - Данные публичной оферты.
+    */
+    public async getPublicOfferAsync() {
+        return await this.http.get(API_URL.apiUrl + "/press/offer").pipe(
+            tap(data => this.publicOffer$.next(data))
         );
     };
 }

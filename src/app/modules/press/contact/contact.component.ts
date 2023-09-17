@@ -19,7 +19,7 @@ export class ContactComponent implements OnInit {
 
     public async ngOnInit() {
         forkJoin([
-            await this.getSelectedCallCenterTicketsAsync()
+            await this.getContactsAsync()
         ]).subscribe();
     };
 
@@ -27,7 +27,7 @@ export class ContactComponent implements OnInit {
     * Функция получает контакты.
     * @returns - Список контактов.
     */
-    private async getSelectedCallCenterTicketsAsync() {
+    private async getContactsAsync() {
         (await this._pressService.getContactsAsync())
             .subscribe(_ => {
                 console.log("Контакты: ", this.contacts$.value);

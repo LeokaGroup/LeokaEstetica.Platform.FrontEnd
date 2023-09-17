@@ -27,10 +27,12 @@ import { CardModule } from 'primeng/card';
 import { PressRoutingModule } from './press-routing.module';
 import { ContactComponent } from './contact/contact.component';
 import { PressService } from './services/press.service';
+import { PublicOfferComponent } from './public-offer/public-offer.component';
 
 @NgModule({
     declarations: [
-        ContactComponent
+        ContactComponent,
+        PublicOfferComponent
     ],
 
     imports: [
