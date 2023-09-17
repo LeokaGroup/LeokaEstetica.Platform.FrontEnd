@@ -50,6 +50,11 @@ const routes: Routes = [
 
   {
     path: 'forbidden', component: ForbiddenComponent
+  },
+
+  {
+    path: "press",
+    loadChildren: () => import('./modules/press/press.module').then(m => m.PressModule)
   }
 ];
 

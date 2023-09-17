@@ -1,0 +1,16 @@
+<div class="d-flex block-profile space-top-80">
+  <div class="profile-left-menu col-lg-3">
+
+  </div>
+
+  <div class="block-worksheet">
+    <div class="worksheet-panel">
+      <p-panel header="Контакты" [toggleable]="false" [collapsed]="false">
+        <div class="d-flex" *ngFor="let item of contacts$.value">
+          <div class="control-input-text-worksheet">
+            <strong>{{item.name}}</strong>
+            <p>{{item.description}}</p>
+          </div>
+        </div>
+      </p-panel>
+    </div>

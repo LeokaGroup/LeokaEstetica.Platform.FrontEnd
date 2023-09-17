@@ -41,8 +41,12 @@
                 <p class="text-content">Частые вопросы</p>
               </div>
     
-              <div class="footer-item">
+              <div class="footer-item" [routerLink]="['/press/contacts']">
                 <p class="text-content">Контакты</p>
+              </div>
+
+              <div class="footer-item" [routerLink]="['/press/offer']">
+                <p class="text-content">Публичная оферта</p>
               </div>
         </div>
       </div>
@@ -57,7 +61,13 @@
       </div>
     </div>
   
-    <div class="text-date">
-      © {{dateLine}} Leoka Estetica. Сделано с заботой.
+    <div class="d-flex block-sub-footer">
+      <div class="text-date">
+        © {{dateLine}} Leoka Estetica. Сделано с заботой.
+      </div>
+  
+      <div class="payment-system-logos">
+        <img class="logo" src="../../../../assets/images/logo/payment_system_logos.png">
+      </div>
     </div>
   </div>
