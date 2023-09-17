@@ -1,9 +1,8 @@
 import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
-import { BehaviorSubject, forkJoin } from "rxjs";
+import { forkJoin, ReplaySubject } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
-import { DialogInput } from "src/app/modules/messages/chat/models/input/dialog-input";
 import { DialogMessageInput } from "src/app/modules/messages/chat/models/input/dialog-message-input";
 import { ChatMessagesService } from "src/app/modules/messages/chat/services/chat-messages.service";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
@@ -17,6 +16,7 @@ import { InviteProjectTeamMemberInput } from "../models/input/invite-project-tea
 import { ProjectResponseInput } from "../models/input/project-response-input";
 import { UpdateProjectInput } from "../models/input/update-project-input";
 import { AddProjectArchiveInput } from "src/app/modules/backoffice/models/input/project/add-project-archive-input";
+import { DialogInput } from "src/app/modules/messages/chat/models/input/dialog-input";
 
 @Component({
     selector: "detail",
@@ -25,6 +25,7 @@ import { AddProjectArchiveInput } from "src/app/modules/backoffice/models/input/
 })
 
 /**
+ * * TODO: Логика чатов дублируется с логикой в диалогах ЛК. Отрефачить и унифицировать в одном месте где-то.
  * Класс деталей проекта (используется для изменения и просмотра проекта).
  */
 export class DetailProjectComponent {
@@ -110,6 +111,7 @@ export class DetailProjectComponent {
     aMessages: any[] = [];
     aDialogs: any[] = [];
     lastMessage: any;
+    chatFeed: ReplaySubject<any> = new ReplaySubject<any>();
 
   public async ngOnInit() {
         forkJoin([
@@ -118,7 +120,6 @@ export class DetailProjectComponent {
         await this.getProjectVacanciesAsync(),
         await this.getProjectVacanciesColumnNamesAsync(),
         await this.getAvailableAttachVacanciesAsync(),
-        await this.getProjectDialogsAsync(this.projectId),
         await this.onWriteOwnerDialogAsync(),
         await this.getProjectCommentsAsync(),
         await this.getProjectTeamColumnsNamesAsync(),
@@ -136,7 +137,64 @@ export class DetailProjectComponent {
             this.allFeedSubscription = this._signalrService.AllFeedObservable
                 .subscribe((response: any) => {
                     console.log("Подписались на сообщения", response);
-                    this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
+                    
+                    // Если пришел тип уведомления, то просто показываем его.
+                    if (response.notificationLevel !== undefined) {
+                        this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
+                    }
+
+                    
+                    else if (response.actionType == "All") {
+                        console.log("Сообщения чата проекта: ", response);
+                        this.aDialogs = response.dialogs;     
+                        this.aMessages = response.dialogs;    
+                    }
+
+                    else if (response.actionType == "Concrete") {
+                        console.log("Сообщения диалога: ", response.messages);                               
+                        this.aMessages = response.messages;          
+                        let lastMessage = response.messages[response.messages.length - 1];   
+                        this.lastMessage = lastMessage;  
+        
+                        // Делаем небольшую задержку, чтобы диалог успел открыться, прежде чем будем скролить к низу.
+                        setTimeout(() => {
+                            let block = document.getElementById("#idMessages");
+                            block!.scrollBy({
+                                left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
+                                top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
+                                behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
+                            });
+                        }, 1);
+                    }
+
+                    else if (response.actionType == "Message") {
+                        console.log("Сообщения диалога: ", this.aMessages);
+                        this.message = ""; 
+                        let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
+                        let lastMessage = response.messages[response.messages.length - 1];   
+                        this.lastMessage = lastMessage;  
+                        this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
+
+                        this.aMessages = response.messages;    
+
+                        this.aMessages.forEach((msg: any) => {
+                            if (msg.userCode !== localStorage["u_c"]) {
+                                msg.isMyMessage = false;
+                            }
+                            else {
+                                msg.isMyMessage = true;
+                            }
+                        });
+                        
+                        setTimeout(() => {
+                            let block = document.getElementById("#idMessages");
+                            block!.scrollBy({
+                                left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
+                                top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
+                                behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
+                            });
+                        }, 1);
+                    }
                 });
         });
     };
@@ -161,6 +219,12 @@ export class DetailProjectComponent {
         this._signalrService.listenSuccessAddArchiveProject();
         this._signalrService.listenErrorAddArchiveProject();
         this._signalrService.listenWarningAddArchiveProject();
+
+        this._signalrService.getDialogsAsync(this.projectId);
+        this._signalrService.listenGetProjectDialogs();
+
+        this._signalrService.listenGetDialog();
+        this._signalrService.listenSendMessage();
     };
 
     private checkUrlParams() {
@@ -386,6 +450,11 @@ export class DetailProjectComponent {
      */
     public async onShowProjectResponseWithVacancyModal(isResponseVacancy: boolean) {
         this.isResponseVacancy = isResponseVacancy;
+        
+        (await this._projectService.availableVacanciesProjectResponseAsync(this.projectId))
+        .subscribe((response: any) => {
+            this.availableAttachVacancies = response;
+        });
     };
 
     /**
@@ -426,47 +495,19 @@ export class DetailProjectComponent {
     };
 
     /**
-     * Функция получает список диалогов.
-     * @param projectId - Id проекта. Если не передали, то получает все диалоги.
-     * @returns - Список диалогов.
-     */
-    private async getProjectDialogsAsync(projectId: number | null) {
-        (await this._messagesService.getProjectDialogsAsync(projectId))
-        .subscribe(async _ => {
-            console.log("Сообщения чата проекта: ", this.messages$.value);
-            this.userName = this.messages$.value.fullName;
-            console.log("userName", this.userName);
-            let dialogs = this.messages$.value;
-            this.aDialogs = dialogs;     
-            this.aMessages = this.messages$.value.messages;                
-        });
-    };
-
-    /**
      * Функция получает диалог и его сообщения.
      * @param discussionTypeId - Id типа обсуждения.
      * @returns - Диалог и его сообщения.
      */
     public async onGetDialogAsync(dialogId: number) {
+        let dialogInput = new DialogInput();
+        dialogInput.DialogId = dialogId;
+        dialogInput.DiscussionType = "Project";
+        dialogInput.DiscussionTypeId = this.projectId;
+
+        this._signalrService.getDialogAsync(dialogInput);
+
         this.dialogId = dialogId;
-
-        await this._messagesService.getProjectDialogAsync(this.projectId, dialogId)
-            .then((response: any) => {                
-                console.log("Сообщения диалога: ", this.dialog$.value);                               
-                this.aMessages = response.messages;                     
-                let lastMessage = response.messages[response.messages.length - 1];   
-                this.lastMessage = lastMessage;  
-
-                // Делаем небольшую задержку, чтобы диалог успел открыться, прежде чем будем скролить к низу.
-                setTimeout(() => {
-                    let block = document.getElementById("#idMessages");
-                    block!.scrollBy({
-                        left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
-                        top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
-                        behavior: 'smooth' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
-                    });
-                }, 1);
-            });
     };
 
     public async onWriteOwnerDialogAsync() {
@@ -488,22 +529,9 @@ export class DetailProjectComponent {
     public async onSendMessageAsync() {
         let dialogInput = new DialogMessageInput();
         dialogInput.Message = this.message;
-        dialogInput.DialogId = this.dialogId;        
-
-        (await this._messagesService.sendDialogMessageAsync(dialogInput))
-        .subscribe(async _ => {
-            console.log("Сообщения диалога: ", this.messages$.value);
-            this.message = "";               
-            this.messages$ = new BehaviorSubject([]);
-
-            new Promise(async (resolve, reject) => {
-                await this.onGetDialogAsync(this.dialogId);
-                resolve(1);
-            }).then(() => {
-                let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
-                this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
-            });         
-        });
+        dialogInput.DialogId = this.dialogId;       
+        
+        this._signalrService.sendMessageAsync(this.message, this.dialogId);
     };
 
     /**

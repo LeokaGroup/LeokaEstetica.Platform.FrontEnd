@@ -1,3 +1,5 @@
+<p-toast></p-toast>
+
 <div class="d-flex block-profile space-top-80">
     <div class="profile-left-menu col-lg-3">
   
@@ -55,11 +57,11 @@
     
                             <!-- Основная область чата. -->
                             <ng-template pTemplate>
-                                <div class="block-messages">
+                                <div id="#idMessages" class="block-messages">
                                   <div *ngFor="let item of aMessages">
-                                    <div class="d-flex justify-content-between">
+                                    <div class="d-flex justify-content-between" [ngClass]="{blockMessage: item.isMyMessage}">
                                       <p>{{item.message}}</p>
-                                      <span class="time-right">{{item.created}}</span>
+                                        <span class="time-right">{{item.created}}</span>
                                     </div>
                                   </div>
                                 </div>

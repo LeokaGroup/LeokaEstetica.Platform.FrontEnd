@@ -1,5 +1,5 @@
 export class DialogInput {
-    DialogId?: number | null;
+    DialogId?: number = 0;
     
     DiscussionType: string = "";
 
