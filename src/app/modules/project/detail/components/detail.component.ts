@@ -281,9 +281,18 @@ export class DetailProjectComponent {
         model.ProjectName = this.selectedProject$.value.projectName;
         model.ProjectDetails = this.selectedProject$.value.projectDetails;
         model.ProjectId = this.projectId;
-        model.ProjectStage = this.selectedStage.stageSysName;
-        model.Conditions = this.selectedStage.conditions;
-        model.Demands = this.selectedStage.demands;
+
+        if (!this.selectedStage) {
+            model.ProjectStage = this.selectedProject$.value.stageSysName;
+            model.Conditions = this.selectedProject$.value.conditions;
+            model.Demands = this.selectedProject$.value.demands;
+        }
+
+        else {
+            model.ProjectStage = this.selectedStage.stageSysName;
+            model.Conditions = this.selectedStage.conditions;
+            model.Demands = this.selectedStage.demands;
+        }
 
         (await this._projectService.updateProjectAsync(model))
         .subscribe(_ => {
