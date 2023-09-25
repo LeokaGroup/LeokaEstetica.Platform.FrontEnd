@@ -48,12 +48,6 @@ export class MyProjectsComponent implements OnInit {
             console.log("Подключились");
 
             this.listenAllHubsNotifications();
-
-            // Подписываемся на получение всех сообщений.
-            this.allFeedSubscription = this._signalrService.AllFeedObservable
-                .subscribe((response: any) => {
-                    console.log("Подписались на сообщения", response);
-                });
         });
     };
 

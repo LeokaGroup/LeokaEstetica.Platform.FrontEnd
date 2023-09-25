@@ -3,8 +3,6 @@ import { forkJoin } from "rxjs";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { MessageService } from "primeng/api";
 import { BackOfficeService } from "../../../services/backoffice.service";
-import { Router } from "@angular/router";
-import { ProjectService } from "src/app/modules/project/services/project.service";
 
 @Component({
     selector: "archive",
@@ -23,9 +21,7 @@ export class ProjectsArchiveComponent implements OnInit {
 
     constructor(private readonly _backofficeService: BackOfficeService,
         private readonly _signalrService: SignalrService,
-        private readonly _messageService: MessageService,
-        private readonly _router: Router,
-        private readonly _projectService: ProjectService) {
+        private readonly _messageService: MessageService) {
 
     }
 
@@ -39,12 +35,6 @@ export class ProjectsArchiveComponent implements OnInit {
             console.log("Подключились");
 
             this.listenAllHubsNotifications();
-
-            // Подписываемся на получение всех сообщений.
-            this.allFeedSubscription = this._signalrService.AllFeedObservable
-                .subscribe((response: any) => {
-                    console.log("Подписались на сообщения", response);
-                });
         });
     };
 
