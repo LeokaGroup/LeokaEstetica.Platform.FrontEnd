@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { DialogInput } from 'src/app/modules/messages/chat/models/input/dialog-input';
 import { RedisService } from 'src/app/modules/redis/services/redis.service';
@@ -9,7 +9,7 @@ import { RedisService } from 'src/app/modules/redis/services/redis.service';
 @Injectable()
 export class SignalrService {
   private hubConnection: any;
-  private $allFeed: Subject<any> = new Subject<any>();
+  private $allFeed: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   public constructor(private readonly _redisService: RedisService,
     private readonly _router: Router) {
@@ -26,8 +26,7 @@ export class SignalrService {
             console.log("Соединение установлено");
             console.log("ConnectionId:", this.hubConnection.connectionId);
 
-            let route = this._router.url;
-            if (route !== "/user/signin") {
+            if (this._router.url !== "/user/signin") {
               await (await this._redisService.addConnectionIdCacheAsync(this.hubConnection.connectionId))
                 .subscribe(_ => {
                   console.log("Записали ConnectionId");
@@ -44,8 +43,8 @@ export class SignalrService {
     }
   };
 
-  public get AllFeedObservable(): Observable<any> {
-    return this.$allFeed.asObservable();
+  public get AllFeedObservable() {
+    return this.$allFeed;
   }
 
   /**
