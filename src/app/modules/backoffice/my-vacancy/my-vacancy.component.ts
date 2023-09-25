@@ -108,6 +108,12 @@ export class MyVacancyComponent implements OnInit {
       .subscribe(async (response: any) => {
         console.log("Удалили вакансию: ", response);
         this.isDeleteVacancy = false;
+
+        this._messageService.add({
+                severity: this._signalrService.AllFeedObservable.value.notificationLevel,
+                summary: this._signalrService.AllFeedObservable.value.title,
+                detail: this._signalrService.AllFeedObservable.value.message
+              });
         
         await this.getUserVacanciesAsync();
       });
