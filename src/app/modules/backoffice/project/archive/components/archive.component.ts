@@ -41,15 +41,10 @@ export class ProjectsArchiveComponent implements OnInit {
             this.listenAllHubsNotifications();
 
             // Подписываемся на получение всех сообщений.
-          this.allFeedSubscription = this._signalrService.AllFeedObservable
-            .subscribe((response: any) => {
-              console.log("Подписались на сообщения", response);
-              this._messageService.add({
-                severity: response.notificationLevel,
-                summary: response.title,
-                detail: response.message
-              });
-            });
+            this.allFeedSubscription = this._signalrService.AllFeedObservable
+                .subscribe((response: any) => {
+                    console.log("Подписались на сообщения", response);
+                });
         });
     };
 
@@ -79,6 +74,13 @@ export class ProjectsArchiveComponent implements OnInit {
         (await this._backofficeService.deleteProjectArchiveAsync(projectId))
         .subscribe(async _ => {
             console.log("Удалили проект из архива: ", this.deleteProjectArchive$.value);  
+
+            this._messageService.add({
+                severity: this._signalrService.AllFeedObservable.value.notificationLevel,
+                summary: this._signalrService.AllFeedObservable.value.title,
+                detail: this._signalrService.AllFeedObservable.value.message
+            });
+
             await this.getProjectsArchiveAsync();
         });
     };

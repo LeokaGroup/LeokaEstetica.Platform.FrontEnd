@@ -14,8 +14,9 @@
                 <label>Название проекта</label>
             </div>
             <div>
-                <input type="text" class="p-inputtext-sm input-control-worksheet control-project" placeholder="Название проекта" pInputText
-              autocomplete="new-password" [(ngModel)]="projectName"/>
+                <input type="text" class="p-inputtext-sm input-control-worksheet control-project" 
+                placeholder="Название проекта" pInputText
+              [(ngModel)]="projectName"/>
             </div>
           </div>
         </div>
@@ -29,7 +30,7 @@
                                 <label>Описание проекта</label>
                             </div>
                             <div>
-                                <p-editor autocomplete="new-password" [(ngModel)]="projectDetails"  [style]="{'height':'320px'}"></p-editor>
+                                <p-editor [(ngModel)]="projectDetails"  [style]="{'height':'320px'}"></p-editor>
                             </div>
                         </div>
                     </div>
@@ -62,7 +63,7 @@
                     <label>Условия</label>
                   </div>
                   <div>
-                    <p-editor autocomplete="new-password" [(ngModel)]="conditions" [style]="{'height':'320px'}"></p-editor>
+                    <p-editor [(ngModel)]="conditions" [style]="{'height':'320px'}"></p-editor>
                   </div>
                 </div>
               </div>
@@ -79,7 +80,7 @@
                     <label>Требования</label>
                   </div>
                   <div>
-                    <p-editor autocomplete="new-password" [(ngModel)]="demands" [style]="{'height':'320px'}"></p-editor>
+                    <p-editor [(ngModel)]="demands" [style]="{'height':'320px'}"></p-editor>
                   </div>
                 </div>
               </div>

@@ -28,6 +28,7 @@ export class CreateProjectComponent implements OnInit {
   selectedStage: any;
   demands: string = "";
   conditions: string = "";
+  isCreateProject: boolean = false;
 
   constructor(private readonly _backofficeService: BackOfficeService,
               private readonly _signalrService: SignalrService,
@@ -53,11 +54,14 @@ export class CreateProjectComponent implements OnInit {
       this.allFeedSubscription = this._signalrService.AllFeedObservable
         .subscribe((response: any) => {
           console.log("Подписались на сообщения", response);
-          this._messageService.add({
-            severity: response.notificationLevel,
-            summary: response.title,
-            detail: response.message
-          });
+
+          if (response.isShow) {
+            this._messageService.add({
+              severity: response.notificationLevel,
+              summary: response.title,
+              detail: response.message
+            });
+          }
         });
     });
   };
@@ -95,9 +99,17 @@ export class CreateProjectComponent implements OnInit {
     createProjectInput.Conditions = this.conditions;
     createProjectInput.Demands = this.demands;
 
+    this.isCreateProject = true;
+
     (await this._backofficeService.createProjectAsync(createProjectInput))
       .subscribe((response: any) => {
         console.log("Создание проекта: ", this.projectData$.value);
+
+        // this._messageService.add({
+        //   severity: this._signalrService.AllFeedObservable.value.notificationLevel,
+        //   summary: this._signalrService.AllFeedObservable.value.title,
+        //   detail: this._signalrService.AllFeedObservable.value.message
+        // });
 
         if (this.projectData$.value.errors !== null && this.projectData$.value.errors.length > 0) {
           response.errors.forEach((item: any) => {
