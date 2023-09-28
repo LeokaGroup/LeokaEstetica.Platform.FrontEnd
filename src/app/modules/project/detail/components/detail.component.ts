@@ -137,7 +137,6 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         this._signalrService.AllFeedObservable
         .subscribe((response: any) => {
             console.log("Подписались на сообщения", response);
-            debugger;
             
             // Если пришел тип уведомления, то просто показываем его.
             if (response.notificationLevel !== undefined) {
@@ -227,6 +226,8 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
 
         this._signalrService.listenGetDialog();
         this._signalrService.listenSendMessage();
+
+        this._signalrService.listenWarningSearchProjectTeamMember();
     };
 
     private checkUrlParams() {

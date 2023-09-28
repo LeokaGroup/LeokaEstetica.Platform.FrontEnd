@@ -547,4 +547,13 @@ export class SignalrService {
       this.$allFeed.next(response);
     });
   };
+
+  /**
+   * Функция слушает предупреждение при поиске пользователя для приглашения в проект.
+   */
+   public listenWarningSearchProjectTeamMember() {
+    (<HubConnection>this.hubConnection).on("SendNotificationWarningSearchProjectTeamMember", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 }
