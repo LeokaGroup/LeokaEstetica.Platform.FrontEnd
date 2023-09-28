@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { forkJoin } from "rxjs";
 import { Router } from "@angular/router";
 import { DialogMessageInput } from "../../messages/chat/models/input/dialog-message-input";
@@ -17,7 +17,7 @@ import { DialogInput } from "../../messages/chat/models/input/dialog-input";
  * TODO: Логика чатов дублируется с логикой в просмотре проекта. Отрефачить и унифицировать в одном месте где-то.
  * Класс компонента сообщений пользователя в ЛК.
  */
-export class MessagesComponent implements OnInit {
+export class MessagesComponent implements OnInit, OnDestroy {
     public readonly dialog$ = this._messagesService.dialog$;
     public profileMessages$ = this._messagesService.profileMessages$;
     aMessages: any[] = [];
@@ -45,69 +45,68 @@ export class MessagesComponent implements OnInit {
             console.log("Подключились");
 
             this.listenAllHubsNotifications();
+        });
 
-            // Подписываемся на получение всех сообщений.
-            this.allFeedSubscription = this._signalrService.AllFeedObservable
-                .subscribe((response: any) => {
-                    console.log("Подписались на сообщения", response);
-                    
-                    // Если пришел тип уведомления, то просто показываем его.
-                    if (response.notificationLevel !== undefined) {
-                        this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
+        // Подписываемся на получение всех сообщений.
+        this._signalrService.AllFeedObservable
+        .subscribe((response: any) => {
+            console.log("Подписались на сообщения", response);
+            
+            // Если пришел тип уведомления, то просто показываем его.
+            if (response.notificationLevel !== undefined) {
+                this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
+            }
+            
+            if (response.actionType == "All") {
+                console.log("Сообщения чата ЛК: ", response);
+                this.aDialogs = response.dialogs;     
+                this.aMessages = response.dialogs;    
+            }
+
+            else if (response.actionType == "Concrete") {
+                console.log("Сообщения диалога: ", response.messages);                               
+                this.aMessages = response.messages;          
+                let lastMessage = response.messages[response.messages.length - 1];   
+                this.lastMessage = lastMessage;  
+
+                // Делаем небольшую задержку, чтобы диалог успел открыться, прежде чем будем скролить к низу.
+                setTimeout(() => {
+                    let block = document.getElementById("#idMessages");
+                    block!.scrollBy({
+                        left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
+                        top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
+                        behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
+                    });
+                }, 1);
+            }
+
+            else if (response.actionType == "Message") {
+                console.log("Сообщения диалога: ", this.aMessages);
+                this.message = ""; 
+                let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
+                let lastMessage = response.messages[response.messages.length - 1];   
+                this.lastMessage = lastMessage;  
+                this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
+                this.aMessages = response.messages;  
+                
+                this.aMessages.forEach((msg: any) => {
+                    if (msg.userCode !== localStorage["u_c"]) {
+                        msg.isMyMessage = false;
                     }
-
-                    
-                    else if (response.actionType == "All") {
-                        console.log("Сообщения чата ЛК: ", response);
-                        this.aDialogs = response.dialogs;     
-                        this.aMessages = response.dialogs;    
-                    }
-
-                    else if (response.actionType == "Concrete") {
-                        console.log("Сообщения диалога: ", response.messages);                               
-                        this.aMessages = response.messages;          
-                        let lastMessage = response.messages[response.messages.length - 1];   
-                        this.lastMessage = lastMessage;  
-        
-                        // Делаем небольшую задержку, чтобы диалог успел открыться, прежде чем будем скролить к низу.
-                        setTimeout(() => {
-                            let block = document.getElementById("#idMessages");
-                            block!.scrollBy({
-                                left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
-                                top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
-                                behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
-                            });
-                        }, 1);
-                    }
-
-                    else if (response.actionType == "Message") {
-                        console.log("Сообщения диалога: ", this.aMessages);
-                        this.message = ""; 
-                        let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
-                        let lastMessage = response.messages[response.messages.length - 1];   
-                        this.lastMessage = lastMessage;  
-                        this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
-                        this.aMessages = response.messages;  
-                        
-                        this.aMessages.forEach((msg: any) => {
-                            if (msg.userCode !== localStorage["u_c"]) {
-                                msg.isMyMessage = false;
-                            }
-                            else {
-                                msg.isMyMessage = true;
-                            }
-                        });
-                        
-                        setTimeout(() => {
-                            let block = document.getElementById("#idMessages");
-                            block!.scrollBy({
-                                left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
-                                top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
-                                behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
-                            });
-                        }, 1);
+                    else {
+                        msg.isMyMessage = true;
                     }
                 });
+                
+                setTimeout(() => {
+                    let block = document.getElementById("#idMessages");
+                    block!.scrollBy({
+                        left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
+                        top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
+                        behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
+                    });
+                }, 1);
+            }
         });
     };
 
@@ -148,4 +147,8 @@ export class MessagesComponent implements OnInit {
         
         this._signalrService.sendMessageAsync(this.message, this.dialogId);
     };
+
+    public ngOnDestroy() { 
+        this._signalrService.NewAllFeedObservable;
+    }; 
 }
