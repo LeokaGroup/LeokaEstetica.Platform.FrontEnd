@@ -9,7 +9,7 @@ import { RedisService } from 'src/app/modules/redis/services/redis.service';
 @Injectable()
 export class SignalrService {
   private hubConnection: any;
-  private $allFeed: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public $allFeed: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   public constructor(private readonly _redisService: RedisService,
     private readonly _router: Router) {
@@ -45,7 +45,11 @@ export class SignalrService {
 
   public get AllFeedObservable() {
     return this.$allFeed;
-  }
+  };
+
+  public get NewAllFeedObservable() {
+    return new BehaviorSubject<any>(null);
+  };
 
   /**
    * Функция слушает уведомления сохранения профиля пользователя из хаба.
@@ -501,7 +505,6 @@ export class SignalrService {
    */
   public listenGetDialog() {
     (<HubConnection>this.hubConnection).on("listenGetDialog", (response: any) => {
-      1
       this.$allFeed.next(response);
     });
   };
