@@ -24,7 +24,7 @@
                 <div class="control-input-text-worksheet">
 
                   <div>
-                      <label>Название вакансии</label>
+                      <strong>Название вакансии</strong>
                   </div>
 
                   <div *ngIf="isEditMode; else blockOne">
@@ -43,7 +43,7 @@
               <div class="d-flex">
                 <div class="control-input-text-worksheet mt-3">
                   <div>
-                    <label>Опыт</label>
+                    <strong>Опыт</strong>
                   </div>
                   <div *ngIf="isEditMode; else blockTwo">
                     <input type="text"
@@ -59,7 +59,7 @@
 
                 <div class="control-input-text-worksheet mt-3">
                   <div>
-                    <label>Занятость</label>
+                    <strong>Занятость</strong>
                   </div>
                   <div *ngIf="isEditMode; else blockTree">
                     <input type="text"
@@ -75,7 +75,7 @@
 
                 <div class="control-input-text-worksheet mt-3">
                   <div>
-                    <label>Оплата</label>
+                    <strong>Оплата</strong>
                   </div>
                   <div *ngIf="isEditMode; else blockFour">
                     <input type="text"
@@ -96,7 +96,7 @@
                           <div class="d-flex worksheet-line">
                               <div class="control-input-text-worksheet">
                                   <div>
-                                      <label>Описание вакансии</label>
+                                      <strong>Описание вакансии</strong>
                                   </div>
                                 <div *ngIf="isEditMode; else blockFive">
                                       <p-editor
@@ -119,7 +119,7 @@
                         <div class="d-flex worksheet-line">
                             <div class="control-input-text-worksheet">
                                 <div>
-                                    <label>Условия</label>
+                                    <strong>Условия</strong>
                                 </div>
                               <div *ngIf="isEditMode">
                                     <p-editor
@@ -143,7 +143,7 @@
                       <div class="d-flex worksheet-line">
                           <div class="control-input-text-worksheet">
                               <div>
-                                  <label>Требования</label>
+                                  <strong>Требования</strong>
                               </div>
                             <div *ngIf="isEditMode">
                                   <p-editor

@@ -21,7 +21,7 @@
         <div class="d-flex">
           <div class="control-input-text-worksheet">
             <div>
-                <label>Название проекта</label>
+                <strong>Название проекта</strong>
             </div>
             <div *ngIf="isEditMode; else blockOne">
               <input type="text"
@@ -42,7 +42,7 @@
                     <div class="d-flex worksheet-line">
                         <div class="control-input-text-worksheet">
                             <div>
-                                <label>Описание проекта</label>
+                                <strong>Описание проекта</strong>
                             </div>
                           <div *ngIf="isEditMode; else blockTwo">
                                <p-editor autocomplete="new-password"
@@ -63,7 +63,7 @@
         <div class="d-flex mt-3">
           <div class="control-input-text-worksheet">
             <div>
-                <label>Стадия проекта</label>
+                <strong>Стадия проекта</strong>
             </div>
             <div *ngIf="isEditMode; else blockTree">
               <p-dropdown [options]="projectStages$.value"
@@ -86,7 +86,7 @@
               <div class="d-flex worksheet-line">
                 <div class="control-input-text-worksheet">
                   <div>
-                    <label>Требования</label>
+                    <strong>Требования</strong>
                   </div>
                   <div *ngIf="isEditMode">
                     <p-editor autocomplete="new-password"
@@ -110,7 +110,7 @@
               <div class="d-flex worksheet-line">
                 <div class="control-input-text-worksheet">
                   <div>
-                    <label>Условия</label>
+                    <strong>Условия</strong>
                   </div>
                   <div *ngIf="isEditMode">
                     <p-editor autocomplete="new-password"
@@ -542,7 +542,7 @@
       <div class="d-flex">
         <div class="control-input-text-worksheet">
           <div>
-              <label>Название вакансии</label>
+              <strong>Название вакансии</strong>
           </div>
           <div>
               <input type="text"
@@ -559,7 +559,7 @@
       <div class="d-flex">
         <div class="control-input-text-worksheet mt-3">
           <div>
-            <label>Опыт</label>
+            <strong>Опыт</strong>
           </div>
           <div>
             <input type="text"
@@ -574,7 +574,7 @@
 
         <div class="control-input-text-worksheet mt-3">
           <div>
-            <label>Занятость</label>
+            <strong>Занятость</strong>
           </div>
           <div>
             <input type="text"
@@ -589,7 +589,7 @@
 
         <div class="control-input-text-worksheet mt-3">
           <div>
-            <label>Оплата</label>
+            <strong>Оплата</strong>
           </div>
           <div>
             <input type="text"
@@ -609,7 +609,7 @@
                   <div class="d-flex worksheet-line">
                       <div class="control-input-text-worksheet">
                           <div>
-                              <label>Описание вакансии</label>
+                              <strong>Описание вакансии</strong>
                           </div>
                           <div>
                               <p-editor autocomplete="new-password"
