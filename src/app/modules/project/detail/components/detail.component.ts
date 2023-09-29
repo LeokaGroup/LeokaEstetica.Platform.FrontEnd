@@ -46,6 +46,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     public readonly projectVacancies$ = this._projectService.projectVacancies$;
     public readonly projectVacanciesColumns$ = this._projectService.projectVacanciesColumns$;
     public readonly availableAttachVacancies$ = this._projectService.availableAttachVacancies$;
+    public readonly availableInviteVacancies$ = this._projectService.availableInviteVacancies$;
     public readonly selectedVacancy$ = this._vacancyService.selectedVacancy$;
     public messages$ = this._messagesService.messages$;
     public readonly dialog$ = this._messagesService.dialog$;
@@ -100,6 +101,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     selectedInviteVariant: any;
     isVacancyInvite: boolean = false;
     availableAttachVacancies: any[] = [];
+    availableInviteVacancies: any[] = [];
     deleteMember: string = "";
     isDeleteProjectTeamMember: boolean = false;
     isLeaveProjectTeamMember: boolean = false;
@@ -119,6 +121,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         await this.getProjectVacanciesAsync(),
         await this.getProjectVacanciesColumnNamesAsync(),
         await this.getAvailableAttachVacanciesAsync(),
+        await this.getAvailableInviteVacanciesAsync(),
         await this.onWriteOwnerDialogAsync(),
         await this.getProjectCommentsAsync(),
         await this.getProjectTeamColumnsNamesAsync(),
@@ -371,6 +374,18 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
             .subscribe(_ => {
                 console.log("Доступные к привязке вакансии: ", this.availableAttachVacancies$.value);
                 this.availableAttachVacancies = this.availableAttachVacancies$.value.projectVacancies;
+            });
+    };
+
+    /**
+    // * Функция получает список вакансий пользователя, по которым можно пригласить пользователя в проект.
+    // * @returns - Список вакансий.
+    */
+    private async getAvailableInviteVacanciesAsync() {
+        (await this._projectService.getAvailableInviteVacanciesAsync(this.projectId))
+            .subscribe(_ => {
+                console.log("Доступные к приглашению в проект вакансии: ", this.availableInviteVacancies$.value);
+                this.availableInviteVacancies = this.availableInviteVacancies$.value.projectVacancies;
             });
     };
 

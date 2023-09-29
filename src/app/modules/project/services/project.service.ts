@@ -22,6 +22,7 @@ export class ProjectService {
     public projectVacancies$ = new BehaviorSubject<any>(null);
     public projectVacanciesColumns$ = new BehaviorSubject<any>(null);
     public availableAttachVacancies$ = new BehaviorSubject<any>(null);
+    public availableInviteVacancies$ = new BehaviorSubject<any>(null);
     public projectResponse$ = new BehaviorSubject<any>(null);
     public createdProjectComment$ = new BehaviorSubject<any>(null);
     public projectComments$ = new BehaviorSubject<any>(null);
@@ -116,14 +117,21 @@ export class ProjectService {
     };
 
     /**
+    // * Функция получает список вакансий пользователя, которые можно прикрепить к проекту
+    // * @returns - Список вакансий.
+    */
+    public async getAvailableInviteVacanciesAsync(projectId: number) {
+        return await this.http.get(API_URL.apiUrl + "/projects/available-invite-vacancies?projectId=" + projectId).pipe(
+            tap(data => this.availableInviteVacancies$.next(data))
+        );
+    };
+
+    /**
      * Функция прикрепляет вакансию к проекту.
      * @param attachModel - Входная модель.
      */
     public async attachProjectVacancyAsync(attachModel: AttachProjectVacancyInput) {
         return await this.http.post(API_URL.apiUrl + "/projects/attach-vacancy", attachModel)
-        // .pipe(
-        //     tap(data => this.availableAttachVacancies$.next(data))
-        // );
     };
 
     /**
