@@ -310,12 +310,12 @@
 
     <!-- Область с чатом. -->
     <div class="worksheet-panel space-top-80 space-bottom-50 d-flex">
-    <p-panel header="Чат с владельцем проекта" [toggleable]="true" [collapsed]="true">
+    <p-panel header="Чат с владельцем проекта" [toggleable]="true" [collapsed]="isCollapsed">
       <div class="d-flex">
         <div class="control-input-text-worksheet">
           <div class="mb-3">
             <div>
-              <p-splitter [style]="{'height': '500px'}"
+              <p-splitter [style]="{'height': '300px'}"
                   [panelSizes]="[20,80]"
                   [minSizes]="[10,0]"
                   styleClass="mb-5"
@@ -355,6 +355,10 @@
                                     </div>
                                   </div>
                                 </div>
+                            </div>
+
+                            <div class="not-communication" *ngIf="aDialogs.length == 0">
+                              <strong>Вы еще не общались с владельцем проекта. Самое время начать обсуждение.</strong>
                             </div>
                         </ng-template>
 

@@ -113,6 +113,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     aMessages: any[] = [];
     aDialogs: any[] = [];
     lastMessage: any;
+    isCollapsed: boolean = true;
 
   public async ngOnInit() {
         forkJoin([
@@ -122,7 +123,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         await this.getProjectVacanciesColumnNamesAsync(),
         await this.getAvailableAttachVacanciesAsync(),
         await this.getAvailableInviteVacanciesAsync(),
-        await this.onWriteOwnerDialogAsync(),
+        // await this.onWriteOwnerDialogAsync(),
         await this.getProjectCommentsAsync(),
         await this.getProjectTeamColumnsNamesAsync(),
         await this.getProjectTeamAsync(),
@@ -539,6 +540,8 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     };
 
     public async onWriteOwnerDialogAsync() {
+        this.isCollapsed = false;
+
         let dialogInput = new DialogInput();
         dialogInput.DiscussionTypeId = this.projectId;
         dialogInput.DiscussionType = "Project";
@@ -549,7 +552,8 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
             if (this.dialog$.value.dialogId > 0) {
                 this.dialogId = this.dialog$.value.dialogId;
                 this.userName = this.dialog$.value.fullName;
-                console.log("userName", this.userName);
+
+                this._signalrService.getDialogsAsync(this.projectId);
             }
         });
     };
