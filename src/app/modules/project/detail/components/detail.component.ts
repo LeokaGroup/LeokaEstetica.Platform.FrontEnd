@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
-import { BehaviorSubject, forkJoin } from "rxjs";
+import { forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { DialogMessageInput } from "src/app/modules/messages/chat/models/input/dialog-message-input";
 import { ChatMessagesService } from "src/app/modules/messages/chat/services/chat-messages.service";
@@ -144,7 +144,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
             }
 
             
-            else if (response.actionType == "All") {
+            else if (response.actionType == "All" && response.dialogs.length > 0) {
                 console.log("Сообщения чата проекта: ", response);
                 this.aDialogs = response.dialogs;     
                 this.aMessages = response.dialogs;    

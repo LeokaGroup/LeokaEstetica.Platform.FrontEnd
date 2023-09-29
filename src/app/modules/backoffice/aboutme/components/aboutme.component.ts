@@ -69,11 +69,11 @@ export class AboutmeComponent implements OnInit {
             this.listenAllHubsNotifications();
 
             // Подписываемся на получение всех сообщений.
-            this.allFeedSubscription = this._signalrService.AllFeedObservable
-                .subscribe((response: any) => {
-                    console.log("Подписались на сообщения", response);
-                    this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
-                });
+            // this.allFeedSubscription = this._signalrService.AllFeedObservable
+            //     .subscribe((response: any) => {
+            //         console.log("Подписались на сообщения", response);
+            //         this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
+            //     });
         });
 
         this.checkUrlParams();
