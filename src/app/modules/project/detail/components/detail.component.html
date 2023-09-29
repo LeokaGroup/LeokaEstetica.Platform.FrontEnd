@@ -743,7 +743,7 @@
                     <label>Выберите вакансию для приглашения</label>
                 </div>
                 <div>
-                  <p-dropdown [options]="availableAttachVacancies$.value.projectVacancies"
+                  <p-dropdown [options]="availableInviteVacancies$.value.projectVacancies"
                               [(ngModel)]="selectedInviteVacancy"
                               optionLabel="userVacancy.vacancyName"
                               [disabled]="!selectedInviteVariant || isVacancyInvite">
