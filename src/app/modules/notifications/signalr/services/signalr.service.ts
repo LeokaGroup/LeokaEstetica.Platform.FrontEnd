@@ -556,4 +556,13 @@ export class SignalrService {
       this.$allFeed.next(data);
     });
   };
+
+  /**
+   * Функция слушает успешную запись комментария к проекту.
+   */
+   public listenSuccessCreatedCommentProject() {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessCreatedCommentProject", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 }

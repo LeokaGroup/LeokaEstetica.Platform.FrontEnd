@@ -231,6 +231,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         this._signalrService.listenSendMessage();
 
         this._signalrService.listenWarningSearchProjectTeamMember();
+        this._signalrService.listenSuccessCreatedCommentProject();
     };
 
     private checkUrlParams() {
