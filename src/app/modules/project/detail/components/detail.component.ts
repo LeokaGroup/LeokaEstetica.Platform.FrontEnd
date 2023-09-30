@@ -1,7 +1,7 @@
-import { Component } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
-import { forkJoin, ReplaySubject } from "rxjs";
+import { forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { DialogMessageInput } from "src/app/modules/messages/chat/models/input/dialog-message-input";
 import { ChatMessagesService } from "src/app/modules/messages/chat/services/chat-messages.service";
@@ -28,7 +28,7 @@ import { DialogInput } from "src/app/modules/messages/chat/models/input/dialog-i
  * * TODO: Логика чатов дублируется с логикой в диалогах ЛК. Отрефачить и унифицировать в одном месте где-то.
  * Класс деталей проекта (используется для изменения и просмотра проекта).
  */
-export class DetailProjectComponent {
+export class DetailProjectComponent implements OnInit, OnDestroy {
     constructor(private readonly _projectService: ProjectService,
         private readonly _activatedRoute: ActivatedRoute,
         private readonly _signalrService: SignalrService,
@@ -46,6 +46,7 @@ export class DetailProjectComponent {
     public readonly projectVacancies$ = this._projectService.projectVacancies$;
     public readonly projectVacanciesColumns$ = this._projectService.projectVacanciesColumns$;
     public readonly availableAttachVacancies$ = this._projectService.availableAttachVacancies$;
+    public readonly availableInviteVacancies$ = this._projectService.availableInviteVacancies$;
     public readonly selectedVacancy$ = this._vacancyService.selectedVacancy$;
     public messages$ = this._messagesService.messages$;
     public readonly dialog$ = this._messagesService.dialog$;
@@ -100,6 +101,7 @@ export class DetailProjectComponent {
     selectedInviteVariant: any;
     isVacancyInvite: boolean = false;
     availableAttachVacancies: any[] = [];
+    availableInviteVacancies: any[] = [];
     deleteMember: string = "";
     isDeleteProjectTeamMember: boolean = false;
     isLeaveProjectTeamMember: boolean = false;
@@ -111,7 +113,7 @@ export class DetailProjectComponent {
     aMessages: any[] = [];
     aDialogs: any[] = [];
     lastMessage: any;
-    chatFeed: ReplaySubject<any> = new ReplaySubject<any>();
+    isCollapsed: boolean = true;
 
   public async ngOnInit() {
         forkJoin([
@@ -120,7 +122,8 @@ export class DetailProjectComponent {
         await this.getProjectVacanciesAsync(),
         await this.getProjectVacanciesColumnNamesAsync(),
         await this.getAvailableAttachVacanciesAsync(),
-        await this.onWriteOwnerDialogAsync(),
+        await this.getAvailableInviteVacanciesAsync(),
+        // await this.onWriteOwnerDialogAsync(),
         await this.getProjectCommentsAsync(),
         await this.getProjectTeamColumnsNamesAsync(),
         await this.getProjectTeamAsync(),
@@ -132,70 +135,72 @@ export class DetailProjectComponent {
             console.log("Подключились");
 
             this.listenAllHubsNotifications();
+        });
 
-            // Подписываемся на получение всех сообщений.
-            this.allFeedSubscription = this._signalrService.AllFeedObservable
-                .subscribe((response: any) => {
-                    console.log("Подписались на сообщения", response);
-                    
-                    // Если пришел тип уведомления, то просто показываем его.
-                    if (response.notificationLevel !== undefined) {
-                        this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
+        // Подписываемся на получение всех сообщений.
+        this._signalrService.AllFeedObservable
+        .subscribe((response: any) => {
+            console.log("Подписались на сообщения", response);
+            
+            // Если пришел тип уведомления, то просто показываем его.
+            if (response.notificationLevel !== undefined) {
+                this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
+            }
+
+            
+            else if (response.actionType == "All" && response.dialogs.length > 0) {
+                console.log("Сообщения чата проекта: ", response);
+                this.aDialogs = response.dialogs;     
+                this.aMessages = response.dialogs;    
+            }
+
+            else if (response.actionType == "Concrete") {
+                console.log("Сообщения диалога: ", response.messages);    
+
+                this.aMessages = response.messages;          
+                let lastMessage = response.messages[response.messages.length - 1];   
+                this.lastMessage = lastMessage;  
+
+                // Делаем небольшую задержку, чтобы диалог успел открыться, прежде чем будем скролить к низу.
+                setTimeout(() => {
+                    let block = document.getElementById("#idMessages");
+                    block!.scrollBy({
+                        left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
+                        top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
+                        behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
+                    });
+                }, 1);
+            }
+
+            else if (response.actionType == "Message") {
+                console.log("Сообщения диалога: ", this.aMessages);
+
+                this.message = ""; 
+                let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
+                let lastMessage = response.messages[response.messages.length - 1];   
+                this.lastMessage = lastMessage;  
+                this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
+
+                this.aMessages = response.messages;    
+
+                this.aMessages.forEach((msg: any) => {
+                    if (msg.userCode !== localStorage["u_c"]) {
+                        msg.isMyMessage = false;
                     }
-
-                    
-                    else if (response.actionType == "All") {
-                        console.log("Сообщения чата проекта: ", response);
-                        this.aDialogs = response.dialogs;     
-                        this.aMessages = response.dialogs;    
-                    }
-
-                    else if (response.actionType == "Concrete") {
-                        console.log("Сообщения диалога: ", response.messages);                               
-                        this.aMessages = response.messages;          
-                        let lastMessage = response.messages[response.messages.length - 1];   
-                        this.lastMessage = lastMessage;  
-        
-                        // Делаем небольшую задержку, чтобы диалог успел открыться, прежде чем будем скролить к низу.
-                        setTimeout(() => {
-                            let block = document.getElementById("#idMessages");
-                            block!.scrollBy({
-                                left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
-                                top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
-                                behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
-                            });
-                        }, 1);
-                    }
-
-                    else if (response.actionType == "Message") {
-                        console.log("Сообщения диалога: ", this.aMessages);
-                        this.message = ""; 
-                        let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
-                        let lastMessage = response.messages[response.messages.length - 1];   
-                        this.lastMessage = lastMessage;  
-                        this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
-
-                        this.aMessages = response.messages;    
-
-                        this.aMessages.forEach((msg: any) => {
-                            if (msg.userCode !== localStorage["u_c"]) {
-                                msg.isMyMessage = false;
-                            }
-                            else {
-                                msg.isMyMessage = true;
-                            }
-                        });
-                        
-                        setTimeout(() => {
-                            let block = document.getElementById("#idMessages");
-                            block!.scrollBy({
-                                left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
-                                top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
-                                behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
-                            });
-                        }, 1);
+                    else {
+                        msg.isMyMessage = true;
                     }
                 });
+                
+                setTimeout(() => {
+                    let block = document.getElementById("#idMessages");
+                    block!.scrollBy({
+                        left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
+                        top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
+                        behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
+                    });
+                }, 1);
+            }
         });
     };
 
@@ -225,6 +230,9 @@ export class DetailProjectComponent {
 
         this._signalrService.listenGetDialog();
         this._signalrService.listenSendMessage();
+
+        this._signalrService.listenWarningSearchProjectTeamMember();
+        this._signalrService.listenSuccessCreatedCommentProject();
     };
 
     private checkUrlParams() {
@@ -368,6 +376,18 @@ export class DetailProjectComponent {
             .subscribe(_ => {
                 console.log("Доступные к привязке вакансии: ", this.availableAttachVacancies$.value);
                 this.availableAttachVacancies = this.availableAttachVacancies$.value.projectVacancies;
+            });
+    };
+
+    /**
+    // * Функция получает список вакансий пользователя, по которым можно пригласить пользователя в проект.
+    // * @returns - Список вакансий.
+    */
+    private async getAvailableInviteVacanciesAsync() {
+        (await this._projectService.getAvailableInviteVacanciesAsync(this.projectId))
+            .subscribe(_ => {
+                console.log("Доступные к приглашению в проект вакансии: ", this.availableInviteVacancies$.value);
+                this.availableInviteVacancies = this.availableInviteVacancies$.value.projectVacancies;
             });
     };
 
@@ -520,6 +540,8 @@ export class DetailProjectComponent {
     };
 
     public async onWriteOwnerDialogAsync() {
+        this.isCollapsed = false;
+
         let dialogInput = new DialogInput();
         dialogInput.DiscussionTypeId = this.projectId;
         dialogInput.DiscussionType = "Project";
@@ -530,7 +552,8 @@ export class DetailProjectComponent {
             if (this.dialog$.value.dialogId > 0) {
                 this.dialogId = this.dialog$.value.dialogId;
                 this.userName = this.dialog$.value.fullName;
-                console.log("userName", this.userName);
+
+                this._signalrService.getDialogsAsync(this.projectId);
             }
         });
     };
@@ -737,4 +760,8 @@ export class DetailProjectComponent {
                 console.log("Добавили проект в архив: ", this.archivedProject$.value);
             });
     };
+
+    public ngOnDestroy() { 
+        this._signalrService.NewAllFeedObservable;
+    }; 
 }

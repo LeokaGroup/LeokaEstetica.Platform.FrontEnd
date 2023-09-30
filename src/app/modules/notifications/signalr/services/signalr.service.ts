@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { DialogInput } from 'src/app/modules/messages/chat/models/input/dialog-input';
 import { RedisService } from 'src/app/modules/redis/services/redis.service';
@@ -9,7 +9,7 @@ import { RedisService } from 'src/app/modules/redis/services/redis.service';
 @Injectable()
 export class SignalrService {
   private hubConnection: any;
-  private $allFeed: Subject<any> = new Subject<any>();
+  public $allFeed: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   public constructor(private readonly _redisService: RedisService,
     private readonly _router: Router) {
@@ -26,8 +26,7 @@ export class SignalrService {
             console.log("Соединение установлено");
             console.log("ConnectionId:", this.hubConnection.connectionId);
 
-            let route = this._router.url;
-            if (route !== "/user/signin") {
+            if (this._router.url !== "/user/signin") {
               await (await this._redisService.addConnectionIdCacheAsync(this.hubConnection.connectionId))
                 .subscribe(_ => {
                   console.log("Записали ConnectionId");
@@ -44,9 +43,13 @@ export class SignalrService {
     }
   };
 
-  public get AllFeedObservable(): Observable<any> {
-    return this.$allFeed.asObservable();
-  }
+  public get AllFeedObservable() {
+    return this.$allFeed;
+  };
+
+  public get NewAllFeedObservable() {
+    return new BehaviorSubject<any>(null);
+  };
 
   /**
    * Функция слушает уведомления сохранения профиля пользователя из хаба.
@@ -502,7 +505,6 @@ export class SignalrService {
    */
   public listenGetDialog() {
     (<HubConnection>this.hubConnection).on("listenGetDialog", (response: any) => {
-      1
       this.$allFeed.next(response);
     });
   };
@@ -543,6 +545,24 @@ export class SignalrService {
   public listenProfileDialogs() {
     (<HubConnection>this.hubConnection).on("listenProfileDialogs", (response: any) => {
       this.$allFeed.next(response);
+    });
+  };
+
+  /**
+   * Функция слушает предупреждение при поиске пользователя для приглашения в проект.
+   */
+   public listenWarningSearchProjectTeamMember() {
+    (<HubConnection>this.hubConnection).on("SendNotificationWarningSearchProjectTeamMember", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает успешную запись комментария к проекту.
+   */
+   public listenSuccessCreatedCommentProject() {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessCreatedCommentProject", (data: any) => {
+      this.$allFeed.next(data);
     });
   };
 }

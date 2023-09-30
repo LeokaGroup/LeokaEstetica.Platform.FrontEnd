@@ -21,7 +21,7 @@
         <div class="d-flex">
           <div class="control-input-text-worksheet">
             <div>
-                <label>Название проекта</label>
+                <strong>Название проекта</strong>
             </div>
             <div *ngIf="isEditMode; else blockOne">
               <input type="text"
@@ -42,7 +42,7 @@
                     <div class="d-flex worksheet-line">
                         <div class="control-input-text-worksheet">
                             <div>
-                                <label>Описание проекта</label>
+                                <strong>Описание проекта</strong>
                             </div>
                           <div *ngIf="isEditMode; else blockTwo">
                                <p-editor autocomplete="new-password"
@@ -63,7 +63,7 @@
         <div class="d-flex mt-3">
           <div class="control-input-text-worksheet">
             <div>
-                <label>Стадия проекта</label>
+                <strong>Стадия проекта</strong>
             </div>
             <div *ngIf="isEditMode; else blockTree">
               <p-dropdown [options]="projectStages$.value"
@@ -86,7 +86,7 @@
               <div class="d-flex worksheet-line">
                 <div class="control-input-text-worksheet">
                   <div>
-                    <label>Требования</label>
+                    <strong>Требования</strong>
                   </div>
                   <div *ngIf="isEditMode">
                     <p-editor autocomplete="new-password"
@@ -110,7 +110,7 @@
               <div class="d-flex worksheet-line">
                 <div class="control-input-text-worksheet">
                   <div>
-                    <label>Условия</label>
+                    <strong>Условия</strong>
                   </div>
                   <div *ngIf="isEditMode">
                     <p-editor autocomplete="new-password"
@@ -310,12 +310,12 @@
 
     <!-- Область с чатом. -->
     <div class="worksheet-panel space-top-80 space-bottom-50 d-flex">
-    <p-panel header="Чат с владельцем проекта" [toggleable]="true" [collapsed]="true">
+    <p-panel header="Чат с владельцем проекта" [toggleable]="true" [collapsed]="isCollapsed">
       <div class="d-flex">
         <div class="control-input-text-worksheet">
           <div class="mb-3">
             <div>
-              <p-splitter [style]="{'height': '500px'}"
+              <p-splitter [style]="{'height': '300px'}"
                   [panelSizes]="[20,80]"
                   [minSizes]="[10,0]"
                   styleClass="mb-5"
@@ -355,6 +355,10 @@
                                     </div>
                                   </div>
                                 </div>
+                            </div>
+
+                            <div class="not-communication" *ngIf="aDialogs.length == 0">
+                              <strong>Вы еще не общались с владельцем проекта. Самое время начать обсуждение.</strong>
                             </div>
                         </ng-template>
 
@@ -506,7 +510,8 @@
           [style]="{width: '50vw', height: '50vw'}"
           [maximizable]="false"
           [draggable]="false"
-          [resizable]="false">
+          [resizable]="false"
+          emptyMessage="Нет данных">
 
   <div class="d-flex mt-3">
     <div class="control-input-text-worksheet">
@@ -542,7 +547,7 @@
       <div class="d-flex">
         <div class="control-input-text-worksheet">
           <div>
-              <label>Название вакансии</label>
+              <strong>Название вакансии</strong>
           </div>
           <div>
               <input type="text"
@@ -559,7 +564,7 @@
       <div class="d-flex">
         <div class="control-input-text-worksheet mt-3">
           <div>
-            <label>Опыт</label>
+            <strong>Опыт</strong>
           </div>
           <div>
             <input type="text"
@@ -574,7 +579,7 @@
 
         <div class="control-input-text-worksheet mt-3">
           <div>
-            <label>Занятость</label>
+            <strong>Занятость</strong>
           </div>
           <div>
             <input type="text"
@@ -589,7 +594,7 @@
 
         <div class="control-input-text-worksheet mt-3">
           <div>
-            <label>Оплата</label>
+            <strong>Оплата</strong>
           </div>
           <div>
             <input type="text"
@@ -609,7 +614,7 @@
                   <div class="d-flex worksheet-line">
                       <div class="control-input-text-worksheet">
                           <div>
-                              <label>Описание вакансии</label>
+                              <strong>Описание вакансии</strong>
                           </div>
                           <div>
                               <p-editor autocomplete="new-password"
@@ -700,17 +705,16 @@
 </p-dialog>
 
 <!-- Диалог удаления вакансии проекта. -->
-<p-dialog header="Удаление вакансии проекта"
-          [(visible)]="isDeleteVacancyInProject"
-          [breakpoints]="{'960px': '75vw'}"
-          [style]="{width: '50vw'}"
-          [draggable]="false"
-          [resizable]="false">
-<p>Вы уверены, что хотите удалить вакансию проекта <strong>{{vacancyNameForDelete}}</strong>?</p>
-<ng-template pTemplate="footer">
-<p-button (click)="isDeleteVacancyInProject=false" label="Отменить" styleClass="p-button-text"></p-button>
-<p-button (click)="onDeleteVacancyInProjectAsync()" label="Удалить" styleClass="p-button-danger p-button-text"></p-button>
-</ng-template>
+<p-dialog header="Удаление вакансии проекта" [(visible)]="isDeleteVacancyInProject" [breakpoints]="{'960px': '75vw'}"
+  [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+  <p>При удалении вакансии она не будет удалена из ваших вакансий и каталога.
+    Она будет удалена из проекта.</p>
+  <p>Вы уверены, что хотите удалить вакансию проекта <strong>{{vacancyNameForDelete}}</strong>?</p>
+  <ng-template pTemplate="footer">
+    <p-button (click)="isDeleteVacancyInProject=false" label="Отменить" styleClass="p-button-text"></p-button>
+    <p-button (click)="onDeleteVacancyInProjectAsync()" label="Удалить" styleClass="p-button-danger p-button-text">
+    </p-button>
+  </ng-template>
 </p-dialog>
 
 <!-- Диалог инвайта в проект. -->
@@ -743,10 +747,12 @@
                     <label>Выберите вакансию для приглашения</label>
                 </div>
                 <div>
-                  <p-dropdown [options]="availableAttachVacancies$.value.projectVacancies"
+                  <p-dropdown [options]="availableInviteVacancies"
                               [(ngModel)]="selectedInviteVacancy"
                               optionLabel="userVacancy.vacancyName"
-                              [disabled]="!selectedInviteVariant || isVacancyInvite">
+                              [disabled]="!selectedInviteVariant 
+                              || isVacancyInvite"
+                              emptyMessage="Нет данных">
                   </p-dropdown>
                 </div>
 

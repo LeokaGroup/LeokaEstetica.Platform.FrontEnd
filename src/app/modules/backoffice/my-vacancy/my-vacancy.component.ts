@@ -45,15 +45,7 @@ export class MyVacancyComponent implements OnInit {
     // Подключаемся.
     this._signalrService.startConnection().then(() => {
       console.log("Подключились");
-
       this.listenAllHubsNotifications();
-
-      // Подписываемся на получение всех сообщений.
-      this.allFeedSubscription = this._signalrService.AllFeedObservable
-        .subscribe((response: any) => {
-          console.log("Подписались на сообщения", response);
-          this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
-        });
     });
   };
 
@@ -116,6 +108,12 @@ export class MyVacancyComponent implements OnInit {
       .subscribe(async (response: any) => {
         console.log("Удалили вакансию: ", response);
         this.isDeleteVacancy = false;
+
+        this._messageService.add({
+                severity: this._signalrService.AllFeedObservable.value.notificationLevel,
+                summary: this._signalrService.AllFeedObservable.value.title,
+                detail: this._signalrService.AllFeedObservable.value.message
+              });
         
         await this.getUserVacanciesAsync();
       });
@@ -137,8 +135,14 @@ export class MyVacancyComponent implements OnInit {
 
     (await this._vacancyService.addArchiveVacancyAsync(vacancyArchiveInput))
       .subscribe(async _ => {
-
         console.log("Вакансия добавлена в архив", this.archivedVacancy$.value);  
+
+        this._messageService.add({
+          severity: this._signalrService.AllFeedObservable.value.notificationLevel,
+          summary: this._signalrService.AllFeedObservable.value.title,
+          detail: this._signalrService.AllFeedObservable.value.message
+        });
+
         await this.getUserVacanciesAsync();  
       });
   };

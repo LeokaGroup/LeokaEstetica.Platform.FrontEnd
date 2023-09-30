@@ -43,7 +43,7 @@
                         *ngIf="isModeEdit" />
                <div *ngIf="isModeView">
                  <label>
-                   <small>Фамилия</small>
+                   <strong>Фамилия</strong>
                  </label>
                </div>
                <div>
@@ -78,7 +78,7 @@
                         *ngIf="isModeEdit" />
                 <div *ngIf="isModeView">
                   <label>
-                    <small>Имя</small>
+                    <strong>Имя</strong>
                   </label>
                 </div>
                 <span *ngIf="isModeView">{{profileInfo$.value.firstName}}</span>
@@ -94,7 +94,7 @@
                         *ngIf="isModeEdit" />
                 <div *ngIf="isModeView">
                   <label>
-                    <small>Отчество</small>
+                    <strong>Отчество</strong>
                   </label>
                 </div>
                 <span *ngIf="isModeView">{{profileInfo$.value.patronymic}}</span>
@@ -114,7 +114,7 @@
                 <small *ngIf="!isModeView">При изменении Email, Вам нужно будет авторизоваться повторно.<br> Вы будете перенаправлены автоматически.</small>
                 <div *ngIf="isModeView">
                   <label>
-                    <small>Email</small>
+                    <strong>Email</strong>
                   </label>
                 </div>
                 <span *ngIf="isModeView">{{profileInfo$.value.email}}</span>
@@ -130,7 +130,7 @@
                         *ngIf="isModeEdit" />
                 <div *ngIf="isModeView">
                   <label>
-                    <small>Номер телефона</small>
+                    <strong>Номер телефона</strong>
                   </label>
                 </div>
                 <span *ngIf="isModeView">{{profileInfo$.value.phoneNumber}}</span>
@@ -148,7 +148,7 @@
                         *ngIf="isModeEdit" />
                 <div *ngIf="isModeView">
                   <label>
-                    <small>Telegram</small>
+                    <strong>Telegram</strong>
                   </label>
                 </div>
                 <span *ngIf="isModeView">{{profileInfo$.value.telegram}}</span>
@@ -164,7 +164,7 @@
                         *ngIf="isModeEdit" />
                 <div *ngIf="isModeView">
                   <label>
-                    <small>WhatsApp</small>
+                    <strong>WhatsApp</strong>
                   </label>
                 </div>
                 <span *ngIf="isModeView">{{profileInfo$.value.whatsApp}}</span>
@@ -180,7 +180,7 @@
                         *ngIf="isModeEdit" />
                 <div *ngIf="isModeView">
                   <label>
-                    <small>Ссылка ВКонтакте</small>
+                    <strong>Ссылка ВКонтакте</strong>
                   </label>
                 </div>
                 <span *ngIf="isModeView">{{profileInfo$.value.vkontakte}}</span>
@@ -198,7 +198,7 @@
                         *ngIf="isModeEdit" />
                 <div *ngIf="isModeView">
                   <label>
-                    <small>Другая ссылка</small>
+                    <strong>Другая ссылка</strong>
                   </label>
                 </div>
                 <span *ngIf="isModeView">{{profileInfo$.value.otherLink}}</span>
@@ -232,7 +232,7 @@
                             class="input-about-me"></textarea>
                 <div *ngIf="isModeView">
                   <label>
-                    <small>О себе</small>
+                    <strong>О себе</strong>
                   </label>
                 </div>
                 <span *ngIf="isModeView">{{profileInfo$.value.aboutme}}</span>
@@ -250,7 +250,7 @@
                         *ngIf="isModeEdit" />
                 <div *ngIf="isModeView">
                   <label>
-                    <small>Должность</small>
+                    <strong>Должность</strong>
                   </label>
                 </div>
                 <span *ngIf="isModeView">{{profileInfo$.value.job}}</span>
@@ -267,7 +267,7 @@
                         *ngIf="isModeEdit"  />
                 <div *ngIf="isModeView">
                   <label>
-                    <small>Опыт (стаж)</small>
+                    <strong>Опыт (стаж)</strong>
                   </label>
                 </div>
                 <span *ngIf="isModeView">{{profileInfo$.value.workExperience}}</span>
