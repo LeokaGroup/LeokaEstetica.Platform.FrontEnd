@@ -47,14 +47,21 @@ export class SignUpComponent implements OnInit {
         (await this._userService.signUpAsync(this.formSignUp.value.email, this.formSignUp.value.password))
         .subscribe((response: any) => {
             console.log("Новый пользователь: ", this.userData$.value);           
-            if (!this.userData$.value.errors.length || this.userData$.value.errors == null) {            
-                this._router.navigate(["/user/signin"]).then(() => {  
-                    this._redirectService.redirect("user/signin");                
-                });
+            if (response.isSuccess) {  
+                this._messageService.add({
+                    severity: 'success',
+                    summary: "Все хорошо",
+                    detail: "Ваша анкета успешно создана и отправлена на модерацию."
+                });   
+
+                setTimeout(() => {
+                    this._router.navigate(["/user/signin"]).then(() => {  
+                        this._redirectService.redirect("user/signin");                
+                    });
+                }, 4000);
             }
 
             else {
-                console.log("errors validate", response);
                 response.errors.forEach((item: any) => {
                     this._messageService.add({ severity: item.customState ?? 'error', summary: "Что то не так", detail: item.errorMessage });
                 });                
