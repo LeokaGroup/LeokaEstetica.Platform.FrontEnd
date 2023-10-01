@@ -1,0 +1,100 @@
+<p-toast></p-toast>
+
+<div class="d-flex block-profile space-top-80">
+  <div class="profile-left-menu col-lg-3">
+  </div>
+  <div class="profile-table">
+    <p-table [value]="listVacancy$.value.vacancies"
+             [(selection)]="selectedVacancy"
+             dataKey="vacancyId"
+             [paginator]="listVacancy$.value.total > 0"
+             [rows]="10"
+             styleClass="p-datatable-gridlines"
+             responsiveLayout="scroll">
+
+      <ng-template pTemplate="caption">
+        <h3>Ваши вакансии</h3>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th></th>
+          <th>ID</th>
+          <th>Название</th>
+          <th>Описание</th>
+          <th>Статус</th>
+          <th>Просмотр</th>
+          <th>Редактирование</th>
+          <th>Архивирование</th>
+          <th>Удаление</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-vacancy>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="vacancy"></p-tableCheckbox>
+          </td>
+          <td>{{vacancy.vacancyId}}</td>
+          <td>{{vacancy.vacancyName}}</td>
+          <td>{{vacancy.vacancyText}}</td>
+          <td>{{vacancy.vacancyStatusName}}</td>
+          <td><button pButton type="button"
+                      label="Просмотр"
+                      class="p-button-outlined p-button-primary"
+                      (click)="onRouteViewVacancy(vacancy.vacancyId)">
+          </button>
+          </td>
+          <td><button pButton type="button"
+                      label="Редактировать"
+                      class="p-button-outlined p-button-primary"
+                      (click)="onRouteEditVacancy(vacancy.vacancyId)">
+          </button>
+          </td>
+          <td>
+            <button pButton type="button"
+                    label="В архив"
+                    class="p-button-outlined p-button-warning"
+                    [disabled]="vacancy.vacancyStatusSysName == 'Archived'"
+                    (click)="onAddArchiveVacancyAsync(vacancy.vacancyId)">
+            </button>
+          </td>
+          <td><button pButton
+                      type="button"
+                      label="Удалить"
+                      class="p-button-outlined p-button-danger"
+                      (click)="onBeforeDeleteVacancy(vacancy.vacancyId, vacancy.vacancyName)">
+          </button></td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="summary">
+        Всего: {{listVacancy$.value.total}}
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="7">
+              <div class="empty-vacancies">
+                Вы не создали еще ни одной вакансии.
+              </div>
+            </td>
+        </tr>
+    </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<!-- Диалог удаления проекта. -->
+<p-dialog header="Удаление вакансии"
+          [(visible)]="isDeleteVacancy"
+          [breakpoints]="{'960px': '75vw'}"
+          [style]="{width: '50vw'}"
+          [draggable]="false"
+          [resizable]="false">
+  <p>Вы уверены, что хотите удалить вакансию <strong>{{vacancyName}}</strong>?</p>
+  <ng-template pTemplate="footer">
+    <p-button (click)="isDeleteVacancy=false" label="Отменить" styleClass="p-button-text"></p-button>
+    <p-button (click)="onDeleteVacancyInMenuAsync()" label="Удалить" styleClass="p-button-danger p-button-text"></p-button>
+  </ng-template>
+</p-dialog>

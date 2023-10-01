@@ -1,0 +1,63 @@
+<p-toast></p-toast>
+
+<div class="d-flex block-profile space-top-80">
+  <div class="profile-left-menu col-lg-3">
+
+  </div>
+
+  <div>
+    <p-table [value]="archivedProjects$.value.projectsArchive"
+            
+            dataKey="projectId"
+            [paginator]="archivedProjects$.value.total > 0"
+            [rows]="10"
+            styleClass="p-datatable-gridlines"
+            responsiveLayout="scroll"
+            >
+      <ng-template pTemplate="caption">
+          <h3>Ваши проекты в архиве</h3>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th></th>
+          <th>ID</th>
+          <th>Название проекта</th>
+          <th>Дата архивации</th>
+          <th>Удаление</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-project>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="project"></p-tableCheckbox>
+            </td>
+            <td>{{project.projectId}}</td>
+            <td>{{project.projectName}}</td>
+            <td>{{project.dateArchived}}</td>
+            <td><button pButton type="button" 
+                        label="Удалить из архива" 
+                        class="p-button-outlined p-button-success"
+                        (click)="onDeleteProjectArchiveAsync(project.projectId)">
+              </button>
+            </td>
+          </tr>
+      </ng-template>
+
+      <ng-template pTemplate="summary">
+          Всего: {{archivedProjects$.value.total}}
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="7">
+              <div class="empty-projects">
+                У вас пока нет проектов, находящихся в архиве.
+              </div>
+            </td>
+        </tr>
+    </ng-template>
+  </p-table>
+  </div>
+</div>

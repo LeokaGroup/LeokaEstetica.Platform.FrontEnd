@@ -1,0 +1,380 @@
+<p-toast></p-toast>
+
+<div class="mb-1 telegram-invite d-flex justify-content-center col-lg-12">
+  <div class="invite-telegram">
+    <div class="block-invite">
+      <div>
+        <span>Будьте всегда в курсе новых событий на платформе вступив в наш уютный Telegram-канал.</span>&nbsp;
+      </div>
+      <div class="btn-invite-telegram">
+        <p-button label="Присоединиться" styleClass="p-button-link" (click)="onCreateInviteLinkTelegramAsync()"></p-button>
+      </div>
+    </div>
+  </div>  
+</div>
+
+<div class="d-flex block-profile space-top-50">
+  <div class="profile-left-menu col-lg-3">
+
+  </div>
+
+  <div class="block-worksheet col-lg-7">  
+    <div *ngIf="isShowRemarks" class="mb-1">
+      <strong>Имеются замечания. Анкета не будет опубликована, пока замечания не будут исправлены и приняты модератором.</strong>
+    </div>
+
+    <div class="mb-1" *ngFor="let r of profileInfo$.value.resumeRemarks">
+      <div>
+        <p-message severity="warn" text="{{r.remarkText}}"></p-message>
+      </div>
+    </div>
+
+
+    <div class="worksheet-panel">
+      <p-panel header="Контактная информация" [toggleable]="true">
+        <div class="block-contact">
+            <div class="control-input-text-worksheet">
+                <input type="text"
+                        class="p-inputtext-sm input-control-worksheet"
+                        placeholder="Фамилия"
+                        pInputText
+                        autocomplete="new-password"
+                        [(ngModel)]="lastName"
+                        *ngIf="isModeEdit" />
+               <div *ngIf="isModeView">
+                 <label>
+                   <strong>Фамилия</strong>
+                 </label>
+               </div>
+               <div>
+                <span *ngIf="isModeView">{{profileInfo$.value.lastName}}</span>
+               </div>
+
+                <div class="field-checkbox">
+                    <p-checkbox [(ngModel)]="profileInfo$.value.isShortFirstName"
+                                [binary]="true"
+                                inputId="binary"
+                                *ngIf="isModeEdit">
+                  </p-checkbox>
+                    <p-checkbox [(ngModel)]="isShortFirstName"
+                                [binary]="true"
+                                inputId="binary"
+                                *ngIf="isModeView"
+                                [disabled]="true">
+                  </p-checkbox>
+                    <label for="binary">
+                        <small>Отображать только первую букву фамилии</small>
+                    </label>
+                </div>
+            </div>
+
+            <div class="control-input-text-worksheet">
+                <input type="text"
+                        class="p-inputtext-sm input-control-worksheet"
+                        placeholder="Имя"
+                        pInputText
+                        autocomplete="new-password"
+                        [(ngModel)]="firstName"
+                        *ngIf="isModeEdit" />
+                <div *ngIf="isModeView">
+                  <label>
+                    <strong>Имя</strong>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.firstName}}</span>
+            </div>
+
+            <div class="control-input-text-worksheet">
+                <input type="text"
+                        class="p-inputtext-sm input-control-worksheet"
+                        placeholder="Отчество"
+                        pInputText
+                        autocomplete="new-password"
+                        [(ngModel)]="patronymic"
+                        *ngIf="isModeEdit" />
+                <div *ngIf="isModeView">
+                  <label>
+                    <strong>Отчество</strong>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.patronymic}}</span>
+            </div>
+        </div>
+
+        <div class="d-flex worksheet-line justify-content-between">
+            <div class="control-input-text-worksheet">
+                <input type="text"
+                        class="p-inputtext-sm input-control-worksheet"
+                        placeholder="Email"
+                        pInputText
+                        autocomplete="new-password"
+                        [(ngModel)]="email"
+                        *ngIf="isModeEdit" />
+                        <br>
+                <small *ngIf="!isModeView">При изменении Email, Вам нужно будет авторизоваться повторно.<br> Вы будете перенаправлены автоматически.</small>
+                <div *ngIf="isModeView">
+                  <label>
+                    <strong>Email</strong>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.email}}</span>
+            </div>
+
+            <div class="control-input-text-worksheet">
+                <input type="text"
+                        class="p-inputtext-sm input-control-worksheet"
+                        placeholder="Номер телефона"
+                        pInputText
+                        autocomplete="new-password"
+                        [(ngModel)]="phoneNumber"
+                        *ngIf="isModeEdit" />
+                <div *ngIf="isModeView">
+                  <label>
+                    <strong>Номер телефона</strong>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.phoneNumber}}</span>
+            </div>
+        </div>
+
+        <div class="d-flex worksheet-line justify-content-between">
+            <div class="control-input-text-worksheet">
+                <input type="text"
+                        class="p-inputtext-sm input-control-worksheet"
+                        placeholder="Telegram"
+                        pInputText
+                        autocomplete="new-password"
+                        [(ngModel)]="telegram"
+                        *ngIf="isModeEdit" />
+                <div *ngIf="isModeView">
+                  <label>
+                    <strong>Telegram</strong>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.telegram}}</span>
+            </div>
+
+            <div class="control-input-text-worksheet">
+                <input type="text"
+                        class="p-inputtext-sm input-control-worksheet"
+                        placeholder="WhatsApp"
+                        pInputText
+                        autocomplete="new-password"
+                        [(ngModel)]="whatsApp"
+                        *ngIf="isModeEdit" />
+                <div *ngIf="isModeView">
+                  <label>
+                    <strong>WhatsApp</strong>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.whatsApp}}</span>
+            </div>
+
+            <div class="control-input-text-worksheet">
+                <input type="text"
+                        class="p-inputtext-sm input-control-worksheet"
+                        placeholder="ВКонтакте"
+                        pInputText
+                        autocomplete="new-password"
+                        [(ngModel)]="vkontakte"
+                        *ngIf="isModeEdit" />
+                <div *ngIf="isModeView">
+                  <label>
+                    <strong>Ссылка ВКонтакте</strong>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.vkontakte}}</span>
+            </div>
+        </div>
+
+        <div class="d-flex worksheet-line justify-content-between">
+            <div class="control-input-text-worksheet">
+                <input type="text"
+                        class="p-inputtext-sm input-control-worksheet"
+                        placeholder="Другая соц.сеть"
+                        pInputText
+                        autocomplete="new-password"
+                        [(ngModel)]="otherLink"
+                        *ngIf="isModeEdit" />
+                <div *ngIf="isModeView">
+                  <label>
+                    <strong>Другая ссылка</strong>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.otherLink}}</span>
+            </div>
+        </div>
+<!--
+        <div class="d-flex worksheet-line">
+            <div class="control-input-text-worksheet">
+                <button type="submit"
+                      class="btn btn-primary button-action-pur-control-worksheet">
+                Сохранить
+              </button>
+            </div>
+        </div> -->
+      </p-panel>
+    </div>
+
+    <div class="worksheet-panel space-top">
+      <p-panel header="О себе" [toggleable]="true">
+        <div class="d-flex worksheet-line">
+            <div class="control-input-text-worksheet">
+                <textarea input-control-worksheet
+                            rows="5"
+                            cols="100"
+                            pInputTextarea
+                            [autoResize]="true"
+                            autocomplete="new-password"
+                            placeholder="Напишите о себе"
+                            [(ngModel)]="aboutme"
+                            *ngIf="isModeEdit"
+                            class="input-about-me"></textarea>
+                <div *ngIf="isModeView">
+                  <label>
+                    <strong>О себе</strong>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.aboutme}}</span>
+            </div>
+        </div>
+
+        <div class="d-flex worksheet-line">
+            <div class="control-input-text-worksheet">
+                <input type="text"
+                        class="p-inputtext-sm input-control-worksheet"
+                        placeholder="Должность"
+                        pInputText
+                        autocomplete="new-password"
+                        [(ngModel)]="job"
+                        *ngIf="isModeEdit" />
+                <div *ngIf="isModeView">
+                  <label>
+                    <strong>Должность</strong>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.job}}</span>
+            </div>
+
+            <!-- TODO: Передавать это поле на бэк, когда там будет оно добавлено. -->
+            <div class="control-input-text-worksheet">
+                <input type="text"
+                        class="p-inputtext-sm input-control-worksheet"
+                        placeholder="Опыт (стаж)"
+                        pInputText
+                        autocomplete="new-password"
+                        [(ngModel)]="workExperience"
+                        *ngIf="isModeEdit"  />
+                <div *ngIf="isModeView">
+                  <label>
+                    <strong>Опыт (стаж)</strong>
+                  </label>
+                </div>
+                <span *ngIf="isModeView">{{profileInfo$.value.workExperience}}</span>
+            </div>
+        </div>
+
+        <!-- <div class="d-flex worksheet-line">
+            <div class="control-input-text-worksheet">
+                <button type="submit"
+                      class="btn btn-primary button-action-pur-control-worksheet">
+                Сохранить
+              </button>
+            </div>
+        </div> -->
+      </p-panel>
+    </div>
+
+    <div class="worksheet-panel space-top">
+      <p-panel header="Навыки" [toggleable]="true" >
+        <div *ngIf="isModeEdit; else elseBlockSkills">
+        <p-pickList [source]="profileSkillsItems$.value"
+                    [target]="aSelectedSkills"
+                    sourceHeader="Выберете навыки"
+                    targetHeader="Выбранные навыки"
+                    [dragdrop]="true"
+                    [responsive]="true"
+                    [sourceStyle]="{'height':'30rem'}"
+                    [targetStyle]="{'height':'30rem'}"
+                    filterBy="name"
+                    sourceFilterPlaceholder="Найти по названию"
+                    targetFilterPlaceholder="Найти по названию"
+                    (onMoveToTarget)="onSaveProfileUserSkillsAsync()">
+    <ng-template  let-product pTemplate="item" >
+        <div class="product-item">
+            <div class="image-container">
+                    <!-- <img src="assets/showcase/images/demo/product/{{product.image}}" [alt]="product.name" class="product-image" /> -->
+            </div>
+            <div class="product-list-detail">
+                <h5 class="mb-2">{{product.skillName}}</h5>
+                <i class="pi pi-tag product-category-icon"></i>
+                <span class="product-category">{{product.tag}}</span>
+            </div>
+            <div class="product-list-action">
+                <!-- <h6 class="mb-2">${{product.price}}</h6> -->
+                <!-- <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span> -->
+            </div>
+        </div>
+    </ng-template>
+        </p-pickList>
+        </div>
+          <ng-template #elseBlockSkills>
+            <div *ngFor="let ski of aSelectedSkills">
+              {{ski.skillName}}
+            </div>
+          </ng-template>
+      </p-panel>
+    </div>
+
+
+    <div class="worksheet-panel space-top">
+        <p-panel header="Цели на платформе" [toggleable]="true">
+          <div *ngIf="isModeEdit; else elseBlockIntents">
+          <p-pickList [source]="profileIntentsItems$.value"
+                    [target]="aSelectedIntents"
+                    sourceHeader="Выберете ваши цели на платформе"
+                    targetHeader="Выбранные цели"
+                    [dragdrop]="true"
+                    [responsive]="true"
+                    [sourceStyle]="{'height':'30rem'}"
+                    [targetStyle]="{'height':'30rem'}"
+                    filterBy="name"
+                    sourceFilterPlaceholder="Найти по названию"
+                    targetFilterPlaceholder="Найти по названию">
+    <ng-template let-product pTemplate="item">
+        <div class="product-item">
+            <div class="image-container">
+                    <!-- <img src="assets/showcase/images/demo/product/{{product.image}}" [alt]="product.name" class="product-image" /> -->
+            </div>
+            <div class="product-list-detail">
+                <h5 class="mb-2">{{product.intentName}}</h5>
+                <!-- <i class="pi pi-tag product-category-icon"></i>
+                <span class="product-category">{{product.tag}}</span> -->
+            </div>
+            <div class="product-list-action">
+                <!-- <h6 class="mb-2">${{product.price}}</h6> -->
+                <!-- <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span> -->
+            </div>
+        </div>
+    </ng-template>
+</p-pickList>
+          </div>
+          <ng-template #elseBlockIntents>
+            <div *ngFor="let int of aSelectedIntents">
+              {{int.intentName}}
+            </div>
+          </ng-template>
+        </p-panel>
+      </div>
+
+      <div class="d-flex worksheet-line worksheet-panel mb-3">
+            <div class="control-input-text-worksheet">
+              <button type="button"
+                      class="btn btn-primary button-action-pur-control-worksheet"
+                      (click)="onSaveProfileInfoAsync()">
+                Сохранить
+              </button>
+            </div>
+        </div>
+  </div>
+</div>

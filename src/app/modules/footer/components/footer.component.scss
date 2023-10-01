@@ -1,0 +1,81 @@
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/modules/header/components/header.component.scss";
+@use "/src/app/common/styles/styles.scss";
+
+.footer {
+    width: 100%;
+    background: #FAF9FC;
+    display: flex;
+    flex-direction: column;   
+    margin-top: 300px; 
+  
+    .footer-item {
+      font-family: 'Montserrat-Regular';
+      font-size: 14px;
+      line-height: 20px;
+    //   color: #FFFFFF;
+      margin: 15px 0px;
+      cursor: pointer;
+    }
+  
+    .block-footers {
+      display: flex;
+      justify-content: space-around;
+  
+      .block-footer {
+        margin-top: 50px;
+      }
+    }
+  
+    .block-logo {
+      text-align: start;
+      cursor: pointer;
+      padding: 40px 0px 0px 112px;
+    }
+  
+    .title {
+      margin: 0 10px;
+    //   color: #35365D;
+      font-family: 'Stolzl';
+      font-style: normal;
+      font-weight: 900;
+      font-size: 20px;
+      line-height: 24px;
+    }
+  
+    .sub-title {
+      margin: 0 10px;
+    //   color: #35365D;
+      font-family: 'Montserrat-Regular';
+      font-weight: 400;
+      font-size: 10px;
+      line-height: 10px;
+      display: flex;
+      align-items: center;
+      letter-spacing: 1pt;
+    }
+  
+    .text-date {
+      padding: 40px 0px 0px 112px;
+      // background: #361469;
+      background: #FAF9FC;
+      font-family: 'SF Pro Display';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+      letter-spacing: 0.4px;
+    //   color: #D1D5DB;
+      padding-bottom: 32px;
+      // padding-top: 50px;
+    }
+  }
+  
+  .block-sub-footer {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .payment-system-logos {
+    margin-left: 50px;
+  }

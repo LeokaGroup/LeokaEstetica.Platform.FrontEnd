@@ -1,0 +1,144 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+
+.chat {
+    width: 750px;
+}
+
+::ng-deep.p-fieldset-toggleable .p-fieldset-legend a {
+  text-decoration: none;
+}
+
+/* Chat containers */
+.container {
+    border: 2px solid #dedede;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+/* Darker chat container */
+.darker {
+    border-color: #ccc;
+    background-color: #ddd;
+}
+
+/* Clear floats */
+.container::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Style images */
+.container img {
+    float: left;
+    max-width: 60px;
+    width: 100%;
+    margin-right: 20px;
+    border-radius: 50%;
+}
+
+/* Style the right image */
+.container img.right {
+    float: right;
+    margin-left: 20px;
+    margin-right:0;
+}
+
+/* Style time text */
+.time-right {
+    float: right;
+    color: #aaa;
+}
+
+/* Style time text */
+.time-left {
+    float: left;
+    color: #999;
+}
+
+::ng-deep.p-splitter-panel-nested .p-splitter-panel {
+    display: block;
+  }
+
+  .block-messages {
+    height: 300px;
+    overflow-y: scroll;
+  }
+
+  .block-message {
+    border: 2px solid #dedede;
+    // background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    text-align: left;
+  }
+
+  .blockMessage {
+    background: #F2F4F9;
+    margin: 5px 0px;
+  }
+
+  // Медиа-запросы.
+@media (max-width: 575px) {}
+
+/* sm (>=576 и <=767) */
+@media (min-width: 576px) and (max-width: 767px) {
+  .block-worksheet {
+    margin-left: 200px;
+    margin-right: 10px;
+  }
+
+  .block-contact {
+    flex-direction: column;
+ }
+
+ .worksheet-line {
+    flex-direction: column;
+ }
+
+ .control-input-text-worksheet {
+    margin: 20px 10px 0 0px;
+ }
+}
+
+/* md (>=768 и <=991) */
+@media (min-width: 768px) and (max-width: 991px) {
+ .worksheet-panel {
+    margin-left: 250px;
+ }
+
+ .block-contact {
+    flex-direction: column;
+ }
+
+ .worksheet-line {
+    flex-direction: column;
+ }
+
+ .control-input-text-worksheet {
+    margin: 20px 10px 0 0px;
+ }
+
+ .input-about-me {
+    width: 400px;
+ }
+}
+
+/* lg (>=992 и <=1199) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .worksheet-panel {
+        width: 400px;
+    }
+}
+
+/* xl (>=1200) */
+@media (min-width: 1200px) {
+    .worksheet-panel {
+        margin-left: 10px;
+     }
+}

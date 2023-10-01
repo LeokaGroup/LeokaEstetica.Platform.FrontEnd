@@ -1,0 +1,159 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+
+.block-worksheet {
+    margin-right: 50px;
+    margin-left: 50px;
+}
+
+.space-top {
+    margin-top: 50px;
+}
+
+.block-contact {
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-control-worksheet {
+    width: 200px;
+    outline: none;
+
+    &:focus {
+        outline: none;
+        border: 1px solid #403866;
+        box-shadow: none;
+    }
+
+    &:hover {
+        border-color: #403866;
+    }
+}
+
+.worksheet-line {
+    margin-top: 30px;
+    justify-content: space-between;
+}
+
+// Стили для пиклиста.
+.product-item {
+    display: flex;
+    align-items: center;
+    padding: .5rem;
+    width: 100%;
+
+    img {
+        width: 75px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+        margin-right: 1rem;
+    }
+
+    .product-list-detail {
+        flex: 1 1 0;
+    }
+
+    .product-list-action {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .product-category-icon {
+        vertical-align: middle;
+        margin-right: .5rem;
+    }
+
+    .product-category {
+        vertical-align: middle;
+        line-height: 1;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .product-item {
+        flex-wrap: wrap;
+
+        .image-container {
+            width: 100%;
+            text-align: center;
+        }
+
+        img {
+            margin: 0 0 1rem 0;
+            width: 100px;
+        }
+    }
+}
+
+::ng-deep .p-button-link {
+    padding: 0 0;
+    color: white!important;
+    text-decoration: underline;
+}
+
+.invite-telegram {
+    background-color: #827ffe;
+    color: white;
+    width: 100%;
+}
+
+.block-invite {
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+}
+
+// Медиа-запросы.
+@media (max-width: 575px) {}
+
+/* sm (>=576 и <=767) */
+@media (min-width: 576px) and (max-width: 767px) {
+  .block-worksheet {
+    margin-left: 200px;
+    margin-right: 10px;
+  }
+
+  .block-contact {
+    flex-direction: column;
+ }
+
+ .worksheet-line {
+    flex-direction: column;
+ }
+
+ .control-input-text-worksheet {
+    margin: 20px 10px 0 0px;
+ }
+}
+
+/* md (>=768 и <=991) */
+@media (min-width: 768px) and (max-width: 991px) {
+ .worksheet-panel {
+    margin-left: 250px;
+ }
+
+ .block-contact {
+    flex-direction: column;
+ }
+
+ .worksheet-line {
+    flex-direction: column;
+ }
+
+ .control-input-text-worksheet {
+    margin: 20px 10px 0 0px;
+ }
+
+ .input-about-me {
+    width: 400px;
+ }
+}
+
+/* lg (>=992 и <=1199) */
+@media (min-width: 992px) and (max-width: 1199px) {}
+
+/* xl (>=1200) */
+@media (min-width: 1200px) {
+
+}

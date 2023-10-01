@@ -1,0 +1,56 @@
+@use "/src/app/common/styles/control.scss";
+
+ .header {
+   padding: 10px;
+   align-items: center;
+   position: absolute;
+   z-index: 2;
+   top: 0;
+ }
+
+ .menu-item {
+   padding: 0 10px;
+   position: relative;
+   z-index: 1;
+   cursor: pointer;
+ }
+
+ .navbar-brand {
+   margin-right: 100px;
+ }
+
+ .logo {
+  width: 150px;
+ }
+
+ .invisible {
+   display: none;
+ }
+ .avatar-client{
+   cursor: grab;
+ }
+
+.navbar-light {
+  background: #FAFAFA;
+}
+
+// Медиа-запросы.
+@media (max-width: 575px) {}
+
+/* sm (>=576 и <=767) */
+@media (min-width: 576px) and (max-width: 767px) {}
+
+/* md (>=768 и <=991) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .button-action-auth-control {
+    font-size: 14px;
+  }
+}
+
+/* lg (>=992 и <=1199) */
+@media (min-width: 992px) and (max-width: 1199px) {}
+
+/* xl (>=1200) */
+@media (min-width: 1200px) {
+ 
+}

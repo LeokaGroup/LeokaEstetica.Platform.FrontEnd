@@ -1,0 +1,29 @@
+<p-toast></p-toast>
+
+<div class="d-flex block-profile space-top-80">
+  <div class="profile-left-menu col-lg-3">
+  </div>
+
+  <div>
+    <div>
+      <order-form-steps></order-form-steps>
+    </div>
+
+    <div class="fare-rule-details mt-5">
+        <p-panel header="Оплата тарифа">
+          <p>При оплате вы будете перенаправлены в платежную систему для оплаты тарифа.</p>
+          <p>Нажимая кнопку "Оплатить", Вы подтверждаете, что ознакомлены и согласны с нашими тарифами.</p>
+        </p-panel>
+
+        <div class="d-flex worksheet-line mt-3">
+            <div class="control-input-text-worksheet control-order-form">
+              <button type="button" 
+                      class="btn btn-primary button-action-pur-control"
+                      (click)="onPayOrderAsync()">
+                Оплатить
+              </button>
+            </div>
+          </div>
+    </div>
+  </div>
+</div>

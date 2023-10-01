@@ -1,0 +1,123 @@
+<p-toast></p-toast>
+
+<div class="d-flex block-profile space-top-80">
+  <div class="profile-left-menu col-lg-3">
+  </div>
+  <div>
+    <p-table [value]="userOrders$.value.orders"
+             [(selection)]="selectedOrder"
+             dataKey="orderId"
+             [paginator]="userOrders$.value.total > 0"
+             [rows]="10"
+             styleClass="p-datatable-gridlines"
+             responsiveLayout="scroll">
+
+      <ng-template pTemplate="caption">
+        <h3>Ваши заказы</h3>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th></th>
+          <th>ID заказа</th>
+          <th>Название заказа</th>
+          <th>Описание заказа</th>
+          <th>Дата создания заказа</th>
+          <th>Статус заказа</th>
+          <th>Подробнее</th>
+          <!-- <th>Редактирование</th> -->
+          <!-- <th>Удаление</th> -->
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-order>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="order"></p-tableCheckbox>
+          </td>
+          <td>{{order.orderId}}</td>
+          <td>{{order.orderName}}</td>
+          <td>{{order.orderDetails}}</td>
+          <td>{{order.dateCreated}}</td>
+          <td>{{order.statusName}}</td>
+          <td><button pButton type="button"
+                      label="Подробнее"
+                      class="p-button-outlined p-button-primaryproject.projectId"
+                      (click)="onRouteViewOrder(order.orderId)">
+          </button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="summary">
+        Всего: {{userOrders$.value.total}}
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="7">
+              <div class="empty-orders">
+                У вас пока нет заказов.
+              </div>
+            </td>
+        </tr>
+    </ng-template>
+    </p-table>
+  </div>  
+</div>
+
+<div class="d-flex block-profile space-top-80">
+  <div class="profile-left-menu col-lg-3">
+  </div>
+  <div>
+    <p-table [value]="histories$.value.histories"
+             dataKey="orderId"
+             [paginator]="histories$.value.total > 0"
+             [rows]="10"
+             styleClass="p-datatable-gridlines"
+             responsiveLayout="scroll">
+
+      <ng-template pTemplate="caption">
+        <h3>История операций</h3>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <!-- <th></th> -->
+          <th>ID операции</th>
+          <th>Название операции</th>
+          <th>Дата операции</th>
+          <th>ID заказа</th>
+          <th>Статус операции</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-history>
+        <tr>
+          <!-- <td>
+            <p-tableCheckbox [value]="history"></p-tableCheckbox>
+          </td> -->
+          <td>{{history.shadowId}}</td>
+          <td>{{history.actionText}}</td>
+          <td>{{history.dateCreated}}</td>
+          <td>{{history.orderId}}</td>
+          <td>{{history.statusName}}</td>          
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="summary">
+        Всего: {{histories$.value.total}}
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="7">
+              <div class="empty-orders">
+                У вас пока нет операций по заказам.
+              </div>
+            </td>
+        </tr>
+    </ng-template>
+    </p-table>
+  </div>
+</div>

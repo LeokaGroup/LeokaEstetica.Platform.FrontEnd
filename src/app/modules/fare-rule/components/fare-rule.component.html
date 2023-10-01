@@ -1,0 +1,45 @@
+<p-carousel [numVisible]="numVisible" [numScroll]="numScroll" [circular]="true" [responsiveOptions]="responsiveOptions"
+  [value]="fareRules$.value" orientation="{{carouselType}}">
+  <ng-template let-fare pTemplate="item">
+
+    <div class="tarifs">
+      <div class="tarifs-body">
+        <p-card [style]="{ height: '1000px' }">
+          <div class="header">
+            <h3 class="title">
+              {{fare.name}}
+            </h3>
+
+            <h4 class="price">
+              {{fare.price}} ₽/мес.
+            </h4>
+
+            <h6 class="label">
+              {{fare.label}}
+            </h6>            
+          </div>
+
+          <div class="footer">
+            <strong style="text-align: center" class="text-content">Что входит в тариф:</strong>
+            <ul *ngFor="let item of fare.fareRuleItems" class="discription">
+              <li class="text-content">{{item.name}} {{item.label}}</li>
+            </ul>
+
+            <div class="d-flex justify-content-center">
+              <div class="control-fare-rule" *ngIf="fare.ruleId > 1">
+                <button type="submit" class="btn btn-primary button-action-pur-control"
+                  (click)="onRouteOrderInfoAsync(fare.publicId)"
+                  [disabled]="!isAvailableFareRule">
+                  Оформить
+                </button>
+                <div class="d-flex justify-content-center" *ngIf="!isAvailableFareRule">
+                  <small>Для оформления тарифа нужно быть авторизованными.</small>   
+                </div>
+              </div>  
+            </div>   
+          </div>         
+        </p-card>
+      </div>
+    </div>
+  </ng-template>
+</p-carousel>

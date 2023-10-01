@@ -1,0 +1,86 @@
+@use "/src/app/common/styles/styles.scss";
+
+.fon {
+  background-color: rgba(23, 52, 57, 0.95);
+  //display: inline-block;
+  height: 100vh;
+  overflow: hidden;
+  overflow-x: hidden;
+  width: 100%;
+  //margin-top: -5px;
+  //padding-top: -5px;
+
+  img {
+    opacity: 0.1;
+  }
+}
+
+.fon-content {
+  position: absolute;
+  z-index: 2;
+  top: 40%;
+  text-align: center;
+
+
+  .fon-title {
+    color: #fff;
+  }
+
+  .fon-text {
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0 100px;
+  }
+}
+
+.platform-offers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .offer-item {
+    width: 300px;
+    margin: 30px 20px 0px 0px;
+  }
+
+  .offer-tag {
+    margin: 20px 10px;
+  }
+}
+
+
+.block-knowledge {
+  white-space: pre-line;
+}
+
+.block-new-users {
+  // box-shadow: 0 0 12px 0 rgba(0,0,0,.18);
+  // height: 350px;
+  // overflow-x: hidden;
+  // overflow-y: overlay;
+  padding: 16px 16px;
+  line-height: 1.5rem;
+}
+
+.block-statistics {
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+// Медиа-запросы.
+@media (max-width: 575px) {}
+
+/* sm (>=576 и <=767) */
+@media (min-width: 576px) and (max-width: 767px) {}
+
+/* md (>=768 и <=991) */
+@media (min-width: 768px) and (max-width: 991px) {
+ 
+}
+
+/* lg (>=992 и <=1199) */
+@media (min-width: 992px) and (max-width: 1199px) {}
+
+/* xl (>=1200) */
+@media (min-width: 1200px) {
+ 
+}

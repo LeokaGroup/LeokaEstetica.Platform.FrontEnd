@@ -1,0 +1,163 @@
+<p-toast></p-toast>
+
+<div class="d-flex block-profile space-top-80">
+  <div class="col-lg-3">
+  </div>
+
+  <div class="col-lg-6 block-catalog-vacancies text-content">
+    <div class="mb-2 block-search">
+      <span class="p-fluid control-search">
+        <p-autoComplete [(ngModel)]="searchText"
+                        [suggestions]="catalog$.value.catalogVacancies"
+                        [showEmptyMessage]="true"
+                        emptyMessage="Результатов не найдено"
+                        field="vacancyName"
+                        [minLength]="1"
+                        (completeMethod)="onSearchVacanciesAsync($event)"
+                        (onClear)="onLoadCatalogVacanciesAsync()"
+                        placeholder="Поиск по вакансиям...">
+        </p-autoComplete>
+        <p class="vacancy-count">Найдено вакансий: {{ catalog$.value.total }}</p>
+      </span>
+    </div>
+    
+    <div class="catalog-vacancies-item" *ngFor="let item of aCatalogVacancies">
+      <div [ngClass]="{selectedColor: item.isSelectedColor}">
+       <div class="project-text-item">
+        <div class="d-flex">
+          <div>
+            <p-tag styleClass="mr-2" severity="primary" value="{{item.payment == '' ? 'Без оплаты' : item.payment + '₽'}}"></p-tag>
+          </div>
+
+          <div class="tag">
+            <p-tag styleClass="mr-2" severity="info" value="{{item.workExperience}}"></p-tag>
+          </div>
+
+          <div class="tag">
+            <p-tag styleClass="mr-2" severity="success" value="{{item.employment}}"></p-tag>
+          </div>
+
+          <div class="tag" *ngIf="item.tagColor !== null && item.tagValue !== null">
+            <p-tag severity="{{item.tagColor}}" value="{{item.tagValue}}"></p-tag>
+          </div>
+        </div>
+
+        <div class="vacancy-text-block">
+          <h3 class="vacancy-title" (click)="onRouteSelectedVacancy(item.vacancyId)">{{item.vacancyName}}</h3>
+          <div class="vacancy-text">{{item.vacancyText}}</div>
+
+          <div>
+            <i class="pi pi-clock">&nbsp;{{item.displayDateCreated}}</i>
+          </div>
+        </div>
+       </div>
+      </div>
+        
+    </div>
+
+    <!-- Пагинация. -->
+    <div>
+      <p-paginator [rows]="20"
+                  [totalRecords]="rowsCount"
+                  (onPageChange)="onGetVacanciesPaginationAsync($event)"
+                  *ngIf="rowsCount > 0">
+      </p-paginator>
+    </div>
+  </div>
+
+
+
+  <!-- Фильтры вакансий. -->
+  <div class="col-lg-3 block-catalog-filters">
+    <h5>Фильтры</h5>
+
+    <div>
+      <div class="">
+        <div>
+          
+        </div>
+        <div>
+          <div *ngFor="let item of aSalaries" class="field-checkbox">
+            <p-radioButton [inputId]="item.key"
+                            name="item"
+                            [value]="item"
+                            [(ngModel)]="selectedSalary"
+                            (onClick)="onFilterVacanciesAsync()">
+            </p-radioButton>
+            <label [for]="item.key">{{item.name}}</label>
+        </div>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <div>
+          <strong>Оплата</strong>
+        </div>
+        <div>
+          <div *ngFor="let item of aPays" class="field-checkbox">
+            <p-radioButton [inputId]="item.key"
+                            name="item"
+                            [value]="item"
+                            [(ngModel)]="selectedPay"
+                            (onClick)="onFilterVacanciesAsync()">
+            </p-radioButton>
+            <label [for]="item.key">{{item.name}}</label>
+        </div>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <div>
+          <strong>Опыт работы</strong>
+        </div>
+        <div>
+          <div *ngFor="let item of aExperience" class="field-checkbox">
+            <p-radioButton [inputId]="item.key"
+                            name="item"
+                            [value]="item"
+                            [(ngModel)]="selectedExperience"
+                            (onClick)="onFilterVacanciesAsync()">
+            </p-radioButton>
+            <label [for]="item.key">{{item.name}}</label>
+        </div>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <div>
+          <strong>Занятость</strong>
+        </div>
+        <div>
+        <div *ngFor="let item of aEmployments" class="field-checkbox">
+          <p-checkbox name="item.key"
+                      value="item"
+                      [value]="item"
+                      [(ngModel)]="selectedEmployment"
+                      [inputId]="item.key"
+                      (onChange)="onFilterVacanciesAsync()">
+          </p-checkbox>
+          <label [for]="item.key">{{item.name}}</label>
+      </div>
+        </div>
+      </div>
+
+      <!-- TODO: этот тип фильтра будем использовать при поиске. Вне поиска решили не делать. -->
+      <!-- <div class="mt-3">
+        <div>
+          <strong>Ключевые слова</strong>
+        </div>
+        <div>
+        <div *ngFor="let item of aKeywords" class="field-checkbox">
+          <p-checkbox name="item.key"
+                      value="item"
+                      [value]="item"
+                      [(ngModel)]="selectedKeyword"
+                      [inputId]="item.key">
+          </p-checkbox>
+          <label [for]="item.key">{{item.name}}</label>
+      </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+</div>

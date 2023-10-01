@@ -1,0 +1,1201 @@
+<p-toast></p-toast>
+
+<div class="block-moderation">
+  <div>
+    <p-megaMenu [model]="items"></p-megaMenu>
+
+    <!-- Проекты. -->
+    <div *ngIf="isProjectsModeration" class="mt-5">
+      <p-table [value]="aProjects" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+        <ng-template pTemplate="caption">
+          Проекты на модерации
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID</th>
+            <th>Название проекта</th>
+            <th>Дата модерации</th>
+            <th>Дата создания</th>
+            <th>Просмотр</th>
+            <th>Одобрение</th>
+            <th>Отклонение</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-prj>
+          <tr>
+            <td>{{prj.projectId}}</td>
+            <td>{{prj.projectName}}</td>
+            <td>{{prj.dateModeration}}</td>
+            <td>{{prj.dateCreated}}</td>
+            <td><button pButton
+                        type="button"
+                        label="Просмотр"
+                        class="p-button-text"
+                        (click)="onPreviewProjectAsync(prj.projectId)">
+            </button>
+            </td>
+            <td><button pButton
+                        type="button"
+                        label="Одобрить"
+                        class="p-button-success p-button-text"
+                        (click)="onApproveProjectAsync(prj.projectId)">
+              </button>
+            </td>
+            <td><button pButton 
+                        type="button" 
+                        label="Отклонить" 
+                        class="p-button-danger p-button-text"
+                        (click)="onRejectProjectAsync(prj.projectId)">
+              </button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          Всего: {{totalProjects}}
+        </ng-template>
+      </p-table>
+    </div>
+
+    <!-- Вакансии. -->
+    <div *ngIf="isVacanciesModeration" class="mt-5">
+      <p-table [value]="aVacancies" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+        <ng-template pTemplate="caption">
+          Вакансии на модерации
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID</th>
+            <th>Название вакансии</th>
+            <th>Дата модерации</th>
+            <th>Дата создания</th>
+            <th>Просмотр</th>
+            <th>Одобрение</th>
+            <th>Отклонение</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-vac>
+          <tr>
+            <td>{{vac.vacancyId}}</td>
+            <td>{{vac.vacancyName}}</td>
+            <td>{{vac.dateModeration}}</td>
+            <td>{{vac.dateCreated}}</td>
+            <td><button pButton
+                        type="button"
+                        label="Просмотр"
+                        class="p-button-text"
+                        (click)="onPreviewVacancyAsync(vac.vacancyId)">
+            </button>
+            </td>
+            <td><button pButton
+                        type="button"
+                        label="Одобрить"
+                        class="p-button-success p-button-text"
+                        (click)="onApproveVacancyAsync(vac.vacancyId)">
+              </button>
+            </td>
+            <td><button pButton
+              type="button"
+              label="Отклонить"
+              class="p-button-danger p-button-text"
+              (click)="onRejectVacancyAsync(vac.vacancyId)"></button></td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          Всего: {{totalVacancies}}
+        </ng-template>
+      </p-table>
+    </div>
+
+<!-- Анкеты. -->
+<div *ngIf="isResumesModeration" class="mt-5">
+  <p-table [value]="aResumes" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="caption">
+      Анкеты на модерации
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Дата создания</th>
+        <th>Просмотр</th>
+        <th>Одобрение</th>
+        <th>Отклонение</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-resum>
+      <tr>
+        <td>{{resum.profileInfoId}}</td>
+        <td>{{resum.email}}</td>
+        <td>{{resum.dateModeration}}</td>
+        <td><button pButton
+                    type="button"
+                    label="Просмотр"
+                    class="p-button-text"
+                    (click)="onPreviewResumeAsync(resum.profileInfoId)">
+        </button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Одобрить"
+                    class="p-button-success p-button-text"
+                    (click)="onApproveResumeAsync(resum.profileInfoId)">
+        </button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Отклонить"
+                    class="p-button-danger p-button-text"
+                    (click)="onRejectResumeAsync(resum.profileInfoId)">
+        </button></td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      Всего: {{totalResumes}}
+    </ng-template>
+  </p-table>
+</div>
+
+ <!-- Комментарии проектов. -->
+ <div *ngIf="isShowProjectComments" class="mt-5">
+  <p-table [value]="aProjectComments" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="caption">
+      Комментарии проектов на модерации
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Название комментария</th>
+        <th>Дата модерации</th>
+        <th>Дата создания</th>
+        <th>Просмотр</th>
+        <th>Одобрение</th>
+        <th>Отклонение</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-comment>
+      <tr>
+        <td>{{comment.commentId}}</td>
+        <td>{{comment.projectComment.comment}}</td>
+        <td>{{comment.dateModeration}}</td>
+        <td>{{comment.created}}</td>
+        <td><button pButton
+                    type="button"
+                    label="Просмотр"
+                    class="p-button-text"
+                    (click)="onPreviewProjectComment(comment.projectComment)">
+        </button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Одобрить"
+                    class="p-button-success p-button-text">
+          </button>
+        </td>
+        <td><button pButton 
+                    type="button" 
+                    label="Отклонить" 
+                    class="p-button-danger p-button-text">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <!-- Всего: {{totalProjects}} -->
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Замечания проектов (не отправленные). -->
+<div *ngIf="isProjectsUnShippedRemarks" class="mt-5">
+  <p-table [value]="projectsRemarks$.value" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="caption">
+      Не отправленные замечания проектов
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Название проекта</th>
+        <th>Получение замечания</th>
+        <th>Отправка замечаний</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-prj>
+      <tr>
+        <td>{{prj.projectId}}</td>
+        <td>
+          <p-button label="{{prj.projectName}}" 
+                    styleClass="p-button-link"
+                    (click)="getProjectUnShippedRemarksAsync(prj.projectId)">
+
+          </p-button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Просмотр"
+                    class="p-button-text"
+                    (click)="getProjectUnShippedRemarksAsync(prj.projectId)">
+        </button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Отправить"
+                    class="p-button-success p-button-text"
+                    (click)="onSendProjectRemarksAsync(prj.projectId)">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <!-- Всего: {{totalProjects}} -->
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Проекты с неисправленными замечаниями. -->
+<div *ngIf="isAwaitingCorrectionProjectRemarks" class="mt-5">
+  <p-table [value]="aAwaitingCorrectionProjectRemarks" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="caption">
+      Неисправленные замечания проектов
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID проекта</th>
+        <th>ID замечания</th>
+        <th>Название замечания</th>
+        <th>Текст замечания</th>
+        <th>Статус замечания</th>
+        <th>Принятие замечания</th>
+        <th>Не принятие Замечания</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-prj>
+      <tr>
+        <td>{{prj.projectId}}</td>
+        <td>{{prj.remarkId}}</td>
+        <td>{{prj.russianName}}</td>
+        <td>{{prj.remarkText}}</td>
+        <td>{{prj.remarkStatusId}}</td>
+        <!-- <td>
+          <p-button label="{{prj.projectName}}" 
+                    styleClass="p-button-link"
+                    (click)="getProjectUnShippedRemarksAsync(prj.projectId)">
+
+          </p-button>
+        </td> -->
+        <td><button pButton
+                    type="button"
+                    label="Принять"
+                    class="p-button-text p-button-success">
+        </button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Не принять"
+                    class="p-button-danger p-button-text">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <!-- Всего: {{totalProjects}} -->
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Замечания вакансий (не отправленные). -->
+<div *ngIf="isVacanciesUnShippedRemarks" class="mt-5">
+  <p-table [value]="vacanciesRemarks$.value" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="caption">
+      Не отправленные замечания вакансий
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Название вакансии</th>
+        <th>Получение замечания</th>
+        <th>Отправка замечаний</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-vac>
+      <tr>
+        <td>{{vac.vacancyId}}</td>
+        <td>
+          <p-button label="{{vac.vacancyName}}" 
+                    styleClass="p-button-link">
+
+          </p-button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Просмотр"
+                    class="p-button-text"
+                    (click)="getVacancyUnShippedRemarksAsync(vac.vacancyId)">
+        </button>
+        </td>
+        <!-- <td><button pButton
+                    type="button"
+                    label="Отправить"
+                    class="p-button-success p-button-text"
+                    (click)="onSendProjectRemarksAsync(vac.projectId)">
+          </button>
+        </td> -->
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <!-- Всего: {{totalProjects}} -->
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Проекты с неисправленными замечаниями. -->
+<div *ngIf="isAwaitingCorrectionVacanciesRemarks" class="mt-5">
+  <p-table [value]="aAwaitingCorrectionVacanciesRemarks" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="caption">
+      Неисправленные замечания вакансий
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID вакансии</th>
+        <th>ID замечания</th>
+        <th>Название замечания</th>
+        <th>Текст замечания</th>
+        <th>Статус замечания</th>
+        <th>Принятие замечания</th>
+        <th>Не принятие замечания</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-prj>
+      <tr>
+        <td>{{prj.vacancyId}}</td>
+        <td>{{prj.remarkId}}</td>
+        <td>{{prj.russianName}}</td>
+        <td>{{prj.remarkText}}</td>
+        <td>{{prj.remarkStatusId}}</td>
+        <!-- <td>
+          <p-button label="{{prj.projectName}}" 
+                    styleClass="p-button-link"
+                    (click)="getProjectUnShippedRemarksAsync(prj.projectId)">
+
+          </p-button>
+        </td> -->
+        <td><button pButton
+                    type="button"
+                    label="Принять"
+                    class="p-button-text p-button-success">
+        </button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Не принять"
+                    class="p-button-danger p-button-text">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <!-- Всего: {{totalProjects}} -->
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Замечания анкет (не отправленные). -->
+<div *ngIf="isResumesUnShippedRemarks" class="mt-5">
+  <p-table [value]="resumesRemarks$.value" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="caption">
+      Не отправленные замечания анкет
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Название анкеты</th>
+        <th>Получение замечания</th>
+        <th>Отправка замечаний</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-pi>
+      <tr>
+        <td>{{pi.profileInfoId}}</td>
+        <td>
+          <p-button label="{{pi.profileName}}" 
+                    styleClass="p-button-link">
+
+          </p-button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Просмотр"
+                    class="p-button-text"
+                    (click)="getResumeUnShippedRemarksAsync(pi.profileInfoId)">
+        </button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Отправить"
+                    class="p-button-success p-button-text"
+                    (click)="onSendResumeRemarksAsync(pi.profileInfoId)">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <!-- Всего: {{totalProjects}} -->
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Анкеты с неисправленными замечаниями. -->
+<div *ngIf="isAwaitingCorrectionResumesRemarks" class="mt-5">
+  <p-table [value]="aAwaitingCorrectionResumesRemarks" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="caption">
+      Неисправленные замечания анкет
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID замечания</th>
+        <th>Название замечания</th>
+        <th>Текст замечания</th>
+        <th>Статус замечания</th>
+        <th>Принятие замечания</th>
+        <th>Не принятие замечаний</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-prj>
+      <tr>
+        <td>{{prj.profileInfoId}}</td>
+        <td>{{prj.russianName}}</td>
+        <td>{{prj.remarkText}}</td>
+        <td>{{prj.remarkStatusId}}</td>
+        <!-- <td>
+          <p-button label="{{prj.projectName}}" 
+                    styleClass="p-button-link"
+                    (click)="getProjectUnShippedRemarksAsync(prj.projectId)">
+
+          </p-button>
+        </td> -->
+        <td><button pButton
+                    type="button"
+                    label="Принять"
+                    class="p-button-text p-button-success">
+        </button>
+        </td>
+        <td><button pButton
+                    type="button"
+                    label="Не принять"
+                    class="p-button-danger p-button-text">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <!-- Всего: {{totalProjects}} -->
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Тикеты. -->
+<div *ngIf="isShowTIckets" class="mt-5">
+  <p-table [value]="aTickets" styleClass="p-datatable-gridlines">
+    <ng-template pTemplate="caption">
+      Список тикетов (Все)
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID тикета</th>
+        <th>Название тикета</th>
+        <th>Статус тикета</th>
+        <th>Просмотр</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-t>
+      <tr>
+        <td>{{t.ticketId}}</td>
+        <td>{{t.ticketName}}</td>
+        <td>{{t.statusName}}</td>
+        <td><button pButton type="button" label="Просмотр" class="p-button-text"
+            (click)="onViewTicket(t.ticketId)">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <!-- Всего: {{totalProjects}} -->
+    </ng-template>
+  </p-table>
+</div>
+
+</div>
+</div>
+
+<!-- Диалог просмотра проекта. -->
+<p-sidebar [(visible)]="isShowPreviewModerationProjectModal" [fullScreen]="true">
+  <div class="">
+    <div class="control-input-text-worksheet">
+      <div>
+          <label>Название проекта</label>
+      </div>
+      <div>
+          <input type="text"
+          class="p-inputtext-sm input-control-worksheet"
+          placeholder="Название проекта"
+          pInputText
+          autocomplete="new-password"
+          [(ngModel)]="projectName"
+          [disabled]="true" />
+      </div>
+
+      <div>
+        <p-checkbox inputId="remarkProjectName"
+                    [value]="'RemarkProjectName'"
+                    (onChange)="onSetProjectRemarks('RemarkProjectName', '', 'Название проекта')">
+
+        </p-checkbox>
+        <label for="remarkProjectName">&nbsp;Есть замечание</label>
+      </div>
+    </div>
+
+    <div class="control-input-text-worksheet mt-3">
+      <div class="control-input-text-worksheet">
+         <div>
+            <label>Описание проекта</label>
+        </div>
+        <textarea input-control-worksheet
+                  rows="5"
+                  cols="100"
+                  pInputTextarea
+                  [autoResize]="true"
+                  autocomplete="new-password"
+                  placeholder="Детали проекта"
+                  [(ngModel)]="projectDetails"
+                  class="control-textarea"
+                  [disabled]="true">
+        </textarea>
+      </div>
+
+      <div>
+        <p-checkbox inputId="remarkProjectDetails"
+                    [value]="'RemarkProjectDetails'"
+                    (onChange)="onSetProjectRemarks('RemarkProjectDetails', '', 'Описание проекта')">
+        </p-checkbox>
+        <label for="remarkProjectDetails">&nbsp;Есть замечание</label>
+      </div>
+
+      <div class="control-input-text-worksheet mt-3">
+        <div>
+            <label>Стадия проекта</label>
+        </div>
+        <div>
+            <input type="text"
+            class="p-inputtext-sm input-control-worksheet"
+            placeholder="Стадия проекта"
+            pInputText
+            autocomplete="new-password"
+            [(ngModel)]="stageName"
+            [disabled]="true" />
+        </div>
+      </div>
+
+      <!-- Замечания проекта. -->
+    <div *ngIf="aRemarksProject.length > 0" class="mt-5">
+      <p-table [value]="aRemarksProject" styleClass="p-datatable-gridlines">
+        <ng-template pTemplate="caption">
+          Замечания к проекту
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID проекта</th>
+            <th>Название поля</th>
+            <th>Замечание</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-prj>
+          <tr>
+            <td>{{prj.projectId}}</td>
+            <td>{{prj.russianName}}</td>
+            <td>
+              <textarea input-control-worksheet
+                        rows="5"
+                        cols="100"
+                        pInputTextarea
+                        [autoResize]="true"
+                        autocomplete="new-password"
+                        placeholder="Введите замечание"
+                        [(ngModel)]="prj.remarkText"
+                        class="control-textarea">
+            </textarea>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <!-- Всего: {{totalProjects}} -->
+        </ng-template>
+      </p-table>
+    </div>
+    </div>    
+  </div>
+  <ng-template pTemplate="footer">
+    <div class="mt-3">
+      <p-button icon="pi pi-check"
+              (click)="onApproveProjectAsync(projectId)"
+              label="Одобрить проект"
+              styleClass="p-button-success p-button-text"
+              [disabled]="aRemarksProject.length > 0">
+    </p-button>
+
+    <p-button icon="pi pi-check"
+              (click)="onRejectProjectAsync(projectId)"
+              label="Отклонить проект"
+              styleClass="p-button-danger p-button-text">
+    </p-button>
+
+    <p-button icon="pi pi-check"              
+              label="Внести замечания"
+              styleClass="p-button-warning p-button-text"
+              [disabled]="aRemarksProject.length == 0"
+              (click)="onCreateProjectRemarksAsync()">
+    </p-button>
+
+    <p-button icon="pi pi-check"
+              (click)="onSendProjectRemarksAsync()"
+              label="Отправить замечания"
+              styleClass="p-button-success p-button-text">
+    </p-button>
+    </div>
+  </ng-template>
+</p-sidebar>
+
+
+<!-- Диалог просмотра вакансии. -->
+<p-sidebar class="p-sidebar-sm" 
+          [(visible)]="isShowPreviewModerationVacancyModal" 
+          [style]="{width: '100vw'}">
+  <div class="mt-3">
+    <div class="control-input-text-worksheet">
+      <div>
+          <label>Название вакансии</label>
+      </div>
+      <div>
+          <input type="text"
+          class="p-inputtext-sm input-control-worksheet control-project"
+          placeholder="Название проекта"
+          pInputText
+          autocomplete="new-password"
+          [(ngModel)]="vacancyName"
+          [disabled]="true" />
+      </div>
+
+      <div>
+        <p-checkbox inputId="remarkVacancyName"
+                    [value]="'RemarkVacancyName'"
+                    (onChange)="onSetVacancyRemarks('RemarkVacancyName', '', 'Название вакансии')">
+
+        </p-checkbox>
+        <label for="remarkVacancyName">&nbsp;Есть замечание</label>
+      </div>
+    </div>
+
+    <div class="control-input-text-worksheet mt-3">
+      <div>
+          <label>Опыт</label>
+      </div>
+      <div>
+          <input type="text"
+                  class="p-inputtext-sm input-control-worksheet control-project"
+                  placeholder="Опыт"
+                  pInputText
+                  autocomplete="new-password"
+                  [(ngModel)]="workExperience"
+                  [disabled]="true" />
+      </div>
+
+      <div>
+        <p-checkbox inputId="remarkVacancyExperience"
+                    [value]="'RemarkVacancyExperience'"
+                    (onChange)="onSetVacancyRemarks('RemarkVacancyExperience', '', 'Опыт работы')">
+
+        </p-checkbox>
+        <label for="remarkVacancyExperience">&nbsp;Есть замечание</label>
+      </div>
+    </div>
+
+    <div class="control-input-text-worksheet mt-3">
+      <div>
+          <label>Занятость</label>
+      </div>
+      <div>
+          <input type="text"
+                  class="p-inputtext-sm input-control-worksheet control-project"
+                  placeholder="Занятость"
+                  pInputText
+                  autocomplete="new-password"
+                  [(ngModel)]="employment"
+                  [disabled]="true" />
+      </div>
+
+      <div>
+        <p-checkbox inputId="remarkVacancyEmployment"
+                    [value]="'RemarkVacancyEmployment'"
+                    (onChange)="onSetVacancyRemarks('RemarkVacancyEmployment', '', 'Занятость')">
+
+        </p-checkbox>
+        <label for="remarkVacancyEmployment">&nbsp;Есть замечание</label>
+      </div>
+    </div>
+
+    <div class="control-input-text-worksheet mt-3">
+      <div>
+          <label>Оплата</label>
+      </div>
+      <div>
+          <input type="text"
+                  class="p-inputtext-sm input-control-worksheet control-project"
+                  placeholder="Оплата"
+                  pInputText
+                  autocomplete="new-password"
+                  [(ngModel)]="payment"
+                  [disabled]="true" />
+      </div>
+
+      <div>
+        <p-checkbox inputId="remarkVacancyPayment"
+                    [value]="'RemarkVacancyPayment'"
+                    (onChange)="onSetVacancyRemarks('RemarkVacancyPayment', '', 'Оплата')">
+
+        </p-checkbox>
+        <label for="remarkVacancyPayment">&nbsp;Есть замечание</label>
+      </div>
+    </div>
+
+    <div class="control-input-text-worksheet mt-3">
+      <div class="control-input-text-worksheet">
+         <div>
+            <label>Описание вакансии</label>
+        </div>
+        <textarea input-control-worksheet
+                  rows="5"
+                  cols="100"
+                  pInputTextarea
+                  [autoResize]="true"
+                  autocomplete="new-password"
+                  placeholder="Детали вакансии"
+                  [(ngModel)]="vacancyText"
+                  class="control-textarea"
+                  [disabled]="true">
+        </textarea>
+
+        <div>
+          <p-checkbox inputId="remarkVacancyText"
+                      [value]="'RemarkVacancyText'"
+                      (onChange)="onSetVacancyRemarks('RemarkVacancyText', '', 'Описание вакансии')">
+  
+          </p-checkbox>
+          <label for="remarkVacancyText">&nbsp;Есть замечание</label>
+        </div>
+      </div>
+
+       <!-- Замечания вакансии. -->
+    <div *ngIf="aRemarksVacancy.length > 0" class="mt-5">
+      <p-table [value]="aRemarksVacancy" styleClass="p-datatable-gridlines">
+        <ng-template pTemplate="caption">
+          Замечания к вакансии
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID вакансии</th>
+            <th>Название поля</th>
+            <th>Замечание</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-vac>
+          <tr>
+            <td>{{vac.vacancyId}}</td>
+            <td>{{vac.russianName}}</td>
+            <td>
+              <textarea input-control-worksheet
+                        rows="5"
+                        cols="100"
+                        pInputTextarea
+                        [autoResize]="true"
+                        autocomplete="new-password"
+                        placeholder="Введите замечание"
+                        [(ngModel)]="vac.remarkText"
+                        class="control-textarea">
+            </textarea>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <!-- Всего: {{totalProjects}} -->
+        </ng-template>
+      </p-table>
+    </div>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <div class="mt-3">
+      <p-button icon="pi pi-check"
+              (click)="onApproveVacancyAsync(vacancyId)"
+              label="Одобрить вакансию"
+              styleClass="p-button-success p-button-text">
+    </p-button>
+
+    <p-button icon="pi pi-check"
+              (click)="onRejectVacancyAsync(vacancyId)"
+              label="Отклонить вакансию"
+              styleClass="p-button-danger p-button-text"
+              [disabled]="aRemarksVacancy.length > 0">
+    </p-button>
+
+    <p-button icon="pi pi-check"              
+              label="Внести замечания"
+              styleClass="p-button-warning p-button-text"
+              [disabled]="aRemarksVacancy.length == 0"
+              (click)="onCreateVacancyRemarksAsync()">
+    </p-button>
+
+    <p-button icon="pi pi-check"
+              (click)="onSendVacancyRemarksAsync()"
+              label="Отправить замечания"
+              styleClass="p-button-success p-button-text">
+    </p-button>
+    </div>
+  </ng-template>
+</p-sidebar>
+
+<!-- Диалог просмотра анкеты. -->
+<p-sidebar class="p-sidebar-sm" 
+          [(visible)]="isShowPreviewModerationResumeModal" 
+          [style]="{width: '100vw'}">
+
+    <div class="mt-3">
+      <div class="control-input-text-worksheet mt-3">
+        <div class="control-input-text-worksheet mt-3">
+          <div>
+              <label>Фамилия</label>
+          </div>
+          <div>
+              <input type="text"
+                      class="p-inputtext-sm input-control-worksheet control-project"
+                      placeholder="Фамилия"
+                      pInputText
+                      autocomplete="new-password"
+                      [(ngModel)]="aProfile.lastName"
+                      [disabled]="true" />
+          </div>
+    
+          <div>
+            <p-checkbox inputId="remarkResumeFio"
+                        [value]="'RemarkResumeFio'"
+                        (onChange)="onSetResumeRemarks('RemarkResumeFio', '', 'Фамилия', profileInfoId)">
+    
+            </p-checkbox>
+            <label for="remarkResumeFio">&nbsp;Есть замечание</label>
+          </div>
+        </div>
+
+        <div class="control-input-text-worksheet mt-3">
+          <div>
+              <label>Имя</label>
+          </div>
+          <div>
+              <input type="text"
+                      class="p-inputtext-sm input-control-worksheet control-project"
+                      placeholder="Имя"
+                      pInputText
+                      autocomplete="new-password"
+                      [(ngModel)]="aProfile.firstName"
+                      [disabled]="true" />
+          </div>
+    
+          <div>
+            <p-checkbox inputId="remarkResumeFirstName"
+                        [value]="'RemarkResumeFirstName'"
+                        (onChange)="onSetResumeRemarks('RemarkResumeFirstName', '', 'Имя', profileInfoId)">
+    
+            </p-checkbox>
+            <label for="remarkResumeFirstName">&nbsp;Есть замечание</label>
+          </div>
+        </div>
+
+        <div class="control-input-text-worksheet mt-3">
+          <div>
+              <label>Отчество</label>
+          </div>
+          <div>
+              <input type="text"
+                      class="p-inputtext-sm input-control-worksheet control-project"
+                      placeholder="Отчество"
+                      pInputText
+                      autocomplete="new-password"
+                      [(ngModel)]="aProfile.patronymic"
+                      [disabled]="true" />
+          </div>
+    
+          <div>
+            <p-checkbox inputId="remarkResumePatronymic"
+                        [value]="'RemarkResumePatronymic'"
+                        (onChange)="onSetResumeRemarks('RemarkResumePatronymic', '', 'Отчество', profileInfoId)">
+    
+            </p-checkbox>
+            <label for="remarkResumePatronymic">&nbsp;Есть замечание</label>
+          </div>
+        </div>
+
+        <div class="control-input-text-worksheet mt-3">
+          <div>
+              <label>Email</label>
+          </div>
+          <div>
+              <input type="text"
+                      class="p-inputtext-sm input-control-worksheet control-project"
+                      placeholder="Email"
+                      pInputText
+                      autocomplete="new-password"
+                      [(ngModel)]="aProfile.email"
+                      [disabled]="true" />
+          </div>
+    
+          <div>
+            <p-checkbox inputId="remarkResumeEmail"
+                        [value]="'RemarkResumeEmail'"
+                        (onChange)="onSetResumeRemarks('RemarkResumeEmail', '', 'Почта', profileInfoId)">
+    
+            </p-checkbox>
+            <label for="remarkResumeEmail">&nbsp;Есть замечание</label>
+          </div>
+        </div>
+
+        <div class="control-input-text-worksheet mt-3">
+          <div>
+              <label>Номер телефона</label>
+          </div>
+          <div>
+              <input type="text"
+                      class="p-inputtext-sm input-control-worksheet control-project"
+                      placeholder="Номер телефона"
+                      pInputText
+                      autocomplete="new-password"
+                      [(ngModel)]="aProfile.phoneNumber"
+                      [disabled]="true" />
+          </div>
+    
+          <div>
+            <p-checkbox inputId="remarkResumePhoneNumber"
+                        [value]="'RemarkResumePhoneNumber'"
+                        (onChange)="onSetResumeRemarks('RemarkResumePhoneNumber', '', 'Номер телефона', profileInfoId)">
+    
+            </p-checkbox>
+            <label for="remarkResumePhoneNumber">&nbsp;Есть замечание</label>
+          </div>
+        </div>
+
+        <div class="control-input-text-worksheet mt-3">
+          <div>
+              <label>Номер телефона</label>
+          </div>
+          <div>
+              <input type="text"
+                      class="p-inputtext-sm input-control-worksheet control-project"
+                      placeholder="Номер телефона"
+                      pInputText
+                      autocomplete="new-password"
+                      [(ngModel)]="aProfile.phoneNumber"
+                      [disabled]="true" />
+          </div>
+    
+          <div>
+            <p-checkbox inputId="remarkResumeJob"
+                        [value]="'RemarkResumeJob'"
+                        (onChange)="onSetResumeRemarks('RemarkResumeJob', '', 'Опыт работы', profileInfoId)">
+    
+            </p-checkbox>
+            <label for="remarkResumeJob">&nbsp;Есть замечание</label>
+          </div>
+        </div>
+
+        <div class="control-input-text-worksheet mt-3">
+          <div>
+            <label>Описание aнкеты</label>
+          </div>
+          <textarea input-control-worksheet
+                    rows="5"
+                    cols="100"
+                    pInputTextarea
+                    [autoResize]="true"
+                    autocomplete="new-password"
+                    placeholder="Описание aнкеты"
+                    [(ngModel)]="aProfile.aboutme"
+                    class="control-textarea"
+                    [disabled]="true">
+        </textarea>
+
+        <div>
+          <p-checkbox inputId="remarkResumeDetails"
+                      [value]="'RemarkResumeDetails'"
+                      (onChange)="onSetResumeRemarks('RemarkResumeDetails', '', 'Описание анкеты', profileInfoId)">
+  
+          </p-checkbox>
+          <label for="remarkResumeDetails">&nbsp;Есть замечание</label>
+        </div>
+        </div>
+
+        <div class="control-input-text-worksheet mt-3">
+          <p-panel header="Навыки">
+            <div *ngFor="let s of aSkills">
+              {{s.skillName}}
+            </div>
+        </p-panel>          
+        <div>
+          <p-checkbox inputId="remarkResumeSkills"
+                      [value]="'RemarkResumeSkills'"
+                      (onChange)="onSetResumeRemarks('RemarkResumeSkills', '', 'Навыки', profileInfoId)">
+  
+          </p-checkbox>
+          <label for="remarkResumeSkills">&nbsp;Есть замечание</label>
+        </div>
+        </div>
+
+        <div class="control-input-text-worksheet mt-3">
+          <p-panel header="Цели">
+            <div *ngFor="let i of aIntents">
+              {{i.intentName}}
+            </div>
+        </p-panel>          
+        <div>
+          <p-checkbox inputId="remarkResumeIntents"
+                      [value]="'RemarkResumeIntents'"
+                      (onChange)="onSetResumeRemarks('RemarkResumeIntents', '', 'Цели', profileInfoId)">
+  
+          </p-checkbox>
+          <label for="remarkResumeIntents">&nbsp;Есть замечание</label>
+        </div>
+        </div>
+
+        <!-- Замечания анкеты. -->
+        <div *ngIf="aRemarksResume.length > 0" class="mt-5">
+          <p-table [value]="aRemarksResume" styleClass="p-datatable-gridlines">
+            <ng-template pTemplate="caption">
+              Замечания к анкете
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th>ID анкеты</th>
+                <th>Название поля</th>
+                <th>Замечание</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-r>
+              <tr>
+                <td>{{r.profileInfoId}}</td>
+                <td>{{r.russianName}}</td>
+                <td>
+                  <textarea input-control-worksheet
+                            rows="5"
+                            cols="100"
+                            pInputTextarea
+                            [autoResize]="true"
+                            autocomplete="new-password"
+                            placeholder="Введите замечание"
+                            [(ngModel)]="r.remarkText"
+                            class="control-textarea">
+                </textarea>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+              <!-- Всего: {{totalProjects}} -->
+            </ng-template>
+          </p-table>
+        </div>                
+      </div>
+    </div>
+  <ng-template pTemplate="footer">
+    <div class="mt-3">
+      <p-button icon="pi pi-check"
+              (click)="onApproveResumeAsync(profileInfoId)"
+              label="Одобрить aнкету"
+              styleClass="p-button-success p-button-text">
+    </p-button>
+
+    <p-button icon="pi pi-check"
+              (click)="onRejectResumeAsync(profileInfoId)"
+              label="Отклонить aнкету"
+              styleClass="p-button-danger p-button-text">
+    </p-button>
+
+    <p-button icon="pi pi-check"              
+              label="Внести замечания"
+              styleClass="p-button-warning p-button-text"
+              [disabled]="aRemarksResume.length == 0"
+              (click)="onCreateResumeRemarksAsync()">
+    </p-button>
+
+    <p-button icon="pi pi-check"
+              (click)="onSendResumeRemarksAsync(profileInfoId)"
+              label="Отправить замечания"
+              styleClass="p-button-success p-button-text">
+    </p-button>
+    </div>
+  </ng-template>
+</p-sidebar>
+
+<!-- Диалог просмотра комментария проекта. -->
+<p-sidebar class="p-sidebar-sm" 
+          [(visible)]="isShowPreviewModerationProjectCommentModal" 
+          [style]="{width: '100vw'}">
+
+    <div class="mt-3">
+      <div class="control-input-text-worksheet mt-3">
+        <div>
+          <label>Текст комментария проекта</label>
+        </div>
+        <textarea input-control-worksheet
+                  rows="5"
+                  cols="100"
+                  pInputTextarea
+                  [autoResize]="true"
+                  autocomplete="new-password"
+                  placeholder="Текст комментария"
+                  [(ngModel)]="viewTextComment"
+                  class="control-textarea"
+                  [disabled]="true">
+      </textarea>
+
+      <div>
+        <p-checkbox inputId="remarkResumeDetails"
+                    [value]="'RemarkResumeDetails'"
+                    (onChange)="onSetResumeRemarks('RemarkResumeDetails', '', 'Текст комментария', viewProjectComment.commentId)">
+
+        </p-checkbox>
+        <label for="remarkComment">&nbsp;Есть замечание</label>
+      </div>       
+      </div>
+    </div>
+  <ng-template pTemplate="footer">
+    <div class="mt-3">
+      <p-button icon="pi pi-check"
+              (click)="onApproveProjectCommentsAsync()"
+              label="Одобрить комментарий"
+              styleClass="p-button-success p-button-text">
+    </p-button>
+
+    <p-button icon="pi pi-check"
+              (click)="onRejectProjectCommentsAsync()"
+              label="Отклонить комментарий"
+              styleClass="p-button-danger p-button-text">
+    </p-button>
+
+    <p-button icon="pi pi-check"              
+              label="Внести замечания"
+              styleClass="p-button-warning p-button-text"
+              [disabled]="aRemarksResume.length == 0"
+              (click)="onCreateResumeRemarksAsync()">
+    </p-button>
+
+    <p-button icon="pi pi-check"
+              (click)="onSendResumeRemarksAsync(profileInfoId)"
+              label="Отправить замечания"
+              styleClass="p-button-success p-button-text">
+    </p-button>
+    </div>
+  </ng-template>
+</p-sidebar>

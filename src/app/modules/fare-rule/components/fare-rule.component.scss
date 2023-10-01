@@ -1,0 +1,41 @@
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+
+.tarifs{
+  // display: grid;
+  // gap:10px;
+  margin: 10px 40px;
+  // height: 600px;
+}
+.tarifs-body{
+  // height: 100vh;
+}
+.header{
+  height: 110px;
+  border-bottom: 1px solid #e79214;
+  margin: 10px 0;
+  text-align: center;
+}
+.title{
+  color:blue;
+}
+.label{
+  color: #2d812d;
+}
+.footer{
+  min-height: 70vh;
+  margin-top: 20px;
+  border-bottom: 1px solid #e79214;
+}
+.discription{
+  text-align: left;
+  margin-top: 10px;
+}
+.btn{
+  margin-top: 10px;
+}
+
+.control-fare-rule {
+  position: absolute;
+  bottom: 30px;  
+}

@@ -1,0 +1,73 @@
+<div class="footer">
+    <div class="d-flex align-items-center block-logo" [routerLink]="['/']">
+      <div>
+        <a class="navbar-brand" routerLink="">
+            <img class="logo" src="../../../../assets/images/logo/logo.png">
+          </a>
+      </div>
+    </div>
+  
+    <div class="block-footers">
+      <!-- 1 ряд. -->
+      <div class="block-footer">
+        <div>
+          <div class="footer-item">
+            <p class="text-content">Вакансии</p>
+          </div>
+
+          <div class="footer-item">
+            <p class="text-content">Проекты</p>
+          </div>
+
+          <div class="footer-item">
+            <p class="text-content">База резюме</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- 2 ряд. -->
+      <div class="block-footer">
+        <div>
+          <div class="footer-item">
+            <p class="text-content">Служба поддержки</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- 3 ряд. -->
+      <div class="block-footer">
+        <div>
+            <div class="footer-item">
+                <p class="text-content">Частые вопросы</p>
+              </div>
+    
+              <div class="footer-item" [routerLink]="['/press/contacts']">
+                <p class="text-content">Контакты</p>
+              </div>
+
+              <div class="footer-item" [routerLink]="['/press/offer']">
+                <p class="text-content">Публичная оферта</p>
+              </div>
+        </div>
+      </div>
+  
+      <!-- 4 ряд. -->
+      <div class="block-footer">
+        <div>
+          <div class="footer-item">
+            &nbsp;
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="d-flex block-sub-footer">
+      <div class="text-date">
+        © {{dateLine}} Leoka Estetica. Сделано с заботой.
+      </div>
+  
+      <div class="payment-system-logos">
+        <img class="logo" src="../../../../assets/images/logo/payment_system_logos.png">
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,46 @@
+<p-toast></p-toast>
+
+<div class="space-top-80">
+  <div class="col-lg-12 d-flex justify-content-center">
+    <h3 class="mt-5 mb-5">Есть предложение/пожелание по улучшению платформы? Поделитесь с нами!</h3>
+  </div>
+
+  <p-card header="">
+    <div class="section-1-container section-container">
+        <div class="container">
+          <div class="row">
+            <div class="col-10 offset-1 col-lg-8 offset-lg-2 div-wrapper d-flex justify-content-center align-items-center">
+              <div class="div-to-align">
+                <div class="row justify-content-center form-signin">
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1">Ваш Email</label><br>
+
+                        <input type="text"
+                                class="p-inputtext-sm input-control-worksheet"
+                                placeholder="Email"
+                                pInputText
+                                autocomplete="new-password"
+                                [(ngModel)]="contactEmail" />
+                      </div>
+    
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1">Описание</label><br>
+                    <textarea input-control-worksheet rows="5" cols="{{ticketMessageCols}}" pInputTextarea [autoResize]="true"
+                      autocomplete="new-password" placeholder="" [(ngModel)]="wisheOfferText"
+                      class="control-textarea">
+                    </textarea>
+                  </div>
+    
+                  <button type="submit" 
+                          class="btn btn-primary button-action-pur-short-control"
+                          (click)="onCreateWisheOfferAsync()">
+                    Отправить
+                  </button>           
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </p-card>
+</div>

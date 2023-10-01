@@ -1,0 +1,37 @@
+<p-toast></p-toast>
+
+<div class="d-flex block-profile space-top-80">
+  <div class="profile-left-menu col-lg-3">
+  </div>
+
+  <div>
+    <div>
+      <order-form-steps></order-form-steps>
+    </div>
+
+    <div class="fare-rule-details mt-5">
+        <p-panel header="Описание и условия тарифа">
+          <strong>Название тарифа:</strong>
+          <p>{{fareRuleInfo$.value.name}}</p>
+
+          <strong>Условия:</strong>
+          <ul *ngFor="let fr of fareRuleInfo$.value.fareRuleItems">
+            <li>{{fr.name}} {{fr.label}}</li>
+          </ul>
+
+          <strong>Цена:</strong>
+          <p>{{fareRuleInfo$.value.price + ' ' + '₽/мес.'}}</p>
+        </p-panel>
+
+        <div class="d-flex worksheet-line mt-3">
+            <div class="control-input-text-worksheet control-order-form">
+              <button type="button" 
+                      class="btn btn-primary button-action-pur-control"
+                      (click)="onRouteNextStepAsync()">
+                К выбору плана подписки
+              </button>
+            </div>
+          </div>
+    </div>
+  </div>
+</div>
