@@ -38,7 +38,8 @@
                   type="button" 
                   label="Отключить подписку"
                   class="p-button-text p-button-plain"
-                  (click)="onCalculateRefundAsync()">
+                  (click)="onCalculateRefundAsync()"
+                  *ngIf="item.isActive">
           </button>
         </p-card>
       </ng-template>
