@@ -296,6 +296,9 @@
                     [responsive]="true"
                     [sourceStyle]="{'height':'30rem'}"
                     [targetStyle]="{'height':'30rem'}"
+                    filterBy="name"
+                    sourceFilterPlaceholder="Найти по названию"
+                    targetFilterPlaceholder="Найти по названию"
                     (onMoveToTarget)="onSaveProfileUserSkillsAsync()">
     <ng-template  let-product pTemplate="item" >
         <div class="product-item">
@@ -334,7 +337,10 @@
                     [dragdrop]="true"
                     [responsive]="true"
                     [sourceStyle]="{'height':'30rem'}"
-                    [targetStyle]="{'height':'30rem'}">
+                    [targetStyle]="{'height':'30rem'}"
+                    filterBy="name"
+                    sourceFilterPlaceholder="Найти по названию"
+                    targetFilterPlaceholder="Найти по названию">
     <ng-template let-product pTemplate="item">
         <div class="product-item">
             <div class="image-container">
