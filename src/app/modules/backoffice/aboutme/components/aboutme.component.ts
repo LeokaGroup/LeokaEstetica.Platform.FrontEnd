@@ -76,6 +76,17 @@ export class AboutmeComponent implements OnInit {
             //     });
         });
 
+        // Подписываемся на получение всех сообщений.
+        this._signalrService.AllFeedObservable
+        .subscribe((response: any) => {
+            console.log("Подписались на сообщения", response);
+            
+            // Если пришел тип уведомления, то просто показываем его.
+            if (response.notificationLevel !== undefined) {
+                this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
+            }
+        });
+
         this.checkUrlParams();
     };
 
@@ -183,7 +194,11 @@ export class AboutmeComponent implements OnInit {
                 });
 
                 return;
-            }                      
+            }           
+            
+            // else {
+            //     this._messageService.add({ severity: 'success', summary: "Все хорошо", detail: response.successMessage });
+            // }
 
             await this.getSelectedUserSkillsAsync();
             await this.getSelectedUserIntentsAsync();

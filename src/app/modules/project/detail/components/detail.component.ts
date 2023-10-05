@@ -123,7 +123,6 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         await this.getProjectVacanciesColumnNamesAsync(),
         await this.getAvailableAttachVacanciesAsync(),
         await this.getAvailableInviteVacanciesAsync(),
-        // await this.onWriteOwnerDialogAsync(),
         await this.getProjectCommentsAsync(),
         await this.getProjectTeamColumnsNamesAsync(),
         await this.getProjectTeamAsync(),
