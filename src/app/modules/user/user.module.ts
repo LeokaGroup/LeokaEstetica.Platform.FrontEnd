@@ -8,6 +8,7 @@ import { ConfirmComponent } from './confirm-account/confirm-account.component';
 import { SignInComponent } from './signin/components/signin.component';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
     declarations: [
@@ -21,7 +22,8 @@ import { ToastModule } from 'primeng/toast';
         FormsModule,
         UserRoutingModule,
         ReactiveFormsModule,
-        ToastModule
+        ToastModule,
+        ButtonModule
     ],
 
     exports: [],
