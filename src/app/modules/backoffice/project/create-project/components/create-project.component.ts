@@ -49,20 +49,17 @@ export class CreateProjectComponent implements OnInit {
       console.log("Подключились");
 
       this.listenAllHubsNotifications();
+    });
 
-      // Подписываемся на получение всех сообщений.
-      this.allFeedSubscription = this._signalrService.AllFeedObservable
-        .subscribe((response: any) => {
-          console.log("Подписались на сообщения", response);
-
-          if (response.isShow) {
-            this._messageService.add({
-              severity: response.notificationLevel,
-              summary: response.title,
-              detail: response.message
-            });
-          }
-        });
+    // Подписываемся на получение всех сообщений.
+    this._signalrService.AllFeedObservable
+    .subscribe((response: any) => {
+        console.log("Подписались на сообщения", response);
+        
+        // Если пришел тип уведомления, то просто показываем его.
+        if (response.notificationLevel !== undefined) {
+            this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
+        }
     });
   };
 

@@ -52,22 +52,26 @@ export class CreateVacancyComponent implements OnInit {
     conditions: string = "";
 
     public async ngOnInit() {
-         // Подключаемся.
-         this._signalrService.startConnection().then(() => {
+        // Подключаемся.
+        this._signalrService.startConnection().then(() => {
             console.log("Подключились");
 
             console.log(this.expirienceVariants);
 
 
             this.listenAllHubsNotifications();
-
-            // Подписываемся на получение всех сообщений.
-            this.allFeedSubscription = this._signalrService.AllFeedObservable
-                .subscribe((response: any) => {
-                    console.log("Подписались на сообщения", response);
-                    this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
-                });
         });
+
+         // Подписываемся на получение всех сообщений.
+    this._signalrService.AllFeedObservable
+    .subscribe((response: any) => {
+        console.log("Подписались на сообщения", response);
+        
+        // Если пришел тип уведомления, то просто показываем его.
+        if (response.notificationLevel !== undefined) {
+            this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
+        }
+    });
 
         this.checkUrlParams();
         await this.getUserProjectsAsync();
