@@ -304,7 +304,7 @@ export class BackOfficeService {
      * @param restoreInput - Входная модель.
      */
      public async restorePasswordAsync(restoreInput: RestoreInput) {
-      return await this.http.post(API_URL.apiUrl + "/user/restore", restoreInput).pipe(
+      return await this.http.patch(API_URL.apiUrl + "/user/restore", restoreInput).pipe(
         tap(data => this.restorePassword$.next(data))
       );
     };
