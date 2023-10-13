@@ -291,10 +291,12 @@ export class BackOfficeService {
       
   /**
      * Функция проверяет переход по ссылке восстановления пароля.
+     * @param confirmCode - Код для проверки.
+     * @param email - Пользователь.
      @returns - Признак результата проверки.
      */
-   public async checkRestorePasswordLinkAsync(publicKey: string) {
-    return await this.http.get(API_URL.apiUrl + `/user/restore/check?publicKey=${publicKey}`).pipe(
+   public async checkRestorePasswordLinkAsync(confirmCode: string, email: string) {
+    return await this.http.get(API_URL.apiUrl + `/user/restore/check?confirmCode=${confirmCode}&userName=${email}`).pipe(
       tap(data => this.checkSednedRestoreCode$.next(data))
     );
   };
