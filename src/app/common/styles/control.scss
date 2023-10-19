@@ -64,9 +64,20 @@
     @include controlGrayForm();
 }
 
+.input-control-restore {
+    width: 50%;
+    @include controlGrayForm();
+}
+
 .button-action-pur-control {
     width: 100%;
     height: 62px;
+    @include purButton();
+}
+
+.button-action-pur-control-restore {
+    width: 50%;
+    height: 50px;
     @include purButton();
 }
 
