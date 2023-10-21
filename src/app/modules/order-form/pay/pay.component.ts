@@ -58,9 +58,9 @@ export class PayComponent implements OnInit {
         .subscribe(_ => {
             console.log("Оплатили заказ: ", this.orderPay$.value);
 
-            if (this.orderPay$.value.url !== ""
-                && this.orderPay$.value.url !== null) {
-                window.location.href = this.orderPay$.value.url;
+            if (this.orderPay$.value.confirmation.confirmationUrl !== ""
+                && this.orderPay$.value.confirmation.confirmationUrl !== null) {
+                window.location.href = this.orderPay$.value.confirmation.confirmationUrl;
             }
         });
     };
