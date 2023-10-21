@@ -18,7 +18,7 @@
 
       <ng-template pTemplate="header">
         <tr>
-          <th></th>
+          <!-- <th></th> -->
           <th>ID заказа</th>
           <th>Название заказа</th>
           <th>Описание заказа</th>
@@ -32,9 +32,9 @@
 
       <ng-template pTemplate="body" let-order>
         <tr>
-          <td>
+          <!-- <td>
             <p-tableCheckbox [value]="order"></p-tableCheckbox>
-          </td>
+          </td> -->
           <td>{{order.orderId}}</td>
           <td>{{order.orderName}}</td>
           <td>{{order.orderDetails}}</td>
