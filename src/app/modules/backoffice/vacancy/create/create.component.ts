@@ -208,7 +208,7 @@ export class CreateVacancyComponent implements OnInit {
      * @returns Список проектов.
      */
      private async getUserProjectsAsync() {        
-        (await this._backofficeService.getUserProjectsAsync())
+        (await this._backofficeService.getUserProjectsAsync(true))
         .subscribe(_ => {
             console.log("Проекты пользователя:", this.userProjects$.value);
         });
