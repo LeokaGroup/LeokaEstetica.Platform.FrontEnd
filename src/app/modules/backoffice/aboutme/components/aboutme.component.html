@@ -51,18 +51,18 @@
                </div>
 
                 <div class="field-checkbox">
-                    <p-checkbox [(ngModel)]="profileInfo$.value.isShortFirstName"
+                    <p-checkbox [(ngModel)]="isShortFirstName"
                                 [binary]="true"
-                                inputId="binary"
+                                inputId="short-first-name"
                                 *ngIf="isModeEdit">
                   </p-checkbox>
                     <p-checkbox [(ngModel)]="isShortFirstName"
                                 [binary]="true"
-                                inputId="binary"
+                                inputId="short-first-name"
                                 *ngIf="isModeView"
                                 [disabled]="true">
                   </p-checkbox>
-                    <label for="binary">
+                    <label for="short-first-name">
                         <small>Отображать только первую букву фамилии</small>
                     </label>
                 </div>

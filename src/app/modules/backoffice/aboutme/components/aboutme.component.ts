@@ -195,10 +195,6 @@ export class AboutmeComponent implements OnInit {
 
                 return;
             }           
-            
-            // else {
-            //     this._messageService.add({ severity: 'success', summary: "Все хорошо", detail: response.successMessage });
-            // }
 
             await this.getSelectedUserSkillsAsync();
             await this.getSelectedUserIntentsAsync();
