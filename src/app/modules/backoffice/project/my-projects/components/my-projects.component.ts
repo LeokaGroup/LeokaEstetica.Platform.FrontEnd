@@ -77,7 +77,7 @@ export class MyProjectsComponent implements OnInit {
      * @returns Список проектов.
      */
     private async getUserProjectsAsync() {
-        (await this._backofficeService.getUserProjectsAsync())
+        (await this._backofficeService.getUserProjectsAsync(false))
         .subscribe(_ => {
             console.log("Проекты пользователя:", this.userProjects$.value);
         });
