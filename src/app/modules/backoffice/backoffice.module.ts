@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { BackOfficeRoutingModule } from './backoffice-routing.module';
@@ -36,6 +36,7 @@ import { RestoreComponent } from './restore/components/restore.component';
 import { MessageModule } from 'primeng/message';
 import { MessagesComponent } from './messages/messages.component';
 import { SplitterModule } from 'primeng/splitter';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 
 @NgModule({
@@ -74,7 +75,8 @@ import { SplitterModule } from 'primeng/splitter';
         DialogModule,
         MessagesModule,
         MessageModule,
-        SplitterModule
+        SplitterModule,
+        InputNumberModule
     ],
 
     exports: [],
@@ -84,7 +86,11 @@ import { SplitterModule } from 'primeng/splitter';
         SignalrService,
         RedisService,
         MessageService,
-        RedirectService
+        RedirectService,
+        {
+            provide: DEFAULT_CURRENCY_CODE,
+            useValue: 'RUB'
+          }
     ]
 })
 

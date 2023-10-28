@@ -31,7 +31,7 @@ export class CreateVacancyComponent implements OnInit {
 
     vacancyName: string = "";
     vacancyText: string = "";
-    payment: string = "";
+    payment: number = 0;
     allFeedSubscription: any;
     projectId: number = 0;
     selectedExpirience: any = "";
@@ -165,7 +165,7 @@ export class CreateVacancyComponent implements OnInit {
         model.VacancyText = this.vacancyText;
         model.WorkExperience = this.selectedExpirience.name;
         model.Employment = this.selectedEmployments.name;
-        model.Payment = this.payment;
+        model.Payment = this.payment.toString();
         model.ProjectId = this.selectedProject.projectId;
         model.Conditions = this.conditions;
         model.Demands = this.demands;
@@ -183,7 +183,7 @@ export class CreateVacancyComponent implements OnInit {
         model.VacancyText = this.vacancyText;
         model.WorkExperience = this.selectedExpirience.name;
         model.Employment = this.selectedEmployments.name;
-        model.Payment = this.payment;
+        model.Payment = this.payment.toString();
         model.ProjectId = this.projectId;
 
         return model;
