@@ -23,12 +23,12 @@ export class HeaderComponent implements OnInit {
                 this._router.navigate(["/profile/orders"]);
             }
         },
-        {
-            label: 'Настройки',
-            command: () => {
+        // {
+        //     label: 'Настройки',
+        //     command: () => {
 
-            }
-        },       
+        //     }
+        // },       
         {
             label: 'Заявки в поддержку',
             command: () => {
