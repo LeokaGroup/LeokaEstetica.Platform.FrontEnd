@@ -407,6 +407,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
             console.log("Прикрепили вакансию: ", this.selectedVacancy.vacancyId);
             this.isShowAttachVacancyModal = false;
             await this.getProjectVacanciesAsync();
+            await this.getAvailableAttachVacanciesAsync();
         });
     };
 
