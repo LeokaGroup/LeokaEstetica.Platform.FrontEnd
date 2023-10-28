@@ -21,14 +21,16 @@
                       type="button" 
                       label="Принять" 
                       class="p-button-success p-button-text"
-                      (click)="onApproveProjectInviteAsync(notify.notificationId)">
+                      (click)="onApproveProjectInviteAsync(notify.notificationId)"
+                      *ngIf="notify.isAcceptButton">
               </button>
 
               <button pButton 
                       type="button" 
                       label="Отклонить" 
                       class="p-button-danger p-button-text"
-                      (click)="onRejectProjectInviteAsync(notify.notificationId)">
+                      (click)="onRejectProjectInviteAsync(notify.notificationId)"
+                      *ngIf="notify.isRejectButton">
               </button>
             </div>
           </div>
