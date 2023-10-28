@@ -439,7 +439,7 @@
                         <p-button (click)="onShowDeleteProjectTeamMemberModal(team.member, team.userId)"
                                   label="Исключить"
                                   styleClass="p-button-danger p-button-text"
-                                  *ngIf="isVisibleActionDeleteProjectTeamMember">
+                                  *ngIf="team.isVisibleActionDeleteProjectTeamMember">
                         </p-button>
                       </td>
                     </tr>

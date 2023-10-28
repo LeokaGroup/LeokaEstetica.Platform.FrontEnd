@@ -565,4 +565,22 @@ export class SignalrService {
       this.$allFeed.next(data);
     });
   };
+
+   /**
+   * Функция слушает успешное создание возврата.
+   */
+    public listenSuccessSuccessManualRefund() {
+      (<HubConnection>this.hubConnection).on("SendNotificationSuccessManualRefund", (data: any) => {
+        this.$allFeed.next(data);
+      });
+    };
+
+     /**
+   * Функция слушает предупреждения создание возврата при дубликате.
+   */
+      public listenWarningManualRefund() {
+        (<HubConnection>this.hubConnection).on("SendNotificationWarningManualRefund", (data: any) => {
+          this.$allFeed.next(data);
+        });
+      };
 }

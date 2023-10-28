@@ -171,10 +171,11 @@ export class BackOfficeService {
 
   /**
    * Функция получает список проектов пользователя.
+   * @param isCreateVacancy - Признак создания вакансии.
    * @returns Список проектов.
    */
-  public async getUserProjectsAsync() {
-    return await this.http.get(API_URL.apiUrl + "/projects/user-projects").pipe(
+  public async getUserProjectsAsync(isCreateVacancy: boolean) {
+    return await this.http.get(API_URL.apiUrl + "/projects/user-projects?isCreateVacancy=" + isCreateVacancy).pipe(
       tap(data => this.userProjects$.next(data))
     );
   };

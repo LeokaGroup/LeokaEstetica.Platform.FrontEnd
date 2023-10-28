@@ -51,18 +51,18 @@
                </div>
 
                 <div class="field-checkbox">
-                    <p-checkbox [(ngModel)]="profileInfo$.value.isShortFirstName"
+                    <p-checkbox [(ngModel)]="isShortFirstName"
                                 [binary]="true"
-                                inputId="binary"
+                                inputId="short-first-name"
                                 *ngIf="isModeEdit">
                   </p-checkbox>
                     <p-checkbox [(ngModel)]="isShortFirstName"
                                 [binary]="true"
-                                inputId="binary"
+                                inputId="short-first-name"
                                 *ngIf="isModeView"
                                 [disabled]="true">
                   </p-checkbox>
-                    <label for="binary">
+                    <label for="short-first-name">
                         <small>Отображать только первую букву фамилии</small>
                     </label>
                 </div>
@@ -133,7 +133,7 @@
                     <strong>Номер телефона</strong>
                   </label>
                 </div>
-                <span *ngIf="isModeView">{{profileInfo$.value.phoneNumber}}</span>
+                <span *ngIf="isModeView">{{(profileInfo$.value.phoneNumber == null || profileInfo$.value.phoneNumber == '') ? 'Не указан' : profileInfo$.value.phoneNumber}}</span>
             </div>
         </div>
 
@@ -151,7 +151,7 @@
                     <strong>Telegram</strong>
                   </label>
                 </div>
-                <span *ngIf="isModeView">{{profileInfo$.value.telegram}}</span>
+                <span *ngIf="isModeView">{{(profileInfo$.value.telegram == '' || profileInfo$.value.telegram == null) ? 'Не указан' : profileInfo$.value.telegram}}</span>
             </div>
 
             <div class="control-input-text-worksheet">
@@ -167,7 +167,7 @@
                     <strong>WhatsApp</strong>
                   </label>
                 </div>
-                <span *ngIf="isModeView">{{profileInfo$.value.whatsApp}}</span>
+                <span *ngIf="isModeView">{{(profileInfo$.value.whatsApp == '' || profileInfo$.value.whatsApp == null) ? 'Не указан' : profileInfo$.value.whatsApp}}</span>
             </div>
 
             <div class="control-input-text-worksheet">
@@ -183,7 +183,7 @@
                     <strong>Ссылка ВКонтакте</strong>
                   </label>
                 </div>
-                <span *ngIf="isModeView">{{profileInfo$.value.vkontakte}}</span>
+                <span *ngIf="isModeView">{{(profileInfo$.value.vkontakte == '' || profileInfo$.value.vkontakte == null) ? 'Не указан' : profileInfo$.value.vkontakte}}</span>
             </div>
         </div>
 
@@ -201,7 +201,7 @@
                     <strong>Другая ссылка</strong>
                   </label>
                 </div>
-                <span *ngIf="isModeView">{{profileInfo$.value.otherLink}}</span>
+                <span *ngIf="isModeView">{{(profileInfo$.value.otherLink == '' || profileInfo$.value.otherLink == null) ? 'Не указана' : profileInfo$.value.otherLink}}</span>
             </div>
         </div>
 <!--
@@ -324,7 +324,10 @@
             </div>
           </ng-template>
       </p-panel>
-      <p>Не нашли Ваш навык? Предложите его через форму пожеланий и предложений на главной странице платформы!<br>Возможно, мы включим его в список навыков на платформе.</p>
+      <p *ngIf="isModeEdit">
+        Не нашли Ваш навык? Предложите его через форму пожеланий и предложений на главной странице платформы!
+        <br>Возможно, мы включим его в список навыков на платформе.
+      </p>
     </div>
 
 
