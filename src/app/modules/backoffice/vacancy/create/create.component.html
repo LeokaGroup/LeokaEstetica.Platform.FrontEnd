@@ -64,9 +64,12 @@
               <label>Оплата</label>
             </div>
             <div>
-              <input type="text" class="p-inputtext-sm input-control-worksheet control-vacancy"
-                placeholder="20 000 – 40 000 руб." pInputText autocomplete="new-password"
-               [(ngModel)]="payment" />
+               <p-inputNumber class="p-inputtext-sm input-control-worksheet control-vacancy" 
+                              inputId="integeronly" 
+                              [(ngModel)]="payment" 
+                              autocomplete="new-password">
+
+               </p-inputNumber>
             </div>
           </div>
         </div>

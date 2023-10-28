@@ -21,19 +21,25 @@
                       type="button" 
                       label="Принять" 
                       class="p-button-success p-button-text"
-                      (click)="onApproveProjectInviteAsync(notify.notificationId)">
+                      (click)="onApproveProjectInviteAsync(notify.notificationId)"
+                      *ngIf="notify.isAcceptButton">
               </button>
 
               <button pButton 
                       type="button" 
                       label="Отклонить" 
                       class="p-button-danger p-button-text"
-                      (click)="onRejectProjectInviteAsync(notify.notificationId)">
+                      (click)="onRejectProjectInviteAsync(notify.notificationId)"
+                      *ngIf="notify.isRejectButton">
               </button>
             </div>
           </div>
 
           <hr>
+        </div>
+
+        <div class="d-flex" *ngIf="userNotifications$.value.notifications.length == 0">
+          <p>Уведомлений нет.</p>
         </div>
       </p-panel>
     </div>

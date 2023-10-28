@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
+import { CreateRefundInput } from "../../vacancy/models/input/create-refund-input";
 import { SubscriptionsService } from "../services/subscriptions.service";
 
 @Component({
@@ -21,12 +22,14 @@ export class SubscriptionsComponent implements OnInit {
     public readonly subscriptions$ = this._subscriptionsService.subscriptions$;  
     public readonly refund$ = this._subscriptionsService.refund$;  
     public readonly fareRuleInfo$ = this._subscriptionsService.fareRuleInfo$;    
+    public readonly createdRefund$ = this._subscriptionsService.createdRefund$;    
 
     refundPrice: number = 0;
     isRefund: boolean = false;
     allFeedSubscription: any;
     isFareRuleDetails: boolean = false;
     fareRuleInfo: any = {};
+    orderId: number = 0;
 
     public async ngOnInit() {
         forkJoin([
@@ -34,18 +37,22 @@ export class SubscriptionsComponent implements OnInit {
         ]).subscribe();
 
         // Подключаемся.
-    this._signalrService.startConnection().then(() => {
-        console.log("Подключились");
-  
-        this.listenAllHubsNotifications();
-  
+        this._signalrService.startConnection().then(() => {
+            console.log("Подключились");
+
+            this.listenAllHubsNotifications();
+        });
+
         // Подписываемся на получение всех сообщений.
-        this.allFeedSubscription = this._signalrService.AllFeedObservable
-          .subscribe((response: any) => {
-            console.log("Подписались на сообщения", response);
-            this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
-          });
-      });
+        this._signalrService.AllFeedObservable
+            .subscribe((response: any) => {
+                console.log("Подписались на сообщения", response);
+
+                // Если пришел тип уведомления, то просто показываем его.
+                if (response.notificationLevel !== undefined) {
+                    this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
+                }
+            });
     };   
 
     /**
@@ -53,6 +60,8 @@ export class SubscriptionsComponent implements OnInit {
    */
   private listenAllHubsNotifications() {
     this._signalrService.listenErrorCalculateRefund();
+    this._signalrService.listenSuccessSuccessManualRefund();
+    this._signalrService.listenWarningManualRefund();
   };
 
      /**
@@ -75,12 +84,25 @@ export class SubscriptionsComponent implements OnInit {
         .subscribe(_ => {
             console.log("Вычисление возврата: ", this.refund$.value);
             this.refundPrice = this.refund$.value.price;
+            this.orderId = this.refund$.value.orderId;
             this.isRefund = true;
         });
     };
 
-    public onRefundAsync() {
+    /**
+     * 
+     * Функция создает возврат.
+     * @returns - Данные возврата.
+     */
+    public async onRefundAsync() {
+        let refundInput = new CreateRefundInput();
+        refundInput.OrderId = this.orderId;
+        refundInput.Price = this.refundPrice;
 
+        (await this._subscriptionsService.createRefundAsync(refundInput))
+        .subscribe(_ => {
+            console.log("Создали возврат: ", this.createdRefund$.value);
+        });
     };
 
     /**
