@@ -93,7 +93,7 @@ export class OrderFormSelectSubscriptionPlanComponent implements OnInit {
 
         // Отображаем модалку апрува с новой ценой от пользователя.
         this.isShowNeedContinueModal = this.freePrice$.value.price !== this.freePrice$.value.freePrice
-          && !this.isContinueCreateOrderCache;
+          && !this.isContinueCreateOrderCache && this.freePrice$.value.freePrice > 0;
 
         // Если пользователь дал согласие с новой ценой либо модалку не показывали и тогда оформляем как обычно.
         if (this.isContinueCreateOrderCache
