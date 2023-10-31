@@ -5,7 +5,7 @@
   </div>
 
   <div class="block-worksheet block-subscriptions">
-    <div *ngFor="let item of subscriptions$.value"  class="worksheet-panel subscription">
+    <div *ngFor="let item of subscriptions$.value" class="worksheet-panel subscription">
       <div *ngIf="item.isActive; else elseBlock" [class.active]="item.isActive" class="podpiska">
         <p-card header="Подписка оформлена"  subheader="{{item.subscriptionName}}"
                 [style]="{width: '360px',height:'200px', color:'#4c944c'}"  styleClass="p-card-shadow" >
@@ -19,14 +19,15 @@
                   type="button" 
                   label="Отключить подписку"
                   class="p-button-text p-button-plain"
-                  (click)="onCalculateRefundAsync()">
+                  (click)="onCalculateRefundAsync()"
+                  *ngIf="item.isActive && item.objectId > 1">
           </button>
         </p-card>
       </div>
 
       <ng-template #elseBlock class="podpiska">
         <p-card  header="Подписка" subheader="{{item.subscriptionName}}"
-                 [style]="{width: '360px',height:'200px'}"  styleClass="p-card-shadow" >
+                 [style]="{width: '360px',height:'200px'}" styleClass="p-card-shadow" >
           <button pButton  
                  type="button" 
                  label="Что входит в подписку?"
