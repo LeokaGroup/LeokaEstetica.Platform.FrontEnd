@@ -32,4 +32,12 @@ export class FooterComponent implements OnInit {
             this.dateLine += startYear + "-" + now;
         }
     };
+
+    public onRouteTelegram() {
+        window.open('https://t.me/leoka_estetica', '_blank');
+    };
+
+    public onRouteVk() {
+        window.open('https://vk.com/leoka_estetica', '_blank');
+    };
 }
