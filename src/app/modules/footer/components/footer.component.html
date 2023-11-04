@@ -1,9 +1,25 @@
 <div class="footer">
-    <div class="d-flex align-items-center block-logo" [routerLink]="['/']">
+    <div class="d-flex align-items-center justify-content-between block-logo">
       <div>
         <a class="navbar-brand" routerLink="">
             <img class="logo" src="../../../../assets/images/logo/logo.png">
           </a>
+      </div>
+
+      <div class="block-social d-flex block-sub-footer">
+        <div class="" (click)="onRouteTelegram()">
+          <img class="logo-social" src="../../../../assets/images/landing/telegram_icon-icons.com_72055.png">
+          &nbsp;
+          <span>Мы в Telegram</span>
+        </div>
+  
+        &nbsp;&nbsp;
+  
+        <div class="block-social d-flex block-sub-footer" (click)="onRouteVk()">
+          <img class="logo-social" src="../../../../assets/images/landing/icons8-vk-48.png">
+          &nbsp;
+          <span>Мы в ВК</span>
+        </div>
       </div>
     </div>
   
