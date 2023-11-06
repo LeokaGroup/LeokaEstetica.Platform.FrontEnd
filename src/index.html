@@ -22,12 +22,12 @@
         $.ajax({
           url: window.location.href.includes("https://leoka-estetica-dev.ru") ||
             window.location.href.includes("http://localhost:4200/") ?
-            "https://leoka-estetica-dev.online/user/providers-config"
+            "https://leoka-estetica-dev.ru.net/user/providers-config"
             // ? "http://localhost:9992/user/providers-config"
             :
             window.location.href.includes("https://leoka-estetica-test.ru") ?
-            "https://leoka-estetica-test.online/user/providers-config" :
-            "https://leoka-estetica.online/user/providers-config",
+            "https://leoka-estetica-test.ru.net/user/providers-config" :
+            "https://leoka-estetica.ru.net/user/providers-config",
           dataType: 'json',
           contentType: 'application/json',
           type: 'GET',
