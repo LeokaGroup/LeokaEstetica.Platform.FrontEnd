@@ -10,135 +10,46 @@
 </head>
 
 <body>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-  <script>
-    var vkReference;
-    var vkRedirectReference;
-    var googleReference;
-    var googleRedirectReference;
-
-    window.addEventListener('load', () => {
-    if (window.location.pathname == "/user/signin") {
-    $.ajax({
-    url: window.location.href.includes("https://leoka-estetica-dev.ru") ||
-    window.location.href.includes("http://localhost:4200/")
-    ? "https://leoka-estetica-dev.online/user/providers-config"
-    // ? "http://localhost:9992/user/providers-config"
-    : window.location.href.includes("https://leoka-estetica-test.ru")
-    ? "https://leoka-estetica-test.online/user/providers-config"
-    : "https://leoka-estetica.online/user/providers-config",
-    dataType: 'json',
-    contentType: 'application/json',
-    type: 'GET',    
-    success: function (response) {
-    vkReference = response.vkReference;
-    vkRedirectReference = response.vkRedirectReference;
-    googleReference = response.googleReference;
-    googleRedirectReference = response.googleRedirectReference;
-    }
-    });
-    }
-    });
-  </script> -->
-
-  <!-- TODO: Все это надо будет отрефачить и вынести отдельно куда-нибудь. -->
-  <!-- <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script>      
-    function handleCredentialResponse(response) {
-      let userSignInGoogleInput = {
-        googleAuthToken: response.credential
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+    (function (m, e, t, r, i, k, a) {
+      m[i] = m[i] || function () {
+        (m[i].a = m[i].a || []).push(arguments)
       };
-
-      $.ajax({
-        url: googleReference,
-        type: 'POST',
-        dataType: 'json',
-        contentType: 'application/json',
-        data: JSON.stringify(userSignInGoogleInput),
-        success: function (data) {
-          if (data.isSuccess) {
-            localStorage["t_n"] = data.token;
-            localStorage["u_c"] = data.userCode;
-
-            window.location.href = googleRedirectReference;
-          }
+      m[i].l = 1 * new Date();
+      for (var j = 0; j < document.scripts.length; j++) {
+        if (document.scripts[j].src === r) {
+          return;
         }
-      });
-    }
+      }
+      k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k,
+        a)
+    })
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(95429747, "init", {
+      clickmap: true,
+      trackLinks: true,
+      accurateTrackBounce: true,
+      webvisor: true
+    });
+  </script>
+  <noscript>
+    <div><img src="https://mc.yandex.ru/watch/95429747" style="position:absolute; left:-9999px;" alt="" /></div>
+  </noscript>
+  <!-- /Yandex.Metrika counter -->
+
+  <script type="text/javascript">
     window.onload = function () {
-      if (!localStorage["t_n"] && window.location.pathname !== "/") {
-        google.accounts.id.initialize({
-          client_id: "418999951875-s1smtv8oitn579i8pd4na059pnbctf19.apps.googleusercontent.com",
-          callback: handleCredentialResponse
-        });
-        google.accounts.id.renderButton(
-          document.getElementById("buttonDiv"), {
-            theme: "outline",
-            size: "large"
-          }
-        );
-        google.accounts.id.prompt();
+      if (window.location.href.includes("https://leoka-estetica-dev.ru") ||
+      window.location.href.includes("https://leoka-estetica-test.ru")) {
+      var meta = document.createElement('meta');
+      meta.name = 'robots';
+      meta.setAttribute('content', 'none');
+      document.getElementsByTagName('head')[0].appendChild(meta);
       }
     }
-  </script> -->
-
-  <!-- <script src="https://vk.com/js/api/openapi.js?169" type="text/javascript"></script>
-  <script type="text/javascript" src="https://vk.com/js/api/openapi.js?169"></script> -->
-  <!-- <script type="text/javascript">
-    VK.init({
-      apiId: 51577951
-    });
-  </script> -->
-
-
-  <!-- VK Widget -->
-  <!-- <script type="text/javascript">
-    if (!localStorage["t_n"] && window.location.pathname !== "/") {
-      VK.Widgets.Auth("vk_auth", {
-        "onAuth": function (response) {
-          let userSignInVkInput = {
-            vkUserId: response.uid,
-            firstName: response.first_name,
-            lastName: response.last_name
-          };
-
-          $.ajax({
-            url: vkReference,
-            type: 'POST',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify(userSignInVkInput),
-            success: function (data) {
-              if (data.isSuccess) {
-                localStorage["t_n"] = data.token;
-                localStorage["u_c"] = data.userCode;
-
-                window.location.href = vkRedirectReference;
-              }
-            }
-          });
-        }
-      });
-    }
-  </script> -->
-
-  <!-- Yandex.Metrika counter -->
-<script type="text/javascript" >
-  (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-  m[i].l=1*new Date();
-  for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-  k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-  (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-
-  ym(95429747, "init", {
-       clickmap:true,
-       trackLinks:true,
-       accurateTrackBounce:true,
-       webvisor:true
-  });
-</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/95429747" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
+  </script>
 
   <app-root></app-root>
 </body>
