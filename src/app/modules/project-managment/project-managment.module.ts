@@ -29,6 +29,7 @@ import { MessageModule } from 'primeng/message';
 import { CardModule } from 'primeng/card';
 import { ProjectManagmentRoutingModule } from './project-managment-routing.module';
 import { StartProjectManagmentComponent } from './start/components/start-project-managment.component';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 
 @NgModule({
     declarations: [
@@ -61,7 +62,8 @@ import { StartProjectManagmentComponent } from './start/components/start-project
         TagModule,
         MessagesModule,
         MessageModule,
-        CardModule
+        CardModule,
+        ScrollPanelModule
     ],
 
     exports: [],
