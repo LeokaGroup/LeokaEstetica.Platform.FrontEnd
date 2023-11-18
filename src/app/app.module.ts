@@ -38,6 +38,7 @@ import { OrderService } from './modules/order-form/services/order.service';
 import { TicketService } from './modules/ticket/services/ticket.service';
 import { ForbiddenComponent } from './modules/forbidden/forbidden.component';
 import { ProjectManagmentModule } from './modules/project-managment/project-managment.module';
+import { ProjectManagmentService } from './modules/project-managment/services/project-managment.service';
 
 @NgModule({
   declarations: [
@@ -94,7 +95,8 @@ import { ProjectManagmentModule } from './modules/project-managment/project-mana
     NotificationsService,
     OrderFormService,
     OrderService,
-    TicketService
+    TicketService,
+    ProjectManagmentService
   ],
 
   bootstrap: [AppComponent]
