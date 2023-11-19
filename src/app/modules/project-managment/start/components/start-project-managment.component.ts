@@ -13,15 +13,18 @@ import { ProjectManagmentService } from "../../services/project-managment.servic
  */
 export class StartProjectManagmentComponent implements OnInit {
     public readonly userProjects$ = this._projectManagmentService.userProjects$;
+    public readonly viewStrategies$ = this._projectManagmentService.viewStrategies$;
 
     selectedProject: any;
+    selectedStrategy: any;
 
     constructor(private readonly _projectManagmentService: ProjectManagmentService) {
     }
 
     public async ngOnInit() {
         forkJoin([
-          await this.getUseProjectsAsync()
+            await this.getUseProjectsAsync(),
+            await this.getViewStrategiesAsync()
         ]).subscribe();
     };
 
@@ -33,6 +36,17 @@ export class StartProjectManagmentComponent implements OnInit {
         (await this._projectManagmentService.getUseProjectsAsync())
             .subscribe(_ => {
                 console.log("Проекты пользователя для УП: ", this.userProjects$.value.userProjects);
+            });
+    };
+
+    /**
+  * Функция получает список стратегий представления.
+  * @returns - Список стратегий.
+  */
+    private async getViewStrategiesAsync() {
+        (await this._projectManagmentService.getViewStrategiesAsync())
+            .subscribe(_ => {
+                console.log("Стратегии представления для УП: ", this.viewStrategies$.value);
             });
     };
 }

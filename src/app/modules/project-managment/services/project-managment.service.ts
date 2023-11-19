@@ -10,6 +10,7 @@ import { API_URL } from 'src/app/core/core-urls/api-urls';
 export class ProjectManagmentService {
     public availableProjectManagment$ = new BehaviorSubject<any>(null);
     public userProjects$ = new BehaviorSubject<any>(null);
+    public viewStrategies$ = new BehaviorSubject<any>(null);
 
     apiUrl: any;
 
@@ -42,6 +43,16 @@ export class ProjectManagmentService {
      public async getUseProjectsAsync() {
         return await this._http.get(this.apiUrl + "/project-managment/user-projects").pipe(
             tap(data => this.userProjects$.next(data))
+        );
+    };
+
+     /**
+    * Функция получает список стратегий представления.
+    * @returns - Список стратегий.
+    */
+      public async getViewStrategiesAsync() {
+        return await this._http.get(this.apiUrl + "/project-managment/view-strategies").pipe(
+            tap(data => this.viewStrategies$.next(data))
         );
     };
 }
