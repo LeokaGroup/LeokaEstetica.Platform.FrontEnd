@@ -9,9 +9,20 @@ import { API_URL } from 'src/app/core/core-urls/api-urls';
 @Injectable()
 export class ProjectManagmentService {
     public availableProjectManagment$ = new BehaviorSubject<any>(null);
+    public userProjects$ = new BehaviorSubject<any>(null);
 
-    constructor(private readonly http: HttpClient) {
-        
+    apiUrl: any;
+
+    constructor(private readonly _http: HttpClient) {
+        // Если используем ендпоинты модуля УП.
+        if (API_URL.apiUrlProjectManagment !== null && API_URL.apiUrlProjectManagment !== undefined) {
+            this.apiUrl = API_URL.apiUrlProjectManagment;
+        }
+
+        // Если используем основные ендпоинты.
+        else {
+            this.apiUrl = API_URL.apiUrl
+        }
     }
 
     /**
@@ -19,8 +30,18 @@ export class ProjectManagmentService {
     * @returns - Признак доступности модуля УП.
     */
     public async availableProjectManagmentAsync() {
-        return await this.http.get(API_URL.apiUrl + "/project-managment/config/is-available-project-managment").pipe(
+        return await this._http.get(this.apiUrl + "/project-managment/config/is-available-project-managment").pipe(
             tap(data => this.availableProjectManagment$.next(data))
+        );
+    };
+
+    /**
+    * Функция получает список проектов пользователя.
+    * @returns - Список проектов.
+    */
+     public async getUseProjectsAsync() {
+        return await this._http.get(this.apiUrl + "/project-managment/user-projects").pipe(
+            tap(data => this.userProjects$.next(data))
         );
     };
 }

@@ -147,6 +147,10 @@ export class AppComponent implements OnInit {
         if (currentUrl.indexOf("press/offer") >= 0) {
           this.isVisibleMenu = false;
         }
+
+        if (currentUrl.indexOf("project-managment") >= 0) {
+          this.isVisibleMenu = false;
+        }
       });
   };
 }

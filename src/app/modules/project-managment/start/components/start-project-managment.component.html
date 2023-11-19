@@ -1,15 +1,72 @@
 <div class="d-flex block-profile space-top-80">
   <!-- Выбор проекта. -->
-  <div class="mt-5 block-project-managment d-flex col-lg-12">
+  <div class="block-project-managment d-flex col-lg-12">
     <div class="col-lg-12">
-      <div class="block-new-users">
-        <p-card header="Выбор проекта">
+      <div class="block-user-projects">
+        <!-- <p-card header="Выбор проекта">
           <p-scrollPanel class="" [style]="{ width: '100%', height: '350px'}">
-            <p class="text-content">
-              
+            <p class="text-content" *ngFor="let prj of userProjects$.value.userProjects">
+              {{prj.projectName}}
             </p>
           </p-scrollPanel>      
-      </p-card>
+      </p-card> -->
+
+      <p-table [value]="userProjects$.value.userProjects"
+      [(selection)]="selectedProject"
+      dataKey="projectId"
+      [paginator]="userProjects$.value.total > 0"
+      [rows]="10"
+      styleClass="p-datatable-gridlines"
+      responsiveLayout="scroll">
+
+<ng-template pTemplate="caption">
+ <h3>Ваши проекты</h3>
+</ng-template>
+
+<ng-template pTemplate="header">
+ <tr>
+   <!-- <th></th> -->
+   <th>ID проекта</th>
+   <th>Название проекта</th>
+   <th>Статус проекта</th>
+   <th>Выбор</th>
+   <!-- <th>Статус заказа</th>
+   <th>Подробнее</th> -->
+   <!-- <th>Редактирование</th> -->
+   <!-- <th>Удаление</th> -->
+ </tr>
+</ng-template>
+
+<ng-template pTemplate="body" let-prj>
+ <tr>
+   <!-- <td>
+     <p-tableCheckbox [value]="order"></p-tableCheckbox>
+   </td> -->
+   <td>{{prj.projectId}}</td>
+   <td>{{prj.projectName}}</td>
+   <td>{{prj.projectStatusName}}</td>
+   <td><button pButton type="button"
+               label="Выбрать"
+               class="p-button-outlined">
+   </button>
+   </td>
+ </tr>
+</ng-template>
+
+<ng-template pTemplate="summary">
+ Всего: {{userProjects$.value.total}}
+</ng-template>
+
+<ng-template pTemplate="emptymessage">
+ <tr>
+     <td colspan="7">
+       <div class="empty-orders">
+         У вас пока нет проектов.
+       </div>
+     </td>
+ </tr>
+</ng-template>
+</p-table>
       </div>
     </div>
   </div>
