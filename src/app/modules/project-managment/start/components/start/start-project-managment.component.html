@@ -5,7 +5,8 @@
       <div class="block-user-projects">
         <p-table [value]="userProjects$.value.userProjects" [(selection)]="selectedProject" dataKey="projectId"
           [paginator]="userProjects$.value.total > 0" [rows]="10" styleClass="p-datatable-gridlines"
-          responsiveLayout="scroll">
+          responsiveLayout="scroll"
+          selectionMode="single">
 
           <ng-template pTemplate="caption">
             <h3>Выбор проекта для управления</h3>
@@ -17,21 +18,21 @@
               <th>ID проекта</th>
               <th>Название проекта</th>
               <th>Статус проекта</th>
-              <th>Выбор</th>
+              <!-- <th>Выбор</th> -->
             </tr>
           </ng-template>
 
           <ng-template pTemplate="body" let-prj>
-            <tr>
+            <tr [pSelectableRow]="prj">
               <!-- <td>
      <p-tableCheckbox [value]="order"></p-tableCheckbox>
    </td> -->
               <td>{{prj.projectId}}</td>
               <td>{{prj.projectName}}</td>
               <td>{{prj.projectStatusName}}</td>
-              <td><button pButton type="button" label="Выбрать" class="p-button-outlined">
+              <!-- <td><button pButton type="button" label="Выбрать" class="p-button-outlined">
                 </button>
-              </td>
+              </td> -->
             </tr>
           </ng-template>
 
@@ -61,7 +62,8 @@
       <div class="block-view-strategy">
         <p-table [value]="viewStrategies$.value" [(selection)]="selectedStrategy" dataKey="strategyId"
          [rows]="10" styleClass="p-datatable-gridlines"
-          responsiveLayout="scroll">
+          responsiveLayout="scroll"
+          selectionMode="single">
 
           <ng-template pTemplate="caption">
             <h3>Выбор стратегии представления</h3>
@@ -73,21 +75,21 @@
               <!-- <th>ID проекта</th> -->
               <th>Название стратегии</th>
               <th>Описание стратегии (что это такое)</th>
-              <th>Выбор</th>
+              <!-- <th>Выбор</th> -->
               <th>Подробнее о стратегии</th>
             </tr>
           </ng-template>
 
           <ng-template pTemplate="body" let-st>
-            <tr>
+            <tr [pSelectableRow]="st">
               <!-- <td>
      <p-tableCheckbox [value]="order"></p-tableCheckbox>
    </td> -->
               <td>{{st.viewStrategyName}}</td>
               <td>На бэке пока не сделана логика</td>
-              <td><button pButton type="button" label="Выбрать" class="p-button-outlined">
+              <!-- <td><button pButton type="button" label="Выбрать" class="p-button-outlined">
                 </button>
-              </td>
+              </td> -->
               <td><button pButton type="button" label="Подробнее" class="p-button-outlined">
               </button>
             </td>
@@ -111,4 +113,12 @@
       </div>
     </div>
   </div>
+</div>
+
+<div>
+  <button type="submit" 
+          class="mt-5 btn btn-primary button-action-pur-control"
+          (click)="onRouteWorkSpace()">
+    Вперед
+  </button>
 </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { forkJoin } from "rxjs";
-import { ProjectManagmentService } from "../../services/project-managment.service";
+import { ProjectManagmentService } from "../../../services/project-managment.service";
 
 @Component({
     selector: "",
@@ -18,7 +19,8 @@ export class StartProjectManagmentComponent implements OnInit {
     selectedProject: any;
     selectedStrategy: any;
 
-    constructor(private readonly _projectManagmentService: ProjectManagmentService) {
+    constructor(private readonly _projectManagmentService: ProjectManagmentService,
+        private readonly _router: Router) {
     }
 
     public async ngOnInit() {
@@ -48,5 +50,31 @@ export class StartProjectManagmentComponent implements OnInit {
             .subscribe(_ => {
                 console.log("Стратегии представления для УП: ", this.viewStrategies$.value);
             });
+    };
+
+    /**
+     * Функция переходит в рабочее пространство проекта.
+     */
+    public onRouteWorkSpace() {
+        console.log("selectedProject", this.selectedProject);
+        console.log("selectedStrategy", this.selectedStrategy);
+
+        let projectId = this.selectedProject.projectId;
+        let strategy = this.selectedStrategy.viewStrategySysName.toLowerCase();
+
+        if (strategy == "kanban") {
+            strategy = "kn";
+        }
+
+        else if (strategy == "scrum") {
+            strategy = "sm";
+        }
+
+        this._router.navigate(["/project-managment/space"], {
+            queryParams: {
+                projectId,
+                view: strategy
+            }
+        });
     };
 }

@@ -28,12 +28,14 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { CardModule } from 'primeng/card';
 import { ProjectManagmentRoutingModule } from './project-managment-routing.module';
-import { StartProjectManagmentComponent } from './start/components/start-project-managment.component';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { StartProjectManagmentComponent } from './start/components/start/start-project-managment.component';
+import { SpaceComponent } from './start/components/space/space.component';
 
 @NgModule({
     declarations: [
-        StartProjectManagmentComponent
+        StartProjectManagmentComponent,
+        SpaceComponent
     ],
 
     imports: [
