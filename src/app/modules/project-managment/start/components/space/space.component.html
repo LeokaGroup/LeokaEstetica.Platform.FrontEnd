@@ -1,0 +1,24 @@
+<nav class="navbar navbar-light justify-content-evenly">
+    <!-- <a class="navbar-brand" routerLink="">
+      <img class="logo" src="../../../../assets/images/logo/logo.png">
+    </a> -->
+    <div class="form-inline">
+        <p-menubar [model]="items1" class="second-menu">
+            <ng-template pTemplate="start">
+                <!-- <img src="https://primefaces.org/cdn/primeng/images/primeng.svg" height="40" class="mr-2" /> -->
+            </ng-template>
+            <ng-template pTemplate="end">
+                <input type="text" pInputText placeholder="Search" class="w-full search-line" />
+            </ng-template>
+        </p-menubar>
+    </div>
+
+   <!-- <div [ngClass]="{invisible: !isHideAuthButtons}">
+    <p-avatar label="P"
+              shape="circle"
+              (click)="menu.toggle($event)">
+    </p-avatar>
+
+    <p-menu #menu [popup]="true" [model]="items"></p-menu>
+   </div> -->
+  </nav>
