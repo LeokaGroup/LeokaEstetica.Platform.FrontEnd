@@ -11,6 +11,7 @@ export class ProjectManagmentService {
     public availableProjectManagment$ = new BehaviorSubject<any>(null);
     public userProjects$ = new BehaviorSubject<any>(null);
     public viewStrategies$ = new BehaviorSubject<any>(null);
+    public headerItems$ = new BehaviorSubject<any>(null);
 
     apiUrl: any;
 
@@ -40,19 +41,29 @@ export class ProjectManagmentService {
     * Функция получает список проектов пользователя.
     * @returns - Список проектов.
     */
-     public async getUseProjectsAsync() {
+    public async getUseProjectsAsync() {
         return await this._http.get(this.apiUrl + "/project-managment/user-projects").pipe(
             tap(data => this.userProjects$.next(data))
         );
     };
 
-     /**
-    * Функция получает список стратегий представления.
-    * @returns - Список стратегий.
-    */
-      public async getViewStrategiesAsync() {
+    /**
+   * Функция получает список стратегий представления.
+   * @returns - Список стратегий.
+   */
+    public async getViewStrategiesAsync() {
         return await this._http.get(this.apiUrl + "/project-managment/view-strategies").pipe(
             tap(data => this.viewStrategies$.next(data))
+        );
+    };
+
+    /**
+ * Функция получает список элементов меню хидера (верхнее меню).
+ * @returns - Список элементов.
+ */
+    public async getHeaderItemsAsync() {
+        return await this._http.get(this.apiUrl + "/project-managment/header").pipe(
+            tap(data => this.headerItems$.next(data))
         );
     };
 }

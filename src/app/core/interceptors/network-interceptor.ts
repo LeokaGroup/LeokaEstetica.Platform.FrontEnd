@@ -36,7 +36,7 @@ export class NetworkInterceptor implements HttpInterceptor {
 
         return next.handle(req).pipe(
             catchError((response: HttpErrorResponse) => {
-                if (response.status == 403) {
+                if (response.status == 401) {
                     localStorage.clear();
                     this._router.navigate(["/user/signin"]).then(() => {  
                         this._redirectService.redirect("user/signin");                

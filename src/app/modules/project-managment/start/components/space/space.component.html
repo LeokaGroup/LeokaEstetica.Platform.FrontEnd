@@ -1,0 +1,12 @@
+<nav class="navbar navbar-light justify-content-evenly">
+  <div class="form-inline">
+    <p-menubar [model]="aHeaderItems" class="second-menu">
+      <ng-template pTemplate="start">
+
+      </ng-template>
+      <ng-template pTemplate="end">
+        <input type="text" pInputText placeholder="Поиск" class="w-full search-line" />
+      </ng-template>
+    </p-menubar>
+  </div>
+</nav>

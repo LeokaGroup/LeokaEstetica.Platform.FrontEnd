@@ -1,0 +1,14 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+@use "/src/app/modules/header/components/header.component.scss";
+
+::ng-deep .second-menu .p-component {
+  border: none;
+}
+
+.search-line {
+    &:focus {
+        box-shadow: none;
+    }
+}

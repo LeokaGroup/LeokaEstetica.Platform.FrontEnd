@@ -31,6 +31,8 @@ import { ProjectManagmentRoutingModule } from './project-managment-routing.modul
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { StartProjectManagmentComponent } from './start/components/start/start-project-managment.component';
 import { SpaceComponent } from './start/components/space/space.component';
+import { AvatarModule } from 'primeng/avatar';
+import { MenubarModule } from 'primeng/menubar';
 
 @NgModule({
     declarations: [
@@ -65,7 +67,9 @@ import { SpaceComponent } from './start/components/space/space.component';
         MessagesModule,
         MessageModule,
         CardModule,
-        ScrollPanelModule
+        ScrollPanelModule,
+        AvatarModule,
+        MenubarModule
     ],
 
     exports: [],
