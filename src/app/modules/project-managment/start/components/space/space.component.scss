@@ -12,3 +12,17 @@
         box-shadow: none;
     }
 }
+
+.block-task {
+  overflow-x: scroll;
+  // max-width: 288px;
+
+  .task-ver-line {
+    min-height: 100px;
+    // width: 288px;
+    min-width: 280px;
+    // max-width: 288px;
+    background: #F1F3F5;
+    margin: 0 10px 0 0px;
+  }
+}
