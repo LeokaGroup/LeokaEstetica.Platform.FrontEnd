@@ -34,6 +34,7 @@ import { SpaceComponent } from './start/components/space/space.component';
 import { AvatarModule } from 'primeng/avatar';
 import { MenubarModule } from 'primeng/menubar';
 import { TooltipModule } from 'primeng/tooltip';
+import { ListboxModule } from 'primeng/listbox';
 
 @NgModule({
     declarations: [
@@ -71,7 +72,8 @@ import { TooltipModule } from 'primeng/tooltip';
         ScrollPanelModule,
         AvatarModule,
         MenubarModule,
-        TooltipModule
+        TooltipModule,
+        ListboxModule
     ],
 
     exports: [],
