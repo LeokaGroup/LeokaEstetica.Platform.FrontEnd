@@ -33,6 +33,8 @@ import { StartProjectManagmentComponent } from './start/components/start/start-p
 import { SpaceComponent } from './start/components/space/space.component';
 import { AvatarModule } from 'primeng/avatar';
 import { MenubarModule } from 'primeng/menubar';
+import { TooltipModule } from 'primeng/tooltip';
+import { ListboxModule } from 'primeng/listbox';
 
 @NgModule({
     declarations: [
@@ -69,7 +71,9 @@ import { MenubarModule } from 'primeng/menubar';
         CardModule,
         ScrollPanelModule,
         AvatarModule,
-        MenubarModule
+        MenubarModule,
+        TooltipModule,
+        ListboxModule
     ],
 
     exports: [],

@@ -15,9 +15,13 @@ import { ProjectManagmentService } from "../../../services/project-managment.ser
 export class StartProjectManagmentComponent implements OnInit {
     public readonly userProjects$ = this._projectManagmentService.userProjects$;
     public readonly viewStrategies$ = this._projectManagmentService.viewStrategies$;
+    public readonly projectManagmentTemplates$ = this._projectManagmentService.projectManagmentTemplates$;
 
     selectedProject: any;
     selectedStrategy: any;
+    selectedTemplate: any;
+    isSelectTemplate: boolean = false;
+    aSelectedStatuses: any[] = [];
 
     constructor(private readonly _projectManagmentService: ProjectManagmentService,
         private readonly _router: Router) {
@@ -26,7 +30,8 @@ export class StartProjectManagmentComponent implements OnInit {
     public async ngOnInit() {
         forkJoin([
             await this.getUseProjectsAsync(),
-            await this.getViewStrategiesAsync()
+            await this.getViewStrategiesAsync(),
+            await this.getProjectManagmentTemplatesAsync()
         ]).subscribe();
     };
 
@@ -76,5 +81,36 @@ export class StartProjectManagmentComponent implements OnInit {
                 view: strategy
             }
         });
+    };
+
+    public onSelectStrategy() {
+        console.log("onSelectStrategy", this.selectedStrategy);
+        this.isSelectTemplate = true;
+    };
+
+    public onChangeTemplate() {
+        console.log("onChangeTemplate", this.selectedTemplate);
+        this.aSelectedStatuses = [];
+        
+        this.selectedTemplate.projectManagmentTaskStatusTemplates.forEach((el: any) => {
+            this.aSelectedStatuses.push({
+                statusName: el.statusName,
+                templateId: el.templateId,
+                statusId: el.statusId
+            });
+        });
+
+        console.log("aSelectedStatuses", this.aSelectedStatuses);
+    };
+
+    /**
+* Функция получает список шаблонов со статусами для выбора пользователю
+* @returns - Список шаблонов.
+*/
+    private async getProjectManagmentTemplatesAsync() {
+        (await this._projectManagmentService.getProjectManagmentTemplatesAsync())
+            .subscribe(_ => {
+                console.log("Шаблоны для выбора: ", this.projectManagmentTemplates$.value);
+            });
     };
 }

@@ -12,6 +12,7 @@ export class ProjectManagmentService {
     public userProjects$ = new BehaviorSubject<any>(null);
     public viewStrategies$ = new BehaviorSubject<any>(null);
     public headerItems$ = new BehaviorSubject<any>(null);
+    public projectManagmentTemplates$ = new BehaviorSubject<any>(null);
 
     apiUrl: any;
 
@@ -64,6 +65,16 @@ export class ProjectManagmentService {
     public async getHeaderItemsAsync() {
         return await this._http.get(this.apiUrl + "/project-managment/header").pipe(
             tap(data => this.headerItems$.next(data))
+        );
+    };
+
+    /**
+* Функция получает список шаблонов со статусами для выбора пользователю
+* @returns - Список шаблонов.
+*/
+    public async getProjectManagmentTemplatesAsync() {
+        return await this._http.get(this.apiUrl + "/project-managment/templates").pipe(
+            tap(data => this.projectManagmentTemplates$.next(data))
         );
     };
 }
