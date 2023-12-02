@@ -13,6 +13,7 @@ export class ProjectManagmentService {
     public viewStrategies$ = new BehaviorSubject<any>(null);
     public headerItems$ = new BehaviorSubject<any>(null);
     public projectManagmentTemplates$ = new BehaviorSubject<any>(null);
+    public workSpaceConfig$ = new BehaviorSubject<any>(null);
 
     apiUrl: any;
 
@@ -59,9 +60,9 @@ export class ProjectManagmentService {
     };
 
     /**
- * Функция получает список элементов меню хидера (верхнее меню).
- * @returns - Список элементов.
- */
+     * Функция получает список элементов меню хидера (верхнее меню).
+     * @returns - Список элементов.
+     */
     public async getHeaderItemsAsync() {
         return await this._http.get(this.apiUrl + "/project-managment/header").pipe(
             tap(data => this.headerItems$.next(data))
@@ -69,12 +70,30 @@ export class ProjectManagmentService {
     };
 
     /**
-* Функция получает список шаблонов со статусами для выбора пользователю
-* @returns - Список шаблонов.
-*/
+    * Функция получает список шаблонов со статусами для выбора пользователю
+    * @returns - Список шаблонов.
+    */
     public async getProjectManagmentTemplatesAsync() {
         return await this._http.get(this.apiUrl + "/project-managment/templates").pipe(
             tap(data => this.projectManagmentTemplates$.next(data))
+        );
+    };
+
+    /**
+    * Функция получает конфигурацию рабочего пространства по выбранному шаблону.
+    * Под конфигурацией понимаются основные элементы рабочего пространства (набор задач, статусов, фильтров, колонок и тд)
+    * если выбранный шаблон это предполагает.
+    * @param projectId - Id проекта.
+    * @param strategy - Выбранная стратегия.
+    * @param templateId - Id выбранного шаблона.
+    * @returns - Данные конфигурации.
+    */
+    public async getConfigurationWorkSpaceBySelectedTemplateAsync(projectId: number, strategy: string,
+        templateId: number) {
+        return await this._http.get(this.apiUrl + `/project-managment/config-workspace-template?projectId=${projectId}
+        &strategy=${strategy}
+        &templateId=${templateId}`).pipe(
+            tap(data => this.workSpaceConfig$.next(data))
         );
     };
 }
