@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
@@ -16,13 +16,19 @@ import { ProjectManagmentService } from "../../../services/project-managment.ser
 export class SpaceComponent implements OnInit {
     constructor(private readonly _projectManagmentService: ProjectManagmentService,
         private readonly _router: Router,
-        private readonly _redirectService: RedirectService) {
+        private readonly _redirectService: RedirectService,
+        private readonly _activatedRoute: ActivatedRoute) {
     }
     
     public readonly headerItems$ = this._projectManagmentService.headerItems$;
+    public readonly workSpaceConfig$ = this._projectManagmentService.workSpaceConfig$;
 
     isHideAuthButtons: boolean = false;
     aHeaderItems: any[] = [];
+    selectedProjectId: number = 0;
+    selectedStrategy: string = "";
+    selectedTemplateId: number = 0;
+    aStatuses: any[] = [];
 
     items: any[] = [
         {
@@ -56,7 +62,9 @@ export class SpaceComponent implements OnInit {
 
     public async ngOnInit() {
         forkJoin([
-            await this.getHeaderItemsAsync()
+            this.checkUrlParams(),
+            await this.getHeaderItemsAsync(),
+            await this.getConfigurationWorkSpaceBySelectedTemplateAsync()
         ]).subscribe();
 
         this.isHideAuthButtons = localStorage["t_n"] ? true : false;        
@@ -76,5 +84,31 @@ export class SpaceComponent implements OnInit {
 
     public activeMenu(event: any) {
         console.log(event);
+    };
+
+    private async checkUrlParams() {
+        this._activatedRoute.queryParams
+          .subscribe(async params => {
+            this.selectedProjectId = params["projectId"];
+            this.selectedStrategy = params["view"];
+            this.selectedTemplateId = params["tm"];
+          });
+      };
+
+      /**
+    * Функция получает конфигурацию рабочего пространства по выбранному шаблону.
+    * Под конфигурацией понимаются основные элементы рабочего пространства (набор задач, статусов, фильтров, колонок и тд)
+    * если выбранный шаблон это предполагает.
+    * @returns - Данные конфигурации.
+    */
+    private async getConfigurationWorkSpaceBySelectedTemplateAsync() {
+        (await this._projectManagmentService.getConfigurationWorkSpaceBySelectedTemplateAsync(this.selectedProjectId,
+            this.selectedStrategy, this.selectedTemplateId))
+            .subscribe(_ => {
+                console.log("Конфигурация рабочего пространства: ", this.workSpaceConfig$.value);
+                this.workSpaceConfig$.value.projectManagmentTaskStatuses.forEach((item: any) => {
+                    this.aStatuses.push(item.statusName);
+                });
+            });
     };
 }

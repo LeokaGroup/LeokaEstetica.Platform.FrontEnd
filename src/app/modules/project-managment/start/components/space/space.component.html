@@ -12,101 +12,17 @@
   </div>
 </nav>
 
-<div class="d-flex block-profile space-top-80">
-  <!-- <div class="profile-left-menu col-lg-2">
+<div class="d-flex col-lg-12 mt-3 block-title">
+  <h5>Kanban-доска проекта [Название проекта]</h5>
+</div>
 
-  </div> -->
-
+<!-- Блок с задачами. -->
+<div class="d-flex mt-3">
   <div class="block-worksheet col-lg-12">
     <div class="d-flex block-task">
-      <div class="task-ver-line">
-        1
-      </div>
-    
-      <div class="task-ver-line">
-        2
-      </div>
-    
-      <div class="task-ver-line">
-        3
-      </div>
-    
-      <div class="task-ver-line">
-        4
-      </div>
-    
-      <div class="task-ver-line">
-        5
-      </div>
-    
-      <div class="task-ver-line">
-        6
-      </div>
-    
-        <div class="task-ver-line">
-        7
-      </div>
-    
-      <div class="task-ver-line">
-        8
-      </div>
-    
-      <div class="task-ver-line">
-        9
+      <div class="task-ver-line" *ngFor="let st of aStatuses">
+        {{st.toUpperCase()}}
       </div>
     </div>
   </div>
 </div>
-
-<!-- <div class="d-flex block-task">
-  <div class="task-ver-line">
-    1
-  </div>
-
-  <div class="task-ver-line">
-    2
-  </div>
-
-  <div class="task-ver-line">
-    3
-  </div>
-
-  <div class="task-ver-line">
-    4
-  </div>
-
-  <div class="task-ver-line">
-    5
-  </div>
-
-  <div class="task-ver-line">
-    6
-  </div>
-
-    <div class="task-ver-line">
-    7
-  </div>
-
-  <div class="task-ver-line">
-    8
-  </div>
-
-  <div class="task-ver-line">
-    9
-  </div>
-</div> -->
-
-<!-- Диалог удаления вакансии. -->
-<!-- <p-dialog  header="Удаление вакансии из проекта"
-          [(visible)]="isDeleteVacancy"
-          [breakpoints]="{'960px': '75vw'}"
-          [style]="{width: '50vw'}"
-          [draggable]="false"
-          [resizable]="false"
-          icon="pi pi-exclamation-triangle">
-        <p>Удалить вакансию <strong>{{selectedVacancy$.value.vacancyName}}?</strong></p>
-        <ng-template pTemplate="footer">
-        <p-button (click)="isDeleteVacancy=false" label="Отмена" styleClass="p-button-text"></p-button>
-        <p-button (click)="onDeleteVacancyAsync()" label="Удалить" styleClass="p-button-text p-button-danger"></p-button>
-        </ng-template>
-</p-dialog> -->

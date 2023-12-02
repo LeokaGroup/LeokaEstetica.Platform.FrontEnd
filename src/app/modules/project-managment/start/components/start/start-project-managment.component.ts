@@ -22,6 +22,8 @@ export class StartProjectManagmentComponent implements OnInit {
     selectedTemplate: any;
     isSelectTemplate: boolean = false;
     aSelectedStatuses: any[] = [];
+    isSelectedTemplate: boolean = false;
+    isSelectedProject: boolean = false;
 
     constructor(private readonly _projectManagmentService: ProjectManagmentService,
         private readonly _router: Router) {
@@ -75,23 +77,33 @@ export class StartProjectManagmentComponent implements OnInit {
             strategy = "sm";
         }
 
+        // Можем взять templateId от любого статуса, так как все статусы будут принадлежать одному шаблону,
+        // который выбран пользователем.
+        let templateId = this.selectedTemplate.projectManagmentTaskStatusTemplates[0].templateId;
+
         this._router.navigate(["/project-managment/space"], {
             queryParams: {
                 projectId,
-                view: strategy
+                view: strategy,
+                tm: templateId
             }
         });
     };
 
+    /**
+     * Функция отображает модалку выбора шаблона.
+     */
     public onSelectStrategy() {
-        console.log("onSelectStrategy", this.selectedStrategy);
         this.isSelectTemplate = true;
     };
 
+    /**
+     * Функция подтягивает статусы выбранного шаблона.
+     */
     public onChangeTemplate() {
-        console.log("onChangeTemplate", this.selectedTemplate);
         this.aSelectedStatuses = [];
         
+        // Перебираем статусы выбранного шаблона, чтобы добавить их в массив статусов и отобразить на UI.
         this.selectedTemplate.projectManagmentTaskStatusTemplates.forEach((el: any) => {
             this.aSelectedStatuses.push({
                 statusName: el.statusName,
@@ -99,8 +111,6 @@ export class StartProjectManagmentComponent implements OnInit {
                 statusId: el.statusId
             });
         });
-
-        console.log("aSelectedStatuses", this.aSelectedStatuses);
     };
 
     /**
@@ -112,5 +122,22 @@ export class StartProjectManagmentComponent implements OnInit {
             .subscribe(_ => {
                 console.log("Шаблоны для выбора: ", this.projectManagmentTemplates$.value);
             });
+    };
+
+    /**
+     * Функция фиксирует выбор шаблона пользователем.
+     */
+    public onSelectTemplate() {
+        this.isSelectedTemplate = true;
+
+        // Закрываем модалку.
+        this.isSelectTemplate = false;
+    };
+
+    /**
+     * Функция фиксирует выбранный проект пользователя.
+     */
+    public onSelectProject() {
+        this.isSelectedProject = this.selectedProject !== undefined && this.selectedProject?.projectId > 0;
     };
 }

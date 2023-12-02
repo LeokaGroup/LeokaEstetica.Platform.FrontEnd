@@ -6,7 +6,8 @@
         <p-table [value]="userProjects$.value.userProjects" [(selection)]="selectedProject" dataKey="projectId"
           [paginator]="userProjects$.value.total > 0" [rows]="10" styleClass="p-datatable-gridlines"
           responsiveLayout="scroll"
-          selectionMode="single">
+          selectionMode="single"
+          (onRowSelect)="onSelectProject()">
 
           <ng-template pTemplate="caption">
             <h3>Выбор проекта для управления</h3>
@@ -122,7 +123,8 @@
 <div>
   <button type="submit" 
           class="mt-5 btn btn-primary button-action-pur-control"
-          (click)="onRouteWorkSpace()">
+          (click)="onRouteWorkSpace()"
+          [disabled]="!isSelectedTemplate || !isSelectedProject">
     Перейти в рабочее пространство
   </button>
 </div>
@@ -148,19 +150,27 @@
           </p-listbox>
         </div>
 
-       <div class="col-lg-6">
-        <strong class="mb-1">Шаблон включает в себя статусы</strong>
-        <p-listbox [options]="aSelectedStatuses" 
-                  optionLabel="statusName" 
-                  [style]="{'width':'15rem'}" 
-                  [listStyle]="{'max-height': '220px'}"
-                  emptyMessage="Не выбран шаблон">
-        </p-listbox>
-       </div>
+        <div class="col-lg-6">
+          <strong class="mb-1">Шаблон включает в себя статусы</strong>
+          <p-listbox [options]="aSelectedStatuses" 
+                    optionLabel="statusName" 
+                    [style]="{'width':'15rem'}" 
+                    [listStyle]="{'max-height': '220px'}"
+                    emptyMessage="Не выбран шаблон">
+          </p-listbox>
+        </div>
        </div>
 
         <ng-template pTemplate="footer">
-        <p-button (click)="isSelectTemplate=false" label="Отмена" styleClass="p-button-text"></p-button>
-        <p-button label="Выбрать шаблон" styleClass="p-button-text p-button-success" [disabled]="aSelectedStatuses.length == 0"></p-button>
+        <p-button (click)="isSelectTemplate=!isSelectTemplate" 
+                  label="Отмена" 
+                  styleClass="p-button-text">
+        </p-button>
+
+        <p-button label="Выбрать шаблон" 
+                  styleClass="p-button-text p-button-success" 
+                  [disabled]="aSelectedStatuses.length == 0"
+                  (click)="onSelectTemplate()">
+        </p-button>
         </ng-template>
 </p-dialog>
