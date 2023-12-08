@@ -35,6 +35,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { MenubarModule } from 'primeng/menubar';
 import { TooltipModule } from 'primeng/tooltip';
 import { ListboxModule } from 'primeng/listbox';
+import { DragDropModule } from 'primeng/dragdrop';
 
 @NgModule({
     declarations: [
@@ -73,7 +74,8 @@ import { ListboxModule } from 'primeng/listbox';
         AvatarModule,
         MenubarModule,
         TooltipModule,
-        ListboxModule
+        ListboxModule,
+        DragDropModule
     ],
 
     exports: [],
