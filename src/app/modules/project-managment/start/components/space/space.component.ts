@@ -106,9 +106,6 @@ export class SpaceComponent implements OnInit {
             this.selectedStrategy, this.selectedTemplateId))
             .subscribe(_ => {
                 console.log("Конфигурация рабочего пространства: ", this.workSpaceConfig$.value);
-                this.workSpaceConfig$.value.projectManagmentTaskStatuses.forEach((item: any) => {
-                    this.aStatuses.push(item.statusName);
-                });
             });
     };
 }

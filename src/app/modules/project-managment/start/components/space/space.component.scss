@@ -31,3 +31,18 @@
 .block-title {
   margin: 0px 10px 0px 10px;
 }
+
+.status-name {
+  // display: flex;
+  // justify-content: center;
+  font-weight: 700;
+  margin: 0 5px;
+}
+
+::ng-deep .p-card-body {
+  margin: 5px 0px 5px 0px;
+}
+
+::ng-deep .p-card-body .p-card-title {
+  font-size: 13px;
+}
