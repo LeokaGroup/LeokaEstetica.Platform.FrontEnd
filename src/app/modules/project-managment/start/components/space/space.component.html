@@ -12,38 +12,83 @@
   </div>
 </nav>
 
-<div class="d-flex col-lg-12 mt-3 block-title">
+<!-- <div class="d-flex col-lg-12 mt-3 block-title">
   <h5>Kanban-доска проекта [Название проекта]</h5>
-</div>
+</div> -->
 
 <!-- Блок с задачами. -->
-<div class="d-flex mt-3">
+<div class="d-flex">
   <div class="block-worksheet col-lg-12">
     <div class="d-flex block-task">
-      <div class="task-ver-line" *ngFor="let st of workSpaceConfig$.value.projectManagmentTaskStatuses">
+      <div class="task-ver-line" *ngFor="let st of workSpaceConfig$.value?.projectManagmentTaskStatuses">
         <div class="status-name">
           {{st.statusName.toUpperCase()}}
           {{st.total}}
         </div>
 
+        <!-- Блок с задачами. -->
         <div class="block-tasks" *ngFor="let t of st.projectManagmentTasks">
+          <!-- Блок с каждой задачей. -->
           <div class="task">
-            <!-- <div class="task-name">
-              {{t.name}}
-            </div> -->
-            <p-card header="{{t.name}}" class="card-task">
-              <!-- <p class="m-0">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
-                  quas!
-              </p> -->
-          </p-card>
+            <div class="card card-task">
+              <div class="title">
+                {{t.name}}
+              </div>
+            </div>
 
-           <p-card header="{{t.name}}" class="card-task">
-              <!-- <p class="m-0">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
-                  quas!
-              </p> -->
-          </p-card>
+            <div class="card card-task">
+              <div class="title">
+                {{t.name}}
+              </div>
+            </div>
+
+            <div class="card card-task">
+              <div class="title">
+                {{t.name}}
+              </div>
+            </div>
+
+            <div class="card card-task">
+              <div class="title">
+                {{t.name}}
+              </div>
+            </div>
+
+            <div class="card card-task">
+              <div class="title">
+                {{t.name}}
+              </div>
+            </div>
+
+            <div class="card card-task">
+              <div class="title">
+                {{t.name}}
+              </div>
+            </div>
+
+            <div class="card card-task">
+              <div class="title">
+                {{t.name}}
+              </div>
+            </div>
+
+            <div class="card card-task">
+              <div class="title">
+                {{t.name}}
+              </div>
+            </div>
+
+            <div class="card card-task">
+              <div class="title">
+                {{t.name}}
+              </div>
+            </div>
+
+            <div class="card card-task">
+              <div class="title">
+                {{t.name}}
+              </div>
+            </div>
           </div>
         </div>
       </div>
