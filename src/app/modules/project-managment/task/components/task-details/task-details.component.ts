@@ -18,17 +18,36 @@ export class TaskDetailsComponent implements OnInit {
         private readonly _activatedRoute: ActivatedRoute) {
     }
 
+    public readonly taskDetails$ = this._projectManagmentService.taskDetails$;
+
+    projectId: number = 0;
+    projectTaskId: number = 0;
+
     public async ngOnInit() {
         forkJoin([
-            this.checkUrlParams()
+            this.checkUrlParams(),
+            await this.getProjectTaskDetailsAsync()
         ]).subscribe();
     };
 
     private async checkUrlParams() {
         this._activatedRoute.queryParams
-          .subscribe(async params => {
-            // this.selectedProjectId = params["projectId"];
-            console.log("params: ", params);
-          });
-      };
+            .subscribe(async params => {
+                console.log("params: ", params);
+
+                this.projectId = params["projectId"];
+                this.projectTaskId = params["taskId"];
+            });
+    };
+
+    /**
+    * Функция получает детали задачи по ее Id.
+    * @returns - Детали задачи.
+    */
+    private async getProjectTaskDetailsAsync() {
+        (await this._projectManagmentService.getTaskDetailsByTaskIdAsync(this.projectId, this.projectTaskId))
+            .subscribe(_ => {
+                console.log("Детали задачи: ", this.taskDetails$.value);
+            });
+    };
 }

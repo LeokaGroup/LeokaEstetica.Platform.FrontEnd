@@ -17,7 +17,6 @@ export class ProjectManagmentService {
     public taskDetails$ = new BehaviorSubject<any>(null);
 
     apiUrl: any;
-    public selectedTaskId: number = 0;
 
     constructor(private readonly _http: HttpClient) {
         // Если используем ендпоинты модуля УП.
@@ -105,8 +104,8 @@ export class ProjectManagmentService {
     * @param taskId - Id задачи.
     * @returns - Данные конфигурации.
     */
-      public async getTaskDetailsByTaskIdAsync(projectId: number, taskId: number) {
-        return await this._http.get(this.apiUrl + `/project-managment/task?taskId=${taskId}&projectId=${projectId}`).pipe(
+      public async getTaskDetailsByTaskIdAsync(projectId: number, projectTaskId: number) {
+        return await this._http.get(this.apiUrl + `/project-managment/task?projectTaskId=${projectTaskId}&projectId=${projectId}`).pipe(
             tap(data => this.taskDetails$.next(data))
         );
     };

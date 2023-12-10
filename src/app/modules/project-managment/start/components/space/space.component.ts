@@ -109,9 +109,11 @@ export class SpaceComponent implements OnInit {
             });
     };
 
-    public onSelectTask(taskId: number, projectTaskId: number) {
-        this._projectManagmentService.selectedTaskId = taskId;
-
+    /**
+     * Функция переходит к деталям задачи.
+     * @param projectTaskId - Id задачи в рамках проекта.
+     */
+    public onSelectTask(projectTaskId: number) {
         let projectId = this.selectedProjectId;
 
         this._router.navigate(["/project-management/space/details"], {
