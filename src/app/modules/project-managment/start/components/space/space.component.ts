@@ -108,4 +108,17 @@ export class SpaceComponent implements OnInit {
                 console.log("Конфигурация рабочего пространства: ", this.workSpaceConfig$.value);
             });
     };
+
+    public onSelectTask(taskId: number, projectTaskId: number) {
+        this._projectManagmentService.selectedTaskId = taskId;
+
+        let projectId = this.selectedProjectId;
+
+        this._router.navigate(["/project-management/space/details"], {
+            queryParams: {
+                projectId,
+                taskId: projectTaskId
+            }
+        });
+    };
 }

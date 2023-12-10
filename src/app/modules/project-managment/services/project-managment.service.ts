@@ -14,8 +14,10 @@ export class ProjectManagmentService {
     public headerItems$ = new BehaviorSubject<any>(null);
     public projectManagmentTemplates$ = new BehaviorSubject<any>(null);
     public workSpaceConfig$ = new BehaviorSubject<any>(null);
+    public taskDetails$ = new BehaviorSubject<any>(null);
 
     apiUrl: any;
+    public selectedTaskId: number = 0;
 
     constructor(private readonly _http: HttpClient) {
         // Если используем ендпоинты модуля УП.
@@ -94,6 +96,18 @@ export class ProjectManagmentService {
         &strategy=${strategy}
         &templateId=${templateId}`).pipe(
             tap(data => this.workSpaceConfig$.next(data))
+        );
+    };
+
+     /**
+    * Функция получает детали задачи.
+    * @param projectId - Id проекта.
+    * @param taskId - Id задачи.
+    * @returns - Данные конфигурации.
+    */
+      public async getTaskDetailsByTaskIdAsync(projectId: number, taskId: number) {
+        return await this._http.get(this.apiUrl + `/project-managment/task?taskId=${taskId}&projectId=${projectId}`).pipe(
+            tap(data => this.taskDetails$.next(data))
         );
     };
 }

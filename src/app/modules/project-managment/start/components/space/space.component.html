@@ -30,7 +30,7 @@
         <div class="block-tasks" *ngFor="let t of st.projectManagmentTasks">
           <!-- Блок с каждой задачей. -->
           <div class="task">
-            <div class="card card-task">
+            <div class="card card-task" (click)="onSelectTask(t.taskId, t.projectTaskId)">
               <div class="title">
                 {{t.name}}
               </div>
