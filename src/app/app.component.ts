@@ -148,7 +148,7 @@ export class AppComponent implements OnInit {
           this.isVisibleMenu = false;
         }
 
-        if (currentUrl.indexOf("project-managment") >= 0) {
+        if (currentUrl.indexOf("project-management") >= 0) {
           this.isVisibleMenu = false;
         }
       });

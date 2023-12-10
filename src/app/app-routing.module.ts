@@ -58,7 +58,7 @@ const routes: Routes = [
   },
 
   {
-    path: "project-managment",
+    path: "project-management",
     loadChildren: () => import('./modules/project-managment/project-managment.module').then(m => m.ProjectManagmentModule)
   }
 ];

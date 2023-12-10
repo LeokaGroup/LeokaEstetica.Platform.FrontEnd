@@ -14,6 +14,7 @@ export class ProjectManagmentService {
     public headerItems$ = new BehaviorSubject<any>(null);
     public projectManagmentTemplates$ = new BehaviorSubject<any>(null);
     public workSpaceConfig$ = new BehaviorSubject<any>(null);
+    public taskDetails$ = new BehaviorSubject<any>(null);
 
     apiUrl: any;
 
@@ -94,6 +95,18 @@ export class ProjectManagmentService {
         &strategy=${strategy}
         &templateId=${templateId}`).pipe(
             tap(data => this.workSpaceConfig$.next(data))
+        );
+    };
+
+     /**
+    * Функция получает детали задачи.
+    * @param projectId - Id проекта.
+    * @param taskId - Id задачи.
+    * @returns - Данные конфигурации.
+    */
+      public async getTaskDetailsByTaskIdAsync(projectId: number, projectTaskId: number) {
+        return await this._http.get(this.apiUrl + `/project-managment/task?projectTaskId=${projectTaskId}&projectId=${projectId}`).pipe(
+            tap(data => this.taskDetails$.next(data))
         );
     };
 }

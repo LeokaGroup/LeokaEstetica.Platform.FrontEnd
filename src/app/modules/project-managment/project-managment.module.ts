@@ -36,11 +36,13 @@ import { MenubarModule } from 'primeng/menubar';
 import { TooltipModule } from 'primeng/tooltip';
 import { ListboxModule } from 'primeng/listbox';
 import { DragDropModule } from 'primeng/dragdrop';
+import { TaskDetailsComponent } from './task/components/task-details/task-details.component';
 
 @NgModule({
     declarations: [
         StartProjectManagmentComponent,
-        SpaceComponent
+        SpaceComponent,
+        TaskDetailsComponent
     ],
 
     imports: [

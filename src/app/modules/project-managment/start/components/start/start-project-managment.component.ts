@@ -81,7 +81,7 @@ export class StartProjectManagmentComponent implements OnInit {
         // который выбран пользователем.
         let templateId = this.selectedTemplate.projectManagmentTaskStatusTemplates[0].templateId;
 
-        this._router.navigate(["/project-managment/space"], {
+        this._router.navigate(["/project-management/space"], {
             queryParams: {
                 projectId,
                 view: strategy,
