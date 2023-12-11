@@ -3,6 +3,7 @@
 @use "/src/app/common/styles/styles.scss";
 @use "/src/app/modules/header/components/header.component.scss";
 
+// FIXME: Отрефачить, вынести в общие стили.
 ::ng-deep .second-menu .p-component {
   border: none;
 }

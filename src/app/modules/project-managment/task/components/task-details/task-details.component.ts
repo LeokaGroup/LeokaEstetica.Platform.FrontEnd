@@ -19,14 +19,26 @@ export class TaskDetailsComponent implements OnInit {
     }
 
     public readonly taskDetails$ = this._projectManagmentService.taskDetails$;
+    public readonly headerItems$ = this._projectManagmentService.headerItems$;
 
     projectId: number = 0;
     projectTaskId: number = 0;
+    aHeaderItems: any[] = [];
+    home: string = "project name";
+    items: any[] = [
+        {
+            label: "[Тут будет название проекта]"
+        },
+        {
+            label: "[Тут будет префикс проекта + название задачи]"
+        }
+    ];
 
     public async ngOnInit() {
         forkJoin([
             this.checkUrlParams(),
-            await this.getProjectTaskDetailsAsync()
+            await this.getProjectTaskDetailsAsync(),
+            await this.getHeaderItemsAsync()
         ]).subscribe();
     };
 
@@ -39,6 +51,18 @@ export class TaskDetailsComponent implements OnInit {
                 this.projectTaskId = params["taskId"];
             });
     };
+
+       /**
+  * Функция получает список элементов меню хидера (верхнее меню).
+  * @returns - Список элементов.
+  */
+        private async getHeaderItemsAsync() {
+            (await this._projectManagmentService.getHeaderItemsAsync())
+                .subscribe(_ => {
+                    console.log("Хидер УП: ", this.headerItems$.value);
+                    this.aHeaderItems = this.headerItems$.value;
+                });
+        };
 
     /**
     * Функция получает детали задачи по ее Id.
