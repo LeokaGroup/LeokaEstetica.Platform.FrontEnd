@@ -37,6 +37,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ListboxModule } from 'primeng/listbox';
 import { DragDropModule } from 'primeng/dragdrop';
 import { TaskDetailsComponent } from './task/components/task-details/task-details.component';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 
 @NgModule({
     declarations: [
@@ -77,7 +78,8 @@ import { TaskDetailsComponent } from './task/components/task-details/task-detail
         MenubarModule,
         TooltipModule,
         ListboxModule,
-        DragDropModule
+        DragDropModule,
+        BreadcrumbModule
     ],
 
     exports: [],
