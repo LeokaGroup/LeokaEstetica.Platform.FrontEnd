@@ -38,6 +38,6 @@ export class FooterComponent implements OnInit {
     };
 
     public onRouteVk() {
-        window.open('https://vk.com/leoka_estetica', '_blank');
+        window.open('https://vk.com/leokaestetica', '_blank');
     };
 }
