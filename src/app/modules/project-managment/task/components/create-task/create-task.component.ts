@@ -5,20 +5,18 @@ import { ProjectManagmentService } from "../../../services/project-managment.ser
 
 @Component({
     selector: "",
-    templateUrl: "./task-details.component.html",
-    styleUrls: ["./task-details.component.scss"]
+    templateUrl: "./create-task.component.html",
+    styleUrls: ["./create-task.component.scss"]
 })
 
 /**
- * Класс модуля управления проектами (детали задачи).
+ * Класс модуля управления проектами (создание задачи).
  */
-export class TaskDetailsComponent implements OnInit {
+export class CreateTaskComponent implements OnInit {
     constructor(private readonly _projectManagmentService: ProjectManagmentService,
         private readonly _router: Router,
         private readonly _activatedRoute: ActivatedRoute) {
     }
-
-    public readonly taskDetails$ = this._projectManagmentService.taskDetails$;
 
     projectId: number = 0;
     projectTaskId: number = 0;
@@ -26,7 +24,6 @@ export class TaskDetailsComponent implements OnInit {
     public async ngOnInit() {
         forkJoin([
             this.checkUrlParams(),
-            await this.getProjectTaskDetailsAsync()
         ]).subscribe();
     };
 
@@ -36,7 +33,6 @@ export class TaskDetailsComponent implements OnInit {
                 console.log("params: ", params);
 
                 this.projectId = params["projectId"];
-                this.projectTaskId = params["taskId"];
             });
     };
 
@@ -44,10 +40,10 @@ export class TaskDetailsComponent implements OnInit {
     * Функция получает детали задачи по ее Id.
     * @returns - Детали задачи.
     */
-    private async getProjectTaskDetailsAsync() {
-        (await this._projectManagmentService.getTaskDetailsByTaskIdAsync(this.projectId, this.projectTaskId))
-            .subscribe(_ => {
-                console.log("Детали задачи: ", this.taskDetails$.value);
-            });
-    };
+    // private async getProjectTaskDetailsAsync() {
+    //     (await this._projectManagmentService.getTaskDetailsByTaskIdAsync(this.projectId, this.projectTaskId))
+    //         .subscribe(_ => {
+    //             console.log("Детали задачи: ", this.taskDetails$.value);
+    //         });
+    // };
 }

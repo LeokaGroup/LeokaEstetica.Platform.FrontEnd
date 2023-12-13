@@ -1,50 +1,6 @@
 @use "/src/app/common/styles/spaces.scss";
 @use "/src/app/common/styles/control.scss";
 @use "/src/app/common/styles/styles.scss";
-@use "/src/app/modules/header/components/header.component.scss";
-
-// FIXME: Отрефачить, вынести в общие стили.
-::ng-deep .second-menu .p-component {
-  border: none;
-}
-
-::ng-deep .second-menu .p-component .p-menubar-root-list .p-menuitem {
-  .p-menuitem-text {
-    color: #717D94;
-    font-size: 15px;
-    font-weight: 700;
-  }
-}
-
-.search-line {
-  &:focus {
-    box-shadow: none;
-  }
-}
-
-::ng-deep .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:focus {
-  box-shadow: none;
-  color: #717D94;
-}
-
-::ng-deep .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:hover {
-  box-shadow: none;
-  color: #717D94;
-}
-
-::ng-deep .p-menubar .p-menuitem-link:focus {
-  box-shadow: none;
-  color: #717D94;
-}
-
-::ng-deep .p-menubar .p-menuitem-link:hover {
-  box-shadow: none;
-  color: #717D94!important;
-}
-
-.p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:hover {
-  color: #717D94;
-}
 
 .task-details {
     margin-left: 10px;
