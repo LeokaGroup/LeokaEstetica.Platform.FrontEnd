@@ -41,18 +41,23 @@
         <div class="d-flex line">
           <div class="line-item d-flex">
             <label class="control-label-task-item">Тип:</label>
-            <!-- <p class="line-item-value">{{taskDetails$.value?.taskTypeName}}</p> -->
+            <p-dropdown [options]="taskTypes$.value" 
+                        [(ngModel)]="selectedTaskType" 
+                        optionLabel="typeName" 
+                        [showClear]="true" 
+                        placeholder="Выберите тип">
+
+            </p-dropdown>
           </div>
         </div>
   
         <div class="d-flex line">
           <label class="control-label-task-item">Приоритет:</label>
-          <!-- <p class="line-item-value">{{taskDetails$.value?.priorityName}}</p> -->
           <p-dropdown [options]="priorities$.value" 
                       [(ngModel)]="selectedPriority" 
                       optionLabel="priorityName" 
                       [showClear]="true" 
-                      placeholder="Приоритет задачи">
+                      placeholder="Выберите приоритет">
 
           </p-dropdown>
         </div>

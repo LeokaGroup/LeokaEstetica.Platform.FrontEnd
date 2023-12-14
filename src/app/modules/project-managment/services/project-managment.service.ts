@@ -16,6 +16,7 @@ export class ProjectManagmentService {
     public workSpaceConfig$ = new BehaviorSubject<any>(null);
     public taskDetails$ = new BehaviorSubject<any>(null);
     public priorities$ = new BehaviorSubject<any>(null);
+    public taskTypes$ = new BehaviorSubject<any>(null);
 
     apiUrl: any;
 
@@ -118,6 +119,16 @@ export class ProjectManagmentService {
       public async getTaskPrioritiesAsync() {
         return await this._http.get(this.apiUrl + "/project-managment/priorities").pipe(
             tap(data => this.priorities$.next(data))
+        );
+    };
+
+     /**
+    * Функция получает типы задач для выбора.
+    * @returns - Типы задач.
+    */
+      public async getTaskTypesAsync() {
+        return await this._http.get(this.apiUrl + "/project-managment/task-types").pipe(
+            tap(data => this.taskTypes$.next(data))
         );
     };
 }

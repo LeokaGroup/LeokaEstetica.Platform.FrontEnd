@@ -19,15 +19,18 @@ export class CreateTaskComponent implements OnInit {
     }
 
     public readonly priorities$ = this._projectManagmentService.priorities$;
+    public readonly taskTypes$ = this._projectManagmentService.taskTypes$;
 
     projectId: number = 0;
     projectTaskId: number = 0;
     selectedPriority: any;
+    selectedTaskType: any;
 
     public async ngOnInit() {
         forkJoin([
             this.checkUrlParams(),
-            await this.getTaskPrioritiesAsync()
+            await this.getTaskPrioritiesAsync(),
+            await this.getTaskTypesAsync()
         ]).subscribe();
     };
 
@@ -48,6 +51,17 @@ export class CreateTaskComponent implements OnInit {
         (await this._projectManagmentService.getTaskPrioritiesAsync())
             .subscribe(_ => {
                 console.log("Приоритеты задачи для выбора: ", this.priorities$.value);
+            });
+    };
+
+      /**
+    * Функция получает типы задач для выбора.
+    * @returns - Типы задач.
+    */
+      private async getTaskTypesAsync() {
+        (await this._projectManagmentService.getTaskTypesAsync())
+            .subscribe(_ => {
+                console.log("Типы задач для выбора: ", this.taskTypes$.value);
             });
     };
 }
