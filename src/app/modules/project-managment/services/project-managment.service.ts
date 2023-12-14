@@ -15,6 +15,7 @@ export class ProjectManagmentService {
     public projectManagmentTemplates$ = new BehaviorSubject<any>(null);
     public workSpaceConfig$ = new BehaviorSubject<any>(null);
     public taskDetails$ = new BehaviorSubject<any>(null);
+    public priorities$ = new BehaviorSubject<any>(null);
 
     apiUrl: any;
 
@@ -107,6 +108,16 @@ export class ProjectManagmentService {
       public async getTaskDetailsByTaskIdAsync(projectId: number, projectTaskId: number) {
         return await this._http.get(this.apiUrl + `/project-managment/task?projectTaskId=${projectTaskId}&projectId=${projectId}`).pipe(
             tap(data => this.taskDetails$.next(data))
+        );
+    };
+
+     /**
+    * Функция получает приоритеты задачи для выбора.
+    * @returns - Приоритеты задачи.
+    */
+      public async getTaskPrioritiesAsync() {
+        return await this._http.get(this.apiUrl + "/project-managment/priorities").pipe(
+            tap(data => this.priorities$.next(data))
         );
     };
 }

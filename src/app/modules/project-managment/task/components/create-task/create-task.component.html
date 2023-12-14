@@ -48,6 +48,13 @@
         <div class="d-flex line">
           <label class="control-label-task-item">Приоритет:</label>
           <!-- <p class="line-item-value">{{taskDetails$.value?.priorityName}}</p> -->
+          <p-dropdown [options]="priorities$.value" 
+                      [(ngModel)]="selectedPriority" 
+                      optionLabel="priorityName" 
+                      [showClear]="true" 
+                      placeholder="Приоритет задачи">
+
+          </p-dropdown>
         </div>
   
         <div class="d-flex line">

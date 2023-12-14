@@ -2,3 +2,7 @@
 @use "/src/app/common/styles/control.scss";
 @use "/src/app/common/styles/styles.scss";
 @use "/src/app/modules/project-managment/task/components/task-details/task-details.component.scss";
+
+::ng-deep .p-dropdown-label {
+    padding: 0 10px;
+}

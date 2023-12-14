@@ -18,12 +18,16 @@ export class CreateTaskComponent implements OnInit {
         private readonly _activatedRoute: ActivatedRoute) {
     }
 
+    public readonly priorities$ = this._projectManagmentService.priorities$;
+
     projectId: number = 0;
     projectTaskId: number = 0;
+    selectedPriority: any;
 
     public async ngOnInit() {
         forkJoin([
             this.checkUrlParams(),
+            await this.getTaskPrioritiesAsync()
         ]).subscribe();
     };
 
@@ -36,14 +40,14 @@ export class CreateTaskComponent implements OnInit {
             });
     };
 
-    /**
-    * Функция получает детали задачи по ее Id.
-    * @returns - Детали задачи.
+     /**
+    * Функция получает приоритеты задачи для выбора.
+    * @returns - Приоритеты задачи.
     */
-    // private async getProjectTaskDetailsAsync() {
-    //     (await this._projectManagmentService.getTaskDetailsByTaskIdAsync(this.projectId, this.projectTaskId))
-    //         .subscribe(_ => {
-    //             console.log("Детали задачи: ", this.taskDetails$.value);
-    //         });
-    // };
+    private async getTaskPrioritiesAsync() {
+        (await this._projectManagmentService.getTaskPrioritiesAsync())
+            .subscribe(_ => {
+                console.log("Приоритеты задачи для выбора: ", this.priorities$.value);
+            });
+    };
 }
