@@ -6,3 +6,8 @@
 ::ng-deep .p-dropdown-label {
     padding: 0 10px;
 }
+
+::ng-deep .p-inputtextarea-resizable {
+    width: 100%;
+    min-height: 200px;
+}

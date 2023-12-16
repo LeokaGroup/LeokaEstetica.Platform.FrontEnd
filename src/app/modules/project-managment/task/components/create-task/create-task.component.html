@@ -150,13 +150,7 @@
     <div class="block-task-lines col-lg-12 d-flex">
       <div class="col-lg-8">
         <strong>Описание</strong>
-        <!-- <div class="empty-task-details" *ngIf="taskDetails$.value?.details == null || taskDetails$.value?.details == ''">
-          Добавьте описание задачи, чтобы исполнителю было понятно, что нужно сделать в рамках задачи
-        </div> -->
-  
-        <div class="task-details">
-          <!-- {{taskDetails$.value?.details}} -->
-        </div>
+        <textarea pInputTextarea [autoResize]="true"></textarea>
       </div>
   
       <div class="col-lg-4">
