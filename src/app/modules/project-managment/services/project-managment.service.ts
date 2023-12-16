@@ -8,6 +8,8 @@ import { API_URL } from 'src/app/core/core-urls/api-urls';
  */
 @Injectable()
 export class ProjectManagmentService {
+    apiUrl: any;
+
     public availableProjectManagment$ = new BehaviorSubject<any>(null);
     public userProjects$ = new BehaviorSubject<any>(null);
     public viewStrategies$ = new BehaviorSubject<any>(null);
@@ -17,8 +19,7 @@ export class ProjectManagmentService {
     public taskDetails$ = new BehaviorSubject<any>(null);
     public priorities$ = new BehaviorSubject<any>(null);
     public taskTypes$ = new BehaviorSubject<any>(null);
-
-    apiUrl: any;
+    public taskTags$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient) {
         // Если используем ендпоинты модуля УП.
@@ -129,6 +130,16 @@ export class ProjectManagmentService {
       public async getTaskTypesAsync() {
         return await this._http.get(this.apiUrl + "/project-managment/task-types").pipe(
             tap(data => this.taskTypes$.next(data))
+        );
+    };
+
+    /**
+    * Функция получает теги задач для выбора.
+    * @returns - Список тегов.
+    */
+     public async getTaskTagsAsync() {
+        return await this._http.get(this.apiUrl + "/project-managment/task-tags").pipe(
+            tap(data => this.taskTags$.next(data))
         );
     };
 }

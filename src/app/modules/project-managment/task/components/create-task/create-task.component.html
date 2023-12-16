@@ -80,7 +80,13 @@
   
         <div class="d-flex line">
           <label class="control-label-task-item">Метки:</label>
-          <!-- <p class="line-item-value">{{taskDetails$.value?.tagNames ?? 'Нет'}}</p> -->
+          <p-dropdown [options]="taskTags$.value" 
+                      [(ngModel)]="selectedTag" 
+                      optionLabel="tagName" 
+                      [showClear]="true" 
+                      placeholder="Выберите тег">
+
+          </p-dropdown>
         </div>
       </div>
   

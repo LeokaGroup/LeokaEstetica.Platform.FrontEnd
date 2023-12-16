@@ -18,19 +18,22 @@ export class CreateTaskComponent implements OnInit {
         private readonly _activatedRoute: ActivatedRoute) {
     }
 
-    public readonly priorities$ = this._projectManagmentService.priorities$;
-    public readonly taskTypes$ = this._projectManagmentService.taskTypes$;
-
     projectId: number = 0;
     projectTaskId: number = 0;
     selectedPriority: any;
     selectedTaskType: any;
+    selectedTag: any;
+
+    public readonly priorities$ = this._projectManagmentService.priorities$;
+    public readonly taskTypes$ = this._projectManagmentService.taskTypes$;
+    public readonly taskTags$ = this._projectManagmentService.taskTags$;
 
     public async ngOnInit() {
         forkJoin([
             this.checkUrlParams(),
             await this.getTaskPrioritiesAsync(),
-            await this.getTaskTypesAsync()
+            await this.getTaskTypesAsync(),
+            await this.getTaskTagsAsync()
         ]).subscribe();
     };
 
@@ -62,6 +65,17 @@ export class CreateTaskComponent implements OnInit {
         (await this._projectManagmentService.getTaskTypesAsync())
             .subscribe(_ => {
                 console.log("Типы задач для выбора: ", this.taskTypes$.value);
+            });
+    };
+
+      /**
+    * Функция получает теги задач для выбора.
+    * @returns - Список тегов.
+    */
+       private async getTaskTagsAsync() {
+        (await this._projectManagmentService.getTaskTagsAsync())
+            .subscribe(_ => {
+                console.log("Теги для выбора: ", this.taskTags$.value);
             });
     };
 }
