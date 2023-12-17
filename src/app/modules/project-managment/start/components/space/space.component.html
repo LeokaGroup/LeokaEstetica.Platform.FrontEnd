@@ -1,0 +1,44 @@
+<!-- FIXME: Отрефачить, вынести в общий компонент. -->
+<!-- Меню хидера (верхнее). -->
+<nav class="navbar navbar-light justify-content-evenly">
+  <div class="form-inline">
+    <p-menubar [model]="aHeaderItems" class="second-menu">
+      <ng-template pTemplate="start">
+
+      </ng-template>
+      <ng-template pTemplate="end">
+        <input type="text" pInputText placeholder="Поиск" class="w-full search-line" />
+      </ng-template>
+    </p-menubar>
+  </div>
+</nav>
+
+<!-- <div class="d-flex col-lg-12 mt-3 block-title">
+  <h5>Kanban-доска проекта [Название проекта]</h5>
+</div> -->
+
+<!-- Блок с задачами. -->
+<div class="d-flex">
+  <div class="block-worksheet col-lg-12">
+    <div class="d-flex block-task">
+      <div class="task-ver-line" *ngFor="let st of workSpaceConfig$.value?.projectManagmentTaskStatuses">
+        <div class="status-name">
+          {{st.statusName.toUpperCase()}}
+          {{st.total}}
+        </div>
+
+        <!-- Блок с задачами. -->
+        <div class="block-tasks" *ngFor="let t of st.projectManagmentTasks">
+          <!-- Блок с каждой задачей. -->
+          <div class="task">
+            <div class="card card-task" (click)="onSelectTask(t.projectTaskId)">
+              <div class="title">
+                {{t.name}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
