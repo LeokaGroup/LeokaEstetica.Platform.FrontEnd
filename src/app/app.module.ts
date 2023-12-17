@@ -37,6 +37,8 @@ import { OrderFormService } from './modules/order-form/order-form-info/services/
 import { OrderService } from './modules/order-form/services/order.service';
 import { TicketService } from './modules/ticket/services/ticket.service';
 import { ForbiddenComponent } from './modules/forbidden/forbidden.component';
+import { ProjectManagmentModule } from './modules/project-managment/project-managment.module';
+import { ProjectManagmentService } from './modules/project-managment/services/project-managment.service';
 
 @NgModule({
   declarations: [
@@ -67,7 +69,8 @@ import { ForbiddenComponent } from './modules/forbidden/forbidden.component';
     MenuModule,
     AdministrationModule,
     CarouselModule,
-    OrderFormModule
+    OrderFormModule,
+    ProjectManagmentModule
   ],
 
   providers: [
@@ -92,7 +95,8 @@ import { ForbiddenComponent } from './modules/forbidden/forbidden.component';
     NotificationsService,
     OrderFormService,
     OrderService,
-    TicketService
+    TicketService,
+    ProjectManagmentService
   ],
 
   bootstrap: [AppComponent]

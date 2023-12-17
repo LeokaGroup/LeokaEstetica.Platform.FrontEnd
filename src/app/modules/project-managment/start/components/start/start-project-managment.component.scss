@@ -1,0 +1,10 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+
+::ng-deep .p-listbox-item {
+    &:focus {
+        box-shadow: none!important;
+        outline: none!important;
+      }
+}

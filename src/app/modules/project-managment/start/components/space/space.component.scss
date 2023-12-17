@@ -1,0 +1,110 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+@use "/src/app/modules/header/components/header.component.scss";
+
+// FIXME: Отрефачить, вынести в общие стили.
+::ng-deep .second-menu .p-component {
+  border: none;
+}
+
+::ng-deep .second-menu .p-component .p-menubar-root-list .p-menuitem {
+  .p-menuitem-text {
+    color: #717D94;
+    font-size: 15px;
+    font-weight: 700;
+  }
+}
+
+.search-line {
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+::ng-deep .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:focus {
+  box-shadow: none;
+  color: #717D94;
+}
+
+::ng-deep .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:hover {
+  box-shadow: none;
+  color: #717D94;
+}
+
+::ng-deep .p-menubar .p-menuitem-link:focus {
+  box-shadow: none;
+  color: #717D94;
+}
+
+::ng-deep .p-menubar .p-menuitem-link:hover {
+  box-shadow: none;
+  color: #717D94!important;
+}
+
+.p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:hover {
+  color: #717D94;
+}
+
+.block-tasks {
+  min-height: 500px;
+  max-height: 510px;
+  // overflow-x: scroll;
+  overflow-y: scroll;
+}
+
+.block-task {
+  overflow-x: scroll;
+
+  // FIXME: Сделать это динамически, по задаче #26072758 Добавление выдвижного меню в рабочем пространстве.
+  // margin: 0px 10px 0px 400px;
+  margin: 0px 10px 0px 10px;
+
+  .task-ver-line {
+    // min-height: 300px;
+    min-width: 280px;
+    background: #F1F3F5;
+    margin: 0 10px 0 0px;
+    // max-height: 500px;
+    //   min-height: 800px;
+    // max-height: 810px;
+  }
+}
+
+.block-title {
+  margin: 0px 10px 0px 10px;
+}
+
+.status-name {
+  font-weight: 700;
+  margin: 0 5px;
+  color: #717D94;
+}
+
+.card {
+  margin: 5px 5px 5px 5px;
+  font-size: 15px;
+  line-height: 16px;
+  word-break: break-word;
+  color: #717D94;
+  min-height: 90px;
+  font-weight: 400;
+  flex-wrap: nowrap;
+  // border: none;
+  cursor: pointer;
+  // cursor: grab;
+  border: 2px solid #dedede;
+
+  &:hover {
+    background: #ffffff1a;
+    // box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  }
+}
+
+.title {
+  margin: 10px 10px 10px 10px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  line-height: 1.43;
+  letter-spacing: 0.01071em;
+}
