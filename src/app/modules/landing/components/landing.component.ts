@@ -163,4 +163,8 @@ export class LandingComponent implements OnInit {
             console.log("Преимущества платформы: ", this.platformCondituions$.value);
         });
     };
+
+    public onCreateInviteLinkTelegramAsync() {
+        window.location.href = "https://t.me/leoka_estetica";
+    };
 }

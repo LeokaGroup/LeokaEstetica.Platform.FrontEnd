@@ -86,24 +86,6 @@
     }
 }
 
-::ng-deep .p-button-link {
-    padding: 0 0;
-    color: white!important;
-    text-decoration: underline;
-}
-
-.invite-telegram {
-    background-color: #827ffe;
-    color: white;
-    width: 100%;
-}
-
-.block-invite {
-    display: flex;
-    justify-content: center;
-    padding: 5px;
-}
-
 // Медиа-запросы.
 @media (max-width: 575px) {}
 
