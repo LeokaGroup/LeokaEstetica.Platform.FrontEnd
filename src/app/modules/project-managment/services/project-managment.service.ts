@@ -20,6 +20,7 @@ export class ProjectManagmentService {
     public priorities$ = new BehaviorSubject<any>(null);
     public taskTypes$ = new BehaviorSubject<any>(null);
     public taskTags$ = new BehaviorSubject<any>(null);
+    public taskStatuses$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient) {
         // Если используем ендпоинты модуля УП.
@@ -140,6 +141,17 @@ export class ProjectManagmentService {
      public async getTaskTagsAsync() {
         return await this._http.get(this.apiUrl + "/project-managment/task-tags").pipe(
             tap(data => this.taskTags$.next(data))
+        );
+    };
+
+    /**
+    * Функция получает статусы задач для выбора.
+    * Статусы выводятся в рамках шаблона.
+    * @returns - Список статусов.
+    */
+     public async getTaskStatusesAsync(projectId: number) {
+        return await this._http.get(this.apiUrl + `/project-managment/task-statuses?projectId=${projectId}`).pipe(
+            tap(data => this.taskStatuses$.next(data))
         );
     };
 }

@@ -23,17 +23,20 @@ export class CreateTaskComponent implements OnInit {
     selectedPriority: any;
     selectedTaskType: any;
     selectedTag: any;
+    selectedStatus: any;
 
     public readonly priorities$ = this._projectManagmentService.priorities$;
     public readonly taskTypes$ = this._projectManagmentService.taskTypes$;
     public readonly taskTags$ = this._projectManagmentService.taskTags$;
+    public readonly taskStatuses$ = this._projectManagmentService.taskStatuses$;
 
     public async ngOnInit() {
         forkJoin([
             this.checkUrlParams(),
             await this.getTaskPrioritiesAsync(),
             await this.getTaskTypesAsync(),
-            await this.getTaskTagsAsync()
+            await this.getTaskTagsAsync(),
+            await this.getTaskStatusesAsync()
         ]).subscribe();
     };
 
@@ -76,6 +79,18 @@ export class CreateTaskComponent implements OnInit {
         (await this._projectManagmentService.getTaskTagsAsync())
             .subscribe(_ => {
                 console.log("Теги для выбора: ", this.taskTags$.value);
+            });
+    };
+
+     /**
+    * Функция получает статусы задач для выбора.
+    * Статусы выводятся в рамках шаблона.
+    * @returns - Список статусов.
+    */
+      private async getTaskStatusesAsync() {
+        (await this._projectManagmentService.getTaskStatusesAsync(this.projectId))
+            .subscribe(_ => {
+                console.log("Статусы для выбора: ", this.taskStatuses$.value);
             });
     };
 }
