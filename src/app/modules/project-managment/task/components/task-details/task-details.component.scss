@@ -1,0 +1,98 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+@use "/src/app/modules/header/components/header.component.scss";
+
+// FIXME: Отрефачить, вынести в общие стили.
+::ng-deep .second-menu .p-component {
+  border: none;
+}
+
+::ng-deep .second-menu .p-component .p-menubar-root-list .p-menuitem {
+  .p-menuitem-text {
+    color: #717D94;
+    font-size: 15px;
+    font-weight: 700;
+  }
+}
+
+.search-line {
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+::ng-deep .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:focus {
+  box-shadow: none;
+  color: #717D94;
+}
+
+::ng-deep .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:hover {
+  box-shadow: none;
+  color: #717D94;
+}
+
+::ng-deep .p-menubar .p-menuitem-link:focus {
+  box-shadow: none;
+  color: #717D94;
+}
+
+::ng-deep .p-menubar .p-menuitem-link:hover {
+  box-shadow: none;
+  color: #717D94!important;
+}
+
+.p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:hover {
+  color: #717D94;
+}
+
+.task-details {
+    margin-left: 10px;
+}
+
+// FIXME: Вынесем в общие стили, если еще где то будет использоваться.
+.control-label-task-item {
+  color: #929292;
+  margin: 0px 10px 0px 0px;
+  padding: 0;
+}
+
+.line-item {
+  margin: 0px 100px 0px 0px;
+}
+
+.line-item-value {
+  padding: 0;
+  margin: 0;
+}
+
+// FIXME: Вынесем в общие стили, если еще где то будет использоваться.
+.control-button-executor-me {
+  padding: 0;
+}
+
+.line {
+  padding: 5px 0px;
+}
+
+:host ::ng-deep .p-button {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px;
+}
+
+.task-actions {
+  margin: 0 10px 0 0;
+}
+
+.task-name {
+  font-size: 24px;
+  font-weight: 400;
+  max-width: 50%;
+}
+
+.empty-task-details {
+  color: #929292;
+  font-size: 15px;
+  max-width: 640px;
+}

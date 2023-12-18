@@ -55,6 +55,11 @@ const routes: Routes = [
   {
     path: "press",
     loadChildren: () => import('./modules/press/press.module').then(m => m.PressModule)
+  },
+
+  {
+    path: "project-management",
+    loadChildren: () => import('./modules/project-managment/project-managment.module').then(m => m.ProjectManagmentModule)
   }
 ];
 

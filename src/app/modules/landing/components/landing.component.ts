@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
 import { SignalrService } from "../../notifications/signalr/services/signalr.service";
+import { ProjectManagmentService } from "../../project-managment/services/project-managment.service";
 import { LandingService } from "../services/landing.service";
 
 @Component({
@@ -20,7 +21,8 @@ export class LandingComponent implements OnInit {
     public readonly knowledgeLanding$ = this._landingService.knowledgeLanding$;    
     public readonly newUsers$ = this._landingService.newUsers$;    
     public readonly lastProjectComments$ = this._landingService.lastProjectComments$; 
-    public readonly platformCondituions$ = this._landingService.platformCondituions$;    
+    public readonly platformCondituions$ = this._landingService.platformCondituions$;   
+    public readonly availableProjectManagment$ = this._projectManagmentService.availableProjectManagment$; 
 
     aCreateProject: any[] = [];
     aSearchProject: any[] = [];
@@ -34,7 +36,8 @@ export class LandingComponent implements OnInit {
 
     constructor(private readonly _landingService: LandingService,
         private readonly _signalrService: SignalrService,
-        private readonly _messageService: MessageService) {
+        private readonly _messageService: MessageService,
+        private readonly _projectManagmentService: ProjectManagmentService) {
     }
 
     public async ngOnInit() {
@@ -45,7 +48,8 @@ export class LandingComponent implements OnInit {
             await this.getKnowledgeLandingAsync(),
             await this.getNewUsersAsync(),
             await this.getLastProjectCommentsAsync(),
-            await this.getPlatformConditionsAsync()
+            await this.getPlatformConditionsAsync(),
+            await this.availableProjectManagmentAsync()
         ]).subscribe();        
 
         // Подключаемся.
@@ -163,6 +167,17 @@ export class LandingComponent implements OnInit {
             console.log("Преимущества платформы: ", this.platformCondituions$.value);
         });
     };
+
+        /**
+* Функция получает список проектов пользователя.
+* @returns - Список проектов.
+*/
+private async availableProjectManagmentAsync() {
+    (await this._projectManagmentService.availableProjectManagmentAsync())
+        .subscribe(_ => {
+            console.log("Доступность модуля УП: ", this.availableProjectManagment$.value);
+        });
+};
 
     public onCreateInviteLinkTelegramAsync() {
         window.location.href = "https://t.me/leoka_estetica";
