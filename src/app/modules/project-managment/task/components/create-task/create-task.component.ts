@@ -24,11 +24,13 @@ export class CreateTaskComponent implements OnInit {
     selectedTaskType: any;
     selectedTag: any;
     selectedStatus: any;
+    selectedExecutor: any;
 
     public readonly priorities$ = this._projectManagmentService.priorities$;
     public readonly taskTypes$ = this._projectManagmentService.taskTypes$;
     public readonly taskTags$ = this._projectManagmentService.taskTags$;
     public readonly taskStatuses$ = this._projectManagmentService.taskStatuses$;
+    public readonly taskExecutors$ = this._projectManagmentService.taskExecutors$;
 
     public async ngOnInit() {
         forkJoin([
@@ -36,7 +38,8 @@ export class CreateTaskComponent implements OnInit {
             await this.getTaskPrioritiesAsync(),
             await this.getTaskTypesAsync(),
             await this.getTaskTagsAsync(),
-            await this.getTaskStatusesAsync()
+            await this.getTaskStatusesAsync(),
+            await this.getSelectTaskExecutorsAsync()
         ]).subscribe();
     };
 
@@ -91,6 +94,17 @@ export class CreateTaskComponent implements OnInit {
         (await this._projectManagmentService.getTaskStatusesAsync(this.projectId))
             .subscribe(_ => {
                 console.log("Статусы для выбора: ", this.taskStatuses$.value);
+            });
+    };
+
+      /**
+    * Функция получает исполнителей для выбора.
+    * @returns - Список статусов.
+    */
+      private async getSelectTaskExecutorsAsync() {
+        (await this._projectManagmentService.getSelectTaskExecutorsAsync(this.projectId))
+            .subscribe(_ => {
+                console.log("Исполнители для выбора: ", this.taskExecutors$.value);
             });
     };
 }

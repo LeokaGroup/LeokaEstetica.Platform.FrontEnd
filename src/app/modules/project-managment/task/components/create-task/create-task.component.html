@@ -109,13 +109,19 @@
             <label class="control-label-task-item">Исполнитель:</label>
             <div>
               <!-- <p class="line-item-value">{{taskDetails$.value?.executorName ?? 'Не назначен'}}</p> -->
+              <p-dropdown [options]="taskExecutors$.value" 
+                          [(ngModel)]="selectedExecutor" 
+                          optionLabel="fullName" 
+                          [showClear]="true" 
+                          placeholder="Выберите исполнителя">
+              </p-dropdown>
               <button pButton pRipple label="Назначить меня" class="p-button-link control-button-executor-me"></button>
             </div>
           </div>
   
           <div class="line-item d-flex">
             <label class="control-label-task-item">Автор:</label>
-            <!-- <p class="line-item-value">{{taskDetails$.value?.authorName}}</p> -->
+            <p>Заполняется автоматически.</p>
           </div>
   
           <div class="line-item d-flex">
@@ -135,12 +141,12 @@
         <div>
           <div class="line-item d-flex">
             <label class="control-label-task-item">Создано:</label>
-            <p>Заполняется автоматически после создания задачи.</p>
+            <p>Заполняется автоматически.</p>
           </div>
   
           <div class="line-item d-flex">
             <label class="control-label-task-item">Обновлено:</label>
-            <p>Заполняется автоматически после создания задачи.</p>
+            <p>Заполняется автоматически.</p>
           </div>
         </div>
         </div>

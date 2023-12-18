@@ -21,6 +21,7 @@ export class ProjectManagmentService {
     public taskTypes$ = new BehaviorSubject<any>(null);
     public taskTags$ = new BehaviorSubject<any>(null);
     public taskStatuses$ = new BehaviorSubject<any>(null);
+    public taskExecutors$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient) {
         // Если используем ендпоинты модуля УП.
@@ -152,6 +153,16 @@ export class ProjectManagmentService {
      public async getTaskStatusesAsync(projectId: number) {
         return await this._http.get(this.apiUrl + `/project-managment/task-statuses?projectId=${projectId}`).pipe(
             tap(data => this.taskStatuses$.next(data))
+        );
+    };
+
+    /**
+    * Функция получает исполнителей для выбора.
+    * @returns - Список статусов.
+    */
+     public async getSelectTaskExecutorsAsync(projectId: number) {
+        return await this._http.get(this.apiUrl + `/project-managment/select-task-executors?projectId=${projectId}`).pipe(
+            tap(data => this.taskExecutors$.next(data))
         );
     };
 }
