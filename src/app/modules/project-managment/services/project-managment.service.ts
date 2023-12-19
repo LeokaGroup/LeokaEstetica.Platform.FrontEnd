@@ -157,11 +157,11 @@ export class ProjectManagmentService {
     };
 
     /**
-    * Функция получает исполнителей для выбора.
-    * @returns - Список статусов.
+    * Функция получает исполнителей или наблюдателей для выбора.
+    * @returns - Список пользователей.
     */
-     public async getSelectTaskExecutorsAsync(projectId: number) {
-        return await this._http.get(this.apiUrl + `/project-managment/select-task-executors?projectId=${projectId}`).pipe(
+     public async getSelectTaskPeopleAsync(projectId: number) {
+        return await this._http.get(this.apiUrl + `/project-managment/select-task-people?projectId=${projectId}`).pipe(
             tap(data => this.taskExecutors$.next(data))
         );
     };

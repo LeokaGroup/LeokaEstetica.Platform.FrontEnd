@@ -27,9 +27,6 @@ export class ProjectManagementHeaderComponent implements OnInit {
     items: any[] = [
         {
             label: "[Тут будет название проекта]"
-        },
-        {
-            label: "[Тут будет префикс проекта + название задачи]"
         }
     ];
 

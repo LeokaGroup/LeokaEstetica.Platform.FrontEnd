@@ -2,6 +2,7 @@
     <!-- Название задачи. -->
     <div class="task-name">
       <!-- <p>{{taskDetails$.value?.name}}</p> -->
+      TEST
     </div>
   
     <!-- Блок с кнопками действий. -->
@@ -108,8 +109,7 @@
           <div class="line-item d-flex">
             <label class="control-label-task-item">Исполнитель:</label>
             <div>
-              <!-- <p class="line-item-value">{{taskDetails$.value?.executorName ?? 'Не назначен'}}</p> -->
-              <p-dropdown [options]="taskExecutors$.value" 
+              <p-dropdown [options]="taskPeople$.value" 
                           [(ngModel)]="selectedExecutor" 
                           optionLabel="fullName" 
                           [showClear]="true" 
@@ -125,12 +125,14 @@
           </div>
   
           <div class="line-item d-flex">
+            <label class="control-label-task-item">Наблюдатели:</label>
             <div>
-              <label class="control-label-task-item">Наблюдатели:</label>
-            </div>
-           
-            <div>
-              <!-- <p class="line-item-value">{{taskDetails$.value?.watcherNames ?? 'Нет наблюдателей'}}</p> -->
+              <p-dropdown [options]="taskPeople$.value" 
+                          [(ngModel)]="selectedWatcher" 
+                          optionLabel="fullName" 
+                          [showClear]="true" 
+                          placeholder="Выберите наблюдателя">
+              </p-dropdown>
               <button pButton pRipple label="Добавить меня" class="p-button-link control-button-executor-me"></button>
             </div>
           </div>
