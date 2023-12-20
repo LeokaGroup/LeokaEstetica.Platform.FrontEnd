@@ -26,6 +26,7 @@ export class CreateTaskComponent implements OnInit {
     selectedStatus: any;
     selectedExecutor: any;
     selectedWatcher: any;
+    taskName: string = "";
 
     public readonly priorities$ = this._projectManagmentService.priorities$;
     public readonly taskTypes$ = this._projectManagmentService.taskTypes$;
@@ -35,12 +36,7 @@ export class CreateTaskComponent implements OnInit {
 
     public async ngOnInit() {
         forkJoin([
-            this.checkUrlParams(),
-            await this.getTaskPrioritiesAsync(),
-            await this.getTaskTypesAsync(),
-            await this.getTaskTagsAsync(),
-            await this.getTaskStatusesAsync(),
-            await this.getSelectTaskPeopleAsync()
+            this.checkUrlParams()
         ]).subscribe();
     };
 
@@ -57,7 +53,7 @@ export class CreateTaskComponent implements OnInit {
     * Функция получает приоритеты задачи для выбора.
     * @returns - Приоритеты задачи.
     */
-    private async getTaskPrioritiesAsync() {
+    public async onGetTaskPrioritiesAsync() {
         (await this._projectManagmentService.getTaskPrioritiesAsync())
             .subscribe(_ => {
                 console.log("Приоритеты задачи для выбора: ", this.priorities$.value);
@@ -68,7 +64,7 @@ export class CreateTaskComponent implements OnInit {
     * Функция получает типы задач для выбора.
     * @returns - Типы задач.
     */
-      private async getTaskTypesAsync() {
+      public async onGetTaskTypesAsync() {
         (await this._projectManagmentService.getTaskTypesAsync())
             .subscribe(_ => {
                 console.log("Типы задач для выбора: ", this.taskTypes$.value);
@@ -79,7 +75,7 @@ export class CreateTaskComponent implements OnInit {
     * Функция получает теги задач для выбора.
     * @returns - Список тегов.
     */
-       private async getTaskTagsAsync() {
+       public async onGetTaskTagsAsync() {
         (await this._projectManagmentService.getTaskTagsAsync())
             .subscribe(_ => {
                 console.log("Теги для выбора: ", this.taskTags$.value);
@@ -91,7 +87,7 @@ export class CreateTaskComponent implements OnInit {
     * Статусы выводятся в рамках шаблона.
     * @returns - Список статусов.
     */
-      private async getTaskStatusesAsync() {
+      public async onGetTaskStatusesAsync() {
         (await this._projectManagmentService.getTaskStatusesAsync(this.projectId))
             .subscribe(_ => {
                 console.log("Статусы для выбора: ", this.taskStatuses$.value);
@@ -102,7 +98,7 @@ export class CreateTaskComponent implements OnInit {
     * Функция получает исполнителей для выбора.
     * @returns - Список статусов.
     */
-      private async getSelectTaskPeopleAsync() {
+      public async onGetSelectTaskPeopleAsync() {
         (await this._projectManagmentService.getSelectTaskPeopleAsync(this.projectId))
             .subscribe(_ => {
                 console.log("Исполнители и наблюдатели для выбора: ", this.taskPeople$.value);

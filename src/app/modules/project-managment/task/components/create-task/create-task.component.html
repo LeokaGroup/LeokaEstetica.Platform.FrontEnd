@@ -1,8 +1,19 @@
 <div class="task-details mt-3">
     <!-- Название задачи. -->
     <div class="task-name">
-      <!-- <p>{{taskDetails$.value?.name}}</p> -->
-      TEST
+      <p-inplace>
+        <ng-template pTemplate="display">
+          <span>Введите название задачи</span>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <input type="text" [(ngModel)]="taskName" pInputText
+            class="p-inputtext-sm input-control-worksheet control-task-name" />
+        </ng-template>
+      </p-inplace>
+    </div>
+
+    <div>
+      <hr>
     </div>
   
     <!-- Блок с кнопками действий. -->
@@ -62,7 +73,10 @@
                         [(ngModel)]="selectedTaskType" 
                         optionLabel="typeName" 
                         [showClear]="true" 
-                        placeholder="Выберите тип">
+                        placeholder="Выберите тип"
+                        [emptyMessage]="(taskTypes$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                        (onClick)="onGetTaskTypesAsync()"
+                        optionValue="typeId">
 
             </p-dropdown>
           </div>
@@ -74,7 +88,9 @@
                       [(ngModel)]="selectedPriority" 
                       optionLabel="priorityName" 
                       [showClear]="true" 
-                      placeholder="Выберите приоритет">
+                      placeholder="Выберите приоритет"
+                      [emptyMessage]="(priorities$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                      (onClick)="onGetTaskPrioritiesAsync()">
 
           </p-dropdown>
         </div>
@@ -85,7 +101,9 @@
                       [(ngModel)]="selectedTag" 
                       optionLabel="tagName" 
                       [showClear]="true" 
-                      placeholder="Выберите тег">
+                      placeholder="Выберите тег"
+                      [emptyMessage]="(taskTags$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                      (onClick)="onGetTaskTagsAsync()">
 
           </p-dropdown>
         </div>
@@ -98,7 +116,9 @@
                       [(ngModel)]="selectedStatus" 
                       optionLabel="statusName" 
                       [showClear]="true" 
-                      placeholder="Выберите статус">
+                      placeholder="Выберите статус"
+                      [emptyMessage]="(taskStatuses$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                      (onClick)="onGetTaskStatusesAsync()">
           </p-dropdown>
         </div>
       </div>
@@ -113,7 +133,9 @@
                           [(ngModel)]="selectedExecutor" 
                           optionLabel="fullName" 
                           [showClear]="true" 
-                          placeholder="Выберите исполнителя">
+                          placeholder="Выберите исполнителя"
+                          [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                          (onClick)="onGetSelectTaskPeopleAsync()">
               </p-dropdown>
               <button pButton pRipple label="Назначить меня" class="p-button-link control-button-executor-me"></button>
             </div>
@@ -131,7 +153,9 @@
                           [(ngModel)]="selectedWatcher" 
                           optionLabel="fullName" 
                           [showClear]="true" 
-                          placeholder="Выберите наблюдателя">
+                          placeholder="Выберите наблюдателя"
+                          [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                          (onClick)="onGetSelectTaskPeopleAsync()">
               </p-dropdown>
               <button pButton pRipple label="Добавить меня" class="p-button-link control-button-executor-me"></button>
             </div>

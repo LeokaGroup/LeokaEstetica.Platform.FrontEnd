@@ -39,15 +39,14 @@ import { DragDropModule } from 'primeng/dragdrop';
 import { TaskDetailsComponent } from './task/components/task-details/task-details.component';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { CreateTaskComponent } from './task/components/create-task/create-task.component';
-// import { ProjectManagementHeaderComponent } from './header/components/project-management-header.component';
+import { InplaceModule } from 'primeng/inplace';
 
 @NgModule({
     declarations: [
         StartProjectManagmentComponent,
         SpaceComponent,
         TaskDetailsComponent,
-        CreateTaskComponent,
-        // ProjectManagementHeaderComponent
+        CreateTaskComponent
     ],
 
     imports: [
@@ -83,7 +82,8 @@ import { CreateTaskComponent } from './task/components/create-task/create-task.c
         TooltipModule,
         ListboxModule,
         DragDropModule,
-        BreadcrumbModule
+        BreadcrumbModule,
+        InplaceModule
     ],
 
     exports: [],

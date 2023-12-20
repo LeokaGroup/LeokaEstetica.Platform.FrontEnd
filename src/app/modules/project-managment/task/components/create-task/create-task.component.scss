@@ -11,3 +11,11 @@
     width: 100%;
     min-height: 200px;
 }
+
+.control-task-name {
+    min-width: 900px;
+}
+
+::ng-deep .p-inplace-display {
+    font-size: 34px;
+}
