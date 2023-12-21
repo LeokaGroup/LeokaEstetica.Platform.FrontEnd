@@ -24,9 +24,13 @@ export class CreateTaskComponent implements OnInit {
     selectedTaskType: any;
     selectedTag: any;
     selectedStatus: any;
-    selectedExecutor: any;
+    selectedExecutor: any[] = [];
     selectedWatcher: any;
     taskName: string = "";
+    taskDetails: string = "";
+    aSelectedTags: any[] = [];
+    aSelectedWachers: any[] = [];
+    aPeople: any[] = [];
 
     public readonly priorities$ = this._projectManagmentService.priorities$;
     public readonly taskTypes$ = this._projectManagmentService.taskTypes$;
@@ -102,6 +106,67 @@ export class CreateTaskComponent implements OnInit {
         (await this._projectManagmentService.getSelectTaskPeopleAsync(this.projectId))
             .subscribe(_ => {
                 console.log("Исполнители и наблюдатели для выбора: ", this.taskPeople$.value);
+                this.aPeople = this.taskPeople$.value;
             });
+    };
+
+    public onSelectTaskTag() {
+        console.log("selectedTag", this.selectedTag);
+
+        let isDublicate = this.aSelectedTags.find(x => x.tagId == this.selectedTag.tagId);
+        if (isDublicate == undefined) {
+            this.aSelectedTags.push(this.selectedTag);
+        }
+    };
+
+    public onSelectWachers() {
+        console.log("selectedWatcher", this.selectedWatcher);
+
+        let checkDublicate = this.aSelectedWachers.find(x => x.userId == this.selectedWatcher.userId);
+        if (checkDublicate == undefined || checkDublicate == null) {
+            this.aSelectedWachers.push(this.selectedWatcher);
+        }
+    };
+
+    public async onSetMeWatcher() {
+        if (this.aPeople.length == 0) {
+            await this.onGetSelectTaskPeopleAsync();
+        }
+
+        let findUser = this.aPeople.find(x => x.userCode == localStorage["u_c"]);
+
+        if (findUser !== undefined && findUser !== null) {
+            this.aSelectedWachers.push(findUser);
+        }
+    };
+
+    public async onSetMeExecutor() {
+        // Если еще не подгружали, то подгрузим, затем сделаем текущего пользователя исполнителем.
+        if (this.aPeople.length == 0) {
+            new Promise(function (resolve, reject) {
+                setTimeout(() => resolve(1), 300); // TODO: Должны ставить задержку, иначе не успевает подгрузиться.
+            }).then(async () => {
+                await this.onGetSelectTaskPeopleAsync()
+
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        let findUser = this.aPeople.find(x => x.userCode == localStorage["u_c"]);
+
+                        if (findUser !== undefined && findUser !== null) {
+                            this.selectedExecutor.push(findUser);
+                        }
+                    }, 300); // TODO: Должны ставить задержку, иначе не успевает подгрузиться.
+                });
+
+            });
+        }
+
+        else {
+            let findUser = this.aPeople.find(x => x.userCode == localStorage["u_c"]);
+
+            if (findUser !== undefined && findUser !== null) {
+                this.selectedExecutor.push(findUser);
+            }
+        }
     };
 }

@@ -40,6 +40,7 @@ import { TaskDetailsComponent } from './task/components/task-details/task-detail
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { CreateTaskComponent } from './task/components/create-task/create-task.component';
 import { InplaceModule } from 'primeng/inplace';
+import { ChipModule } from 'primeng/chip';
 
 @NgModule({
     declarations: [
@@ -83,7 +84,8 @@ import { InplaceModule } from 'primeng/inplace';
         ListboxModule,
         DragDropModule,
         BreadcrumbModule,
-        InplaceModule
+        InplaceModule,
+        ChipModule
     ],
 
     exports: [],

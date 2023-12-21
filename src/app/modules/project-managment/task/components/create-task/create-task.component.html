@@ -90,22 +90,32 @@
                       [showClear]="true" 
                       placeholder="Выберите приоритет"
                       [emptyMessage]="(priorities$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
-                      (onClick)="onGetTaskPrioritiesAsync()">
+                      (onClick)="onGetTaskPrioritiesAsync()"
+                      optionValue="priorityId">
 
           </p-dropdown>
         </div>
   
         <div class="d-flex line">
           <label class="control-label-task-item">Метки:</label>
-          <p-dropdown [options]="taskTags$.value" 
+          <div>
+            <p-dropdown [options]="taskTags$.value" 
                       [(ngModel)]="selectedTag" 
                       optionLabel="tagName" 
                       [showClear]="true" 
                       placeholder="Выберите тег"
                       [emptyMessage]="(taskTags$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
-                      (onClick)="onGetTaskTagsAsync()">
+                      (onClick)="onGetTaskTagsAsync()"
+                      (onChange)="onSelectTaskTag()">
 
           </p-dropdown>
+         
+          <div *ngFor="let t of aSelectedTags">
+            <div class="tag">
+              <p-chip label="{{t.tagName}}" [removable]="true"></p-chip>
+            </div>
+          </div>
+          </div>
         </div>
       </div>
   
@@ -118,7 +128,8 @@
                       [showClear]="true" 
                       placeholder="Выберите статус"
                       [emptyMessage]="(taskStatuses$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
-                      (onClick)="onGetTaskStatusesAsync()">
+                      (onClick)="onGetTaskStatusesAsync()"
+                      optionValue="statusId">
           </p-dropdown>
         </div>
       </div>
@@ -137,7 +148,18 @@
                           [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
                           (onClick)="onGetSelectTaskPeopleAsync()">
               </p-dropdown>
-              <button pButton pRipple label="Назначить меня" class="p-button-link control-button-executor-me"></button>
+              <button pButton 
+                      pRipple 
+                      label="Назначить меня" 
+                      class="p-button-link control-button-executor-me"
+                      (click)="onSetMeExecutor()">
+              </button>
+
+              <div *ngFor="let e of selectedExecutor">
+                <div class="wacher">
+                  <p-chip label="{{e.fullName}}" [removable]="true"></p-chip>
+                </div>
+              </div>
             </div>
           </div>
   
@@ -155,9 +177,21 @@
                           [showClear]="true" 
                           placeholder="Выберите наблюдателя"
                           [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
-                          (onClick)="onGetSelectTaskPeopleAsync()">
+                          (onClick)="onGetSelectTaskPeopleAsync()"
+                          (onChange)="onSelectWachers()">
               </p-dropdown>
-              <button pButton pRipple label="Добавить меня" class="p-button-link control-button-executor-me"></button>
+              <button pButton 
+                      pRipple 
+                      label="Добавить меня" 
+                      class="p-button-link control-button-executor-me"
+                      (click)="onSetMeWatcher()">
+              </button>
+
+              <div *ngFor="let w of aSelectedWachers">
+                <div class="wacher">
+                  <p-chip label="{{w.fullName}}" [removable]="true"></p-chip>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -187,7 +221,7 @@
     <div class="block-task-lines col-lg-12 d-flex">
       <div class="col-lg-8">
         <strong>Описание</strong>
-        <textarea pInputTextarea [autoResize]="true"></textarea>
+        <p-editor [(ngModel)]="taskDetails" [style]="{'min-height':'150px','height':'100%'}"></p-editor>
       </div>
   
       <div class="col-lg-4">
