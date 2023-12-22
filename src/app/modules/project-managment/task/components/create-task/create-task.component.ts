@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
+import { CreateProjectManagementTaskInput } from "../../models/input/create-task-input";
 
 @Component({
     selector: "",
@@ -24,12 +25,12 @@ export class CreateTaskComponent implements OnInit {
     selectedTaskType: any;
     selectedTag: any;
     selectedStatus: any;
-    selectedExecutor: any[] = [];
+    selectedExecutor: any;
     selectedWatcher: any;
     taskName: string = "";
     taskDetails: string = "";
-    aSelectedTags: any[] = [];
-    aSelectedWachers: any[] = [];
+    aSelectedTags: Set<any> = new Set<any>();
+    aSelectedWachers: Set<any> = new Set<any>();
     aPeople: any[] = [];
 
     public readonly priorities$ = this._projectManagmentService.priorities$;
@@ -113,38 +114,26 @@ export class CreateTaskComponent implements OnInit {
     public onSelectTaskTag() {
         console.log("selectedTag", this.selectedTag);
 
-        let isDublicate = this.aSelectedTags.find(x => x.tagId == this.selectedTag.tagId);
+        let isDublicate = Array.from(this.aSelectedTags).find(x => x.tagId == this.selectedTag.tagId);
         if (isDublicate == undefined) {
-            this.aSelectedTags.push(this.selectedTag);
+            this.aSelectedTags.add(this.selectedTag);
         }
     };
 
     public onSelectWachers() {
         console.log("selectedWatcher", this.selectedWatcher);
 
-        let checkDublicate = this.aSelectedWachers.find(x => x.userId == this.selectedWatcher.userId);
+        let checkDublicate = Array.from(this.aSelectedWachers).find(x => x.userId == this.selectedWatcher.userId);
         if (checkDublicate == undefined || checkDublicate == null) {
-            this.aSelectedWachers.push(this.selectedWatcher);
+            this.aSelectedWachers.add(this.selectedWatcher);
         }
     };
 
     public async onSetMeWatcher() {
-        if (this.aPeople.length == 0) {
-            await this.onGetSelectTaskPeopleAsync();
-        }
-
-        let findUser = this.aPeople.find(x => x.userCode == localStorage["u_c"]);
-
-        if (findUser !== undefined && findUser !== null) {
-            this.aSelectedWachers.push(findUser);
-        }
-    };
-
-    public async onSetMeExecutor() {
-        // Если еще не подгружали, то подгрузим, затем сделаем текущего пользователя исполнителем.
-        if (this.aPeople.length == 0) {
+         // Если еще не подгружали, то подгрузим, затем сделаем текущего пользователя наблюдателем.
+         if (this.aPeople.length == 0) {
             new Promise(function (resolve, reject) {
-                setTimeout(() => resolve(1), 300); // TODO: Должны ставить задержку, иначе не успевает подгрузиться.
+                setTimeout(() => resolve(1), 500); // TODO: Должны ставить задержку, иначе не успевает подгрузиться.
             }).then(async () => {
                 await this.onGetSelectTaskPeopleAsync()
 
@@ -153,9 +142,9 @@ export class CreateTaskComponent implements OnInit {
                         let findUser = this.aPeople.find(x => x.userCode == localStorage["u_c"]);
 
                         if (findUser !== undefined && findUser !== null) {
-                            this.selectedExecutor.push(findUser);
+                            this.aSelectedWachers.add(findUser);
                         }
-                    }, 300); // TODO: Должны ставить задержку, иначе не успевает подгрузиться.
+                    }, 500); // TODO: Должны ставить задержку, иначе не успевает подгрузиться.
                 });
 
             });
@@ -165,8 +154,76 @@ export class CreateTaskComponent implements OnInit {
             let findUser = this.aPeople.find(x => x.userCode == localStorage["u_c"]);
 
             if (findUser !== undefined && findUser !== null) {
-                this.selectedExecutor.push(findUser);
+                this.aSelectedWachers.add(findUser);
             }
         }
+    };
+
+    public async onSetMeExecutor() {
+        // Если еще не подгружали, то подгрузим, затем сделаем текущего пользователя исполнителем.
+        if (this.aPeople.length == 0) {
+            new Promise(function (resolve, reject) {
+                setTimeout(() => resolve(1), 500); // TODO: Должны ставить задержку, иначе не успевает подгрузиться.
+            }).then(async () => {
+                await this.onGetSelectTaskPeopleAsync()
+
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        let findUser = this.aPeople.find(x => x.userCode == localStorage["u_c"]);
+
+                        if (findUser !== undefined && findUser !== null) {
+                            this.selectedExecutor = findUser;
+                        }
+                    }, 500); // TODO: Должны ставить задержку, иначе не успевает подгрузиться.
+                });
+
+            });
+        }
+
+        else {
+            let findUser = this.aPeople.find(x => x.userCode == localStorage["u_c"]);
+
+            if (findUser !== undefined && findUser !== null) {
+                this.selectedExecutor = findUser;
+            }
+        }
+    };
+
+    /**
+     * Функция создает задачу.
+     */
+    public async onCreateProjectTaskAsync() {
+        let createTaskInput = this.createProjectManagementTaskRequest();
+
+        (await this._projectManagmentService.createProjectTaskAsync(createTaskInput))
+        .subscribe(_ => {});
+    };
+
+    /**
+     * Функция создает входную модель для запроса создания задачи.
+     */
+    private createProjectManagementTaskRequest(): CreateProjectManagementTaskInput {
+        let createTaskInput = new CreateProjectManagementTaskInput();
+        createTaskInput.isQuickCreate = false;
+        createTaskInput.name = this.taskName;
+        createTaskInput.details = this.taskDetails;
+        createTaskInput.executorId = this.selectedExecutor.userId;
+        createTaskInput.projectId = this.projectId;
+        createTaskInput.priorityId = this.selectedPriority;
+
+        let aTags = Array.from(this.aSelectedTags).map(x => {
+            return x.tagId;
+        });
+
+        let aWatchers = Array.from(this.aSelectedWachers).map(x => {
+            return x.userId;
+        });
+
+        createTaskInput.tagIds = aTags;
+        createTaskInput.taskStatusId = this.selectedStatus;
+        createTaskInput.watcherIds = aWatchers;
+        createTaskInput.taskTypeId = this.selectedTaskType;
+
+        return createTaskInput;
     };
 }

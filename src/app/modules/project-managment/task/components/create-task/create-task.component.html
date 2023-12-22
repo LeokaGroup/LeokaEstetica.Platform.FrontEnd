@@ -6,8 +6,10 @@
           <span>Введите название задачи</span>
         </ng-template>
         <ng-template pTemplate="content">
-          <input type="text" [(ngModel)]="taskName" pInputText
-            class="p-inputtext-sm input-control-worksheet control-task-name" />
+          <input type="text" 
+                [(ngModel)]="taskName" 
+                pInputText
+                class="p-inputtext-sm input-control-worksheet control-task-name" />
         </ng-template>
       </p-inplace>
     </div>
@@ -30,7 +32,8 @@
         <button pButton type="button" 
               icon="pi pi-save" 
               label="Сохранить"
-              class="p-button-text p-button-success task-actions">
+              class="p-button-text p-button-success task-actions"
+              (click)="onCreateProjectTaskAsync()">
       </button>
       </div>
   
@@ -154,12 +157,6 @@
                       class="p-button-link control-button-executor-me"
                       (click)="onSetMeExecutor()">
               </button>
-
-              <div *ngFor="let e of selectedExecutor">
-                <div class="wacher">
-                  <p-chip label="{{e.fullName}}" [removable]="true"></p-chip>
-                </div>
-              </div>
             </div>
           </div>
   

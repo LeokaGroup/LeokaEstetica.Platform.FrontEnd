@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
+import { CreateProjectManagementTaskInput } from '../task/models/input/create-task-input';
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -163,6 +164,16 @@ export class ProjectManagmentService {
      public async getSelectTaskPeopleAsync(projectId: number) {
         return await this._http.get(this.apiUrl + `/project-managment/select-task-people?projectId=${projectId}`).pipe(
             tap(data => this.taskExecutors$.next(data))
+        );
+    };
+
+    /**
+    * Функция получает исполнителей или наблюдателей для выбора.
+    * @returns - Список пользователей.
+    */
+    public async createProjectTaskAsync(createTaskInput: CreateProjectManagementTaskInput) {
+        return await this._http.post(this.apiUrl + "/project-managment/task", createTaskInput).pipe(
+            tap(_ => console.log("Задача успешно создана"))
         );
     };
 }
