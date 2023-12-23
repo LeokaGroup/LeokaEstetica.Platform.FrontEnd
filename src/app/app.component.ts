@@ -36,6 +36,7 @@ export class AppComponent implements OnInit {
   counter: number = 0;
   currentUrl: string = "";
   isVisibleHeader: boolean = false;
+  isVisibleProjectManagementMenu: boolean = false;
 
   constructor(public networkService: NetworkService,
     private readonly _router: Router,
@@ -45,6 +46,7 @@ export class AppComponent implements OnInit {
   public ngOnInit() {
     this.checkCurrentRouteUrl();     
     this.isVisibleHeader = true;      
+    // this.isVisibleProjectManagementMenu = true;
   };
 
   public rerender(): void {
@@ -149,6 +151,7 @@ export class AppComponent implements OnInit {
         }
 
         if (currentUrl.indexOf("project-management") >= 0) {
+          this.isVisibleProjectManagementMenu = true;
           this.isVisibleMenu = false;
         }
       });
