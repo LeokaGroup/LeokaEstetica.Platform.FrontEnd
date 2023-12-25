@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
+import { ConfigSpaceSettingInput } from '../task/models/input/config-space-setting-input';
 import { CreateProjectManagementTaskInput } from '../task/models/input/create-task-input';
 
 /**
@@ -23,6 +24,8 @@ export class ProjectManagmentService {
     public taskTags$ = new BehaviorSubject<any>(null);
     public taskStatuses$ = new BehaviorSubject<any>(null);
     public taskExecutors$ = new BehaviorSubject<any>(null);
+    public projectWorkspaceSettings$ = new BehaviorSubject<any>(null);
+    public commitedProjectWorkspaceSettings$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient) {
         // Если используем ендпоинты модуля УП.
@@ -174,6 +177,26 @@ export class ProjectManagmentService {
     public async createProjectTaskAsync(createTaskInput: CreateProjectManagementTaskInput) {
         return await this._http.post(this.apiUrl + "/project-managment/task", createTaskInput).pipe(
             tap(_ => console.log("Задача успешно создана"))
+        );
+    };
+
+     /**
+    * Функция получает сформированную ссылку для перехода к управлению проектом.
+    * Если ее нет, то предлагаем к выбору шаблон, стратегию представления.
+    * @returns - Выходная модель.
+    */
+      public async getBuildProjectSpaceSettingsAsync() {
+        return await this._http.get(this.apiUrl + "/project-managment/config/build-project-space").pipe(
+            tap(data => this.projectWorkspaceSettings$.next(data))
+        );
+    };
+
+    /**
+    * Функция фиксирует выбранные пользователем настройки рабочего пространства проекта.
+    */
+     public async commitSpaceSettingsAsync(configSpaceSettingInput: ConfigSpaceSettingInput) {
+        return await this._http.post(this.apiUrl + "/project-managment/config/space-settings", configSpaceSettingInput).pipe(
+            tap(data => this.commitedProjectWorkspaceSettings$.next(data))
         );
     };
 }

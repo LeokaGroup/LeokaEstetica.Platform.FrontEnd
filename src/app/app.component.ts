@@ -46,7 +46,6 @@ export class AppComponent implements OnInit {
   public ngOnInit() {
     this.checkCurrentRouteUrl();     
     this.isVisibleHeader = true;      
-    // this.isVisibleProjectManagementMenu = true;
   };
 
   public rerender(): void {
@@ -153,6 +152,10 @@ export class AppComponent implements OnInit {
         if (currentUrl.indexOf("project-management") >= 0) {
           this.isVisibleProjectManagementMenu = true;
           this.isVisibleMenu = false;
+        }
+
+        if (currentUrl === "/") {
+          this.isVisibleProjectManagementMenu = false;
         }
       });
   };
