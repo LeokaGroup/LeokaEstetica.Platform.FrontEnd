@@ -26,6 +26,7 @@ export class ProjectManagmentService {
     public taskExecutors$ = new BehaviorSubject<any>(null);
     public projectWorkspaceSettings$ = new BehaviorSubject<any>(null);
     public commitedProjectWorkspaceSettings$ = new BehaviorSubject<any>(null);
+    public createdTask$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient) {
         // Если используем ендпоинты модуля УП.
@@ -176,7 +177,7 @@ export class ProjectManagmentService {
     */
     public async createProjectTaskAsync(createTaskInput: CreateProjectManagementTaskInput) {
         return await this._http.post(this.apiUrl + "/project-managment/task", createTaskInput).pipe(
-            tap(_ => console.log("Задача успешно создана"))
+            tap(data => this.createdTask$.next(data))
         );
     };
 
