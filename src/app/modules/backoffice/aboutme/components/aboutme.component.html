@@ -19,15 +19,23 @@
   </div>
 
   <div class="block-worksheet col-lg-7">  
-    <div *ngIf="isShowRemarks" class="mb-1">
+    <!-- <div *ngIf="isShowRemarks" class="mb-1">
       <strong>Имеются замечания. Анкета не будет опубликована, пока замечания не будут исправлены и приняты модератором.</strong>
+    </div> -->
+    <!-- TODO: Добавлено пока не починим функционал замечаний. -->
+    <div *ngIf="isEmptyProfile" class="mb-1">
+      <div class="mb-1">
+        <div>
+          <p-message severity="warn" text="Анкета не будет опубликована в базе резюме, так как не все данные анкеты заполнены."></p-message>
+        </div>
+      </div>
     </div>
 
-    <div class="mb-1" *ngFor="let r of profileInfo$.value.resumeRemarks">
+    <!-- <div class="mb-1" *ngFor="let r of profileInfo$.value.resumeRemarks">
       <div>
         <p-message severity="warn" text="{{r.remarkText}}"></p-message>
       </div>
-    </div>
+    </div> -->
 
 
     <div class="worksheet-panel">

@@ -44,6 +44,7 @@ export class AboutmeComponent implements OnInit {
     isModeEdit: boolean = false;
     aResumeRemarks: any[] = [];
     isShowRemarks: boolean = false;
+    isEmptyProfile: boolean = false;
 
     constructor(private readonly _backofficeService: BackOfficeService,
         private readonly _signalrService: SignalrService,
@@ -129,6 +130,7 @@ export class AboutmeComponent implements OnInit {
                 (await this._backofficeService.getProfileInfoAsync())
                 .subscribe(_ => {
                     console.log("Данные анкеты: ", this.profileInfo$.value);
+                    this.isEmptyProfile = this.profileInfo$.value.isEmptyProfile;
                     this.setEditFields();
                 });
             }
