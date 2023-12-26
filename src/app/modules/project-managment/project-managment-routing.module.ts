@@ -6,10 +6,6 @@ import { CreateTaskComponent } from './task/components/create-task/create-task.c
 import { TaskDetailsComponent } from './task/components/task-details/task-details.component';
 
 const routes: Routes = [
-    // {
-    //     path: '', component: ProjectManagementHeaderComponent
-    // },
-
     {
         path: 'start', component: StartProjectManagmentComponent
     },

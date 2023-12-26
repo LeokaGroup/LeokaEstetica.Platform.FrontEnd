@@ -132,7 +132,7 @@
                       placeholder="Выберите статус"
                       [emptyMessage]="(taskStatuses$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
                       (onClick)="onGetTaskStatusesAsync()"
-                      optionValue="statusId">
+                      optionValue="taskStatusId">
           </p-dropdown>
         </div>
       </div>

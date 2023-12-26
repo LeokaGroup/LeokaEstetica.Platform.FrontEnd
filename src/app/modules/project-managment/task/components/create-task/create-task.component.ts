@@ -38,6 +38,7 @@ export class CreateTaskComponent implements OnInit {
     public readonly taskTags$ = this._projectManagmentService.taskTags$;
     public readonly taskStatuses$ = this._projectManagmentService.taskStatuses$;
     public readonly taskPeople$ = this._projectManagmentService.taskExecutors$;
+    public readonly createdTask$ = this._projectManagmentService.createdTask$;
 
     public async ngOnInit() {
         forkJoin([
@@ -196,7 +197,10 @@ export class CreateTaskComponent implements OnInit {
         let createTaskInput = this.createProjectManagementTaskRequest();
 
         (await this._projectManagmentService.createProjectTaskAsync(createTaskInput))
-        .subscribe(_ => {});
+        .subscribe(_ => {
+            console.log("Задача создана: ", this.createdTask$.value);
+            window.location.href = this.createdTask$.value.redirectUrl;
+        });
     };
 
     /**
