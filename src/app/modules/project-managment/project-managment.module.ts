@@ -41,13 +41,15 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { CreateTaskComponent } from './task/components/create-task/create-task.component';
 import { InplaceModule } from 'primeng/inplace';
 import { ChipModule } from 'primeng/chip';
+import { SettingsProjectManagmentComponent } from './settings/components/settings.component';
 
 @NgModule({
     declarations: [
         StartProjectManagmentComponent,
         SpaceComponent,
         TaskDetailsComponent,
-        CreateTaskComponent
+        CreateTaskComponent,
+        SettingsProjectManagmentComponent
     ],
 
     imports: [

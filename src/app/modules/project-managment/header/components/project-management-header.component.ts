@@ -58,16 +58,36 @@ export class ProjectManagementHeaderComponent implements OnInit {
             });
     };
 
+    /**
+     * Функция обработки выбранного пункта меню модуля УП.
+     * @param event - Событие.
+     */
     public onSelectMenu(event: any) {
         let selectedValue = event.target.textContent;
         let projectId = this.projectId;
 
-        if (selectedValue === "Задачу") {
-            this._router.navigate(["/project-management/space/create"], {
-                queryParams: {
-                    projectId
-                }
-              });
+        // Переход к созданию задачи.
+        switch (selectedValue) {
+            case "Настройки":
+                break;
+
+            case "Задачу":
+                this._router.navigate(["/project-management/space/create"], {
+                    queryParams: {
+                        projectId
+                    }
+                });
+                break;
+
+            case "Настройки представлений":
+                this._router.navigate(["/project-management/space/settings"], {
+                    queryParams: {
+                        projectId
+                    }
+                });
+                break;
+            default:
+                console.error(`Неизвестный тип события: ${selectedValue}`);
         }
     };
 }
