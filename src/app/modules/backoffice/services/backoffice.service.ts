@@ -133,8 +133,8 @@ export class BackOfficeService {
    * Функция получает список выбранных навыков пользователя.
    * @returns - Список навыков.
    */
-  public async getSelectedUserSkillsAsync() {
-    return await this.http.get(API_URL.apiUrl + "/profile/selected-skills").pipe(
+  public async getSelectedUserSkillsAsync(userCode?: string) {
+    return await this.http.get(API_URL.apiUrl + `/profile/selected-skills?userCode=${userCode}`).pipe(
       tap(data => this.selectedSkillsItems$.next(data))
     );
   };
@@ -143,8 +143,8 @@ export class BackOfficeService {
    * Функция получает список выбранных целей пользователя.
    * @returns - Список навыков.
    */
-  public async getSelectedUserIntentsAsync() {
-    return await this.http.get(API_URL.apiUrl + "/profile/selected-intents").pipe(
+  public async getSelectedUserIntentsAsync(userCode?: string) {
+    return await this.http.get(API_URL.apiUrl + `/profile/selected-intents?userCode=${userCode}`).pipe(
       tap(data => this.selectedIntentsItems$.next(data))
     );
   };

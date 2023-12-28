@@ -45,6 +45,7 @@ export class AboutmeComponent implements OnInit {
     aResumeRemarks: any[] = [];
     isShowRemarks: boolean = false;
     isEmptyProfile: boolean = false;
+    userCode: any;
 
     constructor(private readonly _backofficeService: BackOfficeService,
         private readonly _signalrService: SignalrService,
@@ -58,8 +59,6 @@ export class AboutmeComponent implements OnInit {
             await this.getProfileSkillsAsync(),
             await this.getProfileIntentsAsync(),
             await this.getProfileInfoAsync(),
-            await this.getSelectedUserSkillsAsync(),
-            await this.getSelectedUserIntentsAsync(),
             await this.getResumeRemarksAsync()
         ]).subscribe();
 
@@ -109,6 +108,15 @@ export class AboutmeComponent implements OnInit {
         this._activatedRoute.queryParams
         .subscribe(async params => {
             let mode = params["mode"];
+
+            if (params["uc"] == undefined || params["uc"] == null) {
+                this.userCode = "";
+            }
+
+            else {
+                this.userCode = params["uc"];
+            }
+
             console.log("mode: ", mode);
 
             if (mode == "view") {
@@ -134,6 +142,9 @@ export class AboutmeComponent implements OnInit {
                     this.setEditFields();
                 });
             }
+
+            await this.getSelectedUserSkillsAsync();
+            await this.getSelectedUserIntentsAsync();
           });
     };
 
@@ -261,7 +272,7 @@ export class AboutmeComponent implements OnInit {
     * @returns - Список навыков.
     */
       private async getSelectedUserSkillsAsync() {
-        (await this._backofficeService.getSelectedUserSkillsAsync())
+        (await this._backofficeService.getSelectedUserSkillsAsync(this.userCode))
             .subscribe(_ => {
                 console.log("Список выбранных навыков: ", this.selectedSkillsItems$.value);
                 this.aSelectedSkills = this.selectedSkillsItems$.value;
@@ -273,7 +284,7 @@ export class AboutmeComponent implements OnInit {
     * @returns - Список навыков.
     */
       private async getSelectedUserIntentsAsync() {
-        (await this._backofficeService.getSelectedUserIntentsAsync())
+        (await this._backofficeService.getSelectedUserIntentsAsync(this.userCode))
             .subscribe(_ => {
                 console.log("Список выбранных целей: ", this.selectedIntentsItems$.value);
                 this.aSelectedIntents = this.selectedIntentsItems$.value;
