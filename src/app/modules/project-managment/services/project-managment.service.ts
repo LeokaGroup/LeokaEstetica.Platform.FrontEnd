@@ -4,6 +4,7 @@ import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { ConfigSpaceSettingInput } from '../task/models/input/config-space-setting-input';
 import { CreateProjectManagementTaskInput } from '../task/models/input/create-task-input';
+import { UserTaskTagInput } from '../task/models/input/user-task-tag-input';
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -198,6 +199,16 @@ export class ProjectManagmentService {
      public async commitSpaceSettingsAsync(configSpaceSettingInput: ConfigSpaceSettingInput) {
         return await this._http.post(this.apiUrl + "/project-managment/config/space-settings", configSpaceSettingInput).pipe(
             tap(data => this.commitedProjectWorkspaceSettings$.next(data))
+        );
+    };
+
+    /**
+    * Функция создает метку (тег) для задач пользователя.
+    * @param userTaskTagInput - Входная модель.
+    */
+     public async createUserTaskTagAsync(userTaskTagInput: UserTaskTagInput) {
+        return await this._http.post(this.apiUrl + "/project-managment/user-tag", userTaskTagInput).pipe(
+            tap(_ => console.log("Метка (тег) успешно создано"))
         );
     };
 }
