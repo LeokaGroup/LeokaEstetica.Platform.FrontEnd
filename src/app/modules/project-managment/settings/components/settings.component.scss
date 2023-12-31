@@ -24,3 +24,17 @@
   line-height: 1.43;
   letter-spacing: 0.01071em;
 }
+
+.block-create-tag {
+  .tag {
+    box-shadow: 0 0 12px 0 rgba(0,0,0,.18);
+    padding: 20px;
+  }
+}
+
+.block-create-status {
+  .status {
+    box-shadow: 0 0 12px 0 rgba(0,0,0,.18);
+    padding: 20px;
+  }
+}
