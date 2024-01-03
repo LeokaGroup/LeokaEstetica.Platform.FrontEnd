@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../services/project-managment.service";
+import { CreateTaskStatusInput } from "../../task/models/input/create-task-status-input";
 import { UserTaskTagInput } from "../../task/models/input/user-task-tag-input";
 
 @Component({
@@ -28,7 +29,7 @@ export class SettingsProjectManagmentComponent implements OnInit {
     statusName: string = "";
     statusDescription: string = "";
     projectId: number = 0;
-    selectedStatus: any;
+    selectedAssociationStatusSysName: any;
 
     items: any[] = [{
         label: 'Рабочие процессы',
@@ -85,6 +86,26 @@ export class SettingsProjectManagmentComponent implements OnInit {
         (await this._projectManagmentService.getProjectTemplateStatusesAsync(this.projectId))
             .subscribe(_ => {
                 console.log("Статусы шаблона проекта для выбора: ", this.templateStatuses$.value);
+            });
+    };
+
+    /**
+    * Функция создает новый статус шаблона пользователя учитывая ассоциацию статуса.
+    */
+     public async onCreateUserTaskStatusTemplateAsync() {
+        let createTaskStatusInput = new CreateTaskStatusInput();
+        createTaskStatusInput.statusName = this.statusName;
+        createTaskStatusInput.statusDescription = this.statusDescription;
+        createTaskStatusInput.projectId = this.projectId;
+        createTaskStatusInput.associationStatusSysName = this.selectedAssociationStatusSysName.statusSysName;
+
+        (await this._projectManagmentService.createUserTaskStatusTemplateAsync(createTaskStatusInput))
+            .subscribe(_ => {
+                this.statusName = "";
+                this.statusDescription = "";
+
+                // TODO: Очищать тоже надо сбрасывать. Какой-нить setDefaultValue тут подошел бы.
+                // this.selectedAssociationStatusSysName = null;
             });
     };
 }
