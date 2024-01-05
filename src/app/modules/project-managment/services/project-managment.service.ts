@@ -4,6 +4,7 @@ import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
 import { ConfigSpaceSettingInput } from '../task/models/input/config-space-setting-input';
 import { CreateProjectManagementTaskInput } from '../task/models/input/create-task-input';
+import { CreateTaskStatusInput } from '../task/models/input/create-task-status-input';
 import { UserTaskTagInput } from '../task/models/input/user-task-tag-input';
 
 /**
@@ -28,6 +29,7 @@ export class ProjectManagmentService {
     public projectWorkspaceSettings$ = new BehaviorSubject<any>(null);
     public commitedProjectWorkspaceSettings$ = new BehaviorSubject<any>(null);
     public createdTask$ = new BehaviorSubject<any>(null);
+    public templateStatuses$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient) {
         // Если используем ендпоинты модуля УП.
@@ -209,6 +211,26 @@ export class ProjectManagmentService {
      public async createUserTaskTagAsync(userTaskTagInput: UserTaskTagInput) {
         return await this._http.post(this.apiUrl + "/project-managment/user-tag", userTaskTagInput).pipe(
             tap(_ => console.log("Метка (тег) успешно создано"))
+        );
+    };
+
+    /**
+    * Функция получает статусы шаблона для определения категории при создании статуса.
+    * Статусы выводятся в рамках шаблона.
+    * @returns - Список статусов.
+    */
+     public async getProjectTemplateStatusesAsync(projectId: number) {
+        return await this._http.get(this.apiUrl + `/project-managment/select-create-task-statuses?projectId=${projectId}`).pipe(
+            tap(data => this.templateStatuses$.next(data))
+        );
+    };
+
+    /**
+    * Функция создает новый статус шаблона пользователя учитывая ассоциацию статуса.
+    */
+     public async createUserTaskStatusTemplateAsync(createTaskStatusInput: CreateTaskStatusInput) {
+        return await this._http.post(this.apiUrl + `/project-managment/user-task-status`, createTaskStatusInput).pipe(
+            tap(_ => console.log("Кастомный статус успешно создан"))
         );
     };
 }

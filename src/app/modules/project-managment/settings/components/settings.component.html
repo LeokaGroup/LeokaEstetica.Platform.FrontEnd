@@ -12,7 +12,7 @@
 
   <!-- Создание метки (тега). -->
   <div class="block-create-tag col-lg-9 mt-3" *ngIf="isShowCreateTag">
-    <h3>Создание метки (тега)</h3>
+    <h3>Создание новой/нового метки (тега)</h3>
     <div class="tag">
       <div>
         <span class="ml-2">Название метки (тега)</span>
@@ -42,7 +42,7 @@
 
   <!-- Создание статуса. -->
   <div class="block-create-status col-lg-9 mt-3" *ngIf="isShowCreateStatus">
-    <h3>Создание статуса</h3>
+    <h3>Создание нового статуса</h3>
     <div class="status">
       <div class="tag">
         <div>
@@ -52,9 +52,37 @@
         <div>
           <input type="text" class="p-inputtext-sm" pInputText [(ngModel)]="statusName">
         </div>
+
+        <div>
+          <span class="ml-2">Описание статуса - опционально</span>
+        </div>
+  
+        <div>
+          <input type="text" class="p-inputtext-sm" pInputText [(ngModel)]="statusDescription">
+        </div>
+
+        <div>
+          <label class="control-label-task-item">Категория</label>
+        </div>
+        <div>
+          <p-dropdown [options]="templateStatuses$.value" 
+                    [(ngModel)]="selectedAssociationStatusSysName" 
+                    optionLabel="statusName" 
+                    [showClear]="true" 
+                    placeholder="Выберите статус"
+                    [emptyMessage]="(templateStatuses$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                    (onClick)="onGetProjectTemplateStatusesAsync()">
+        </p-dropdown>
+        <br>
+        <small>С каким из статусов будет ассоциироваться новый статус.</small>
+        </div>
   
         <div class="mt-3">
-          <p-button label="Создать" styleClass="p-button-sm" [disabled]="statusName == ''"></p-button>
+          <p-button label="Создать" 
+                    styleClass="p-button-sm" 
+                    [disabled]="statusName == ''"
+                    (click)="onCreateUserTaskStatusTemplateAsync()">
+          </p-button>
         </div>
       </div>
     </div>
