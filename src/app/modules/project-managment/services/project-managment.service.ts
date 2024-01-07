@@ -209,7 +209,7 @@ export class ProjectManagmentService {
     * @param userTaskTagInput - Входная модель.
     */
      public async createUserTaskTagAsync(userTaskTagInput: UserTaskTagInput) {
-        return await this._http.post(this.apiUrl + "/project-managment/user-tag", userTaskTagInput).pipe(
+        return await this._http.post(this.apiUrl + "/project-managment-settings/user-tag", userTaskTagInput).pipe(
             tap(_ => console.log("Метка (тег) успешно создано"))
         );
     };
@@ -220,7 +220,7 @@ export class ProjectManagmentService {
     * @returns - Список статусов.
     */
      public async getProjectTemplateStatusesAsync(projectId: number) {
-        return await this._http.get(this.apiUrl + `/project-managment/select-create-task-statuses?projectId=${projectId}`).pipe(
+        return await this._http.get(this.apiUrl + `/project-managment-settings/select-create-task-statuses?projectId=${projectId}`).pipe(
             tap(data => this.templateStatuses$.next(data))
         );
     };
@@ -229,7 +229,7 @@ export class ProjectManagmentService {
     * Функция создает новый статус шаблона пользователя учитывая ассоциацию статуса.
     */
      public async createUserTaskStatusTemplateAsync(createTaskStatusInput: CreateTaskStatusInput) {
-        return await this._http.post(this.apiUrl + `/project-managment/user-task-status`, createTaskStatusInput).pipe(
+        return await this._http.post(this.apiUrl + `/project-managment-settings/user-task-status`, createTaskStatusInput).pipe(
             tap(_ => console.log("Кастомный статус успешно создан"))
         );
     };
