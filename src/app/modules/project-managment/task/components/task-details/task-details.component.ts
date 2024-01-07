@@ -22,6 +22,8 @@ export class TaskDetailsComponent implements OnInit {
 
     projectId: number = 0;
     projectTaskId: number = 0;
+    isClosable: boolean = true;
+    isActiveTaskName: boolean = false;
 
     public async ngOnInit() {
         forkJoin([
@@ -50,4 +52,12 @@ export class TaskDetailsComponent implements OnInit {
                 console.log("Детали задачи: ", this.taskDetails$.value);
             });
     };
+
+    public onActivateTaskName() {
+        this.isActiveTaskName = !this.isActiveTaskName;
+    };
+
+    // public onDeactivateTaskName(event: any) {
+    //     console.log("event", event);
+    // };
 }
