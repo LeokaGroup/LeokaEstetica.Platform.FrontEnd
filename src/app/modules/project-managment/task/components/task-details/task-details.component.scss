@@ -52,3 +52,20 @@
   font-size: 15px;
   max-width: 640px;
 }
+
+:host ::ng-deep .p-inplace-display {
+  font-size: 24px;
+  font-weight: 400;
+  max-width: 50%;
+}
+
+.task-name-title {
+  font-weight: 400;
+  margin: 0;
+  font-size: 24px;
+  line-height: 28px;
+}
+
+:host ::ng-deep .p-inputtext {
+  width: 640px;;
+}
