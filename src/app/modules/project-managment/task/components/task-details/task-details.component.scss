@@ -52,3 +52,7 @@
   font-size: 15px;
   max-width: 640px;
 }
+
+:host ::ng-deep .p-dropdown-label {
+  margin: -5px 10px -5px -5px;
+}

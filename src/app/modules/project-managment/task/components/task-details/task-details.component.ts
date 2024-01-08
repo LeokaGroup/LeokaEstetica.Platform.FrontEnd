@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
@@ -19,14 +20,23 @@ export class TaskDetailsComponent implements OnInit {
     }
 
     public readonly taskDetails$ = this._projectManagmentService.taskDetails$;
+    public readonly taskStatuses$ = this._projectManagmentService.taskStatuses$;
 
     projectId: number = 0;
     projectTaskId: number = 0;
+    selectedStatus: any;
+
+    formStatuses: FormGroup = new FormGroup({
+        "statusName": new FormControl("", [
+            Validators.required
+        ])
+    });
 
     public async ngOnInit() {
         forkJoin([
             this.checkUrlParams(),
             await this.getProjectTaskDetailsAsync()
+            // await this.onGetTaskStatusesAsync()
         ]).subscribe();
     };
 
@@ -46,8 +56,21 @@ export class TaskDetailsComponent implements OnInit {
     */
     private async getProjectTaskDetailsAsync() {
         (await this._projectManagmentService.getTaskDetailsByTaskIdAsync(this.projectId, this.projectTaskId))
-            .subscribe(_ => {
+            .subscribe(async _ => {
                 console.log("Детали задачи: ", this.taskDetails$.value);
+
+                // Получаем статусы задач для выбора.
+                (await this._projectManagmentService.getTaskStatusesAsync(this.projectId))
+                .subscribe(_ => {
+                    console.log("Статусы для выбора: ", this.taskStatuses$.value);
+
+                    let value = this.taskStatuses$.value.find((st: any) => st.taskStatusId == this.taskDetails$.value.taskStatusId);
+                    this.formStatuses.get("statusName")?.setValue(value);
+                });
             });
+    };
+
+    public async onChangeStatusAsync() {
+        console.log("changedStatus", this.formStatuses.value.statusName);
     };
 }
