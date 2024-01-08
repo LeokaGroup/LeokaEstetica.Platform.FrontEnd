@@ -1,26 +1,54 @@
 <div class="task-details mt-3">
   <!-- Название задачи. -->
   <div class="task-name">
-    <p>{{taskDetails$.value?.name}}</p>
+    <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveTaskName" (onActivate)="onActivateTaskName()">
+      <ng-template pTemplate="display">
+        <span class="task-name-title">{{taskDetails$.value?.name}}</span>
+      </ng-template>
+      <ng-template pTemplate="content">
+          <input type="text" value="{{taskDetails$.value?.name}}" pInputText>
+      </ng-template>
+  </p-inplace>
+
+  <button pButton 
+          pRipple 
+          icon="pi pi-save"
+          type="button" 
+          label="Сохранить" 
+          class="p-button-success p-button-text p-button-sm"
+          *ngIf="isActiveTaskName"
+          (click)="isActiveTaskName=!isActiveTaskName">
+  </button>
+
+  <button pButton 
+          pRipple 
+          icon="pi pi-times"
+          type="button" 
+          label="Отмена" 
+          class="p-button-secondary p-button-text p-button-sm"
+          *ngIf="isActiveTaskName"
+          (click)="isActiveTaskName=!isActiveTaskName">
+  </button>
   </div>
 
   <!-- Блок с кнопками действий. -->
   <div class="mt-3 mb-3 d-flex block-task-actions">
-    <div class="block-buttons-task-actions">
+    <!-- <div class="block-buttons-task-actions">
       <button pButton type="button" 
             icon="pi pi-pencil" 
             label="Редактировать"
             class="p-button-text p-button-secondary task-actions">
     </button>
-    </div>   
+    </div>    -->
 
-    <div>
-      <button pButton type="button" 
-            icon="pi pi-file-import" 
-            label="Прикрепить файлы"
-            class="p-button-text p-button-secondary task-actions">
+    <!-- <div>
+      <button pButton 
+              type="button" 
+              icon="pi pi-file-import" 
+              label="Прикрепить файлы"
+              class="p-button-text p-button-secondary task-actions">
     </button>
-    </div>
+    </div> -->
 
     <!-- <div>
       <button pButton type="button" 

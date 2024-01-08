@@ -24,6 +24,8 @@ export class TaskDetailsComponent implements OnInit {
 
     projectId: number = 0;
     projectTaskId: number = 0;
+    isClosable: boolean = true;
+    isActiveTaskName: boolean = false;
     selectedStatus: any;
 
     formStatuses: FormGroup = new FormGroup({
@@ -69,6 +71,14 @@ export class TaskDetailsComponent implements OnInit {
                 });
             });
     };
+
+    public onActivateTaskName() {
+        this.isActiveTaskName = !this.isActiveTaskName;
+    };
+
+    // public onDeactivateTaskName(event: any) {
+    //     console.log("event", event);
+    // };
 
     public async onChangeStatusAsync() {
         console.log("changedStatus", this.formStatuses.value.statusName);
