@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
+import { ChangeTaskStatusInput } from '../task/models/input/change-task-status-input';
 import { ConfigSpaceSettingInput } from '../task/models/input/config-space-setting-input';
 import { CreateProjectManagementTaskInput } from '../task/models/input/create-task-input';
 import { CreateTaskStatusInput } from '../task/models/input/create-task-status-input';
@@ -244,6 +245,16 @@ export class ProjectManagmentService {
       public async getAvailableTaskStatusTransitionsAsync(projectId: number, projectTaskId: number) {
         return await this._http.get(this.apiUrl + `/project-management/available-task-status-transitions?projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
             tap(data => this.availableTransitions$.next(data))
+        );
+    };
+
+    /**
+    * Функция изменяет статус задачи.
+    * @param changeTaskStatusInput - Входная модель.
+    */
+     public async changeTaskStatusAsync(changeTaskStatusInput: ChangeTaskStatusInput) {
+        return await this._http.patch(this.apiUrl + `/project-management/task-status`, changeTaskStatusInput).pipe(
+            tap(_ => console.log("Статус задачи успешно изменен"))
         );
     };
 }

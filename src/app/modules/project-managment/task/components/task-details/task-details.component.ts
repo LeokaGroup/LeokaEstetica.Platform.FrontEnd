@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
+import { ChangeTaskStatusInput } from "../../models/input/change-task-status-input";
 
 @Component({
     selector: "",
@@ -82,7 +83,31 @@ export class TaskDetailsComponent implements OnInit {
         this.isActiveTaskName = !this.isActiveTaskName;
     };
 
+    /**
+     * Функция изменяет статус задачи.
+     */
     public async onChangeStatusAsync() {
-        console.log("changedStatus", this.formStatuses.value.statusName);
+        let changeTaskStatusInput = new ChangeTaskStatusInput();
+        changeTaskStatusInput.projectId = this.projectId;
+        changeTaskStatusInput.taskId = this.projectTaskId;
+        changeTaskStatusInput.changeStatusId = this.selectedStatus.taskStatusId;
+
+        (await this._projectManagmentService.changeTaskStatusAsync(changeTaskStatusInput))
+        .subscribe(async _ => {
+             // Получаем все статусы шаблона проекта.
+             (await this._projectManagmentService.getTaskStatusesAsync(this.projectId))
+             .subscribe(async _ => {
+                 console.log("Статусы для выбора: ", this.taskStatuses$.value);
+
+                 // Получаем статусы задач для выбора, чтобы подставить ранее сохраненый статус.
+                 (await this._projectManagmentService.getAvailableTaskStatusTransitionsAsync(this.projectId, this.projectTaskId))
+                     .subscribe(_ => {
+                         console.log("Возможные переходы статусов задачи: ", this.availableTransitions$.value);
+
+                         let value = this.taskStatuses$.value.find((st: any) => st.taskStatusId == this.selectedStatus.taskStatusId);
+                         this.formStatuses.get("statusName")?.setValue(value);
+                     });
+             });
+        });
     };
 }
