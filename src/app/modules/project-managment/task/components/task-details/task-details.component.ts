@@ -1,7 +1,9 @@
 import { Component, OnInit } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
+import { ChangeTaskStatusInput } from "../../models/input/change-task-status-input";
 
 @Component({
     selector: "",
@@ -19,11 +21,20 @@ export class TaskDetailsComponent implements OnInit {
     }
 
     public readonly taskDetails$ = this._projectManagmentService.taskDetails$;
+    public readonly taskStatuses$ = this._projectManagmentService.taskStatuses$;
+    public readonly availableTransitions$ = this._projectManagmentService.availableTransitions$;
 
     projectId: number = 0;
     projectTaskId: number = 0;
     isClosable: boolean = true;
     isActiveTaskName: boolean = false;
+    selectedStatus: any;
+
+    formStatuses: FormGroup = new FormGroup({
+        "statusName": new FormControl("", [
+            Validators.required
+        ])
+    });
 
     public async ngOnInit() {
         forkJoin([
@@ -48,8 +59,23 @@ export class TaskDetailsComponent implements OnInit {
     */
     private async getProjectTaskDetailsAsync() {
         (await this._projectManagmentService.getTaskDetailsByTaskIdAsync(this.projectId, this.projectTaskId))
-            .subscribe(_ => {
+            .subscribe(async _ => {
                 console.log("Детали задачи: ", this.taskDetails$.value);
+
+                // Получаем все статусы шаблона проекта.
+                (await this._projectManagmentService.getTaskStatusesAsync(this.projectId))
+                    .subscribe(async _ => {
+                        console.log("Статусы для выбора: ", this.taskStatuses$.value);
+
+                        // Получаем статусы задач для выбора, чтобы подставить ранее сохраненый статус.
+                        (await this._projectManagmentService.getAvailableTaskStatusTransitionsAsync(this.projectId, this.projectTaskId))
+                            .subscribe(_ => {
+                                console.log("Возможные переходы статусов задачи: ", this.availableTransitions$.value);
+
+                                let value = this.taskStatuses$.value.find((st: any) => st.taskStatusId == this.taskDetails$.value.taskStatusId);
+                                this.formStatuses.get("statusName")?.setValue(value);
+                            });
+                    });
             });
     };
 
@@ -57,7 +83,31 @@ export class TaskDetailsComponent implements OnInit {
         this.isActiveTaskName = !this.isActiveTaskName;
     };
 
-    // public onDeactivateTaskName(event: any) {
-    //     console.log("event", event);
-    // };
+    /**
+     * Функция изменяет статус задачи.
+     */
+    public async onChangeStatusAsync() {
+        let changeTaskStatusInput = new ChangeTaskStatusInput();
+        changeTaskStatusInput.projectId = this.projectId;
+        changeTaskStatusInput.taskId = this.projectTaskId;
+        changeTaskStatusInput.changeStatusId = this.selectedStatus.taskStatusId;
+
+        (await this._projectManagmentService.changeTaskStatusAsync(changeTaskStatusInput))
+        .subscribe(async _ => {
+             // Получаем все статусы шаблона проекта.
+             (await this._projectManagmentService.getTaskStatusesAsync(this.projectId))
+             .subscribe(async _ => {
+                 console.log("Статусы для выбора: ", this.taskStatuses$.value);
+
+                 // Получаем статусы задач для выбора, чтобы подставить ранее сохраненый статус.
+                 (await this._projectManagmentService.getAvailableTaskStatusTransitionsAsync(this.projectId, this.projectTaskId))
+                     .subscribe(_ => {
+                         console.log("Возможные переходы статусов задачи: ", this.availableTransitions$.value);
+
+                         let value = this.taskStatuses$.value.find((st: any) => st.taskStatusId == this.selectedStatus.taskStatusId);
+                         this.formStatuses.get("statusName")?.setValue(value);
+                     });
+             });
+        });
+    };
 }

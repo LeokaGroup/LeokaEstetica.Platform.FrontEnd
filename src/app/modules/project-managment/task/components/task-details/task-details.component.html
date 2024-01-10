@@ -84,12 +84,20 @@
       </div>
     </div>
 
-    <div class="col-lg-4">
+    <form class="col-lg-4" [formGroup]="formStatuses">
       <div class="line-item d-flex">
         <label class="control-label-task-item">Статус:</label>
-        <p class="line-item-value">{{taskDetails$.value?.taskStatusName}}</p>
+        <p-dropdown [options]="taskStatuses$.value" 
+                    [(ngModel)]="selectedStatus" 
+                    optionLabel="statusName" 
+                    [showClear]="true" 
+                    placeholder="Выберите статус"
+                    [emptyMessage]="(taskStatuses$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                    formControlName="statusName"
+                    (onChange)="onChangeStatusAsync()">
+        </p-dropdown>
       </div>
-    </div>
+    </form>
 
     <div class="col-lg-4">
       <strong>Люди</strong>

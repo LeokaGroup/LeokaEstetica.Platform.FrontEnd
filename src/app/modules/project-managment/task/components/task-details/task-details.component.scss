@@ -66,6 +66,12 @@
   line-height: 28px;
 }
 
-:host ::ng-deep .p-inputtext {
-  width: 640px;;
+:host ::ng-deep .p-inplace-content {
+  input {
+    width: 100%;
+  }
+}
+
+:host ::ng-deep .p-dropdown-label {
+  margin: -5px 10px -5px -5px;
 }
