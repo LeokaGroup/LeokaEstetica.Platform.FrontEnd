@@ -87,12 +87,12 @@
     <form class="col-lg-4" [formGroup]="formStatuses">
       <div class="line-item d-flex">
         <label class="control-label-task-item">Статус:</label>
-        <p-dropdown [options]="taskStatuses$.value" 
+        <p-dropdown [options]="availableTransitions$.value" 
                     [(ngModel)]="selectedStatus" 
                     optionLabel="statusName" 
                     [showClear]="true" 
                     placeholder="Выберите статус"
-                    [emptyMessage]="(taskStatuses$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                    [emptyMessage]="(availableTransitions$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
                     formControlName="statusName"
                     (onChange)="onChangeStatusAsync()">
         </p-dropdown>
@@ -103,16 +103,16 @@
       <strong>Люди</strong>
       <div>
         <div class="line-item d-flex">
+          <label class="control-label-task-item">Автор:</label>
+          <p class="line-item-value">{{taskDetails$.value?.authorName}}</p>
+        </div>
+
+        <div class="line-item d-flex">
           <label class="control-label-task-item">Исполнитель:</label>
           <div>
             <p class="line-item-value">{{taskDetails$.value?.executorName ?? 'Не назначен'}}</p>
             <button pButton pRipple label="Назначить меня" class="p-button-link control-button-executor-me"></button>
           </div>
-        </div>
-
-        <div class="line-item d-flex">
-          <label class="control-label-task-item">Автор:</label>
-          <p class="line-item-value">{{taskDetails$.value?.authorName}}</p>
         </div>
 
         <div class="line-item d-flex">
