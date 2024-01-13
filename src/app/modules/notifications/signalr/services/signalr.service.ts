@@ -583,4 +583,22 @@ export class SignalrService {
           this.$allFeed.next(data);
         });
       };
+
+  /**
+* Функция слушает уведомления об предупреждении лимите вакансий по тарифу.
+*/
+  public listenWarningLimitFareRuleVacancies() {
+    (<HubConnection>this.hubConnection).on("SendNotificationWarningLimitFareRuleVacancies", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+* Функция слушает уведомления ошибки при создании вакансии.
+*/
+  public listenErrorCreateVacancy() {
+    (<HubConnection>this.hubConnection).on("SendNotificationErrorCreatedUserVacancy", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 }
