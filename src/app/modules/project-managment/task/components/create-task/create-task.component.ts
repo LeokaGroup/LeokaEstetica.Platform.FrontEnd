@@ -198,6 +198,7 @@ export class CreateTaskComponent implements OnInit {
 
         (await this._projectManagmentService.createProjectTaskAsync(createTaskInput))
         .subscribe(_ => {
+            // TODO: Добавить вывод ошибок в уведомлялку с бэка при ошибках создания задачи.
             console.log("Задача создана: ", this.createdTask$.value);
             window.location.href = this.createdTask$.value.redirectUrl;
         });
