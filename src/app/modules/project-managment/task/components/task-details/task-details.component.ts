@@ -62,21 +62,12 @@ export class TaskDetailsComponent implements OnInit {
             .subscribe(async _ => {
                 console.log("Детали задачи: ", this.taskDetails$.value);
 
-                // Получаем все статусы шаблона проекта.
-                // (await this._projectManagmentService.getTaskStatusesAsync(this.projectId))
-                //     .subscribe(async _ => {
-                //         console.log("Статусы для выбора: ", this.taskStatuses$.value);
-
-                        
-                //     });
-
                 // Получаем статусы задач для выбора, чтобы подставить ранее сохраненый статус.
                 (await this._projectManagmentService.getAvailableTaskStatusTransitionsAsync(this.projectId, this.projectTaskId))
                 .subscribe(_ => {
                     console.log("Возможные переходы статусов задачи: ", this.availableTransitions$.value);
 
-                    debugger;
-                    let value = this.availableTransitions$.value.find((st: any) => st.statusId == this.taskDetails$.value.taskStatusId);
+                    let value = this.availableTransitions$.value.find((st: any) => st.taskStatusId == this.taskDetails$.value.taskStatusId);
                     this.formStatuses.get("statusName")?.setValue(value);
                 });
             });
