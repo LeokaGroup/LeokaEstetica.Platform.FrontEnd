@@ -131,7 +131,7 @@ export class TaskDetailsComponent implements OnInit {
 
         (await this._projectManagmentService.saveTaskNameAsync(modelInput))
             .subscribe(_ => {});
-    }
+    };
 
     /**
      * Функция сохраняет описание задачи.
@@ -146,5 +146,5 @@ export class TaskDetailsComponent implements OnInit {
 
         (await this._projectManagmentService.saveTaskDetailsAsync(modelInput))
             .subscribe(_ => {});
-    }
+    };
 }

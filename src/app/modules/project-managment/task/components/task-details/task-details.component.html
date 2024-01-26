@@ -80,7 +80,22 @@
 
       <div class="d-flex line">
         <label class="control-label-task-item">Метки:</label>
-        <p class="line-item-value">{{taskDetails$.value?.tagNames ?? 'Нет'}}</p>
+        
+        <p-chip label="{{taskDetails$.value?.tagNames ?? 'Нет'}}" [removable]="true"></p-chip>
+
+        <p-overlayPanel #op [style]="{'min-width': '300px'}">
+          <ng-template pTemplate>
+              Content
+          </ng-template>
+        </p-overlayPanel>
+
+        <button pButton 
+                pRipple 
+                icon="pi pi-plus"
+                type="button" 
+                class="p-button-secondary p-button-text p-button-sm"
+                (click)="op.toggle($event)">
+        </button>
       </div>
     </div>
 
