@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { API_URL } from 'src/app/core/core-urls/api-urls';
+import { ChangeTaskDetailsInput } from '../task/models/input/change-task-details-input';
+import { ChangeTaskNameInput } from '../task/models/input/change-task-name-input';
 import { ChangeTaskStatusInput } from '../task/models/input/change-task-status-input';
 import { ConfigSpaceSettingInput } from '../task/models/input/config-space-setting-input';
 import { CreateProjectManagementTaskInput } from '../task/models/input/create-task-input';
@@ -255,6 +257,26 @@ export class ProjectManagmentService {
      public async changeTaskStatusAsync(changeTaskStatusInput: ChangeTaskStatusInput) {
         return await this._http.patch(this.apiUrl + `/project-management/task-status`, changeTaskStatusInput).pipe(
             tap(_ => console.log("Статус задачи успешно изменен"))
+        );
+    };
+
+    /**
+    * Функция сохраняет название задачи.
+    * @param changeTaskNameInput - Входная модель.
+    */
+     public async saveTaskNameAsync(changeTaskNameInput: ChangeTaskNameInput) {
+        return await this._http.patch(this.apiUrl + `/project-management/task-name`, changeTaskNameInput).pipe(
+            tap(_ => console.log("Название задачи успешно изменено"))
+        );
+    };
+
+    /**
+    * Функция сохраняет описание задачи.
+    * @param changeTaskNameInput - Входная модель.
+    */
+     public async saveTaskDetailsAsync(changeTaskDetailsInput: ChangeTaskDetailsInput) {
+        return await this._http.patch(this.apiUrl + `/project-management/task-details`, changeTaskDetailsInput).pipe(
+            tap(_ => console.log("Описание задачи успешно изменено"))
         );
     };
 }

@@ -3,6 +3,8 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
+import { ChangeTaskDetailsInput } from "../../models/input/change-task-details-input";
+import { ChangeTaskNameInput } from "../../models/input/change-task-name-input";
 import { ChangeTaskStatusInput } from "../../models/input/change-task-status-input";
 
 @Component({
@@ -28,7 +30,10 @@ export class TaskDetailsComponent implements OnInit {
     projectTaskId: number = 0;
     isClosable: boolean = true;
     isActiveTaskName: boolean = false;
+    isActiveTaskDetails: boolean = false;
     selectedStatus: any;
+    taskDetails: string = "";
+    taskName: string = "";
 
     formStatuses: FormGroup = new FormGroup({
         "statusName": new FormControl("", [
@@ -67,14 +72,22 @@ export class TaskDetailsComponent implements OnInit {
                 .subscribe(_ => {
                     console.log("Возможные переходы статусов задачи: ", this.availableTransitions$.value);
 
+                    // Записываем текущий статус задачи в выпадающий список.
                     let value = this.availableTransitions$.value.find((st: any) => st.taskStatusId == this.taskDetails$.value.taskStatusId);
                     this.formStatuses.get("statusName")?.setValue(value);
+
+                    this.taskDetails = this.taskDetails$.value?.details;
+                    this.taskName = this.taskDetails$.value?.name;
                 });
             });
     };
 
     public onActivateTaskName() {
         this.isActiveTaskName = !this.isActiveTaskName;
+    };
+
+    public onActivateTaskDetails() {
+        this.isActiveTaskDetails = !this.isActiveTaskDetails;
     };
 
     /**
@@ -104,4 +117,34 @@ export class TaskDetailsComponent implements OnInit {
              });
         });
     };
+
+    /**
+     * Функция сохраняет название задачи.
+     */
+    public async onSaveTaskNameAsync(taskName: string) {
+        this.isActiveTaskName = !this.isActiveTaskName;
+
+        let modelInput = new ChangeTaskNameInput();
+        modelInput.projectId = this.projectId;
+        modelInput.taskId = this.projectTaskId;
+        modelInput.changedTaskName = taskName;
+
+        (await this._projectManagmentService.saveTaskNameAsync(modelInput))
+            .subscribe(_ => {});
+    }
+
+    /**
+     * Функция сохраняет описание задачи.
+     */
+     public async onSaveTaskDetailsAsync(taskDetails: string) {
+        this.isActiveTaskDetails = !this.isActiveTaskDetails;
+
+        let modelInput = new ChangeTaskDetailsInput();
+        modelInput.projectId = this.projectId;
+        modelInput.taskId = this.projectTaskId;
+        modelInput.changedTaskDetails = taskDetails;
+
+        (await this._projectManagmentService.saveTaskDetailsAsync(modelInput))
+            .subscribe(_ => {});
+    }
 }
