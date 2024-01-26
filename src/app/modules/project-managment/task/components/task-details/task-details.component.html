@@ -3,10 +3,10 @@
   <div class="task-name">
     <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveTaskName" (onActivate)="onActivateTaskName()">
       <ng-template pTemplate="display">
-        <span class="task-name-title">{{taskDetails$.value?.name}}</span>
+        <span class="task-name-title">{{taskName}}</span>
       </ng-template>
       <ng-template pTemplate="content">
-          <input type="text" value="{{taskDetails$.value?.name}}" pInputText>
+          <input type="text" [(ngModel)]="taskName"  value="{{taskName}}" pInputText>
       </ng-template>
   </p-inplace>
 
@@ -17,7 +17,7 @@
           label="Сохранить" 
           class="p-button-success p-button-text p-button-sm"
           *ngIf="isActiveTaskName"
-          (click)="isActiveTaskName=!isActiveTaskName">
+          (click)="onSaveTaskNameAsync(taskName)">
   </button>
 
   <button pButton 
@@ -151,14 +151,53 @@
   <!-- Описание задачи. -->
   <div class="block-task-lines col-lg-12 d-flex">
     <div class="col-lg-8">
-      <strong>Описание</strong>
-      <div class="empty-task-details" *ngIf="taskDetails$.value?.details == null || taskDetails$.value?.details == ''">
-        Добавьте описание задачи, чтобы исполнителю было понятно, что нужно сделать в рамках задачи
+      <div>
+        <strong>Описание</strong>
       </div>
 
-      <div class="task-details">
-        {{taskDetails$.value?.details}}
-      </div>
+      <p-inplace [style]="{'min-height':'30px'}" [active]="isActiveTaskDetails" (onActivate)="onActivateTaskDetails()">
+        <ng-template pTemplate="display">
+          <span class="empty-task-details" *ngIf="taskDetails == null || taskDetails == ''">
+            Добавьте описание задачи, чтобы исполнителю было понятно, что нужно сделать в рамках задачи
+          </span>
+          <span class="task-name-title">{{taskDetails}}</span>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <textarea input-control-worksheet
+                      rows="5"
+                      cols="100"
+                      pInputTextarea
+                      [autoResize]="true"
+                      autocomplete="new-password"
+                      placeholder="Описание задачи"
+                      [(ngModel)]="taskDetails"
+                      class="input-about-me"
+                      value="{{taskDetails}}">
+            </textarea>
+
+           <div>
+            <button pButton 
+                    pRipple 
+                    icon="pi pi-times"
+                    type="button" 
+                    label="Сохранить" 
+                    class="p-button-success p-button-text p-button-sm"
+                    *ngIf="isActiveTaskDetails"
+                    (click)="onSaveTaskDetailsAsync(taskDetails)">
+            </button>
+
+            <button pButton 
+                    pRipple 
+                    icon="pi pi-times"
+                    type="button" 
+                    label="Отмена" 
+                    class="p-button-secondary p-button-text p-button-sm"
+                    *ngIf="isActiveTaskDetails"
+                    (click)="isActiveTaskDetails=!isActiveTaskDetails">
+            </button>
+           </div>
+        </ng-template>
+    </p-inplace>
     </div>
 
     <div class="col-lg-4">
