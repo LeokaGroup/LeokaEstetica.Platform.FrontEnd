@@ -25,6 +25,7 @@ export class TaskDetailsComponent implements OnInit {
     public readonly taskDetails$ = this._projectManagmentService.taskDetails$;
     public readonly taskStatuses$ = this._projectManagmentService.taskStatuses$;
     public readonly availableTransitions$ = this._projectManagmentService.availableTransitions$;
+    public readonly projectTags$ = this._projectManagmentService.projectTags$;
 
     projectId: number = 0;
     projectTaskId: number = 0;
@@ -34,6 +35,7 @@ export class TaskDetailsComponent implements OnInit {
     selectedStatus: any;
     taskDetails: string = "";
     taskName: string = "";
+    selectedTag: any;
 
     formStatuses: FormGroup = new FormGroup({
         "statusName": new FormControl("", [
@@ -44,7 +46,8 @@ export class TaskDetailsComponent implements OnInit {
     public async ngOnInit() {
         forkJoin([
             this.checkUrlParams(),
-            await this.getProjectTaskDetailsAsync()
+            await this.getProjectTaskDetailsAsync(),
+            await this.getProjectTagsAsync()
         ]).subscribe();
     };
 
@@ -146,5 +149,16 @@ export class TaskDetailsComponent implements OnInit {
 
         (await this._projectManagmentService.saveTaskDetailsAsync(modelInput))
             .subscribe(_ => {});
+    };
+
+    /**
+  * Функция получает теги проекта для выбора.
+  * @returns - Список тегов.
+  */
+    private async getProjectTagsAsync() {
+        (await this._projectManagmentService.getProjectTagsAsync())
+            .subscribe(_ => {
+                console.log("Теги для выбора: ", this.projectTags$.value);
+            });
     };
 }

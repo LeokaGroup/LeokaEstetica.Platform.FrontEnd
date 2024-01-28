@@ -35,7 +35,7 @@ export class CreateTaskComponent implements OnInit {
 
     public readonly priorities$ = this._projectManagmentService.priorities$;
     public readonly taskTypes$ = this._projectManagmentService.taskTypes$;
-    public readonly taskTags$ = this._projectManagmentService.taskTags$;
+    public readonly projectTags$ = this._projectManagmentService.projectTags$;
     public readonly taskStatuses$ = this._projectManagmentService.taskStatuses$;
     public readonly taskPeople$ = this._projectManagmentService.taskExecutors$;
     public readonly createdTask$ = this._projectManagmentService.createdTask$;
@@ -78,13 +78,13 @@ export class CreateTaskComponent implements OnInit {
     };
 
       /**
-    * Функция получает теги задач для выбора.
+    * Функция получает теги проекта для выбора.
     * @returns - Список тегов.
     */
-       public async onGetTaskTagsAsync() {
-        (await this._projectManagmentService.getTaskTagsAsync())
+       public async onGetProjectTagsAsync() {
+        (await this._projectManagmentService.getProjectTagsAsync())
             .subscribe(_ => {
-                console.log("Теги для выбора: ", this.taskTags$.value);
+                console.log("Теги для выбора: ", this.projectTags$.value);
             });
     };
 

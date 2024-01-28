@@ -26,7 +26,7 @@ export class ProjectManagmentService {
     public taskDetails$ = new BehaviorSubject<any>(null);
     public priorities$ = new BehaviorSubject<any>(null);
     public taskTypes$ = new BehaviorSubject<any>(null);
-    public taskTags$ = new BehaviorSubject<any>(null);
+    public projectTags$ = new BehaviorSubject<any>(null);
     public taskStatuses$ = new BehaviorSubject<any>(null);
     public taskExecutors$ = new BehaviorSubject<any>(null);
     public projectWorkspaceSettings$ = new BehaviorSubject<any>(null);
@@ -148,12 +148,12 @@ export class ProjectManagmentService {
     };
 
     /**
-    * Функция получает теги задач для выбора.
+    * Функция получает теги проекта для выбора.
     * @returns - Список тегов.
     */
-     public async getTaskTagsAsync() {
-        return await this._http.get(this.apiUrl + "/project-management/task-tags").pipe(
-            tap(data => this.taskTags$.next(data))
+     public async getProjectTagsAsync() {
+        return await this._http.get(this.apiUrl + "/project-management/project-tags").pipe(
+            tap(data => this.projectTags$.next(data))
         );
     };
 
@@ -213,7 +213,7 @@ export class ProjectManagmentService {
     * @param userTaskTagInput - Входная модель.
     */
      public async createUserTaskTagAsync(userTaskTagInput: UserTaskTagInput) {
-        return await this._http.post(this.apiUrl + "/project-management/user-tag", userTaskTagInput).pipe(
+        return await this._http.post(this.apiUrl + "/project-management/project-tag", userTaskTagInput).pipe(
             tap(_ => console.log("Метка (тег) успешно создано"))
         );
     };

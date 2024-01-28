@@ -102,13 +102,13 @@
         <div class="d-flex line">
           <label class="control-label-task-item">Метки:</label>
           <div>
-            <p-dropdown [options]="taskTags$.value" 
+            <p-dropdown [options]="projectTags$.value" 
                       [(ngModel)]="selectedTag" 
                       optionLabel="tagName" 
                       [showClear]="true" 
                       placeholder="Выберите тег"
-                      [emptyMessage]="(taskTags$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
-                      (onClick)="onGetTaskTagsAsync()"
+                      [emptyMessage]="(projectTags$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                      (onClick)="onGetProjectTagsAsync()"
                       (onChange)="onSelectTaskTag()">
 
           </p-dropdown>

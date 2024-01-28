@@ -85,7 +85,14 @@
 
         <p-overlayPanel #op [style]="{'min-width': '300px'}">
           <ng-template pTemplate>
-              Content
+            <div>
+              <p-dropdown [options]="this.projectTags$.value"
+                          [(ngModel)]="selectedTag"
+                          optionLabel="tagName"
+                          class="control-project-stages"
+                          >
+              </p-dropdown>
+            </div>
           </ng-template>
         </p-overlayPanel>
 
