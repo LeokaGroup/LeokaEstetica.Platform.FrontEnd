@@ -6,6 +6,7 @@ import { ProjectManagmentService } from "../../../services/project-managment.ser
 import { ChangeTaskDetailsInput } from "../../models/input/change-task-details-input";
 import { ChangeTaskNameInput } from "../../models/input/change-task-name-input";
 import { ChangeTaskStatusInput } from "../../models/input/change-task-status-input";
+import { ProjectTaskTagInput } from "../../models/input/project-task-tag-input";
 
 @Component({
     selector: "",
@@ -160,5 +161,39 @@ export class TaskDetailsComponent implements OnInit {
             .subscribe(_ => {
                 console.log("Теги для выбора: ", this.projectTags$.value);
             });
+    };
+
+    /**
+    * Функция привязывает тег к задаче проекта.
+    * Выбор происходит из набора тегов проекта.
+    * @param projectTaskTagInput - Входная модель.
+    */
+    public async onAttachTaskTagAsync() {
+        let projectTaskTagInput = new ProjectTaskTagInput();
+        projectTaskTagInput.projectId = +this.projectId;
+        projectTaskTagInput.projectTaskId = +this.projectTaskId;
+        projectTaskTagInput.tagId = this.selectedTag.tagId;
+
+        (await this._projectManagmentService.attachTaskTagAsync(projectTaskTagInput))
+            .subscribe(async _ => {
+                await this.getProjectTaskDetailsAsync();
+            });
+    };
+
+    /**
+    * Функция привязывает тег к задаче проекта.
+    * Выбор происходит из набора тегов проекта.
+    * @param removedValue - Название тега.
+    */
+     public async onDetachTaskTagAsync(removedValue: string) {
+        let projectTaskTagInput = new ProjectTaskTagInput();
+        projectTaskTagInput.projectId = +this.projectId;
+        projectTaskTagInput.projectTaskId = +this.projectTaskId;
+        projectTaskTagInput.tagId = this.projectTags$.value.filter((item: any) => item.tagName == removedValue)[0].tagId;
+
+         (await this._projectManagmentService.detachTaskTagAsync(projectTaskTagInput))
+             .subscribe(async _ => {
+                 await this.getProjectTaskDetailsAsync();
+             });
     };
 }

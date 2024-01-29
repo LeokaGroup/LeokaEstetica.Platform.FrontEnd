@@ -81,7 +81,13 @@
       <div class="d-flex line">
         <label class="control-label-task-item">Метки:</label>
         
-        <p-chip label="{{taskDetails$.value?.tagNames ?? 'Нет'}}" [removable]="true"></p-chip>
+        <div class="chip-block">
+          <div *ngFor="let lbl of taskDetails$.value?.tagNames">
+            <div class="chip-item">
+              <p-chip label="{{lbl ?? 'Нет'}}" [removable]="true" (onRemove)="onDetachTaskTagAsync(lbl)"></p-chip>
+            </div>
+          </div>
+        </div>
 
         <p-overlayPanel #op [style]="{'min-width': '300px'}">
           <ng-template pTemplate>
@@ -90,7 +96,8 @@
                           [(ngModel)]="selectedTag"
                           optionLabel="tagName"
                           class="control-project-stages"
-                          >
+                          placeholder="Выберите тег"
+                          (onChange)="onAttachTaskTagAsync()">
               </p-dropdown>
             </div>
           </ng-template>

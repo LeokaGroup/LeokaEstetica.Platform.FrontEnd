@@ -75,3 +75,16 @@
 :host ::ng-deep .p-dropdown-label {
   margin: -5px 10px -5px -5px;
 }
+
+.chip-block {
+  display: flex;
+  flex-wrap: wrap;
+
+  .chip-item {
+    padding: 2px 2px;
+  }
+}
+
+::ng-deep .p-chip-text {
+  font-size: smaller;
+}

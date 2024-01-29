@@ -8,6 +8,7 @@ import { ChangeTaskStatusInput } from '../task/models/input/change-task-status-i
 import { ConfigSpaceSettingInput } from '../task/models/input/config-space-setting-input';
 import { CreateProjectManagementTaskInput } from '../task/models/input/create-task-input';
 import { CreateTaskStatusInput } from '../task/models/input/create-task-status-input';
+import { ProjectTaskTagInput } from '../task/models/input/project-task-tag-input';
 import { UserTaskTagInput } from '../task/models/input/user-task-tag-input';
 
 /**
@@ -277,6 +278,27 @@ export class ProjectManagmentService {
      public async saveTaskDetailsAsync(changeTaskDetailsInput: ChangeTaskDetailsInput) {
         return await this._http.patch(this.apiUrl + `/project-management/task-details`, changeTaskDetailsInput).pipe(
             tap(_ => console.log("Описание задачи успешно изменено"))
+        );
+    };
+
+    /**
+    * Функция привязывает тег к задаче проекта.
+    * Выбор происходит из набора тегов проекта.
+    * @param projectTaskTagInput - Входная модель.
+    */
+     public async attachTaskTagAsync(projectTaskTagInput: ProjectTaskTagInput) {
+        return await this._http.patch(this.apiUrl + `/project-management/attach-task-tag`, projectTaskTagInput).pipe(
+            tap(_ => console.log("Тег успешно привязан к задаче"))
+        );
+    };
+
+    /**
+    * Функция отвязывает тег от задачи проекта.
+    * @param projectTaskTagInput - Входная модель.
+    */
+     public async detachTaskTagAsync(projectTaskTagInput: ProjectTaskTagInput) {
+        return await this._http.patch(this.apiUrl + `/project-management/detach-task-tag`, projectTaskTagInput).pipe(
+            tap(_ => console.log("Тег успешно отвязан от задачи"))
         );
     };
 }
