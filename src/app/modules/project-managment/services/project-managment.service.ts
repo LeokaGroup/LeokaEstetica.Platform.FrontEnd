@@ -9,6 +9,7 @@ import { ConfigSpaceSettingInput } from '../task/models/input/config-space-setti
 import { CreateProjectManagementTaskInput } from '../task/models/input/create-task-input';
 import { CreateTaskStatusInput } from '../task/models/input/create-task-status-input';
 import { ProjectTaskTagInput } from '../task/models/input/project-task-tag-input';
+import { TaskPriorityInput } from '../task/models/input/task-priority-input';
 import { UserTaskTagInput } from '../task/models/input/user-task-tag-input';
 
 /**
@@ -299,6 +300,16 @@ export class ProjectManagmentService {
      public async detachTaskTagAsync(projectTaskTagInput: ProjectTaskTagInput) {
         return await this._http.patch(this.apiUrl + `/project-management/detach-task-tag`, projectTaskTagInput).pipe(
             tap(_ => console.log("Тег успешно отвязан от задачи"))
+        );
+    };
+
+    /**
+    * Функция обновляет приоритет задачи.
+    * @param projectTaskTagInput - Входная модель.
+    */
+     public async updateTaskPriorityAsync(taskPriorityInput: TaskPriorityInput) {
+        return await this._http.patch(this.apiUrl + `/project-management/task-priority`, taskPriorityInput).pipe(
+            tap(_ => console.log("Приоритет задачи успешно изменен"))
         );
     };
 }
