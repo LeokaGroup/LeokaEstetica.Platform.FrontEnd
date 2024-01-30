@@ -8,6 +8,7 @@ import { ChangeTaskStatusInput } from '../task/models/input/change-task-status-i
 import { ConfigSpaceSettingInput } from '../task/models/input/config-space-setting-input';
 import { CreateProjectManagementTaskInput } from '../task/models/input/create-task-input';
 import { CreateTaskStatusInput } from '../task/models/input/create-task-status-input';
+import { ProjectTaskExecutorInput } from '../task/models/input/project-task-executor-input';
 import { ProjectTaskTagInput } from '../task/models/input/project-task-tag-input';
 import { UserTaskTagInput } from '../task/models/input/user-task-tag-input';
 
@@ -299,6 +300,16 @@ export class ProjectManagmentService {
      public async detachTaskTagAsync(projectTaskTagInput: ProjectTaskTagInput) {
         return await this._http.patch(this.apiUrl + `/project-management/detach-task-tag`, projectTaskTagInput).pipe(
             tap(_ => console.log("Тег успешно отвязан от задачи"))
+        );
+    };
+
+    /**
+    * Функция обновляет исполнителя задачи.
+    * @param projectTaskExecutorInput - Входная модель.
+    */
+     public async changeTaskExecutorAsync(projectTaskExecutorInput: ProjectTaskExecutorInput) {
+        return await this._http.patch(this.apiUrl + `/project-management/task-executor`, projectTaskExecutorInput).pipe(
+            tap(_ => console.log("Исполнитель задачи успешно изменен"))
         );
     };
 }

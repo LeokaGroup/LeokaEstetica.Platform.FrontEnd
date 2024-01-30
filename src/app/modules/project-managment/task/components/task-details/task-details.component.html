@@ -136,13 +136,22 @@
           <p class="line-item-value">{{taskDetails$.value?.authorName}}</p>
         </div>
 
-        <div class="line-item d-flex">
+        <form class="line-item d-flex" [formGroup]="formExecutors">
           <label class="control-label-task-item">Исполнитель:</label>
           <div>
-            <p class="line-item-value">{{taskDetails$.value?.executorName ?? 'Не назначен'}}</p>
+            <!-- <p class="line-item-value">{{taskDetails$.value?.executorName ?? 'Не назначен'}}</p> -->
+            <p-dropdown [options]="taskPeople$.value" 
+                        [(ngModel)]="selectedExecutor" 
+                        optionLabel="fullName" 
+                        [showClear]="true" 
+                        placeholder="Выберите исполнителя"
+                        [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                        formControlName="executorName"
+                        (onChange)="onChangeTaskExecutorAsync()">
+            </p-dropdown>
             <button pButton pRipple label="Назначить меня" class="p-button-link control-button-executor-me"></button>
           </div>
-        </div>
+        </form>
 
         <div class="line-item d-flex">
           <div>
