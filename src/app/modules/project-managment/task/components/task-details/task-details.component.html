@@ -136,13 +136,22 @@
           <p class="line-item-value">{{taskDetails$.value?.authorName}}</p>
         </div>
 
-        <div class="line-item d-flex">
+        <form class="line-item d-flex" [formGroup]="formExecutors">
           <label class="control-label-task-item">Исполнитель:</label>
           <div>
-            <p class="line-item-value">{{taskDetails$.value?.executorName ?? 'Не назначен'}}</p>
+            <!-- <p class="line-item-value">{{taskDetails$.value?.executorName ?? 'Не назначен'}}</p> -->
+            <p-dropdown [options]="taskPeople$.value" 
+                        [(ngModel)]="selectedExecutor" 
+                        optionLabel="fullName" 
+                        [showClear]="true" 
+                        placeholder="Выберите исполнителя"
+                        [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                        formControlName="executorName"
+                        (onChange)="onChangeTaskExecutorAsync()">
+            </p-dropdown>
             <button pButton pRipple label="Назначить меня" class="p-button-link control-button-executor-me"></button>
           </div>
-        </div>
+        </form>
 
         <div class="line-item d-flex">
           <div>
@@ -152,19 +161,19 @@
           <div>
             <!-- <p class="line-item-value">{{taskDetails$.value?.watcherNames ?? 'Нет наблюдателей'}}</p> -->
             <div class="chip-block">
-              <div *ngFor="let lbl of taskDetails$.value?.watcherNames">
+              <div *ngFor="let lbl of taskDetails$.value?.watcherNames; index as i">
                 <div class="chip-item">
-                  <p-chip label="{{lbl ?? 'Нет'}}" [removable]="true" (onRemove)="onDetachTaskWatcherAsync(lbl)"></p-chip>
+                  <p-chip label="{{lbl ?? 'Нет'}}" [removable]="true" (onRemove)="onDetachTaskWatcherAsync(lbl, i)"></p-chip>
                 </div>
               </div>
             </div>
     
-            <p-overlayPanel #op [style]="{'min-width': '300px'}">
+            <p-overlayPanel #wa [style]="{'min-width': '300px'}">
               <ng-template pTemplate>
                 <div>
                   <p-dropdown [options]="taskPeople$.value"
                               [(ngModel)]="selectedWatcher"
-                              optionLabel="watcherName"
+                              optionLabel="fullName"
                               class="control-project-stages"
                               placeholder="Выберите наблюдателя"
                               [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
@@ -179,7 +188,7 @@
                     icon="pi pi-plus"
                     type="button" 
                     class="p-button-secondary p-button-text p-button-sm"
-                    (click)="op.toggle($event)">
+                    (click)="wa.toggle($event)">
             </button>
             <!-- <button pButton pRipple label="Добавить меня" class="p-button-link control-button-executor-me"></button> -->
           </div>
