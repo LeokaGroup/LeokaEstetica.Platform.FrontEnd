@@ -139,7 +139,6 @@
         <form class="line-item d-flex" [formGroup]="formExecutors">
           <label class="control-label-task-item">Исполнитель:</label>
           <div>
-            <!-- <p class="line-item-value">{{taskDetails$.value?.executorName ?? 'Не назначен'}}</p> -->
             <p-dropdown [options]="taskPeople$.value" 
                         [(ngModel)]="selectedExecutor" 
                         optionLabel="fullName" 
