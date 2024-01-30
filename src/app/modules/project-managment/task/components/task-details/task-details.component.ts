@@ -37,6 +37,7 @@ export class TaskDetailsComponent implements OnInit {
     taskDetails: string = "";
     taskName: string = "";
     selectedTag: any;
+    selectedWatcher: any;
 
     formStatuses: FormGroup = new FormGroup({
         "statusName": new FormControl("", [
@@ -195,5 +196,13 @@ export class TaskDetailsComponent implements OnInit {
              .subscribe(async _ => {
                  await this.getProjectTaskDetailsAsync();
              });
+    };
+
+    public async onDetachTaskWatcherAsync() {
+
+    };
+
+    public async onAttachTaskWatcherAsync() {
+
     };
 }

@@ -150,8 +150,38 @@
           </div>
          
           <div>
-            <p class="line-item-value">{{taskDetails$.value?.watcherNames ?? 'Нет наблюдателей'}}</p>
-            <button pButton pRipple label="Добавить меня" class="p-button-link control-button-executor-me"></button>
+            <!-- <p class="line-item-value">{{taskDetails$.value?.watcherNames ?? 'Нет наблюдателей'}}</p> -->
+            <div class="chip-block">
+              <div *ngFor="let lbl of taskDetails$.value?.watcherNames">
+                <div class="chip-item">
+                  <p-chip label="{{lbl ?? 'Нет'}}" [removable]="true" (onRemove)="onDetachTaskWatcherAsync(lbl)"></p-chip>
+                </div>
+              </div>
+            </div>
+    
+            <p-overlayPanel #op [style]="{'min-width': '300px'}">
+              <ng-template pTemplate>
+                <div>
+                  <p-dropdown [options]="taskPeople$.value"
+                              [(ngModel)]="selectedWatcher"
+                              optionLabel="watcherName"
+                              class="control-project-stages"
+                              placeholder="Выберите наблюдателя"
+                              [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                              (onChange)="onAttachTaskWatcherAsync()">
+                  </p-dropdown>
+                </div>
+              </ng-template>
+            </p-overlayPanel>
+    
+            <button pButton 
+                    pRipple 
+                    icon="pi pi-plus"
+                    type="button" 
+                    class="p-button-secondary p-button-text p-button-sm"
+                    (click)="op.toggle($event)">
+            </button>
+            <!-- <button pButton pRipple label="Добавить меня" class="p-button-link control-button-executor-me"></button> -->
           </div>
         </div>
       </div>
