@@ -329,7 +329,7 @@ export class ProjectManagmentService {
     * @param projectTaskWatcherInput - Входная модель.
     */
       public async detachTaskWatcherAsync(projectTaskWatcherInput: ProjectTaskWatcherInput) {
-        return await this._http.patch(this.apiUrl + `/project-management/detach-tast-watcher`, projectTaskWatcherInput).pipe(
+        return await this._http.patch(this.apiUrl + `/project-management/detach-task-watcher`, projectTaskWatcherInput).pipe(
             tap(_ => console.log("Наблюдатель успешно отвязан от задачи"))
         );
     };

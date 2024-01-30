@@ -242,7 +242,13 @@ export class TaskDetailsComponent implements OnInit {
         let projectTaskTagInput = new ProjectTaskWatcherInput();
         projectTaskTagInput.projectId = +this.projectId;
         projectTaskTagInput.projectTaskId = +this.projectTaskId;
+        // debugger;
         projectTaskTagInput.watcherId = this.taskPeople$.value[i].userId;
+
+        (await this._projectManagmentService.detachTaskWatcherAsync(projectTaskTagInput))
+        .subscribe(async _ => {
+            await this.getProjectTaskDetailsAsync();
+        });
     };
 
     /**
