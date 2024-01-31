@@ -8,6 +8,7 @@ import { ChangeTaskNameInput } from "../../models/input/change-task-name-input";
 import { ChangeTaskStatusInput } from "../../models/input/change-task-status-input";
 import { ProjectTaskExecutorInput } from "../../models/input/project-task-executor-input";
 import { ProjectTaskTagInput } from "../../models/input/project-task-tag-input";
+import { TaskPriorityInput } from "../../models/input/task-priority-input";
 
 @Component({
     selector: "",
@@ -28,6 +29,7 @@ export class TaskDetailsComponent implements OnInit {
     public readonly taskStatuses$ = this._projectManagmentService.taskStatuses$;
     public readonly availableTransitions$ = this._projectManagmentService.availableTransitions$;
     public readonly projectTags$ = this._projectManagmentService.projectTags$;
+    public readonly priorities$ = this._projectManagmentService.priorities$;
     public readonly taskPeople$ = this._projectManagmentService.taskExecutors$;
 
     projectId: number = 0;
@@ -39,11 +41,18 @@ export class TaskDetailsComponent implements OnInit {
     taskDetails: string = "";
     taskName: string = "";
     selectedTag: any;
+    selectedPriority: any;
     aPeople: any[] = [];
     selectedExecutor: any;
 
     formStatuses: FormGroup = new FormGroup({
         "statusName": new FormControl("", [
+            Validators.required
+        ])
+    });
+
+    formPriorities: FormGroup = new FormGroup({
+        "priorityName": new FormControl("", [
             Validators.required
         ])
     });
@@ -102,6 +111,16 @@ export class TaskDetailsComponent implements OnInit {
                                 this.formExecutors.get("executorName")?.setValue(value);
                             });
                     });
+
+                // Получаем приоритеты задач для выбора, чтобы подставить ранее сохраненый приоритет.
+                (await this._projectManagmentService.getTaskPrioritiesAsync())
+                .subscribe(_ => {
+                    console.log("Приоритеты задачи для выбора: ", this.priorities$.value);
+
+                    // Записываем текущий приоритет задачи в выпадающий список.
+                    let value = this.priorities$.value.find((st: any) => st.priorityId == this.taskDetails$.value.priorityId);
+                    this.formPriorities.get("priorityName")?.setValue(value);
+                });
             });
     };
 
@@ -211,6 +230,21 @@ export class TaskDetailsComponent implements OnInit {
         projectTaskTagInput.tagId = this.projectTags$.value.filter((item: any) => item.tagName == removedValue)[0].tagId;
 
          (await this._projectManagmentService.detachTaskTagAsync(projectTaskTagInput))
+             .subscribe(async _ => {
+                 await this.getProjectTaskDetailsAsync();
+             });
+    };
+
+    /**
+     * Функция обновляет приоритет задачи.
+     */
+    public async onChangeTaskPriorityAsync() {
+        let taskPriorityInput = new TaskPriorityInput();
+        taskPriorityInput.projectId = +this.projectId;
+        taskPriorityInput.projectTaskId = +this.projectTaskId;
+        taskPriorityInput.priorityId = this.selectedPriority.priorityId;
+
+         (await this._projectManagmentService.updateTaskPriorityAsync(taskPriorityInput))
              .subscribe(async _ => {
                  await this.getProjectTaskDetailsAsync();
              });
