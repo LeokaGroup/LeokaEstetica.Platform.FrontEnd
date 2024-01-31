@@ -6,6 +6,7 @@ import { ProjectManagmentService } from "../../../services/project-managment.ser
 import { ChangeTaskDetailsInput } from "../../models/input/change-task-details-input";
 import { ChangeTaskNameInput } from "../../models/input/change-task-name-input";
 import { ChangeTaskStatusInput } from "../../models/input/change-task-status-input";
+import { ProjectTaskExecutorInput } from "../../models/input/project-task-executor-input";
 import { ProjectTaskTagInput } from "../../models/input/project-task-tag-input";
 import { TaskPriorityInput } from "../../models/input/task-priority-input";
 
@@ -29,6 +30,7 @@ export class TaskDetailsComponent implements OnInit {
     public readonly availableTransitions$ = this._projectManagmentService.availableTransitions$;
     public readonly projectTags$ = this._projectManagmentService.projectTags$;
     public readonly priorities$ = this._projectManagmentService.priorities$;
+    public readonly taskPeople$ = this._projectManagmentService.taskExecutors$;
 
     projectId: number = 0;
     projectTaskId: number = 0;
@@ -40,6 +42,8 @@ export class TaskDetailsComponent implements OnInit {
     taskName: string = "";
     selectedTag: any;
     selectedPriority: any;
+    aPeople: any[] = [];
+    selectedExecutor: any;
 
     formStatuses: FormGroup = new FormGroup({
         "statusName": new FormControl("", [
@@ -49,6 +53,12 @@ export class TaskDetailsComponent implements OnInit {
 
     formPriorities: FormGroup = new FormGroup({
         "priorityName": new FormControl("", [
+            Validators.required
+        ])
+    });
+
+    formExecutors: FormGroup = new FormGroup({
+        "executorName": new FormControl("", [
             Validators.required
         ])
     });
@@ -82,16 +92,25 @@ export class TaskDetailsComponent implements OnInit {
 
                 // Получаем статусы задач для выбора, чтобы подставить ранее сохраненый статус.
                 (await this._projectManagmentService.getAvailableTaskStatusTransitionsAsync(this.projectId, this.projectTaskId))
-                .subscribe(_ => {
-                    console.log("Возможные переходы статусов задачи: ", this.availableTransitions$.value);
+                    .subscribe(async _ => {
+                        console.log("Возможные переходы статусов задачи: ", this.availableTransitions$.value);
 
-                    // Записываем текущий статус задачи в выпадающий список.
-                    let value = this.availableTransitions$.value.find((st: any) => st.taskStatusId == this.taskDetails$.value.taskStatusId);
-                    this.formStatuses.get("statusName")?.setValue(value);
+                        // Записываем текущий статус задачи в выпадающий список.
+                        let value = this.availableTransitions$.value.find((st: any) => st.taskStatusId == this.taskDetails$.value.taskStatusId);
+                        this.formStatuses.get("statusName")?.setValue(value);
 
-                    this.taskDetails = this.taskDetails$.value?.details;
-                    this.taskName = this.taskDetails$.value?.name;
-                });
+                        this.taskDetails = this.taskDetails$.value?.details;
+                        this.taskName = this.taskDetails$.value?.name;
+
+                        (await this._projectManagmentService.getSelectTaskPeopleAsync(this.projectId))
+                            .subscribe(_ => {
+                                console.log("Исполнители и наблюдатели для выбора: ", this.taskPeople$.value);
+                                this.aPeople = this.taskPeople$.value;
+
+                                let value = this.taskPeople$.value.find((st: any) => st.userId == this.taskDetails$.value.executorId);
+                                this.formExecutors.get("executorName")?.setValue(value);
+                            });
+                    });
 
                 // Получаем приоритеты задач для выбора, чтобы подставить ранее сохраненый приоритет.
                 (await this._projectManagmentService.getTaskPrioritiesAsync())
@@ -123,22 +142,22 @@ export class TaskDetailsComponent implements OnInit {
         changeTaskStatusInput.changeStatusId = this.selectedStatus.taskStatusId;
 
         (await this._projectManagmentService.changeTaskStatusAsync(changeTaskStatusInput))
-        .subscribe(async _ => {
-             // Получаем все статусы шаблона проекта.
-             (await this._projectManagmentService.getTaskStatusesAsync(this.projectId))
-             .subscribe(async _ => {
-                 console.log("Статусы для выбора: ", this.taskStatuses$.value);
+            .subscribe(async _ => {
+                // Получаем все статусы шаблона проекта.
+                (await this._projectManagmentService.getTaskStatusesAsync(this.projectId))
+                    .subscribe(async _ => {
+                        console.log("Статусы для выбора: ", this.taskStatuses$.value);
 
-                 // Получаем статусы задач для выбора, чтобы подставить ранее сохраненый статус.
-                 (await this._projectManagmentService.getAvailableTaskStatusTransitionsAsync(this.projectId, this.projectTaskId))
-                     .subscribe(_ => {
-                         console.log("Возможные переходы статусов задачи: ", this.availableTransitions$.value);
+                        // Получаем статусы задач для выбора, чтобы подставить ранее сохраненый статус.
+                        (await this._projectManagmentService.getAvailableTaskStatusTransitionsAsync(this.projectId, this.projectTaskId))
+                            .subscribe(async _ => {
+                                console.log("Возможные переходы статусов задачи: ", this.availableTransitions$.value);
 
-                         let value = this.availableTransitions$.value.find((st: any) => st.statusId == this.selectedStatus.taskStatusId);
-                         this.formStatuses.get("statusName")?.setValue(value);
-                     });
-             });
-        });
+                                let value = this.availableTransitions$.value.find((st: any) => st.statusId == this.selectedStatus.taskStatusId);
+                                this.formStatuses.get("statusName")?.setValue(value);
+                            });
+                    });
+            });
     };
 
     /**
@@ -226,6 +245,21 @@ export class TaskDetailsComponent implements OnInit {
         taskPriorityInput.priorityId = this.selectedPriority.priorityId;
 
          (await this._projectManagmentService.updateTaskPriorityAsync(taskPriorityInput))
+             .subscribe(async _ => {
+                 await this.getProjectTaskDetailsAsync();
+             });
+    };
+
+    /**
+     * Функция обновляет исполнителя задачи.
+     */
+    public async onChangeTaskExecutorAsync() {
+        let projectTaskExecutorInput = new ProjectTaskExecutorInput();
+        projectTaskExecutorInput.projectId = +this.projectId;
+        projectTaskExecutorInput.projectTaskId = +this.projectTaskId;
+        projectTaskExecutorInput.executorId = this.selectedExecutor.userId;
+
+        (await this._projectManagmentService.changeTaskExecutorAsync(projectTaskExecutorInput))
              .subscribe(async _ => {
                  await this.getProjectTaskDetailsAsync();
              });
