@@ -10,6 +10,7 @@ import { CreateProjectManagementTaskInput } from '../task/models/input/create-ta
 import { CreateTaskStatusInput } from '../task/models/input/create-task-status-input';
 import { ProjectTaskExecutorInput } from '../task/models/input/project-task-executor-input';
 import { ProjectTaskTagInput } from '../task/models/input/project-task-tag-input';
+import { ProjectTaskWatcherInput } from '../task/models/input/project-task-watcher-input';
 import { TaskPriorityInput } from '../task/models/input/task-priority-input';
 import { UserTaskTagInput } from '../task/models/input/user-task-tag-input';
 
@@ -321,6 +322,26 @@ export class ProjectManagmentService {
      public async changeTaskExecutorAsync(projectTaskExecutorInput: ProjectTaskExecutorInput) {
         return await this._http.patch(this.apiUrl + `/project-management/task-executor`, projectTaskExecutorInput).pipe(
             tap(_ => console.log("Исполнитель задачи успешно изменен"))
+        );
+    };
+
+    /**
+    * Функция привязывает наблюдателя задачи.
+    * @param projectTaskWatcherInput - Входная модель.
+    */
+     public async attachTaskWatcherAsync(projectTaskWatcherInput: ProjectTaskWatcherInput) {
+        return await this._http.patch(this.apiUrl + `/project-management/attach-task-watcher`, projectTaskWatcherInput).pipe(
+            tap(_ => console.log("Наблюдатель задачи успешно привязан"))
+        );
+    };
+
+     /**
+    * Функция отвязывает наблюдателя от задачи проекта.
+    * @param projectTaskWatcherInput - Входная модель.
+    */
+      public async detachTaskWatcherAsync(projectTaskWatcherInput: ProjectTaskWatcherInput) {
+        return await this._http.patch(this.apiUrl + `/project-management/detach-task-watcher`, projectTaskWatcherInput).pipe(
+            tap(_ => console.log("Наблюдатель успешно отвязан от задачи"))
         );
     };
 }

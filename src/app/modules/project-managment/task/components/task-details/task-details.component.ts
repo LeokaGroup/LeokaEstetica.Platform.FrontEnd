@@ -8,6 +8,7 @@ import { ChangeTaskNameInput } from "../../models/input/change-task-name-input";
 import { ChangeTaskStatusInput } from "../../models/input/change-task-status-input";
 import { ProjectTaskExecutorInput } from "../../models/input/project-task-executor-input";
 import { ProjectTaskTagInput } from "../../models/input/project-task-tag-input";
+import { ProjectTaskWatcherInput } from "../../models/input/project-task-watcher-input";
 import { TaskPriorityInput } from "../../models/input/task-priority-input";
 
 @Component({
@@ -41,9 +42,10 @@ export class TaskDetailsComponent implements OnInit {
     taskDetails: string = "";
     taskName: string = "";
     selectedTag: any;
-    selectedPriority: any;
+    selectedWatcher: any;
     aPeople: any[] = [];
     selectedExecutor: any;
+    selectedPriority: any;
 
     formStatuses: FormGroup = new FormGroup({
         "statusName": new FormControl("", [
@@ -114,13 +116,23 @@ export class TaskDetailsComponent implements OnInit {
 
                 // Получаем приоритеты задач для выбора, чтобы подставить ранее сохраненый приоритет.
                 (await this._projectManagmentService.getTaskPrioritiesAsync())
-                .subscribe(_ => {
-                    console.log("Приоритеты задачи для выбора: ", this.priorities$.value);
+                    .subscribe(async _ => {
+                        console.log("Приоритеты задачи для выбора: ", this.priorities$.value);
 
-                    // Записываем текущий приоритет задачи в выпадающий список.
-                    let value = this.priorities$.value.find((st: any) => st.priorityId == this.taskDetails$.value.priorityId);
-                    this.formPriorities.get("priorityName")?.setValue(value);
-                });
+                        // Записываем текущий приоритет задачи в выпадающий список.
+                        let value = this.priorities$.value.find((st: any) => st.priorityId == this.taskDetails$.value.priorityId);
+                        this.formPriorities.get("priorityName")?.setValue(value);
+
+                        // Получаем приоритеты задач для выбора, чтобы подставить ранее сохраненый приоритет.
+                        (await this._projectManagmentService.getTaskPrioritiesAsync())
+                            .subscribe(_ => {
+                                console.log("Приоритеты задачи для выбора: ", this.priorities$.value);
+
+                                // Записываем текущий приоритет задачи в выпадающий список.
+                                let value = this.priorities$.value.find((st: any) => st.priorityId == this.taskDetails$.value.priorityId);
+                                this.formPriorities.get("priorityName")?.setValue(value);
+                            });
+                    });
             });
     };
 
@@ -260,6 +272,38 @@ export class TaskDetailsComponent implements OnInit {
         projectTaskExecutorInput.executorId = this.selectedExecutor.userId;
 
         (await this._projectManagmentService.changeTaskExecutorAsync(projectTaskExecutorInput))
+             .subscribe(async _ => {
+                 await this.getProjectTaskDetailsAsync();
+             });
+    };
+
+      /**
+     * Функция отвязывает наблюдателя задачи.
+     * @param removedValue - Удаляемое значение.
+     * @param i - Индекс.
+     */
+       public async onDetachTaskWatcherAsync(removedValue: string, i: number) {
+        let projectTaskTagInput = new ProjectTaskWatcherInput();
+        projectTaskTagInput.projectId = +this.projectId;
+        projectTaskTagInput.projectTaskId = +this.projectTaskId;
+        projectTaskTagInput.watcherId = this.taskPeople$.value[i].userId;
+
+        (await this._projectManagmentService.detachTaskWatcherAsync(projectTaskTagInput))
+        .subscribe(async _ => {
+            await this.getProjectTaskDetailsAsync();
+        });
+    };
+
+    /**
+    * Функция привязывает наблюдателя задачи.
+    */
+    public async onAttachTaskWatcherAsync() {
+        let projectTaskExecutorInput = new ProjectTaskWatcherInput();
+        projectTaskExecutorInput.projectId = +this.projectId;
+        projectTaskExecutorInput.projectTaskId = +this.projectTaskId;
+        projectTaskExecutorInput.watcherId = this.selectedWatcher.userId;
+
+        (await this._projectManagmentService.attachTaskWatcherAsync(projectTaskExecutorInput))
              .subscribe(async _ => {
                  await this.getProjectTaskDetailsAsync();
              });
