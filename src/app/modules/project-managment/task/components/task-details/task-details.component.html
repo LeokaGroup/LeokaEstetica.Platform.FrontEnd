@@ -73,10 +73,19 @@
         </div>
       </div>
 
-      <div class="d-flex line">
+      <form class="d-flex line" [formGroup]="formPriorities">
         <label class="control-label-task-item">Приоритет:</label>
-        <p class="line-item-value">{{taskDetails$.value?.priorityName}}</p>
-      </div>
+       
+        <p-dropdown [options]="priorities$.value" 
+                    [(ngModel)]="selectedPriority" 
+                    optionLabel="priorityName" 
+                    [showClear]="true" 
+                    placeholder="Выберите приоритет"
+                    [emptyMessage]="(priorities$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                    formControlName="priorityName"
+                    (onChange)="onChangeTaskPriorityAsync()">
+        </p-dropdown>
+      </form>
 
       <div class="d-flex line">
         <label class="control-label-task-item">Метки:</label>
@@ -139,7 +148,6 @@
         <form class="line-item d-flex" [formGroup]="formExecutors">
           <label class="control-label-task-item">Исполнитель:</label>
           <div>
-            <!-- <p class="line-item-value">{{taskDetails$.value?.executorName ?? 'Не назначен'}}</p> -->
             <p-dropdown [options]="taskPeople$.value" 
                         [(ngModel)]="selectedExecutor" 
                         optionLabel="fullName" 

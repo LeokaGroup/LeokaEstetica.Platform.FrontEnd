@@ -9,6 +9,7 @@ import { ChangeTaskStatusInput } from "../../models/input/change-task-status-inp
 import { ProjectTaskExecutorInput } from "../../models/input/project-task-executor-input";
 import { ProjectTaskTagInput } from "../../models/input/project-task-tag-input";
 import { ProjectTaskWatcherInput } from "../../models/input/project-task-watcher-input";
+import { TaskPriorityInput } from "../../models/input/task-priority-input";
 
 @Component({
     selector: "",
@@ -29,6 +30,7 @@ export class TaskDetailsComponent implements OnInit {
     public readonly taskStatuses$ = this._projectManagmentService.taskStatuses$;
     public readonly availableTransitions$ = this._projectManagmentService.availableTransitions$;
     public readonly projectTags$ = this._projectManagmentService.projectTags$;
+    public readonly priorities$ = this._projectManagmentService.priorities$;
     public readonly taskPeople$ = this._projectManagmentService.taskExecutors$;
 
     projectId: number = 0;
@@ -43,9 +45,16 @@ export class TaskDetailsComponent implements OnInit {
     selectedWatcher: any;
     aPeople: any[] = [];
     selectedExecutor: any;
+    selectedPriority: any;
 
     formStatuses: FormGroup = new FormGroup({
         "statusName": new FormControl("", [
+            Validators.required
+        ])
+    });
+
+    formPriorities: FormGroup = new FormGroup({
+        "priorityName": new FormControl("", [
             Validators.required
         ])
     });
@@ -102,6 +111,26 @@ export class TaskDetailsComponent implements OnInit {
 
                                 let value = this.taskPeople$.value.find((st: any) => st.userId == this.taskDetails$.value.executorId);
                                 this.formExecutors.get("executorName")?.setValue(value);
+                            });
+                    });
+
+                // Получаем приоритеты задач для выбора, чтобы подставить ранее сохраненый приоритет.
+                (await this._projectManagmentService.getTaskPrioritiesAsync())
+                    .subscribe(async _ => {
+                        console.log("Приоритеты задачи для выбора: ", this.priorities$.value);
+
+                        // Записываем текущий приоритет задачи в выпадающий список.
+                        let value = this.priorities$.value.find((st: any) => st.priorityId == this.taskDetails$.value.priorityId);
+                        this.formPriorities.get("priorityName")?.setValue(value);
+
+                        // Получаем приоритеты задач для выбора, чтобы подставить ранее сохраненый приоритет.
+                        (await this._projectManagmentService.getTaskPrioritiesAsync())
+                            .subscribe(_ => {
+                                console.log("Приоритеты задачи для выбора: ", this.priorities$.value);
+
+                                // Записываем текущий приоритет задачи в выпадающий список.
+                                let value = this.priorities$.value.find((st: any) => st.priorityId == this.taskDetails$.value.priorityId);
+                                this.formPriorities.get("priorityName")?.setValue(value);
                             });
                     });
             });
@@ -219,6 +248,21 @@ export class TaskDetailsComponent implements OnInit {
     };
 
     /**
+     * Функция обновляет приоритет задачи.
+     */
+    public async onChangeTaskPriorityAsync() {
+        let taskPriorityInput = new TaskPriorityInput();
+        taskPriorityInput.projectId = +this.projectId;
+        taskPriorityInput.projectTaskId = +this.projectTaskId;
+        taskPriorityInput.priorityId = this.selectedPriority.priorityId;
+
+         (await this._projectManagmentService.updateTaskPriorityAsync(taskPriorityInput))
+             .subscribe(async _ => {
+                 await this.getProjectTaskDetailsAsync();
+             });
+    };
+
+    /**
      * Функция обновляет исполнителя задачи.
      */
     public async onChangeTaskExecutorAsync() {
@@ -233,12 +277,12 @@ export class TaskDetailsComponent implements OnInit {
              });
     };
 
-    /**
+      /**
      * Функция отвязывает наблюдателя задачи.
      * @param removedValue - Удаляемое значение.
      * @param i - Индекс.
      */
-    public async onDetachTaskWatcherAsync(removedValue: string, i: number) {
+       public async onDetachTaskWatcherAsync(removedValue: string, i: number) {
         let projectTaskTagInput = new ProjectTaskWatcherInput();
         projectTaskTagInput.projectId = +this.projectId;
         projectTaskTagInput.projectTaskId = +this.projectTaskId;
