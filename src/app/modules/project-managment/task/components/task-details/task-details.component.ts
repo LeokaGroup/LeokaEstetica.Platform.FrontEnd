@@ -32,6 +32,7 @@ export class TaskDetailsComponent implements OnInit {
     public readonly projectTags$ = this._projectManagmentService.projectTags$;
     public readonly priorities$ = this._projectManagmentService.priorities$;
     public readonly taskPeople$ = this._projectManagmentService.taskExecutors$;
+    public readonly taskLinkDefault$ = this._projectManagmentService.taskLinkDefault$;
 
     projectId: number = 0;
     projectTaskId: number = 0;
@@ -69,7 +70,8 @@ export class TaskDetailsComponent implements OnInit {
         forkJoin([
             this.checkUrlParams(),
             await this.getProjectTaskDetailsAsync(),
-            await this.getProjectTagsAsync()
+            await this.getProjectTagsAsync(),
+            await this.getTaskLinkDefaultAsync()
         ]).subscribe();
     };
 
@@ -306,6 +308,16 @@ export class TaskDetailsComponent implements OnInit {
         (await this._projectManagmentService.attachTaskWatcherAsync(projectTaskExecutorInput))
              .subscribe(async _ => {
                  await this.getProjectTaskDetailsAsync();
+             });
+    };
+
+     /**
+    * Функция получает связи задачи (обычные связи).
+    */
+      private async getTaskLinkDefaultAsync() {
+        (await this._projectManagmentService.getTaskLinkDefaultAsync(+this.projectId, +this.projectTaskId))
+             .subscribe(_ => {
+                console.log("Связанные задачи (обычная связь): ", this.taskLinkDefault$.value);
              });
     };
 }

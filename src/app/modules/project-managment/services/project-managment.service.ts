@@ -38,6 +38,7 @@ export class ProjectManagmentService {
     public createdTask$ = new BehaviorSubject<any>(null);
     public templateStatuses$ = new BehaviorSubject<any>(null);
     public availableTransitions$ = new BehaviorSubject<any>(null);
+    public taskLinkDefault$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient) {
         // Если используем ендпоинты модуля УП.
@@ -342,6 +343,18 @@ export class ProjectManagmentService {
       public async detachTaskWatcherAsync(projectTaskWatcherInput: ProjectTaskWatcherInput) {
         return await this._http.patch(this.apiUrl + `/project-management/detach-task-watcher`, projectTaskWatcherInput).pipe(
             tap(_ => console.log("Наблюдатель успешно отвязан от задачи"))
+        );
+    };
+
+     /**
+    * Функция получает связи задачи (обычные связи).
+    * @param projectId - Id проекта.
+    * @param projectTaskId - Id задачи в рамках проекта.
+    */
+      public async getTaskLinkDefaultAsync(projectId: number, projectTaskId: number) {
+        return await this._http.get(this.apiUrl + 
+            `/project-management/task-link-default?projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
+            tap(data => this.taskLinkDefault$.next(data))
         );
     };
 }
