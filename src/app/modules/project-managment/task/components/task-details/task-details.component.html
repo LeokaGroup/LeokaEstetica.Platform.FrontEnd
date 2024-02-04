@@ -296,7 +296,8 @@
           <button pButton type="button" 
                   label="Добавить связь" 
                   icon="pi pi-plus" 
-                  class="p-button-secondary p-button-sm p-button-text">
+                  class="p-button-secondary p-button-sm p-button-text"
+                  (click)="onSelectCreateTaskLinkAsync()">
           </button>
         </div>
       </div>
@@ -306,7 +307,7 @@
                   [tableStyle]="{'min-width': '50rem'}"
                   [rows]="10"
                   responsiveLayout="scroll"
-                  [paginator]="taskLinkDefault$.value.length > 0">
+                  [paginator]="taskLinkDefault$.value?.length > 0">
           <ng-template pTemplate="header">
               <tr>
                   <th>Код задачи</th>
@@ -438,3 +439,69 @@
     </div>
   </div>
 </div>
+
+<!-- Диалог выбора типа связи и добавления связи с задачей. -->
+<p-dialog header="Добавление связи" [(visible)]="isVisibleCreateTaskLink" [modal]="true" [style]="{width: '50vw', height: '50vw'}"
+    [draggable]="false" [resizable]="false">
+    <div class="">
+      <div>
+        <label class="control-label-task-item">Тип связи:</label>
+      </div>
+     
+     <div>
+      <p-dropdown [options]="linkTypes$.value" 
+                  [(ngModel)]="selectedLinkType" 
+                  [showClear]="true" 
+                  placeholder="Выберите тип связи"
+                  [emptyMessage]="(linkTypes$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                  optionLabel="value"
+                  (onClick)="onGetAvailableTaskLinkAsync()">
+      </p-dropdown>
+     </div>
+    </div>
+
+    <div class="" *ngIf="selectedLinkType">
+      <div>
+        <label class="control-label-task-item">Задача для связи:</label>
+      </div>
+     
+     <div>
+      <p-dropdown [options]="linkTasks$.value" 
+                  [(ngModel)]="selectedTaskLink" 
+                  optionLabel="taskName" 
+                  [filter]="true" 
+                  filterBy="filterText" 
+                  [showClear]="true" 
+                  placeholder="Выберите задачу для связи">
+        <ng-template pTemplate="selectedItem">
+            <div class="country-item country-item-value" *ngIf="selectedTaskLink">
+                <div>{{selectedTaskLink.taskName}}</div>
+            </div>
+        </ng-template>
+
+        <ng-template let-t pTemplate="item">
+            <div class="country-item">
+                <div>{{t.taskName}}</div>
+            </div>
+        </ng-template>
+    </p-dropdown>
+     </div>
+    </div>
+
+        <ng-template pTemplate="footer">
+          <p-button icon="pi pi-times" 
+                    (click)="isVisibleCreateTaskLink = false" 
+                    label="Отменить" 
+                    styleClass="p-button-danger p-button-sm p-button-text">
+
+          </p-button>
+
+          <p-button icon="pi pi-check" 
+                    (click)="onCreateTaskLinkDefaultAsync()" 
+                    label="Добавить связь" 
+                    styleClass="p-button-success p-button-sm p-button-text"
+                    [disabled]="!selectedLinkType">
+
+        </p-button>
+        </ng-template>
+</p-dialog>

@@ -11,6 +11,7 @@ import { CreateTaskStatusInput } from '../task/models/input/create-task-status-i
 import { ProjectTaskExecutorInput } from '../task/models/input/project-task-executor-input';
 import { ProjectTaskTagInput } from '../task/models/input/project-task-tag-input';
 import { ProjectTaskWatcherInput } from '../task/models/input/project-task-watcher-input';
+import { TaskLinkInput } from '../task/models/input/task-link-input';
 import { TaskPriorityInput } from '../task/models/input/task-priority-input';
 import { UserTaskTagInput } from '../task/models/input/user-task-tag-input';
 
@@ -39,6 +40,8 @@ export class ProjectManagmentService {
     public templateStatuses$ = new BehaviorSubject<any>(null);
     public availableTransitions$ = new BehaviorSubject<any>(null);
     public taskLinkDefault$ = new BehaviorSubject<any>(null);
+    public linkTypes$ = new BehaviorSubject<any>(null);
+    public linkTasks$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient) {
         // Если используем ендпоинты модуля УП.
@@ -355,6 +358,38 @@ export class ProjectManagmentService {
         return await this._http.get(this.apiUrl + 
             `/project-management/task-link-default?projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
             tap(data => this.taskLinkDefault$.next(data))
+        );
+    };
+
+      /**
+    * Функция создает связь с задачей (обычная связь).
+    * @param taskLinkInput - Входная модель.
+    */
+       public async createTaskLinkDefaultAsync(taskLinkInput: TaskLinkInput) {
+        return await this._http.post(this.apiUrl + `/project-management/task-link-default`, taskLinkInput).pipe(
+            tap(_ => console.log("Связь успешно добавлена"))
+        );
+    };
+
+     /**
+     * Функция получает типы связей задач.
+     */
+       public async getLinkTypesAsync() {
+        return await this._http.get(this.apiUrl + `/project-management/link-types`).pipe(
+            tap(data => this.linkTypes$.next(data))
+        );
+    };
+
+      /**
+     * Функция получает задачи проекта, которые доступны для создания связи с текущей задачей (разных типов связей).
+     * Под текущей задачей понимается задача, которую просматривает пользователь.
+     * @param projectId - Id проекта.
+     * @param linkType - Тип связи.
+     */
+      public async getAvailableTaskLinkAsync(projectId: number, linkType: string) {
+        return await this._http.get(this.apiUrl + 
+            `/project-management/available-task-link?projectId=${projectId}&linkType=${linkType}`).pipe(
+            tap(data => this.linkTasks$.next(data))
         );
     };
 }
