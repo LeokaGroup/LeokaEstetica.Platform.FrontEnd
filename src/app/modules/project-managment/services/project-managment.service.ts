@@ -42,6 +42,8 @@ export class ProjectManagmentService {
     public taskLinkDefault$ = new BehaviorSubject<any>(null);
     public taskLinkParent$ = new BehaviorSubject<any>(null);
     public taskLinkChild$ = new BehaviorSubject<any>(null);
+    public taskLinkDepend$ = new BehaviorSubject<any>(null);
+    public taskLinkBlocked$ = new BehaviorSubject<any>(null);
     public linkTypes$ = new BehaviorSubject<any>(null);
     public linkTasks$ = new BehaviorSubject<any>(null);
 
@@ -384,6 +386,30 @@ export class ProjectManagmentService {
         return await this._http.get(this.apiUrl + 
             `/project-management/task-link-child?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Child`).pipe(
             tap(data => this.taskLinkChild$.next(data))
+        );
+    };
+
+     /**
+    * Функция получает связи задачи (связи зависит от).
+    * @param projectId - Id проекта.
+    * @param projectTaskId - Id задачи в рамках проекта.
+    */
+      public async getTaskLinkDependAsync(projectId: number, projectTaskId: number) {
+        return await this._http.get(this.apiUrl + 
+            `/project-management/task-link-depend?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Depend`).pipe(
+            tap(data => this.taskLinkDepend$.next(data))
+        );
+    };
+
+    /**
+    * Функция получает связи задачи (связи блокирует).
+    * @param projectId - Id проекта.
+    * @param projectTaskId - Id задачи в рамках проекта.
+    */
+     public async getTaskLinkBlockedAsync(projectId: number, projectTaskId: number) {
+        return await this._http.get(this.apiUrl + 
+            `/project-management/task-link-blocked?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Depend`).pipe(
+            tap(data => this.taskLinkBlocked$.next(data))
         );
     };
 

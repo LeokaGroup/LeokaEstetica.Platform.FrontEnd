@@ -36,6 +36,8 @@ export class TaskDetailsComponent implements OnInit {
     public readonly taskLinkDefault$ = this._projectManagmentService.taskLinkDefault$;
     public readonly taskLinkParent$ = this._projectManagmentService.taskLinkParent$;
     public readonly taskLinkChild$ = this._projectManagmentService.taskLinkChild$;
+    public readonly taskLinkDepend$ = this._projectManagmentService.taskLinkDepend$;
+    public readonly taskLinkBlocked$ = this._projectManagmentService.taskLinkBlocked$;
     public readonly linkTypes$ = this._projectManagmentService.linkTypes$;
     public readonly linkTasks$ = this._projectManagmentService.linkTasks$;
 
@@ -93,7 +95,9 @@ export class TaskDetailsComponent implements OnInit {
             await this.getProjectTagsAsync(),
             await this.getTaskLinkDefaultAsync(),
             await this.getTaskLinkParentAsync(),
-            await this.getTaskLinkChildAsync()
+            await this.getTaskLinkChildAsync(),
+            await this.getTaskLinkDependAsync(),
+            await this.getTaskLinkBlockedAsync()
         ]).subscribe();
     };
 
@@ -363,6 +367,26 @@ export class TaskDetailsComponent implements OnInit {
              });
     };
 
+     /**
+    * Функция получает связи задачи (связь зависит от).
+    */
+      private async getTaskLinkDependAsync() {
+        (await this._projectManagmentService.getTaskLinkDependAsync(+this.projectId, +this.projectTaskId))
+             .subscribe(_ => {
+                console.log("Связанные задачи (связь зависит от): ", this.taskLinkDepend$.value);
+             });
+    };
+
+     /**
+    * Функция получает связи задачи (связь блокирует).
+    */
+      private async getTaskLinkBlockedAsync() {
+        (await this._projectManagmentService.getTaskLinkBlockedAsync(+this.projectId, +this.projectTaskId))
+             .subscribe(_ => {
+                console.log("Связанные задачи (связь блокирует): ", this.taskLinkBlocked$.value);
+             });
+    };
+
     /**
      * Функция создает связь с задачей (тип связь выбирается в выпадающем списке).
      * @returns 
@@ -391,6 +415,11 @@ export class TaskDetailsComponent implements OnInit {
 
             if (this.selectedLinkType.key == "Child") {
                 await this.getTaskLinkChildAsync();
+            }
+
+            if (this.selectedLinkType.key == "Depend") {
+                await this.getTaskLinkDependAsync();
+                await this.getTaskLinkBlockedAsync();
             }
             
             this.isVisibleCreateTaskLink = false;
