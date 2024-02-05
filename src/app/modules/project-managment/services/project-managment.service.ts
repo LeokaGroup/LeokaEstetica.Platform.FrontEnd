@@ -11,6 +11,7 @@ import { CreateTaskStatusInput } from '../task/models/input/create-task-status-i
 import { ProjectTaskExecutorInput } from '../task/models/input/project-task-executor-input';
 import { ProjectTaskTagInput } from '../task/models/input/project-task-tag-input';
 import { ProjectTaskWatcherInput } from '../task/models/input/project-task-watcher-input';
+import { TaskLinkInput } from '../task/models/input/task-link-input';
 import { TaskPriorityInput } from '../task/models/input/task-priority-input';
 import { UserTaskTagInput } from '../task/models/input/user-task-tag-input';
 
@@ -38,6 +39,13 @@ export class ProjectManagmentService {
     public createdTask$ = new BehaviorSubject<any>(null);
     public templateStatuses$ = new BehaviorSubject<any>(null);
     public availableTransitions$ = new BehaviorSubject<any>(null);
+    public taskLinkDefault$ = new BehaviorSubject<any>(null);
+    public taskLinkParent$ = new BehaviorSubject<any>(null);
+    public taskLinkChild$ = new BehaviorSubject<any>(null);
+    public taskLinkDepend$ = new BehaviorSubject<any>(null);
+    public taskLinkBlocked$ = new BehaviorSubject<any>(null);
+    public linkTypes$ = new BehaviorSubject<any>(null);
+    public linkTasks$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient) {
         // Если используем ендпоинты модуля УП.
@@ -342,6 +350,98 @@ export class ProjectManagmentService {
       public async detachTaskWatcherAsync(projectTaskWatcherInput: ProjectTaskWatcherInput) {
         return await this._http.patch(this.apiUrl + `/project-management/detach-task-watcher`, projectTaskWatcherInput).pipe(
             tap(_ => console.log("Наблюдатель успешно отвязан от задачи"))
+        );
+    };
+
+     /**
+    * Функция получает связи задачи (обычные связи).
+    * @param projectId - Id проекта.
+    * @param projectTaskId - Id задачи в рамках проекта.
+    */
+      public async getTaskLinkDefaultAsync(projectId: number, projectTaskId: number) {
+        return await this._http.get(this.apiUrl + 
+            `/project-management/task-link-default?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Link`).pipe(
+            tap(data => this.taskLinkDefault$.next(data))
+        );
+    };
+
+      /**
+    * Функция получает связи задачи (родительские связи).
+    * @param projectId - Id проекта.
+    * @param projectTaskId - Id задачи в рамках проекта.
+    */
+       public async getTaskLinkParentAsync(projectId: number, projectTaskId: number) {
+        return await this._http.get(this.apiUrl + 
+            `/project-management/task-link-parent?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Parent`).pipe(
+            tap(data => this.taskLinkParent$.next(data))
+        );
+    };
+
+     /**
+    * Функция получает связи задачи (дочерние связи).
+    * @param projectId - Id проекта.
+    * @param projectTaskId - Id задачи в рамках проекта.
+    */
+      public async getTaskLinkChildAsync(projectId: number, projectTaskId: number) {
+        return await this._http.get(this.apiUrl + 
+            `/project-management/task-link-child?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Child`).pipe(
+            tap(data => this.taskLinkChild$.next(data))
+        );
+    };
+
+     /**
+    * Функция получает связи задачи (связи зависит от).
+    * @param projectId - Id проекта.
+    * @param projectTaskId - Id задачи в рамках проекта.
+    */
+      public async getTaskLinkDependAsync(projectId: number, projectTaskId: number) {
+        return await this._http.get(this.apiUrl + 
+            `/project-management/task-link-depend?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Depend`).pipe(
+            tap(data => this.taskLinkDepend$.next(data))
+        );
+    };
+
+    /**
+    * Функция получает связи задачи (связи блокирует).
+    * @param projectId - Id проекта.
+    * @param projectTaskId - Id задачи в рамках проекта.
+    */
+     public async getTaskLinkBlockedAsync(projectId: number, projectTaskId: number) {
+        return await this._http.get(this.apiUrl + 
+            `/project-management/task-link-blocked?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Depend`).pipe(
+            tap(data => this.taskLinkBlocked$.next(data))
+        );
+    };
+
+      /**
+    * Функция создает связь с задачей (в зависимости от типа связи, который передали).
+    * @param taskLinkInput - Входная модель.
+    */
+       public async createTaskLinkAsync(taskLinkInput: TaskLinkInput) {
+        return await this._http.post(this.apiUrl + `/project-management/task-link`, taskLinkInput).pipe(
+            tap(_ => console.log("Связь успешно добавлена"))
+        );
+    };
+
+     /**
+     * Функция получает типы связей задач.
+     */
+       public async getLinkTypesAsync() {
+        return await this._http.get(this.apiUrl + `/project-management/link-types`).pipe(
+            tap(data => this.linkTypes$.next(data))
+        );
+    };
+
+      /**
+     * Функция получает задачи проекта, которые доступны для создания связи с текущей задачей (разных типов связей).
+     * Под текущей задачей понимается задача, которую просматривает пользователь.
+     * @param projectId - Id проекта.
+     * @param linkType - Тип связи.
+     */
+      public async getAvailableTaskLinkAsync(projectId: number, linkType: string) {
+        return await this._http.get(this.apiUrl + 
+            `/project-management/available-task-link?projectId=${projectId}&linkType=${linkType}`).pipe(
+            tap(data => this.linkTasks$.next(data))
         );
     };
 }

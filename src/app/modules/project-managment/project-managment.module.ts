@@ -42,6 +42,7 @@ import { CreateTaskComponent } from './task/components/create-task/create-task.c
 import { InplaceModule } from 'primeng/inplace';
 import { ChipModule } from 'primeng/chip';
 import { SettingsProjectManagmentComponent } from './settings/components/settings.component';
+import { SplitButtonModule } from 'primeng/splitbutton';
 
 @NgModule({
     declarations: [
@@ -74,7 +75,7 @@ import { SettingsProjectManagmentComponent } from './settings/components/setting
         SplitterModule,
         OverlayPanelModule,
         AutoCompleteModule,
-        PaginatorModule,    
+        PaginatorModule,
         RadioButtonModule,
         TagModule,
         MessagesModule,
@@ -88,7 +89,8 @@ import { SettingsProjectManagmentComponent } from './settings/components/setting
         DragDropModule,
         BreadcrumbModule,
         InplaceModule,
-        ChipModule
+        ChipModule,
+        SplitButtonModule
     ],
 
     exports: [],

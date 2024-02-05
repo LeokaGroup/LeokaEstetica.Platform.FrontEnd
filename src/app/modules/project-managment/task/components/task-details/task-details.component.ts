@@ -9,6 +9,7 @@ import { ChangeTaskStatusInput } from "../../models/input/change-task-status-inp
 import { ProjectTaskExecutorInput } from "../../models/input/project-task-executor-input";
 import { ProjectTaskTagInput } from "../../models/input/project-task-tag-input";
 import { ProjectTaskWatcherInput } from "../../models/input/project-task-watcher-input";
+import { TaskLinkInput } from "../../models/input/task-link-input";
 import { TaskPriorityInput } from "../../models/input/task-priority-input";
 
 @Component({
@@ -32,6 +33,13 @@ export class TaskDetailsComponent implements OnInit {
     public readonly projectTags$ = this._projectManagmentService.projectTags$;
     public readonly priorities$ = this._projectManagmentService.priorities$;
     public readonly taskPeople$ = this._projectManagmentService.taskExecutors$;
+    public readonly taskLinkDefault$ = this._projectManagmentService.taskLinkDefault$;
+    public readonly taskLinkParent$ = this._projectManagmentService.taskLinkParent$;
+    public readonly taskLinkChild$ = this._projectManagmentService.taskLinkChild$;
+    public readonly taskLinkDepend$ = this._projectManagmentService.taskLinkDepend$;
+    public readonly taskLinkBlocked$ = this._projectManagmentService.taskLinkBlocked$;
+    public readonly linkTypes$ = this._projectManagmentService.linkTypes$;
+    public readonly linkTasks$ = this._projectManagmentService.linkTasks$;
 
     projectId: number = 0;
     projectTaskId: number = 0;
@@ -46,6 +54,21 @@ export class TaskDetailsComponent implements OnInit {
     aPeople: any[] = [];
     selectedExecutor: any;
     selectedPriority: any;
+    isVisibleCreateTaskLink: boolean = false;
+    selectedLinkType: any;
+    selectedTaskLink: any;
+    aAvailableActions: any[] = [
+        {
+            label: 'Связи',
+            items: [{
+                label: 'Добавить связь',
+                icon: 'pi pi-plus',
+                command: async () => {
+                    await this.onSelectCreateTaskLinkAsync();
+                }
+            }]
+        }
+    ];
 
     formStatuses: FormGroup = new FormGroup({
         "statusName": new FormControl("", [
@@ -69,7 +92,12 @@ export class TaskDetailsComponent implements OnInit {
         forkJoin([
             this.checkUrlParams(),
             await this.getProjectTaskDetailsAsync(),
-            await this.getProjectTagsAsync()
+            await this.getProjectTagsAsync(),
+            await this.getTaskLinkDefaultAsync(),
+            await this.getTaskLinkParentAsync(),
+            await this.getTaskLinkChildAsync(),
+            await this.getTaskLinkDependAsync(),
+            await this.getTaskLinkBlockedAsync()
         ]).subscribe();
     };
 
@@ -307,5 +335,121 @@ export class TaskDetailsComponent implements OnInit {
              .subscribe(async _ => {
                  await this.getProjectTaskDetailsAsync();
              });
+    };
+
+     /**
+    * Функция получает связи задачи (обычные связи).
+    */
+      private async getTaskLinkDefaultAsync() {
+        (await this._projectManagmentService.getTaskLinkDefaultAsync(+this.projectId, +this.projectTaskId))
+             .subscribe(_ => {
+                console.log("Связанные задачи (обычная связь): ", this.taskLinkDefault$.value);
+             });
+    };
+
+    /**
+    * Функция получает связи задачи (родительские связи).
+    */
+     private async getTaskLinkParentAsync() {
+        (await this._projectManagmentService.getTaskLinkParentAsync(+this.projectId, +this.projectTaskId))
+             .subscribe(_ => {
+                console.log("Связанные задачи (родительская связь): ", this.taskLinkParent$.value);
+             });
+    };
+
+     /**
+    * Функция получает связи задачи (дочерние связи).
+    */
+      private async getTaskLinkChildAsync() {
+        (await this._projectManagmentService.getTaskLinkChildAsync(+this.projectId, +this.projectTaskId))
+             .subscribe(_ => {
+                console.log("Связанные задачи (дочерняя связь): ", this.taskLinkChild$.value);
+             });
+    };
+
+     /**
+    * Функция получает связи задачи (связь зависит от).
+    */
+      private async getTaskLinkDependAsync() {
+        (await this._projectManagmentService.getTaskLinkDependAsync(+this.projectId, +this.projectTaskId))
+             .subscribe(_ => {
+                console.log("Связанные задачи (связь зависит от): ", this.taskLinkDepend$.value);
+             });
+    };
+
+     /**
+    * Функция получает связи задачи (связь блокирует).
+    */
+      private async getTaskLinkBlockedAsync() {
+        (await this._projectManagmentService.getTaskLinkBlockedAsync(+this.projectId, +this.projectTaskId))
+             .subscribe(_ => {
+                console.log("Связанные задачи (связь блокирует): ", this.taskLinkBlocked$.value);
+             });
+    };
+
+    /**
+     * Функция создает связь с задачей (тип связь выбирается в выпадающем списке).
+     * @returns 
+     */
+    public async onCreateTaskLinkAsync() {
+        if (!this.selectedLinkType) {
+            return;
+        }
+
+        let taskLinkInput = new TaskLinkInput();
+        taskLinkInput.projectId = +this.projectId;
+        taskLinkInput.taskFromLink = +this.projectTaskId;
+        taskLinkInput.taskToLink = this.selectedTaskLink.taskId;
+        taskLinkInput.linkType = this.selectedTaskLink.linkType;
+        
+        (await this._projectManagmentService.createTaskLinkAsync(taskLinkInput))
+        .subscribe(async _ => {
+            // Подгружаем те связи, которые надо актуализировать в таблице связей.
+            if (this.selectedLinkType.key == "Link") {
+                await this.getTaskLinkDefaultAsync();
+            }
+
+            if (this.selectedLinkType.key == "Parent") {
+                await this.getTaskLinkParentAsync();
+            }
+
+            if (this.selectedLinkType.key == "Child") {
+                await this.getTaskLinkChildAsync();
+            }
+
+            if (this.selectedLinkType.key == "Depend") {
+                await this.getTaskLinkDependAsync();
+                await this.getTaskLinkBlockedAsync();
+            }
+            
+            this.isVisibleCreateTaskLink = false;
+         });
+    };
+
+    /**
+     * Функция получает типы связей задач.
+     */
+     private async getLinkTypesAsync() {
+        (await this._projectManagmentService.getLinkTypesAsync())
+        .subscribe(_ => {
+           console.log("Типы связей: ", this.linkTypes$.value);
+        });
+    };
+
+     /**
+     * Функция получает задачи проекта, которые доступны для создания связи с текущей задачей (разных типов связей).
+     * Под текущей задачей понимается задача, которую просматривает пользователь.
+     * @param linkType - Тип связи.
+     */
+      public async onGetAvailableTaskLinkAsync() {
+        (await this._projectManagmentService.getAvailableTaskLinkAsync(+this.projectId, this.selectedLinkType.key))
+        .subscribe(_ => {
+           console.log("Задачи доступные для связи: ", this.linkTasks$.value);
+        });
+    };
+
+    public async onSelectCreateTaskLinkAsync() {
+        this.isVisibleCreateTaskLink = true;
+        await this.getLinkTypesAsync();
     };
 }

@@ -88,3 +88,18 @@
 ::ng-deep .p-chip-text {
   font-size: smaller;
 }
+
+.smaller-text {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 700px;
+  font-size: smaller;
+}
+
+::ng-deep .ng-star-inserted .cancel {
+  text-align: center;
+}
+
+.only-smaller-text {
+  font-size: smaller;
+}
