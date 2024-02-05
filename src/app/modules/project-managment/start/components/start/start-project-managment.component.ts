@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
+import { ConfigSpaceSettingInput } from "../../../task/models/input/config-space-setting-input";
 
 @Component({
     selector: "",
@@ -16,6 +17,8 @@ export class StartProjectManagmentComponent implements OnInit {
     public readonly userProjects$ = this._projectManagmentService.userProjects$;
     public readonly viewStrategies$ = this._projectManagmentService.viewStrategies$;
     public readonly projectManagmentTemplates$ = this._projectManagmentService.projectManagmentTemplates$;
+    public readonly projectWorkspaceSettings$ = this._projectManagmentService.projectWorkspaceSettings$;
+    public readonly commitedProjectWorkspaceSettings$ = this._projectManagmentService.commitedProjectWorkspaceSettings$;
 
     selectedProject: any;
     selectedStrategy: any;
@@ -33,7 +36,8 @@ export class StartProjectManagmentComponent implements OnInit {
         forkJoin([
             await this.getUseProjectsAsync(),
             await this.getViewStrategiesAsync(),
-            await this.getProjectManagmentTemplatesAsync()
+            await this.getProjectManagmentTemplatesAsync(),
+            await this.getBuildProjectSpaceSettingsAsync()
         ]).subscribe();
     };
 
@@ -61,12 +65,18 @@ export class StartProjectManagmentComponent implements OnInit {
 
     /**
      * Функция переходит в рабочее пространство проекта.
+     * Если пользователь ранее выбирал настройки, то не отображаем к выбору стратегию и шаблон, а применяем ссылку с бэка.
      */
-    public onRouteWorkSpace() {
+    public async onRouteWorkSpace() {
         console.log("selectedProject", this.selectedProject);
         console.log("selectedStrategy", this.selectedStrategy);
 
+        // Можем взять templateId от любого статуса, так как все статусы будут принадлежать одному шаблону,
+        // который выбран пользователем.
+        let configSpaceSettingInput = new ConfigSpaceSettingInput();
         let projectId = this.selectedProject.projectId;
+        configSpaceSettingInput.projectId = projectId;
+
         let strategy = this.selectedStrategy.viewStrategySysName.toLowerCase();
 
         if (strategy == "kanban") {
@@ -77,17 +87,15 @@ export class StartProjectManagmentComponent implements OnInit {
             strategy = "sm";
         }
 
-        // Можем взять templateId от любого статуса, так как все статусы будут принадлежать одному шаблону,
-        // который выбран пользователем.
-        let templateId = this.selectedTemplate.projectManagmentTaskStatusTemplates[0].templateId;
+        configSpaceSettingInput.strategy = strategy;
+        configSpaceSettingInput.templateId = this.selectedTemplate.projectManagmentTaskStatusTemplates[0].templateId;
 
-        this._router.navigate(["/project-management/space"], {
-            queryParams: {
-                projectId,
-                view: strategy,
-                tm: templateId
-            }
-        });
+        (await this._projectManagmentService.commitSpaceSettingsAsync(configSpaceSettingInput))
+            .subscribe(_ => {
+                if (this.commitedProjectWorkspaceSettings$.value.isCommitProjectSettings) {
+                    window.location.href = this.commitedProjectWorkspaceSettings$.value.projectManagmentSpaceUrl;
+                }
+            });
     };
 
     /**
@@ -139,5 +147,16 @@ export class StartProjectManagmentComponent implements OnInit {
      */
     public onSelectProject() {
         this.isSelectedProject = this.selectedProject !== undefined && this.selectedProject?.projectId > 0;
+    };
+
+    private async getBuildProjectSpaceSettingsAsync() {
+        (await this._projectManagmentService.getBuildProjectSpaceSettingsAsync())
+        .subscribe(_ => {
+            console.log("projectWorkspaceSettings", this.projectWorkspaceSettings$.value);
+
+            if (this.projectWorkspaceSettings$.value.isCommitProjectSettings) {
+                window.location.href = this.projectWorkspaceSettings$.value.projectManagmentSpaceUrl;
+            }
+        });
     };
 }

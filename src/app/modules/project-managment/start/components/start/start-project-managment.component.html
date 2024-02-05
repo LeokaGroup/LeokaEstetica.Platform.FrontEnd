@@ -1,10 +1,10 @@
-<div class="d-flex block-profile space-top-80">
+<div class="d-flex block-profile space-top-80" *ngIf="!projectWorkspaceSettings$.value?.isCommitProjectSettings">
   <!-- Выбор проекта. -->
   <div class="block-project-managment d-flex col-lg-12">
     <div class="col-lg-12">
       <div class="block-user-projects">
-        <p-table [value]="userProjects$.value.userProjects" [(selection)]="selectedProject" dataKey="projectId"
-          [paginator]="userProjects$.value.total > 0" [rows]="10" styleClass="p-datatable-gridlines"
+        <p-table [value]="userProjects$.value?.userProjects" [(selection)]="selectedProject" dataKey="projectId"
+          [paginator]="userProjects$.value?.total > 0" [rows]="10" styleClass="p-datatable-gridlines"
           responsiveLayout="scroll"
           selectionMode="single"
           (onRowSelect)="onSelectProject()">
@@ -39,7 +39,7 @@
           </ng-template>
 
           <ng-template pTemplate="summary">
-            Всего: {{userProjects$.value.total}}
+            Всего: {{userProjects$.value?.total}}
           </ng-template>
 
           <ng-template pTemplate="emptymessage">
@@ -58,7 +58,7 @@
 </div>
 
 <!-- Выбор стратегии представления. -->
-<div class="d-flex block-profile space-top-80">
+<div class="d-flex block-profile space-top-80" *ngIf="!projectWorkspaceSettings$.value?.isCommitProjectSettings">
   <div class="mt-3 block-project-managment d-flex col-lg-12">
     <div class="col-lg-12">
       <div class="block-view-strategy">
@@ -120,7 +120,7 @@
   </div>
 </div>
 
-<div>
+<div *ngIf="!projectWorkspaceSettings$.value?.isCommitProjectSettings">
   <button type="submit" 
           class="mt-5 btn btn-primary button-action-pur-control"
           (click)="onRouteWorkSpace()"

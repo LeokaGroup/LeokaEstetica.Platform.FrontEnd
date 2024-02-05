@@ -159,6 +159,7 @@ export class CatalogVacancyComponent implements OnInit {
         (await this._vacancyService.searchVacanciesAsync(event.query))
             .subscribe(_ => {
                 console.log("Результаты поиска: ", this.catalog$.value);
+                this.aCatalogVacancies = this.catalog$.value.catalogVacancies;
             });
     };
 

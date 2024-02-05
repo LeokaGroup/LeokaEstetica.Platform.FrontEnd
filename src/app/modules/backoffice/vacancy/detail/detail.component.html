@@ -86,7 +86,7 @@
                             [(ngModel)]="payment"
                             [disabled]="!isEditMode" />
                   </div>
-                  <ng-template #blockFour>{{payment}}</ng-template>
+                  <ng-template #blockFour><p class="white-space">{{payment == '0' ? 'Без оплаты либо оплата не указана' : payment}}</p></ng-template>
                 </div>
               </div>
 
@@ -105,7 +105,7 @@
                                       [readonly]="!isEditMode"></p-editor>
                                   </div>
                                 <ng-template #blockFive>
-                                  {{vacancyText}}
+                                  <p class="white-space">{{vacancyText}}</p>
                                 </ng-template>
                               </div>
                           </div>
@@ -129,7 +129,7 @@
                                 </div>
                              
                                 <div *ngIf="!isEditMode">
-                                  {{conditions}}
+                                  <p class="white-space">{{conditions}}</p>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +153,7 @@
                               </div>
                            
                               <div *ngIf="!isEditMode">
-                                {{demands}}
+                                <p class="white-space">{{demands}}</p>
                               </div>
                           </div>
                       </div>

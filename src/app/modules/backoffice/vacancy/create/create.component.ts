@@ -56,9 +56,6 @@ export class CreateVacancyComponent implements OnInit {
         this._signalrService.startConnection().then(() => {
             console.log("Подключились");
 
-            console.log(this.expirienceVariants);
-
-
             this.listenAllHubsNotifications();
         });
 
@@ -82,6 +79,8 @@ export class CreateVacancyComponent implements OnInit {
      */
      private listenAllHubsNotifications() {
         this._signalrService.listenSuccessCreatedUserVacancyInfo();
+        this._signalrService.listenWarningLimitFareRuleVacancies();
+        this._signalrService.listenErrorCreateVacancy();
     };
 
 

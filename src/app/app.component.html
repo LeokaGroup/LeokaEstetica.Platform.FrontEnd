@@ -1,5 +1,9 @@
 <ngx-loading [show]="loading$.value"></ngx-loading>
 <header *ngIf="isVisibleHeader"></header>
+
+<!-- Меню хидера (верхнее). -->
+<project-management-header *ngIf="isVisibleProjectManagementMenu"></project-management-header>
+
 <left-menu *ngIf="isVisibleMenu"></left-menu>
 <router-outlet></router-outlet>
 <footer></footer>
