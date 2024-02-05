@@ -160,3 +160,9 @@
 .control-order-form {
     width: 100%;
 }
+
+::ng-deep .p-button-text {
+    &:focus {
+        box-shadow: none !important;
+    }
+}

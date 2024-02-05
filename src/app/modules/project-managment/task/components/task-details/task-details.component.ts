@@ -34,6 +34,7 @@ export class TaskDetailsComponent implements OnInit {
     public readonly priorities$ = this._projectManagmentService.priorities$;
     public readonly taskPeople$ = this._projectManagmentService.taskExecutors$;
     public readonly taskLinkDefault$ = this._projectManagmentService.taskLinkDefault$;
+    public readonly taskLinkParent$ = this._projectManagmentService.taskLinkParent$;
     public readonly linkTypes$ = this._projectManagmentService.linkTypes$;
     public readonly linkTasks$ = this._projectManagmentService.linkTasks$;
 
@@ -53,6 +54,18 @@ export class TaskDetailsComponent implements OnInit {
     isVisibleCreateTaskLink: boolean = false;
     selectedLinkType: any;
     selectedTaskLink: any;
+    aAvailableActions: any[] = [
+        {
+            label: 'Связи',
+            items: [{
+                label: 'Добавить связь',
+                icon: 'pi pi-plus',
+                command: async () => {
+                    await this.onSelectCreateTaskLinkAsync();
+                }
+            }]
+        }
+    ];
 
     formStatuses: FormGroup = new FormGroup({
         "statusName": new FormControl("", [
@@ -77,7 +90,8 @@ export class TaskDetailsComponent implements OnInit {
             this.checkUrlParams(),
             await this.getProjectTaskDetailsAsync(),
             await this.getProjectTagsAsync(),
-            await this.getTaskLinkDefaultAsync()
+            await this.getTaskLinkDefaultAsync(),
+            await this.getTaskLinkParentAsync()
         ]).subscribe();
     };
 
@@ -328,6 +342,16 @@ export class TaskDetailsComponent implements OnInit {
     };
 
     /**
+    * Функция получает связи задачи (родительские связи).
+    */
+     private async getTaskLinkParentAsync() {
+        (await this._projectManagmentService.getTaskLinkParentAsync(+this.projectId, +this.projectTaskId))
+             .subscribe(_ => {
+                console.log("Связанные задачи (родительская связь): ", this.taskLinkParent$.value);
+             });
+    };
+
+    /**
      * Функция создает связь с задачей (тип связь выбирается в выпадающем списке).
      * @returns 
      */
@@ -342,9 +366,17 @@ export class TaskDetailsComponent implements OnInit {
         taskLinkInput.taskToLink = this.selectedTaskLink.taskId;
         taskLinkInput.linkType = this.selectedTaskLink.linkType;
         
-        (await this._projectManagmentService.createTaskLinkDefaultAsync(taskLinkInput))
+        (await this._projectManagmentService.createTaskLinkAsync(taskLinkInput))
         .subscribe(async _ => {
-            await this.getTaskLinkDefaultAsync();
+            // Подгружаем те связи, которые надо актуализировать в таблице связей.
+            if (this.selectedLinkType.key == "Link") {
+                await this.getTaskLinkDefaultAsync();
+            }
+
+            if (this.selectedLinkType.key == "Parent") {
+                await this.getTaskLinkParentAsync();
+            }
+            
             this.isVisibleCreateTaskLink = false;
          });
     };

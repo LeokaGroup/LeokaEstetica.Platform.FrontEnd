@@ -40,6 +40,7 @@ export class ProjectManagmentService {
     public templateStatuses$ = new BehaviorSubject<any>(null);
     public availableTransitions$ = new BehaviorSubject<any>(null);
     public taskLinkDefault$ = new BehaviorSubject<any>(null);
+    public taskLinkParent$ = new BehaviorSubject<any>(null);
     public linkTypes$ = new BehaviorSubject<any>(null);
     public linkTasks$ = new BehaviorSubject<any>(null);
 
@@ -356,8 +357,20 @@ export class ProjectManagmentService {
     */
       public async getTaskLinkDefaultAsync(projectId: number, projectTaskId: number) {
         return await this._http.get(this.apiUrl + 
-            `/project-management/task-link-default?projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
+            `/project-management/task-link-default?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Link`).pipe(
             tap(data => this.taskLinkDefault$.next(data))
+        );
+    };
+
+      /**
+    * Функция получает связи задачи (родительские связи).
+    * @param projectId - Id проекта.
+    * @param projectTaskId - Id задачи в рамках проекта.
+    */
+       public async getTaskLinkParentAsync(projectId: number, projectTaskId: number) {
+        return await this._http.get(this.apiUrl + 
+            `/project-management/task-link-parent?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Parent`).pipe(
+            tap(data => this.taskLinkParent$.next(data))
         );
     };
 
@@ -365,7 +378,7 @@ export class ProjectManagmentService {
     * Функция создает связь с задачей (в зависимости от типа связи, который передали).
     * @param taskLinkInput - Входная модель.
     */
-       public async createTaskLinkDefaultAsync(taskLinkInput: TaskLinkInput) {
+       public async createTaskLinkAsync(taskLinkInput: TaskLinkInput) {
         return await this._http.post(this.apiUrl + `/project-management/task-link`, taskLinkInput).pipe(
             tap(_ => console.log("Связь успешно добавлена"))
         );
