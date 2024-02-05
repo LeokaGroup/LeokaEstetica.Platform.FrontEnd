@@ -41,6 +41,7 @@ export class ProjectManagmentService {
     public availableTransitions$ = new BehaviorSubject<any>(null);
     public taskLinkDefault$ = new BehaviorSubject<any>(null);
     public taskLinkParent$ = new BehaviorSubject<any>(null);
+    public taskLinkChild$ = new BehaviorSubject<any>(null);
     public linkTypes$ = new BehaviorSubject<any>(null);
     public linkTasks$ = new BehaviorSubject<any>(null);
 
@@ -371,6 +372,18 @@ export class ProjectManagmentService {
         return await this._http.get(this.apiUrl + 
             `/project-management/task-link-parent?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Parent`).pipe(
             tap(data => this.taskLinkParent$.next(data))
+        );
+    };
+
+     /**
+    * Функция получает связи задачи (дочерние связи).
+    * @param projectId - Id проекта.
+    * @param projectTaskId - Id задачи в рамках проекта.
+    */
+      public async getTaskLinkChildAsync(projectId: number, projectTaskId: number) {
+        return await this._http.get(this.apiUrl + 
+            `/project-management/task-link-child?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Child`).pipe(
+            tap(data => this.taskLinkChild$.next(data))
         );
     };
 

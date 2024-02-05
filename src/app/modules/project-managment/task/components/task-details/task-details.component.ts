@@ -35,6 +35,7 @@ export class TaskDetailsComponent implements OnInit {
     public readonly taskPeople$ = this._projectManagmentService.taskExecutors$;
     public readonly taskLinkDefault$ = this._projectManagmentService.taskLinkDefault$;
     public readonly taskLinkParent$ = this._projectManagmentService.taskLinkParent$;
+    public readonly taskLinkChild$ = this._projectManagmentService.taskLinkChild$;
     public readonly linkTypes$ = this._projectManagmentService.linkTypes$;
     public readonly linkTasks$ = this._projectManagmentService.linkTasks$;
 
@@ -91,7 +92,8 @@ export class TaskDetailsComponent implements OnInit {
             await this.getProjectTaskDetailsAsync(),
             await this.getProjectTagsAsync(),
             await this.getTaskLinkDefaultAsync(),
-            await this.getTaskLinkParentAsync()
+            await this.getTaskLinkParentAsync(),
+            await this.getTaskLinkChildAsync()
         ]).subscribe();
     };
 
@@ -351,6 +353,16 @@ export class TaskDetailsComponent implements OnInit {
              });
     };
 
+     /**
+    * Функция получает связи задачи (дочерние связи).
+    */
+      private async getTaskLinkChildAsync() {
+        (await this._projectManagmentService.getTaskLinkChildAsync(+this.projectId, +this.projectTaskId))
+             .subscribe(_ => {
+                console.log("Связанные задачи (дочерняя связь): ", this.taskLinkChild$.value);
+             });
+    };
+
     /**
      * Функция создает связь с задачей (тип связь выбирается в выпадающем списке).
      * @returns 
@@ -375,6 +387,10 @@ export class TaskDetailsComponent implements OnInit {
 
             if (this.selectedLinkType.key == "Parent") {
                 await this.getTaskLinkParentAsync();
+            }
+
+            if (this.selectedLinkType.key == "Child") {
+                await this.getTaskLinkChildAsync();
             }
             
             this.isVisibleCreateTaskLink = false;
