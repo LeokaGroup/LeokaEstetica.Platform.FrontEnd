@@ -345,6 +345,7 @@ export class TaskDetailsComponent implements OnInit {
         (await this._projectManagmentService.createTaskLinkDefaultAsync(taskLinkInput))
         .subscribe(async _ => {
             await this.getTaskLinkDefaultAsync();
+            this.isVisibleCreateTaskLink = false;
          });
     };
 

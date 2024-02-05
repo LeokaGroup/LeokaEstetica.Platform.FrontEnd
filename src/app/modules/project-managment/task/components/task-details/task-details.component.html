@@ -485,6 +485,23 @@
             </div>
         </ng-template>
     </p-dropdown>
+    
+    <div>
+      <small *ngIf="selectedLinkType.key == 'Link'">Укажите, с какой задачей нужно связать текущую (связь без иерархии).
+
+      </small>
+      <small *ngIf="selectedLinkType.key == 'Parent'">Укажите, какая задача является родительской для текущей (связь с
+        иерархией).
+
+      </small>
+      <small *ngIf="selectedLinkType.key == 'Child'">Укажите, какая задача является дочерней для текущей (связь с
+        иерархией).
+
+      </small>
+      <small *ngIf="selectedLinkType.key == 'Depend'">Укажите, от какой задачи зависит текущая (связь без иерархии).
+
+      </small>
+    </div>
      </div>
     </div>
 

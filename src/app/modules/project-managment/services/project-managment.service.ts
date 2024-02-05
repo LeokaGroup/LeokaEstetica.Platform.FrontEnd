@@ -362,11 +362,11 @@ export class ProjectManagmentService {
     };
 
       /**
-    * Функция создает связь с задачей (обычная связь).
+    * Функция создает связь с задачей (в зависимости от типа связи, который передали).
     * @param taskLinkInput - Входная модель.
     */
        public async createTaskLinkDefaultAsync(taskLinkInput: TaskLinkInput) {
-        return await this._http.post(this.apiUrl + `/project-management/task-link-default`, taskLinkInput).pipe(
+        return await this._http.post(this.apiUrl + `/project-management/task-link`, taskLinkInput).pipe(
             tap(_ => console.log("Связь успешно добавлена"))
         );
     };
