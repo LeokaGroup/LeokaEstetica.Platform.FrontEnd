@@ -327,7 +327,11 @@ export class TaskDetailsComponent implements OnInit {
              });
     };
 
-    public async onCreateTaskLinkDefaultAsync() {
+    /**
+     * Функция создает связь с задачей (тип связь выбирается в выпадающем списке).
+     * @returns 
+     */
+    public async onCreateTaskLinkAsync() {
         if (!this.selectedLinkType) {
             return;
         }
@@ -335,11 +339,13 @@ export class TaskDetailsComponent implements OnInit {
         let taskLinkInput = new TaskLinkInput();
         taskLinkInput.projectId = +this.projectId;
         taskLinkInput.taskFromLink = +this.projectTaskId;
-        // TODO: Добавить Id задачи, из возможных к связыванию.
-        console.log(this.selectedTaskLink);
+        taskLinkInput.taskToLink = this.selectedTaskLink.taskId;
+        taskLinkInput.linkType = this.selectedTaskLink.linkType;
         
-        // (await this._projectManagmentService.createTaskLinkDefaultAsync(taskLinkInput))
-        // .subscribe(_ => { });
+        (await this._projectManagmentService.createTaskLinkDefaultAsync(taskLinkInput))
+        .subscribe(async _ => {
+            await this.getTaskLinkDefaultAsync();
+         });
     };
 
     /**
