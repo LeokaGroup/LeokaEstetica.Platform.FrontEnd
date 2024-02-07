@@ -452,4 +452,32 @@ export class TaskDetailsComponent implements OnInit {
         this.isVisibleCreateTaskLink = true;
         await this.getLinkTypesAsync();
     };
+
+    /**
+     * Функция удаляет связь с задачей определенного типа.
+     * @param removedLinkId - Id задачи, с которой разорвать связь.
+     * @param linkType - Тип связи.
+     */
+    public async onRemoveTaskLinkAsync(removedLinkId: number, linkType: string) {
+        (await this._projectManagmentService.removeTaskLinkAsync(removedLinkId, linkType, +this.projectTaskId, +this.projectId))
+             .subscribe(async _ => {
+                  // Подгружаем те связи, которые надо актуализировать в таблице связей.
+            if (linkType == "Link") {
+                await this.getTaskLinkDefaultAsync();
+            }
+
+            if (linkType == "Parent") {
+                await this.getTaskLinkParentAsync();
+            }
+
+            if (linkType == "Child") {
+                await this.getTaskLinkChildAsync();
+            }
+
+            if (linkType == "Depend") {
+                await this.getTaskLinkDependAsync();
+                await this.getTaskLinkBlockedAsync();
+            }
+             });
+    };
 }
