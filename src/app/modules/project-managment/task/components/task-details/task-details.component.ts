@@ -7,6 +7,7 @@ import { ChangeTaskDetailsInput } from "../../models/input/change-task-details-i
 import { ChangeTaskNameInput } from "../../models/input/change-task-name-input";
 import { ChangeTaskStatusInput } from "../../models/input/change-task-status-input";
 import { ProjectTaskExecutorInput } from "../../models/input/project-task-executor-input";
+import { ProjectTaskFileInput } from "../../models/input/project-task-file-input";
 import { ProjectTaskTagInput } from "../../models/input/project-task-tag-input";
 import { ProjectTaskWatcherInput } from "../../models/input/project-task-watcher-input";
 import { TaskLinkInput } from "../../models/input/task-link-input";
@@ -41,8 +42,8 @@ export class TaskDetailsComponent implements OnInit {
     public readonly linkTypes$ = this._projectManagmentService.linkTypes$;
     public readonly linkTasks$ = this._projectManagmentService.linkTasks$;
 
-    projectId: number = 0;
-    projectTaskId: number = 0;
+    projectId: any;
+    projectTaskId: any;
     isClosable: boolean = true;
     isActiveTaskName: boolean = false;
     isActiveTaskDetails: boolean = false;
@@ -87,6 +88,9 @@ export class TaskDetailsComponent implements OnInit {
             Validators.required
         ])
     });
+
+    taskFormData = new FormData();
+    uploadedFiles: any[] = [];
 
     public async ngOnInit() {
         forkJoin([
@@ -451,6 +455,30 @@ export class TaskDetailsComponent implements OnInit {
     public async onSelectCreateTaskLinkAsync() {
         this.isVisibleCreateTaskLink = true;
         await this.getLinkTypesAsync();
+    };
+
+    /**
+     * Функция выбирает файл.
+     * @param event - Событие.
+     */
+    public onSelectTaskFiles(event: any) {
+        for(let file of event.files) {
+            this.taskFormData.append("formCollection", file);
+        }
+    };
+
+    /**
+     * Функция добавляет файл к задаче.
+     */
+    public async onUploadTaskFilesAsync() {
+        let inputModel = new ProjectTaskFileInput();
+        inputModel.projectId = this.projectId;
+        inputModel.taskId = this.projectTaskId;
+
+        this.taskFormData.append("projectTaskFileInput", JSON.stringify(inputModel));
+
+        (await this._projectManagmentService.uploadTaskFilesAsync(this.taskFormData))
+             .subscribe(async _ => {});
     };
 
     /**
