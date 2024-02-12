@@ -341,7 +341,11 @@
 
                   <td>
                     <div class="cancel">
-                      <button pButton type="button" icon="pi pi-times" class="p-button-danger p-button-sm p-button-text"></button>
+                      <button pButton type="button" 
+                              icon="pi pi-times" 
+                              class="p-button-danger p-button-sm p-button-text"
+                              (click)="onRemoveTaskLinkAsync(t.taskId, 'Link')">
+                      </button>
                     </div>
                   </td>
               </tr>
@@ -418,7 +422,12 @@
 
                   <td>
                     <div class="cancel">
-                      <button pButton type="button" icon="pi pi-times" class="p-button-danger p-button-sm p-button-text"></button>
+                      <button pButton 
+                              type="button" 
+                              icon="pi pi-times" 
+                              class="p-button-danger p-button-sm p-button-text"
+                              (click)="onRemoveTaskLinkAsync(t.taskId, 'Parent')">
+                      </button>
                     </div>
                   </td>
               </tr>
@@ -495,7 +504,12 @@
 
                   <td>
                     <div class="cancel">
-                      <button pButton type="button" icon="pi pi-times" class="p-button-danger p-button-sm p-button-text"></button>
+                      <button pButton 
+                              type="button" 
+                              icon="pi pi-times" 
+                              class="p-button-danger p-button-sm p-button-text"
+                              (click)="onRemoveTaskLinkAsync(t.taskId, 'Child')">
+                      </button>
                     </div>
                   </td>
               </tr>
@@ -572,7 +586,12 @@
 
                   <td>
                     <div class="cancel">
-                      <button pButton type="button" icon="pi pi-times" class="p-button-danger p-button-sm p-button-text"></button>
+                      <button pButton 
+                              type="button" 
+                              icon="pi pi-times" 
+                              class="p-button-danger p-button-sm p-button-text"
+                              (click)="onRemoveTaskLinkAsync(t.taskId, 'Depend')">
+                      </button>
                     </div>
                   </td>
               </tr>
