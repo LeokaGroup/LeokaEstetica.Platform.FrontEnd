@@ -9,6 +9,7 @@ import { ConfigSpaceSettingInput } from '../task/models/input/config-space-setti
 import { CreateProjectManagementTaskInput } from '../task/models/input/create-task-input';
 import { CreateTaskStatusInput } from '../task/models/input/create-task-status-input';
 import { ProjectTaskExecutorInput } from '../task/models/input/project-task-executor-input';
+import { ProjectTaskFileInput } from '../task/models/input/project-task-file-input';
 import { ProjectTaskTagInput } from '../task/models/input/project-task-tag-input';
 import { ProjectTaskWatcherInput } from '../task/models/input/project-task-watcher-input';
 import { TaskLinkInput } from '../task/models/input/task-link-input';
@@ -442,6 +443,12 @@ export class ProjectManagmentService {
         return await this._http.get(this.apiUrl + 
             `/project-management/available-task-link?projectId=${projectId}&linkType=${linkType}`).pipe(
             tap(data => this.linkTasks$.next(data))
+        );
+    };
+
+       public async uploadTaskFilesAsync(formData: FormData) {
+        return await this._http.post(this.apiUrl + `/project-management/upload-task-file`, formData).pipe(
+            tap(_ => console.log("Файлы успешно добавлены к задаче"))
         );
     };
 }

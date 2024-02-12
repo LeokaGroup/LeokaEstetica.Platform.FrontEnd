@@ -677,10 +677,15 @@
   <div class="block-task-lines col-lg-12 d-flex">
     <div class="col-lg-8">
       <strong>Вложенные файлы</strong>
+      <p-fileUpload [multiple]="true" 
+                    (onSelect)="onSelectTaskFiles($event)" 
+                    (uploadHandler)="onUploadTaskFilesAsync()"
+                    [customUpload]="true">
+      </p-fileUpload>
     </div>
 
     <div class="col-lg-4">
-
+      
     </div>
   </div>
 
