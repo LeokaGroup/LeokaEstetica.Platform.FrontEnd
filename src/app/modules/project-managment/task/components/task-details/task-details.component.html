@@ -695,16 +695,62 @@
   <!-- Файлы задачи. -->
   <div class="block-task-lines col-lg-12 d-flex">
     <div class="col-lg-8">
-      <strong>Вложенные файлы</strong>
+      <strong>Прикрепить файлы</strong>
       <p-fileUpload [multiple]="true" 
                     (onSelect)="onSelectTaskFiles($event)" 
                     (uploadHandler)="onUploadTaskFilesAsync()"
-                    [customUpload]="true">
+                    [customUpload]="true"
+                    chooseLabel="Прикрепить файл"
+                    uploadLabel="Сохранить"
+                    cancelLabel="Отменить"
+                    uploadIcon="pi pi-save">
       </p-fileUpload>
+
+      <!-- <div class="card block-task-files mt-3">
+        <strong>Файлы задачи</strong>
+        <ul *ngIf="taskFiles$?.value.length">
+          <li *ngFor="let tf of taskFiles$?.value">
+           <div class="d-flex">
+            <div>
+              {{tf.documentName}}
+            </div>
+            
+            <div>
+              <div class="cancel">
+                <button pButton type="button" 
+                        icon="pi pi-times" 
+                        class="p-button-danger p-button-sm p-button-text">
+                </button>
+              </div>
+            </div>
+           </div>
+          </li>
+        </ul>
+      </div> -->
     </div>
 
-    <div class="col-lg-4">
-      
+    <div class="col-lg-4 block-attached-files" *ngIf="taskFiles$?.value.length">
+      <div class="card block-task-files mt-4">
+        <strong>Файлы задачи</strong>
+        <ul *ngFor="let tf of taskFiles$?.value">
+          <li>
+           <div class="d-flex">
+            <div>
+              {{tf.documentName}}
+            </div>
+            
+            <div>
+              <div class="cancel">
+                <button pButton type="button" 
+                        icon="pi pi-times" 
+                        class="p-button-danger p-button-sm p-button-text">
+                </button>
+              </div>
+            </div>
+           </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 

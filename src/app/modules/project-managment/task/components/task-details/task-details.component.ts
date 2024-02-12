@@ -41,6 +41,7 @@ export class TaskDetailsComponent implements OnInit {
     public readonly taskLinkBlocked$ = this._projectManagmentService.taskLinkBlocked$;
     public readonly linkTypes$ = this._projectManagmentService.linkTypes$;
     public readonly linkTasks$ = this._projectManagmentService.linkTasks$;
+    public readonly taskFiles$ = this._projectManagmentService.taskFiles$;
 
     projectId: any;
     projectTaskId: any;
@@ -101,7 +102,8 @@ export class TaskDetailsComponent implements OnInit {
             await this.getTaskLinkParentAsync(),
             await this.getTaskLinkChildAsync(),
             await this.getTaskLinkDependAsync(),
-            await this.getTaskLinkBlockedAsync()
+            await this.getTaskLinkBlockedAsync(),
+            await this.getTaskFilesAsync()
         ]).subscribe();
     };
 
@@ -507,5 +509,15 @@ export class TaskDetailsComponent implements OnInit {
                 await this.getTaskLinkBlockedAsync();
             }
              });
+    };
+
+    /**
+     * Функция получает файлы задачи.
+     */
+    private async getTaskFilesAsync() {
+        (await this._projectManagmentService.getTaskFilesAsync(+this.projectId, +this.projectTaskId))
+        .subscribe(_ => {
+           console.log("Файлы задачи: ", this.taskFiles$.value);
+        });
     };
 }

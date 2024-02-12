@@ -9,7 +9,6 @@ import { ConfigSpaceSettingInput } from '../task/models/input/config-space-setti
 import { CreateProjectManagementTaskInput } from '../task/models/input/create-task-input';
 import { CreateTaskStatusInput } from '../task/models/input/create-task-status-input';
 import { ProjectTaskExecutorInput } from '../task/models/input/project-task-executor-input';
-import { ProjectTaskFileInput } from '../task/models/input/project-task-file-input';
 import { ProjectTaskTagInput } from '../task/models/input/project-task-tag-input';
 import { ProjectTaskWatcherInput } from '../task/models/input/project-task-watcher-input';
 import { TaskLinkInput } from '../task/models/input/task-link-input';
@@ -47,6 +46,7 @@ export class ProjectManagmentService {
     public taskLinkBlocked$ = new BehaviorSubject<any>(null);
     public linkTypes$ = new BehaviorSubject<any>(null);
     public linkTasks$ = new BehaviorSubject<any>(null);
+    public taskFiles$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient) {
         // Если используем ендпоинты модуля УП.
@@ -460,9 +460,24 @@ export class ProjectManagmentService {
             );
     };
 
+    /**
+     * Функция добавляет файл к задаче.
+     * @param formData - Данные формы.
+     */
        public async uploadTaskFilesAsync(formData: FormData) {
         return await this._http.post(this.apiUrl + `/project-management/upload-task-file`, formData).pipe(
             tap(_ => console.log("Файлы успешно добавлены к задаче"))
+        );
+    };
+
+     /**
+     * Функция добавляет файл к задаче.
+     * @param projectId - Id проекта.
+     * @param projectTaskId - Id задачи в рамках проекта.
+     */
+      public async getTaskFilesAsync(projectId: number, projectTaskId: number) {
+        return await this._http.get(this.apiUrl + `/project-management/task-files?projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
+            tap(data => this.taskFiles$.next(data))
         );
     };
 }
