@@ -446,6 +446,20 @@ export class ProjectManagmentService {
         );
     };
 
+      /**
+     * Функция удаляет связь с задачей определенного типа.
+     * @param removedLinkId - Id задачи, с которой разорвать связь.
+     * @param linkType - Тип связи.
+     * @param currentTaskId - Id текущей задачи в рамках проекта.
+     * @param projectId - Id проекта.
+     */
+    public async removeTaskLinkAsync(removedLinkId: number, linkType: string, currentTaskId: number, projectId: number) {
+        return await this._http.delete(this.apiUrl +
+            `/project-management/task-link?linkType=${linkType}&linkType=${linkType}&removedLinkId=${removedLinkId}&currentTaskId=${currentTaskId}&projectId=${projectId}`).pipe(
+                tap(data => this.linkTasks$.next(data))
+            );
+    };
+
        public async uploadTaskFilesAsync(formData: FormData) {
         return await this._http.post(this.apiUrl + `/project-management/upload-task-file`, formData).pipe(
             tap(_ => console.log("Файлы успешно добавлены к задаче"))
