@@ -47,6 +47,7 @@ export class ProjectManagmentService {
     public linkTypes$ = new BehaviorSubject<any>(null);
     public linkTasks$ = new BehaviorSubject<any>(null);
     public taskFiles$ = new BehaviorSubject<any>(null);
+    public downloadFile$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient) {
         // Если используем ендпоинты модуля УП.
@@ -479,5 +480,19 @@ export class ProjectManagmentService {
         return await this._http.get(this.apiUrl + `/project-management/task-files?projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
             tap(data => this.taskFiles$.next(data))
         );
+    };
+
+     /**
+     * Функция скачивает файл задачи.
+     * @param documentId - Id документа.
+     * @param projectId - Id проекта.
+     * @param projectTaskId - Id задачи в рамках проекта.
+     */
+    public async downloadFileAsync(documentId: number, projectId: number, projectTaskId: number) {
+        return await this._http.get(this.apiUrl +
+            `/project-management/download-task-file?documentId=${documentId}&projectId=${projectId}&projectTaskId=${projectTaskId}`,
+            { observe: 'response', responseType: 'blob' }).pipe(
+                tap(data => this.downloadFile$.next(data))
+            );
     };
 }
