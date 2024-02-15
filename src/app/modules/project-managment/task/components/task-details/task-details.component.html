@@ -732,7 +732,8 @@
                       icon="pi pi-times" 
                       class="p-button-danger p-button-sm p-button-text"
                       pTooltip="Удалить файл"
-                      tooltipPosition="bottom">
+                      tooltipPosition="bottom"
+                      (click)="onRemoveTaskFileAsync(tf.documentId)">
               </button>
             </div>
            </div>

@@ -495,4 +495,17 @@ export class ProjectManagmentService {
                 tap(data => this.downloadFile$.next(data))
             );
     };
+
+    /**
+   * Функция удаляет файл задачи.
+     * @param documentId - Id документа.
+   * @param projectId - Id проекта.
+   * @param projectTaskId - Id задачи в рамках проекта.
+   */
+    public async removeTaskFileAsync(documentId: number, projectId: number, projectTaskId: number) {
+        return await this._http.delete(this.apiUrl + 
+            `/project-management/task-file?documentId=${documentId}&projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
+            tap(_ => console.log("Файл задачи успешно удален"))
+        );
+    };
 }
