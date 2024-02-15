@@ -481,7 +481,9 @@ export class TaskDetailsComponent implements OnInit {
         this.taskFormData.append("projectTaskFileInput", JSON.stringify(inputModel));
 
         (await this._projectManagmentService.uploadTaskFilesAsync(this.taskFormData))
-             .subscribe(async _ => {});
+             .subscribe(async _ => {
+                await this.getTaskFilesAsync();
+             });
     };
 
     /**
@@ -544,5 +546,16 @@ export class TaskDetailsComponent implements OnInit {
                 resolve(this.downloadFile$.value);
             });
         })
+    };
+
+    /**
+     * Функция удаляет файл задачи.
+      * @param documentId - Id документа.
+     */
+    public async onRemoveTaskFileAsync(documentId: number) {
+        (await this._projectManagmentService.removeTaskFileAsync(documentId, +this.projectId, +this.projectTaskId))
+        .subscribe(async _ => {
+            await this.getTaskFilesAsync();
+        });
     };
 }
