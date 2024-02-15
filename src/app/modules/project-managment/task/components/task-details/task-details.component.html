@@ -344,7 +344,9 @@
                       <button pButton type="button" 
                               icon="pi pi-times" 
                               class="p-button-danger p-button-sm p-button-text"
-                              (click)="onRemoveTaskLinkAsync(t.taskId, 'Link')">
+                              (click)="onRemoveTaskLinkAsync(t.taskId, 'Link')"
+                              pTooltip="Удалить связь"
+                              tooltipPosition="bottom">
                       </button>
                     </div>
                   </td>
@@ -705,28 +707,6 @@
                     cancelLabel="Отменить"
                     uploadIcon="pi pi-save">
       </p-fileUpload>
-
-      <!-- <div class="card block-task-files mt-3">
-        <strong>Файлы задачи</strong>
-        <ul *ngIf="taskFiles$?.value.length">
-          <li *ngFor="let tf of taskFiles$?.value">
-           <div class="d-flex">
-            <div>
-              {{tf.documentName}}
-            </div>
-            
-            <div>
-              <div class="cancel">
-                <button pButton type="button" 
-                        icon="pi pi-times" 
-                        class="p-button-danger p-button-sm p-button-text">
-                </button>
-              </div>
-            </div>
-           </div>
-          </li>
-        </ul>
-      </div> -->
     </div>
 
     <div class="col-lg-4 block-attached-files" *ngIf="taskFiles$?.value.length">
@@ -739,13 +719,21 @@
               {{tf.documentName}}
             </div>
             
-            <div>
-              <div class="cancel">
-                <button pButton type="button" 
-                        icon="pi pi-times" 
-                        class="p-button-danger p-button-sm p-button-text">
-                </button>
-              </div>
+            <div class="cancel">
+              <button pButton type="button" 
+                      icon="pi pi-cloud-download" 
+                      class="p-button-primary p-button-sm p-button-text"
+                      pTooltip="Скачать файл"
+                      tooltipPosition="bottom"
+                      (click)="onDownloadFileAsync(tf.documentId, tf.documentName)">
+              </button>
+              
+              <button pButton type="button" 
+                      icon="pi pi-times" 
+                      class="p-button-danger p-button-sm p-button-text"
+                      pTooltip="Удалить файл"
+                      tooltipPosition="bottom">
+              </button>
             </div>
            </div>
           </li>

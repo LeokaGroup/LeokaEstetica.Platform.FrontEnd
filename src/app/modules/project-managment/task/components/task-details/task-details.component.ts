@@ -42,6 +42,7 @@ export class TaskDetailsComponent implements OnInit {
     public readonly linkTypes$ = this._projectManagmentService.linkTypes$;
     public readonly linkTasks$ = this._projectManagmentService.linkTasks$;
     public readonly taskFiles$ = this._projectManagmentService.taskFiles$;
+    public readonly downloadFile$ = this._projectManagmentService.downloadFile$;
 
     projectId: any;
     projectTaskId: any;
@@ -519,5 +520,29 @@ export class TaskDetailsComponent implements OnInit {
         .subscribe(_ => {
            console.log("Файлы задачи: ", this.taskFiles$.value);
         });
+    };
+
+    /**
+     * Функция скачивает файл.
+     * @param documentId - Id документа.
+     * @param documentName - Название документа.
+     * @returns - Скачанный файл.
+     */
+    public async onDownloadFileAsync(documentId: number, documentName: string) {
+        return new Promise(async resolve => {
+            (await this._projectManagmentService.downloadFileAsync(documentId, +this.projectId, +this.projectTaskId))
+            .subscribe((_) => {
+               console.log("Скачивается файл: ", this.downloadFile$.value);
+    
+                const a = document.createElement('a');
+                a.setAttribute('type', 'hidden');
+                a.href = URL.createObjectURL(this.downloadFile$.value.body);
+                a.download = documentName;
+                a.click();
+                a.remove();
+    
+                resolve(this.downloadFile$.value);
+            });
+        })
     };
 }
