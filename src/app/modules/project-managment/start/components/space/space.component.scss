@@ -64,3 +64,29 @@
   line-height: 1.43;
   letter-spacing: 0.01071em;
 }
+
+.block-scrum-task-list {
+  font-size: smaller;
+}
+
+.scrum-task-line {
+  padding: 7px 0px;
+}
+
+.laconic-text {
+  font-size: 13px;
+  line-height: 16px;
+  padding: 4px 8px;
+}
+
+.selected-task-row {
+  cursor: pointer;
+  //border: 2px solid #dedede;
+
+  &:hover {
+    // Если темная тема, то этот цвет лучше.
+    // background: #ffffff1a;
+    background: #EBF2F9;
+    // box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  }
+}

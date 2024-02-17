@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
+import * as $ from 'jquery';
 
 @Component({
     selector: "",
@@ -19,7 +20,7 @@ export class SpaceComponent implements OnInit {
         private readonly _redirectService: RedirectService,
         private readonly _activatedRoute: ActivatedRoute) {
     }
-    
+
     public readonly headerItems$ = this._projectManagmentService.headerItems$;
     public readonly workSpaceConfig$ = this._projectManagmentService.workSpaceConfig$;
 
@@ -42,23 +43,25 @@ export class SpaceComponent implements OnInit {
         //     command: () => {
 
         //     }
-        // },       
+        // },
         {
             label: 'Заявки в поддержку',
             command: () => {
                 this._router.navigate(["/profile/tickets"])
             }
-        },   
+        },
         {
             label: 'Выйти',
             command: () => {
                 localStorage.clear();
-                this._router.navigate(["/user/signin"]).then(() => {  
-                    this._redirectService.redirect("user/signin");                
+                this._router.navigate(["/user/signin"]).then(() => {
+                    this._redirectService.redirect("user/signin");
                 });
             }
         }
     ];
+
+  mode: string = "";
 
     public async ngOnInit() {
         forkJoin([
@@ -67,7 +70,7 @@ export class SpaceComponent implements OnInit {
             await this.getConfigurationWorkSpaceBySelectedTemplateAsync()
         ]).subscribe();
 
-        this.isHideAuthButtons = localStorage["t_n"] ? true : false;        
+        this.isHideAuthButtons = localStorage["t_n"] ? true : false;
     };
 
     /**
@@ -106,6 +109,11 @@ export class SpaceComponent implements OnInit {
             this.selectedStrategy, this.selectedTemplateId))
             .subscribe(_ => {
                 console.log("Конфигурация рабочего пространства: ", this.workSpaceConfig$.value);
+                this.mode = this.workSpaceConfig$.value.strategy;
+
+                // if (this.mode == "sm") {
+                //   $(".block-tasks").css({ 'overflow-y' : 'hidden' });
+                // }
             });
     };
 
