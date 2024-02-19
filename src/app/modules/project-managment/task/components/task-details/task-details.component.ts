@@ -396,7 +396,7 @@ export class TaskDetailsComponent implements OnInit {
 
     /**
      * Функция создает связь с задачей (тип связь выбирается в выпадающем списке).
-     * @returns 
+     * @returns
      */
     public async onCreateTaskLinkAsync() {
         if (!this.selectedLinkType) {
@@ -408,7 +408,7 @@ export class TaskDetailsComponent implements OnInit {
         taskLinkInput.taskFromLink = +this.projectTaskId;
         taskLinkInput.taskToLink = this.selectedTaskLink.taskId;
         taskLinkInput.linkType = this.selectedTaskLink.linkType;
-        
+
         (await this._projectManagmentService.createTaskLinkAsync(taskLinkInput))
         .subscribe(async _ => {
             // Подгружаем те связи, которые надо актуализировать в таблице связей.
@@ -428,7 +428,7 @@ export class TaskDetailsComponent implements OnInit {
                 await this.getTaskLinkDependAsync();
                 await this.getTaskLinkBlockedAsync();
             }
-            
+
             this.isVisibleCreateTaskLink = false;
          });
     };
@@ -535,14 +535,14 @@ export class TaskDetailsComponent implements OnInit {
             (await this._projectManagmentService.downloadFileAsync(documentId, +this.projectId, +this.projectTaskId))
             .subscribe((_) => {
                console.log("Скачивается файл: ", this.downloadFile$.value);
-    
+
                 const a = document.createElement('a');
                 a.setAttribute('type', 'hidden');
                 a.href = URL.createObjectURL(this.downloadFile$.value.body);
                 a.download = documentName;
                 a.click();
                 a.remove();
-    
+
                 resolve(this.downloadFile$.value);
             });
         })
@@ -554,7 +554,7 @@ export class TaskDetailsComponent implements OnInit {
      */
     public async onRemoveTaskFileAsync(documentId: number) {
         (await this._projectManagmentService.removeTaskFileAsync(documentId, +this.projectId, +this.projectTaskId))
-        .subscribe(async _ => {
+        .subscribe(async (_: any) => {
             await this.getTaskFilesAsync();
         });
     };

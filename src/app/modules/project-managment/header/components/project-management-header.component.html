@@ -1,9 +1,9 @@
 <!-- Меню хидера (верхнее). -->
 <nav class="navbar navbar-light justify-content-evenly">
     <div class="form-inline">
-      <p-menubar [model]="aHeaderItems" class="second-menu" (click) = "onSelectMenu($event)">
+      <p-menubar [model]="aHeaderItems" class="second-menu" [id] (click) = "onSelectMenu($event)">
         <ng-template pTemplate="start">
-  
+
         </ng-template>
         <ng-template pTemplate="end">
           <!-- <input type="text" pInputText /> -->
@@ -11,7 +11,7 @@
       </p-menubar>
     </div>
   </nav>
-  
+
   <!-- Хлебные крошки. -->
   <div class="block-task">
     <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>

@@ -1,7 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import {Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../services/project-managment.service";
+import { FixationStrategyInput } from "../../task/models/input/fixation-strategy-input";
+import {API_URL} from "../../../../core/core-urls/api-urls";
 
 @Component({
     selector: "project-management-header",
@@ -13,10 +15,10 @@ import { ProjectManagmentService } from "../../services/project-managment.servic
  * Класс модуля управления проектами (хидера).
  */
 export class ProjectManagementHeaderComponent implements OnInit {
-    constructor(private readonly _projectManagmentService: ProjectManagmentService,
-        private readonly _router: Router,
-        private readonly _activatedRoute: ActivatedRoute) {
-    }
+  constructor(private readonly _projectManagmentService: ProjectManagmentService,
+              private readonly _router: Router,
+              private readonly _activatedRoute: ActivatedRoute) {
+  }
 
     public readonly headerItems$ = this._projectManagmentService.headerItems$;
 
@@ -62,7 +64,7 @@ export class ProjectManagementHeaderComponent implements OnInit {
      * Функция обработки выбранного пункта меню модуля УП.
      * @param event - Событие.
      */
-    public onSelectMenu(event: any) {
+    public async onSelectMenu(event: any) {
         let selectedValue = event.target.textContent;
         let projectId = this.projectId;
 
@@ -79,13 +81,37 @@ export class ProjectManagementHeaderComponent implements OnInit {
                 });
                 break;
 
-            case "Настройки представлений":
+          case "Настройки представлений":
                 this._router.navigate(["/project-management/space/settings"], {
                     queryParams: {
                         projectId
                     }
                 });
                 break;
+
+          case "Scrum (список)":
+            let fixationScrumInput = new FixationStrategyInput();
+            fixationScrumInput.projectId = projectId;
+            fixationScrumInput.strategySysName = "Scrum";
+
+            (await this._projectManagmentService.fixationSelectedViewStrategyAsync(fixationScrumInput))
+              .subscribe(_ => {
+                window.location.reload();
+              });
+
+            break;
+
+          case "Kanban (доска)":
+            let fixationKanbanInput = new FixationStrategyInput();
+            fixationKanbanInput.projectId = projectId;
+            fixationKanbanInput.strategySysName = "Kanban";
+
+            (await this._projectManagmentService.fixationSelectedViewStrategyAsync(fixationKanbanInput))
+              .subscribe(_ => {
+                window.location.reload();
+              });
+
+            break;
             default:
                 console.error(`Неизвестный тип события: ${selectedValue}`);
         }

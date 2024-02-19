@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
-import * as $ from 'jquery';
 
 @Component({
     selector: "",
@@ -111,9 +110,6 @@ export class SpaceComponent implements OnInit {
                 console.log("Конфигурация рабочего пространства: ", this.workSpaceConfig$.value);
                 this.mode = this.workSpaceConfig$.value.strategy;
 
-                // if (this.mode == "sm") {
-                //   $(".block-tasks").css({ 'overflow-y' : 'hidden' });
-                // }
             });
     };
 

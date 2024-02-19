@@ -8,12 +8,14 @@ import { ChangeTaskStatusInput } from '../task/models/input/change-task-status-i
 import { ConfigSpaceSettingInput } from '../task/models/input/config-space-setting-input';
 import { CreateProjectManagementTaskInput } from '../task/models/input/create-task-input';
 import { CreateTaskStatusInput } from '../task/models/input/create-task-status-input';
+import { FixationStrategyInput } from '../task/models/input/fixation-strategy-input';
 import { ProjectTaskExecutorInput } from '../task/models/input/project-task-executor-input';
 import { ProjectTaskTagInput } from '../task/models/input/project-task-tag-input';
 import { ProjectTaskWatcherInput } from '../task/models/input/project-task-watcher-input';
 import { TaskLinkInput } from '../task/models/input/task-link-input';
 import { TaskPriorityInput } from '../task/models/input/task-priority-input';
 import { UserTaskTagInput } from '../task/models/input/user-task-tag-input';
+import {Router} from "@angular/router";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -49,7 +51,9 @@ export class ProjectManagmentService {
     public taskFiles$ = new BehaviorSubject<any>(null);
     public downloadFile$ = new BehaviorSubject<any>(null);
 
-    constructor(private readonly _http: HttpClient) {
+    constructor(private readonly _http: HttpClient,
+                private readonly _router: Router) {
+
         // Если используем ендпоинты модуля УП.
         if (API_URL.apiUrlProjectManagment !== null && API_URL.apiUrlProjectManagment !== undefined) {
             this.apiUrl = API_URL.apiUrlProjectManagment;
@@ -361,7 +365,7 @@ export class ProjectManagmentService {
     * @param projectTaskId - Id задачи в рамках проекта.
     */
       public async getTaskLinkDefaultAsync(projectId: number, projectTaskId: number) {
-        return await this._http.get(this.apiUrl + 
+        return await this._http.get(this.apiUrl +
             `/project-management/task-link-default?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Link`).pipe(
             tap(data => this.taskLinkDefault$.next(data))
         );
@@ -373,7 +377,7 @@ export class ProjectManagmentService {
     * @param projectTaskId - Id задачи в рамках проекта.
     */
        public async getTaskLinkParentAsync(projectId: number, projectTaskId: number) {
-        return await this._http.get(this.apiUrl + 
+        return await this._http.get(this.apiUrl +
             `/project-management/task-link-parent?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Parent`).pipe(
             tap(data => this.taskLinkParent$.next(data))
         );
@@ -385,7 +389,7 @@ export class ProjectManagmentService {
     * @param projectTaskId - Id задачи в рамках проекта.
     */
       public async getTaskLinkChildAsync(projectId: number, projectTaskId: number) {
-        return await this._http.get(this.apiUrl + 
+        return await this._http.get(this.apiUrl +
             `/project-management/task-link-child?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Child`).pipe(
             tap(data => this.taskLinkChild$.next(data))
         );
@@ -397,7 +401,7 @@ export class ProjectManagmentService {
     * @param projectTaskId - Id задачи в рамках проекта.
     */
       public async getTaskLinkDependAsync(projectId: number, projectTaskId: number) {
-        return await this._http.get(this.apiUrl + 
+        return await this._http.get(this.apiUrl +
             `/project-management/task-link-depend?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Depend`).pipe(
             tap(data => this.taskLinkDepend$.next(data))
         );
@@ -409,7 +413,7 @@ export class ProjectManagmentService {
     * @param projectTaskId - Id задачи в рамках проекта.
     */
      public async getTaskLinkBlockedAsync(projectId: number, projectTaskId: number) {
-        return await this._http.get(this.apiUrl + 
+        return await this._http.get(this.apiUrl +
             `/project-management/task-link-blocked?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Depend`).pipe(
             tap(data => this.taskLinkBlocked$.next(data))
         );
@@ -441,7 +445,7 @@ export class ProjectManagmentService {
      * @param linkType - Тип связи.
      */
       public async getAvailableTaskLinkAsync(projectId: number, linkType: string) {
-        return await this._http.get(this.apiUrl + 
+        return await this._http.get(this.apiUrl +
             `/project-management/available-task-link?projectId=${projectId}&linkType=${linkType}`).pipe(
             tap(data => this.linkTasks$.next(data))
         );
@@ -503,9 +507,20 @@ export class ProjectManagmentService {
    * @param projectTaskId - Id задачи в рамках проекта.
    */
     public async removeTaskFileAsync(documentId: number, projectId: number, projectTaskId: number) {
-        return await this._http.delete(this.apiUrl + 
+        return await this._http.delete(this.apiUrl +
             `/project-management/task-file?documentId=${documentId}&projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
             tap(_ => console.log("Файл задачи успешно удален"))
         );
     };
+
+  /**
+   * Функция фиксирует выбранную пользователем стратегию представления.
+   * @param strategySysName - Системное название выбранной стратегии представления.
+   * @param projectId - Id проекта.
+   */
+  public async fixationSelectedViewStrategyAsync(fixationStrategyInput: FixationStrategyInput) {
+    return await this._http.patch(this.apiUrl + `/project-management-settings/fixation-strategy`, fixationStrategyInput).pipe(
+      tap(_ => console.log("Стратегия зафиксирована"))
+    );
+  };
 }
