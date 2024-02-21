@@ -29,6 +29,11 @@ export class SpaceComponent implements OnInit {
     selectedStrategy: string = "";
     selectedTemplateId: number = 0;
     aStatuses: any[] = [];
+    isLow: boolean = false;
+    isMedium: boolean = false;
+    isHigh: boolean = false;
+    isUrgent: boolean = false;
+    isBlocker: boolean = false;
 
     items: any[] = [
         {
@@ -109,7 +114,6 @@ export class SpaceComponent implements OnInit {
             .subscribe(_ => {
                 console.log("Конфигурация рабочего пространства: ", this.workSpaceConfig$.value);
                 this.mode = this.workSpaceConfig$.value.strategy;
-
             });
     };
 

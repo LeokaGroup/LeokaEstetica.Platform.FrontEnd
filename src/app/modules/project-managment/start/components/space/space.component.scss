@@ -83,10 +83,29 @@
   cursor: pointer;
   //border: 2px solid #dedede;
 
-  &:hover {
-    // Если темная тема, то этот цвет лучше.
-    // background: #ffffff1a;
-    background: #EBF2F9;
-    // box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  }
+  //&:hover {
+  //  // Если темная тема, то этот цвет лучше.
+  //  background: #EBF2F9;
+  //  // box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  //}
+}
+
+.low {
+  background: #F7F7F7;
+}
+
+.medium {
+  background: #C6E2FF;
+}
+
+.high {
+  background: #FFE1D7;
+}
+
+.surgent {
+  background: #FFD6C8;
+}
+
+.blocker {
+  background: #FF9696;
 }
