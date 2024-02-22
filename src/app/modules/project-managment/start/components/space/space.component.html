@@ -53,7 +53,7 @@
             low:t.priorityId == 1,
             medium:t.priorityId == 2,
             high:t.priorityId == 3,
-            surgent:t.priorityId == 4,
+            urgent:t.priorityId == 4,
             blocker:t.priorityId == 5}"
                  class="selected-task-row"
                  (click)="onSelectTask(t.projectTaskId)">
@@ -67,6 +67,23 @@
                   <div class="col-lg-2 laconic-text">{{t.updated}}</div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="line-see-more" *ngIf="st.projectManagmentTasks == null">
+            <div>Нет данных.</div>
+          </div>
+
+          <div *ngIf="st.projectManagmentTasks !== null && st.total > 10 && st.paginator.hasNextPage">
+            <div class="mt-2">
+              <button pButton type="button"
+                      label="Показать больше"
+                      class="p-button-outlined p-button-secondary p-button-sm line-see-more control-see-more"
+                      [loading]="isLoading"
+                      (click)="onGetConfigurationWorkSpaceBySelectedTemplateAsync(st.paginator.pageNumber, st.taskStatusId)">
+              </button>
             </div>
           </div>
         </div>

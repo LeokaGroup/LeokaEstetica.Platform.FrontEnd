@@ -34,6 +34,7 @@ export class SpaceComponent implements OnInit {
     isHigh: boolean = false;
     isUrgent: boolean = false;
     isBlocker: boolean = false;
+    isLoading: boolean = false;
 
     items: any[] = [
         {
@@ -123,12 +124,16 @@ export class SpaceComponent implements OnInit {
    * если выбранный шаблон это предполагает.
    * @returns - Данные конфигурации.
    */
-  public async onGetConfigurationWorkSpaceBySelectedTemplateAsync() {
+  public async onGetConfigurationWorkSpaceBySelectedTemplateAsync(pageNumber: number, taskStatusId: number) {
+    this.isLoading = true;
+
     (await this._projectManagmentService.getConfigurationWorkSpaceBySelectedTemplateAsync(this.selectedProjectId,
-      null, 1))
+      taskStatusId, ++pageNumber))
       .subscribe(_ => {
         console.log("Конфигурация рабочего пространства: ", this.workSpaceConfig$.value);
+
         this.mode = this.workSpaceConfig$.value.strategy;
+        this.isLoading = false;
       });
   };
 
