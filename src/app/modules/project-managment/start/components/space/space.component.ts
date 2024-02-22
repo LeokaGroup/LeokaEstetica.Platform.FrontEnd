@@ -29,6 +29,11 @@ export class SpaceComponent implements OnInit {
     selectedStrategy: string = "";
     selectedTemplateId: number = 0;
     aStatuses: any[] = [];
+    isLow: boolean = false;
+    isMedium: boolean = false;
+    isHigh: boolean = false;
+    isUrgent: boolean = false;
+    isBlocker: boolean = false;
 
     items: any[] = [
         {
@@ -105,13 +110,27 @@ export class SpaceComponent implements OnInit {
     */
     private async getConfigurationWorkSpaceBySelectedTemplateAsync() {
         (await this._projectManagmentService.getConfigurationWorkSpaceBySelectedTemplateAsync(this.selectedProjectId,
-            this.selectedStrategy, this.selectedTemplateId))
+            null, 1))
             .subscribe(_ => {
                 console.log("Конфигурация рабочего пространства: ", this.workSpaceConfig$.value);
                 this.mode = this.workSpaceConfig$.value.strategy;
-
             });
     };
+
+  /**
+   * Функция получает конфигурацию рабочего пространства по выбранному шаблону (Клик на "Показать больше").
+   * Под конфигурацией понимаются основные элементы рабочего пространства (набор задач, статусов, фильтров, колонок и тд)
+   * если выбранный шаблон это предполагает.
+   * @returns - Данные конфигурации.
+   */
+  public async onGetConfigurationWorkSpaceBySelectedTemplateAsync() {
+    (await this._projectManagmentService.getConfigurationWorkSpaceBySelectedTemplateAsync(this.selectedProjectId,
+      null, 1))
+      .subscribe(_ => {
+        console.log("Конфигурация рабочего пространства: ", this.workSpaceConfig$.value);
+        this.mode = this.workSpaceConfig$.value.strategy;
+      });
+  };
 
     /**
      * Функция переходит к деталям задачи.

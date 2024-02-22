@@ -115,23 +115,22 @@ export class ProjectManagmentService {
         );
     };
 
-    /**
-    * Функция получает конфигурацию рабочего пространства по выбранному шаблону.
-    * Под конфигурацией понимаются основные элементы рабочего пространства (набор задач, статусов, фильтров, колонок и тд)
-    * если выбранный шаблон это предполагает.
-    * @param projectId - Id проекта.
-    * @param strategy - Выбранная стратегия.
-    * @param templateId - Id выбранного шаблона.
-    * @returns - Данные конфигурации.
-    */
-    public async getConfigurationWorkSpaceBySelectedTemplateAsync(projectId: number, strategy: string,
-        templateId: number) {
-        return await this._http.get(this.apiUrl + `/project-management/config-workspace-template?projectId=${projectId}
-        &strategy=${strategy}
-        &templateId=${templateId}`).pipe(
-            tap(data => this.workSpaceConfig$.next(data))
-        );
-    };
+  /**
+   * Функция получает конфигурацию рабочего пространства по выбранному шаблону.
+   * Под конфигурацией понимаются основные элементы рабочего пространства (набор задач, статусов, фильтров, колонок и тд)
+   * если выбранный шаблон это предполагает.
+   * @param projectId - Id проекта.
+   * @param paginatorStatusId - Id статуса, для которого нужно применить пагинатор.
+   * Если он null, то пагинатор применится для задач всех статусов шаблона.
+   * @param page - Номер страницы..
+   * @returns - Данные конфигурации.
+   */
+  public async getConfigurationWorkSpaceBySelectedTemplateAsync(projectId: number, paginatorStatusId: number | null, page: number) {
+    return await this._http.get(this.apiUrl +
+      `/project-management/config-workspace-template?projectId=${projectId}&paginatorStatusId=${paginatorStatusId}&page=${page}`).pipe(
+      tap(data => this.workSpaceConfig$.next(data))
+    );
+  };
 
      /**
     * Функция получает детали задачи.

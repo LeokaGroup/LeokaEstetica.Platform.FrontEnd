@@ -49,7 +49,14 @@
         <div [ngClass]="{'block-tasks': mode !== 'sm'}" *ngFor="let t of st.projectManagmentTasks">
           <!-- Блок с каждой задачей Scrum. -->
           <div class="task">
-            <div class="selected-task-row" (click)="onSelectTask(t.projectTaskId)">
+            <div [ngClass]="{
+            low:t.priorityId == 1,
+            medium:t.priorityId == 2,
+            high:t.priorityId == 3,
+            surgent:t.priorityId == 4,
+            blocker:t.priorityId == 5}"
+                 class="selected-task-row"
+                 (click)="onSelectTask(t.projectTaskId)">
               <div class="scrum-task-line">
                 <div class="d-flex justify-content-between">
                   <div class="col-lg-2 laconic-text">{{t.taskTypeName}}</div>
