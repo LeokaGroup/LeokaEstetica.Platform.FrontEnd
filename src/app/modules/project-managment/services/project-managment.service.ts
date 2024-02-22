@@ -126,10 +126,19 @@ export class ProjectManagmentService {
    * @returns - Данные конфигурации.
    */
   public async getConfigurationWorkSpaceBySelectedTemplateAsync(projectId: number, paginatorStatusId: number | null, page: number) {
-    return await this._http.get(this.apiUrl +
-      `/project-management/config-workspace-template?projectId=${projectId}&paginatorStatusId=${paginatorStatusId}&page=${page}`).pipe(
-      tap(data => this.workSpaceConfig$.next(data))
-    );
+    if (paginatorStatusId == null) {
+      return await this._http.get(this.apiUrl +
+        `/project-management/config-workspace-template?projectId=${projectId}&page=${page}`).pipe(
+        tap(data => this.workSpaceConfig$.next(data))
+      );
+    }
+
+    else {
+      return await this._http.get(this.apiUrl +
+        `/project-management/config-workspace-template?projectId=${projectId}&paginatorStatusId=${paginatorStatusId}&page=${page}`).pipe(
+        tap(data => this.workSpaceConfig$.next(data))
+      );
+    }
   };
 
      /**
