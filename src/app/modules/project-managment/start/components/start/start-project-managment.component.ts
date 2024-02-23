@@ -27,6 +27,8 @@ export class StartProjectManagmentComponent implements OnInit {
     aSelectedStatuses: any[] = [];
     isSelectedTemplate: boolean = false;
     isSelectedProject: boolean = false;
+    projectManagementProjectName: string = "";
+    projectManagementProjectNamePrefix: string = "";
 
     constructor(private readonly _projectManagmentService: ProjectManagmentService,
         private readonly _router: Router) {
@@ -76,6 +78,8 @@ export class StartProjectManagmentComponent implements OnInit {
         let configSpaceSettingInput = new ConfigSpaceSettingInput();
         let projectId = this.selectedProject.projectId;
         configSpaceSettingInput.projectId = projectId;
+        configSpaceSettingInput.projectManagementName = this.projectManagementProjectName;
+        configSpaceSettingInput.projectManagementNamePrefix = this.projectManagementProjectNamePrefix;
 
         let strategy = this.selectedStrategy.viewStrategySysName.toLowerCase();
 
@@ -110,7 +114,7 @@ export class StartProjectManagmentComponent implements OnInit {
      */
     public onChangeTemplate() {
         this.aSelectedStatuses = [];
-        
+
         // Перебираем статусы выбранного шаблона, чтобы добавить их в массив статусов и отобразить на UI.
         this.selectedTemplate.projectManagmentTaskStatusTemplates.forEach((el: any) => {
             this.aSelectedStatuses.push({
@@ -137,8 +141,6 @@ export class StartProjectManagmentComponent implements OnInit {
      */
     public onSelectTemplate() {
         this.isSelectedTemplate = true;
-
-        // Закрываем модалку.
         this.isSelectTemplate = false;
     };
 
@@ -154,6 +156,7 @@ export class StartProjectManagmentComponent implements OnInit {
         .subscribe(_ => {
             console.log("projectWorkspaceSettings", this.projectWorkspaceSettings$.value);
 
+            // Если настройки были зафиксированы, то переходим сразу в раб.пространство проекта.
             if (this.projectWorkspaceSettings$.value.isCommitProjectSettings) {
                 window.location.href = this.projectWorkspaceSettings$.value.projectManagmentSpaceUrl;
             }
