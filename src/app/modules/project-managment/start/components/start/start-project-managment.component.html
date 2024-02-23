@@ -9,8 +9,11 @@
           </div>
 
           <div>
-            <input pInputText id="idProjectManagementProjectName" aria-describedby="idProjectManagementProjectName-help"
-                   [(ngModel)]="projectManagementProjectName" [style]="{width: '700px'}"/>
+            <input pInputText id="idProjectManagementProjectName"
+                   aria-describedby="idProjectManagementProjectName-help"
+                   [(ngModel)]="projectManagementProjectName"
+                   [style]="{width: '700px'}"
+                   (change)="onUpdateProjectManagementProjectName()"/>
           </div>
           <div>
             <small id="idProjectManagementProjectName-help">Название проекта в модуле управления проектами.</small>
@@ -24,7 +27,9 @@
 
           <div>
             <input pInputText id="idProjectManagementProjectNamePrefix"
-                   aria-describedby="idProjectManagementProjectNamePrefix-help" [(ngModel)]="projectManagementProjectNamePrefix"/>
+                   aria-describedby="idProjectManagementProjectNamePrefix-help"
+                   [(ngModel)]="projectManagementProjectNamePrefix"
+                   maxlength="9"/>
           </div>
 
           <div>
