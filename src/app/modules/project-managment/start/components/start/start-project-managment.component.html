@@ -1,3 +1,46 @@
+<!-- Ввод названия проекта. -->
+<div class="d-flex block-profile" *ngIf="!projectWorkspaceSettings$.value?.isCommitProjectSettings">
+  <div class="mt-3 block-project-managment d-flex col-lg-12">
+    <div class="col-lg-12">
+      <div class="block-select-project-name">
+        <div class="">
+          <div>
+            <label for="idProjectManagementProjectName">Название проекта</label>
+          </div>
+
+          <div>
+            <input pInputText id="idProjectManagementProjectName"
+                   aria-describedby="idProjectManagementProjectName-help"
+                   [(ngModel)]="projectManagementProjectName"
+                   [style]="{width: '700px'}"
+                   (change)="onUpdateProjectManagementProjectName()"/>
+          </div>
+          <div>
+            <small id="idProjectManagementProjectName-help">Название проекта в модуле управления проектами.</small>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <div>
+            <label for="idProjectManagementProjectNamePrefix">Префикс проекта</label>
+          </div>
+
+          <div>
+            <input pInputText id="idProjectManagementProjectNamePrefix"
+                   aria-describedby="idProjectManagementProjectNamePrefix-help"
+                   [(ngModel)]="projectManagementProjectNamePrefix"
+                   maxlength="9"/>
+          </div>
+
+          <div>
+            <small id="idProjectManagementProjectNamePrefix-help">Номера задач будут начинаться с данного префикса.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="d-flex block-profile space-top-80" *ngIf="!projectWorkspaceSettings$.value?.isCommitProjectSettings">
   <!-- Выбор проекта. -->
   <div class="block-project-managment d-flex col-lg-12">
@@ -121,10 +164,10 @@
 </div>
 
 <div *ngIf="!projectWorkspaceSettings$.value?.isCommitProjectSettings">
-  <button type="submit" 
+  <button type="submit"
           class="mt-5 btn btn-primary button-action-pur-control"
           (click)="onRouteWorkSpace()"
-          [disabled]="!isSelectedTemplate || !isSelectedProject">
+          [disabled]="!isSelectedTemplate || !isSelectedProject || !projectManagementProjectName || !projectManagementProjectNamePrefix">
     Перейти в рабочее пространство
   </button>
 </div>
@@ -141,10 +184,10 @@
        <div class="d-flex col-lg-12">
         <div class="col-lg-6">
           <strong class="mb-1">Название шаблона</strong>
-          <p-listbox [options]="projectManagmentTemplates$.value" 
-                  [(ngModel)]="selectedTemplate" 
-                  optionLabel="templateName" 
-                  [style]="{'width':'15rem'}" 
+          <p-listbox [options]="projectManagmentTemplates$.value"
+                  [(ngModel)]="selectedTemplate"
+                  optionLabel="templateName"
+                  [style]="{'width':'15rem'}"
                   [listStyle]="{'max-height': '220px'}"
                   (onChange)="onChangeTemplate()">
           </p-listbox>
@@ -152,9 +195,9 @@
 
         <div class="col-lg-6">
           <strong class="mb-1">Шаблон включает в себя статусы</strong>
-          <p-listbox [options]="aSelectedStatuses" 
-                    optionLabel="statusName" 
-                    [style]="{'width':'15rem'}" 
+          <p-listbox [options]="aSelectedStatuses"
+                    optionLabel="statusName"
+                    [style]="{'width':'15rem'}"
                     [listStyle]="{'max-height': '220px'}"
                     emptyMessage="Не выбран шаблон">
           </p-listbox>
@@ -162,13 +205,13 @@
        </div>
 
         <ng-template pTemplate="footer">
-        <p-button (click)="isSelectTemplate=!isSelectTemplate" 
-                  label="Отмена" 
+        <p-button (click)="isSelectTemplate=!isSelectTemplate"
+                  label="Отмена"
                   styleClass="p-button-text">
         </p-button>
 
-        <p-button label="Выбрать шаблон" 
-                  styleClass="p-button-text p-button-success" 
+        <p-button label="Выбрать шаблон"
+                  styleClass="p-button-text p-button-success"
                   [disabled]="aSelectedStatuses.length == 0"
                   (click)="onSelectTemplate()">
         </p-button>
