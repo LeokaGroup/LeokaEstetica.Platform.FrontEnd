@@ -558,4 +558,15 @@ export class TaskDetailsComponent implements OnInit {
             await this.getTaskFilesAsync();
         });
     };
+
+    public onSelectTaskLink(fullTaskId: string) {
+      let projectId = this.projectId;
+
+      this._router.navigate(["/space/details"], {
+        queryParams: {
+          projectId,
+          taskId: fullTaskId
+        }
+      });
+    };
 }

@@ -111,3 +111,13 @@
 .block-attached-files {
   padding: 0 10px;
 }
+
+.link {
+  cursor: pointer;
+  color:blue;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
