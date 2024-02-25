@@ -316,9 +316,12 @@
           </ng-template>
           <ng-template pTemplate="body" let-t>
               <tr>
-                  <td>{{t.fullTaskId ?? 'Не указан'}}</td>
+                  <td class="link">
+                    <div (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId ?? 'Не указан'}}</div>
+                  </td>
+
                   <td>
-                    <div class="smaller-text">{{t.taskName}}</div>
+                    <div>{{t.taskName}}</div>
                   </td>
 
                   <td>
@@ -399,7 +402,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-t>
               <tr>
-                  <td>{{t.fullTaskId ?? 'Не указан'}}</td>
+                  <td class="link" (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId ?? 'Не указан'}}</td>
                   <td>
                     <div class="smaller-text">{{t.taskName}}</div>
                   </td>
@@ -481,7 +484,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-t>
               <tr>
-                  <td>{{t.fullTaskId ?? 'Не указан'}}</td>
+                  <td class="link" (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId ?? 'Не указан'}}</td>
                   <td>
                     <div class="smaller-text">{{t.taskName}}</div>
                   </td>
@@ -563,7 +566,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-t>
               <tr>
-                  <td>{{t.fullTaskId ?? 'Не указан'}}</td>
+                  <td class="link" (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId ?? 'Не указан'}}</td>
                   <td>
                     <div class="smaller-text">{{t.taskName}}</div>
                   </td>
@@ -645,7 +648,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-t>
               <tr>
-                  <td>{{t.fullTaskId ?? 'Не указан'}}</td>
+                  <td class="link" (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId ?? 'Не указан'}}</td>
                   <td>
                     <div class="smaller-text">{{t.taskName}}</div>
                   </td>
