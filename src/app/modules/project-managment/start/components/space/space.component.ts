@@ -141,7 +141,7 @@ export class SpaceComponent implements OnInit {
      * Функция переходит к деталям задачи.
      * @param projectTaskId - Id задачи в рамках проекта.
      */
-    public onSelectTask(projectTaskId: number) {
+    public onSelectTask(projectTaskId: string) {
         let projectId = this.selectedProjectId;
 
         this._router.navigate(["/project-management/space/details"], {
