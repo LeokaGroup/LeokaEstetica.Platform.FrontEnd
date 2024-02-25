@@ -200,7 +200,7 @@ export class TaskDetailsComponent implements OnInit {
                             .subscribe(async _ => {
                                 console.log("Возможные переходы статусов задачи: ", this.availableTransitions$.value);
 
-                                let value = this.availableTransitions$.value.find((st: any) => st.statusId == this.selectedStatus.taskStatusId);
+                                let value = this.availableTransitions$.value.find((st: any) => st.taskStatusId == this.selectedStatus.taskStatusId);
                                 this.formStatuses.get("statusName")?.setValue(value);
                             });
                     });
