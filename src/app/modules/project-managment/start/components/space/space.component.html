@@ -56,11 +56,11 @@
             urgent:t.priorityId == 4,
             blocker:t.priorityId == 5}"
                  class="selected-task-row"
-                 (click)="onSelectTask(t.projectTaskId)">
+                 (click)="onSelectTask(t.fullProjectTaskId)">
               <div class="scrum-task-line">
                 <div class="d-flex justify-content-between">
                   <div class="col-lg-2 laconic-text">{{t.taskTypeName}}</div>
-                  <div class="col-lg-2">[Ключ задачи - пока не выводится]</div>
+                  <div class="col-lg-2">{{t.fullProjectTaskId}}</div>
                   <div class="col-lg-2 laconic-text">{{t.name}}</div>
                   <div class="col-lg-2 laconic-text">{{t.priorityName}}</div>
                   <div class="col-lg-2 laconic-text">{{t.executorName}}</div>

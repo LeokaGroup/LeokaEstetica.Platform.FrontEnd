@@ -10,21 +10,21 @@
       </ng-template>
   </p-inplace>
 
-  <button pButton 
-          pRipple 
+  <button pButton
+          pRipple
           icon="pi pi-save"
-          type="button" 
-          label="Сохранить" 
+          type="button"
+          label="Сохранить"
           class="p-button-success p-button-text p-button-sm"
           *ngIf="isActiveTaskName"
           (click)="onSaveTaskNameAsync(taskName)">
   </button>
 
-  <button pButton 
-          pRipple 
+  <button pButton
+          pRipple
           icon="pi pi-times"
-          type="button" 
-          label="Отмена" 
+          type="button"
+          label="Отмена"
           class="p-button-secondary p-button-text p-button-sm"
           *ngIf="isActiveTaskName"
           (click)="isActiveTaskName=!isActiveTaskName">
@@ -34,26 +34,26 @@
   <!-- Блок с кнопками действий. -->
   <div class="mt-3 mb-3 d-flex block-task-actions">
     <!-- <div>
-      <button pButton 
-              type="button" 
-              icon="pi pi-file-import" 
+      <button pButton
+              type="button"
+              icon="pi pi-file-import"
               label="Прикрепить файлы"
               class="p-button-text p-button-secondary task-actions">
     </button>
     </div> -->
 
     <div>
-      <button type="button" 
-              pButton 
-              icon="pi pi-arrow-down" 
-              label="Возможные действия" 
-              class="p-button-text p-button-primary p-button-sm task-actions" 
+      <button type="button"
+              pButton
+              icon="pi pi-arrow-down"
+              label="Возможные действия"
+              class="p-button-text p-button-primary p-button-sm task-actions"
               (click)="menu.toggle($event)">
       </button>
       <p-menu #menu [popup]="true" [model]="aAvailableActions"></p-menu>
     </div>
   </div>
-  
+
   <div>
     <hr>
   </div>
@@ -71,11 +71,11 @@
 
       <form class="d-flex line" [formGroup]="formPriorities">
         <label class="control-label-task-item">Приоритет:</label>
-       
-        <p-dropdown [options]="priorities$.value" 
-                    [(ngModel)]="selectedPriority" 
-                    optionLabel="priorityName" 
-                    [showClear]="true" 
+
+        <p-dropdown [options]="priorities$.value"
+                    [(ngModel)]="selectedPriority"
+                    optionLabel="priorityName"
+                    [showClear]="true"
                     placeholder="Выберите приоритет"
                     [emptyMessage]="(priorities$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
                     formControlName="priorityName"
@@ -85,7 +85,7 @@
 
       <div class="d-flex line">
         <label class="control-label-task-item">Метки:</label>
-        
+
         <div class="chip-block">
           <div *ngFor="let lbl of taskDetails$.value?.tagNames">
             <div class="chip-item">
@@ -108,10 +108,10 @@
           </ng-template>
         </p-overlayPanel>
 
-        <button pButton 
-                pRipple 
+        <button pButton
+                pRipple
                 icon="pi pi-plus"
-                type="button" 
+                type="button"
                 class="p-button-secondary p-button-text p-button-sm"
                 (click)="op.toggle($event)">
         </button>
@@ -121,10 +121,10 @@
     <form class="col-lg-4" [formGroup]="formStatuses">
       <div class="line-item d-flex">
         <label class="control-label-task-item">Статус:</label>
-        <p-dropdown [options]="availableTransitions$.value" 
-                    [(ngModel)]="selectedStatus" 
-                    optionLabel="statusName" 
-                    [showClear]="true" 
+        <p-dropdown [options]="availableTransitions$.value"
+                    [(ngModel)]="selectedStatus"
+                    optionLabel="statusName"
+                    [showClear]="true"
                     placeholder="Выберите статус"
                     [emptyMessage]="(availableTransitions$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
                     formControlName="statusName"
@@ -144,10 +144,10 @@
         <form class="line-item d-flex" [formGroup]="formExecutors">
           <label class="control-label-task-item">Исполнитель:</label>
           <div>
-            <p-dropdown [options]="taskPeople$.value" 
-                        [(ngModel)]="selectedExecutor" 
-                        optionLabel="fullName" 
-                        [showClear]="true" 
+            <p-dropdown [options]="taskPeople$.value"
+                        [(ngModel)]="selectedExecutor"
+                        optionLabel="fullName"
+                        [showClear]="true"
                         placeholder="Выберите исполнителя"
                         [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
                         formControlName="executorName"
@@ -161,7 +161,7 @@
           <div>
             <label class="control-label-task-item">Наблюдатели:</label>
           </div>
-         
+
           <div>
             <div class="chip-block">
               <div *ngFor="let lbl of taskDetails$.value?.watcherNames; index as i">
@@ -170,7 +170,7 @@
                 </div>
               </div>
             </div>
-    
+
             <p-overlayPanel #wa [style]="{'min-width': '300px'}">
               <ng-template pTemplate>
                 <div>
@@ -185,11 +185,11 @@
                 </div>
               </ng-template>
             </p-overlayPanel>
-    
-            <button pButton 
-                    pRipple 
+
+            <button pButton
+                    pRipple
                     icon="pi pi-plus"
-                    type="button" 
+                    type="button"
                     class="p-button-secondary p-button-text p-button-sm"
                     (click)="wa.toggle($event)">
             </button>
@@ -247,21 +247,21 @@
             </textarea>
 
            <div>
-            <button pButton 
-                    pRipple 
+            <button pButton
+                    pRipple
                     icon="pi pi-times"
-                    type="button" 
-                    label="Сохранить" 
+                    type="button"
+                    label="Сохранить"
                     class="p-button-success p-button-text p-button-sm"
                     *ngIf="isActiveTaskDetails"
                     (click)="onSaveTaskDetailsAsync(taskDetails)">
             </button>
 
-            <button pButton 
-                    pRipple 
+            <button pButton
+                    pRipple
                     icon="pi pi-times"
-                    type="button" 
-                    label="Отмена" 
+                    type="button"
+                    label="Отмена"
                     class="p-button-secondary p-button-text p-button-sm"
                     *ngIf="isActiveTaskDetails"
                     (click)="isActiveTaskDetails=!isActiveTaskDetails">
@@ -289,24 +289,24 @@
         </div>
 
         <!-- <div>
-          <button pButton type="button" 
-                  label="Добавить связь" 
-                  icon="pi pi-plus" 
+          <button pButton type="button"
+                  label="Добавить связь"
+                  icon="pi pi-plus"
                   class="p-button-secondary p-button-sm p-button-text"
                   (click)="onSelectCreateTaskLinkAsync()">
           </button>
         </div> -->
       </div>
       <div class="">
-        <p-table [value]="taskLinkDefault$.value" 
-                  styleClass="p-datatable-sm" 
+        <p-table [value]="taskLinkDefault$.value"
+                  styleClass="p-datatable-sm"
                   [tableStyle]="{'min-width': '50rem'}"
                   [rows]="10"
                   responsiveLayout="scroll"
                   [paginator]="taskLinkDefault$.value?.length > 0">
           <ng-template pTemplate="header">
               <tr>
-                  <th>Код задачи</th>
+                  <th>Ключ</th>
                   <th>Название задачи</th>
                   <th>Статус</th>
                   <th>Исполнитель</th>
@@ -316,7 +316,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-t>
               <tr>
-                  <td>{{t.code ?? 'Не указан'}}</td>
+                  <td>{{t.fullTaskId ?? 'Не указан'}}</td>
                   <td>
                     <div class="smaller-text">{{t.taskName}}</div>
                   </td>
@@ -332,7 +332,7 @@
                       {{t.executorName}}
                     </div>
                   </td>
-                  
+
                   <td>
                     <div class="smaller-text">
                       {{t.lastUpdated}}
@@ -341,8 +341,8 @@
 
                   <td>
                     <div class="cancel">
-                      <button pButton type="button" 
-                              icon="pi pi-times" 
+                      <button pButton type="button"
+                              icon="pi pi-times"
                               class="p-button-danger p-button-sm p-button-text"
                               (click)="onRemoveTaskLinkAsync(t.taskId, 'Link')"
                               pTooltip="Удалить связь"
@@ -381,15 +381,15 @@
 
       </div>
       <div class="">
-        <p-table [value]="taskLinkParent$.value" 
-                  styleClass="p-datatable-sm" 
+        <p-table [value]="taskLinkParent$.value"
+                  styleClass="p-datatable-sm"
                   [tableStyle]="{'min-width': '50rem'}"
                   [rows]="10"
                   responsiveLayout="scroll"
                   [paginator]="taskLinkParent$.value?.length > 0">
           <ng-template pTemplate="header">
               <tr>
-                  <th>Код задачи</th>
+                  <th>Ключ</th>
                   <th>Название задачи</th>
                   <th>Статус</th>
                   <th>Исполнитель</th>
@@ -399,7 +399,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-t>
               <tr>
-                  <td>{{t.code ?? 'Не указан'}}</td>
+                  <td>{{t.fullTaskId ?? 'Не указан'}}</td>
                   <td>
                     <div class="smaller-text">{{t.taskName}}</div>
                   </td>
@@ -415,7 +415,7 @@
                       {{t.executorName}}
                     </div>
                   </td>
-                  
+
                   <td>
                     <div class="smaller-text">
                       {{t.lastUpdated}}
@@ -424,9 +424,9 @@
 
                   <td>
                     <div class="cancel">
-                      <button pButton 
-                              type="button" 
-                              icon="pi pi-times" 
+                      <button pButton
+                              type="button"
+                              icon="pi pi-times"
                               class="p-button-danger p-button-sm p-button-text"
                               (click)="onRemoveTaskLinkAsync(t.taskId, 'Parent')">
                       </button>
@@ -463,15 +463,15 @@
 
       </div>
       <div class="">
-        <p-table [value]="taskLinkChild$.value" 
-                  styleClass="p-datatable-sm" 
+        <p-table [value]="taskLinkChild$.value"
+                  styleClass="p-datatable-sm"
                   [tableStyle]="{'min-width': '50rem'}"
                   [rows]="10"
                   responsiveLayout="scroll"
                   [paginator]="taskLinkChild$.value?.length > 0">
           <ng-template pTemplate="header">
               <tr>
-                  <th>Код задачи</th>
+                  <th>Ключ</th>
                   <th>Название задачи</th>
                   <th>Статус</th>
                   <th>Исполнитель</th>
@@ -481,7 +481,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-t>
               <tr>
-                  <td>{{t.code ?? 'Не указан'}}</td>
+                  <td>{{t.fullTaskId ?? 'Не указан'}}</td>
                   <td>
                     <div class="smaller-text">{{t.taskName}}</div>
                   </td>
@@ -497,7 +497,7 @@
                       {{t.executorName}}
                     </div>
                   </td>
-                  
+
                   <td>
                     <div class="smaller-text">
                       {{t.lastUpdated}}
@@ -506,9 +506,9 @@
 
                   <td>
                     <div class="cancel">
-                      <button pButton 
-                              type="button" 
-                              icon="pi pi-times" 
+                      <button pButton
+                              type="button"
+                              icon="pi pi-times"
                               class="p-button-danger p-button-sm p-button-text"
                               (click)="onRemoveTaskLinkAsync(t.taskId, 'Child')">
                       </button>
@@ -545,15 +545,15 @@
 
       </div>
       <div class="">
-        <p-table [value]="taskLinkDepend$.value" 
-                  styleClass="p-datatable-sm" 
+        <p-table [value]="taskLinkDepend$.value"
+                  styleClass="p-datatable-sm"
                   [tableStyle]="{'min-width': '50rem'}"
                   [rows]="10"
                   responsiveLayout="scroll"
                   [paginator]="taskLinkDepend$.value?.length > 0">
           <ng-template pTemplate="header">
               <tr>
-                  <th>Код задачи</th>
+                  <th>Ключ</th>
                   <th>Название задачи</th>
                   <th>Статус</th>
                   <th>Исполнитель</th>
@@ -563,7 +563,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-t>
               <tr>
-                  <td>{{t.code ?? 'Не указан'}}</td>
+                  <td>{{t.fullTaskId ?? 'Не указан'}}</td>
                   <td>
                     <div class="smaller-text">{{t.taskName}}</div>
                   </td>
@@ -579,7 +579,7 @@
                       {{t.executorName}}
                     </div>
                   </td>
-                  
+
                   <td>
                     <div class="smaller-text">
                       {{t.lastUpdated}}
@@ -588,9 +588,9 @@
 
                   <td>
                     <div class="cancel">
-                      <button pButton 
-                              type="button" 
-                              icon="pi pi-times" 
+                      <button pButton
+                              type="button"
+                              icon="pi pi-times"
                               class="p-button-danger p-button-sm p-button-text"
                               (click)="onRemoveTaskLinkAsync(t.taskId, 'Depend')">
                       </button>
@@ -627,15 +627,15 @@
 
       </div>
       <div class="">
-        <p-table [value]="taskLinkBlocked$.value" 
-                  styleClass="p-datatable-sm" 
+        <p-table [value]="taskLinkBlocked$.value"
+                  styleClass="p-datatable-sm"
                   [tableStyle]="{'min-width': '50rem'}"
                   [rows]="10"
                   responsiveLayout="scroll"
                   [paginator]="taskLinkBlocked$.value?.length > 0">
           <ng-template pTemplate="header">
               <tr>
-                  <th>Код задачи</th>
+                  <th>Ключ</th>
                   <th>Название задачи</th>
                   <th>Статус</th>
                   <th>Исполнитель</th>
@@ -645,7 +645,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-t>
               <tr>
-                  <td>{{t.code ?? 'Не указан'}}</td>
+                  <td>{{t.fullTaskId ?? 'Не указан'}}</td>
                   <td>
                     <div class="smaller-text">{{t.taskName}}</div>
                   </td>
@@ -661,7 +661,7 @@
                       {{t.executorName}}
                     </div>
                   </td>
-                  
+
                   <td>
                     <div class="smaller-text">
                       {{t.lastUpdated}}
@@ -698,8 +698,8 @@
   <div class="block-task-lines col-lg-12 d-flex">
     <div class="col-lg-8">
       <strong>Прикрепить файлы</strong>
-      <p-fileUpload [multiple]="true" 
-                    (onSelect)="onSelectTaskFiles($event)" 
+      <p-fileUpload [multiple]="true"
+                    (onSelect)="onSelectTaskFiles($event)"
                     (uploadHandler)="onUploadTaskFilesAsync()"
                     [customUpload]="true"
                     chooseLabel="Прикрепить файл"
@@ -718,18 +718,18 @@
             <div>
               {{tf.documentName}}
             </div>
-            
+
             <div class="cancel">
-              <button pButton type="button" 
-                      icon="pi pi-cloud-download" 
+              <button pButton type="button"
+                      icon="pi pi-cloud-download"
                       class="p-button-primary p-button-sm p-button-text"
                       pTooltip="Скачать файл"
                       tooltipPosition="bottom"
                       (click)="onDownloadFileAsync(tf.documentId, tf.documentName)">
               </button>
-              
-              <button pButton type="button" 
-                      icon="pi pi-times" 
+
+              <button pButton type="button"
+                      icon="pi pi-times"
                       class="p-button-danger p-button-sm p-button-text"
                       pTooltip="Удалить файл"
                       tooltipPosition="bottom"
@@ -766,11 +766,11 @@
       <div>
         <label class="control-label-task-item">Тип связи:</label>
       </div>
-     
+
      <div>
-      <p-dropdown [options]="linkTypes$.value" 
-                  [(ngModel)]="selectedLinkType" 
-                  [showClear]="true" 
+      <p-dropdown [options]="linkTypes$.value"
+                  [(ngModel)]="selectedLinkType"
+                  [showClear]="true"
                   placeholder="Выберите тип связи"
                   [emptyMessage]="(linkTypes$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
                   optionLabel="value"
@@ -783,14 +783,14 @@
       <div>
         <label class="control-label-task-item">Задача для связи:</label>
       </div>
-     
+
      <div>
-      <p-dropdown [options]="linkTasks$.value" 
-                  [(ngModel)]="selectedTaskLink" 
-                  optionLabel="taskName" 
-                  [filter]="true" 
-                  filterBy="filterText" 
-                  [showClear]="true" 
+      <p-dropdown [options]="linkTasks$.value"
+                  [(ngModel)]="selectedTaskLink"
+                  optionLabel="taskName"
+                  [filter]="true"
+                  filterBy="filterText"
+                  [showClear]="true"
                   placeholder="Выберите задачу для связи">
         <ng-template pTemplate="selectedItem">
             <div class="country-item country-item-value" *ngIf="selectedTaskLink">
@@ -804,7 +804,7 @@
             </div>
         </ng-template>
     </p-dropdown>
-    
+
     <div>
       <small *ngIf="selectedLinkType.key == 'Link'">Укажите, с какой задачей нужно связать текущую (связь без иерархии).
 
@@ -825,16 +825,16 @@
     </div>
 
         <ng-template pTemplate="footer">
-          <p-button icon="pi pi-times" 
-                    (click)="isVisibleCreateTaskLink = false" 
-                    label="Отменить" 
+          <p-button icon="pi pi-times"
+                    (click)="isVisibleCreateTaskLink = false"
+                    label="Отменить"
                     styleClass="p-button-danger p-button-sm p-button-text">
 
           </p-button>
 
-          <p-button icon="pi pi-check" 
-                    (click)="onCreateTaskLinkAsync()" 
-                    label="Добавить связь" 
+          <p-button icon="pi pi-check"
+                    (click)="onCreateTaskLinkAsync()"
+                    label="Добавить связь"
                     styleClass="p-button-success p-button-sm p-button-text"
                     [disabled]="!selectedLinkType">
 

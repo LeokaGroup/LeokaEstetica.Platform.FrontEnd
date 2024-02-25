@@ -147,7 +147,7 @@ export class ProjectManagmentService {
     * @param taskId - Id задачи.
     * @returns - Данные конфигурации.
     */
-      public async getTaskDetailsByTaskIdAsync(projectId: number, projectTaskId: number) {
+      public async getTaskDetailsByTaskIdAsync(projectId: number, projectTaskId: string) {
         return await this._http.get(this.apiUrl + `/project-management/task?projectTaskId=${projectTaskId}&projectId=${projectId}`).pipe(
             tap(data => this.taskDetails$.next(data))
         );
@@ -372,7 +372,7 @@ export class ProjectManagmentService {
     * @param projectId - Id проекта.
     * @param projectTaskId - Id задачи в рамках проекта.
     */
-      public async getTaskLinkDefaultAsync(projectId: number, projectTaskId: number) {
+      public async getTaskLinkDefaultAsync(projectId: number, projectTaskId: string) {
         return await this._http.get(this.apiUrl +
             `/project-management/task-link-default?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Link`).pipe(
             tap(data => this.taskLinkDefault$.next(data))
@@ -396,7 +396,7 @@ export class ProjectManagmentService {
     * @param projectId - Id проекта.
     * @param projectTaskId - Id задачи в рамках проекта.
     */
-      public async getTaskLinkChildAsync(projectId: number, projectTaskId: number) {
+      public async getTaskLinkChildAsync(projectId: number, projectTaskId: string) {
         return await this._http.get(this.apiUrl +
             `/project-management/task-link-child?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Child`).pipe(
             tap(data => this.taskLinkChild$.next(data))
@@ -408,7 +408,7 @@ export class ProjectManagmentService {
     * @param projectId - Id проекта.
     * @param projectTaskId - Id задачи в рамках проекта.
     */
-      public async getTaskLinkDependAsync(projectId: number, projectTaskId: number) {
+      public async getTaskLinkDependAsync(projectId: number, projectTaskId: string) {
         return await this._http.get(this.apiUrl +
             `/project-management/task-link-depend?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Depend`).pipe(
             tap(data => this.taskLinkDepend$.next(data))
@@ -420,7 +420,7 @@ export class ProjectManagmentService {
     * @param projectId - Id проекта.
     * @param projectTaskId - Id задачи в рамках проекта.
     */
-     public async getTaskLinkBlockedAsync(projectId: number, projectTaskId: number) {
+     public async getTaskLinkBlockedAsync(projectId: number, projectTaskId: string) {
         return await this._http.get(this.apiUrl +
             `/project-management/task-link-blocked?projectId=${projectId}&projectTaskId=${projectTaskId}&linkType=Depend`).pipe(
             tap(data => this.taskLinkBlocked$.next(data))
@@ -488,7 +488,7 @@ export class ProjectManagmentService {
      * @param projectId - Id проекта.
      * @param projectTaskId - Id задачи в рамках проекта.
      */
-      public async getTaskFilesAsync(projectId: number, projectTaskId: number) {
+      public async getTaskFilesAsync(projectId: number, projectTaskId: string) {
         return await this._http.get(this.apiUrl + `/project-management/task-files?projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
             tap(data => this.taskFiles$.next(data))
         );

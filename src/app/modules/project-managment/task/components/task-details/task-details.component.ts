@@ -256,7 +256,7 @@ export class TaskDetailsComponent implements OnInit {
     public async onAttachTaskTagAsync() {
         let projectTaskTagInput = new ProjectTaskTagInput();
         projectTaskTagInput.projectId = +this.projectId;
-        projectTaskTagInput.projectTaskId = +this.projectTaskId;
+        projectTaskTagInput.projectTaskId = this.projectTaskId;
         projectTaskTagInput.tagId = this.selectedTag.tagId;
 
         (await this._projectManagmentService.attachTaskTagAsync(projectTaskTagInput))
@@ -273,7 +273,7 @@ export class TaskDetailsComponent implements OnInit {
      public async onDetachTaskTagAsync(removedValue: string) {
         let projectTaskTagInput = new ProjectTaskTagInput();
         projectTaskTagInput.projectId = +this.projectId;
-        projectTaskTagInput.projectTaskId = +this.projectTaskId;
+        projectTaskTagInput.projectTaskId = this.projectTaskId;
         projectTaskTagInput.tagId = this.projectTags$.value.filter((item: any) => item.tagName == removedValue)[0].tagId;
 
          (await this._projectManagmentService.detachTaskTagAsync(projectTaskTagInput))
@@ -288,7 +288,7 @@ export class TaskDetailsComponent implements OnInit {
     public async onChangeTaskPriorityAsync() {
         let taskPriorityInput = new TaskPriorityInput();
         taskPriorityInput.projectId = +this.projectId;
-        taskPriorityInput.projectTaskId = +this.projectTaskId;
+        taskPriorityInput.projectTaskId = this.projectTaskId;
         taskPriorityInput.priorityId = this.selectedPriority.priorityId;
 
          (await this._projectManagmentService.updateTaskPriorityAsync(taskPriorityInput))
@@ -303,7 +303,7 @@ export class TaskDetailsComponent implements OnInit {
     public async onChangeTaskExecutorAsync() {
         let projectTaskExecutorInput = new ProjectTaskExecutorInput();
         projectTaskExecutorInput.projectId = +this.projectId;
-        projectTaskExecutorInput.projectTaskId = +this.projectTaskId;
+        projectTaskExecutorInput.projectTaskId = this.projectTaskId;
         projectTaskExecutorInput.executorId = this.selectedExecutor.userId;
 
         (await this._projectManagmentService.changeTaskExecutorAsync(projectTaskExecutorInput))
@@ -320,7 +320,7 @@ export class TaskDetailsComponent implements OnInit {
        public async onDetachTaskWatcherAsync(removedValue: string, i: number) {
         let projectTaskTagInput = new ProjectTaskWatcherInput();
         projectTaskTagInput.projectId = +this.projectId;
-        projectTaskTagInput.projectTaskId = +this.projectTaskId;
+        projectTaskTagInput.projectTaskId = this.projectTaskId;
         projectTaskTagInput.watcherId = this.taskPeople$.value[i].userId;
 
         (await this._projectManagmentService.detachTaskWatcherAsync(projectTaskTagInput))
@@ -335,7 +335,7 @@ export class TaskDetailsComponent implements OnInit {
     public async onAttachTaskWatcherAsync() {
         let projectTaskExecutorInput = new ProjectTaskWatcherInput();
         projectTaskExecutorInput.projectId = +this.projectId;
-        projectTaskExecutorInput.projectTaskId = +this.projectTaskId;
+        projectTaskExecutorInput.projectTaskId = this.projectTaskId;
         projectTaskExecutorInput.watcherId = this.selectedWatcher.userId;
 
         (await this._projectManagmentService.attachTaskWatcherAsync(projectTaskExecutorInput))
@@ -348,7 +348,7 @@ export class TaskDetailsComponent implements OnInit {
     * Функция получает связи задачи (обычные связи).
     */
       private async getTaskLinkDefaultAsync() {
-        (await this._projectManagmentService.getTaskLinkDefaultAsync(+this.projectId, +this.projectTaskId))
+        (await this._projectManagmentService.getTaskLinkDefaultAsync(+this.projectId, this.projectTaskId))
              .subscribe(_ => {
                 console.log("Связанные задачи (обычная связь): ", this.taskLinkDefault$.value);
              });
@@ -358,7 +358,7 @@ export class TaskDetailsComponent implements OnInit {
     * Функция получает связи задачи (родительские связи).
     */
      private async getTaskLinkParentAsync() {
-        (await this._projectManagmentService.getTaskLinkParentAsync(+this.projectId, +this.projectTaskId))
+        (await this._projectManagmentService.getTaskLinkParentAsync(+this.projectId, this.projectTaskId))
              .subscribe(_ => {
                 console.log("Связанные задачи (родительская связь): ", this.taskLinkParent$.value);
              });
@@ -368,7 +368,7 @@ export class TaskDetailsComponent implements OnInit {
     * Функция получает связи задачи (дочерние связи).
     */
       private async getTaskLinkChildAsync() {
-        (await this._projectManagmentService.getTaskLinkChildAsync(+this.projectId, +this.projectTaskId))
+        (await this._projectManagmentService.getTaskLinkChildAsync(+this.projectId, this.projectTaskId))
              .subscribe(_ => {
                 console.log("Связанные задачи (дочерняя связь): ", this.taskLinkChild$.value);
              });
@@ -378,7 +378,7 @@ export class TaskDetailsComponent implements OnInit {
     * Функция получает связи задачи (связь зависит от).
     */
       private async getTaskLinkDependAsync() {
-        (await this._projectManagmentService.getTaskLinkDependAsync(+this.projectId, +this.projectTaskId))
+        (await this._projectManagmentService.getTaskLinkDependAsync(+this.projectId, this.projectTaskId))
              .subscribe(_ => {
                 console.log("Связанные задачи (связь зависит от): ", this.taskLinkDepend$.value);
              });
@@ -388,7 +388,7 @@ export class TaskDetailsComponent implements OnInit {
     * Функция получает связи задачи (связь блокирует).
     */
       private async getTaskLinkBlockedAsync() {
-        (await this._projectManagmentService.getTaskLinkBlockedAsync(+this.projectId, +this.projectTaskId))
+        (await this._projectManagmentService.getTaskLinkBlockedAsync(+this.projectId, this.projectTaskId))
              .subscribe(_ => {
                 console.log("Связанные задачи (связь блокирует): ", this.taskLinkBlocked$.value);
              });
@@ -405,8 +405,8 @@ export class TaskDetailsComponent implements OnInit {
 
         let taskLinkInput = new TaskLinkInput();
         taskLinkInput.projectId = +this.projectId;
-        taskLinkInput.taskFromLink = +this.projectTaskId;
-        taskLinkInput.taskToLink = this.selectedTaskLink.taskId;
+        taskLinkInput.taskFromLink = this.projectTaskId;
+        taskLinkInput.taskToLink = this.selectedTaskLink.fullTaskId;
         taskLinkInput.linkType = this.selectedTaskLink.linkType;
 
         (await this._projectManagmentService.createTaskLinkAsync(taskLinkInput))
@@ -492,7 +492,7 @@ export class TaskDetailsComponent implements OnInit {
      * @param linkType - Тип связи.
      */
     public async onRemoveTaskLinkAsync(removedLinkId: number, linkType: string) {
-        (await this._projectManagmentService.removeTaskLinkAsync(removedLinkId, linkType, +this.projectTaskId, +this.projectId))
+        (await this._projectManagmentService.removeTaskLinkAsync(removedLinkId, linkType, this.projectTaskId, +this.projectId))
              .subscribe(async _ => {
                   // Подгружаем те связи, которые надо актуализировать в таблице связей.
             if (linkType == "Link") {
@@ -518,7 +518,7 @@ export class TaskDetailsComponent implements OnInit {
      * Функция получает файлы задачи.
      */
     private async getTaskFilesAsync() {
-        (await this._projectManagmentService.getTaskFilesAsync(+this.projectId, +this.projectTaskId))
+        (await this._projectManagmentService.getTaskFilesAsync(+this.projectId, this.projectTaskId))
         .subscribe(_ => {
            console.log("Файлы задачи: ", this.taskFiles$.value);
         });
@@ -532,7 +532,7 @@ export class TaskDetailsComponent implements OnInit {
      */
     public async onDownloadFileAsync(documentId: number, documentName: string) {
         return new Promise(async resolve => {
-            (await this._projectManagmentService.downloadFileAsync(documentId, +this.projectId, +this.projectTaskId))
+            (await this._projectManagmentService.downloadFileAsync(documentId, +this.projectId, this.projectTaskId))
             .subscribe((_) => {
                console.log("Скачивается файл: ", this.downloadFile$.value);
 
@@ -553,7 +553,7 @@ export class TaskDetailsComponent implements OnInit {
       * @param documentId - Id документа.
      */
     public async onRemoveTaskFileAsync(documentId: number) {
-        (await this._projectManagmentService.removeTaskFileAsync(documentId, +this.projectId, +this.projectTaskId))
+        (await this._projectManagmentService.removeTaskFileAsync(documentId, +this.projectId, this.projectTaskId))
         .subscribe(async (_: any) => {
             await this.getTaskFilesAsync();
         });
