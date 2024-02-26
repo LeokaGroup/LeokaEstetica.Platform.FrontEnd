@@ -13,6 +13,7 @@ import { ProjectTaskWatcherInput } from "../../models/input/project-task-watcher
 import { TaskLinkInput } from "../../models/input/task-link-input";
 import { TaskPriorityInput } from "../../models/input/task-priority-input";
 import {TaskCommentInput} from "../../models/input/task-comment-input";
+import {TaskCommentExtendedInput} from "../../models/input/task-comment-extended-input";
 
 @Component({
     selector: "",
@@ -74,7 +75,6 @@ export class TaskDetailsComponent implements OnInit {
             }]
         }
     ];
-  comment: string = "";
 
     formStatuses: FormGroup = new FormGroup({
         "statusName": new FormControl("", [
@@ -96,6 +96,8 @@ export class TaskDetailsComponent implements OnInit {
 
     taskFormData = new FormData();
     uploadedFiles: any[] = [];
+    comment: string = "";
+    isActiveTaskComment: boolean = false;
 
     public async ngOnInit() {
         forkJoin([
@@ -598,6 +600,19 @@ export class TaskDetailsComponent implements OnInit {
     (await this._projectManagmentService.getTaskCommentsAsync(this.projectTaskId, +this.projectId))
       .subscribe(async (_: any) => {
         console.log("Комментарии задачи: ", this.taskComments$.value);
+      });
+  };
+
+  public async onUpdateTaskCommentAsync(commentId: number, comment: string) {
+    let taskCommentExtendedInput = new TaskCommentExtendedInput();
+    taskCommentExtendedInput.comment = comment;
+    taskCommentExtendedInput.projectId = +this.projectId;
+    taskCommentExtendedInput.projectTaskId = this.projectTaskId;
+    taskCommentExtendedInput.commentId = commentId;
+
+    (await this._projectManagmentService.updateTaskCommentAsync(taskCommentExtendedInput))
+      .subscribe(async (_: any) => {
+        await this.getTaskCommentsAsync();
       });
   };
 }

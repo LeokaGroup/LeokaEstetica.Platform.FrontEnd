@@ -72,6 +72,10 @@
   }
 }
 
+:host ::ng-deep .p-inplace span {
+  font-size: 14px;
+}
+
 :host ::ng-deep .p-dropdown-label {
   margin: -5px 10px -5px -5px;
 }
@@ -125,4 +129,14 @@
 .control-comment {
   display: flex;
   flex-direction: row-reverse;
+}
+
+.block-comments {
+  //display: flex;
+  //justify-content: space-between;
+  //font-size: 14px;
+}
+
+.comment {
+  font-size: 14px;
 }
