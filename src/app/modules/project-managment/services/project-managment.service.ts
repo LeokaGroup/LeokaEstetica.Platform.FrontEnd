@@ -51,6 +51,7 @@ export class ProjectManagmentService {
     public linkTasks$ = new BehaviorSubject<any>(null);
     public taskFiles$ = new BehaviorSubject<any>(null);
     public downloadFile$ = new BehaviorSubject<any>(null);
+    public taskComments$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient,
                 private readonly _router: Router) {
@@ -540,6 +541,18 @@ export class ProjectManagmentService {
   public async createTaskCommentAsync(taskCommentInput: TaskCommentInput) {
     return await this._http.post(this.apiUrl + `/project-management/task-comment`, taskCommentInput).pipe(
       tap(_ => console.log("Комментарий задачи создан"))
+    );
+  };
+
+  /**
+   * Функция получает список комментариев задачи.
+   * @param projectTaskId - Id задачи в рамках проекта.
+   * @param projectId - Id проекта.
+   */
+  public async getTaskCommentsAsync(projectTaskId: string, projectId: number) {
+    return await this._http.get(this.apiUrl +
+      `/project-management/task-comment?projectTaskId=${projectTaskId}&projectId=${projectId}`).pipe(
+      tap(data => this.taskComments$.next(data))
     );
   };
 }

@@ -755,23 +755,30 @@
     <div class="col-lg-8">
       <p-tabView>
         <p-tabPanel header="Комментарии">
-          <p-panel header="[тут будет текст обновлено и тд]">
-            <div>
-              <textarea pInputTextarea
-                        [autoResize]="true"
-                        [style]="{width: '100%'}"
-                        [(ngModel)]="comment">
-              </textarea>
-            </div>
+          <div *ngFor="let c of taskComments$.value">
+            <div>&nbsp;</div>
 
-            <div class="control-comment">
-              <p-button label="Отправить"
-                        icon="pi pi-arrow-up-right"
-                        [hidden]="comment == undefined || comment == '' || comment == null"
-                        (click)="onCreateTaskCommentAsync(comment)">
-              </p-button>
-            </div>
-          </p-panel>
+            <p-panel header="Добавлено: {{c.userName}}">
+              <p>{{c.comment}}</p>
+            </p-panel>
+          </div>
+
+          <!-- Оставить комментарий. -->
+          <div class="mt-3">
+            <p-card header="Оставить комментарий" [style]="{width: '100%'}">
+              <div>
+                <p-editor [(ngModel)]="comment" [style]="{width: '100%'}"></p-editor>
+              </div>
+
+              <div class="control-comment mt-1">
+                <p-button label="Отправить"
+                          icon="pi pi-arrow-up-right"
+                          [hidden]="comment == undefined || comment == '' || comment == null"
+                          (click)="onCreateTaskCommentAsync(comment)">
+                </p-button>
+              </div>
+            </p-card>
+          </div>
         </p-tabPanel>
 
         <p-tabPanel header="История">
