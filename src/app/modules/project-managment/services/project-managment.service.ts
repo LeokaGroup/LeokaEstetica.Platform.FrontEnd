@@ -17,6 +17,7 @@ import { TaskPriorityInput } from '../task/models/input/task-priority-input';
 import { UserTaskTagInput } from '../task/models/input/user-task-tag-input';
 import {Router} from "@angular/router";
 import { TaskCommentInput } from '../task/models/input/task-comment-input';
+import {TaskCommentExtendedInput} from "../task/models/input/task-comment-extended-input";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -536,7 +537,7 @@ export class ProjectManagmentService {
 
   /**
    * Функция создает комментарий к задаче.
-   * @param comment - Комментарий.
+   * @param taskCommentInput - Входная модель..
    */
   public async createTaskCommentAsync(taskCommentInput: TaskCommentInput) {
     return await this._http.post(this.apiUrl + `/project-management/task-comment`, taskCommentInput).pipe(
@@ -553,6 +554,16 @@ export class ProjectManagmentService {
     return await this._http.get(this.apiUrl +
       `/project-management/task-comment?projectTaskId=${projectTaskId}&projectId=${projectId}`).pipe(
       tap(data => this.taskComments$.next(data))
+    );
+  };
+
+  /**
+   * Функция обновляет комментарий задачи.
+   * @param taskCommentInput - Входная модель.
+   */
+  public async updateTaskCommentAsync(taskCommentExtendedInput: TaskCommentExtendedInput) {
+    return await this._http.put(this.apiUrl + `/project-management/task-comment`, taskCommentExtendedInput).pipe(
+      tap(_ => console.log("Комментарий задачи изменен"))
     );
   };
 }
