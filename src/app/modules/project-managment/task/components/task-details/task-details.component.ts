@@ -615,4 +615,11 @@ export class TaskDetailsComponent implements OnInit {
         await this.getTaskCommentsAsync();
       });
   };
+
+  public async onDeleteTaskCommentAsync(commentId: number) {
+    (await this._projectManagmentService.deleteTaskCommentAsync(commentId))
+      .subscribe(async (_: any) => {
+        await this.getTaskCommentsAsync();
+      });
+  };
 }

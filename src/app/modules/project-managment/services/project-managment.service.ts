@@ -566,4 +566,14 @@ export class ProjectManagmentService {
       tap(_ => console.log("Комментарий задачи изменен"))
     );
   };
+
+  /**
+   * Функция удаляет комментарий задачи.
+   * @param commentId - Id комментария.
+   */
+  public async deleteTaskCommentAsync(commentId: number) {
+    return await this._http.delete(this.apiUrl + `/project-management/task-comment?commentId=${commentId}`).pipe(
+      tap(_ => console.log("Комментарий задачи удален"))
+    );
+  };
 }
