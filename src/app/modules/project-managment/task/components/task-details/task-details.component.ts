@@ -44,6 +44,7 @@ export class TaskDetailsComponent implements OnInit {
     public readonly linkTasks$ = this._projectManagmentService.linkTasks$;
     public readonly taskFiles$ = this._projectManagmentService.taskFiles$;
     public readonly downloadFile$ = this._projectManagmentService.downloadFile$;
+    public readonly taskComments$ = this._projectManagmentService.taskComments$;
 
     projectId: any;
     projectTaskId: any;
@@ -106,7 +107,8 @@ export class TaskDetailsComponent implements OnInit {
             await this.getTaskLinkChildAsync(),
             await this.getTaskLinkDependAsync(),
             await this.getTaskLinkBlockedAsync(),
-            await this.getTaskFilesAsync()
+            await this.getTaskFilesAsync(),
+            await this.getTaskCommentsAsync()
         ]).subscribe();
     };
 
@@ -579,12 +581,23 @@ export class TaskDetailsComponent implements OnInit {
   public async onCreateTaskCommentAsync(comment: string) {
     let taskCommentInput = new TaskCommentInput();
     taskCommentInput.comment = this.comment;
-    taskCommentInput.projectId = this.projectId;
+    taskCommentInput.projectId = +this.projectId;
     taskCommentInput.projectTaskId = this.projectTaskId;
 
     (await this._projectManagmentService.createTaskCommentAsync(taskCommentInput))
       .subscribe(async (_: any) => {
         this.comment = "";
+        await this.getTaskCommentsAsync();
+      });
+  };
+
+  /**
+   * Функция получает список комментариев задачи.
+   */
+  private async getTaskCommentsAsync() {
+    (await this._projectManagmentService.getTaskCommentsAsync(this.projectTaskId, +this.projectId))
+      .subscribe(async (_: any) => {
+        console.log("Комментарии задачи: ", this.taskComments$.value);
       });
   };
 }
