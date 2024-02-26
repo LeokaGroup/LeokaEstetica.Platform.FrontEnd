@@ -44,6 +44,7 @@ import { ChipModule } from 'primeng/chip';
 import { SettingsProjectManagmentComponent } from './settings/components/settings.component';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { FileUploadModule } from 'primeng/fileupload';
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
     declarations: [
@@ -92,7 +93,8 @@ import { FileUploadModule } from 'primeng/fileupload';
         InplaceModule,
         ChipModule,
         SplitButtonModule,
-        FileUploadModule
+        FileUploadModule,
+        TabViewModule
     ],
 
     exports: [],

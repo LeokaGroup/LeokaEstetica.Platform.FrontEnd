@@ -12,6 +12,7 @@ import { ProjectTaskTagInput } from "../../models/input/project-task-tag-input";
 import { ProjectTaskWatcherInput } from "../../models/input/project-task-watcher-input";
 import { TaskLinkInput } from "../../models/input/task-link-input";
 import { TaskPriorityInput } from "../../models/input/task-priority-input";
+import {TaskCommentInput} from "../../models/input/task-comment-input";
 
 @Component({
     selector: "",
@@ -72,6 +73,7 @@ export class TaskDetailsComponent implements OnInit {
             }]
         }
     ];
+  comment: string = "";
 
     formStatuses: FormGroup = new FormGroup({
         "statusName": new FormControl("", [
@@ -569,4 +571,20 @@ export class TaskDetailsComponent implements OnInit {
         }
       });
     };
+
+  /**
+   * Функция создает комментарий к задаче.
+   * @param comment - Комментарий.
+   */
+  public async onCreateTaskCommentAsync(comment: string) {
+    let taskCommentInput = new TaskCommentInput();
+    taskCommentInput.comment = this.comment;
+    taskCommentInput.projectId = this.projectId;
+    taskCommentInput.projectTaskId = this.projectTaskId;
+
+    (await this._projectManagmentService.createTaskCommentAsync(taskCommentInput))
+      .subscribe(async (_: any) => {
+        this.comment = "";
+      });
+  };
 }
