@@ -759,50 +759,56 @@
             <div>&nbsp;</div>
 
             <p-panel header="Добавлено: {{c.userName}}">
-              <div class="block-comments">
-                <div>
-                  <div class="task-name">
-                    <p-inplace [style]="{'min-height':'33px'}"
-                               [active]="c.isActiveTaskComment"
-                               (onActivate)="c.isActiveTaskComment = !c.isActiveTaskComment">
-                      <ng-template pTemplate="display">
-                        <span class="task-name-title">{{c.comment}}</span>
-                      </ng-template>
+              <div class="">
+                <div class="block-comments">
+                  <p-inplace [style]="{'min-height':'33px'}"
+                             [active]="c.isActiveTaskComment"
+                             (onActivate)="c.isActiveTaskComment = !c.isActiveTaskComment">
+                    <ng-template pTemplate="display">
+                      <span class="task-name-title">{{c.comment}}</span>
+                    </ng-template>
 
-                      <ng-template pTemplate="content">
-                        <input type="text" [(ngModel)]="c.comment" value="{{c.comment}}" pInputText class="comment">
-                      </ng-template>
-                    </p-inplace>
+                    <ng-template pTemplate="content">
+                      <input type="text" [(ngModel)]="c.comment" value="{{c.comment}}" pInputText class="comment">
+                    </ng-template>
+                  </p-inplace>
 
-                    <button pButton
-                            pRipple
-                            icon="pi pi-save"
-                            type="button"
-                            label="Сохранить"
-                            class="p-button-success p-button-text p-button-sm"
-                            *ngIf="c.isActiveTaskComment"
-                            (click)="onUpdateTaskCommentAsync(c.commentId, c.comment)">
-                    </button>
+                  <button pButton
+                          pRipple
+                          icon="pi pi-save"
+                          type="button"
+                          label="Сохранить"
+                          class="p-button-success p-button-text p-button-sm"
+                          *ngIf="c.isActiveTaskComment"
+                          (click)="onUpdateTaskCommentAsync(c.commentId, c.comment)">
+                  </button>
 
-                    <button pButton
-                            pRipple
-                            icon="pi pi-times"
-                            type="button"
-                            label="Отмена"
-                            class="p-button-secondary p-button-text p-button-sm"
-                            *ngIf="c.isActiveTaskComment"
-                            (click)="c.isActiveTaskComment=!c.isActiveTaskComment">
-                    </button>
-                  </div>
+                  <button pButton
+                          pRipple
+                          icon="pi pi-times"
+                          type="button"
+                          label="Отмена"
+                          class="p-button-secondary p-button-text p-button-sm"
+                          *ngIf="c.isActiveTaskComment"
+                          (click)="c.isActiveTaskComment=!c.isActiveTaskComment">
+                  </button>
 
-                  <div class="control-comment mt-1">
-                    <p-button label="Отправить"
-                              icon="pi pi-arrow-up-right"
-                              [hidden]="comment == undefined || comment == '' || comment == null"
-                              (click)="onCreateTaskCommentAsync(comment)"
-                              class="p-button-sm">
-                    </p-button>
-                  </div>
+                  <button pButton type="button"
+                          icon="pi pi-times"
+                          class="p-button-danger p-button-sm p-button-text"
+                          (click)="onDeleteTaskCommentAsync(c.commentId)"
+                          pTooltip="Удалить комментарий"
+                          tooltipPosition="bottom">
+                  </button>
+                </div>
+
+                <div class="control-comment mt-1">
+                  <p-button label="Отправить"
+                            icon="pi pi-arrow-up-right"
+                            [hidden]="comment == undefined || comment == '' || comment == null"
+                            (click)="onCreateTaskCommentAsync(comment)"
+                            class="p-button-sm">
+                  </p-button>
                 </div>
               </div>
             </p-panel>
