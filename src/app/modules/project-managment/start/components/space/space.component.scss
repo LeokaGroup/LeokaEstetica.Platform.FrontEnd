@@ -115,3 +115,7 @@
 .control-see-more {
   font-weight: 500;
 }
+
+:host ::ng-deep .p-chip {
+  font-size: smaller;
+}
