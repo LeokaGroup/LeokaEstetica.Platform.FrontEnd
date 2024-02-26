@@ -121,3 +121,8 @@
     text-decoration: underline;
   }
 }
+
+.control-comment {
+  display: flex;
+  flex-direction: row-reverse;
+}

@@ -16,6 +16,7 @@ import { TaskLinkInput } from '../task/models/input/task-link-input';
 import { TaskPriorityInput } from '../task/models/input/task-priority-input';
 import { UserTaskTagInput } from '../task/models/input/user-task-tag-input';
 import {Router} from "@angular/router";
+import { TaskCommentInput } from '../task/models/input/task-comment-input';
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -529,6 +530,16 @@ export class ProjectManagmentService {
   public async fixationSelectedViewStrategyAsync(fixationStrategyInput: FixationStrategyInput) {
     return await this._http.patch(this.apiUrl + `/project-management-settings/fixation-strategy`, fixationStrategyInput).pipe(
       tap(_ => console.log("Стратегия зафиксирована"))
+    );
+  };
+
+  /**
+   * Функция создает комментарий к задаче.
+   * @param comment - Комментарий.
+   */
+  public async createTaskCommentAsync(taskCommentInput: TaskCommentInput) {
+    return await this._http.post(this.apiUrl + `/project-management/task-comment`, taskCommentInput).pipe(
+      tap(_ => console.log("Комментарий задачи создан"))
     );
   };
 }
