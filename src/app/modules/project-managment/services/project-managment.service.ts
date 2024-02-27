@@ -53,6 +53,7 @@ export class ProjectManagmentService {
     public taskFiles$ = new BehaviorSubject<any>(null);
     public downloadFile$ = new BehaviorSubject<any>(null);
     public taskComments$ = new BehaviorSubject<any>(null);
+  public downloadUserAvatarFile$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient,
                 private readonly _router: Router) {
@@ -574,6 +575,18 @@ export class ProjectManagmentService {
   public async deleteTaskCommentAsync(commentId: number) {
     return await this._http.delete(this.apiUrl + `/project-management/task-comment?commentId=${commentId}`).pipe(
       tap(_ => console.log("Комментарий задачи удален"))
+    );
+  };
+
+  /**
+   * Функция скачивает файл изображения аватара пользователя проекта.
+   * @param projectId - Id проекта.
+   */
+  public async downloadFileUserAvatarAsync(projectId: number) {
+    return await this._http.get(this.apiUrl +
+      `/project-management-settings/download-user-avatar-file?projectId=${projectId}`,
+      { observe: 'response', responseType: 'blob' }).pipe(
+      tap(data => this.downloadUserAvatarFile$.next(data))
     );
   };
 }
