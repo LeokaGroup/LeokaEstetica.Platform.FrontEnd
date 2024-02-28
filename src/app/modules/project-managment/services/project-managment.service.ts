@@ -582,11 +582,21 @@ export class ProjectManagmentService {
    * Функция скачивает файл изображения аватара пользователя проекта.
    * @param projectId - Id проекта.
    */
-  public async downloadFileUserAvatarAsync(projectId: number) {
+  public async getFileUserAvatarAsync(projectId: number) {
     return await this._http.get(this.apiUrl +
-      `/project-management-settings/download-user-avatar-file?projectId=${projectId}`,
+      `/project-management-settings/user-avatar-file?projectId=${projectId}`,
       { observe: 'response', responseType: 'blob' }).pipe(
       tap(data => this.downloadUserAvatarFile$.next(data))
+    );
+  };
+
+  /**
+   * Функция скачивает файл изображения аватара пользователя проекта.
+   * @param formData - Данные формы.
+   */
+  public async uploadUserAvatarFilesAsync(formData: FormData) {
+    return await this._http.post(this.apiUrl + `/project-management-settings/user-avatar-file`, formData).pipe(
+      tap(_ => console.log("Файлы аватара успешно добавлены"))
     );
   };
 }
