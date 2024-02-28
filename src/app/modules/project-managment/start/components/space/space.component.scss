@@ -123,3 +123,26 @@
 :host ::ng-deep .p-chip {
   font-size: smaller;
 }
+
+.info-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .info-line-number {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .space-line-number {
+    margin-right: 7px;
+  }
+}
+
+.scrum-info-line {
+  display: flex;
+  //justify-content: space-between;
+  align-items: center;
+  //margin-right: 1px;
+}

@@ -82,12 +82,20 @@ export class ProjectManagementHeaderComponent implements OnInit {
                 break;
 
           case "Настройки представлений":
-                this._router.navigate(["/project-management/space/settings"], {
+                this._router.navigate(["/project-management/space/view-settings"], {
                     queryParams: {
                         projectId
                     }
                 });
                 break;
+
+          case "Настройки проекта":
+            this._router.navigate(["/project-management/space/project-settings"], {
+              queryParams: {
+                projectId
+              }
+            });
+            break;
 
           case "Scrum (список)":
             let fixationScrumInput = new FixationStrategyInput();

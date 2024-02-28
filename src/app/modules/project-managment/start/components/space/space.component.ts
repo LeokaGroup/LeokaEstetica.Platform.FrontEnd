@@ -1,8 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import {Component, OnInit, Sanitizer} from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
     selector: "",
@@ -14,11 +15,13 @@ import { ProjectManagmentService } from "../../../services/project-managment.ser
  * Класс модуля управления проектами (рабочее пространство).
  */
 export class SpaceComponent implements OnInit {
-    constructor(private readonly _projectManagmentService: ProjectManagmentService,
-        private readonly _router: Router,
-        private readonly _redirectService: RedirectService,
-        private readonly _activatedRoute: ActivatedRoute) {
-    }
+  constructor(private readonly _projectManagmentService: ProjectManagmentService,
+              private readonly _router: Router,
+              private readonly _redirectService: RedirectService,
+              private readonly _activatedRoute: ActivatedRoute,
+              private readonly _domSanitizer: DomSanitizer,
+              private readonly _sanitizer: Sanitizer) {
+  }
 
     public readonly headerItems$ = this._projectManagmentService.headerItems$;
     public readonly workSpaceConfig$ = this._projectManagmentService.workSpaceConfig$;
@@ -115,6 +118,20 @@ export class SpaceComponent implements OnInit {
             .subscribe(_ => {
                 console.log("Конфигурация рабочего пространства: ", this.workSpaceConfig$.value);
                 this.mode = this.workSpaceConfig$.value.strategy;
+
+              this.workSpaceConfig$.value?.projectManagmentTaskStatuses?.forEach((p1: any) => {
+                p1.projectManagmentTasks?.forEach((p2: any) => {
+                  let byteCharacters = atob(p2.executor.avatar.fileContents);
+                  let byteNumbers = new Array(byteCharacters.length);
+                  for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                  }
+                  let byteArray = new Uint8Array(byteNumbers);
+                  let blob = new Blob([byteArray], {type: "application/octet-stream"});
+                  let href = URL.createObjectURL(blob);
+                  p2.executor.avatar.ava = this._domSanitizer.bypassSecurityTrustUrl(href);
+                });
+              });
             });
     };
 
@@ -133,6 +150,21 @@ export class SpaceComponent implements OnInit {
         console.log("Конфигурация рабочего пространства: ", this.workSpaceConfig$.value);
 
         this.mode = this.workSpaceConfig$.value.strategy;
+
+        this.workSpaceConfig$.value?.projectManagmentTaskStatuses?.forEach((p1: any) => {
+          p1.projectManagmentTasks?.forEach((p2: any) => {
+            let byteCharacters = atob(p2.executor.avatar.fileContents);
+            let byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+              byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            let byteArray = new Uint8Array(byteNumbers);
+            let blob = new Blob([byteArray], {type: "application/octet-stream"});
+            let href = URL.createObjectURL(blob);
+            p2.executor.avatar.ava = this._domSanitizer.bypassSecurityTrustUrl(href);
+          });
+        });
+
         this.isLoading = false;
       });
   };
