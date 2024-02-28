@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { ProjectManagmentService } from "../../services/project-managment.service";
-import {ProjectTaskFileInput} from "../../task/models/input/project-task-file-input";
 import {ProjectUserAvatarFileInput} from "../../task/models/input/project-user-avatar-file-input";
 
 @Component({
@@ -66,10 +65,8 @@ export class ProjectSettingsComponent implements OnInit {
         .subscribe((_) => {
           console.log("Аватар пользователя: ", this.downloadUserAvatarFile$.value);
 
-          const a = document.createElement('a');
-          a.setAttribute('type', 'hidden');
-          a.href = URL.createObjectURL(this.downloadUserAvatarFile$.value.body);
-          this.userAvatarLink = this._domSanitizer.bypassSecurityTrustUrl(a.href);
+          let href = URL.createObjectURL(this.downloadUserAvatarFile$.value.body);
+          this.userAvatarLink = this._domSanitizer.bypassSecurityTrustUrl(href);
 
           resolve(this.downloadUserAvatarFile$.value);
         });
