@@ -1,13 +1,11 @@
 <!-- Меню хидера (верхнее). -->
 <nav class="navbar navbar-light justify-content-evenly">
     <div class="form-inline">
-      <p-menubar [model]="aHeaderItems" class="second-menu" [id] (click) = "onSelectMenu($event)">
+      <p-menubar [model]="aHeaderItems" class="second-menu" (click) = "onSelectMenu($event)">
         <ng-template pTemplate="start">
 
         </ng-template>
-        <ng-template pTemplate="end">
-          <!-- <input type="text" pInputText /> -->
-        </ng-template>
+        <ng-template pTemplate="end"></ng-template>
       </p-menubar>
     </div>
   </nav>
