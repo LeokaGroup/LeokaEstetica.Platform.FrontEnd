@@ -61,7 +61,7 @@ import { ProjectManagementHeaderComponent } from './components/project-managemen
         SplitterModule,
         OverlayPanelModule,
         AutoCompleteModule,
-        PaginatorModule,    
+        PaginatorModule,
         RadioButtonModule,
         TagModule,
         MessagesModule,

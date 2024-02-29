@@ -43,6 +43,11 @@ import { ProjectManagementHeaderComponent } from './modules/project-managment/he
 import { DragDropModule } from 'primeng/dragdrop';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { MenubarModule } from 'primeng/menubar';
+import { FormsModule } from '@angular/forms';
+import { SidebarModule } from 'primeng/sidebar';
+import { ButtonModule } from 'primeng/button';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
   declarations: [
@@ -78,7 +83,12 @@ import { MenubarModule } from 'primeng/menubar';
     ProjectManagmentModule,
     DragDropModule,
     BreadcrumbModule,
-    MenubarModule
+    MenubarModule,
+    FormsModule,
+    SidebarModule,
+    ButtonModule,
+    AutoCompleteModule,
+    CheckboxModule
   ],
 
   providers: [

@@ -53,7 +53,8 @@ export class ProjectManagmentService {
     public taskFiles$ = new BehaviorSubject<any>(null);
     public downloadFile$ = new BehaviorSubject<any>(null);
     public taskComments$ = new BehaviorSubject<any>(null);
-  public downloadUserAvatarFile$ = new BehaviorSubject<any>(null);
+    public downloadUserAvatarFile$ = new BehaviorSubject<any>(null);
+    public searchTasks$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient,
                 private readonly _router: Router) {
@@ -597,6 +598,21 @@ export class ProjectManagmentService {
   public async uploadUserAvatarFilesAsync(formData: FormData) {
     return await this._http.post(this.apiUrl + `/project-management-settings/user-avatar-file`, formData).pipe(
       tap(_ => console.log("Файлы аватара успешно добавлены"))
+    );
+  };
+
+  /**
+   * Функция поиска задач.
+   * @param searchText - Поисковый текст.
+   * @param projectIds - Id проектов, по которым искать.
+   * @param isById - Признак поиска по Id задачи.
+   * @param isByName - Признак поиска по названию задачи.
+   * @param IsByDescription - Признак поиска по описанию задачи.
+   */
+  public async searchTasksAsync(searchText: string, projectIds: number[], isById: boolean, isByName: boolean, isByDescription: boolean) {
+    return await this._http.get(this.apiUrl +
+      `/project-management-search/search-task?searchText=${searchText}&projectIds=${projectIds}&isById=${isById}&isByName=${isByName}&isByDescription=${isByDescription}`).pipe(
+      tap(data => this.searchTasks$.next(data))
     );
   };
 }
