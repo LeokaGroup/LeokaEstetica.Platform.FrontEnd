@@ -38,6 +38,7 @@ export class SpaceComponent implements OnInit {
     isUrgent: boolean = false;
     isBlocker: boolean = false;
     isLoading: boolean = false;
+    isPanelMenu: boolean = false;
 
     items: any[] = [
         {

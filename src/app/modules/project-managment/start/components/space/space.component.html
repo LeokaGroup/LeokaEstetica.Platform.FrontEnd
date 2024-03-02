@@ -1,3 +1,7 @@
+<div class="left-panel" (mouseover)="isPanelMenu=true">
+  <div style="border-left:1px solid #C0C6CF;height:1500px;width: 50px;position: absolute;"></div>
+</div>
+
 <!-- Блок с задачами Kanban. -->
 <div class="d-flex" *ngIf="mode == 'kn'">
   <div class="block-worksheet col-lg-12">
@@ -119,3 +123,27 @@
     </div>
   </div>
 </div>
+
+<!-- Выдвижное меню. -->
+<p-sidebar #sidebarRef [(visible)]="isPanelMenu" class="sidebar">
+  <ng-template pTemplate="header">Header Content</ng-template>
+  <ng-template pTemplate="headless">
+    <div class="flex flex-column h-full">
+      <div class="flex align-items-center justify-content-between px-4 pt-3 flex-shrink-0">
+        <span class="inline-flex align-items-center gap-2">
+           <a class="navbar-brand" routerLink="">
+            <img style="width: 150px;" src="../../../../assets/images/logo/logo.png">
+          </a>
+        </span>
+      </div>
+
+      <div class="overflow-y-auto">
+
+      </div>
+
+      <div class="mt-auto">
+<!--        <hr class="mb-3 mx-3 border-top-1 border-none surface-border" />-->
+      </div>
+    </div>
+  </ng-template>
+</p-sidebar>

@@ -47,6 +47,7 @@ import {FileUploadModule} from 'primeng/fileupload';
 import {TabViewModule} from 'primeng/tabview';
 import {ProjectSettingsComponent} from './project-settings/components/project-settings.component';
 import { ImageModule } from 'primeng/image';
+import { SidebarModule } from 'primeng/sidebar';
 
 @NgModule({
   declarations: [
@@ -98,7 +99,8 @@ import { ImageModule } from 'primeng/image';
     SplitButtonModule,
     FileUploadModule,
     TabViewModule,
-    ImageModule
+    ImageModule,
+    SidebarModule
   ],
 
   exports: [],
