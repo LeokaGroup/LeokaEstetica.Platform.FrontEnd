@@ -87,26 +87,32 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   public async onSelectMenu(event: any) {
     let selectedValue = event.target.textContent;
     let projectId = this.projectId;
+    let isNotRoute = false;
 
     this.aHeaderItems.forEach((firstLevel: any) => {
       // Если первый уровень выбран, то проверяем доступность тут.
       if (firstLevel.label == selectedValue) {
         // Не пускаем дальше если стоит блокировка пункта.
-        if (!firstLevel.disabled) {
-          return;
+        if (firstLevel.disabled) {
+          isNotRoute = true;
         }
       }
 
       // Если на первом уровне не нашли, смотрим еще ниже.
       if (firstLevel.label !== selectedValue) {
-        firstLevel.forEach((secondLevel: any) => {
+        firstLevel.items.forEach((secondLevel: any) => {
           // Не пускаем дальше если стоит блокировка пункта.
-          if (!secondLevel.disabled) {
-            return;
+          if (secondLevel.disabled) {
+            isNotRoute = true;
           }
         });
       }
     });
+
+    // Не даем редиректить, если пункт блокирован.
+    if (isNotRoute) {
+      return;
+    }
 
     // Переход к созданию задачи.
     switch (selectedValue) {
@@ -146,7 +152,6 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
           .subscribe(_ => {
             window.location.reload();
           });
-
         break;
 
       case "Kanban (доска)":
@@ -158,10 +163,7 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
           .subscribe(_ => {
             window.location.reload();
           });
-
         break;
-      default:
-        console.error(`Неизвестный тип события: ${selectedValue}`);
     }
   };
 
