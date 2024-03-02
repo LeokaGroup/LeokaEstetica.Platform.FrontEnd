@@ -17,6 +17,7 @@
           </div>
           <div>
             <small id="idProjectManagementProjectName-help">Название проекта в модуле управления проектами.</small>
+            <small id="idProjectManagementProjectName-description">Обычно проект называют на англ.языке, например, «Digital Ocean».</small>
           </div>
         </div>
 
@@ -59,25 +60,17 @@
 
           <ng-template pTemplate="header">
             <tr>
-              <!-- <th></th> -->
               <th>ID проекта</th>
               <th>Название проекта</th>
               <th>Статус проекта</th>
-              <!-- <th>Выбор</th> -->
             </tr>
           </ng-template>
 
           <ng-template pTemplate="body" let-prj>
             <tr [pSelectableRow]="prj">
-              <!-- <td>
-     <p-tableCheckbox [value]="order"></p-tableCheckbox>
-   </td> -->
               <td>{{prj.projectId}}</td>
               <td>{{prj.projectName}}</td>
               <td>{{prj.projectStatusName}}</td>
-              <!-- <td><button pButton type="button" label="Выбрать" class="p-button-outlined">
-                </button>
-              </td> -->
             </tr>
           </ng-template>
 
@@ -119,34 +112,21 @@
 
           <ng-template pTemplate="header">
             <tr>
-              <!-- <th></th> -->
-              <!-- <th>ID проекта</th> -->
               <th>Название стратегии</th>
               <th>Описание стратегии (что это такое)</th>
-              <!-- <th>Выбор</th> -->
               <th>Подробнее о стратегии</th>
             </tr>
           </ng-template>
 
           <ng-template pTemplate="body" let-st>
             <tr [pSelectableRow]="st">
-              <!-- <td>
-     <p-tableCheckbox [value]="order"></p-tableCheckbox>
-   </td> -->
               <td>{{st.viewStrategyName}}</td>
               <td>На бэке пока не сделана логика</td>
-              <!-- <td><button pButton type="button" label="Выбрать" class="p-button-outlined">
-                </button>
-              </td> -->
               <td><button pButton type="button" label="Подробнее" class="p-button-outlined">
               </button>
             </td>
             </tr>
           </ng-template>
-
-          <!-- <ng-template pTemplate="summary">
-            Всего: {{userProjects$.value.total}}
-          </ng-template> -->
 
           <ng-template pTemplate="emptymessage">
             <tr>
