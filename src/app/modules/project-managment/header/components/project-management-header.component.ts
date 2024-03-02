@@ -30,7 +30,6 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
       label: "[Тут будет название проекта]"
     }
   ];
-  isDisableViewStrategy: boolean = false;
 
   public async ngOnInit() {
     forkJoin([
@@ -78,6 +77,26 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   public async onSelectMenu(event: any) {
     let selectedValue = event.target.textContent;
     let projectId = this.projectId;
+
+    this.aHeaderItems.forEach((firstLevel: any) => {
+      // Если первый уровень выбран, то проверяем доступность тут.
+      if (firstLevel.label == selectedValue) {
+        // Не пускаем дальше если стоит блокировка пункта.
+        if (!firstLevel.disabled) {
+          return;
+        }
+      }
+
+      // Если на первом уровне не нашли, смотрим еще ниже.
+      if (firstLevel.label !== selectedValue) {
+        firstLevel.forEach((secondLevel: any) => {
+          // Не пускаем дальше если стоит блокировка пункта.
+          if (!secondLevel.disabled) {
+            return;
+          }
+        });
+      }
+    });
 
     // Переход к созданию задачи.
     switch (selectedValue) {
