@@ -20,6 +20,7 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   }
 
   public readonly headerItems$ = this._projectManagmentService.headerItems$;
+  public readonly searchTasks$ = this._projectManagmentService.searchTasks$;
 
   projectId: number = 0;
   projectTaskId: number = 0;
@@ -30,6 +31,14 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
       label: "[Тут будет название проекта]"
     }
   ];
+  isDisableViewStrategy: boolean = false;
+  searchText: string = "";
+  isSearch: boolean = false;
+  aProjectTasks: any[] = [];
+  projectTaskName: any;
+  searchById: boolean = false;
+  searchByName: boolean = true;
+  searchByDescription: boolean = false;
 
   public async ngOnInit() {
     forkJoin([
@@ -77,26 +86,6 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   public async onSelectMenu(event: any) {
     let selectedValue = event.target.textContent;
     let projectId = this.projectId;
-
-    this.aHeaderItems.forEach((firstLevel: any) => {
-      // Если первый уровень выбран, то проверяем доступность тут.
-      if (firstLevel.label == selectedValue) {
-        // Не пускаем дальше если стоит блокировка пункта.
-        if (!firstLevel.disabled) {
-          return;
-        }
-      }
-
-      // Если на первом уровне не нашли, смотрим еще ниже.
-      if (firstLevel.label !== selectedValue) {
-        firstLevel.forEach((secondLevel: any) => {
-          // Не пускаем дальше если стоит блокировка пункта.
-          if (!secondLevel.disabled) {
-            return;
-          }
-        });
-      }
-    });
 
     // Переход к созданию задачи.
     switch (selectedValue) {
@@ -153,5 +142,25 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
       default:
         console.error(`Неизвестный тип события: ${selectedValue}`);
     }
+  };
+
+  public async onSearchProjectTasksAsync(event: any) {
+    (await this._projectManagmentService.searchTasksAsync(event.query, [274], false, true, true))
+      .subscribe(_ => {
+        console.log("Поиск: ", this.searchTasks$.value);
+      });
+  };
+
+  public onSelectTask(event: any) {
+    let projectId = this.projectId;
+
+    this._router.navigate(["/project-management/space/details"], {
+      queryParams: {
+        projectId,
+        taskId: event.fullProjectTaskId
+      }
+    });
+
+    this.isSearch = false;
   };
 }
