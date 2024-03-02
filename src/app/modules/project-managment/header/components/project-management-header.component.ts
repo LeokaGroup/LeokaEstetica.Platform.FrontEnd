@@ -20,6 +20,7 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   }
 
   public readonly headerItems$ = this._projectManagmentService.headerItems$;
+  public readonly searchTasks$ = this._projectManagmentService.searchTasks$;
 
   projectId: number = 0;
   projectTaskId: number = 0;
@@ -30,6 +31,15 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
       label: "[Тут будет название проекта]"
     }
   ];
+
+  isDisableViewStrategy: boolean = false;
+  searchText: string = "";
+  isSearch: boolean = false;
+  aProjectTasks: any[] = [];
+  projectTaskName: any;
+  searchById: boolean = false;
+  searchByName: boolean = true;
+  searchByDescription: boolean = false;
 
   public async ngOnInit() {
     forkJoin([
@@ -153,5 +163,25 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
       default:
         console.error(`Неизвестный тип события: ${selectedValue}`);
     }
+  };
+
+  public async onSearchProjectTasksAsync(event: any) {
+    (await this._projectManagmentService.searchTasksAsync(event.query, [274], false, true, true))
+      .subscribe(_ => {
+        console.log("Поиск: ", this.searchTasks$.value);
+      });
+  };
+
+  public onSelectTask(event: any) {
+    let projectId = this.projectId;
+
+    this._router.navigate(["/project-management/space/details"], {
+      queryParams: {
+        projectId,
+        taskId: event.fullProjectTaskId
+      }
+    });
+
+    this.isSearch = false;
   };
 }
