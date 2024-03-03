@@ -24,7 +24,6 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
 
   projectId: number = 0;
   projectTaskId: number = 0;
-  aHeaderItems: any[] = [];
   home: string = "project name";
   items: any[] = [
     {
@@ -40,6 +39,8 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   searchById: boolean = false;
   searchByName: boolean = true;
   searchByDescription: boolean = false;
+  aHeaderItems: any[] = [];
+  aPanelItems: any[] = [];
 
   public async ngOnInit() {
     forkJoin([
@@ -76,7 +77,8 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
     (await this._projectManagmentService.getHeaderItemsAsync())
       .subscribe(_ => {
         console.log("Хидер УП: ", this.headerItems$.value);
-        this.aHeaderItems = this.headerItems$.value;
+        this.aHeaderItems = this.headerItems$.value.headerItems;
+        this.aPanelItems = this.headerItems$.value.panelItems;
       });
   };
 

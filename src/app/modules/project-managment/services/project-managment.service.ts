@@ -105,7 +105,7 @@ export class ProjectManagmentService {
      * @returns - Список элементов.
      */
     public async getHeaderItemsAsync() {
-        return await this._http.get(this.apiUrl + "/project-management/header").pipe(
+        return await this._http.get(this.apiUrl + "/project-management/panel").pipe(
             tap(data => this.headerItems$.next(data))
         );
     };

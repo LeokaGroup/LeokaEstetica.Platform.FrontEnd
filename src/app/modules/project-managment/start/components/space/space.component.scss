@@ -147,6 +147,28 @@
   //margin-right: 1px;
 }
 
-//:host ::ng-deep .p-sidebar-header {
-//  display: none;
-//}
+:host ::ng-deep .p-menuitem-link {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+:host ::ng-deep .p-menu .p-menuitem-link .p-menuitem-text {
+  color: #717D94;
+}
+
+:host ::ng-deep .p-menu .p-menuitem-link {
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.panel-text {
+  color: #717D94;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+}

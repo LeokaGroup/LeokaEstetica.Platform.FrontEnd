@@ -28,6 +28,7 @@ export class SpaceComponent implements OnInit {
 
     isHideAuthButtons: boolean = false;
     aHeaderItems: any[] = [];
+    aPanelItems: any[] = [];
     selectedProjectId: number = 0;
     selectedStrategy: string = "";
     selectedTemplateId: number = 0;
@@ -91,6 +92,7 @@ export class SpaceComponent implements OnInit {
             .subscribe(_ => {
                 console.log("Хидер УП: ", this.headerItems$.value);
                 this.aHeaderItems = this.headerItems$.value;
+                this.aPanelItems = this.headerItems$.value.panelItems;
             });
     };
 
@@ -183,5 +185,9 @@ export class SpaceComponent implements OnInit {
                 taskId: projectTaskId
             }
         });
+    };
+
+    public onSelectMenu(event: any) {
+
     };
 }
