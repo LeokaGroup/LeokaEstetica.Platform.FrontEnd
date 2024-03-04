@@ -56,6 +56,8 @@ export class ProjectManagmentService {
     public downloadUserAvatarFile$ = new BehaviorSubject<any>(null);
     public searchTasks$ = new BehaviorSubject<any>(null);
 
+    public isLeftPanel = false;
+
     constructor(private readonly _http: HttpClient,
                 private readonly _router: Router) {
 

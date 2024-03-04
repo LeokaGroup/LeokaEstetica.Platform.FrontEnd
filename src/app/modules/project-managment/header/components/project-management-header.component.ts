@@ -87,6 +87,8 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
    * @param event - Событие.
    */
   public async onSelectMenu(event: any) {
+    console.log("onSelectMenu", event.target.textContent);
+
     let selectedValue = event.target.textContent;
     let projectId = this.projectId;
     let isNotRoute = false;
