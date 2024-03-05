@@ -55,6 +55,7 @@ export class ProjectManagmentService {
     public taskComments$ = new BehaviorSubject<any>(null);
     public downloadUserAvatarFile$ = new BehaviorSubject<any>(null);
     public searchTasks$ = new BehaviorSubject<any>(null);
+    public epicList$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -615,6 +616,17 @@ export class ProjectManagmentService {
     return await this._http.get(this.apiUrl +
       `/project-management-search/search-task?searchText=${searchText}&projectIds=${projectIds}&isById=${isById}&isByName=${isByName}&isByDescription=${isByDescription}`).pipe(
       tap(data => this.searchTasks$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает список эпиков.
+   * @param projectId - Id проекта.
+   */
+  public async getEpicsAsync(projectId: number) {
+    return await this._http.get(this.apiUrl +
+      `/project-management/epics?projectId=${projectId}`).pipe(
+      tap(data => this.epicList$.next(data))
     );
   };
 }

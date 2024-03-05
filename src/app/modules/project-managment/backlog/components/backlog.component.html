@@ -3,3 +3,22 @@
 </div>
 
 <left-panel></left-panel>
+
+<!-- Таблица эпиков. -->
+<div class="block-tables col-lg-12">
+  <h5>Эпики проекта</h5>
+  <p-table [value]="epicList$.value" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Название эпика</th>
+        <th>Описание эпика</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-epic>
+      <tr>
+        <td>{{ epic.epicName }}</td>
+        <td>{{ epic.epicDescription }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

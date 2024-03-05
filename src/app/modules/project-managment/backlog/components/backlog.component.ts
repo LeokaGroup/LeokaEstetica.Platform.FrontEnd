@@ -20,13 +20,16 @@ export class BacklogComponent implements OnInit {
               private readonly _activatedRoute: ActivatedRoute) {
   }
 
-  // public readonly headerItems$ = this._projectManagmentService.headerItems$;
+  public readonly epicList$ = this._projectManagmentService.epicList$;
 
   selectedProjectId: number = 0;
 
   public async ngOnInit() {
+    this._projectManagmentService.isLeftPanel = false;
+
     forkJoin([
-      this.checkUrlParams()
+      this.checkUrlParams(),
+      await this.getEpicsAsync()
     ]).subscribe();
   };
 
@@ -40,5 +43,12 @@ export class BacklogComponent implements OnInit {
   public onSelectPanelMenu() {
     console.log("onSelectPanelMenu");
     this._projectManagmentService.isLeftPanel = true;
+  };
+
+  private async getEpicsAsync() {
+    (await this._projectManagmentService.getEpicsAsync(+this.selectedProjectId))
+      .subscribe(_ => {
+        console.log("Эпики: ", this.epicList$.value);
+      });
   };
 }
