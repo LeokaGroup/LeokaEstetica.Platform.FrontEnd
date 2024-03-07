@@ -6,6 +6,8 @@ import {StartProjectManagmentComponent} from './start/components/start/start-pro
 import {CreateTaskComponent} from './task/components/create-task/create-task.component';
 import {TaskDetailsComponent} from './task/components/task-details/task-details.component';
 import {ProjectSettingsComponent} from "./project-settings/components/project-settings.component";
+import { BacklogComponent } from './backlog/components/backlog.component';
+import { LeftPanelComponent } from './left-panel/left-panel.component';
 
 const routes: Routes = [
   {
@@ -30,6 +32,14 @@ const routes: Routes = [
 
   {
     path: 'space/project-settings', component: ProjectSettingsComponent
+  },
+
+  {
+    path: 'space/backlog', component: BacklogComponent
+  },
+
+  {
+    path: 'left-panel', component: LeftPanelComponent
   }
 ];
 

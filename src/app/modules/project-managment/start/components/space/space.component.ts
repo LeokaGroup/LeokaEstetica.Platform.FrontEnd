@@ -4,6 +4,7 @@ import { forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
 import {DomSanitizer} from "@angular/platform-browser";
+import {FixationStrategyInput} from "../../../task/models/input/fixation-strategy-input";
 
 @Component({
     selector: "",
@@ -12,7 +13,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 })
 
 /**
- * Класс модуля управления проектами (рабочее пространство).
+ * Класс компонента управления проектами (рабочее пространство).
  */
 export class SpaceComponent implements OnInit {
   constructor(private readonly _projectManagmentService: ProjectManagmentService,
@@ -26,7 +27,6 @@ export class SpaceComponent implements OnInit {
     public readonly headerItems$ = this._projectManagmentService.headerItems$;
     public readonly workSpaceConfig$ = this._projectManagmentService.workSpaceConfig$;
 
-    isHideAuthButtons: boolean = false;
     aHeaderItems: any[] = [];
     aPanelItems: any[] = [];
     selectedProjectId: number = 0;
@@ -48,12 +48,6 @@ export class SpaceComponent implements OnInit {
                 this._router.navigate(["/profile/orders"]);
             }
         },
-        // {
-        //     label: 'Настройки',
-        //     command: () => {
-
-        //     }
-        // },
         {
             label: 'Заявки в поддержку',
             command: () => {
@@ -79,8 +73,6 @@ export class SpaceComponent implements OnInit {
             await this.getHeaderItemsAsync(),
             await this.getConfigurationWorkSpaceBySelectedTemplateAsync()
         ]).subscribe();
-
-        this.isHideAuthButtons = localStorage["t_n"] ? true : false;
     };
 
     /**
@@ -94,10 +86,6 @@ export class SpaceComponent implements OnInit {
                 this.aHeaderItems = this.headerItems$.value;
                 this.aPanelItems = this.headerItems$.value.panelItems;
             });
-    };
-
-    public activeMenu(event: any) {
-        console.log(event);
     };
 
     private async checkUrlParams() {
@@ -117,7 +105,7 @@ export class SpaceComponent implements OnInit {
     */
     private async getConfigurationWorkSpaceBySelectedTemplateAsync() {
         (await this._projectManagmentService.getConfigurationWorkSpaceBySelectedTemplateAsync(this.selectedProjectId,
-            null, 1))
+            null, 1, "Space"))
             .subscribe(_ => {
                 console.log("Конфигурация рабочего пространства: ", this.workSpaceConfig$.value);
                 this.mode = this.workSpaceConfig$.value.strategy;
@@ -148,7 +136,7 @@ export class SpaceComponent implements OnInit {
     this.isLoading = true;
 
     (await this._projectManagmentService.getConfigurationWorkSpaceBySelectedTemplateAsync(this.selectedProjectId,
-      taskStatusId, ++pageNumber))
+      taskStatusId, ++pageNumber, "Space"))
       .subscribe(_ => {
         console.log("Конфигурация рабочего пространства: ", this.workSpaceConfig$.value);
 
@@ -187,7 +175,8 @@ export class SpaceComponent implements OnInit {
         });
     };
 
-    public onSelectMenu(event: any) {
-
+    public onSelectPanelMenu() {
+      console.log("onSelectPanelMenu");
+      this._projectManagmentService.isLeftPanel = true;
     };
 }

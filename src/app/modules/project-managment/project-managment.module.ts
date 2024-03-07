@@ -48,6 +48,8 @@ import {TabViewModule} from 'primeng/tabview';
 import {ProjectSettingsComponent} from './project-settings/components/project-settings.component';
 import { ImageModule } from 'primeng/image';
 import { SidebarModule } from 'primeng/sidebar';
+import { BacklogComponent } from './backlog/components/backlog.component';
+import {LeftPanelComponent} from "./left-panel/left-panel.component";
 
 @NgModule({
   declarations: [
@@ -56,7 +58,9 @@ import { SidebarModule } from 'primeng/sidebar';
     TaskDetailsComponent,
     CreateTaskComponent,
     SettingsProjectManagmentComponent,
-    ProjectSettingsComponent
+    ProjectSettingsComponent,
+    BacklogComponent,
+    LeftPanelComponent
   ],
 
   imports: [
