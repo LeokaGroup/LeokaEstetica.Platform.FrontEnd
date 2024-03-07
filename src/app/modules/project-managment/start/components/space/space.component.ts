@@ -105,7 +105,7 @@ export class SpaceComponent implements OnInit {
     */
     private async getConfigurationWorkSpaceBySelectedTemplateAsync() {
         (await this._projectManagmentService.getConfigurationWorkSpaceBySelectedTemplateAsync(this.selectedProjectId,
-            null, 1))
+            null, 1, "Space"))
             .subscribe(_ => {
                 console.log("Конфигурация рабочего пространства: ", this.workSpaceConfig$.value);
                 this.mode = this.workSpaceConfig$.value.strategy;
@@ -136,7 +136,7 @@ export class SpaceComponent implements OnInit {
     this.isLoading = true;
 
     (await this._projectManagmentService.getConfigurationWorkSpaceBySelectedTemplateAsync(this.selectedProjectId,
-      taskStatusId, ++pageNumber))
+      taskStatusId, ++pageNumber, "Space"))
       .subscribe(_ => {
         console.log("Конфигурация рабочего пространства: ", this.workSpaceConfig$.value);
 
