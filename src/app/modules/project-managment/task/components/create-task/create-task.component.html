@@ -3,7 +3,7 @@
     <div class="task-name">
       <p-inplace>
         <ng-template pTemplate="display">
-          <span>Введите название задачи</span>
+          <span>Введите название</span>
         </ng-template>
         <ng-template pTemplate="content">
           <input type="text"
@@ -68,24 +68,25 @@
     <!-- Детали задачи. -->
     <div class="block-task-lines col-lg-12 d-flex">
       <div class="col-lg-4">
-        <strong>Детали задачи</strong>
+        <strong>Детали</strong>
         <div class="d-flex line">
           <div class="line-item d-flex">
             <label class="control-label-task-item">Тип:</label>
-            <p-dropdown [options]="taskTypes$.value"
+            <p-dropdown [options]="aTaskTypes"
                         [(ngModel)]="selectedTaskType"
                         optionLabel="typeName"
                         [showClear]="true"
                         placeholder="Выберите тип"
                         [emptyMessage]="(taskTypes$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
                         (onClick)="onGetTaskTypesAsync()"
-                        optionValue="typeId">
+                        optionValue="typeSysName"
+                        (onChange)="onSelecteTaskType(selectedTaskType)">
 
             </p-dropdown>
           </div>
         </div>
 
-        <div class="d-flex line">
+        <div class="d-flex line" *ngIf="isCreateTask">
           <label class="control-label-task-item">Приоритет:</label>
           <p-dropdown [options]="priorities$.value"
                       [(ngModel)]="selectedPriority"
@@ -99,7 +100,7 @@
           </p-dropdown>
         </div>
 
-        <div class="d-flex line">
+        <div class="d-flex line" *ngIf="isCreateTask">
           <label class="control-label-task-item">Метки:</label>
           <div>
             <p-dropdown [options]="projectTags$.value"
@@ -122,7 +123,7 @@
         </div>
       </div>
 
-      <div class="col-lg-4">
+      <div class="col-lg-4" *ngIf="isCreateTask || isCreateHistory">
         <div class="line-item d-flex">
           <label class="control-label-task-item">Статус:</label>
           <p-dropdown [options]="taskStatuses$.value"
@@ -138,8 +139,8 @@
       </div>
 
       <div class="col-lg-4">
-        <strong>Люди</strong>
-        <div>
+        <strong *ngIf="isCreateTask">Люди</strong>
+        <div *ngIf="isCreateTask || isCreateHistory">
           <div class="line-item d-flex">
             <label class="control-label-task-item">Исполнитель:</label>
             <div>
@@ -225,56 +226,7 @@
 
       </div>
     </div>
-
     <div>
       <hr>
     </div>
-
-    <!-- Связанные задачи. -->
-<!--    <div class="block-task-lines col-lg-12 d-flex">-->
-<!--      <div class="col-lg-8">-->
-<!--        <strong>Связанные задачи</strong>-->
-<!--        &lt;!&ndash; <div class="empty-task-details" *ngIf="taskDetails$.value?.details == null || taskDetails$.value?.details == ''">-->
-<!--          Добавьте описание задачи, чтобы исполнителю было понятно, что нужно сделать в рамках задачи-->
-<!--        </div> &ndash;&gt;-->
-
-<!--        &lt;!&ndash; <div class="task-details">-->
-<!--          {{taskDetails$.value?.details}}-->
-<!--        </div> &ndash;&gt;-->
-<!--      </div>-->
-
-<!--      <div class="col-lg-4">-->
-
-<!--      </div>-->
-<!--    </div>-->
-
-    <div>
-      <hr>
-    </div>
-
-    <!-- Файлы задачи. -->
-    <div class="block-task-lines col-lg-12 d-flex">
-      <div class="col-lg-8">
-        <strong>Вложенные файлы</strong>
-      </div>
-
-      <div class="col-lg-4">
-
-      </div>
-    </div>
-
-    <div>
-      <hr>
-    </div>
-
-    <!-- КОмментарии задачи. -->
-<!--    <div class="block-task-lines col-lg-12 d-flex">-->
-<!--      <div class="col-lg-8">-->
-<!--        <strong>Активность</strong>-->
-<!--      </div>-->
-<!--  -->
-<!--      <div class="col-lg-4">-->
-<!--  -->
-<!--      </div>-->
-<!--    </div>-->
   </div>

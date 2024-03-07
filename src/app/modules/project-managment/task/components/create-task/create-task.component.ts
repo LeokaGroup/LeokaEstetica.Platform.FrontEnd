@@ -32,6 +32,10 @@ export class CreateTaskComponent implements OnInit {
     aSelectedTags: Set<any> = new Set<any>();
     aSelectedWachers: Set<any> = new Set<any>();
     aPeople: any[] = [];
+    isCreateTask: boolean = false;
+    isCreateEpic: boolean = false;
+    isCreateHistory: boolean = false;
+    aTaskTypes: any[] = [];
 
     public readonly priorities$ = this._projectManagmentService.priorities$;
     public readonly taskTypes$ = this._projectManagmentService.taskTypes$;
@@ -71,10 +75,39 @@ export class CreateTaskComponent implements OnInit {
     * @returns - Типы задач.
     */
       public async onGetTaskTypesAsync() {
-        (await this._projectManagmentService.getTaskTypesAsync())
+        if (this.aTaskTypes.length == 0) {
+          (await this._projectManagmentService.getTaskTypesAsync())
             .subscribe(_ => {
-                console.log("Типы задач для выбора: ", this.taskTypes$.value);
+              console.log("Типы задач для выбора: ", this.taskTypes$.value);
+              this.aTaskTypes = this.taskTypes$.value;
             });
+        }
+
+        // Отображаем нужные поля, смотря что создаем.
+        switch (this.selectedTaskType) {
+          case "Task":
+            this.isCreateTask = true;
+            this.isCreateHistory = false;
+            break;
+
+          case "Error":
+            this.isCreateTask = true;
+            this.isCreateHistory = false;
+            this.isCreateEpic = false;
+            break;
+
+          case "History":
+            this.isCreateTask = false;
+            this.isCreateHistory = true;
+            this.isCreateEpic = false;
+            break;
+
+          case "Epic":
+            this.isCreateTask = false;
+            this.isCreateHistory = false;
+            this.isCreateEpic = true;
+            break;
+        }
     };
 
       /**
@@ -230,5 +263,9 @@ export class CreateTaskComponent implements OnInit {
         createTaskInput.taskTypeId = this.selectedTaskType;
 
         return createTaskInput;
+    };
+
+    public onSelecteTaskType(selectedTaskType: any) {
+      console.log("selectedTaskType", selectedTaskType);
     };
 }
