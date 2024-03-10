@@ -46,6 +46,8 @@ export class TaskDetailsComponent implements OnInit {
     public readonly taskFiles$ = this._projectManagmentService.taskFiles$;
     public readonly downloadFile$ = this._projectManagmentService.downloadFile$;
     public readonly taskComments$ = this._projectManagmentService.taskComments$;
+    public readonly availableEpics$ = this._projectManagmentService.availableEpics$;
+    public readonly epics$ = this._projectManagmentService.epics$;
 
     projectId: any;
     projectTaskId: any;
@@ -94,10 +96,17 @@ export class TaskDetailsComponent implements OnInit {
         ])
     });
 
+    formEpic: FormGroup = new FormGroup({
+      "epicName": new FormControl("", [
+        Validators.required
+      ])
+  });
+
     taskFormData = new FormData();
     uploadedFiles: any[] = [];
     comment: string = "";
     isActiveTaskComment: boolean = false;
+    selectedEpic: any;
 
     public async ngOnInit() {
         forkJoin([
@@ -620,6 +629,31 @@ export class TaskDetailsComponent implements OnInit {
     (await this._projectManagmentService.deleteTaskCommentAsync(commentId))
       .subscribe(async (_: any) => {
         await this.getTaskCommentsAsync();
+      });
+  };
+
+  /**
+   * Функция получает эпики, доступные к добавлению в них задачи.
+   * @param projectId - Id проекта.
+   */
+  public async onGetAvailableEpicsAsync() {
+    (await this._projectManagmentService.getAvailableEpicsAsync(+this.projectId))
+      .subscribe(async (_: any) => {
+        console.log("Доступные эпики: ", this.availableEpics$.value);
+      });
+  };
+
+  /**
+   * Функция добавляет задачу в эпик.
+   */
+  public async onChangeAvailableEpicsAsync() {
+    (await this._projectManagmentService.getEpicsAsync(+this.projectId))
+      .subscribe(_ => {
+        console.log("Эпики: ", this.epics$.value);
+        // this.aPeople = this.taskPeople$.value;
+
+        // let value = this.taskPeople$.value.find((st: any) => st.userId == this.taskDetails$.value.executorId);
+        // this.formExecutors.get("executorName")?.setValue(value);
       });
   };
 }

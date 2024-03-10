@@ -56,6 +56,8 @@ export class ProjectManagmentService {
     public downloadUserAvatarFile$ = new BehaviorSubject<any>(null);
     public searchTasks$ = new BehaviorSubject<any>(null);
     public backlogData$ = new BehaviorSubject<any>(null);
+    public availableEpics$ = new BehaviorSubject<any>(null);
+    public epics$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -651,6 +653,26 @@ export class ProjectManagmentService {
     return await this._http.get(this.apiUrl +
       `/project-management/backlog-tasks?projectId=${projectId}`).pipe(
       tap(data => this.backlogData$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает эпики, доступные к добавлению в них задачи.
+   * @param projectId - Id проекта.
+   */
+  public async getAvailableEpicsAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management/available-epics?projectId=${projectId}`).pipe(
+      tap(data => this.availableEpics$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает список эпиков.
+   * @param projectId - Id проекта.
+   */
+  public async getEpicsAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management/epics?projectId=${projectId}`).pipe(
+      tap(data => this.epics$.next(data))
     );
   };
 }
