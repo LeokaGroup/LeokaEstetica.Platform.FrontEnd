@@ -12,7 +12,7 @@ import {InputMaskModule} from 'primeng/inputmask';
 import {CheckboxModule} from 'primeng/checkbox';
 import {InputTextModule} from 'primeng/inputtext';
 import {PanelModule} from 'primeng/panel';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {SignalrService} from '../notifications/signalr/services/signalr.service';
 import {DropdownModule} from 'primeng/dropdown';
 import {TableModule} from 'primeng/table';
@@ -46,10 +46,13 @@ import {SplitButtonModule} from 'primeng/splitbutton';
 import {FileUploadModule} from 'primeng/fileupload';
 import {TabViewModule} from 'primeng/tabview';
 import {ProjectSettingsComponent} from './project-settings/components/project-settings.component';
-import { ImageModule } from 'primeng/image';
-import { SidebarModule } from 'primeng/sidebar';
-import { BacklogComponent } from './backlog/components/backlog.component';
+import {ImageModule} from 'primeng/image';
+import {SidebarModule} from 'primeng/sidebar';
+import {BacklogComponent} from './backlog/components/backlog.component';
 import {LeftPanelComponent} from "./left-panel/left-panel.component";
+import {CalendarModule} from 'primeng/calendar';
+
+// import { TranslateService } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -104,7 +107,8 @@ import {LeftPanelComponent} from "./left-panel/left-panel.component";
     FileUploadModule,
     TabViewModule,
     ImageModule,
-    SidebarModule
+    SidebarModule,
+    CalendarModule
   ],
 
   exports: [],
@@ -113,6 +117,7 @@ import {LeftPanelComponent} from "./left-panel/left-panel.component";
     UserService,
     MessageService,
     SignalrService
+    // TranslateService
   ]
 })
 

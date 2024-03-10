@@ -55,6 +55,7 @@ export class ProjectManagmentService {
     public taskComments$ = new BehaviorSubject<any>(null);
     public downloadUserAvatarFile$ = new BehaviorSubject<any>(null);
     public searchTasks$ = new BehaviorSubject<any>(null);
+    public backlogData$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -132,20 +133,44 @@ export class ProjectManagmentService {
    * @param page - Номер страницы..
    * @returns - Данные конфигурации.
    */
-  public async getConfigurationWorkSpaceBySelectedTemplateAsync(projectId: number, paginatorStatusId: number | null, page: number) {
-    if (paginatorStatusId == null) {
-      return await this._http.get(this.apiUrl +
-        `/project-management/config-workspace-template?projectId=${projectId}&page=${page}`).pipe(
-        tap(data => this.workSpaceConfig$.next(data))
-      );
+  public async getConfigurationWorkSpaceBySelectedTemplateAsync(projectId: number, paginatorStatusId: number | null, page: number, type: string) {
+    if (type == "Space") {
+      if (paginatorStatusId == null) {
+        return await this._http.get(this.apiUrl +
+          `/project-management/config-workspace-template?projectId=${projectId}&modifyTaskStatuseType=Space&page=${page}`).pipe(
+          tap(data => this.workSpaceConfig$.next(data))
+        );
+      }
+
+      else {
+        return await this._http.get(this.apiUrl +
+          `/project-management/config-workspace-template?projectId=${projectId}&paginatorStatusId=${paginatorStatusId}&modifyTaskStatuseType=Space&page=${page}`).pipe(
+          tap(data => this.workSpaceConfig$.next(data))
+        );
+      }
     }
 
-    else {
-      return await this._http.get(this.apiUrl +
-        `/project-management/config-workspace-template?projectId=${projectId}&paginatorStatusId=${paginatorStatusId}&page=${page}`).pipe(
-        tap(data => this.workSpaceConfig$.next(data))
-      );
+    else if (type == "Backlog") {
+      if (paginatorStatusId == null) {
+        return await this._http.get(this.apiUrl +
+          `/project-management/config-workspace-template?projectId=${projectId}&modifyTaskStatuseType=Backlog&page=${page}`).pipe(
+          tap(data => this.backlogData$.next(data))
+        );
+      }
+
+      else {
+        return await this._http.get(this.apiUrl +
+          `/project-management/config-workspace-template?projectId=${projectId}&paginatorStatusId=${paginatorStatusId}&modifyTaskStatuseType=Backlog&page=${page}`).pipe(
+          tap(data => this.backlogData$.next(data))
+        );
+      }
     }
+
+    // По дефолту вернем применив пагинатор для всех статусов.
+    return await this._http.get(this.apiUrl +
+      `/project-management/config-workspace-template?projectId=${projectId}&page=${page}`).pipe(
+      tap(data => this.workSpaceConfig$.next(data))
+    );
   };
 
      /**
@@ -615,6 +640,17 @@ export class ProjectManagmentService {
     return await this._http.get(this.apiUrl +
       `/project-management-search/search-task?searchText=${searchText}&projectIds=${projectIds}&isById=${isById}&isByName=${isByName}&isByDescription=${isByDescription}`).pipe(
       tap(data => this.searchTasks$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает список задач, историй для бэклога.
+   * @param projectId - Id проекта.
+   */
+  public async getBacklogTasksAsync(projectId: number) {
+    return await this._http.get(this.apiUrl +
+      `/project-management/backlog-tasks?projectId=${projectId}`).pipe(
+      tap(data => this.backlogData$.next(data))
     );
   };
 }
