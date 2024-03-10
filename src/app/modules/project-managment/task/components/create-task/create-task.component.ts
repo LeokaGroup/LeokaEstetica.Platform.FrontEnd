@@ -3,8 +3,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
 import { CreateProjectManagementTaskInput } from "../../models/input/create-task-input";
-// import { TranslateService } from '@ngx-translate/core';
-// import { PrimeNGConfig } from "primeng/api";
+import { TranslateService } from '@ngx-translate/core';
+import { PrimeNGConfig } from "primeng/api";
 
 @Component({
     selector: "",
@@ -19,8 +19,8 @@ export class CreateTaskComponent implements OnInit {
   constructor(private readonly _projectManagmentService: ProjectManagmentService,
               private readonly _router: Router,
               private readonly _activatedRoute: ActivatedRoute,
-              // private _config: PrimeNGConfig,
-              // private _translateService: TranslateService
+              private _config: PrimeNGConfig,
+              private _translateService: TranslateService
   ) {
 
   }
@@ -44,7 +44,7 @@ export class CreateTaskComponent implements OnInit {
     aTaskTypes: any[] = [];
     dateStart: any = null;
     dateEnd: any = null;
-    // locale: any;
+    locale: any;
 
     public readonly priorities$ = this._projectManagmentService.priorities$;
     public readonly taskTypes$ = this._projectManagmentService.taskTypes$;
@@ -58,15 +58,15 @@ export class CreateTaskComponent implements OnInit {
       this.checkUrlParams()
     ]).subscribe();
 
-    // this._translateService.setDefaultLang('ru');
-    // this.translate('ru');
-    // this.locale = this._translateService.getDefaultLang();
+    this._translateService.setDefaultLang('ru');
+    this.translate('ru');
+    this.locale = this._translateService.getDefaultLang();
   };
 
-  // translate(lang: string) {
-  //   this._translateService.use(lang);
-  //   this._translateService.get('primeng').subscribe(res => this._config.setTranslation(res));
-  // }
+  translate(lang: string) {
+    this._translateService.use(lang);
+    this._translateService.get('primeng').subscribe(res => this._config.setTranslation(res));
+  }
 
     private async checkUrlParams() {
         this._activatedRoute.queryParams

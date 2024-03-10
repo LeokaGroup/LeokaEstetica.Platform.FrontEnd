@@ -51,8 +51,8 @@ import {SidebarModule} from 'primeng/sidebar';
 import {BacklogComponent} from './backlog/components/backlog.component';
 import {LeftPanelComponent} from "./left-panel/left-panel.component";
 import {CalendarModule} from 'primeng/calendar';
-
-// import { TranslateService } from '@ngx-translate/core';
+import {TranslateLoader, TranslateModule, TranslateService, TranslateStore } from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 @NgModule({
   declarations: [
@@ -108,7 +108,14 @@ import {CalendarModule} from 'primeng/calendar';
     TabViewModule,
     ImageModule,
     SidebarModule,
-    CalendarModule
+    CalendarModule,
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [HttpClient]
+      }
+    })
   ],
 
   exports: [],
@@ -116,10 +123,14 @@ import {CalendarModule} from 'primeng/calendar';
   providers: [
     UserService,
     MessageService,
-    SignalrService
-    // TranslateService
+    SignalrService,
+    TranslateService,
+    TranslateStore
   ]
 })
 
-export class ProjectManagmentModule {
+export class ProjectManagmentModule {}
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }

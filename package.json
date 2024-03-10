@@ -20,6 +20,8 @@
     "@angular/platform-browser-dynamic": "~13.3.0",
     "@angular/router": "~13.3.0",
     "@microsoft/signalr": "^6.0.10",
+    "@ngx-translate/core": "^13.0.0",
+    "@ngx-translate/http-loader": "^6.0.0",
     "bootstrap": "^5.2.1",
     "jquery": "^3.6.1",
     "ng-drag-drop": "^5.0.0",
