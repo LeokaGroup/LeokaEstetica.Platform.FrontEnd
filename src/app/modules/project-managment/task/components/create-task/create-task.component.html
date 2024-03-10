@@ -86,7 +86,7 @@
           </div>
         </div>
 
-        <div class="d-flex line" *ngIf="isCreateTask">
+        <div class="d-flex line" *ngIf="isCreateTask || isCreateEpic">
           <label class="control-label-task-item">Приоритет:</label>
           <p-dropdown [options]="priorities$.value"
                       [(ngModel)]="selectedPriority"
@@ -100,7 +100,7 @@
           </p-dropdown>
         </div>
 
-        <div class="d-flex line" *ngIf="isCreateTask">
+        <div class="d-flex line" *ngIf="isCreateTask || isCreateEpic">
           <label class="control-label-task-item">Метки:</label>
           <div>
             <p-dropdown [options]="projectTags$.value"
@@ -205,6 +205,30 @@
           <div class="line-item d-flex">
             <label class="control-label-task-item">Обновлено:</label>
             <p>Заполняется автоматически.</p>
+          </div>
+
+          <div class="line-item d-flex" *ngIf="isCreateEpic">
+            <label class="control-label-task-item">Дата начала эпика:</label>
+            <p-calendar [(ngModel)]="dateStart"
+                        dateFormat="dd.mm.yy"
+                        [showTime]="true"
+                        icon="pi pi-calendar"
+                        [showIcon]="true"
+                        [locale]="locale">
+
+            </p-calendar>
+          </div>
+
+          <div class="line-item d-flex mt-1" *ngIf="isCreateEpic">
+            <label class="control-label-task-item">Дата окончания эпика:</label>
+            <p-calendar [(ngModel)]="dateEnd"
+                        icon="pi pi-calendar"
+                        [showIcon]="true"
+                        dateFormat="dd.mm.yy"
+                        [showTime]="true"
+                        [locale]="locale">
+
+            </p-calendar>
           </div>
         </div>
         </div>

@@ -44,15 +44,15 @@ export class AppComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef) { }
 
   public ngOnInit() {
-    this.checkCurrentRouteUrl();     
-    this.isVisibleHeader = true;      
+    this.checkCurrentRouteUrl();
+    this.isVisibleHeader = true;
   };
 
   public rerender(): void {
     console.log("reload");
-    this.isVisibleMenu = false; 
+    this.isVisibleMenu = false;
     this.changeDetectorRef.detectChanges();
-    this.isVisibleMenu = true;    
+    this.isVisibleMenu = true;
     console.log("isVisibleHeader", this.isVisibleHeader);
 };
 
@@ -143,7 +143,7 @@ export class AppComponent implements OnInit {
 
         if (params["page"]) {
           this.isVisibleMenu = true;
-        }        
+        }
 
         if (currentUrl.indexOf("press/offer") >= 0) {
           this.isVisibleMenu = false;

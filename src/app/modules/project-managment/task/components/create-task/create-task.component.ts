@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
 import { CreateProjectManagementTaskInput } from "../../models/input/create-task-input";
+import { TranslateService } from '@ngx-translate/core';
+import { PrimeNGConfig } from "primeng/api";
 
 @Component({
     selector: "",
@@ -14,10 +16,13 @@ import { CreateProjectManagementTaskInput } from "../../models/input/create-task
  * Класс модуля управления проектами (создание задачи).
  */
 export class CreateTaskComponent implements OnInit {
-    constructor(private readonly _projectManagmentService: ProjectManagmentService,
-        private readonly _router: Router,
-        private readonly _activatedRoute: ActivatedRoute) {
-    }
+  constructor(private readonly _projectManagmentService: ProjectManagmentService,
+              private readonly _router: Router,
+              private readonly _activatedRoute: ActivatedRoute,
+              private _config: PrimeNGConfig,
+              private _translateService: TranslateService) {
+
+  }
 
     projectId: number = 0;
     projectTaskId: number = 0;
@@ -36,6 +41,9 @@ export class CreateTaskComponent implements OnInit {
     isCreateEpic: boolean = false;
     isCreateHistory: boolean = false;
     aTaskTypes: any[] = [];
+    dateStart: any = null;
+    dateEnd: any = null;
+    locale: any;
 
     public readonly priorities$ = this._projectManagmentService.priorities$;
     public readonly taskTypes$ = this._projectManagmentService.taskTypes$;
@@ -44,11 +52,20 @@ export class CreateTaskComponent implements OnInit {
     public readonly taskPeople$ = this._projectManagmentService.taskExecutors$;
     public readonly createdTask$ = this._projectManagmentService.createdTask$;
 
-    public async ngOnInit() {
-        forkJoin([
-            this.checkUrlParams()
-        ]).subscribe();
-    };
+  public async ngOnInit() {
+    forkJoin([
+      this.checkUrlParams()
+    ]).subscribe();
+
+    this._translateService.setDefaultLang('ru');
+    this.translate('ru');
+    this.locale = this._translateService.getDefaultLang();
+  };
+
+  translate(lang: string) {
+    this._translateService.use(lang);
+    this._translateService.get('primeng').subscribe(res => this._config.setTranslation(res));
+  }
 
     private async checkUrlParams() {
         this._activatedRoute.queryParams
@@ -233,6 +250,8 @@ export class CreateTaskComponent implements OnInit {
         .subscribe(_ => {
             // TODO: Добавить вывод ошибок в уведомлялку с бэка при ошибках создания задачи.
             console.log("Задача создана: ", this.createdTask$.value);
+
+            // Редиректим к списку задач.
             window.location.href = this.createdTask$.value.redirectUrl;
         });
     };
@@ -241,28 +260,32 @@ export class CreateTaskComponent implements OnInit {
      * Функция создает входную модель для запроса создания задачи.
      */
     private createProjectManagementTaskRequest(): CreateProjectManagementTaskInput {
-        let createTaskInput = new CreateProjectManagementTaskInput();
-        createTaskInput.isQuickCreate = false;
-        createTaskInput.name = this.taskName;
-        createTaskInput.details = this.taskDetails;
-        createTaskInput.executorId = this.selectedExecutor.userId;
-        createTaskInput.projectId = this.projectId;
-        createTaskInput.priorityId = this.selectedPriority;
+      let createTaskInput = new CreateProjectManagementTaskInput();
+      createTaskInput.isQuickCreate = false;
+      createTaskInput.name = this.taskName;
+      createTaskInput.details = this.taskDetails;
+      createTaskInput.executorId = this.selectedExecutor?.userId ?? null;
+      createTaskInput.projectId = this.projectId;
+      createTaskInput.priorityId = this.selectedPriority;
+      createTaskInput.dateStart = this.dateStart;
+      createTaskInput.dateEnd = this.dateEnd;
 
-        let aTags = Array.from(this.aSelectedTags).map(x => {
-            return x.tagId;
-        });
+      let aTags = Array.from(this.aSelectedTags).map(x => {
+        return x.tagId;
+      });
 
-        let aWatchers = Array.from(this.aSelectedWachers).map(x => {
-            return x.userId;
-        });
+      let aWatchers = Array.from(this.aSelectedWachers).map(x => {
+        return x.userId;
+      });
 
-        createTaskInput.tagIds = aTags;
-        createTaskInput.taskStatusId = this.selectedStatus;
-        createTaskInput.watcherIds = aWatchers;
-        createTaskInput.taskTypeId = this.selectedTaskType;
+      createTaskInput.tagIds = aTags;
+      createTaskInput.taskStatusId = this.selectedStatus;
+      createTaskInput.watcherIds = aWatchers;
 
-        return createTaskInput;
+      // Находим Id типа задачи.
+      createTaskInput.taskTypeId = this.aTaskTypes.filter(t => t.typeSysName == this.selectedTaskType)[0].typeId;
+
+      return createTaskInput;
     };
 
     public onSelecteTaskType(selectedTaskType: any) {

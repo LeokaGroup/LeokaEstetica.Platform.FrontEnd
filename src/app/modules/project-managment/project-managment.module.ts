@@ -12,7 +12,7 @@ import {InputMaskModule} from 'primeng/inputmask';
 import {CheckboxModule} from 'primeng/checkbox';
 import {InputTextModule} from 'primeng/inputtext';
 import {PanelModule} from 'primeng/panel';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {SignalrService} from '../notifications/signalr/services/signalr.service';
 import {DropdownModule} from 'primeng/dropdown';
 import {TableModule} from 'primeng/table';
@@ -50,6 +50,10 @@ import { ImageModule } from 'primeng/image';
 import { SidebarModule } from 'primeng/sidebar';
 import { BacklogComponent } from './backlog/components/backlog.component';
 import {LeftPanelComponent} from "./left-panel/left-panel.component";
+import { CalendarModule } from 'primeng/calendar';
+import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 @NgModule({
   declarations: [
@@ -104,17 +108,30 @@ import {LeftPanelComponent} from "./left-panel/left-panel.component";
     FileUploadModule,
     TabViewModule,
     ImageModule,
-    SidebarModule
+    SidebarModule,
+    CalendarModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpTranslateLoader,
+        deps: [HttpClient]
+      }
+    })
   ],
 
-  exports: [],
+  exports: [TranslateModule],
 
   providers: [
     UserService,
     MessageService,
-    SignalrService
+    SignalrService,
+    TranslateService
   ]
 })
 
 export class ProjectManagmentModule {
+}
+
+export function httpTranslateLoader(http: HttpClient):any {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
