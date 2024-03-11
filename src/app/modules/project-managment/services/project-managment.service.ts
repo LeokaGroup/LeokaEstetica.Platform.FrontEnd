@@ -18,6 +18,7 @@ import { UserTaskTagInput } from '../task/models/input/user-task-tag-input';
 import {Router} from "@angular/router";
 import { TaskCommentInput } from '../task/models/input/task-comment-input';
 import {TaskCommentExtendedInput} from "../task/models/input/task-comment-extended-input";
+import {IncludeTaskEpicInput} from "../task/models/input/include-task-epic-input";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -58,6 +59,7 @@ export class ProjectManagmentService {
     public backlogData$ = new BehaviorSubject<any>(null);
     public availableEpics$ = new BehaviorSubject<any>(null);
     public epics$ = new BehaviorSubject<any>(null);
+    public includeEpic$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -673,6 +675,18 @@ export class ProjectManagmentService {
   public async getEpicsAsync(projectId: number) {
     return await this._http.get(this.apiUrl + `/project-management/epics?projectId=${projectId}`).pipe(
       tap(data => this.epics$.next(data))
+    );
+  };
+
+  /**
+   * Функция добавляет задачу в эпик.
+   * @param epicId - Id эпика.
+   * @param projectId - Id проекта.
+   * @param projectTaskId - Id задачи в рамках проекта.
+   */
+  public async includeTaskEpicAsync(includeTaskEpicInput: IncludeTaskEpicInput) {
+    return await this._http.post(this.apiUrl + `/project-management/task-epic`, includeTaskEpicInput).pipe(
+      tap(data => this.includeEpic$.next(data))
     );
   };
 }

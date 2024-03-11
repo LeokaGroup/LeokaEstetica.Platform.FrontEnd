@@ -119,7 +119,8 @@
                       placeholder="Добавить задачу в эпик"
                       [emptyMessage]="(availableEpics$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
                       (onClick)="onGetAvailableEpicsAsync()"
-                      (onClick)="onChangeAvailableEpicsAsync()">
+                      (onChange)="onChangeAvailableEpicsAsync()"
+                      formControlName="epicName">
           </p-dropdown>
         </div>
       </form>
