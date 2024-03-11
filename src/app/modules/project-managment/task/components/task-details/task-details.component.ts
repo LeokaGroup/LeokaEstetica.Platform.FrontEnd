@@ -140,9 +140,17 @@ export class TaskDetailsComponent implements OnInit {
     * @returns - Детали задачи.
     */
     private async getProjectTaskDetailsAsync() {
-        (await this._projectManagmentService.getTaskDetailsByTaskIdAsync(this.projectId, this.projectTaskId))
+        (await this._projectManagmentService.getTaskDetailsByTaskIdAsync(+this.projectId, this.projectTaskId))
             .subscribe(async _ => {
                 console.log("Детали задачи: ", this.taskDetails$.value);
+
+              (await this._projectManagmentService.getAvailableEpicsAsync(+this.projectId))
+                .subscribe(_ => {
+                  console.log("Доступные эпики: ", this.availableEpics$.value);
+
+                  let value = this.availableEpics$.value.find((ep: any) => ep.epicId == this.taskDetails$.value.epicId);
+                  this.formEpic.get("epicName")?.setValue(value);
+                });
 
                 // Получаем статусы задач для выбора, чтобы подставить ранее сохраненый статус.
                 (await this._projectManagmentService.getAvailableTaskStatusTransitionsAsync(this.projectId, this.projectTaskId))
