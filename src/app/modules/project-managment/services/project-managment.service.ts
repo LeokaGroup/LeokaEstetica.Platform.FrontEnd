@@ -18,6 +18,7 @@ import { UserTaskTagInput } from '../task/models/input/user-task-tag-input';
 import {Router} from "@angular/router";
 import { TaskCommentInput } from '../task/models/input/task-comment-input';
 import {TaskCommentExtendedInput} from "../task/models/input/task-comment-extended-input";
+import {IncludeTaskEpicInput} from "../task/models/input/include-task-epic-input";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -56,6 +57,9 @@ export class ProjectManagmentService {
     public downloadUserAvatarFile$ = new BehaviorSubject<any>(null);
     public searchTasks$ = new BehaviorSubject<any>(null);
     public backlogData$ = new BehaviorSubject<any>(null);
+    public availableEpics$ = new BehaviorSubject<any>(null);
+    public epics$ = new BehaviorSubject<any>(null);
+    public includeEpic$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -651,6 +655,38 @@ export class ProjectManagmentService {
     return await this._http.get(this.apiUrl +
       `/project-management/backlog-tasks?projectId=${projectId}`).pipe(
       tap(data => this.backlogData$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает эпики, доступные к добавлению в них задачи.
+   * @param projectId - Id проекта.
+   */
+  public async getAvailableEpicsAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management/available-epics?projectId=${projectId}`).pipe(
+      tap(data => this.availableEpics$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает список эпиков.
+   * @param projectId - Id проекта.
+   */
+  public async getEpicsAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management/epics?projectId=${projectId}`).pipe(
+      tap(data => this.epics$.next(data))
+    );
+  };
+
+  /**
+   * Функция добавляет задачу в эпик.
+   * @param epicId - Id эпика.
+   * @param projectId - Id проекта.
+   * @param projectTaskId - Id задачи в рамках проекта.
+   */
+  public async includeTaskEpicAsync(includeTaskEpicInput: IncludeTaskEpicInput) {
+    return await this._http.post(this.apiUrl + `/project-management/task-epic`, includeTaskEpicInput).pipe(
+      tap(data => this.includeEpic$.next(data))
     );
   };
 }

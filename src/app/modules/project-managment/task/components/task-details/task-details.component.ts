@@ -14,6 +14,7 @@ import { TaskLinkInput } from "../../models/input/task-link-input";
 import { TaskPriorityInput } from "../../models/input/task-priority-input";
 import {TaskCommentInput} from "../../models/input/task-comment-input";
 import {TaskCommentExtendedInput} from "../../models/input/task-comment-extended-input";
+import {IncludeTaskEpicInput} from "../../models/input/include-task-epic-input";
 
 @Component({
     selector: "",
@@ -46,6 +47,9 @@ export class TaskDetailsComponent implements OnInit {
     public readonly taskFiles$ = this._projectManagmentService.taskFiles$;
     public readonly downloadFile$ = this._projectManagmentService.downloadFile$;
     public readonly taskComments$ = this._projectManagmentService.taskComments$;
+    public readonly availableEpics$ = this._projectManagmentService.availableEpics$;
+    public readonly epics$ = this._projectManagmentService.epics$;
+    public readonly includeEpic$ = this._projectManagmentService.includeEpic$;
 
     projectId: any;
     projectTaskId: any;
@@ -94,10 +98,17 @@ export class TaskDetailsComponent implements OnInit {
         ])
     });
 
+    formEpic: FormGroup = new FormGroup({
+      "epicName": new FormControl("", [
+        Validators.required
+      ])
+  });
+
     taskFormData = new FormData();
     uploadedFiles: any[] = [];
     comment: string = "";
     isActiveTaskComment: boolean = false;
+    selectedEpic: any;
 
     public async ngOnInit() {
         forkJoin([
@@ -129,9 +140,17 @@ export class TaskDetailsComponent implements OnInit {
     * @returns - Детали задачи.
     */
     private async getProjectTaskDetailsAsync() {
-        (await this._projectManagmentService.getTaskDetailsByTaskIdAsync(this.projectId, this.projectTaskId))
+        (await this._projectManagmentService.getTaskDetailsByTaskIdAsync(+this.projectId, this.projectTaskId))
             .subscribe(async _ => {
                 console.log("Детали задачи: ", this.taskDetails$.value);
+
+              (await this._projectManagmentService.getAvailableEpicsAsync(+this.projectId))
+                .subscribe(_ => {
+                  console.log("Доступные эпики: ", this.availableEpics$.value);
+
+                  let value = this.availableEpics$.value.find((ep: any) => ep.epicId == this.taskDetails$.value.epicId);
+                  this.formEpic.get("epicName")?.setValue(value);
+                });
 
                 // Получаем статусы задач для выбора, чтобы подставить ранее сохраненый статус.
                 (await this._projectManagmentService.getAvailableTaskStatusTransitionsAsync(this.projectId, this.projectTaskId))
@@ -620,6 +639,35 @@ export class TaskDetailsComponent implements OnInit {
     (await this._projectManagmentService.deleteTaskCommentAsync(commentId))
       .subscribe(async (_: any) => {
         await this.getTaskCommentsAsync();
+      });
+  };
+
+  /**
+   * Функция получает эпики, доступные к добавлению в них задачи.
+   * @param projectId - Id проекта.
+   */
+  public async onGetAvailableEpicsAsync() {
+    (await this._projectManagmentService.getAvailableEpicsAsync(+this.projectId))
+      .subscribe(async (_: any) => {
+        console.log("Доступные эпики: ", this.availableEpics$.value);
+      });
+  };
+
+  /**
+   * Функция добавляет задачу в эпик и подтягивает эпик, в который включена задача.
+   */
+  public async onChangeAvailableEpicsAsync() {
+    let includeTaskEpicInput = new IncludeTaskEpicInput();
+    includeTaskEpicInput.epicId = this.selectedEpic.epicId;
+    includeTaskEpicInput.projectId = +this.projectId;
+    includeTaskEpicInput.projectTaskId = this.projectTaskId;
+
+    (await this._projectManagmentService.includeTaskEpicAsync(includeTaskEpicInput))
+      .subscribe(_ => {
+        console.log("Добавили задачу в эпик: ", this.includeEpic$.value);
+
+        let value = this.availableEpics$.value.find((ep: any) => ep.epicId == this.selectedEpic.epicId);
+        this.formEpic.get("epicName")?.setValue(value);
       });
   };
 }
