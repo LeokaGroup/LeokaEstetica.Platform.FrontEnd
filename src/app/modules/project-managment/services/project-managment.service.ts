@@ -60,6 +60,7 @@ export class ProjectManagmentService {
     public availableEpics$ = new BehaviorSubject<any>(null);
     public epics$ = new BehaviorSubject<any>(null);
     public includeEpic$ = new BehaviorSubject<any>(null);
+    public userStoryStatuses$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -687,6 +688,15 @@ export class ProjectManagmentService {
   public async includeTaskEpicAsync(includeTaskEpicInput: IncludeTaskEpicInput) {
     return await this._http.post(this.apiUrl + `/project-management/task-epic`, includeTaskEpicInput).pipe(
       tap(data => this.includeEpic$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает статусы истории для выбора.
+   */
+  public async getUserStoryStatusesAsync() {
+    return await this._http.get(this.apiUrl + `/project-management/history-statuses`).pipe(
+      tap(data => this.userStoryStatuses$.next(data))
     );
   };
 }

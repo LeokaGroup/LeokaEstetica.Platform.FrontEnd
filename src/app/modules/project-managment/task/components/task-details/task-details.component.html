@@ -31,20 +31,6 @@
   </button>
   </div>
 
-  <!-- Блок с кнопками действий. -->
-  <div class="mt-3 mb-3 d-flex block-task-actions">
-    <div>
-      <button type="button"
-              pButton
-              icon="pi pi-arrow-down"
-              label="Возможные действия"
-              class="p-button-text p-button-primary p-button-sm task-actions"
-              (click)="menu.toggle($event)">
-      </button>
-      <p-menu #menu [popup]="true" [model]="aAvailableActions"></p-menu>
-    </div>
-  </div>
-
   <div>
     <hr>
   </div>
@@ -220,6 +206,24 @@
         </div>
       </div>
       </div>
+    </div>
+  </div>
+
+  <div>
+    <hr>
+  </div>
+
+  <!-- Блок с кнопками действий. -->
+  <div class="mt-3 mb-3 d-flex block-task-actions">
+    <div>
+      <button type="button"
+              pButton
+              icon="pi pi-arrow-down"
+              label="Возможные действия"
+              class="p-button-text p-button-primary p-button-sm task-actions"
+              (click)="menu.toggle($event)">
+      </button>
+      <p-menu #menu [popup]="true" [model]="aAvailableActions"></p-menu>
     </div>
   </div>
 
