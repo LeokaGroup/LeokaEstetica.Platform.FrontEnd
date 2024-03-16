@@ -5,77 +5,8 @@
 <left-panel></left-panel>
 
 <div class="">
-  <h3 class="block-sprint">Планирование спринта</h3>
-
-  <div>
-    <hr>
-  </div>
-
-  <!-- Блок с кнопками действий. -->
-  <div class="mt-3 mb-3 d-flex block-task-actions block-sprint col-lg-12">
-<!--    <div>-->
-<!--      <button pButton type="button"-->
-<!--              icon="pi pi-list"-->
-<!--              label="Активные спринты"-->
-<!--              class="p-button-text p-button-success task-actions p-button-sm control-sprint-strong">-->
-<!--      </button>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <button pButton type="button"-->
-<!--              icon="pi pi-list"-->
-<!--              label="Все спринты"-->
-<!--              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong">-->
-<!--      </button>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <button pButton type="button"-->
-<!--              icon="pi pi-plus"-->
-<!--              label="Спланировать спринт"-->
-<!--              class="p-button-text p-button-primary task-actions p-button-sm control-sprint-strong">-->
-<!--      </button>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <button pButton type="button"-->
-<!--              icon="pi pi-plus"-->
-<!--              label="Добавить задачу в спринт"-->
-<!--              class="p-button-text p-button-primary task-actions p-button-sm control-sprint-strong">-->
-<!--      </button>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <button pButton type="button"-->
-<!--              icon="pi pi-filter"-->
-<!--              label="Фильтровать по историям"-->
-<!--              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong">-->
-<!--      </button>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <button pButton type="button"-->
-<!--              icon="pi pi-filter"-->
-<!--              label="Фильтровать по эпикам"-->
-<!--              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong">-->
-<!--      </button>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <button pButton type="button"-->
-<!--              icon="pi pi-filter"-->
-<!--              label="Фильтровать по задачам"-->
-<!--              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong">-->
-<!--      </button>-->
-<!--    </div>-->
-
-<!--    <div>-->
-<!--      <button pButton type="button"-->
-<!--              icon="pi pi-filter"-->
-<!--              label="Фильтровать по ошибкам"-->
-<!--              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong">-->
-<!--      </button>-->
-<!--    </div>-->
+  <div class="d-flex mt-3 mb-3 justify-content-between">
+    <h3 class="block-sprint">Планирование спринта</h3>
   </div>
 
   <div>
@@ -83,81 +14,185 @@
   </div>
 
   <div class="d-flex mt-3 block-sprint">
-<!--    <strong>Задачи</strong>-->
-    <!--    &nbsp; <small>{{backlogData$.value.tasks.length}} задач</small>-->
+    <strong>Основная информация о спринте</strong>
   </div>
 
-  <div class="">
-    <div class="block-worksheet block-scrum-task-list col-lg-12">
-      <div class="block-task">
-<!--        <hr>-->
-<!--        <div class="d-flex justify-content-between">-->
-<!--          <div class="col-lg-2">&nbsp;</div>-->
-<!--          <strong class="col-lg-2">Ключ</strong>-->
-<!--          <strong class="col-lg-2">Задача</strong>-->
-<!--          <strong class="col-lg-2">Приоритет</strong>-->
-<!--          <strong class="col-lg-2">Исполнитель</strong>-->
-<!--          <strong class="col-lg-2">Обновлено</strong>-->
-<!--        </div>-->
-<!--        <hr>-->
+<div class="d-flex">
+  <div class="col-lg-7">
+    <div class="block-worksheet">
+      <div class="block-sprint">
+        <div class="mt-3">
+          <div>
+            <label>Название спринта</label>
+          </div>
+
+          <div>
+            <input pInputText
+                   type="text"
+                   class="p-inputtext-sm"
+                   placeholder="Название спринта"
+                   [(ngModel)]="sprintName"
+                   [style]="{'width':'80%'}"/>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <div>
+            <label>Описание спринта (опционально)</label>
+          </div>
+
+          <div>
+             <textarea input-control-worksheet
+                       rows="5"
+                       cols="100"
+                       pInputTextarea
+                       [autoResize]="true"
+                       autocomplete="new-password"
+                       placeholder="Описание спринта"
+                       [(ngModel)]="sprintDescription"
+                       class="input-about-me">
+            </textarea>
+          </div>
+        </div>
         <div class="task-ver-line">
-<!--          <div class="d-flex justify-content-between status-name pt-3">-->
-<!--            {{st.statusName.toUpperCase()}}-->
-<!--            {{st.total}}-->
-<!--          </div>-->
 
-          <!-- Блок с задачами Scrum. -->
-<!--          <div *ngFor="let t of st.projectManagmentTasks">-->
-<!--            &lt;!&ndash; Блок с каждой задачей Scrum. &ndash;&gt;-->
-<!--            <div class="task">-->
-<!--              <div [ngClass]="{-->
-<!--            low:t.priorityId == 1,-->
-<!--            medium:t.priorityId == 2,-->
-<!--            high:t.priorityId == 3,-->
-<!--            urgent:t.priorityId == 4,-->
-<!--            blocker:t.priorityId == 5}"-->
-<!--                   class="selected-task-row"-->
-<!--                   (click)="onSelectTask(t.fullProjectTaskId)">-->
-<!--                <div class="scrum-task-line">-->
-<!--                  <div class="d-flex justify-content-between">-->
-<!--                    <div class="col-lg-2 laconic-text">{{t.taskTypeName}}</div>-->
-<!--                    <div class="col-lg-2">{{t.fullProjectTaskId}}</div>-->
-<!--                    <div class="col-lg-2 laconic-text">{{t.name}}</div>-->
-<!--                    <div class="col-lg-2 laconic-text">{{t.priorityName}}</div>-->
-<!--                    <div class="col-lg-2 laconic-text scrum-info-line">-->
-<!--                      <div>-->
-<!--                        <p-avatar [image]="t.executor.avatar.ava" size="small" shape="circle"></p-avatar>-->
-<!--                      </div>-->
-<!--                      &nbsp;-->
-<!--                      <div>-->
-<!--                        {{t.executor.executorName}}-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                    <div class="col-lg-2 laconic-text">{{t.updated}}</div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
+        </div>
+      </div>
 
-<!--          <div>-->
-<!--            <div class="line-see-more" *ngIf="st.projectManagmentTasks == null">-->
-<!--              <div>Нет данных.</div>-->
-<!--            </div>-->
+      <div class="mt-3 block-sprint">
+        <strong>Выбрать задачи для спринта</strong>
+        <div>
+          <p-checkbox inputId="sprintTasks"
+                      [value]="isSprintTasks"
+                      (onChange)="isSprintTasks = !isSprintTasks"
+                      [binary]="true">
 
-<!--            <div *ngIf="st.projectManagmentTasks !== null && st.total > 10 && st.paginator.hasNextPage">-->
-<!--              <div class="mt-2">-->
-<!--                <button pButton type="button"-->
-<!--                        label="Показать больше"-->
-<!--                        class="p-button-outlined p-button-secondary p-button-sm line-see-more control-see-more"-->
-<!--                        [loading]="isLoading"-->
-<!--                        >-->
-<!--                </button>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
+          </p-checkbox>
+          <label for="sprintTasks">&nbsp;Добавить задачи в спринт</label>
+        </div>
+        <small *ngIf="!isSprintTasks">Если не выбраны задачи, то спринт будет спланирован без задач.
+          <br>
+          Их можно будет включить в спринт позже.
+          <br>
+          Спринт без задач нельзя будет начать.
+        </small>
+      </div>
+
+      <div class="mt-3 block-sprint" *ngIf="isSprintTasks">
+        <div>
+          <strong>Задачи спринта</strong>
+        </div>
+      </div>
+
+      <div class="mt-3 block-sprint" *ngIf="isSprintTasks">
+        <p-table [value]="sprintTasks.value"
+                 styleClass="p-datatable-sm"
+                 [tableStyle]="{'min-width': '50rem'}"
+                 [rows]="10"
+                 responsiveLayout="scroll"
+                 [paginator]="sprintTasks.value?.length > 0">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Ключ</th>
+              <th>Тип задачи</th>
+              <th>Название задачи</th>
+              <th>Статус</th>
+              <th>Исполнитель</th>
+              <th>Исключение из спринта</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-t>
+            <tr>
+              <td class="link">
+                <div (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId}}</div>
+              </td>
+
+              <td>
+                <div>{{t.taskName}}</div>
+              </td>
+
+              <td>
+                <div>[Пока не выводится]</div>
+              </td>
+
+              <td>
+                <div class="smaller-text">
+                  {{t.taskStatusName}}
+                </div>
+              </td>
+
+              <td>
+                <div class="smaller-text">
+                  {{t.executorName}}
+                </div>
+              </td>
+
+              <td>
+                <div class="cancel">
+                  <button pButton type="button"
+                          icon="pi pi-times"
+                          class="p-button-danger p-button-sm p-button-text"
+                          pTooltip="Исключить задачу из спринта"
+                          tooltipPosition="bottom">
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">
+                <div>
+                  Нет данных.
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <strong>Даты</strong>
+    <div>
+      <p-checkbox inputId="sprintDates"
+                  [value]="isSprintDates"
+                  (onChange)="isSprintDates = !isSprintDates"
+                  [binary]="true">
+
+      </p-checkbox>
+      <label for="sprintDates">&nbsp;Указать даты спринта</label>
+
+      <div class="mt-3" *ngIf="isSprintDates">
+        <div class="line-item">
+          <label class="control-label-task-item">Дата начала спринта:</label>
+          <br>
+          <p-calendar [(ngModel)]="dateStart"
+                      dateFormat="dd.mm.yy"
+                      [showTime]="true"
+                      icon="pi pi-calendar"
+                      [showIcon]="true"
+                      [locale]="locale">
+
+          </p-calendar>
+        </div>
+
+        <div class="line-item mt-1">
+          <label class="control-label-task-item">Дата окончания спринта:</label>
+          <br>
+          <p-calendar [(ngModel)]="dateEnd"
+                      icon="pi pi-calendar"
+                      [showIcon]="true"
+                      dateFormat="dd.mm.yy"
+                      [showTime]="true"
+                      [locale]="locale">
+
+          </p-calendar>
         </div>
       </div>
     </div>
   </div>
+</div>
 </div>

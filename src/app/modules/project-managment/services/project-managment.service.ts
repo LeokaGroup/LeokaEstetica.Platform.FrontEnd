@@ -60,6 +60,7 @@ export class ProjectManagmentService {
     public availableEpics$ = new BehaviorSubject<any>(null);
     public epics$ = new BehaviorSubject<any>(null);
     public includeEpic$ = new BehaviorSubject<any>(null);
+    public sprintTasks = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 

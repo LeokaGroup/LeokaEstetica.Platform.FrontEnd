@@ -132,6 +132,9 @@ export class BacklogComponent implements OnInit {
     });
   };
 
+  /**
+   * Функция переходит к планированию спринта.
+   */
   public onRoutePlaningSprint() {
     let projectId = this.selectedProjectId;
 

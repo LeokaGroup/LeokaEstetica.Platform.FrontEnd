@@ -1,9 +1,10 @@
-import {Component, OnInit, Sanitizer} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { ProjectManagmentService } from "../../services/project-managment.service";
-import {DomSanitizer} from "@angular/platform-browser";
+import {PrimeNGConfig} from "primeng/api";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: "",
@@ -19,14 +20,21 @@ export class PlaningSprintComponent implements OnInit {
               private readonly _router: Router,
               private readonly _redirectService: RedirectService,
               private readonly _activatedRoute: ActivatedRoute,
-              private readonly _domSanitizer: DomSanitizer,
-              private readonly _sanitizer: Sanitizer) {
+              private _config: PrimeNGConfig,
+              private _translateService: TranslateService) {
   }
 
-  // public readonly backlogData$ = this._projectManagmentService.backlogData$;
+  public readonly sprintTasks = this._projectManagmentService.sprintTasks;
 
   selectedProjectId: number = 0;
   isLoading: boolean = false;
+  sprintName: string = "";
+  sprintDescription: string = "";
+  isSprintDates: boolean = false;
+  locale: any;
+  dateStart: any = null;
+  dateEnd: any = null;
+  isSprintTasks: boolean = false;
 
   public async ngOnInit() {
     this._projectManagmentService.isLeftPanel = false;
@@ -34,7 +42,16 @@ export class PlaningSprintComponent implements OnInit {
     forkJoin([
       this.checkUrlParams()
     ]).subscribe();
+
+    this._translateService.setDefaultLang('ru');
+    this.translate('ru');
+    this.locale = this._translateService.getDefaultLang();
   };
+
+  translate(lang: string) {
+    this._translateService.use(lang);
+    this._translateService.get('primeng').subscribe(res => this._config.setTranslation(res));
+  }
 
   private async checkUrlParams() {
     this._activatedRoute.queryParams
@@ -46,5 +63,16 @@ export class PlaningSprintComponent implements OnInit {
   public onSelectPanelMenu() {
     console.log("onSelectPanelMenu");
     this._projectManagmentService.isLeftPanel = true;
+  };
+
+  public onSelectTaskLink(fullTaskId: string) {
+    let projectId = this.selectedProjectId;
+
+    this._router.navigate(["/space/details"], {
+      queryParams: {
+        projectId,
+        taskId: fullTaskId
+      }
+    });
   };
 }
