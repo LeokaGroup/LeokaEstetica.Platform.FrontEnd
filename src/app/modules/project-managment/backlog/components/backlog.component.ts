@@ -131,4 +131,14 @@ export class BacklogComponent implements OnInit {
       }
     });
   };
+
+  public onRoutePlaningSprint() {
+    let projectId = this.selectedProjectId;
+
+    this._router.navigate(["/project-management/space/sprint/planing"], {
+      queryParams: {
+        projectId
+      }
+    });
+  };
 }

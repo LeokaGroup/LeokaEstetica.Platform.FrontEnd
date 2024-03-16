@@ -53,6 +53,7 @@ import {LeftPanelComponent} from "./left-panel/left-panel.component";
 import {CalendarModule} from 'primeng/calendar';
 import {TranslateLoader, TranslateModule, TranslateService, TranslateStore } from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { PlaningSprintComponent } from './backlog/planing/planing.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
     SettingsProjectManagmentComponent,
     ProjectSettingsComponent,
     BacklogComponent,
-    LeftPanelComponent
+    LeftPanelComponent,
+    PlaningSprintComponent
   ],
 
   imports: [

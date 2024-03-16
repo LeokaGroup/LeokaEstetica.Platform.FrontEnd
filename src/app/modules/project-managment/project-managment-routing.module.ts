@@ -8,6 +8,7 @@ import {TaskDetailsComponent} from './task/components/task-details/task-details.
 import {ProjectSettingsComponent} from "./project-settings/components/project-settings.component";
 import { BacklogComponent } from './backlog/components/backlog.component';
 import { LeftPanelComponent } from './left-panel/left-panel.component';
+import { PlaningSprintComponent } from './backlog/planing/planing.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,10 @@ const routes: Routes = [
 
   {
     path: 'left-panel', component: LeftPanelComponent
+  },
+
+  {
+    path: 'space/sprint/planing', component: PlaningSprintComponent
   }
 ];
 
