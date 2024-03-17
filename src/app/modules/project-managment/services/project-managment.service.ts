@@ -19,6 +19,7 @@ import {Router} from "@angular/router";
 import { TaskCommentInput } from '../task/models/input/task-comment-input';
 import {TaskCommentExtendedInput} from "../task/models/input/task-comment-extended-input";
 import {IncludeTaskEpicInput} from "../task/models/input/include-task-epic-input";
+import {PlaningSprintInput} from "../task/models/input/planing-sprint-input";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -688,6 +689,17 @@ export class ProjectManagmentService {
   public async includeTaskEpicAsync(includeTaskEpicInput: IncludeTaskEpicInput) {
     return await this._http.post(this.apiUrl + `/project-management/task-epic`, includeTaskEpicInput).pipe(
       tap(data => this.includeEpic$.next(data))
+    );
+  };
+
+  /**
+   * Функция планирует спринт.
+   * Добавляет задачи в спринт, если их указали при планировании спринта.
+   * @param planingSprintInput - Входная модель.
+   */
+  public async planingSprintAsync(planingSprintInput: PlaningSprintInput) {
+    return await this._http.post(this.apiUrl + `/project-management/sprint/planing`, planingSprintInput).pipe(
+      tap(_ => console.log("Спринт успешно спланирован"))
     );
   };
 }

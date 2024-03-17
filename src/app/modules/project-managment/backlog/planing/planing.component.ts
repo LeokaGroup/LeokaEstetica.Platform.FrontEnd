@@ -5,6 +5,7 @@ import { RedirectService } from "src/app/common/services/redirect.service";
 import { ProjectManagmentService } from "../../services/project-managment.service";
 import {PrimeNGConfig} from "primeng/api";
 import {TranslateService} from "@ngx-translate/core";
+import {PlaningSprintInput} from "../../task/models/input/planing-sprint-input";
 
 @Component({
   selector: "",
@@ -74,5 +75,27 @@ export class PlaningSprintComponent implements OnInit {
         taskId: fullTaskId
       }
     });
+  };
+
+  /**
+   * Функция планирует спринт.
+   * Добавляет задачи в спринт, если их указали при планировании спринта.
+   */
+  public async onPlaningSprintAsync() {
+    let planingSprintInput = new PlaningSprintInput();
+    planingSprintInput.projectId = this.selectedProjectId;
+    planingSprintInput.sprintName = this.sprintName;
+    planingSprintInput.sprintDescription = this.sprintDescription;
+
+    if (this.dateStart !== null
+      && this.dateStart !== undefined
+      && this.dateEnd !== null
+      && this.dateEnd !== undefined) {
+      planingSprintInput.dateStart = this.dateStart;
+      planingSprintInput.dateEnd = this.dateEnd;
+    }
+
+    (await this._projectManagmentService.planingSprintAsync(planingSprintInput))
+      .subscribe(async (_: any) => {});
   };
 }
