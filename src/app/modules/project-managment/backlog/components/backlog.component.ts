@@ -131,4 +131,17 @@ export class BacklogComponent implements OnInit {
       }
     });
   };
+
+  /**
+   * Функция переходит к планированию спринта.
+   */
+  public onRoutePlaningSprint() {
+    let projectId = this.selectedProjectId;
+
+    this._router.navigate(["/project-management/space/sprint/planing"], {
+      queryParams: {
+        projectId
+      }
+    });
+  };
 }

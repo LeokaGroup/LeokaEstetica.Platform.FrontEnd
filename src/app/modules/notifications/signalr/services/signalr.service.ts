@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
-import { BehaviorSubject } from 'rxjs';
-import { API_URL } from 'src/app/core/core-urls/api-urls';
-import { DialogInput } from 'src/app/modules/messages/chat/models/input/dialog-input';
-import { RedisService } from 'src/app/modules/redis/services/redis.service';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
+import {BehaviorSubject} from 'rxjs';
+import {API_URL} from 'src/app/core/core-urls/api-urls';
+import {DialogInput} from 'src/app/modules/messages/chat/models/input/dialog-input';
+import {RedisService} from 'src/app/modules/redis/services/redis.service';
 
 @Injectable()
 export class SignalrService {
@@ -12,7 +12,7 @@ export class SignalrService {
   public $allFeed: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   public constructor(private readonly _redisService: RedisService,
-    private readonly _router: Router) {
+                     private readonly _router: Router) {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(API_URL.apiUrl + "/notify", 4)
       .build();
@@ -490,9 +490,9 @@ export class SignalrService {
   };
 
   /**
-  * Функция получает диалог проекта.
-  * @param diaalogId - Id диалога.
-  */
+   * Функция получает диалог проекта.
+   * @param diaalogId - Id диалога.
+   */
   public getDialogAsync(dialogInput: DialogInput) {
     <HubConnection>this.hubConnection.invoke("GetDialogAsync", localStorage["u_e"], localStorage["t_n"], JSON.stringify(dialogInput))
       .catch((err: any) => {
@@ -510,8 +510,8 @@ export class SignalrService {
   };
 
   /**
- * Функция отправляет сообщение.
- */
+   * Функция отправляет сообщение.
+   */
   public sendMessageAsync(message: string, dialogId: number) {
     <HubConnection>this.hubConnection.invoke("SendMessageAsync", message, dialogId, localStorage["u_e"], localStorage["t_n"])
       .catch((err: any) => {
@@ -529,9 +529,9 @@ export class SignalrService {
   };
 
   /**
-* Функция получает диалоги ЛК.
-* @param projectId - Id проекта.
-*/
+   * Функция получает диалоги ЛК.
+   * @param projectId - Id проекта.
+   */
   public getProfileDialogsAsync() {
     <HubConnection>this.hubConnection.invoke("GetProfileDialogsAsync", localStorage["u_e"], localStorage["t_n"])
       .catch((err: any) => {
@@ -551,7 +551,7 @@ export class SignalrService {
   /**
    * Функция слушает предупреждение при поиске пользователя для приглашения в проект.
    */
-   public listenWarningSearchProjectTeamMember() {
+  public listenWarningSearchProjectTeamMember() {
     (<HubConnection>this.hubConnection).on("SendNotificationWarningSearchProjectTeamMember", (data: any) => {
       this.$allFeed.next(data);
     });
@@ -560,33 +560,33 @@ export class SignalrService {
   /**
    * Функция слушает успешную запись комментария к проекту.
    */
-   public listenSuccessCreatedCommentProject() {
+  public listenSuccessCreatedCommentProject() {
     (<HubConnection>this.hubConnection).on("SendNotificationSuccessCreatedCommentProject", (data: any) => {
       this.$allFeed.next(data);
     });
   };
 
-   /**
+  /**
    * Функция слушает успешное создание возврата.
    */
-    public listenSuccessSuccessManualRefund() {
-      (<HubConnection>this.hubConnection).on("SendNotificationSuccessManualRefund", (data: any) => {
-        this.$allFeed.next(data);
-      });
-    };
-
-     /**
-   * Функция слушает предупреждения создание возврата при дубликате.
-   */
-      public listenWarningManualRefund() {
-        (<HubConnection>this.hubConnection).on("SendNotificationWarningManualRefund", (data: any) => {
-          this.$allFeed.next(data);
-        });
-      };
+  public listenSuccessSuccessManualRefund() {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessManualRefund", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 
   /**
-* Функция слушает уведомления об предупреждении лимите вакансий по тарифу.
-*/
+   * Функция слушает предупреждения создание возврата при дубликате.
+   */
+  public listenWarningManualRefund() {
+    (<HubConnection>this.hubConnection).on("SendNotificationWarningManualRefund", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает уведомления об предупреждении лимите вакансий по тарифу.
+   */
   public listenWarningLimitFareRuleVacancies() {
     (<HubConnection>this.hubConnection).on("SendNotificationWarningLimitFareRuleVacancies", (data: any) => {
       this.$allFeed.next(data);
@@ -594,8 +594,8 @@ export class SignalrService {
   };
 
   /**
-* Функция слушает уведомления ошибки при создании вакансии.
-*/
+   * Функция слушает уведомления ошибки при создании вакансии.
+   */
   public listenErrorCreateVacancy() {
     (<HubConnection>this.hubConnection).on("SendNotificationErrorCreatedUserVacancy", (data: any) => {
       this.$allFeed.next(data);

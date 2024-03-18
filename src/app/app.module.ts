@@ -48,8 +48,6 @@ import { SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CheckboxModule } from 'primeng/checkbox';
-// import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-// import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 @NgModule({
   declarations: [
@@ -91,13 +89,6 @@ import { CheckboxModule } from 'primeng/checkbox';
     ButtonModule,
     AutoCompleteModule,
     CheckboxModule
-    // TranslateModule.forRoot({
-    //   loader: {
-    //     provide: TranslateLoader,
-    //     useFactory: httpTranslateLoader,
-    //     deps: [HttpClient]
-    //   }
-    // })
   ],
 
   providers: [
@@ -130,7 +121,3 @@ import { CheckboxModule } from 'primeng/checkbox';
 })
 
 export class AppModule { }
-
-// export function httpTranslateLoader(http: HttpClient):any {
-//   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-// }
