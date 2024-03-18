@@ -13,7 +13,6 @@ import {CheckboxModule} from 'primeng/checkbox';
 import {InputTextModule} from 'primeng/inputtext';
 import {PanelModule} from 'primeng/panel';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
-import {SignalrService} from '../notifications/signalr/services/signalr.service';
 import {DropdownModule} from 'primeng/dropdown';
 import {TableModule} from 'primeng/table';
 import {ButtonModule} from 'primeng/button';
@@ -54,6 +53,7 @@ import {CalendarModule} from 'primeng/calendar';
 import {TranslateLoader, TranslateModule, TranslateService, TranslateStore } from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { PlaningSprintComponent } from './backlog/planing/planing.component';
+import { ProjectManagementSignalrService } from '../notifications/signalr/services/project-magement-signalr.service';
 
 @NgModule({
   declarations: [
@@ -125,7 +125,7 @@ import { PlaningSprintComponent } from './backlog/planing/planing.component';
   providers: [
     UserService,
     MessageService,
-    SignalrService,
+    ProjectManagementSignalrService,
     TranslateService,
     TranslateStore
   ]

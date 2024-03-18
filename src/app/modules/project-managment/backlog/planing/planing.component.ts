@@ -3,9 +3,10 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { ProjectManagmentService } from "../../services/project-managment.service";
-import {PrimeNGConfig} from "primeng/api";
+import {MessageService, PrimeNGConfig} from "primeng/api";
 import {TranslateService} from "@ngx-translate/core";
 import {PlaningSprintInput} from "../../task/models/input/planing-sprint-input";
+import { ProjectManagementSignalrService } from "src/app/modules/notifications/signalr/services/project-magement-signalr.service";
 
 @Component({
   selector: "",
@@ -22,7 +23,9 @@ export class PlaningSprintComponent implements OnInit {
               private readonly _redirectService: RedirectService,
               private readonly _activatedRoute: ActivatedRoute,
               private _config: PrimeNGConfig,
-              private _translateService: TranslateService) {
+              private _translateService: TranslateService,
+              private readonly _projectManagementSignalrService: ProjectManagementSignalrService,
+              private readonly _messageService: MessageService) {
   }
 
   public readonly sprintTasks = this._projectManagmentService.sprintTasks;
@@ -36,6 +39,7 @@ export class PlaningSprintComponent implements OnInit {
   dateStart: any = null;
   dateEnd: any = null;
   isSprintTasks: boolean = false;
+  allFeedSubscription: any;
 
   public async ngOnInit() {
     this._projectManagmentService.isLeftPanel = false;
@@ -44,9 +48,38 @@ export class PlaningSprintComponent implements OnInit {
       this.checkUrlParams()
     ]).subscribe();
 
+    // Подключаемся.
+    this._projectManagementSignalrService.startConnection().then(() => {
+      console.log("Подключились");
+
+      this.listenAllHubsNotifications();
+    });
+
+    // Подписываемся на получение всех сообщений.
+    this._projectManagementSignalrService.AllFeedObservable
+      .subscribe((response: any) => {
+        console.log("Подписались на сообщения", response);
+
+        // Если пришел тип уведомления, то просто показываем его.
+        if (response.notificationLevel !== undefined) {
+          this._messageService.add({
+            severity: response.notificationLevel,
+            summary: response.title,
+            detail: response.message
+          });
+        }
+      });
+
     this._translateService.setDefaultLang('ru');
     this.translate('ru');
     this.locale = this._translateService.getDefaultLang();
+  };
+
+  /**
+   * Функция слушает все хабы.
+   */
+  private listenAllHubsNotifications() {
+    this._projectManagementSignalrService.listenSuccessPlaningSprint();
   };
 
   translate(lang: string) {
@@ -80,13 +113,16 @@ export class PlaningSprintComponent implements OnInit {
   /**
    * Функция планирует спринт.
    * Добавляет задачи в спринт, если их указали при планировании спринта.
+   * calendar по дефолту передает дату и время в UTC.
    */
   public async onPlaningSprintAsync() {
     let planingSprintInput = new PlaningSprintInput();
-    planingSprintInput.projectId = this.selectedProjectId;
+    let projectId = this.selectedProjectId;
+    planingSprintInput.projectId = projectId
     planingSprintInput.sprintName = this.sprintName;
     planingSprintInput.sprintDescription = this.sprintDescription;
 
+    // Заполняем даты, если трогали календарь. Даты пойдут на бэк в UTC.
     if (this.dateStart !== null
       && this.dateStart !== undefined
       && this.dateEnd !== null
@@ -96,6 +132,14 @@ export class PlaningSprintComponent implements OnInit {
     }
 
     (await this._projectManagmentService.planingSprintAsync(planingSprintInput))
-      .subscribe(async (_: any) => {});
+      .subscribe(async (_: any) => {
+        setTimeout(() => {
+          this._router.navigate(["/project-management/space/backlog"], {
+            queryParams: {
+              projectId
+            }
+          });
+        }, 4000);
+      });
   };
 }
