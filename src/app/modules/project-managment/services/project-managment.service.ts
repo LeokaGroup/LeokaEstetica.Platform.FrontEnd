@@ -62,6 +62,7 @@ export class ProjectManagmentService {
     public epics$ = new BehaviorSubject<any>(null);
     public includeEpic$ = new BehaviorSubject<any>(null);
     public sprintTasks = new BehaviorSubject<any>(null);
+    public userStoryStatuses$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -700,6 +701,15 @@ export class ProjectManagmentService {
   public async planingSprintAsync(planingSprintInput: PlaningSprintInput) {
     return await this._http.post(this.apiUrl + `/project-management/sprint/planing`, planingSprintInput).pipe(
       tap(_ => console.log("Спринт успешно спланирован"))
+    );
+  };
+
+  /**
+   * Функция получает статусы истории для выбора.
+   */
+  public async getUserStoryStatusesAsync() {
+    return await this._http.get(this.apiUrl + `/project-management/history-statuses`).pipe(
+      tap(data => this.userStoryStatuses$.next(data))
     );
   };
 }

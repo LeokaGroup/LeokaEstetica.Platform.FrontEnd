@@ -45,6 +45,7 @@ export class CreateTaskComponent implements OnInit {
     dateStart: any = null;
     dateEnd: any = null;
     locale: any;
+    selectedHistoryStatus: any;
 
     public readonly priorities$ = this._projectManagmentService.priorities$;
     public readonly taskTypes$ = this._projectManagmentService.taskTypes$;
@@ -52,6 +53,7 @@ export class CreateTaskComponent implements OnInit {
     public readonly taskStatuses$ = this._projectManagmentService.taskStatuses$;
     public readonly taskPeople$ = this._projectManagmentService.taskExecutors$;
     public readonly createdTask$ = this._projectManagmentService.createdTask$;
+    public readonly userStoryStatuses$ = this._projectManagmentService.userStoryStatuses$;
 
   public async ngOnInit() {
     forkJoin([
@@ -118,6 +120,8 @@ export class CreateTaskComponent implements OnInit {
             this.isCreateTask = false;
             this.isCreateHistory = true;
             this.isCreateEpic = false;
+
+            await this.getUserStoryStatusesAsync();
             break;
 
           case "Epic":
@@ -280,7 +284,7 @@ export class CreateTaskComponent implements OnInit {
       });
 
       createTaskInput.tagIds = aTags;
-      createTaskInput.taskStatusId = this.selectedStatus;
+      createTaskInput.taskStatusId = !this.isCreateHistory ? this.selectedStatus : this.selectedHistoryStatus;
       createTaskInput.watcherIds = aWatchers;
 
       // Находим Id типа задачи.
@@ -291,5 +295,15 @@ export class CreateTaskComponent implements OnInit {
 
     public onSelecteTaskType(selectedTaskType: any) {
       console.log("selectedTaskType", selectedTaskType);
+    };
+
+  /**
+   * Функция получает статусы истории для выбора.
+   */
+    private async getUserStoryStatusesAsync() {
+      (await this._projectManagmentService.getUserStoryStatusesAsync())
+        .subscribe(_ => {
+          console.log("Статусы истории для выбора: ", this.userStoryStatuses$.value);
+        });
     };
 }
