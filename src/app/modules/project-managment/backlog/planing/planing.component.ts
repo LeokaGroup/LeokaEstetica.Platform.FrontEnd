@@ -29,6 +29,7 @@ export class PlaningSprintComponent implements OnInit {
   }
 
   public readonly sprintTasks = this._projectManagmentService.sprintTasks;
+  public readonly searchSprintTasks$ = this._projectManagmentService.searchSprintTasks;
 
   selectedProjectId: number = 0;
   isLoading: boolean = false;
@@ -40,6 +41,11 @@ export class PlaningSprintComponent implements OnInit {
   dateEnd: any = null;
   isSprintTasks: boolean = false;
   allFeedSubscription: any;
+  selectedTask: any;
+  aSearchTasks: any[] = [];
+  isSearchByTaskId: boolean = false;
+  isSearchByTaskName: boolean = false;
+  isSearchByTaskDescription: boolean = false;
 
   public async ngOnInit() {
     this._projectManagmentService.isLeftPanel = false;
@@ -142,4 +148,13 @@ export class PlaningSprintComponent implements OnInit {
         }, 4000);
       });
   };
+
+  public async onSearchIncludeSprintTaskAsync(event: any) {
+    console.log(event);
+
+    (await this._projectManagmentService.searchIncludeSprintTaskAsync(event.query, this.isSearchByTaskId, this.isSearchByTaskName, this.isSearchByTaskDescription, this.selectedProjectId))
+      .subscribe(async (_: any) => {
+        console.log("Задачи для добавления в спринт", this.searchSprintTasks$.value);
+      });
+  }
 }
