@@ -46,6 +46,7 @@ export class PlaningSprintComponent implements OnInit {
   isSearchByTaskId: boolean = false;
   isSearchByTaskName: boolean = false;
   isSearchByTaskDescription: boolean = false;
+  aAddedTaskSprint: any[] = [];
 
   public async ngOnInit() {
     this._projectManagmentService.isLeftPanel = false;
@@ -149,12 +150,36 @@ export class PlaningSprintComponent implements OnInit {
       });
   };
 
+  /**
+   * Функция находит задачи для добавления их в спринт.
+   * @param event - Ивент события.
+   */
   public async onSearchIncludeSprintTaskAsync(event: any) {
-    console.log(event);
-
-    (await this._projectManagmentService.searchIncludeSprintTaskAsync(event.query, this.isSearchByTaskId, this.isSearchByTaskName, this.isSearchByTaskDescription, this.selectedProjectId))
-      .subscribe(async (_: any) => {
+    (await this._projectManagmentService.searchIncludeSprintTaskAsync(
+      event.query, this.isSearchByTaskId, this.isSearchByTaskName, this.isSearchByTaskDescription,
+      this.selectedProjectId))
+      .subscribe(_ => {
         console.log("Задачи для добавления в спринт", this.searchSprintTasks$.value);
       });
-  }
+  };
+
+  public onSelectTask() {
+    console.log("selectedTask", this.selectedTask);
+    this.aAddedTaskSprint.push(this.selectedTask);
+  };
+
+  public onRemoveAddedTask(projectTaskId: number) {
+    if (projectTaskId == 0) {
+      return;
+    }
+
+    let deletedItemIdx = this.aAddedTaskSprint.findIndex(x => x.projectTaskId == projectTaskId);
+    // delete this.aAddedTaskSprint[deletedItemIdx];
+    this.aAddedTaskSprint.splice(deletedItemIdx,  1);
+    debugger;
+
+    if (!this.aAddedTaskSprint.length || this.aAddedTaskSprint[0] == undefined) {
+      this.aAddedTaskSprint = [];
+    }
+  };
 }

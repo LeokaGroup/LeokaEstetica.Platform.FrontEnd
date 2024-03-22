@@ -115,7 +115,8 @@
                          emptyMessage="Результатов не найдено"
                          field="findText"
                          [minLength]="0"
-                          placeholder="Добавить задачу в спринт">
+                          placeholder="Добавить задачу в спринт"
+                         (onSelect)="onSelectTask()">
 
          </p-autoComplete>
 
@@ -156,12 +157,12 @@
          </div>
        </div>
 
-        <p-table [value]="sprintTasks.value"
+        <p-table [value]="aAddedTaskSprint"
                  styleClass="p-datatable-sm"
                  [tableStyle]="{'min-width': '50rem'}"
                  [rows]="10"
                  responsiveLayout="scroll"
-                 [paginator]="sprintTasks.value?.length > 0">
+                 [paginator]="aAddedTaskSprint.length > 0">
           <ng-template pTemplate="header">
             <tr>
               <th>Ключ</th>
@@ -175,26 +176,26 @@
           <ng-template pTemplate="body" let-t>
             <tr>
               <td class="link">
-                <div (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId}}</div>
+                <div (click)="onSelectTaskLink(t?.fullTaskId)">{{t?.fullProjectTaskId}}</div>
               </td>
 
               <td>
-                <div>{{t.taskName}}</div>
+                <div>{{t?.taskTypeName}}</div>
               </td>
 
               <td>
-                <div>[Пока не выводится]</div>
+                <div>{{t?.name}}</div>
               </td>
 
               <td>
                 <div class="smaller-text">
-                  {{t.taskStatusName}}
+                  {{t?.statusName}}
                 </div>
               </td>
 
               <td>
                 <div class="smaller-text">
-                  {{t.executorName}}
+                  {{t?.executorName}}
                 </div>
               </td>
 
@@ -204,7 +205,8 @@
                           icon="pi pi-times"
                           class="p-button-danger p-button-sm p-button-text"
                           pTooltip="Исключить задачу из спринта"
-                          tooltipPosition="bottom">
+                          tooltipPosition="bottom"
+                          (click)="onRemoveAddedTask(t.projectTaskId)">
                   </button>
                 </div>
               </td>
