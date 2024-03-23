@@ -102,7 +102,6 @@ export class PlaningSprintComponent implements OnInit {
   };
 
   public onSelectPanelMenu() {
-    console.log("onSelectPanelMenu");
     this._projectManagmentService.isLeftPanel = true;
   };
 
@@ -138,6 +137,11 @@ export class PlaningSprintComponent implements OnInit {
       planingSprintInput.dateEnd = this.dateEnd;
     }
 
+    // Если были добавлены задачи.
+    if (this.aAddedTaskSprint.length > 0) {
+      planingSprintInput.projectTaskIds = this.aAddedTaskSprint.map(x => x.projectTaskId);
+    }
+
     (await this._projectManagmentService.planingSprintAsync(planingSprintInput))
       .subscribe(async (_: any) => {
         setTimeout(() => {
@@ -164,22 +168,19 @@ export class PlaningSprintComponent implements OnInit {
   };
 
   public onSelectTask() {
-    console.log("selectedTask", this.selectedTask);
     this.aAddedTaskSprint.push(this.selectedTask);
   };
 
+  /**
+   * Функция удаляет задачу из таблицы на фронте.
+   * @param projectTaskId - Id задачи в рамках проекта.
+   */
   public onRemoveAddedTask(projectTaskId: number) {
     if (projectTaskId == 0) {
       return;
     }
 
     let deletedItemIdx = this.aAddedTaskSprint.findIndex(x => x.projectTaskId == projectTaskId);
-    // delete this.aAddedTaskSprint[deletedItemIdx];
-    this.aAddedTaskSprint.splice(deletedItemIdx,  1);
-    debugger;
-
-    if (!this.aAddedTaskSprint.length || this.aAddedTaskSprint[0] == undefined) {
-      this.aAddedTaskSprint = [];
-    }
+    this.aAddedTaskSprint.splice(deletedItemIdx, 1);
   };
 }
