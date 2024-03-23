@@ -63,6 +63,7 @@ export class ProjectManagmentService {
     public includeEpic$ = new BehaviorSubject<any>(null);
     public sprintTasks = new BehaviorSubject<any>(null);
     public userStoryStatuses$ = new BehaviorSubject<any>(null);
+    public searchSprintTasks = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -710,6 +711,15 @@ export class ProjectManagmentService {
   public async getUserStoryStatusesAsync() {
     return await this._http.get(this.apiUrl + `/project-management/history-statuses`).pipe(
       tap(data => this.userStoryStatuses$.next(data))
+    );
+  };
+
+  /**
+   * Функция ищет задачи, истории, эпики, ошибки по разным критериям.
+   */
+  public async searchIncludeSprintTaskAsync(searchText: string, isSearchByProjectTaskId: boolean, isSearchByTaskName: boolean, isSearchByTaskDescription: boolean, projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-search/include-sprint-task?searchText=${searchText}&isSearchByProjectTaskId=${isSearchByProjectTaskId}&isSearchByTaskName=${isSearchByTaskName}&isSearchByTaskDescription=${isSearchByTaskDescription}&projectId=${projectId}`).pipe(
+      tap(data => this.searchSprintTasks.next(data))
     );
   };
 }

@@ -107,12 +107,62 @@
       </div>
 
       <div class="mt-3 block-sprint" *ngIf="isSprintTasks">
-        <p-table [value]="sprintTasks.value"
+       <div class="mb-3">
+         <p-autoComplete [(ngModel)]="selectedTask"
+                         [suggestions]="searchSprintTasks$.value"
+                         (completeMethod)="onSearchIncludeSprintTaskAsync($event)"
+                         [showEmptyMessage]="true"
+                         emptyMessage="Результатов не найдено"
+                         field="findText"
+                         [minLength]="0"
+                          placeholder="Добавить задачу в спринт"
+                         (onSelect)="onSelectTask()">
+
+         </p-autoComplete>
+
+         <div class="d-flex mt-1">
+          <div>
+            <p-checkbox inputId="searchByTaskId"
+                        [value]="isSearchByTaskId"
+                        (onChange)="isSearchByTaskId = !isSearchByTaskId"
+                        [binary]="true">
+
+            </p-checkbox>
+            <label for="searchByTaskId">&nbsp;&nbsp;Искать по ID задачи</label>
+          </div>
+
+           &nbsp;
+
+           <div>
+             <p-checkbox inputId="searchByTaskName"
+                         [value]="isSearchByTaskName"
+                         (onChange)="isSearchByTaskName = !isSearchByTaskName"
+                         [binary]="true">
+
+             </p-checkbox>
+             <label for="searchByTaskName">&nbsp;&nbsp;Искать в названии задачи</label>
+           </div>
+
+           &nbsp;
+
+           <div>
+             <p-checkbox inputId="sprintTasksDescription"
+                         [value]="isSearchByTaskDescription"
+                         (onChange)="isSearchByTaskDescription = !isSearchByTaskDescription"
+                         [binary]="true">
+
+             </p-checkbox>
+             <label for="sprintTasksDescription">&nbsp;&nbsp;Искать в описании задачи</label>
+           </div>
+         </div>
+       </div>
+
+        <p-table [value]="aAddedTaskSprint"
                  styleClass="p-datatable-sm"
                  [tableStyle]="{'min-width': '50rem'}"
                  [rows]="10"
                  responsiveLayout="scroll"
-                 [paginator]="sprintTasks.value?.length > 0">
+                 [paginator]="aAddedTaskSprint.length > 0">
           <ng-template pTemplate="header">
             <tr>
               <th>Ключ</th>
@@ -126,26 +176,26 @@
           <ng-template pTemplate="body" let-t>
             <tr>
               <td class="link">
-                <div (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId}}</div>
+                <div (click)="onSelectTaskLink(t?.fullTaskId)">{{t?.fullProjectTaskId}}</div>
               </td>
 
               <td>
-                <div>{{t.taskName}}</div>
+                <div>{{t?.taskTypeName}}</div>
               </td>
 
               <td>
-                <div>[Пока не выводится]</div>
+                <div>{{t?.name}}</div>
               </td>
 
               <td>
                 <div class="smaller-text">
-                  {{t.taskStatusName}}
+                  {{t?.statusName}}
                 </div>
               </td>
 
               <td>
                 <div class="smaller-text">
-                  {{t.executorName}}
+                  {{t?.executorName}}
                 </div>
               </td>
 
@@ -155,7 +205,8 @@
                           icon="pi pi-times"
                           class="p-button-danger p-button-sm p-button-text"
                           pTooltip="Исключить задачу из спринта"
-                          tooltipPosition="bottom">
+                          tooltipPosition="bottom"
+                          (click)="onRemoveAddedTask(t.projectTaskId)">
                   </button>
                 </div>
               </td>

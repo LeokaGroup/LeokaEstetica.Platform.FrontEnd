@@ -29,6 +29,7 @@ export class PlaningSprintComponent implements OnInit {
   }
 
   public readonly sprintTasks = this._projectManagmentService.sprintTasks;
+  public readonly searchSprintTasks$ = this._projectManagmentService.searchSprintTasks;
 
   selectedProjectId: number = 0;
   isLoading: boolean = false;
@@ -40,6 +41,12 @@ export class PlaningSprintComponent implements OnInit {
   dateEnd: any = null;
   isSprintTasks: boolean = false;
   allFeedSubscription: any;
+  selectedTask: any;
+  aSearchTasks: any[] = [];
+  isSearchByTaskId: boolean = false;
+  isSearchByTaskName: boolean = false;
+  isSearchByTaskDescription: boolean = false;
+  aAddedTaskSprint: any[] = [];
 
   public async ngOnInit() {
     this._projectManagmentService.isLeftPanel = false;
@@ -95,7 +102,6 @@ export class PlaningSprintComponent implements OnInit {
   };
 
   public onSelectPanelMenu() {
-    console.log("onSelectPanelMenu");
     this._projectManagmentService.isLeftPanel = true;
   };
 
@@ -131,6 +137,11 @@ export class PlaningSprintComponent implements OnInit {
       planingSprintInput.dateEnd = this.dateEnd;
     }
 
+    // Если были добавлены задачи.
+    if (this.aAddedTaskSprint.length > 0) {
+      planingSprintInput.projectTaskIds = this.aAddedTaskSprint.map(x => x.projectTaskId);
+    }
+
     (await this._projectManagmentService.planingSprintAsync(planingSprintInput))
       .subscribe(async (_: any) => {
         setTimeout(() => {
@@ -141,5 +152,35 @@ export class PlaningSprintComponent implements OnInit {
           });
         }, 4000);
       });
+  };
+
+  /**
+   * Функция находит задачи для добавления их в спринт.
+   * @param event - Ивент события.
+   */
+  public async onSearchIncludeSprintTaskAsync(event: any) {
+    (await this._projectManagmentService.searchIncludeSprintTaskAsync(
+      event.query, this.isSearchByTaskId, this.isSearchByTaskName, this.isSearchByTaskDescription,
+      this.selectedProjectId))
+      .subscribe(_ => {
+        console.log("Задачи для добавления в спринт", this.searchSprintTasks$.value);
+      });
+  };
+
+  public onSelectTask() {
+    this.aAddedTaskSprint.push(this.selectedTask);
+  };
+
+  /**
+   * Функция удаляет задачу из таблицы на фронте.
+   * @param projectTaskId - Id задачи в рамках проекта.
+   */
+  public onRemoveAddedTask(projectTaskId: number) {
+    if (projectTaskId == 0) {
+      return;
+    }
+
+    let deletedItemIdx = this.aAddedTaskSprint.findIndex(x => x.projectTaskId == projectTaskId);
+    this.aAddedTaskSprint.splice(deletedItemIdx, 1);
   };
 }
