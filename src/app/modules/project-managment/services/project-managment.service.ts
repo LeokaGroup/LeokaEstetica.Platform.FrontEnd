@@ -20,6 +20,7 @@ import { TaskCommentInput } from '../task/models/input/task-comment-input';
 import {TaskCommentExtendedInput} from "../task/models/input/task-comment-extended-input";
 import {IncludeTaskEpicInput} from "../task/models/input/include-task-epic-input";
 import {PlaningSprintInput} from "../task/models/input/planing-sprint-input";
+import { UpdateTaskSprintInput } from '../task/models/input/update-task-sprint-input';
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -733,6 +734,16 @@ export class ProjectManagmentService {
   public async getAvailableProjectSprintsAsync(projectId: number, projectTaskId: string) {
     return await this._http.get(this.apiUrl + `/project-management/available-sprints?projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
       tap(data => this.sprintTask$.next(data))
+    );
+  };
+
+  /**
+   * Функция обновляет спринт, в который входит задача.
+   * @param UudateTaskSprintInput - Водная модель.
+   */
+  public async updateTaskSprintAsync(updateTaskSprintInput: UpdateTaskSprintInput) {
+    return await this._http.put(this.apiUrl + `/project-management/task/sprint`, updateTaskSprintInput).pipe(
+      tap(_ => console.log("Спринт задачи успешно обновлен"))
     );
   };
 }

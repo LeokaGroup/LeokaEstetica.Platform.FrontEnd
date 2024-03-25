@@ -15,6 +15,7 @@ import { TaskPriorityInput } from "../../models/input/task-priority-input";
 import {TaskCommentInput} from "../../models/input/task-comment-input";
 import {TaskCommentExtendedInput} from "../../models/input/task-comment-extended-input";
 import {IncludeTaskEpicInput} from "../../models/input/include-task-epic-input";
+import {UpdateTaskSprintInput} from "../../models/input/update-task-sprint-input";
 
 @Component({
     selector: "",
@@ -697,7 +698,18 @@ export class TaskDetailsComponent implements OnInit {
       });
   };
 
-  public onChangeAvailableSprintsAsync(sprintId: number) {
-    console.log(sprintId);
+  /**
+   * Функция обновляет спринт, в который входит задача.
+   * @param sprintId - Id спринта, на который обновить.
+   */
+  public async onChangeAvailableSprintsAsync(sprintId: number) {
+    let updateTaskSprintInput = new UpdateTaskSprintInput();
+    updateTaskSprintInput.sprintId = sprintId;
+    updateTaskSprintInput.projectTaskId = this.projectTaskId;
+
+    (await this._projectManagmentService.updateTaskSprintAsync(updateTaskSprintInput))
+      .subscribe(async _ => {
+        await this.getProjectTaskDetailsAsync();
+      });
   };
 }
