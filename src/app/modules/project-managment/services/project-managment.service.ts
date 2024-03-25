@@ -61,9 +61,10 @@ export class ProjectManagmentService {
     public availableEpics$ = new BehaviorSubject<any>(null);
     public epics$ = new BehaviorSubject<any>(null);
     public includeEpic$ = new BehaviorSubject<any>(null);
-    public sprintTasks = new BehaviorSubject<any>(null);
+    public sprintTasks$ = new BehaviorSubject<any>(null);
     public userStoryStatuses$ = new BehaviorSubject<any>(null);
-    public searchSprintTasks = new BehaviorSubject<any>(null);
+    public searchSprintTasks$ = new BehaviorSubject<any>(null);
+    public sprintTask$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -719,7 +720,18 @@ export class ProjectManagmentService {
    */
   public async searchIncludeSprintTaskAsync(searchText: string, isSearchByProjectTaskId: boolean, isSearchByTaskName: boolean, isSearchByTaskDescription: boolean, projectId: number) {
     return await this._http.get(this.apiUrl + `/project-management-search/include-sprint-task?searchText=${searchText}&isSearchByProjectTaskId=${isSearchByProjectTaskId}&isSearchByTaskName=${isSearchByTaskName}&isSearchByTaskDescription=${isSearchByTaskDescription}&projectId=${projectId}`).pipe(
-      tap(data => this.searchSprintTasks.next(data))
+      tap(data => this.searchSprintTasks$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает название спринта, в который входит задача.
+   * @param projectId - Id проекта.
+   * @param projectTaskId - Id задачи в рамках проекта.
+   */
+  public async getSprintTaskAsync(projectId: number, projectTaskId: string) {
+    return await this._http.get(this.apiUrl + `/project-management/task/sprint?projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
+      tap(data => this.sprintTask$.next(data))
     );
   };
 }

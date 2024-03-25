@@ -28,8 +28,8 @@ export class PlaningSprintComponent implements OnInit {
               private readonly _messageService: MessageService) {
   }
 
-  public readonly sprintTasks = this._projectManagmentService.sprintTasks;
-  public readonly searchSprintTasks$ = this._projectManagmentService.searchSprintTasks;
+  public readonly sprintTasks = this._projectManagmentService.sprintTasks$;
+  public readonly searchSprintTasks$ = this._projectManagmentService.searchSprintTasks$;
 
   selectedProjectId: number = 0;
   isLoading: boolean = false;

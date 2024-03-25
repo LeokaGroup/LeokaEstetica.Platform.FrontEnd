@@ -50,6 +50,7 @@ export class TaskDetailsComponent implements OnInit {
     public readonly availableEpics$ = this._projectManagmentService.availableEpics$;
     public readonly epics$ = this._projectManagmentService.epics$;
     public readonly includeEpic$ = this._projectManagmentService.includeEpic$;
+    public readonly sprintTask$ = this._projectManagmentService.sprintTask$;
 
     projectId: any;
     projectTaskId: any;
@@ -104,26 +105,34 @@ export class TaskDetailsComponent implements OnInit {
       ])
   });
 
+  formSprint: FormGroup = new FormGroup({
+    "sprintName": new FormControl("", [
+      Validators.required
+    ])
+  });
+
     taskFormData = new FormData();
     uploadedFiles: any[] = [];
     comment: string = "";
     isActiveTaskComment: boolean = false;
     selectedEpic: any;
+    selectedSprint: any;
 
-    public async ngOnInit() {
-        forkJoin([
-            this.checkUrlParams(),
-            await this.getProjectTaskDetailsAsync(),
-            await this.getProjectTagsAsync(),
-            await this.getTaskLinkDefaultAsync(),
-            await this.getTaskLinkParentAsync(),
-            await this.getTaskLinkChildAsync(),
-            await this.getTaskLinkDependAsync(),
-            await this.getTaskLinkBlockedAsync(),
-            await this.getTaskFilesAsync(),
-            await this.getTaskCommentsAsync()
-        ]).subscribe();
-    };
+  public async ngOnInit() {
+    forkJoin([
+      this.checkUrlParams(),
+      await this.getProjectTaskDetailsAsync(),
+      await this.getProjectTagsAsync(),
+      await this.getTaskLinkDefaultAsync(),
+      await this.getTaskLinkParentAsync(),
+      await this.getTaskLinkChildAsync(),
+      await this.getTaskLinkDependAsync(),
+      await this.getTaskLinkBlockedAsync(),
+      await this.getTaskFilesAsync(),
+      await this.getTaskCommentsAsync(),
+      await this.getSprintTaskAsync()
+    ]).subscribe();
+  };
 
     private async checkUrlParams() {
         this._activatedRoute.queryParams
@@ -669,5 +678,26 @@ export class TaskDetailsComponent implements OnInit {
         let value = this.availableEpics$.value.find((ep: any) => ep.epicId == this.selectedEpic.epicId);
         this.formEpic.get("epicName")?.setValue(value);
       });
+  };
+
+  /**
+   * Функция получает название спринта, в который входит задача.
+   */
+  private async getSprintTaskAsync() {
+    (await this._projectManagmentService.getSprintTaskAsync(+this.projectId, this.projectTaskId))
+      .subscribe(_ => {
+        console.log("Спринт, в который добавлена текущая задача: ", this.sprintTask$.value);
+
+        // let value = this.sprintTask$.value.find((sp: any) => sp.sprintId == this.taskDetails$.value.epicId);
+        // this.formEpic.get("epicName")?.setValue(value);
+      });
+  };
+
+  public onGetAvailableSprintsAsync() {
+
+  };
+
+  public onChangeAvailableSprintsAsync() {
+
   };
 }
