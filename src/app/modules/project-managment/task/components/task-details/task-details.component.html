@@ -94,22 +94,25 @@
         </button>
       </div>
 
-      <form class="d-flex line" [formGroup]="formEpic">
-        <label class="control-label-task-item">Эпик:</label>
+      <div class="col-lg-4 mt-3">
+        <strong>Agile</strong>
+        <form class="d-flex line" [formGroup]="formEpic">
+          <label class="control-label-task-item">Эпик:</label>
 
-        <div>
-          <p-dropdown [options]="this.availableEpics$.value"
-                      [(ngModel)]="selectedEpic"
-                      optionLabel="epicName"
-                      class="control-project-stages"
-                      placeholder="Добавить задачу в эпик"
-                      [emptyMessage]="(availableEpics$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
-                      (onClick)="onGetAvailableEpicsAsync()"
-                      (onChange)="onChangeAvailableEpicsAsync()"
-                      formControlName="epicName">
-          </p-dropdown>
-        </div>
-      </form>
+          <div>
+            <p-dropdown [options]="this.availableEpics$.value"
+                        [(ngModel)]="selectedEpic"
+                        optionLabel="epicName"
+                        class="control-project-stages"
+                        placeholder="Добавить задачу в эпик"
+                        [emptyMessage]="(availableEpics$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                        (onClick)="onGetAvailableEpicsAsync()"
+                        (onChange)="onChangeAvailableEpicsAsync()"
+                        formControlName="epicName">
+            </p-dropdown>
+          </div>
+        </form>
+      </div>
     </div>
 
     <form class="col-lg-4" [formGroup]="formStatuses">
