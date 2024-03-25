@@ -725,12 +725,13 @@ export class ProjectManagmentService {
   };
 
   /**
-   * Функция получает название спринта, в который входит задача.
+   * Функция получает спринты, в которые может быть добавлена задача.
+   *  Исключается спринт, в который задача уже добавлена.
    * @param projectId - Id проекта.
    * @param projectTaskId - Id задачи в рамках проекта.
    */
-  public async getSprintTaskAsync(projectId: number, projectTaskId: string) {
-    return await this._http.get(this.apiUrl + `/project-management/task/sprint?projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
+  public async getAvailableProjectSprintsAsync(projectId: number, projectTaskId: string) {
+    return await this._http.get(this.apiUrl + `/project-management/available-sprints?projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
       tap(data => this.sprintTask$.next(data))
     );
   };

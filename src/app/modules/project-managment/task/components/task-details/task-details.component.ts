@@ -129,8 +129,7 @@ export class TaskDetailsComponent implements OnInit {
       await this.getTaskLinkDependAsync(),
       await this.getTaskLinkBlockedAsync(),
       await this.getTaskFilesAsync(),
-      await this.getTaskCommentsAsync(),
-      await this.getSprintTaskAsync()
+      await this.getTaskCommentsAsync()
     ]).subscribe();
   };
 
@@ -202,6 +201,16 @@ export class TaskDetailsComponent implements OnInit {
                                 this.formPriorities.get("priorityName")?.setValue(value);
                             });
                     });
+
+              // Получаем название спринта, в который входит задача.
+              // Исключается спринт, в который задача уже добавлена.
+              (await this._projectManagmentService.getAvailableProjectSprintsAsync(+this.projectId, this.projectTaskId))
+                .subscribe(_ => {
+                  console.log("Доступные спринты для включения задачи: ", this.sprintTask$.value);
+
+                  let value = this.sprintTask$.value.find((sp: any) => sp.sprintId == this.taskDetails$.value.sprintId);
+                  this.formSprint.get("sprintName")?.setValue(value);
+                });
             });
     };
 
@@ -677,19 +686,6 @@ export class TaskDetailsComponent implements OnInit {
 
         let value = this.availableEpics$.value.find((ep: any) => ep.epicId == this.selectedEpic.epicId);
         this.formEpic.get("epicName")?.setValue(value);
-      });
-  };
-
-  /**
-   * Функция получает название спринта, в который входит задача.
-   */
-  private async getSprintTaskAsync() {
-    (await this._projectManagmentService.getSprintTaskAsync(+this.projectId, this.projectTaskId))
-      .subscribe(_ => {
-        console.log("Спринт, в который добавлена текущая задача: ", this.sprintTask$.value);
-
-        // let value = this.sprintTask$.value.find((sp: any) => sp.sprintId == this.taskDetails$.value.epicId);
-        // this.formEpic.get("epicName")?.setValue(value);
       });
   };
 
