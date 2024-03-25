@@ -129,7 +129,8 @@ export class TaskDetailsComponent implements OnInit {
       await this.getTaskLinkDependAsync(),
       await this.getTaskLinkBlockedAsync(),
       await this.getTaskFilesAsync(),
-      await this.getTaskCommentsAsync()
+      await this.getTaskCommentsAsync(),
+      await this.getAvailableSprintsAsync()
     ]).subscribe();
   };
 
@@ -689,11 +690,14 @@ export class TaskDetailsComponent implements OnInit {
       });
   };
 
-  public onGetAvailableSprintsAsync() {
-
+  private async getAvailableSprintsAsync() {
+    (await this._projectManagmentService.getAvailableProjectSprintsAsync(+this.projectId, this.projectTaskId))
+      .subscribe(_ => {
+        console.log("Доступные спринты для включения задачи: ", this.sprintTask$.value);
+      });
   };
 
-  public onChangeAvailableSprintsAsync() {
-
+  public onChangeAvailableSprintsAsync(sprintId: number) {
+    console.log(sprintId);
   };
 }
