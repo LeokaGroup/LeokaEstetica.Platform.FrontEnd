@@ -100,7 +100,7 @@
           <label class="control-label-task-item">Эпик:</label>
 
           <div>
-            <p-dropdown [options]="this.availableEpics$.value"
+            <p-dropdown [options]="availableEpics$.value"
                         [(ngModel)]="selectedEpic"
                         optionLabel="epicName"
                         class="control-project-stages"
@@ -109,6 +109,23 @@
                         (onClick)="onGetAvailableEpicsAsync()"
                         (onChange)="onChangeAvailableEpicsAsync()"
                         formControlName="epicName">
+            </p-dropdown>
+          </div>
+        </form>
+
+        <form class="d-flex line" [formGroup]="formSprint">
+          <label class="control-label-task-item">Спринт:</label>
+
+          <div>
+            <p-dropdown [options]="sprintTask$.value"
+                        [(ngModel)]="selectedSprint"
+                        optionLabel="sprintName"
+                        class="control-project-stages"
+                        placeholder="Добавить задачу в спринт"
+                        [emptyMessage]="(sprintTask$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                        (onClick)="onGetAvailableSprintsAsync()"
+                        (onChange)="onChangeAvailableSprintsAsync()"
+                        formControlName="sprintName">
             </p-dropdown>
           </div>
         </form>
