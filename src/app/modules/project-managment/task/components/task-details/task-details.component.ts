@@ -696,4 +696,16 @@ export class TaskDetailsComponent implements OnInit {
   public onChangeAvailableSprintsAsync() {
 
   };
+
+  public onRouteEpic() {
+    let epicId = this.selectedEpic.epicId;
+    let projectId = this.projectId;
+
+    this._router.navigate(["/project-management/space/epic"], {
+      queryParams: {
+        projectId,
+        epicId
+      }
+    });
+  };
 }

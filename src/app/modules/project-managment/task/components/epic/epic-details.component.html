@@ -1,0 +1,313 @@
+<div class="task-details mt-3">
+  <!-- Название задачи. -->
+  <div class="task-name">
+    <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveTaskName" (onActivate)="onActivateTaskName()">
+      <ng-template pTemplate="display">
+        <span class="task-name-title">{{taskName}}</span>
+      </ng-template>
+      <ng-template pTemplate="content">
+        <input type="text" [(ngModel)]="taskName" value="{{taskName}}" pInputText>
+      </ng-template>
+    </p-inplace>
+
+    <button pButton
+            pRipple
+            icon="pi pi-save"
+            type="button"
+            label="Сохранить"
+            class="p-button-success p-button-text p-button-sm"
+            *ngIf="isActiveTaskName"
+            (click)="onSaveTaskNameAsync(taskName)">
+    </button>
+
+    <button pButton
+            pRipple
+            icon="pi pi-times"
+            type="button"
+            label="Отмена"
+            class="p-button-secondary p-button-text p-button-sm"
+            *ngIf="isActiveTaskName"
+            (click)="isActiveTaskName=!isActiveTaskName">
+    </button>
+  </div>
+
+  <div>
+    <hr>
+  </div>
+
+  <!-- Детали задачи. -->
+  <div class="block-task-lines col-lg-12 d-flex">
+    <div class="col-lg-4">
+      <strong>Детали задачи</strong>
+      <div class="d-flex line">
+        <div class="line-item d-flex">
+          <label class="control-label-task-item">Тип:</label>
+          <p class="line-item-value">{{taskDetails$.value?.taskTypeName}}</p>
+        </div>
+      </div>
+
+      <form class="d-flex line" [formGroup]="formPriorities">
+        <label class="control-label-task-item">Приоритет:</label>
+
+        <p-dropdown [options]="priorities$.value"
+                    [(ngModel)]="selectedPriority"
+                    optionLabel="priorityName"
+                    [showClear]="true"
+                    placeholder="Выберите приоритет"
+                    [emptyMessage]="(priorities$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                    formControlName="priorityName"
+                    (onChange)="onChangeTaskPriorityAsync()">
+        </p-dropdown>
+      </form>
+
+      <div class="d-flex line">
+        <label class="control-label-task-item">Метки:</label>
+
+        <div class="chip-block">
+          <div *ngFor="let lbl of taskDetails$.value?.tagNames">
+            <div class="chip-item">
+              <p-chip label="{{lbl ?? 'Нет'}}" [removable]="true" (onRemove)="onDetachTaskTagAsync(lbl)"></p-chip>
+            </div>
+          </div>
+        </div>
+
+        <p-overlayPanel #op [style]="{'min-width': '300px'}">
+          <ng-template pTemplate>
+            <div>
+              <p-dropdown [options]="this.projectTags$.value"
+                          [(ngModel)]="selectedTag"
+                          optionLabel="tagName"
+                          class="control-project-stages"
+                          placeholder="Выберите тег"
+                          (onChange)="onAttachTaskTagAsync()">
+              </p-dropdown>
+            </div>
+          </ng-template>
+        </p-overlayPanel>
+
+        <button pButton
+                pRipple
+                icon="pi pi-plus"
+                type="button"
+                class="p-button-secondary p-button-text p-button-sm"
+                (click)="op.toggle($event)">
+        </button>
+      </div>
+    </div>
+
+    <form class="col-lg-4" [formGroup]="formStatuses">
+      <div class="line-item d-flex">
+        <label class="control-label-task-item">Статус:</label>
+        <p-dropdown [options]="availableTransitions$.value"
+                    [(ngModel)]="selectedStatus"
+                    optionLabel="statusName"
+                    [showClear]="true"
+                    placeholder="Выберите статус"
+                    [emptyMessage]="(availableTransitions$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                    formControlName="statusName"
+                    (onChange)="onChangeStatusAsync()">
+        </p-dropdown>
+      </div>
+    </form>
+
+    <div class="col-lg-4">
+      <strong>Люди</strong>
+      <div>
+        <div class="line-item d-flex">
+          <label class="control-label-task-item">Автор:</label>
+          <p class="line-item-value">{{taskDetails$.value?.authorName}}</p>
+        </div>
+
+        <form class="line-item d-flex" [formGroup]="formExecutors">
+          <label class="control-label-task-item">Исполнитель:</label>
+          <div>
+            <p-dropdown [options]="taskPeople$.value"
+                        [(ngModel)]="selectedExecutor"
+                        optionLabel="fullName"
+                        [showClear]="true"
+                        placeholder="Выберите исполнителя"
+                        [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                        formControlName="executorName"
+                        (onChange)="onChangeTaskExecutorAsync()">
+            </p-dropdown>
+          </div>
+        </form>
+      </div>
+
+      <div class="mt-3">
+        <strong>Даты</strong>
+        <div>
+          <div class="line-item d-flex">
+            <label class="control-label-task-item">Создано:</label>
+            <p class="line-item-value">{{taskDetails$.value?.created}}</p>
+          </div>
+
+          <div class="line-item d-flex">
+            <label class="control-label-task-item">Обновлено:</label>
+            <p class="line-item-value">{{taskDetails$.value?.updated}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!--  <div>-->
+<!--    <hr>-->
+<!--  </div>-->
+
+  <!-- Блок с кнопками действий. -->
+<!--  <div class="mt-3 mb-3 d-flex block-task-actions">-->
+<!--    <div>-->
+<!--      <button type="button"-->
+<!--              pButton-->
+<!--              icon="pi pi-arrow-down"-->
+<!--              label="Возможные действия"-->
+<!--              class="p-button-text p-button-primary p-button-sm task-actions"-->
+<!--              (click)="menu.toggle($event)">-->
+<!--      </button>-->
+<!--      <p-menu #menu [popup]="true" [model]="aAvailableActions"></p-menu>-->
+<!--    </div>-->
+<!--  </div>-->
+
+  <div>
+    <hr>
+  </div>
+
+  <!-- Описание задачи. -->
+<!--  <div class="block-task-lines col-lg-12 d-flex">-->
+<!--    <div class="col-lg-8">-->
+<!--      <div>-->
+<!--        <strong>Описание</strong>-->
+<!--      </div>-->
+
+<!--      <p-inplace [style]="{'min-height':'30px'}" [active]="isActiveTaskDetails" (onActivate)="onActivateTaskDetails()">-->
+<!--        <ng-template pTemplate="display">-->
+<!--          <span class="empty-task-details" *ngIf="taskDetails == null || taskDetails == ''">-->
+<!--            Добавьте описание задачи, чтобы исполнителю было понятно, что нужно сделать в рамках задачи-->
+<!--          </span>-->
+<!--          <span class="task-name-title">{{taskDetails}}</span>-->
+<!--        </ng-template>-->
+<!--        <ng-template pTemplate="content">-->
+<!--            <textarea input-control-worksheet-->
+<!--                      rows="5"-->
+<!--                      cols="100"-->
+<!--                      pInputTextarea-->
+<!--                      [autoResize]="true"-->
+<!--                      autocomplete="new-password"-->
+<!--                      placeholder="Описание задачи"-->
+<!--                      [(ngModel)]="taskDetails"-->
+<!--                      class="input-about-me"-->
+<!--                      value="{{taskDetails}}">-->
+<!--            </textarea>-->
+
+<!--          <div>-->
+<!--            <button pButton-->
+<!--                    pRipple-->
+<!--                    icon="pi pi-times"-->
+<!--                    type="button"-->
+<!--                    label="Сохранить"-->
+<!--                    class="p-button-success p-button-text p-button-sm"-->
+<!--                    *ngIf="isActiveTaskDetails"-->
+<!--                    (click)="onSaveTaskDetailsAsync(taskDetails)">-->
+<!--            </button>-->
+
+<!--            <button pButton-->
+<!--                    pRipple-->
+<!--                    icon="pi pi-times"-->
+<!--                    type="button"-->
+<!--                    label="Отмена"-->
+<!--                    class="p-button-secondary p-button-text p-button-sm"-->
+<!--                    *ngIf="isActiveTaskDetails"-->
+<!--                    (click)="isActiveTaskDetails=!isActiveTaskDetails">-->
+<!--            </button>-->
+<!--          </div>-->
+<!--        </ng-template>-->
+<!--      </p-inplace>-->
+<!--    </div>-->
+
+<!--    <div class="col-lg-4">-->
+
+<!--    </div>-->
+<!--  </div>-->
+
+  <div>
+    <hr>
+  </div>
+
+  <!-- Связанные задачи (связи блокирует). -->
+  <div class="block-task-lines d-flex">
+    <div class="">
+      <div class="d-flex justify-content-between">
+        <div class="space-bottom-10">
+          <strong>Блокирует</strong>
+        </div>
+
+      </div>
+      <div class="">
+        <p-table [value]="taskLinkBlocked$.value"
+                 styleClass="p-datatable-sm"
+                 [tableStyle]="{'min-width': '50rem'}"
+                 [rows]="10"
+                 responsiveLayout="scroll"
+                 [paginator]="taskLinkBlocked$.value?.length > 0">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Ключ</th>
+              <th>Название задачи</th>
+              <th>Статус</th>
+              <th>Исполнитель</th>
+              <th>Обновлено</th>
+              <th>Разорвать связь</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-t>
+            <tr>
+              <td class="link" (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId ?? 'Не указан'}}</td>
+              <td>
+                <div class="smaller-text">{{t.taskName}}</div>
+              </td>
+
+              <td>
+                <div class="smaller-text">
+                  {{t.taskStatusName}}
+                </div>
+              </td>
+
+              <td>
+                <div class="smaller-text">
+                  {{t.executorName}}
+                </div>
+              </td>
+
+              <td>
+                <div class="smaller-text">
+                  {{t.lastUpdated}}
+                </div>
+              </td>
+
+              <td>
+                <div class="cancel">
+                  <button pButton type="button" icon="pi pi-times" class="p-button-danger p-button-sm p-button-text"></button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">
+                <div>
+                  Связей нет.
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <hr>
+  </div>
+</div>

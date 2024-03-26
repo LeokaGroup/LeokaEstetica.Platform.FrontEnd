@@ -9,6 +9,7 @@ import {ProjectSettingsComponent} from "./project-settings/components/project-se
 import { BacklogComponent } from './backlog/components/backlog.component';
 import { LeftPanelComponent } from './left-panel/left-panel.component';
 import { PlaningSprintComponent } from './backlog/planing/planing.component';
+import { EpicDetailsComponent } from './task/components/epic/epic-details.component';
 
 const routes: Routes = [
   {
@@ -45,6 +46,10 @@ const routes: Routes = [
 
   {
     path: 'space/sprint/planing', component: PlaningSprintComponent
+  },
+
+  {
+    path: 'space/epic', component: EpicDetailsComponent
   }
 ];
 

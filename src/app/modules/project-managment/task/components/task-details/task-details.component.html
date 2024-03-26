@@ -110,6 +110,11 @@
                         (onChange)="onChangeAvailableEpicsAsync()"
                         formControlName="epicName">
             </p-dropdown>
+            <button pButton pRipple label="Перейти к эпику"
+                    class="p-button-link"
+                    (click)="onRouteEpic()">
+
+            </button>
           </div>
         </form>
 
@@ -127,6 +132,10 @@
                         (onChange)="onChangeAvailableSprintsAsync()"
                         formControlName="sprintName">
             </p-dropdown>
+            <button pButton pRipple label="Перейти к спринту"
+                    class="p-button-link">
+
+            </button>
           </div>
         </form>
       </div>
@@ -167,7 +176,7 @@
                         formControlName="executorName"
                         (onChange)="onChangeTaskExecutorAsync()">
             </p-dropdown>
-            <button pButton pRipple label="Назначить меня" class="p-button-link control-button-executor-me"></button>
+<!--            <button pButton pRipple label="Назначить меня" class="p-button-link control-button-executor-me"></button>-->
           </div>
         </form>
 
