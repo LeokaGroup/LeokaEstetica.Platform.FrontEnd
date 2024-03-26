@@ -54,6 +54,7 @@ import {TranslateLoader, TranslateModule, TranslateService, TranslateStore } fro
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { PlaningSprintComponent } from './backlog/planing/planing.component';
 import { ProjectManagementSignalrService } from '../notifications/signalr/services/project-magement-signalr.service';
+import { EpicDetailsComponent } from './task/components/epic/epic-details.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { ProjectManagementSignalrService } from '../notifications/signalr/servic
     ProjectSettingsComponent,
     BacklogComponent,
     LeftPanelComponent,
-    PlaningSprintComponent
+    PlaningSprintComponent,
+    EpicDetailsComponent
   ],
 
   imports: [
