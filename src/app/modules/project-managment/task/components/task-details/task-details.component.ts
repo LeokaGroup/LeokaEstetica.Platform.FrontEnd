@@ -70,16 +70,18 @@ export class TaskDetailsComponent implements OnInit {
     selectedLinkType: any;
     selectedTaskLink: any;
     aAvailableActions: any[] = [
-        {
-            label: 'Связи',
-            items: [{
-                label: 'Добавить связь',
-                icon: 'pi pi-plus',
-                command: async () => {
-                    await this.onSelectCreateTaskLinkAsync();
-                }
-            }]
-        }
+      {
+        label: 'Связи',
+        items: [{
+          label: 'Добавить связь',
+          icon: 'pi pi-plus',
+          command: async () => {
+            await this.onSelectCreateTaskLinkAsync();
+          },
+          visible: true
+        }],
+        visible: true
+      }
     ];
 
     formStatuses: FormGroup = new FormGroup({
@@ -118,6 +120,7 @@ export class TaskDetailsComponent implements OnInit {
     isActiveTaskComment: boolean = false;
     selectedEpic: any;
     selectedSprint: any;
+    taskTypeId: number = 0;
 
   public async ngOnInit() {
     forkJoin([
@@ -132,6 +135,8 @@ export class TaskDetailsComponent implements OnInit {
       await this.getTaskFilesAsync(),
       await this.getTaskCommentsAsync()
     ]).subscribe();
+
+    this.taskTypeId = localStorage["t_t_i"];
   };
 
     private async checkUrlParams() {
