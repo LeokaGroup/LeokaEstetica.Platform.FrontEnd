@@ -745,7 +745,7 @@
       </p-fileUpload>
     </div>
 
-    <div class="col-lg-4 block-attached-files" *ngIf="taskFiles$?.value.length">
+    <div class="col-lg-4 block-attached-files" *ngIf="taskFiles$?.value?.length">
       <div class="card block-task-files mt-4">
         <strong>Файлы задачи</strong>
         <ul *ngFor="let tf of taskFiles$?.value">

@@ -183,13 +183,14 @@ export class ProjectManagmentService {
   };
 
      /**
-    * Функция получает детали задачи.
-    * @param projectId - Id проекта.
-    * @param taskId - Id задачи.
-    * @returns - Данные конфигурации.
-    */
-      public async getTaskDetailsByTaskIdAsync(projectId: number, projectTaskId: string) {
-        return await this._http.get(this.apiUrl + `/project-management/task?projectTaskId=${projectTaskId}&projectId=${projectId}`).pipe(
+      * Функция получает детали задачи.
+      * @param projectId - Id проекта.
+      * @param projectTaskId
+      * @param taskDetailType
+      * @returns - Данные конфигурации.
+      */
+      public async getTaskDetailsByTaskIdAsync(projectId: number, projectTaskId: string, taskDetailType: string) {
+        return await this._http.get(this.apiUrl + `/project-management/task-details?projectTaskId=${projectTaskId}&projectId=${projectId}&taskDetailType=${taskDetailType}`).pipe(
             tap(data => this.taskDetails$.next(data))
         );
     };
@@ -305,17 +306,18 @@ export class ProjectManagmentService {
         );
     };
 
-     /**
-    * Функция получает доступные переходы в статусы задачи.
-    * @param projectId - Id проекта.
-    * @param projectTaskId - Id задачи в рамках проекта.
-    * @returns - Доступные переходы.
-    */
-      public async getAvailableTaskStatusTransitionsAsync(projectId: number, projectTaskId: number) {
-        return await this._http.get(this.apiUrl + `/project-management/available-task-status-transitions?projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
-            tap(data => this.availableTransitions$.next(data))
-        );
-    };
+  /**
+   * Функция получает доступные переходы в статусы задачи.
+   * @param projectId - Id проекта.
+   * @param projectTaskId - Id задачи в рамках проекта.
+   * @param taskType - Тип детализации.
+   * @returns - Доступные переходы.
+   */
+  public async getAvailableTaskStatusTransitionsAsync(projectId: number, projectTaskId: number, taskType: string) {
+    return await this._http.get(this.apiUrl + `/project-management/available-task-status-transitions?projectId=${projectId}&projectTaskId=${projectTaskId}&taskDetailType=${taskType}`).pipe(
+      tap(data => this.availableTransitions$.next(data))
+    );
+  };
 
     /**
     * Функция изменяет статус задачи.
@@ -529,8 +531,8 @@ export class ProjectManagmentService {
      * @param projectId - Id проекта.
      * @param projectTaskId - Id задачи в рамках проекта.
      */
-      public async getTaskFilesAsync(projectId: number, projectTaskId: string) {
-        return await this._http.get(this.apiUrl + `/project-management/task-files?projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
+      public async getTaskFilesAsync(projectId: number, projectTaskId: string, taskTypeId: number) {
+        return await this._http.get(this.apiUrl + `/project-management/task-files?projectId=${projectId}&projectTaskId=${projectTaskId}&taskTypeId=${taskTypeId}`).pipe(
             tap(data => this.taskFiles$.next(data))
         );
     };
