@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import { HeaderService } from "../services/header.service";
 import { BehaviorSubject, Subscription } from "rxjs";
 import { HeaderMenuItem } from "../../../core/models/header-menu-item.model";
@@ -21,7 +21,8 @@ interface HeaderItem {
  */
 export class HeaderComponent implements OnInit, OnDestroy {
     public readonly headerData$: BehaviorSubject<HeaderMenuItem[]> = this._headerService.headerData$;
-    isHideAuthButtons: boolean = false;
+    isHideAuthButtons = false;
+    isMobileMenuOpen = false;
 
     items: HeaderItem[] = [
         {
@@ -45,6 +46,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     constructor(private readonly _headerService: HeaderService,
                 private readonly _activatedRoute: ActivatedRoute,
+                private readonly _router: Router,
                 private changeDetectorRef: ChangeDetectorRef) {}
 
     ngOnInit() {
@@ -57,6 +59,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
         const queryParamsSubscription = this._activatedRoute.queryParams.subscribe(_ => this.rerenderAuthButtons());
         this.subscriptions.add(queryParamsSubscription);
 
+        const routerEventsSubscription = this._router.events.subscribe(event => {
+            if (event instanceof NavigationEnd) {
+                this.isMobileMenuOpen = false;
+                this.controlBodyElementScroll();
+            }
+        });
+        this.subscriptions.add(routerEventsSubscription);
+
         this.isHideAuthButtons = !!localStorage["t_n"];
     }
 
@@ -67,5 +77,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private rerenderAuthButtons() {
         this.isHideAuthButtons = !this.isHideAuthButtons;
         this.changeDetectorRef.detectChanges();
-    };
+    }
+
+    public onHamburgerCLick() {
+        this.isMobileMenuOpen = !this.isMobileMenuOpen
+        this.controlBodyElementScroll()
+    }
+
+    private controlBodyElementScroll(): void {
+        if(this.isMobileMenuOpen) {
+            document.body.classList.add('no-scroll')
+        } else {
+            document.body.classList.remove('no-scroll')
+        }
+    }
 }

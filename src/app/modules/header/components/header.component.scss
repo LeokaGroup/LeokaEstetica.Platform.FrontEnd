@@ -11,6 +11,7 @@
 
 .main-nav {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
   gap: 14px;
@@ -55,5 +56,47 @@
 .profile-block {
   &__avatar {
     cursor: pointer;
+  }
+}
+
+.hamburger {
+  z-index: 12;
+}
+
+.mobile-menu-container {
+  position: absolute;
+  background-color: white;
+  top: 0;
+  right: 0;
+  left: 30%;
+  height: 100dvh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 20px 0;
+  opacity: 0;
+  transition: left 275ms, opacity ease-in-out;
+  pointer-events: none;
+  z-index: -1;
+
+  &.open {
+    left: 0;
+    opacity: 1;
+    z-index: 10;
+    pointer-events: auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hamburger {
+    display: none;
+  }
+
+  .mobile-menu-container {
+    display: contents;
+  }
+
+  .main-nav {
+    flex-direction: row;
   }
 }

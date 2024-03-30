@@ -4,25 +4,33 @@
             <img width="150" height="42" class="logo" src="../../../../assets/images/logo/logo.png" alt="Логотип компании Leoka Estetica">
         </a>
 
-        <nav class="main-nav">
-            <ng-container *ngFor="let item of x.headerData">
-                <a class="main-nav__link" [routerLink]="item.menuItemUrl">{{item.menuItemTitle}}</a>
-            </ng-container>
-        </nav>
+        <div class="mobile-menu-container" [class.open]="isMobileMenuOpen">
+            <nav class="main-nav">
+                <ng-container *ngFor="let item of x.headerData">
+                    <a class="main-nav__link" [routerLink]="item.menuItemUrl">{{item.menuItemTitle}}</a>
+                </ng-container>
+            </nav>
 
-        <ul *ngIf="!isHideAuthButtons" class="auth-links-list">
-            <li class="auth-link">
-                <a class="btn btn-primary btn-header button-action-auth-control" routerLink="/user/signin">Вход</a>
-            </li>
+            <ul *ngIf="!isHideAuthButtons" class="auth-links-list">
+                <li class="auth-link">
+                    <a class="btn btn-primary btn-header button-action-auth-control" routerLink="/user/signin">Вход</a>
+                </li>
 
-            <li class="auth-link">
-                <a class="btn btn-primary btn-header button-action-auth-control" routerLink="/user/signup">Регистрация</a>
-            </li>
-        </ul>
+                <li class="auth-link">
+                    <a class="btn btn-primary btn-header button-action-auth-control" routerLink="/user/signup">Регистрация</a>
+                </li>
+            </ul>
 
-        <div *ngIf="isHideAuthButtons" class="profile-block">
-            <p-avatar class="profile-block__avatar" label="P" shape="circle" (click)="menu.toggle($event)"></p-avatar>
-            <p-menu class="profile-block__menu" #menu [popup]="true" [model]="items"></p-menu>
+            <div *ngIf="isHideAuthButtons" class="profile-block">
+                <p-avatar class="profile-block__avatar" label="P" shape="circle" (click)="menu.toggle($event)"></p-avatar>
+                <p-menu class="profile-block__menu" #menu [popup]="true" [model]="items"></p-menu>
+            </div>
         </div>
+
+        <button class="hamburger hamburger--squeeze" [class.is-active]="isMobileMenuOpen" (click)="onHamburgerCLick()">
+            <div class="hamburger-box">
+                <div class="hamburger-inner"></div>
+            </div>
+        </button>
     </header>
 </ng-container>
