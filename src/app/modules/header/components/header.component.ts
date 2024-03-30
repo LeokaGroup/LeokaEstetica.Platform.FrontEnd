@@ -1,119 +1,71 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { RedirectService } from "src/app/common/services/redirect.service";
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { HeaderService } from "../services/header.service";
+import { BehaviorSubject, Subscription } from "rxjs";
+import { HeaderMenuItem } from "../../../core/models/header-menu-item.model";
+
+interface HeaderItem {
+    label: string,
+    routerLink: string,
+    command?: () => void,
+}
 
 @Component({
-    selector: "header",
+    selector: "app-header",
     templateUrl: "./header.component.html",
     styleUrls: ["./header.component.scss"]
 })
 
 /**
- * Класс календаря пользователя.
+ * Класс компонента header.
  */
-export class HeaderComponent implements OnInit {
-    public readonly headerData$ = this._headerService.headerData$;
-
+export class HeaderComponent implements OnInit, OnDestroy {
+    public readonly headerData$: BehaviorSubject<HeaderMenuItem[]> = this._headerService.headerData$;
     isHideAuthButtons: boolean = false;
-    items: any[] = [
+
+    items: HeaderItem[] = [
         {
             label: 'Заказы',
-            command: () => {
-                this._router.navigate(["/profile/orders"]);
-            }
+            routerLink: '/profile/orders'
         },
-        // {
-        //     label: 'Настройки',
-        //     command: () => {
-
-        //     }
-        // },       
         {
             label: 'Заявки в поддержку',
-            command: () => {
-                this._router.navigate(["/profile/tickets"])
-            }
-        },   
+            routerLink: '/profile/tickets'
+        },
         {
             label: 'Выйти',
+            routerLink: '/user/signin',
             command: () => {
-                localStorage.clear();
-                this._router.navigate(["/user/signin"]).then(() => {  
-                    this._redirectService.redirect("user/signin");                
-                });
+                localStorage.clear()
             }
         }
     ];
 
+    private subscriptions: Subscription = new Subscription();
+
     constructor(private readonly _headerService: HeaderService,
-        private readonly _router: Router,
-        private readonly _activatedRoute: ActivatedRoute,
-        private readonly _redirectService: RedirectService,
-        private changeDetectorRef: ChangeDetectorRef) {
+                private readonly _activatedRoute: ActivatedRoute,
+                private changeDetectorRef: ChangeDetectorRef) {}
+
+    ngOnInit() {
+        const dataSubscription = this._headerService.getHeaderItemsAsync().subscribe();
+        this.subscriptions.add(dataSubscription);
+
+        const headerDataSubscription = this.headerData$.subscribe();
+        this.subscriptions.add(headerDataSubscription);
+
+        const queryParamsSubscription = this._activatedRoute.queryParams.subscribe(_ => this.rerenderAuthButtons());
+        this.subscriptions.add(queryParamsSubscription);
+
+        this.isHideAuthButtons = !!localStorage["t_n"];
     }
 
-    public async ngOnInit() {
-        await this.getHeaderItemsAsync();
-        await this._headerService.refreshTokenAsync();
-        this.checkUrlParams();
-
-        this.isHideAuthButtons = localStorage["t_n"] ? true : false;        
+    ngOnDestroy() {
+        this.subscriptions.unsubscribe();
     }
-
-    /**
-     * Функция получит список элементов хидера.
-     * @returns - Список элементов хидера.
-     */
-    private async getHeaderItemsAsync() {
-        (await this._headerService.getHeaderItemsAsync())
-        .subscribe(_ => {
-            console.log("Данные хидера: ", this.headerData$.value);
-        });
-    };
-
-    /**
-     * Функция редиректит на форму регистрации.
-     */
-    public onRouteSignUp() {
-        this._router.navigate(["/user/signup"]);
-    };
-
-    /**
-     * Функция редиректит на форму авторизации.
-     */
-    public onRouteSignIn() {
-        this._router.navigate(["/user/signin"]).then(() => {  
-            this._redirectService.redirect("user/signin");                
-        });
-    };
-
-    public onSelectHeaderItem(e: any) {
-        console.log(e.menuItemUrl);
-        this._router.navigate([e.menuItemUrl]);
-    };
-
-    private checkUrlParams() {
-        this._activatedRoute.queryParams
-        .subscribe(_ => {
-            this.rerenderAuthButtons();
-          });
-    };
-
-    /**
-     * Функция переходит в профиль пользователя.
-     */
-    public onRouteProfile() {
-        this._router.navigate(["/profile/aboutme"], {
-            queryParams: {
-                mode: "view"
-            }
-        });
-    };
 
     private rerenderAuthButtons() {
-        this.isHideAuthButtons = false;
+        this.isHideAuthButtons = !this.isHideAuthButtons;
         this.changeDetectorRef.detectChanges();
-        this.isHideAuthButtons = true;
     };
 }

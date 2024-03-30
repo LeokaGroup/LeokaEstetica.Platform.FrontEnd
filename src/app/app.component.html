@@ -1,5 +1,5 @@
 <ngx-loading [show]="loading$.value"></ngx-loading>
-<header *ngIf="isVisibleHeader"></header>
+<app-header class="content-grid" *ngIf="isVisibleHeader"></app-header>
 
 <!-- Меню хидера (верхнее). -->
 <project-management-header *ngIf="isVisibleProjectManagementMenu"></project-management-header>

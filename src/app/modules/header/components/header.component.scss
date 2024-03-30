@@ -1,64 +1,59 @@
-@use "/src/app/common/styles/control.scss";
-
- .header {
-   padding: 10px;
-   align-items: center;
-   position: absolute;
-   z-index: 2;
-   top: 0;
- }
-
- .menu-item {
-   padding: 0 10px;
-   position: relative;
-   z-index: 1;
-   cursor: pointer;
- }
-
- .navbar-brand {
-   margin-right: 100px;
- }
-
- .logo {
-  width: 150px;
- }
-
- .logo-social {
-  width: 30px;
- }
-
- .block-social {
-  cursor: pointer;
- }
-
- .invisible {
-   display: none;
- }
- .avatar-client{
-   cursor: grab;
- }
-
-.navbar-light {
-  background: #FAFAFA;
+:host {
+  background-color: var(--gray-50);
 }
 
-// Медиа-запросы.
-@media (max-width: 575px) {}
+.main-header {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  padding: 14px 6px;
+}
 
-/* sm (>=576 и <=767) */
-@media (min-width: 576px) and (max-width: 767px) {}
+.main-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
 
-/* md (>=768 и <=991) */
-@media (min-width: 768px) and (max-width: 991px) {
-  .button-action-auth-control {
-    font-size: 14px;
+  &__link {
+    position: relative;
+    align-content: center;
+    height: 100%;
+    text-decoration: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 7px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: currentcolor;
+      translate: 0 2px;
+      opacity: 0;
+      transition: translate 175ms, opacity 175ms;
+      transition-delay: 75ms;
+    }
+
+    &:hover::after,
+    &:focus-visible::after{
+      translate: 0 -2px;
+      opacity: 1;
+    }
   }
 }
 
-/* lg (>=992 и <=1199) */
-@media (min-width: 992px) and (max-width: 1199px) {}
+.auth-links-list {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
 
-/* xl (>=1200) */
-@media (min-width: 1200px) {
- 
+.profile-block {
+  &__avatar {
+    cursor: pointer;
+  }
 }
