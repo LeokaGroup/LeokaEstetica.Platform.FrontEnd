@@ -15,6 +15,7 @@ import { TaskPriorityInput } from "../../models/input/task-priority-input";
 import {TaskCommentInput} from "../../models/input/task-comment-input";
 import {TaskCommentExtendedInput} from "../../models/input/task-comment-extended-input";
 import {IncludeTaskEpicInput} from "../../models/input/include-task-epic-input";
+import {TaskDetailTypeEnum} from "../../../../Enums/task-detail-type";
 
 @Component({
     selector: "",
@@ -69,16 +70,18 @@ export class TaskDetailsComponent implements OnInit {
     selectedLinkType: any;
     selectedTaskLink: any;
     aAvailableActions: any[] = [
-        {
-            label: 'Связи',
-            items: [{
-                label: 'Добавить связь',
-                icon: 'pi pi-plus',
-                command: async () => {
-                    await this.onSelectCreateTaskLinkAsync();
-                }
-            }]
-        }
+      {
+        label: 'Связи',
+        items: [{
+          label: 'Добавить связь',
+          icon: 'pi pi-plus',
+          command: async () => {
+            await this.onSelectCreateTaskLinkAsync();
+          },
+          visible: true
+        }],
+        visible: true
+      }
     ];
 
     formStatuses: FormGroup = new FormGroup({
@@ -117,6 +120,7 @@ export class TaskDetailsComponent implements OnInit {
     isActiveTaskComment: boolean = false;
     selectedEpic: any;
     selectedSprint: any;
+    taskTypeId: number = 0;
 
   public async ngOnInit() {
     forkJoin([
@@ -131,6 +135,8 @@ export class TaskDetailsComponent implements OnInit {
       await this.getTaskFilesAsync(),
       await this.getTaskCommentsAsync()
     ]).subscribe();
+
+    this.taskTypeId = localStorage["t_t_i"];
   };
 
     private async checkUrlParams() {
@@ -148,70 +154,72 @@ export class TaskDetailsComponent implements OnInit {
     * @returns - Детали задачи.
     */
     private async getProjectTaskDetailsAsync() {
-        (await this._projectManagmentService.getTaskDetailsByTaskIdAsync(+this.projectId, this.projectTaskId))
+      (await this._projectManagmentService.getTaskDetailsByTaskIdAsync(+this.projectId, this.projectTaskId, TaskDetailTypeEnum[localStorage["t_t_i"]]))
+        .subscribe(async _ => {
+          console.log("Детали задачи: ", this.taskDetails$.value);
+
+          (await this._projectManagmentService.getAvailableEpicsAsync(+this.projectId))
+            .subscribe(_ => {
+              console.log("Доступные эпики: ", this.availableEpics$.value);
+
+              let value = this.availableEpics$.value.find((ep: any) => ep.epicId == this.taskDetails$.value.epicId);
+              this.formEpic.get("epicName")?.setValue(value);
+            });
+
+          let taskType = TaskDetailTypeEnum[localStorage["t_t_i"]];
+
+          // Получаем статусы задач для выбора, чтобы подставить ранее сохраненый статус.
+          (await this._projectManagmentService.getAvailableTaskStatusTransitionsAsync(this.projectId, this.projectTaskId, taskType))
             .subscribe(async _ => {
-                console.log("Детали задачи: ", this.taskDetails$.value);
+              console.log("Возможные переходы статусов задачи: ", this.availableTransitions$.value);
 
-              (await this._projectManagmentService.getAvailableEpicsAsync(+this.projectId))
+              // Записываем текущий статус задачи в выпадающий список.
+              let value = this.availableTransitions$.value.find((st: any) => st.taskStatusId == this.taskDetails$.value.taskStatusId);
+              this.formStatuses.get("statusName")?.setValue(value);
+
+              this.taskDetails = this.taskDetails$.value?.details;
+              this.taskName = this.taskDetails$.value?.name;
+
+              (await this._projectManagmentService.getSelectTaskPeopleAsync(this.projectId))
                 .subscribe(_ => {
-                  console.log("Доступные эпики: ", this.availableEpics$.value);
+                  console.log("Исполнители и наблюдатели для выбора: ", this.taskPeople$.value);
+                  this.aPeople = this.taskPeople$.value;
 
-                  let value = this.availableEpics$.value.find((ep: any) => ep.epicId == this.taskDetails$.value.epicId);
-                  this.formEpic.get("epicName")?.setValue(value);
-                });
-
-                // Получаем статусы задач для выбора, чтобы подставить ранее сохраненый статус.
-                (await this._projectManagmentService.getAvailableTaskStatusTransitionsAsync(this.projectId, this.projectTaskId))
-                    .subscribe(async _ => {
-                        console.log("Возможные переходы статусов задачи: ", this.availableTransitions$.value);
-
-                        // Записываем текущий статус задачи в выпадающий список.
-                        let value = this.availableTransitions$.value.find((st: any) => st.taskStatusId == this.taskDetails$.value.taskStatusId);
-                        this.formStatuses.get("statusName")?.setValue(value);
-
-                        this.taskDetails = this.taskDetails$.value?.details;
-                        this.taskName = this.taskDetails$.value?.name;
-
-                        (await this._projectManagmentService.getSelectTaskPeopleAsync(this.projectId))
-                            .subscribe(_ => {
-                                console.log("Исполнители и наблюдатели для выбора: ", this.taskPeople$.value);
-                                this.aPeople = this.taskPeople$.value;
-
-                                let value = this.taskPeople$.value.find((st: any) => st.userId == this.taskDetails$.value.executorId);
-                                this.formExecutors.get("executorName")?.setValue(value);
-                            });
-                    });
-
-                // Получаем приоритеты задач для выбора, чтобы подставить ранее сохраненый приоритет.
-                (await this._projectManagmentService.getTaskPrioritiesAsync())
-                    .subscribe(async _ => {
-                        console.log("Приоритеты задачи для выбора: ", this.priorities$.value);
-
-                        // Записываем текущий приоритет задачи в выпадающий список.
-                        let value = this.priorities$.value.find((st: any) => st.priorityId == this.taskDetails$.value.priorityId);
-                        this.formPriorities.get("priorityName")?.setValue(value);
-
-                        // Получаем приоритеты задач для выбора, чтобы подставить ранее сохраненый приоритет.
-                        (await this._projectManagmentService.getTaskPrioritiesAsync())
-                            .subscribe(_ => {
-                                console.log("Приоритеты задачи для выбора: ", this.priorities$.value);
-
-                                // Записываем текущий приоритет задачи в выпадающий список.
-                                let value = this.priorities$.value.find((st: any) => st.priorityId == this.taskDetails$.value.priorityId);
-                                this.formPriorities.get("priorityName")?.setValue(value);
-                            });
-                    });
-
-              // Получаем название спринта, в который входит задача.
-              // Исключается спринт, в который задача уже добавлена.
-              (await this._projectManagmentService.getAvailableProjectSprintsAsync(+this.projectId, this.projectTaskId))
-                .subscribe(_ => {
-                  console.log("Доступные спринты для включения задачи: ", this.sprintTask$.value);
-
-                  let value = this.sprintTask$.value.find((sp: any) => sp.sprintId == this.taskDetails$.value.sprintId);
-                  this.formSprint.get("sprintName")?.setValue(value);
+                  let value = this.taskPeople$.value.find((st: any) => st.userId == this.taskDetails$.value.executorId);
+                  this.formExecutors.get("executorName")?.setValue(value);
                 });
             });
+
+          // Получаем приоритеты задач для выбора, чтобы подставить ранее сохраненый приоритет.
+          (await this._projectManagmentService.getTaskPrioritiesAsync())
+            .subscribe(async _ => {
+              console.log("Приоритеты задачи для выбора: ", this.priorities$.value);
+
+              // Записываем текущий приоритет задачи в выпадающий список.
+              let value = this.priorities$.value.find((st: any) => st.priorityId == this.taskDetails$.value.priorityId);
+              this.formPriorities.get("priorityName")?.setValue(value);
+
+              // Получаем приоритеты задач для выбора, чтобы подставить ранее сохраненый приоритет.
+              (await this._projectManagmentService.getTaskPrioritiesAsync())
+                .subscribe(_ => {
+                  console.log("Приоритеты задачи для выбора: ", this.priorities$.value);
+
+                  // Записываем текущий приоритет задачи в выпадающий список.
+                  let value = this.priorities$.value.find((st: any) => st.priorityId == this.taskDetails$.value.priorityId);
+                  this.formPriorities.get("priorityName")?.setValue(value);
+                });
+            });
+
+          // Получаем название спринта, в который входит задача.
+          // Исключается спринт, в который задача уже добавлена.
+          (await this._projectManagmentService.getAvailableProjectSprintsAsync(+this.projectId, this.projectTaskId))
+            .subscribe(_ => {
+              console.log("Доступные спринты для включения задачи: ", this.sprintTask$.value);
+
+              let value = this.sprintTask$.value.find((sp: any) => sp.sprintId == this.taskDetails$.value.sprintId);
+              this.formSprint.get("sprintName")?.setValue(value);
+            });
+        });
     };
 
     public onActivateTaskName() {
@@ -238,8 +246,10 @@ export class TaskDetailsComponent implements OnInit {
                     .subscribe(async _ => {
                         console.log("Статусы для выбора: ", this.taskStatuses$.value);
 
+                      let taskType = TaskDetailTypeEnum[localStorage["t_t_i"]];
+
                         // Получаем статусы задач для выбора, чтобы подставить ранее сохраненый статус.
-                        (await this._projectManagmentService.getAvailableTaskStatusTransitionsAsync(this.projectId, this.projectTaskId))
+                        (await this._projectManagmentService.getAvailableTaskStatusTransitionsAsync(this.projectId, this.projectTaskId, taskType))
                             .subscribe(async _ => {
                                 console.log("Возможные переходы статусов задачи: ", this.availableTransitions$.value);
 
@@ -391,50 +401,65 @@ export class TaskDetailsComponent implements OnInit {
     * Функция получает связи задачи (обычные связи).
     */
       private async getTaskLinkDefaultAsync() {
-        (await this._projectManagmentService.getTaskLinkDefaultAsync(+this.projectId, this.projectTaskId))
-             .subscribe(_ => {
-                console.log("Связанные задачи (обычная связь): ", this.taskLinkDefault$.value);
-             });
+       if (TaskDetailTypeEnum[localStorage["t_t_i"]] == TaskDetailTypeEnum.Task.toString()
+         || TaskDetailTypeEnum[localStorage["t_t_i"]] == TaskDetailTypeEnum.Error.toString()) {
+         (await this._projectManagmentService.getTaskLinkDefaultAsync(+this.projectId, this.projectTaskId))
+           .subscribe(_ => {
+             console.log("Связанные задачи (обычная связь): ", this.taskLinkDefault$.value);
+           });
+       }
     };
 
     /**
     * Функция получает связи задачи (родительские связи).
     */
-     private async getTaskLinkParentAsync() {
+    private async getTaskLinkParentAsync() {
+      if (TaskDetailTypeEnum[localStorage["t_t_i"]] == TaskDetailTypeEnum.Task.toString()
+        || TaskDetailTypeEnum[localStorage["t_t_i"]] == TaskDetailTypeEnum.Error.toString()) {
         (await this._projectManagmentService.getTaskLinkParentAsync(+this.projectId, this.projectTaskId))
-             .subscribe(_ => {
-                console.log("Связанные задачи (родительская связь): ", this.taskLinkParent$.value);
-             });
+          .subscribe(_ => {
+            console.log("Связанные задачи (родительская связь): ", this.taskLinkParent$.value);
+          });
+      }
     };
 
      /**
     * Функция получает связи задачи (дочерние связи).
     */
       private async getTaskLinkChildAsync() {
-        (await this._projectManagmentService.getTaskLinkChildAsync(+this.projectId, this.projectTaskId))
-             .subscribe(_ => {
-                console.log("Связанные задачи (дочерняя связь): ", this.taskLinkChild$.value);
-             });
+       if (TaskDetailTypeEnum[localStorage["t_t_i"]] == TaskDetailTypeEnum.Task.toString()
+         || TaskDetailTypeEnum[localStorage["t_t_i"]] == TaskDetailTypeEnum.Error.toString()) {
+         (await this._projectManagmentService.getTaskLinkChildAsync(+this.projectId, this.projectTaskId))
+           .subscribe(_ => {
+             console.log("Связанные задачи (дочерняя связь): ", this.taskLinkChild$.value);
+           });
+       }
     };
 
      /**
     * Функция получает связи задачи (связь зависит от).
     */
       private async getTaskLinkDependAsync() {
-        (await this._projectManagmentService.getTaskLinkDependAsync(+this.projectId, this.projectTaskId))
-             .subscribe(_ => {
-                console.log("Связанные задачи (связь зависит от): ", this.taskLinkDepend$.value);
-             });
+       if (TaskDetailTypeEnum[localStorage["t_t_i"]] == TaskDetailTypeEnum.Task.toString()
+         || TaskDetailTypeEnum[localStorage["t_t_i"]] == TaskDetailTypeEnum.Error.toString()) {
+         (await this._projectManagmentService.getTaskLinkDependAsync(+this.projectId, this.projectTaskId))
+           .subscribe(_ => {
+             console.log("Связанные задачи (связь зависит от): ", this.taskLinkDepend$.value);
+           });
+       }
     };
 
      /**
     * Функция получает связи задачи (связь блокирует).
     */
       private async getTaskLinkBlockedAsync() {
-        (await this._projectManagmentService.getTaskLinkBlockedAsync(+this.projectId, this.projectTaskId))
-             .subscribe(_ => {
-                console.log("Связанные задачи (связь блокирует): ", this.taskLinkBlocked$.value);
-             });
+       if (TaskDetailTypeEnum[localStorage["t_t_i"]] == TaskDetailTypeEnum.Task.toString()
+         || TaskDetailTypeEnum[localStorage["t_t_i"]] == TaskDetailTypeEnum.Error.toString()) {
+         (await this._projectManagmentService.getTaskLinkBlockedAsync(+this.projectId, this.projectTaskId))
+           .subscribe(_ => {
+             console.log("Связанные задачи (связь блокирует): ", this.taskLinkBlocked$.value);
+           });
+       }
     };
 
     /**
@@ -561,7 +586,7 @@ export class TaskDetailsComponent implements OnInit {
      * Функция получает файлы задачи.
      */
     private async getTaskFilesAsync() {
-        (await this._projectManagmentService.getTaskFilesAsync(+this.projectId, this.projectTaskId))
+        (await this._projectManagmentService.getTaskFilesAsync(+this.projectId, this.projectTaskId, localStorage["t_t_i"]))
         .subscribe(_ => {
            console.log("Файлы задачи: ", this.taskFiles$.value);
         });
@@ -695,5 +720,17 @@ export class TaskDetailsComponent implements OnInit {
 
   public onChangeAvailableSprintsAsync() {
 
+  };
+
+  public onRouteEpic() {
+    let epicId = this.selectedEpic.epicId;
+    let projectId = this.projectId;
+
+    this._router.navigate(["/project-management/space/epic"], {
+      queryParams: {
+        projectId,
+        epicId
+      }
+    });
   };
 }
