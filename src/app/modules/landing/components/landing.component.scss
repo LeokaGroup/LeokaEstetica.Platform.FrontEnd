@@ -1,14 +1,8 @@
-@use "/src/app/common/styles/styles.scss";
-
 .fon {
-  background-color: rgba(23, 52, 57, 0.95);
-  //display: inline-block;
+  background-color: rgb(23 52 57 / 95%);
   height: 100vh;
   overflow: hidden;
-  overflow-x: hidden;
   width: 100%;
-  //margin-top: -5px;
-  //padding-top: -5px;
 
   img {
     opacity: 0.1;
@@ -27,7 +21,7 @@
   }
 
   .fon-text {
-    color: rgba(255, 255, 255, 0.65);
+    color: rgb(255 255 255 / 65%);
     margin: 0 100px;
   }
 }
@@ -39,7 +33,7 @@
 
   .offer-item {
     width: 300px;
-    margin: 30px 20px 0px 0px;
+    margin: 30px 20px 0 0;
   }
 
   .offer-tag {
@@ -53,34 +47,12 @@
 }
 
 .block-new-users {
-  // box-shadow: 0 0 12px 0 rgba(0,0,0,.18);
-  // height: 350px;
-  // overflow-x: hidden;
-  // overflow-y: overlay;
-  padding: 16px 16px;
+  padding: 16px;
   line-height: 1.5rem;
 }
 
 .block-statistics {
-  margin-left: 50px;
-  margin-right: 50px;
-}
-
-// Медиа-запросы.
-@media (max-width: 575px) {}
-
-/* sm (>=576 и <=767) */
-@media (min-width: 576px) and (max-width: 767px) {}
-
-/* md (>=768 и <=991) */
-@media (min-width: 768px) and (max-width: 991px) {
- 
-}
-
-/* lg (>=992 и <=1199) */
-@media (min-width: 992px) and (max-width: 1199px) {}
-
-/* xl (>=1200) */
-@media (min-width: 1200px) {
- 
+  display: flex;
+  padding: 0 50px;
+  gap: 20px;
 }

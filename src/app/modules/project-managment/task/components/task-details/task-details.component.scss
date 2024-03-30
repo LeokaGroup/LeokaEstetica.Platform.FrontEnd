@@ -1,7 +1,3 @@
-@use "/src/app/common/styles/spaces.scss";
-@use "/src/app/common/styles/control.scss";
-@use "/src/app/common/styles/styles.scss";
-
 .task-details {
     margin-left: 10px;
 }
@@ -9,12 +5,12 @@
 // FIXME: Вынесем в общие стили, если еще где то будет использоваться.
 .control-label-task-item {
   color: #929292;
-  margin: 0px 10px 0px 0px;
+  margin: 0 10px 0 0;
   padding: 0;
 }
 
 .line-item {
-  margin: 0px 100px 0px 0px;
+  margin: 0 100px 0 0;
 }
 
 .line-item-value {
@@ -28,7 +24,7 @@
 }
 
 .line {
-  padding: 5px 0px;
+  padding: 5px 0;
 }
 
 :host ::ng-deep .p-button {
@@ -85,7 +81,7 @@
   flex-wrap: wrap;
 
   .chip-item {
-    padding: 2px 2px;
+    padding: 2px;
   }
 }
 

@@ -1,7 +1,3 @@
-@use "/src/app/common/styles/spaces.scss";
-@use "/src/app/common/styles/control.scss";
-@use "/src/app/common/styles/styles.scss";
-
 .chat {
     width: 750px;
 }
@@ -66,9 +62,6 @@
   }
 
   .block-message {
-    // border: 2px solid #dedede;
-    // background-color: #f1f1f1;
-    // border-radius: 5px;
     padding: 10px;
     margin: 10px 0;
   }

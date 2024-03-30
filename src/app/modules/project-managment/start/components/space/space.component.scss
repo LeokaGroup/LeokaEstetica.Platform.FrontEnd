@@ -1,11 +1,4 @@
-@use "/src/app/common/styles/spaces.scss";
-@use "/src/app/common/styles/control.scss";
-@use "/src/app/common/styles/styles.scss";
-
 .block-tasks {
-  // min-height: 500px;
-  // max-height: 510px;
-  // overflow-x: scroll;
   overflow-y: scroll;
 }
 
@@ -14,21 +7,17 @@
 
   // FIXME: Сделать это динамически, по задаче #26072758 Добавление выдвижного меню в рабочем пространстве.
   // margin: 0px 10px 0px 400px;
-  margin: 0px 10px 0px 10px;
+  margin: 0 10px;
 
   .task-ver-line {
-    // min-height: 300px;
     min-width: 280px;
     background: #F1F3F5;
-    margin: 0 10px 0 0px;
-    // max-height: 500px;
-    //   min-height: 800px;
-    // max-height: 810px;
+    margin: 0 10px 0 0;
   }
 }
 
 .block-title {
-  margin: 0px 10px 0px 10px;
+  margin: 0 10px;
 }
 
 .status-name {
@@ -38,7 +27,7 @@
 }
 
 .card {
-  margin: 5px 5px 5px 5px;
+  margin: 5px;
   font-size: 15px;
   line-height: 16px;
   word-break: break-word;
@@ -46,21 +35,17 @@
   min-height: 90px;
   font-weight: 400;
   flex-wrap: nowrap;
-  // border: none;
   cursor: pointer;
-  // cursor: grab;
   border: 2px solid #dedede;
 
   &:hover {
-    //background: #ffffff1a;
     background: #DEEBFF;
-    // box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   }
 }
 
 .title {
-  margin: 10px 10px 10px 10px;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  margin: 10px;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
   font-weight: 400;
   line-height: 1.43;
   letter-spacing: 0.01071em;
@@ -71,7 +56,7 @@
 }
 
 .scrum-task-line {
-  padding: 7px 0px;
+  padding: 7px 0;
 }
 
 .laconic-text {
@@ -143,9 +128,7 @@
 
 .scrum-info-line {
   display: flex;
-  //justify-content: space-between;
   align-items: center;
-  //margin-right: 1px;
 }
 
 :host ::ng-deep .p-menuitem-link {

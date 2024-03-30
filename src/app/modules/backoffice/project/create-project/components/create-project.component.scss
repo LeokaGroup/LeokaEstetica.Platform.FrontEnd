@@ -1,11 +1,5 @@
-@use "/src/app/common/styles/spaces.scss";
-@use "/src/app/common/styles/control.scss";
-
-// Медиа-запросы.
-@media (max-width: 575px) {}
-
 /* sm (>=576 и <=767) */
-@media (min-width: 576px) and (max-width: 767px) {
+@media (width >= 576px) and (width <= 767px) {
   .block-worksheet {
     margin-left: 200px;
     margin-right: 10px;
@@ -20,12 +14,12 @@
   }
 
   .control-input-text-worksheet {
-    margin: 20px 10px 0 0px;
+    margin: 20px 10px 0 0;
   }
 }
 
 /* md (>=768 и <=991) */
-@media (min-width: 768px) and (max-width: 991px) {
+@media (width >= 768px) and (width <= 991px) {
   .worksheet-panel {
     margin-left: 250px;
   }
@@ -39,7 +33,7 @@
   }
 
   .control-input-text-worksheet {
-    margin: 20px 10px 0 0px;
+    margin: 20px 10px 0 0;
   }
 
   .input-about-me {
@@ -47,12 +41,9 @@
   }
 }
 
-/* lg (>=992 и <=1199) */
-@media (min-width: 992px) and (max-width: 1199px) {}
-
 /* xl (>=1200) */
-@media (min-width: 1200px) {
+@media (width >= 1200px) {
   .worksheet-panel {
     margin-left: 10px;
-  } 
+  }
 }

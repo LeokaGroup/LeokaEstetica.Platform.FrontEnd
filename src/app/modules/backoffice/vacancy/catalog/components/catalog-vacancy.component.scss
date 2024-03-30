@@ -1,7 +1,3 @@
-@use "/src/app/common/styles/spaces.scss";
-@use "/src/app/common/styles/control.scss";
-@use "/src/app/common/styles/styles.scss";
-
 .tag {
     margin-left: 20px;
 }
@@ -23,7 +19,7 @@
 }
 
 .block-catalog-filters {
-  margin: 0px 0px 10px 10px;
+  margin: 0 0 10px 10px;
 }
 
 .block-profile {

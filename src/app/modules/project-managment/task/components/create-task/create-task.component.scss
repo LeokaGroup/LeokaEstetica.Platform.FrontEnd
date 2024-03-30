@@ -1,6 +1,3 @@
-@use "/src/app/common/styles/spaces.scss";
-@use "/src/app/common/styles/control.scss";
-@use "/src/app/common/styles/styles.scss";
 @use "/src/app/modules/project-managment/task/components/task-details/task-details.component.scss";
 
 ::ng-deep .p-dropdown-label {
@@ -25,7 +22,7 @@
 }
 
 .tag {
-    padding: 5px 0px;
+    padding: 5px 0;
 }
 
 ::ng-deep .p-chip-text {
@@ -33,5 +30,5 @@
 }
 
 .wacher {
-    padding: 5px 0px;
+    padding: 5px 0;
 }

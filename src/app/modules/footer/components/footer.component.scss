@@ -1,53 +1,44 @@
-@use "/src/app/common/styles/control.scss";
-@use "/src/app/modules/header/components/header.component.scss";
-@use "/src/app/common/styles/styles.scss";
-
 .footer {
     width: 100%;
     background: #FAF9FC;
     display: flex;
-    flex-direction: column;   
-    // margin-top: 300px; 
-    margin-top: 10px; 
-  
+    flex-direction: column;
+    margin-top: 10px;
+
     .footer-item {
-      font-family: 'Montserrat-Regular';
+      font-family: Montserrat-Regular;
       font-size: 14px;
       line-height: 20px;
-    //   color: #FFFFFF;
-      margin: 15px 0px;
+      margin: 15px 0;
       cursor: pointer;
     }
-  
+
     .block-footers {
       display: flex;
       justify-content: space-around;
-  
+
       .block-footer {
         margin-top: 50px;
       }
     }
-  
+
     .block-logo {
       text-align: start;
-      // cursor: pointer;
-      padding: 40px 40px 0px 112px;
+      padding: 40px 40px 0 112px;
     }
-  
+
     .title {
       margin: 0 10px;
-    //   color: #35365D;
-      font-family: 'Stolzl';
+      font-family: Stolzl;
       font-style: normal;
       font-weight: 900;
       font-size: 20px;
       line-height: 24px;
     }
-  
+
     .sub-title {
       margin: 0 10px;
-    //   color: #35365D;
-      font-family: 'Montserrat-Regular';
+      font-family: Montserrat-Regular;
       font-weight: 400;
       font-size: 10px;
       line-height: 10px;
@@ -55,28 +46,31 @@
       align-items: center;
       letter-spacing: 1pt;
     }
-  
+
     .text-date {
-      padding: 40px 0px 0px 112px;
-      // background: #361469;
+      padding: 40px 0 0 112px;
       background: #FAF9FC;
-      font-family: 'SF Pro Display';
+      font-family: 'SF Pro Display', serif;
       font-style: normal;
       font-weight: 400;
       font-size: 12px;
       line-height: 16px;
       letter-spacing: 0.4px;
-    //   color: #D1D5DB;
       padding-bottom: 32px;
-      // padding-top: 50px;
     }
   }
-  
-  .block-sub-footer {
-    align-items: center;
-    justify-content: center;
-  }
 
-  .social-logos {
-    margin-left: 50px;
+.social-links-list {
+  display: flex;
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
   }
+}

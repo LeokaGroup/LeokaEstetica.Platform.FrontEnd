@@ -1,16 +1,10 @@
-@use "src/app/common/styles/spaces";
-@use "src/app/common/styles/control";
-
 .empty-vacancies {
     display: flex;
-   //  justify-content: center;
 }
 
 // Медиа-запросы.
-@media (max-width: 575px) {}
-
 /* sm (>=576 и <=767) */
-@media (min-width: 576px) and (max-width: 767px) {
+@media (width >= 576px) and (width <= 767px) {
   .block-worksheet {
     margin-left: 200px;
     margin-right: 10px;
@@ -25,12 +19,12 @@
  }
 
  .control-input-text-worksheet {
-    margin: 20px 10px 0 0px;
+    margin: 20px 10px 0 0;
  }
 }
 
 /* md (>=768 и <=991) */
-@media (min-width: 768px) and (max-width: 991px) {
+@media (width >= 768px) and (width <= 991px) {
  .worksheet-panel {
     margin-left: 250px;
  }
@@ -44,20 +38,16 @@
  }
 
  .control-input-text-worksheet {
-    margin: 20px 10px 0 0px;
+    margin: 20px 10px 0 0;
  }
 
  .input-about-me {
     width: 400px;
  }
-
-//  .p-button-outlined {
-//    width: 100px;
-//  }
 }
 
 /* lg (>=992 и <=1199) */
-@media (min-width: 992px) and (max-width: 1199px) {
+@media (width >= 992px) and (width <= 1199px) {
    .profile-table {
       width: 750px;
       overflow-x: scroll;
@@ -65,15 +55,14 @@
 }
 
 /* xl (>=1200) */
-@media (min-width: 1200px) {
+@media (width >= 1200px) {
     .worksheet-panel {
         margin-left: 10px;
      }
 
      .profile-table {
-      // width: 950px;
       overflow-x: scroll;
-      
+
    }
 
    .block-worksheet {
@@ -81,16 +70,14 @@
     }
 }
 
-@media (min-width: 1440px) {
+@media (width >= 1440px) {
     .profile-table {
-   //   width: 1000px;
      overflow-x: scroll;
   }
 }
 
-@media (min-width: 1536px) {
+@media (width >= 1536px) {
    .profile-table {
-   //  width: 1100px;
     overflow-x: scroll;
  }
 }

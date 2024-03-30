@@ -1,8 +1,5 @@
-@use "/src/app/common/styles/spaces.scss";
-@use "/src/app/common/styles/styles.scss";
-
 .profile-left-menu {
-    margin-left: 50px;    
+    margin-left: 50px;
     width: 300px;
 }
 
@@ -10,18 +7,13 @@
   box-shadow: none;
 }
 
-.block-profile {    
+.block-profile {
     position: absolute;
 }
 
 // Медиа-запросы.
-/* xs (<=543px) */
-@media (max-width: 575px) {
-  
-}
-
 /* sm (>=576 и <=767) */
-@media (min-width: 576px) and (max-width: 767px) {
+@media (width >= 576px) and (width <= 767px) {
   .profile-left-menu {
     margin-left: 10px;
     width: 170px;
@@ -29,7 +21,7 @@
 }
 
 /* md (>=768 и <=991) */
-@media (min-width: 768px) and (max-width: 991px) {
+@media (width >= 768px) and (width <= 991px) {
   .profile-left-menu {
     margin-left: 10px;
     width: 170px;
@@ -37,7 +29,7 @@
 }
 
 /* lg (>=992 и <=1199) */
-@media (min-width: 992px) and (max-width: 1199px) {
+@media (width >= 992px) and (width <= 1199px) {
   .profile-left-menu {
     margin-left: 10px;
     width: 170px;
@@ -45,9 +37,8 @@
 }
 
 /* xl (>=1200) */
-@media (min-width: 1200px) {
+@media (width >= 1200px) {
   .profile-left-menu {
     margin-left: 10px;
-    // width: 170px;
   }
 }
