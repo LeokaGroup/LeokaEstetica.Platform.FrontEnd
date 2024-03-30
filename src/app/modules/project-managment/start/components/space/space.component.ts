@@ -182,4 +182,8 @@ export class SpaceComponent implements OnInit {
       console.log("onSelectPanelMenu");
       this._projectManagmentService.isLeftPanel = true;
     };
+    public onClosePanelMenu() {
+      console.log("onClosePanelMenu");
+      this._projectManagmentService.isLeftPanel = false;
+    };
 }
