@@ -108,17 +108,18 @@
 
       <div class="mt-3 block-sprint" *ngIf="isSprintTasks">
        <div class="mb-3">
-         <p-autoComplete [(ngModel)]="selectedTask"
-                         [suggestions]="searchSprintTasks$.value"
-                         (completeMethod)="onSearchIncludeSprintTaskAsync($event)"
-                         [showEmptyMessage]="true"
-                         emptyMessage="Результатов не найдено"
-                         field="findText"
-                         [minLength]="0"
-                          placeholder="Добавить задачу в спринт"
-                         (onSelect)="onSelectTask()">
-
-         </p-autoComplete>
+           <p-autoComplete [(ngModel)]="selectedTask"
+                           [suggestions]="searchSprintTasks$.value"
+                           (completeMethod)="onSearchIncludeSprintTaskAsync($event)"
+                           [showEmptyMessage]="true"
+                           emptyMessage="Результатов не найдено"
+                           field="findText"
+                           [minLength]="0"
+                           placeholder="Добавить задачу в спринт"
+                           (onSelect)="onSelectTask()"
+                           [style]="{'width':'300px'}" [inputStyle]="{'width':'100%'}"
+           >
+           </p-autoComplete>
 
          <div class="d-flex mt-1">
           <div>
