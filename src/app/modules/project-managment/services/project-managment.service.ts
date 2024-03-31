@@ -1,26 +1,27 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, tap } from 'rxjs';
-import { API_URL } from 'src/app/core/core-urls/api-urls';
-import { ChangeTaskDetailsInput } from '../task/models/input/change-task-details-input';
-import { ChangeTaskNameInput } from '../task/models/input/change-task-name-input';
-import { ChangeTaskStatusInput } from '../task/models/input/change-task-status-input';
-import { ConfigSpaceSettingInput } from '../task/models/input/config-space-setting-input';
-import { CreateProjectManagementTaskInput } from '../task/models/input/create-task-input';
-import { CreateTaskStatusInput } from '../task/models/input/create-task-status-input';
-import { FixationStrategyInput } from '../task/models/input/fixation-strategy-input';
-import { ProjectTaskExecutorInput } from '../task/models/input/project-task-executor-input';
-import { ProjectTaskTagInput } from '../task/models/input/project-task-tag-input';
-import { ProjectTaskWatcherInput } from '../task/models/input/project-task-watcher-input';
-import { TaskLinkInput } from '../task/models/input/task-link-input';
-import { TaskPriorityInput } from '../task/models/input/task-priority-input';
-import { UserTaskTagInput } from '../task/models/input/user-task-tag-input';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, tap} from 'rxjs';
+import {API_URL} from 'src/app/core/core-urls/api-urls';
+import {ChangeTaskDetailsInput} from '../task/models/input/change-task-details-input';
+import {ChangeTaskNameInput} from '../task/models/input/change-task-name-input';
+import {ChangeTaskStatusInput} from '../task/models/input/change-task-status-input';
+import {ConfigSpaceSettingInput} from '../task/models/input/config-space-setting-input';
+import {CreateProjectManagementTaskInput} from '../task/models/input/create-task-input';
+import {CreateTaskStatusInput} from '../task/models/input/create-task-status-input';
+import {FixationStrategyInput} from '../task/models/input/fixation-strategy-input';
+import {ProjectTaskExecutorInput} from '../task/models/input/project-task-executor-input';
+import {ProjectTaskTagInput} from '../task/models/input/project-task-tag-input';
+import {ProjectTaskWatcherInput} from '../task/models/input/project-task-watcher-input';
+import {TaskLinkInput} from '../task/models/input/task-link-input';
+import {TaskPriorityInput} from '../task/models/input/task-priority-input';
+import {UserTaskTagInput} from '../task/models/input/user-task-tag-input';
 import {Router} from "@angular/router";
-import { TaskCommentInput } from '../task/models/input/task-comment-input';
+import {TaskCommentInput} from '../task/models/input/task-comment-input';
 import {TaskCommentExtendedInput} from "../task/models/input/task-comment-extended-input";
 import {IncludeTaskEpicInput} from "../task/models/input/include-task-epic-input";
 import {PlaningSprintInput} from "../task/models/input/planing-sprint-input";
-import { UpdateTaskSprintInput } from '../task/models/input/update-task-sprint-input';
+import {UpdateTaskSprintInput} from '../task/models/input/update-task-sprint-input';
+import {SearchAgileObjectTypeEnum} from '../../enums/search-agile-object-type-enum';
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -720,23 +721,41 @@ export class ProjectManagmentService {
   };
 
   /**
-   * Функция ищет задачи, истории, эпики, ошибки по разным критериям.
+   * Функция находит Agile-объект. Это может быть задача, эпик, история, ошибка.
    */
   public async searchAgileObjectAsync(searchText: string,
-                                            isSearchByProjectTaskId: boolean,
-                                            isSearchByTaskName: boolean,
-                                            isSearchByTaskDescription: boolean,
-                                            projectId: number,
-                                            searchAgileObjectType: SearchAgileObjectTypeEnum) {
-    return await this._http.get(this.apiUrl +
-      `/project-management-search/search-agile-object?searchText=${searchText}
+                                      isSearchByProjectTaskId: boolean,
+                                      isSearchByTaskName: boolean,
+                                      isSearchByTaskDescription: boolean,
+                                      projectId: number,
+                                      searchAgileObjectType: SearchAgileObjectTypeEnum) {
+    if (searchAgileObjectType == SearchAgileObjectTypeEnum.Sprint) {
+      return await this._http.get(this.apiUrl +
+        `/project-management-search/search-agile-object?searchText=${searchText}
       &isSearchByProjectTaskId=${isSearchByProjectTaskId}
       &isSearchByTaskName=${isSearchByTaskName}
       &isSearchByTaskDescription=${isSearchByTaskDescription}
       &projectId=${projectId}
       &searchAgileObjectType=${searchAgileObjectType}`).pipe(
-      tap(data => this.searchSprintTasks$.next(data))
-    );
+        tap(data => this.searchSprintTasks$.next(data))
+      );
+    }
+
+    if (searchAgileObjectType == SearchAgileObjectTypeEnum.Epic) {
+      return await this._http.get(this.apiUrl +
+        `/project-management-search/search-agile-object?searchText=${searchText}
+      &isSearchByProjectTaskId=${isSearchByProjectTaskId}
+      &isSearchByTaskName=${isSearchByTaskName}
+      &isSearchByTaskDescription=${isSearchByTaskDescription}
+      &projectId=${projectId}
+      &searchAgileObjectType=${searchAgileObjectType}`).pipe(
+        tap(data => this.epicTasks$.next(data))
+      );
+    }
+
+    else {
+      throw new Error("Неизвестный тип поиска.");
+    }
   };
 
   /**

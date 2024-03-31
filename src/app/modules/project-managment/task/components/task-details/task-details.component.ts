@@ -793,9 +793,13 @@ export class TaskDetailsComponent implements OnInit {
   public async onSearchIncludeEpicTaskAsync(event: any) {
     (await this._projectManagmentService.searchAgileObjectAsync(
       event.query, this.isSearchByTaskId, this.isSearchByTaskName, this.isSearchByTaskDescription,
-      this.selectedProjectId, SearchAgileObjectTypeEnum.Epic))
+      this.projectId, SearchAgileObjectTypeEnum.Epic))
       .subscribe(_ => {
-        console.log("Задачи для добавления в спринт", this.searchSprintTasks$.value);
+        console.log("Задачи для добавления в эпик", this.epicTasks$.value);
       });
+  };
+
+  public onSelectTask() {
+    this.aEpicTasks.push(this.selectedTask);
   };
 }
