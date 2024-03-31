@@ -46,7 +46,7 @@
         </div>
       </div>
 
-      <form class="d-flex line" [formGroup]="formPriorities">
+      <form class="d-flex line" [formGroup]="formPriorities" *ngIf="taskTypeId == 1 || taskTypeId == 2 || taskTypeId == 4">
         <label class="control-label-task-item">Приоритет:</label>
 
         <p-dropdown [options]="priorities$.value"
