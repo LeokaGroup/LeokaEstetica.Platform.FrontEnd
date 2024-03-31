@@ -732,6 +732,10 @@ export class TaskDetailsComponent implements OnInit {
     updateTaskSprintInput.sprintId = sprintId;
     updateTaskSprintInput.projectTaskId = this.projectTaskId;
 
+    (await this._projectManagmentService.updateTaskSprintAsync(updateTaskSprintInput))
+      .subscribe(async _ => {
+        await this.getProjectTaskDetailsAsync();
+      });
   };
 
   public onRouteEpic() {
@@ -744,9 +748,5 @@ export class TaskDetailsComponent implements OnInit {
         epicId
       }
     });
-    (await this._projectManagmentService.updateTaskSprintAsync(updateTaskSprintInput))
-      .subscribe(async _ => {
-        await this.getProjectTaskDetailsAsync();
-      });
   };
 }
