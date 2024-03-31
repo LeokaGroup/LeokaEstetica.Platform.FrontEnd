@@ -16,7 +16,7 @@
         <div class="block-tasks" *ngFor="let t of st.projectManagmentTasks">
           <!-- Блок с каждой задачей Kanban. -->
           <div class="task scrum-row">
-            <div class="card card-task" (click)="onSelectTask(t.projectTaskId)">
+            <div class="card card-task" (click)="onSelectTask(t.projectTaskId, t.taskTypeId)">
               <div class="title">
                 {{t.name}}
 
@@ -35,7 +35,7 @@
                     </div>
 
                     <div>
-                      <p-avatar [image]="t.executor.avatar.ava" styleClass="mr-2" size="small" shape="circle"></p-avatar>
+                      <p-avatar [image]="t.executor.avatar?.ava" styleClass="mr-2" size="small" shape="circle"></p-avatar>
                     </div>
                   </div>
                 </div>
@@ -80,7 +80,7 @@
             urgent:t.priorityId == 4,
             blocker:t.priorityId == 5}"
                  class="selected-task-row"
-                 (click)="onSelectTask(t.fullProjectTaskId)">
+                 (click)="onSelectTask(t.fullProjectTaskId, t.taskTypeId)">
               <div class="scrum-task-line">
                 <div class="d-flex justify-content-between">
                   <div class="col-lg-2 laconic-text">{{t.taskTypeName}}</div>
@@ -89,7 +89,7 @@
                   <div class="col-lg-2 laconic-text">{{t.priorityName}}</div>
                   <div class="col-lg-2 laconic-text scrum-info-line">
                     <div>
-                      <p-avatar [image]="t.executor.avatar.ava" size="small" shape="circle"></p-avatar>
+                      <p-avatar [image]="t.executor.avatar?.ava" size="small" shape="circle"></p-avatar>
                     </div>
                     &nbsp;
                     <div>

@@ -20,6 +20,10 @@
 .line-item-value {
   padding: 0;
   margin: 0;
+  font-size: 15px;
+  line-height: 20px;
+  font-family: "YS Text","Helvetica Neue","Arial","Helvetica",sans-serif;
+  text-align: start;
 }
 
 // FIXME: Вынесем в общие стили, если еще где то будет использоваться.
