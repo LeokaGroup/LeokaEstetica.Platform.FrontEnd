@@ -53,6 +53,7 @@ export class TaskDetailsComponent implements OnInit {
     public readonly epics$ = this._projectManagmentService.epics$;
     public readonly includeEpic$ = this._projectManagmentService.includeEpic$;
     public readonly sprintTask$ = this._projectManagmentService.sprintTask$;
+    public readonly epicTasks$ = this._projectManagmentService.epicTasks$;
 
     projectId: any;
     projectTaskId: any;
@@ -121,7 +122,14 @@ export class TaskDetailsComponent implements OnInit {
     isActiveTaskComment: boolean = false;
     selectedEpic: any;
     selectedSprint: any;
-    taskTypeId: number = 0;
+    taskTypeId: number = +localStorage["t_t_i"];
+    aSearchTasks: any[] = [];
+    isSearchByTaskId: boolean = false;
+    isSearchByTaskName: boolean = false;
+    isSearchByTaskDescription: boolean = false;
+    aAddedTaskSprint: any[] = [];
+    selectedTask: any;
+    aEpicTasks: any[] = [];
 
   public async ngOnInit() {
     forkJoin([
@@ -137,8 +145,6 @@ export class TaskDetailsComponent implements OnInit {
       await this.getTaskCommentsAsync(),
       await this.getAvailableSprintsAsync()
     ]).subscribe();
-
-    this.taskTypeId = localStorage["t_t_i"];
   };
 
     private async checkUrlParams() {
@@ -222,6 +228,11 @@ export class TaskDetailsComponent implements OnInit {
               this.formSprint.get("sprintName")?.setValue(value);
             });
         });
+
+      // Если просматриваем эпик, то подгрузить задачи эпика.
+      if (this.taskTypeId == 4) {
+        await this.getEpicTasksAsync();
+      }
     };
 
     public onActivateTaskName() {
@@ -748,5 +759,29 @@ export class TaskDetailsComponent implements OnInit {
         epicId
       }
     });
+  };
+
+  /**
+   * Функция получает задачи эпика.
+   */
+  private async getEpicTasksAsync() {
+    (await this._projectManagmentService.getEpicTasksAsync(this.projectId, +this.projectTaskId))
+      .subscribe(async (_: any) => {
+        console.log("Задачи эпика: ", this.epicTasks$.value);
+        this.aEpicTasks = this.epicTasks$.value.epicTasks;
+      });
+  };
+
+  /**
+   * Функция удаляет задачу из таблицы на фронте.
+   * @param projectTaskId - Id задачи в рамках проекта.
+   */
+  public onRemoveAddedTask(projectTaskId: number) {
+    if (projectTaskId == 0) {
+      return;
+    }
+
+    let deletedItemIdx = this.aEpicTasks.findIndex(x => x.projectTaskId == projectTaskId);
+    this.aEpicTasks.splice(deletedItemIdx, 1);
   };
 }
