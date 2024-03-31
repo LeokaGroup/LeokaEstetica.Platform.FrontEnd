@@ -721,8 +721,19 @@ export class ProjectManagmentService {
   /**
    * Функция ищет задачи, истории, эпики, ошибки по разным критериям.
    */
-  public async searchIncludeSprintTaskAsync(searchText: string, isSearchByProjectTaskId: boolean, isSearchByTaskName: boolean, isSearchByTaskDescription: boolean, projectId: number) {
-    return await this._http.get(this.apiUrl + `/project-management-search/include-sprint-task?searchText=${searchText}&isSearchByProjectTaskId=${isSearchByProjectTaskId}&isSearchByTaskName=${isSearchByTaskName}&isSearchByTaskDescription=${isSearchByTaskDescription}&projectId=${projectId}`).pipe(
+  public async searchAgileObjectAsync(searchText: string,
+                                            isSearchByProjectTaskId: boolean,
+                                            isSearchByTaskName: boolean,
+                                            isSearchByTaskDescription: boolean,
+                                            projectId: number,
+                                            searchAgileObjectType: SearchAgileObjectTypeEnum) {
+    return await this._http.get(this.apiUrl +
+      `/project-management-search/search-agile-object?searchText=${searchText}
+      &isSearchByProjectTaskId=${isSearchByProjectTaskId}
+      &isSearchByTaskName=${isSearchByTaskName}
+      &isSearchByTaskDescription=${isSearchByTaskDescription}
+      &projectId=${projectId}
+      &searchAgileObjectType=${searchAgileObjectType}`).pipe(
       tap(data => this.searchSprintTasks$.next(data))
     );
   };
