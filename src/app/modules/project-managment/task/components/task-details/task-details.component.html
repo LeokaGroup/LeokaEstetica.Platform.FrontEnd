@@ -128,8 +128,7 @@
                         class="control-project-stages"
                         placeholder="Добавить задачу в спринт"
                         [emptyMessage]="(sprintTask$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
-                        (onClick)="onGetAvailableSprintsAsync()"
-                        (onChange)="onChangeAvailableSprintsAsync()"
+                        (onChange)="onChangeAvailableSprintsAsync(selectedSprint.sprintId)"
                         formControlName="sprintName">
             </p-dropdown>
             <button pButton pRipple label="Перейти к спринту"

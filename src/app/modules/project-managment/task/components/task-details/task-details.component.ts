@@ -15,6 +15,7 @@ import { TaskPriorityInput } from "../../models/input/task-priority-input";
 import {TaskCommentInput} from "../../models/input/task-comment-input";
 import {TaskCommentExtendedInput} from "../../models/input/task-comment-extended-input";
 import {IncludeTaskEpicInput} from "../../models/input/include-task-epic-input";
+import {UpdateTaskSprintInput} from "../../models/input/update-task-sprint-input";
 import {TaskDetailTypeEnum} from "../../../../Enums/task-detail-type";
 
 @Component({
@@ -133,7 +134,8 @@ export class TaskDetailsComponent implements OnInit {
       await this.getTaskLinkDependAsync(),
       await this.getTaskLinkBlockedAsync(),
       await this.getTaskFilesAsync(),
-      await this.getTaskCommentsAsync()
+      await this.getTaskCommentsAsync(),
+      await this.getAvailableSprintsAsync()
     ]).subscribe();
 
     this.taskTypeId = localStorage["t_t_i"];
@@ -714,12 +716,26 @@ export class TaskDetailsComponent implements OnInit {
       });
   };
 
-  public onGetAvailableSprintsAsync() {
-
+  private async getAvailableSprintsAsync() {
+    (await this._projectManagmentService.getAvailableProjectSprintsAsync(+this.projectId, this.projectTaskId))
+      .subscribe(_ => {
+        console.log("Доступные спринты для включения задачи: ", this.sprintTask$.value);
+      });
   };
 
-  public onChangeAvailableSprintsAsync() {
+  /**
+   * Функция обновляет спринт, в который входит задача.
+   * @param sprintId - Id спринта, на который обновить.
+   */
+  public async onChangeAvailableSprintsAsync(sprintId: number) {
+    let updateTaskSprintInput = new UpdateTaskSprintInput();
+    updateTaskSprintInput.sprintId = sprintId;
+    updateTaskSprintInput.projectTaskId = this.projectTaskId;
 
+    (await this._projectManagmentService.updateTaskSprintAsync(updateTaskSprintInput))
+      .subscribe(async _ => {
+        await this.getProjectTaskDetailsAsync();
+      });
   };
 
   public onRouteEpic() {
