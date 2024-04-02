@@ -66,6 +66,7 @@ export class ProjectManagmentService {
     public userStoryStatuses$ = new BehaviorSubject<any>(null);
     public searchSprintTasks$ = new BehaviorSubject<any>(null);
     public sprintTask$ = new BehaviorSubject<any>(null);
+    public epicTasks$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -741,11 +742,22 @@ export class ProjectManagmentService {
 
   /**
    * Функция обновляет спринт, в который входит задача.
-   * @param UudateTaskSprintInput - Водная модель.
+   * @param UudateTaskSprintInput - Входная модель.
    */
   public async updateTaskSprintAsync(updateTaskSprintInput: UpdateTaskSprintInput) {
     return await this._http.put(this.apiUrl + `/project-management/task/sprint`, updateTaskSprintInput).pipe(
       tap(_ => console.log("Спринт задачи успешно обновлен"))
+    );
+  };
+
+  /**
+   * Функция получает задачи эпика.
+   * @param projectId - Id проекта.
+   * @param epicId - Id эпика.
+   */
+  public async getEpicTasksAsync(projectId: number, epicId: number) {
+    return await this._http.get(this.apiUrl + `/project-management/epic-task?projectId=${projectId}&epicId=${epicId}`).pipe(
+      tap(data => this.epicTasks$.next(data))
     );
   };
 }
