@@ -2,7 +2,7 @@
     color: #403866;
     line-height: 1.2;
     font-size: 18px;
-    display: block; 
+    display: block;
     background-color: #e6e6e6;
     // background: #FAFAFA;
     height: 62px;
@@ -12,7 +12,7 @@
 }
 
 @mixin purButton {
-    background-color: #827ffe;        
+    background-color: #827ffe;
     font-size: 16px;
     color: #fff;
     line-height: 1.2;
@@ -36,7 +36,7 @@
 }
 
 @mixin redButton {
-    background-color: #EF4444;        
+    background-color: #EF4444;
     font-size: 16px;
     color: #fff;
     line-height: 1.2;
@@ -149,9 +149,9 @@
 }
 
 ::ng-deep .p-autocomplete-input {
-    @include controlGrayForm();   
+    @include controlGrayForm();
     background: #FAFAFA;
-   
+
     &:focus {
         box-shadow: none !important;
     }
@@ -159,4 +159,8 @@
 
 .control-order-form {
     width: 100%;
+}
+
+.control-input-text-worksheet {
+  max-width: 680px;
 }
