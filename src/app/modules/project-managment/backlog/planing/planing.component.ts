@@ -7,6 +7,7 @@ import {MessageService, PrimeNGConfig} from "primeng/api";
 import {TranslateService} from "@ngx-translate/core";
 import {PlaningSprintInput} from "../../task/models/input/planing-sprint-input";
 import { ProjectManagementSignalrService } from "src/app/modules/notifications/signalr/services/project-magement-signalr.service";
+import { SearchAgileObjectTypeEnum } from "src/app/modules/enums/search-agile-object-type-enum";
 
 @Component({
   selector: "",
@@ -159,9 +160,9 @@ export class PlaningSprintComponent implements OnInit {
    * @param event - Ивент события.
    */
   public async onSearchIncludeSprintTaskAsync(event: any) {
-    (await this._projectManagmentService.searchIncludeSprintTaskAsync(
+    (await this._projectManagmentService.searchAgileObjectAsync(
       event.query, this.isSearchByTaskId, this.isSearchByTaskName, this.isSearchByTaskDescription,
-      this.selectedProjectId))
+      this.selectedProjectId, SearchAgileObjectTypeEnum.Sprint))
       .subscribe(_ => {
         console.log("Задачи для добавления в спринт", this.searchSprintTasks$.value);
       });

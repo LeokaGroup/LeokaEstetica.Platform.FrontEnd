@@ -17,6 +17,7 @@ import {TaskCommentExtendedInput} from "../../models/input/task-comment-extended
 import {IncludeTaskEpicInput} from "../../models/input/include-task-epic-input";
 import {UpdateTaskSprintInput} from "../../models/input/update-task-sprint-input";
 import {TaskDetailTypeEnum} from "../../../../Enums/task-detail-type";
+import {SearchAgileObjectTypeEnum} from "../../../../enums/search-agile-object-type-enum";
 
 @Component({
     selector: "",
@@ -783,5 +784,22 @@ export class TaskDetailsComponent implements OnInit {
 
     let deletedItemIdx = this.aEpicTasks.findIndex(x => x.projectTaskId == projectTaskId);
     this.aEpicTasks.splice(deletedItemIdx, 1);
+  };
+
+  /**
+   * Функция находит задачи, истории для добавления их в эпик.
+   * @param event - Ивент события.
+   */
+  public async onSearchIncludeEpicTaskAsync(event: any) {
+    (await this._projectManagmentService.searchAgileObjectAsync(
+      event.query, this.isSearchByTaskId, this.isSearchByTaskName, this.isSearchByTaskDescription,
+      this.projectId, SearchAgileObjectTypeEnum.Epic))
+      .subscribe(_ => {
+        console.log("Задачи для добавления в эпик", this.epicTasks$.value);
+      });
+  };
+
+  public onSelectTask() {
+    this.aEpicTasks.push(this.selectedTask);
   };
 }

@@ -733,54 +733,53 @@
 
   <div class="mt-3 block-sprint" *ngIf="taskTypeId == 4">
     <div class="mb-3">
-<!-- TODO: Будет сделано позже. -->
-<!--      <p-autoComplete [(ngModel)]="selectedTask"-->
-<!--                      [suggestions]="searchSprintTasks$.value"-->
-<!--                      (completeMethod)="onSearchIncludeSprintTaskAsync($event)"-->
-<!--                      [showEmptyMessage]="true"-->
-<!--                      emptyMessage="Результатов не найдено"-->
-<!--                      field="findText"-->
-<!--                      [minLength]="0"-->
-<!--                      placeholder="Добавить задачу в спринт"-->
-<!--                      (onSelect)="onSelectTask()">-->
+      <p-autoComplete [(ngModel)]="selectedEpic"
+                      [suggestions]="epicTasks$.value"
+                      (completeMethod)="onSearchIncludeEpicTaskAsync($event)"
+                      [showEmptyMessage]="true"
+                      emptyMessage="Результатов не найдено"
+                      field="findText"
+                      [minLength]="0"
+                      placeholder="Добавить задачу в эпик"
+                      (onSelect)="onSelectTask()">
 
-<!--      </p-autoComplete>-->
+      </p-autoComplete>
 
-<!--      <div class="d-flex mt-1">-->
-<!--        <div>-->
-<!--          <p-checkbox inputId="searchByTaskId"-->
-<!--                      [value]="isSearchByTaskId"-->
-<!--                      (onChange)="isSearchByTaskId = !isSearchByTaskId"-->
-<!--                      [binary]="true">-->
+      <div class="d-flex mt-1">
+        <div>
+          <p-checkbox inputId="searchByTaskId"
+                      [value]="isSearchByTaskId"
+                      (onChange)="isSearchByTaskId = !isSearchByTaskId"
+                      [binary]="true">
 
-<!--          </p-checkbox>-->
-<!--          <label for="searchByTaskId">&nbsp;&nbsp;Искать по ID задачи</label>-->
-<!--        </div>-->
+          </p-checkbox>
+          <label for="searchByTaskId">&nbsp;&nbsp;Искать по ID задачи</label>
+        </div>
 
-<!--        &nbsp;-->
+        &nbsp;
 
-<!--        <div>-->
-<!--          <p-checkbox inputId="searchByTaskName"-->
-<!--                      [value]="isSearchByTaskName"-->
-<!--                      (onChange)="isSearchByTaskName = !isSearchByTaskName"-->
-<!--                      [binary]="true">-->
+        <div>
+          <p-checkbox inputId="searchByTaskName"
+                      [value]="isSearchByTaskName"
+                      (onChange)="isSearchByTaskName = !isSearchByTaskName"
+                      [binary]="true">
 
-<!--          </p-checkbox>-->
-<!--          <label for="searchByTaskName">&nbsp;&nbsp;Искать в названии задачи</label>-->
-<!--        </div>-->
+          </p-checkbox>
+          <label for="searchByTaskName">&nbsp;&nbsp;Искать в названии задачи</label>
+        </div>
 
-<!--        &nbsp;-->
+        &nbsp;
 
-<!--        <div>-->
-<!--          <p-checkbox inputId="sprintTasksDescription"-->
-<!--                      [value]="isSearchByTaskDescription"-->
-<!--                      (onChange)="isSearchByTaskDescription = !isSearchByTaskDescription"-->
-<!--                      [binary]="true">-->
+        <div>
+          <p-checkbox inputId="sprintTasksDescription"
+                      [value]="isSearchByTaskDescription"
+                      (onChange)="isSearchByTaskDescription = !isSearchByTaskDescription"
+                      [binary]="true">
 
-<!--          </p-checkbox>-->
-<!--          <label for="sprintTasksDescription">&nbsp;&nbsp;Искать в описании задачи</label>-->
-<!--        </div>-->
-<!--      </div>-->
+          </p-checkbox>
+          <label for="sprintTasksDescription">&nbsp;&nbsp;Искать в описании задачи</label>
+        </div>
+      </div>
     </div>
 
     <p-table [value]="aEpicTasks"
@@ -788,7 +787,7 @@
              [tableStyle]="{'min-width': '50rem'}"
              [rows]="10"
              responsiveLayout="scroll"
-             [paginator]="aAddedTaskSprint.length > 0">
+             [paginator]="aEpicTasks.length > 0">
       <ng-template pTemplate="header">
         <tr>
           <th>Ключ</th>
