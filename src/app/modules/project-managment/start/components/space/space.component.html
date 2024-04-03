@@ -1,24 +1,9 @@
-<!-- FIXME: Отрефачить, вынести в общий компонент. -->
-<!-- Меню хидера (верхнее). -->
-<nav class="navbar navbar-light justify-content-evenly">
-  <div class="form-inline">
-    <p-menubar [model]="aHeaderItems" class="second-menu">
-      <ng-template pTemplate="start">
+<div class="left-panel" (mouseover)="onSelectPanelMenu()">
+  <div style="border-left:1px solid #C0C6CF;height:1500px;width: 50px;position: absolute;"></div>
+</div>
 
-      </ng-template>
-      <ng-template pTemplate="end">
-        <input type="text" pInputText placeholder="Поиск" class="w-full search-line" />
-      </ng-template>
-    </p-menubar>
-  </div>
-</nav>
-
-<!-- <div class="d-flex col-lg-12 mt-3 block-title">
-  <h5>Kanban-доска проекта [Название проекта]</h5>
-</div> -->
-
-<!-- Блок с задачами. -->
-<div class="d-flex">
+<!-- Блок с задачами Kanban. -->
+<div class="d-flex" *ngIf="mode == 'kn'">
   <div class="block-worksheet col-lg-12">
     <div class="d-flex block-task">
       <div class="task-ver-line" *ngFor="let st of workSpaceConfig$.value?.projectManagmentTaskStatuses">
@@ -27,13 +12,33 @@
           {{st.total}}
         </div>
 
-        <!-- Блок с задачами. -->
+        <!-- Блок с задачами Kanban. -->
         <div class="block-tasks" *ngFor="let t of st.projectManagmentTasks">
-          <!-- Блок с каждой задачей. -->
-          <div class="task">
-            <div class="card card-task" (click)="onSelectTask(t.projectTaskId)">
+          <!-- Блок с каждой задачей Kanban. -->
+          <div class="task scrum-row">
+            <div class="card card-task" (click)="onSelectTask(t.projectTaskId, t.taskTypeId)">
               <div class="title">
                 {{t.name}}
+
+                <div class="tags" *ngFor="let tag of t.tagNames">
+                  <p-chip>{{tag}}</p-chip>
+                </div>
+
+                <div class="info-line">
+                  <div>
+                    <small>{{t.priorityName}}</small>
+                  </div>
+
+                  <div class="info-line-number">
+                    <div class="space-line-number">
+                      <small>{{t.fullProjectTaskId}}</small>
+                    </div>
+
+                    <div>
+                      <p-avatar [image]="t.executor.avatar?.ava" styleClass="mr-2" size="small" shape="circle"></p-avatar>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -42,3 +47,81 @@
     </div>
   </div>
 </div>
+
+<!-- Блок с задачами Scrum. -->
+<div class="" *ngIf="mode == 'sm'">
+  <div class="block-worksheet block-scrum-task-list col-lg-12">
+    <div class="block-task">
+      <hr>
+      <div class="d-flex justify-content-between">
+        <div class="col-lg-2">&nbsp;</div>
+        <strong class="col-lg-2">Ключ</strong>
+        <strong class="col-lg-2">Задача</strong>
+        <strong class="col-lg-2">Приоритет</strong>
+        <strong class="col-lg-2">Исполнитель</strong>
+        <strong class="col-lg-2">Обновлено</strong>
+      </div>
+      <hr>
+      <div class="task-ver-line" *ngFor="let st of workSpaceConfig$.value?.projectManagmentTaskStatuses">
+        <div class="d-flex justify-content-between status-name pt-3">
+          {{st.statusName.toUpperCase()}}
+          {{st.total}}
+        </div>
+
+        <!-- TODO: Этот ngClass на режим представления возможно надо будет убрать или доработать гибче, если надо будет скролить Scrum список. -->
+        <!-- Блок с задачами Scrum. -->
+        <div [ngClass]="{'block-tasks': mode !== 'sm'}" *ngFor="let t of st.projectManagmentTasks">
+          <!-- Блок с каждой задачей Scrum. -->
+          <div class="task">
+            <div [ngClass]="{
+            low:t.priorityId == 1,
+            medium:t.priorityId == 2,
+            high:t.priorityId == 3,
+            urgent:t.priorityId == 4,
+            blocker:t.priorityId == 5}"
+                 class="selected-task-row"
+                 (click)="onSelectTask(t.fullProjectTaskId, t.taskTypeId)">
+              <div class="scrum-task-line">
+                <div class="d-flex justify-content-between">
+                  <div class="col-lg-2 laconic-text">{{t.taskTypeName}}</div>
+                  <div class="col-lg-2">{{t.fullProjectTaskId}}</div>
+                  <div class="col-lg-2 laconic-text">{{t.name}}</div>
+                  <div class="col-lg-2 laconic-text">{{t.priorityName}}</div>
+                  <div class="col-lg-2 laconic-text scrum-info-line">
+                    <div>
+                      <p-avatar [image]="t.executor.avatar?.ava" size="small" shape="circle"></p-avatar>
+                    </div>
+                    &nbsp;
+                    <div>
+                      {{t.executor.executorName}}
+                    </div>
+                  </div>
+                  <div class="col-lg-2 laconic-text">{{t.updated}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="line-see-more" *ngIf="st.projectManagmentTasks == null">
+            <div>Нет данных.</div>
+          </div>
+
+          <div *ngIf="st.projectManagmentTasks !== null && st.total > 10 && st.paginator.hasNextPage">
+            <div class="mt-2">
+              <button pButton type="button"
+                      label="Показать больше"
+                      class="p-button-outlined p-button-secondary p-button-sm line-see-more control-see-more"
+                      [loading]="isLoading"
+                      (click)="onGetConfigurationWorkSpaceBySelectedTemplateAsync(st.paginator.pageNumber, st.taskStatusId)">
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<left-panel></left-panel>

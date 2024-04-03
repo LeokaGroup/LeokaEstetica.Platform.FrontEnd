@@ -1,4 +1,4 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -39,6 +39,15 @@ import { TicketService } from './modules/ticket/services/ticket.service';
 import { ForbiddenComponent } from './modules/forbidden/forbidden.component';
 import { ProjectManagmentModule } from './modules/project-managment/project-managment.module';
 import { ProjectManagmentService } from './modules/project-managment/services/project-managment.service';
+import { ProjectManagementHeaderComponent } from './modules/project-managment/header/components/project-management-header.component';
+import { DragDropModule } from 'primeng/dragdrop';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { MenubarModule } from 'primeng/menubar';
+import { FormsModule } from '@angular/forms';
+import { SidebarModule } from 'primeng/sidebar';
+import { ButtonModule } from 'primeng/button';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
   declarations: [
@@ -46,7 +55,8 @@ import { ProjectManagmentService } from './modules/project-managment/services/pr
     HeaderComponent,
     LeftMenuComponent,
     FooterComponent,
-    ForbiddenComponent
+    ForbiddenComponent,
+    ProjectManagementHeaderComponent
   ],
 
   imports: [
@@ -70,7 +80,15 @@ import { ProjectManagmentService } from './modules/project-managment/services/pr
     AdministrationModule,
     CarouselModule,
     OrderFormModule,
-    ProjectManagmentModule
+    ProjectManagmentModule,
+    DragDropModule,
+    BreadcrumbModule,
+    MenubarModule,
+    FormsModule,
+    SidebarModule,
+    ButtonModule,
+    AutoCompleteModule,
+    CheckboxModule
   ],
 
   providers: [

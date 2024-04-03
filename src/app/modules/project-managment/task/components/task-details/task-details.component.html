@@ -1,55 +1,36 @@
-<!-- FIXME: Отрефачить, вынести в общий компонент. -->
-<!-- Меню хидера (верхнее). -->
-<nav class="navbar navbar-light justify-content-evenly">
-  <div class="form-inline">
-    <p-menubar [model]="aHeaderItems" class="second-menu">
-      <ng-template pTemplate="start">
-
-      </ng-template>
-      <ng-template pTemplate="end">
-        <input type="text" pInputText placeholder="Поиск" class="w-full search-line" />
-      </ng-template>
-    </p-menubar>
-  </div>
-</nav>
-
-<!-- Хлебные крошки. -->
-<div class="block-task">
-  <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
-</div>
-
 <div class="task-details mt-3">
   <!-- Название задачи. -->
   <div class="task-name">
-    <p>{{taskDetails$.value?.name}}</p>
+    <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveTaskName" (onActivate)="onActivateTaskName()">
+      <ng-template pTemplate="display">
+        <h1 class="task-name-title">{{taskName}}</h1>
+      </ng-template>
+      <ng-template pTemplate="content">
+          <input type="text" [(ngModel)]="taskName" value="{{taskName}}" pInputText>
+      </ng-template>
+  </p-inplace>
+
+  <button pButton
+          pRipple
+          icon="pi pi-save"
+          type="button"
+          label="Сохранить"
+          class="p-button-success p-button-text p-button-sm"
+          *ngIf="isActiveTaskName"
+          (click)="onSaveTaskNameAsync(taskName)">
+  </button>
+
+  <button pButton
+          pRipple
+          icon="pi pi-times"
+          type="button"
+          label="Отмена"
+          class="p-button-secondary p-button-text p-button-sm"
+          *ngIf="isActiveTaskName"
+          (click)="isActiveTaskName=!isActiveTaskName">
+  </button>
   </div>
 
-  <!-- Блок с кнопками действий. -->
-  <div class="mt-3 mb-3 d-flex block-task-actions">
-    <div class="block-buttons-task-actions">
-      <button pButton type="button" 
-            icon="pi pi-pencil" 
-            label="Редактировать"
-            class="p-button-text p-button-secondary task-actions">
-    </button>
-    </div>   
-
-    <div>
-      <button pButton type="button" 
-            icon="pi pi-file-import" 
-            label="Прикрепить файлы"
-            class="p-button-text p-button-secondary task-actions">
-    </button>
-    </div>
-
-    <!-- <div>
-      <button pButton type="button" 
-            label="Возможные действия"
-            class="p-button-text p-button-secondary task-actions">
-    </button>
-    </div> -->
-  </div>
-  
   <div>
     <hr>
   </div>
@@ -65,48 +46,176 @@
         </div>
       </div>
 
-      <div class="d-flex line">
+      <form class="d-flex line" [formGroup]="formPriorities" *ngIf="taskTypeId == 1 || taskTypeId == 2 || taskTypeId == 4">
         <label class="control-label-task-item">Приоритет:</label>
-        <p class="line-item-value">{{taskDetails$.value?.priorityName}}</p>
-      </div>
+
+        <p-dropdown [options]="priorities$.value"
+                    [(ngModel)]="selectedPriority"
+                    optionLabel="priorityName"
+                    [showClear]="true"
+                    placeholder="Выберите приоритет"
+                    [emptyMessage]="(priorities$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                    formControlName="priorityName"
+                    (onChange)="onChangeTaskPriorityAsync()">
+        </p-dropdown>
+      </form>
 
       <div class="d-flex line">
         <label class="control-label-task-item">Метки:</label>
-        <p class="line-item-value">{{taskDetails$.value?.tagNames ?? 'Нет'}}</p>
+
+        <div class="chip-block">
+          <div *ngFor="let lbl of taskDetails$.value?.tagNames">
+            <div class="chip-item">
+              <p-chip label="{{lbl ?? 'Нет'}}" [removable]="true" (onRemove)="onDetachTaskTagAsync(lbl)"></p-chip>
+            </div>
+          </div>
+        </div>
+
+        <p-overlayPanel #op [style]="{'min-width': '300px'}">
+          <ng-template pTemplate>
+            <div>
+              <p-dropdown [options]="this.projectTags$.value"
+                          [(ngModel)]="selectedTag"
+                          optionLabel="tagName"
+                          class="control-project-stages"
+                          placeholder="Выберите тег"
+                          (onChange)="onAttachTaskTagAsync()">
+              </p-dropdown>
+            </div>
+          </ng-template>
+        </p-overlayPanel>
+
+        <button pButton
+                pRipple
+                icon="pi pi-plus"
+                type="button"
+                class="p-button-secondary p-button-text p-button-sm"
+                (click)="op.toggle($event)">
+        </button>
+      </div>
+
+      <div class="col-lg-4 mt-3" *ngIf="taskTypeId == 1 || taskTypeId == 2">
+        <strong>Agile</strong>
+        <form class="d-flex line" [formGroup]="formEpic">
+          <label class="control-label-task-item">Эпик:</label>
+
+          <div>
+            <p-dropdown [options]="availableEpics$.value"
+                        [(ngModel)]="selectedEpic"
+                        optionLabel="epicName"
+                        class="control-project-stages"
+                        placeholder="Добавить задачу в эпик"
+                        [emptyMessage]="(availableEpics$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                        (onClick)="onGetAvailableEpicsAsync()"
+                        (onChange)="onChangeAvailableEpicsAsync()"
+                        formControlName="epicName">
+            </p-dropdown>
+            <button pButton pRipple label="Перейти к эпику"
+                    class="p-button-link"
+                    (click)="onRouteEpic()">
+
+            </button>
+          </div>
+        </form>
+
+        <form class="d-flex line" [formGroup]="formSprint">
+          <label class="control-label-task-item">Спринт:</label>
+
+          <div>
+            <p-dropdown [options]="sprintTask$.value"
+                        [(ngModel)]="selectedSprint"
+                        optionLabel="sprintName"
+                        class="control-project-stages"
+                        placeholder="Добавить задачу в спринт"
+                        [emptyMessage]="(sprintTask$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                        (onChange)="onChangeAvailableSprintsAsync(selectedSprint.sprintId)"
+                        formControlName="sprintName">
+            </p-dropdown>
+            <button pButton pRipple label="Перейти к спринту"
+                    class="p-button-link">
+
+            </button>
+          </div>
+        </form>
       </div>
     </div>
 
-    <div class="col-lg-4">
+    <form class="col-lg-4" [formGroup]="formStatuses">
       <div class="line-item d-flex">
         <label class="control-label-task-item">Статус:</label>
-        <p class="line-item-value">{{taskDetails$.value?.taskStatusName}}</p>
+        <p-dropdown [options]="availableTransitions$.value"
+                    [(ngModel)]="selectedStatus"
+                    optionLabel="statusName"
+                    [showClear]="true"
+                    placeholder="Выберите статус"
+                    [emptyMessage]="(availableTransitions$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                    formControlName="statusName"
+                    (onChange)="onChangeStatusAsync()">
+        </p-dropdown>
       </div>
-    </div>
+    </form>
 
     <div class="col-lg-4">
       <strong>Люди</strong>
       <div>
         <div class="line-item d-flex">
-          <label class="control-label-task-item">Исполнитель:</label>
-          <div>
-            <p class="line-item-value">{{taskDetails$.value?.executorName ?? 'Не назначен'}}</p>
-            <button pButton pRipple label="Назначить меня" class="p-button-link control-button-executor-me"></button>
-          </div>
-        </div>
-
-        <div class="line-item d-flex">
           <label class="control-label-task-item">Автор:</label>
           <p class="line-item-value">{{taskDetails$.value?.authorName}}</p>
         </div>
+
+        <form class="line-item d-flex" [formGroup]="formExecutors">
+          <label class="control-label-task-item">Исполнитель:</label>
+          <div>
+            <p-dropdown [options]="taskPeople$.value"
+                        [(ngModel)]="selectedExecutor"
+                        optionLabel="fullName"
+                        [showClear]="true"
+                        placeholder="Выберите исполнителя"
+                        [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                        formControlName="executorName"
+                        (onChange)="onChangeTaskExecutorAsync()">
+            </p-dropdown>
+<!--            <button pButton pRipple label="Назначить меня" class="p-button-link control-button-executor-me"></button>-->
+          </div>
+        </form>
 
         <div class="line-item d-flex">
           <div>
             <label class="control-label-task-item">Наблюдатели:</label>
           </div>
-         
+
           <div>
-            <p class="line-item-value">{{taskDetails$.value?.watcherNames ?? 'Нет наблюдателей'}}</p>
-            <button pButton pRipple label="Добавить меня" class="p-button-link control-button-executor-me"></button>
+            <div class="chip-block">
+              <div *ngFor="let lbl of taskDetails$.value?.watcherNames; index as i">
+                <div class="chip-item">
+                  <p-chip label="{{lbl ?? 'Нет'}}" [removable]="true" (onRemove)="onDetachTaskWatcherAsync(lbl, i)"></p-chip>
+                </div>
+              </div>
+            </div>
+
+            <p-overlayPanel #wa [style]="{'min-width': '300px'}">
+              <ng-template pTemplate>
+                <div>
+                  <p-dropdown [options]="taskPeople$.value"
+                              [(ngModel)]="selectedWatcher"
+                              optionLabel="fullName"
+                              class="control-project-stages"
+                              placeholder="Выберите наблюдателя"
+                              [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                              (onChange)="onAttachTaskWatcherAsync()">
+                  </p-dropdown>
+                </div>
+              </ng-template>
+            </p-overlayPanel>
+
+            <button pButton
+                    pRipple
+                    icon="pi pi-plus"
+                    type="button"
+                    class="p-button-secondary p-button-text p-button-sm"
+                    (click)="wa.toggle($event)">
+            </button>
+            <!-- <button pButton pRipple label="Добавить меня" class="p-button-link control-button-executor-me"></button> -->
           </div>
         </div>
       </div>
@@ -132,17 +241,74 @@
     <hr>
   </div>
 
+  <!-- Блок с кнопками действий. -->
+  <div class="mt-3 mb-3 d-flex block-task-actions">
+    <div>
+      <button type="button"
+              pButton
+              icon="pi pi-arrow-down"
+              label="Возможные действия"
+              class="p-button-text p-button-primary p-button-sm task-actions"
+              (click)="menu.toggle($event)">
+      </button>
+      <p-menu #menu [popup]="true" [model]="aAvailableActions"></p-menu>
+    </div>
+  </div>
+
+  <div>
+    <hr>
+  </div>
+
   <!-- Описание задачи. -->
   <div class="block-task-lines col-lg-12 d-flex">
     <div class="col-lg-8">
-      <strong>Описание</strong>
-      <div class="empty-task-details" *ngIf="taskDetails$.value?.details == null || taskDetails$.value?.details == ''">
-        Добавьте описание задачи, чтобы исполнителю было понятно, что нужно сделать в рамках задачи
+      <div>
+        <strong>Описание</strong>
       </div>
 
-      <div class="task-details">
-        {{taskDetails$.value?.details}}
-      </div>
+      <p-inplace [style]="{'min-height':'30px'}" [active]="isActiveTaskDetails" (onActivate)="onActivateTaskDetails()">
+        <ng-template pTemplate="display">
+          <span class="empty-task-details" *ngIf="taskDetails == null || taskDetails == ''">
+            Добавьте описание задачи, чтобы исполнителю было понятно, что нужно сделать в рамках задачи
+          </span>
+          <span class="task-name-title">{{taskDetails}}</span>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <textarea input-control-worksheet
+                      rows="5"
+                      cols="100"
+                      pInputTextarea
+                      [autoResize]="true"
+                      autocomplete="new-password"
+                      placeholder="Описание задачи"
+                      [(ngModel)]="taskDetails"
+                      class="input-about-me"
+                      value="{{taskDetails}}">
+            </textarea>
+
+           <div>
+            <button pButton
+                    pRipple
+                    icon="pi pi-times"
+                    type="button"
+                    label="Сохранить"
+                    class="p-button-success p-button-text p-button-sm"
+                    *ngIf="isActiveTaskDetails"
+                    (click)="onSaveTaskDetailsAsync(taskDetails)">
+            </button>
+
+            <button pButton
+                    pRipple
+                    icon="pi pi-times"
+                    type="button"
+                    label="Отмена"
+                    class="p-button-secondary p-button-text p-button-sm"
+                    *ngIf="isActiveTaskDetails"
+                    (click)="isActiveTaskDetails=!isActiveTaskDetails">
+            </button>
+           </div>
+        </ng-template>
+    </p-inplace>
     </div>
 
     <div class="col-lg-4">
@@ -154,36 +320,586 @@
     <hr>
   </div>
 
-  <!-- Связанные задачи. -->
-  <div class="block-task-lines col-lg-12 d-flex">
-    <div class="col-lg-8">
-      <strong>Связанные задачи</strong>
-      <!-- <div class="empty-task-details" *ngIf="taskDetails$.value?.details == null || taskDetails$.value?.details == ''">
-        Добавьте описание задачи, чтобы исполнителю было понятно, что нужно сделать в рамках задачи
-      </div> -->
+  <!-- Связанные задачи (обычные связи). -->
+  <div class="block-task-lines d-flex" *ngIf="taskTypeId == 1 || taskTypeId == 2">
+    <div class="">
+      <div class="d-flex justify-content-between">
+        <div class="space-bottom-10">
+          <strong>Связанные задачи</strong>
+        </div>
 
-      <!-- <div class="task-details">
-        {{taskDetails$.value?.details}}
-      </div> -->
-    </div>
+      </div>
+      <div class="">
+        <p-table [value]="taskLinkDefault$.value"
+                  styleClass="p-datatable-sm"
+                  [tableStyle]="{'min-width': '50rem'}"
+                  [rows]="10"
+                  responsiveLayout="scroll"
+                  [paginator]="taskLinkDefault$.value?.length > 0">
+          <ng-template pTemplate="header">
+              <tr>
+                  <th>Ключ</th>
+                  <th>Название задачи</th>
+                  <th>Статус</th>
+                  <th>Исполнитель</th>
+                  <th>Обновлено</th>
+                  <th>Разорвать связь</th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-t>
+              <tr>
+                  <td class="link">
+                    <div (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId ?? 'Не указан'}}</div>
+                  </td>
 
-    <div class="col-lg-4">
+                  <td>
+                    <div>{{t.taskName}}</div>
+                  </td>
 
+                  <td>
+                    <div class="smaller-text">
+                      {{t.taskStatusName}}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="smaller-text">
+                      {{t.executorName}}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="smaller-text">
+                      {{t.lastUpdated}}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="cancel">
+                      <button pButton type="button"
+                              icon="pi pi-times"
+                              class="p-button-danger p-button-sm p-button-text"
+                              (click)="onRemoveTaskLinkAsync(t.taskId, 'Link')"
+                              pTooltip="Удалить связь"
+                              tooltipPosition="bottom">
+                      </button>
+                    </div>
+                  </td>
+              </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">
+                  <div>
+                    Связей нет.
+                  </div>
+                </td>
+            </tr>
+        </ng-template>
+      </p-table>
+      </div>
     </div>
   </div>
 
-  <div>
+  <div *ngIf="taskTypeId == 1 || taskTypeId == 2">
+    <hr>
+  </div>
+
+   <!-- Связанные задачи (родительские связи). -->
+   <div class="block-task-lines d-flex" *ngIf="taskTypeId == 1 || taskTypeId == 2">
+    <div class="">
+      <div class="d-flex justify-content-between">
+        <div class="space-bottom-10">
+          <strong>Родительские задачи</strong>
+        </div>
+
+      </div>
+      <div class="">
+        <p-table [value]="taskLinkParent$.value"
+                  styleClass="p-datatable-sm"
+                  [tableStyle]="{'min-width': '50rem'}"
+                  [rows]="10"
+                  responsiveLayout="scroll"
+                  [paginator]="taskLinkParent$.value?.length > 0">
+          <ng-template pTemplate="header">
+              <tr>
+                  <th>Ключ</th>
+                  <th>Название задачи</th>
+                  <th>Статус</th>
+                  <th>Исполнитель</th>
+                  <th>Обновлено</th>
+                  <th>Разорвать связь</th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-t>
+              <tr>
+                  <td class="link" (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId ?? 'Не указан'}}</td>
+                  <td>
+                    <div class="smaller-text">{{t.taskName}}</div>
+                  </td>
+
+                  <td>
+                    <div class="smaller-text">
+                      {{t.taskStatusName}}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="smaller-text">
+                      {{t.executorName}}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="smaller-text">
+                      {{t.lastUpdated}}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="cancel">
+                      <button pButton
+                              type="button"
+                              icon="pi pi-times"
+                              class="p-button-danger p-button-sm p-button-text"
+                              (click)="onRemoveTaskLinkAsync(t.taskId, 'Parent')">
+                      </button>
+                    </div>
+                  </td>
+              </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">
+                  <div>
+                    Связей нет.
+                  </div>
+                </td>
+            </tr>
+        </ng-template>
+      </p-table>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="taskTypeId == 1 || taskTypeId == 2">
+    <hr>
+  </div>
+
+   <!-- Связанные задачи (дочерние связи). -->
+   <div class="block-task-lines d-flex" *ngIf="taskTypeId == 1 || taskTypeId == 2">
+    <div class="">
+      <div class="d-flex justify-content-between">
+        <div class="space-bottom-10">
+          <strong>Дочерние задачи</strong>
+        </div>
+
+      </div>
+      <div class="">
+        <p-table [value]="taskLinkChild$.value"
+                  styleClass="p-datatable-sm"
+                  [tableStyle]="{'min-width': '50rem'}"
+                  [rows]="10"
+                  responsiveLayout="scroll"
+                  [paginator]="taskLinkChild$.value?.length > 0">
+          <ng-template pTemplate="header">
+              <tr>
+                  <th>Ключ</th>
+                  <th>Название задачи</th>
+                  <th>Статус</th>
+                  <th>Исполнитель</th>
+                  <th>Обновлено</th>
+                  <th>Разорвать связь</th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-t>
+              <tr>
+                  <td class="link" (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId ?? 'Не указан'}}</td>
+                  <td>
+                    <div class="smaller-text">{{t.taskName}}</div>
+                  </td>
+
+                  <td>
+                    <div class="smaller-text">
+                      {{t.taskStatusName}}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="smaller-text">
+                      {{t.executorName}}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="smaller-text">
+                      {{t.lastUpdated}}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="cancel">
+                      <button pButton
+                              type="button"
+                              icon="pi pi-times"
+                              class="p-button-danger p-button-sm p-button-text"
+                              (click)="onRemoveTaskLinkAsync(t.taskId, 'Child')">
+                      </button>
+                    </div>
+                  </td>
+              </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">
+                  <div>
+                    Связей нет.
+                  </div>
+                </td>
+            </tr>
+        </ng-template>
+      </p-table>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="taskTypeId == 1 || taskTypeId == 2">
+    <hr>
+  </div>
+
+   <!-- Связанные задачи (связи зависит от). -->
+   <div class="block-task-lines d-flex" *ngIf="taskTypeId == 1 || taskTypeId == 2">
+    <div class="">
+      <div class="d-flex justify-content-between">
+        <div class="space-bottom-10">
+          <strong>Зависит от</strong>
+        </div>
+
+      </div>
+      <div class="">
+        <p-table [value]="taskLinkDepend$.value"
+                  styleClass="p-datatable-sm"
+                  [tableStyle]="{'min-width': '50rem'}"
+                  [rows]="10"
+                  responsiveLayout="scroll"
+                  [paginator]="taskLinkDepend$.value?.length > 0">
+          <ng-template pTemplate="header">
+              <tr>
+                  <th>Ключ</th>
+                  <th>Название задачи</th>
+                  <th>Статус</th>
+                  <th>Исполнитель</th>
+                  <th>Обновлено</th>
+                  <th>Разорвать связь</th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-t>
+              <tr>
+                  <td class="link" (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId ?? 'Не указан'}}</td>
+                  <td>
+                    <div class="smaller-text">{{t.taskName}}</div>
+                  </td>
+
+                  <td>
+                    <div class="smaller-text">
+                      {{t.taskStatusName}}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="smaller-text">
+                      {{t.executorName}}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="smaller-text">
+                      {{t.lastUpdated}}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="cancel">
+                      <button pButton
+                              type="button"
+                              icon="pi pi-times"
+                              class="p-button-danger p-button-sm p-button-text"
+                              (click)="onRemoveTaskLinkAsync(t.taskId, 'Depend')">
+                      </button>
+                    </div>
+                  </td>
+              </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">
+                  <div>
+                    Связей нет.
+                  </div>
+                </td>
+            </tr>
+        </ng-template>
+      </p-table>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="taskTypeId == 1 || taskTypeId == 2">
+    <hr>
+  </div>
+
+  <!-- Связанные задачи (связи блокирует). -->
+  <div class="block-task-lines d-flex" *ngIf="taskTypeId == 1 || taskTypeId == 2">
+    <div class="">
+      <div class="d-flex justify-content-between">
+        <div class="space-bottom-10">
+          <strong>Блокирует</strong>
+        </div>
+
+      </div>
+      <div class="">
+        <p-table [value]="taskLinkBlocked$.value"
+                  styleClass="p-datatable-sm"
+                  [tableStyle]="{'min-width': '50rem'}"
+                  [rows]="10"
+                  responsiveLayout="scroll"
+                  [paginator]="taskLinkBlocked$.value?.length > 0">
+          <ng-template pTemplate="header">
+              <tr>
+                  <th>Ключ</th>
+                  <th>Название задачи</th>
+                  <th>Статус</th>
+                  <th>Исполнитель</th>
+                  <th>Обновлено</th>
+                  <th>Разорвать связь</th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-t>
+              <tr>
+                  <td class="link" (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId ?? 'Не указан'}}</td>
+                  <td>
+                    <div class="smaller-text">{{t.taskName}}</div>
+                  </td>
+
+                  <td>
+                    <div class="smaller-text">
+                      {{t.taskStatusName}}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="smaller-text">
+                      {{t.executorName}}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="smaller-text">
+                      {{t.lastUpdated}}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="cancel">
+                      <button pButton type="button" icon="pi pi-times" class="p-button-danger p-button-sm p-button-text"></button>
+                    </div>
+                  </td>
+              </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">
+                  <div>
+                    Связей нет.
+                  </div>
+                </td>
+            </tr>
+        </ng-template>
+      </p-table>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-3 block-sprint" *ngIf="taskTypeId == 4">
+    <div>
+      <strong>Задачи эпика</strong>
+    </div>
+  </div>
+
+  <div class="mt-3 block-sprint" *ngIf="taskTypeId == 4">
+    <div class="mb-3">
+      <p-autoComplete [(ngModel)]="selectedEpic"
+                      [suggestions]="epicTasks$.value"
+                      (completeMethod)="onSearchIncludeEpicTaskAsync($event)"
+                      [showEmptyMessage]="true"
+                      emptyMessage="Результатов не найдено"
+                      field="findText"
+                      [minLength]="0"
+                      placeholder="Добавить задачу в эпик"
+                      (onSelect)="onSelectTask()">
+
+      </p-autoComplete>
+
+      <div class="d-flex mt-1">
+        <div>
+          <p-checkbox inputId="searchByTaskId"
+                      [value]="isSearchByTaskId"
+                      (onChange)="isSearchByTaskId = !isSearchByTaskId"
+                      [binary]="true">
+
+          </p-checkbox>
+          <label for="searchByTaskId">&nbsp;&nbsp;Искать по ID задачи</label>
+        </div>
+
+        &nbsp;
+
+        <div>
+          <p-checkbox inputId="searchByTaskName"
+                      [value]="isSearchByTaskName"
+                      (onChange)="isSearchByTaskName = !isSearchByTaskName"
+                      [binary]="true">
+
+          </p-checkbox>
+          <label for="searchByTaskName">&nbsp;&nbsp;Искать в названии задачи</label>
+        </div>
+
+        &nbsp;
+
+        <div>
+          <p-checkbox inputId="sprintTasksDescription"
+                      [value]="isSearchByTaskDescription"
+                      (onChange)="isSearchByTaskDescription = !isSearchByTaskDescription"
+                      [binary]="true">
+
+          </p-checkbox>
+          <label for="sprintTasksDescription">&nbsp;&nbsp;Искать в описании задачи</label>
+        </div>
+      </div>
+    </div>
+
+    <p-table [value]="aEpicTasks"
+             styleClass="p-datatable-sm"
+             [tableStyle]="{'min-width': '50rem'}"
+             [rows]="10"
+             responsiveLayout="scroll"
+             [paginator]="aEpicTasks.length > 0">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Ключ</th>
+          <th>Тип задачи</th>
+          <th>Название задачи</th>
+          <th>Статус</th>
+          <th>Исполнитель</th>
+          <th>Исключение из эпика</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-t>
+        <tr>
+          <td class="link">
+            <div (click)="onSelectTaskLink(t?.fullTaskId)">{{t?.fullProjectTaskId}}</div>
+          </td>
+
+          <td>
+            <div>{{t?.taskTypeName}}</div>
+          </td>
+
+          <td>
+            <div>{{t?.name}}</div>
+          </td>
+
+          <td>
+            <div class="smaller-text">
+              {{t?.statusName}}
+            </div>
+          </td>
+
+          <td>
+            <div class="smaller-text">
+              {{t?.executorName}}
+            </div>
+          </td>
+
+          <td>
+            <div class="cancel">
+              <button pButton type="button"
+                      icon="pi pi-times"
+                      class="p-button-danger p-button-sm p-button-text"
+                      pTooltip="Исключить задачу из эпика"
+                      tooltipPosition="bottom"
+                      (click)="onRemoveAddedTask(t.projectTaskId)">
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7">
+            <div>
+              Нет данных.
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <div *ngIf="taskTypeId == 1 || taskTypeId == 2 || taskTypeId == 4">
     <hr>
   </div>
 
   <!-- Файлы задачи. -->
   <div class="block-task-lines col-lg-12 d-flex">
     <div class="col-lg-8">
-      <strong>Вложенные файлы</strong>
+      <strong>Прикрепить файлы</strong>
+      <p-fileUpload [multiple]="true"
+                    (onSelect)="onSelectTaskFiles($event)"
+                    (uploadHandler)="onUploadTaskFilesAsync()"
+                    [customUpload]="true"
+                    chooseLabel="Прикрепить файл"
+                    uploadLabel="Сохранить"
+                    cancelLabel="Отменить"
+                    uploadIcon="pi pi-save">
+      </p-fileUpload>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-lg-4 block-attached-files" *ngIf="taskFiles$?.value?.length">
+      <div class="card block-task-files mt-4">
+        <strong>Файлы задачи</strong>
+        <ul *ngFor="let tf of taskFiles$?.value">
+          <li>
+           <div class="d-flex">
+            <div>
+              {{tf.documentName}}
+            </div>
 
+            <div class="cancel">
+              <button pButton type="button"
+                      icon="pi pi-cloud-download"
+                      class="p-button-primary p-button-sm p-button-text"
+                      pTooltip="Скачать файл"
+                      tooltipPosition="bottom"
+                      (click)="onDownloadFileAsync(tf.documentId, tf.documentName)">
+              </button>
+
+              <button pButton type="button"
+                      icon="pi pi-times"
+                      class="p-button-danger p-button-sm p-button-text"
+                      pTooltip="Удалить файл"
+                      tooltipPosition="bottom"
+                      (click)="onRemoveTaskFileAsync(tf.documentId)">
+              </button>
+            </div>
+           </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 
@@ -191,10 +907,92 @@
     <hr>
   </div>
 
-  <!-- КОмментарии задачи. -->
+  <!-- Комментарии задачи. -->
   <div class="block-task-lines col-lg-12 d-flex">
     <div class="col-lg-8">
-      <strong>Активность</strong>
+      <p-tabView>
+        <p-tabPanel header="Комментарии">
+          <div *ngFor="let c of taskComments$.value">
+            <div>&nbsp;</div>
+
+            <p-panel header="Добавлено: {{c.userName}}">
+              <div class="">
+                <div class="block-comments">
+                  <p-inplace [style]="{'min-height':'33px'}"
+                             [active]="c.isActiveTaskComment"
+                             (onActivate)="c.isActiveTaskComment = !c.isActiveTaskComment">
+                    <ng-template pTemplate="display">
+                      <span class="task-name-title">{{c.comment}}</span>
+                    </ng-template>
+
+                    <ng-template pTemplate="content">
+                      <input type="text" [(ngModel)]="c.comment" value="{{c.comment}}" pInputText class="comment">
+                    </ng-template>
+                  </p-inplace>
+
+                  <button pButton
+                          pRipple
+                          icon="pi pi-save"
+                          type="button"
+                          label="Сохранить"
+                          class="p-button-success p-button-text p-button-sm"
+                          *ngIf="c.isActiveTaskComment"
+                          (click)="onUpdateTaskCommentAsync(c.commentId, c.comment)">
+                  </button>
+
+                  <button pButton
+                          pRipple
+                          icon="pi pi-times"
+                          type="button"
+                          label="Отмена"
+                          class="p-button-secondary p-button-text p-button-sm"
+                          *ngIf="c.isActiveTaskComment"
+                          (click)="c.isActiveTaskComment=!c.isActiveTaskComment">
+                  </button>
+
+                  <button pButton type="button"
+                          icon="pi pi-times"
+                          class="p-button-danger p-button-sm p-button-text"
+                          (click)="onDeleteTaskCommentAsync(c.commentId)"
+                          pTooltip="Удалить комментарий"
+                          tooltipPosition="bottom">
+                  </button>
+                </div>
+
+                <div class="control-comment mt-1">
+                  <p-button label="Отправить"
+                            icon="pi pi-arrow-up-right"
+                            [hidden]="comment == undefined || comment == '' || comment == null"
+                            (click)="onCreateTaskCommentAsync(comment)"
+                            class="p-button-sm">
+                  </p-button>
+                </div>
+              </div>
+            </p-panel>
+          </div>
+
+          <!-- Оставить комментарий. -->
+          <div class="mt-3">
+            <p-card header="Оставить комментарий" [style]="{width: '100%'}">
+              <div>
+                <p-editor [(ngModel)]="comment" [style]="{width: '100%'}"></p-editor>
+              </div>
+
+              <div class="control-comment mt-1">
+                <p-button label="Отправить"
+                          icon="pi pi-arrow-up-right"
+                          [hidden]="comment == undefined || comment == '' || comment == null"
+                          (click)="onCreateTaskCommentAsync(comment)">
+                </p-button>
+              </div>
+            </p-card>
+          </div>
+        </p-tabPanel>
+
+        <p-tabPanel header="История">
+
+        </p-tabPanel>
+      </p-tabView>
     </div>
 
     <div class="col-lg-4">
@@ -202,3 +1000,86 @@
     </div>
   </div>
 </div>
+
+<!-- Диалог выбора типа связи и добавления связи с задачей. -->
+<p-dialog header="Добавление связи" [(visible)]="isVisibleCreateTaskLink" [modal]="true" [style]="{width: '50vw', height: '50vw'}"
+    [draggable]="false" [resizable]="false">
+    <div class="">
+      <div>
+        <label class="control-label-task-item">Тип связи:</label>
+      </div>
+
+     <div>
+      <p-dropdown [options]="linkTypes$.value"
+                  [(ngModel)]="selectedLinkType"
+                  [showClear]="true"
+                  placeholder="Выберите тип связи"
+                  [emptyMessage]="(linkTypes$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                  optionLabel="value"
+                  (onClick)="onGetAvailableTaskLinkAsync()">
+      </p-dropdown>
+     </div>
+    </div>
+
+    <div class="" *ngIf="selectedLinkType">
+      <div>
+        <label class="control-label-task-item">Задача для связи:</label>
+      </div>
+
+     <div>
+      <p-dropdown [options]="linkTasks$.value"
+                  [(ngModel)]="selectedTaskLink"
+                  optionLabel="taskName"
+                  [filter]="true"
+                  filterBy="filterText"
+                  [showClear]="true"
+                  placeholder="Выберите задачу для связи">
+        <ng-template pTemplate="selectedItem">
+            <div class="country-item country-item-value" *ngIf="selectedTaskLink">
+                <div>{{selectedTaskLink.taskName}}</div>
+            </div>
+        </ng-template>
+
+        <ng-template let-t pTemplate="item">
+            <div class="country-item">
+                <div>{{t.taskName}}</div>
+            </div>
+        </ng-template>
+    </p-dropdown>
+
+    <div>
+      <small *ngIf="selectedLinkType.key == 'Link'">Укажите, с какой задачей нужно связать текущую (связь без иерархии).
+
+      </small>
+      <small *ngIf="selectedLinkType.key == 'Parent'">Укажите, какая задача является родительской для текущей (связь с
+        иерархией).
+
+      </small>
+      <small *ngIf="selectedLinkType.key == 'Child'">Укажите, какая задача является дочерней для текущей (связь с
+        иерархией).
+
+      </small>
+      <small *ngIf="selectedLinkType.key == 'Depend'">Укажите, от какой задачи зависит текущая (связь без иерархии).
+
+      </small>
+    </div>
+     </div>
+    </div>
+
+        <ng-template pTemplate="footer">
+          <p-button icon="pi pi-times"
+                    (click)="isVisibleCreateTaskLink = false"
+                    label="Отменить"
+                    styleClass="p-button-danger p-button-sm p-button-text">
+
+          </p-button>
+
+          <p-button icon="pi pi-check"
+                    (click)="onCreateTaskLinkAsync()"
+                    label="Добавить связь"
+                    styleClass="p-button-success p-button-sm p-button-text"
+                    [disabled]="!selectedLinkType">
+
+        </p-button>
+        </ng-template>
+</p-dialog>

@@ -52,23 +52,27 @@ export class CreateVacancyComponent implements OnInit {
     conditions: string = "";
 
     public async ngOnInit() {
-        // Подключаемся.
-        this._signalrService.startConnection().then(() => {
-            console.log("Подключились");
+      // Подключаемся.
+      this._signalrService.startConnection().then(() => {
+        console.log("Подключились");
 
-            this.listenAllHubsNotifications();
+        this.listenAllHubsNotifications();
+      });
+
+      // Подписываемся на получение всех сообщений.
+      this._signalrService.AllFeedObservable
+        .subscribe((response: any) => {
+          console.log("Подписались на сообщения", response);
+
+          // Если пришел тип уведомления, то просто показываем его.
+          if (response.notificationLevel !== undefined) {
+            this._messageService.add({
+              severity: response.notificationLevel,
+              summary: response.title,
+              detail: response.message
+            });
+          }
         });
-
-         // Подписываемся на получение всех сообщений.
-    this._signalrService.AllFeedObservable
-    .subscribe((response: any) => {
-        console.log("Подписались на сообщения", response);
-        
-        // Если пришел тип уведомления, то просто показываем его.
-        if (response.notificationLevel !== undefined) {
-            this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
-        }
-    });
 
         this.checkUrlParams();
         await this.getUserProjectsAsync();
@@ -206,7 +210,7 @@ export class CreateVacancyComponent implements OnInit {
      * Функция получает список проектов пользователя.
      * @returns Список проектов.
      */
-     private async getUserProjectsAsync() {        
+     private async getUserProjectsAsync() {
         (await this._backofficeService.getUserProjectsAsync(true))
         .subscribe(_ => {
             console.log("Проекты пользователя:", this.userProjects$.value);

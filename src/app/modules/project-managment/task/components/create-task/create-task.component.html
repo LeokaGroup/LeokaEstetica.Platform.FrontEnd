@@ -1,0 +1,272 @@
+<div class="task-details mt-3">
+    <!-- Название задачи. -->
+    <div class="task-name">
+      <p-inplace>
+        <ng-template pTemplate="display">
+          <span>Введите название</span>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <input type="text"
+                [(ngModel)]="taskName"
+                pInputText
+                class="p-inputtext-sm input-control-worksheet control-task-name" />
+        </ng-template>
+      </p-inplace>
+    </div>
+
+    <div>
+      <hr>
+    </div>
+
+    <!-- Детали задачи. -->
+    <div class="block-task-lines col-lg-12 d-flex">
+      <div class="col-lg-4">
+        <strong>Детали</strong>
+        <div class="d-flex line">
+          <div class="line-item d-flex">
+            <label class="control-label-task-item">Тип:</label>
+            <p-dropdown [options]="aTaskTypes"
+                        [(ngModel)]="selectedTaskType"
+                        optionLabel="typeName"
+                        [showClear]="true"
+                        placeholder="Выберите тип"
+                        [emptyMessage]="(taskTypes$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                        (onClick)="onGetTaskTypesAsync()"
+                        optionValue="typeSysName"
+                        (onChange)="onSelecteTaskType(selectedTaskType)">
+
+            </p-dropdown>
+          </div>
+        </div>
+
+        <div class="d-flex line" *ngIf="isCreateTask || isCreateEpic">
+          <label class="control-label-task-item">Приоритет:</label>
+          <p-dropdown [options]="priorities$.value"
+                      [(ngModel)]="selectedPriority"
+                      optionLabel="priorityName"
+                      [showClear]="true"
+                      placeholder="Выберите приоритет"
+                      [emptyMessage]="(priorities$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                      (onClick)="onGetTaskPrioritiesAsync()"
+                      optionValue="priorityId">
+
+          </p-dropdown>
+        </div>
+
+        <div class="d-flex line" *ngIf="isCreateTask || isCreateEpic || isCreateHistory">
+          <label class="control-label-task-item">Метки:</label>
+          <div>
+            <p-dropdown [options]="projectTags$.value"
+                      [(ngModel)]="selectedTag"
+                      optionLabel="tagName"
+                      [showClear]="true"
+                      placeholder="Выберите тег"
+                      [emptyMessage]="(projectTags$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                      (onClick)="onGetProjectTagsAsync()"
+                      (onChange)="onSelectTaskTag()">
+
+          </p-dropdown>
+
+          <div *ngFor="let t of aSelectedTags">
+            <div class="tag">
+              <p-chip label="{{t.tagName}}" [removable]="true"></p-chip>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4" *ngIf="isCreateTask && !isCreateHistory">
+        <div class="line-item d-flex">
+          <label class="control-label-task-item">Статус:</label>
+          <p-dropdown [options]="taskStatuses$.value"
+                      [(ngModel)]="selectedStatus"
+                      optionLabel="statusName"
+                      [showClear]="true"
+                      placeholder="Выберите статус"
+                      [emptyMessage]="(taskStatuses$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                      (onClick)="onGetTaskStatusesAsync()"
+                      optionValue="taskStatusId"
+                      *ngIf="!isCreateHistory">
+          </p-dropdown>
+        </div>
+      </div>
+
+      <div class="col-lg-4" *ngIf="isCreateHistory">
+        <div class="line-item d-flex">
+          <label class="control-label-task-item">Статус:</label>
+          <p-dropdown [options]="userStoryStatuses$.value"
+                      [(ngModel)]="selectedHistoryStatus"
+                      optionLabel="statusName"
+                      [showClear]="true"
+                      placeholder="Выберите статус"
+                      [emptyMessage]="(userStoryStatuses$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                      optionValue="statusId"
+                      *ngIf="isCreateHistory">
+          </p-dropdown>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <strong *ngIf="isCreateTask">Люди</strong>
+        <div *ngIf="isCreateTask || isCreateHistory">
+          <div class="line-item d-flex">
+            <label class="control-label-task-item">Исполнитель:</label>
+            <div>
+              <p-dropdown [options]="taskPeople$.value"
+                          [(ngModel)]="selectedExecutor"
+                          optionLabel="fullName"
+                          [showClear]="true"
+                          placeholder="Выберите исполнителя"
+                          [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                          (onClick)="onGetSelectTaskPeopleAsync()">
+              </p-dropdown>
+              <button pButton
+                      pRipple
+                      label="Назначить меня"
+                      class="p-button-link control-button-executor-me"
+                      (click)="onSetMeExecutor()">
+              </button>
+            </div>
+          </div>
+
+          <div class="line-item d-flex">
+            <label class="control-label-task-item">Автор:</label>
+            <p>Заполняется автоматически.</p>
+          </div>
+
+          <div class="line-item d-flex">
+            <label class="control-label-task-item">Наблюдатели:</label>
+            <div>
+              <p-dropdown [options]="taskPeople$.value"
+                          [(ngModel)]="selectedWatcher"
+                          optionLabel="fullName"
+                          [showClear]="true"
+                          placeholder="Выберите наблюдателя"
+                          [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                          (onClick)="onGetSelectTaskPeopleAsync()"
+                          (onChange)="onSelectWachers()">
+              </p-dropdown>
+              <button pButton
+                      pRipple
+                      label="Добавить меня"
+                      class="p-button-link control-button-executor-me"
+                      (click)="onSetMeWatcher()">
+              </button>
+
+              <div *ngFor="let w of aSelectedWachers">
+                <div class="wacher">
+                  <p-chip label="{{w.fullName}}" [removable]="true"></p-chip>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <strong>Даты</strong>
+        <div>
+          <div class="line-item d-flex">
+            <label class="control-label-task-item">Создано:</label>
+            <p>Заполняется автоматически.</p>
+          </div>
+
+          <div class="line-item d-flex">
+            <label class="control-label-task-item">Обновлено:</label>
+            <p>Заполняется автоматически.</p>
+          </div>
+
+          <div class="line-item d-flex" *ngIf="isCreateEpic">
+            <label class="control-label-task-item">Дата начала эпика:</label>
+            <p-calendar [(ngModel)]="dateStart"
+                        dateFormat="dd.mm.yy"
+                        [showTime]="true"
+                        icon="pi pi-calendar"
+                        [showIcon]="true"
+                        [locale]="locale">
+
+            </p-calendar>
+          </div>
+
+          <div class="line-item d-flex mt-1" *ngIf="isCreateEpic">
+            <label class="control-label-task-item">Дата окончания эпика:</label>
+            <p-calendar [(ngModel)]="dateEnd"
+                        icon="pi pi-calendar"
+                        [showIcon]="true"
+                        dateFormat="dd.mm.yy"
+                        [showTime]="true"
+                        [locale]="locale">
+
+            </p-calendar>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+
+  <div>
+    <hr>
+  </div>
+
+  <!-- Блок с кнопками действий. -->
+  <div class="mt-3 mb-3 d-flex block-task-actions">
+    <!-- <div class="block-buttons-task-actions">
+      <button pButton type="button"
+            icon="pi pi-pencil"
+            label="Редактировать"
+            class="p-button-text p-button-secondary task-actions">
+    </button>
+    </div>    -->
+
+    <div>
+      <button pButton type="button"
+              icon="pi pi-save"
+              label="Сохранить"
+              class="p-button-text p-button-success task-actions"
+              (click)="onCreateProjectTaskAsync()">
+      </button>
+    </div>
+
+    <div>
+      <button pButton type="button"
+              icon="pi pi-file-import"
+              label="Прикрепить файлы"
+              class="p-button-text p-button-secondary task-actions">
+      </button>
+    </div>
+
+    <!-- <div>
+      <button pButton type="button"
+            icon="pi pi-save"
+            label="Добавить связь"
+            class="p-button-text p-button-success task-actions">
+    </button>
+    </div> -->
+
+    <!-- <div>
+      <button pButton type="button"
+            label="Возможные действия"
+            class="p-button-text p-button-secondary task-actions">
+    </button>
+    </div> -->
+  </div>
+
+    <div>
+      <hr>
+    </div>
+
+    <!-- Описание задачи. -->
+    <div class="block-task-lines col-lg-12 d-flex">
+      <div class="col-lg-8">
+        <strong>Описание</strong>
+        <p-editor [(ngModel)]="taskDetails" [style]="{'min-height':'150px','height':'100%'}"></p-editor>
+      </div>
+
+      <div class="col-lg-4">
+
+      </div>
+    </div>
+    <div>
+      <hr>
+    </div>
+  </div>

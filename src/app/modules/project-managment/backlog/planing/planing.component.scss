@@ -1,0 +1,28 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+@use "/src/app/modules/header/components/header.component.scss";
+@use "/src/app/modules/project-managment/start/components/space/space.component.scss";
+
+.block-tables {
+  margin: 10px 10px 10px 10px;
+}
+
+.control-sprint-strong {
+  font-weight: 700;
+}
+
+::ng-deep .p-button-label {
+  padding: 0;
+  font-size: smaller;
+}
+
+.block-sprint {
+  margin: 0px 10px 0px 10px;
+}
+
+.block-sprint {
+  margin: 0px 10px 0px 10px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
