@@ -17,7 +17,7 @@
                 <input type="text" class="p-inputtext-sm input-control-worksheet control-project" placeholder="Название вакансии" pInputText
               autocomplete="new-password" [(ngModel)]="vacancyName" [style]="{'width':'400px'}"/>
             </div>
-          </div>         
+          </div>
         </div>
 
         <div class="d-flex">
@@ -64,9 +64,9 @@
               <label>Оплата</label>
             </div>
             <div>
-               <p-inputNumber class="p-inputtext-sm input-control-worksheet control-vacancy" 
-                              inputId="integeronly" 
-                              [(ngModel)]="payment" 
+               <p-inputNumber class="p-inputtext-sm input-control-worksheet control-vacancy"
+                              inputId="integeronly"
+                              [(ngModel)]="payment"
                               autocomplete="new-password">
 
                </p-inputNumber>
@@ -80,13 +80,13 @@
                 <label>Ваши проекты</label>
             </div>
             <div>
-              <p-dropdown [options]="userProjects$.value.userProjects" 
-                          [(ngModel)]="selectedProject" 
+              <p-dropdown [options]="userProjects$.value.userProjects"
+                          [(ngModel)]="selectedProject"
                           optionLabel="projectName"
                           class="control-project-stages">
               </p-dropdown>
-            </div>          
-          </div>    
+            </div>
+          </div>
         </div>
 
         <div class="d-flex mt-3">
@@ -97,14 +97,14 @@
                             <div>
                                 <label>Описание вакансии</label>
                             </div>
-                            <div>
+                            <div class="control-textarea-big-width">
                                 <p-editor [(ngModel)]="vacancyText" [style]="{'height':'320px'}"></p-editor>
                             </div>
                         </div>
                     </div>
                   </div>
               </div>
-        </div>        
+        </div>
 
         <div class="d-flex mt-3">
           <div class="control-input-text-worksheet">
@@ -114,14 +114,14 @@
                           <div>
                               <label>Требования</label>
                           </div>
-                          <div>
+                          <div class="control-textarea-big-width">
                               <p-editor [(ngModel)]="demands" [style]="{'height':'320px'}"></p-editor>
                           </div>
                       </div>
                   </div>
                 </div>
             </div>
-      </div>       
+      </div>
 
       <div class="d-flex mt-3">
         <div class="control-input-text-worksheet">
@@ -131,14 +131,14 @@
                         <div>
                             <label>Условия</label>
                         </div>
-                        <div>
+                        <div class="control-textarea-big-width">
                             <p-editor [(ngModel)]="conditions" [style]="{'height':'320px'}"></p-editor>
                         </div>
                     </div>
                 </div>
               </div>
           </div>
-    </div>      
+    </div>
       </p-panel>
     </div>
 

@@ -46,3 +46,25 @@
   font-size: 16px;
   line-height: 1.65;
 }
+
+.invite-telegram {
+  background-color: #827ffe;
+  color: white;
+  width: 100%;
+}
+
+.block-invite {
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+}
+
+::ng-deep .p-button-link {
+  padding: 0 0;
+  color: white!important;
+  text-decoration: underline;
+}
+
+.worksheet-panel {
+  max-width: 720px;
+}
