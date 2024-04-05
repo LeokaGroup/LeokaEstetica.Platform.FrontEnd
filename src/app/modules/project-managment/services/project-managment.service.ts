@@ -690,9 +690,7 @@ export class ProjectManagmentService {
 
   /**
    * Функция добавляет задачу в эпик.
-   * @param epicId - Id эпика.
-   * @param projectId - Id проекта.
-   * @param projectTaskId - Id задачи в рамках проекта.
+   * @param includeTaskEpicInput - Входная модель.
    */
   public async includeTaskEpicAsync(includeTaskEpicInput: IncludeTaskEpicInput) {
     return await this._http.post(this.apiUrl + `/project-management/task-epic`, includeTaskEpicInput).pipe(
