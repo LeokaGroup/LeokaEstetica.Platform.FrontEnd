@@ -46,7 +46,7 @@
     <div class="worksheet-panel">
       <p-panel header="Контактная информация" [toggleable]="true">
         <div class="block-contact">
-            <div class="control-input-text-worksheet">
+            <div class="control-input-text-worksheet control-input-text-star">
                 <input type="text"
                         class="p-inputtext-sm input-control-worksheet"
                         placeholder="Фамилия"
@@ -81,7 +81,7 @@
                 </div> -->
             </div>
 
-            <div class="control-input-text-worksheet">
+            <div class="control-input-text-worksheet control-input-text-star">
                 <input type="text"
                         class="p-inputtext-sm input-control-worksheet"
                         placeholder="Имя"
@@ -97,7 +97,7 @@
                 <span *ngIf="isModeView">{{profileInfo$.value.firstName}}</span>
             </div>
 
-            <div class="control-input-text-worksheet">
+            <div class="control-input-text-worksheet ">
                 <input type="text"
                         class="p-inputtext-sm input-control-worksheet"
                         placeholder="Отчество"
@@ -232,7 +232,7 @@
     <div class="worksheet-panel space-top">
       <p-panel header="О себе" [toggleable]="true">
         <div class="d-flex worksheet-line">
-            <div class="control-input-text-worksheet">
+            <div class="control-input-text-worksheet control-input-text-star">
                 <textarea input-control-worksheet
                             rows="5"
                             cols="100"
@@ -253,9 +253,9 @@
         </div>
 
         <div class="d-flex worksheet-line">
-            <div class="control-input-text-worksheet">
+            <div class="control-input-text-worksheet control-input-text-star">
                 <input type="text"
-                        class="p-inputtext-sm input-control-worksheet"
+                        class="p-inputtext-sm input-control-worksheet "
                         placeholder="Должность"
                         pInputText
                         autocomplete="new-password"
@@ -270,7 +270,7 @@
             </div>
 
             <!-- TODO: Передавать это поле на бэк, когда там будет оно добавлено. -->
-            <div class="control-input-text-worksheet">
+            <div class="control-input-text-worksheet control-input-text-star">
                 <input type="text"
                         class="p-inputtext-sm input-control-worksheet"
                         placeholder="Опыт (стаж)"
@@ -299,44 +299,47 @@
     </div>
 
     <div class="worksheet-panel space-top">
-      <p-panel header="Навыки" [toggleable]="true" >
-        <div *ngIf="isModeEdit; else elseBlockSkills">
-        <p-pickList [source]="profileSkillsItems$.value"
-                    [target]="aSelectedSkills"
-                    sourceHeader="Выберите навыки"
-                    targetHeader="Выбранные навыки"
-                    [dragdrop]="true"
-                    [responsive]="true"
-                    [sourceStyle]="{'height':'30rem'}"
-                    [targetStyle]="{'height':'30rem'}"
-                    filterBy="skillName"
-                    sourceFilterPlaceholder="Найти по названию"
-                    targetFilterPlaceholder="Найти по названию"
-                    (onMoveToTarget)="onSaveProfileUserSkillsAsync()">
-    <ng-template  let-product pTemplate="item" >
-        <div class="product-item">
-            <div class="image-container">
-                    <!-- <img src="assets/showcase/images/demo/product/{{product.image}}" [alt]="product.name" class="product-image" /> -->
-            </div>
-            <div class="product-list-detail">
-                <h5 class="mb-2">{{product.skillName}}</h5>
-                <i class="pi pi-tag product-category-icon"></i>
-                <span class="product-category">{{product.tag}}</span>
-            </div>
-            <div class="product-list-action">
-                <!-- <h6 class="mb-2">${{product.price}}</h6> -->
-                <!-- <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span> -->
-            </div>
-        </div>
-    </ng-template>
-        </p-pickList>
-        </div>
-          <ng-template #elseBlockSkills>
-            <div *ngFor="let ski of aSelectedSkills">
-              {{ski.skillName}}
-            </div>
-          </ng-template>
-      </p-panel>
+      <div class="p-panel-el">
+        <p-panel header="Навыки" [toggleable]="true" >
+          <div *ngIf="isModeEdit; else elseBlockSkills">
+          <p-pickList [source]="profileSkillsItems$.value"
+                      [target]="aSelectedSkills"
+                      sourceHeader="Выберите навыки"
+                      targetHeader="Выбранные навыки"
+                      [dragdrop]="true"
+                      [responsive]="true"
+                      [sourceStyle]="{'height':'30rem'}"
+                      [targetStyle]="{'height':'30rem'}"
+                      filterBy="skillName"
+                      sourceFilterPlaceholder="Найти по названию"
+                      targetFilterPlaceholder="Найти по названию"
+                      (onMoveToTarget)="onSaveProfileUserSkillsAsync()">
+      <ng-template  let-product pTemplate="item" >
+          <div class="product-item">
+              <div class="image-container">
+                      <!-- <img src="assets/showcase/images/demo/product/{{product.image}}" [alt]="product.name" class="product-image" /> -->
+              </div>
+              <div class="product-list-detail">
+                  <h5 class="mb-2">{{product.skillName}}</h5>
+                  <i class="pi pi-tag product-category-icon"></i>
+                  <span class="product-category">{{product.tag}}</span>
+              </div>
+              <div class="product-list-action">
+                  <!-- <h6 class="mb-2">${{product.price}}</h6> -->
+                  <!-- <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span> -->
+              </div>
+          </div>
+      </ng-template>
+          </p-pickList>
+          </div>
+            <ng-template #elseBlockSkills>
+              <div *ngFor="let ski of aSelectedSkills">
+                {{ski.skillName}}
+              </div>
+            </ng-template>
+        </p-panel>
+      </div>
+
       <p *ngIf="isModeEdit">
         Не нашли Ваш навык? Предложите его через форму пожеланий и предложений на главной странице платформы!
         <br>Возможно, мы включим его в список навыков на платформе.
@@ -345,7 +348,8 @@
 
 
     <div class="worksheet-panel space-top">
-        <p-panel header="Цели на платформе" [toggleable]="true">
+      <div class="p-panel-el">
+        <p-panel header="Цели на платформе" [toggleable]="true" >
           <div *ngIf="isModeEdit; else elseBlockIntents">
           <p-pickList [source]="profileIntentsItems$.value"
                     [target]="aSelectedIntents"
@@ -382,6 +386,8 @@
             </div>
           </ng-template>
         </p-panel>
+      </div>
+        
       </div>
 
       <div class="d-flex worksheet-line worksheet-panel mb-3">
