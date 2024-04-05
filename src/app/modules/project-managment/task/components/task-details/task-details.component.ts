@@ -832,11 +832,16 @@ export class TaskDetailsComponent implements OnInit {
       });
   };
 
+  /**
+   * Функция выбирает задачу и добавляет в массив задач эпика для дальнейшего включения этих задач в эпик.
+   */
   public onSelectTask() {
     this.aEpicTasks.push(this.selectedTask);
-    console.log("Заготовка для эпика",this.aEpicTasks);
   };
 
+  /**
+   * Функция добавляет задачи в эпик.
+   */
   public async onIncludeEpicTaskAsync() {
     let includeTaskEpicInput = new IncludeTaskEpicInput();
     includeTaskEpicInput.epicId = this.projectTaskId;
@@ -845,6 +850,16 @@ export class TaskDetailsComponent implements OnInit {
     (await this._projectManagmentService.includeTaskEpicAsync(includeTaskEpicInput))
       .subscribe(_ => {
         console.log("Добавили задачу в эпик: ", this.includeEpic$.value);
+
+        let projectId = this.projectId;
+
+        setTimeout(() => {
+          this._router.navigate(["/project-management/space"], {
+            queryParams: {
+              projectId
+            }
+          });
+        }, 4000);
       });
   };
 }
