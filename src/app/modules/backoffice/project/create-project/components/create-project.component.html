@@ -14,7 +14,7 @@
                 <label>Название проекта</label>
             </div>
             <div>
-                <input type="text" class="p-inputtext-sm input-control-worksheet control-project" 
+                <input type="text" class="p-inputtext-sm input-control-worksheet control-project"
                 placeholder="Название проекта" pInputText
               [(ngModel)]="projectName"/>
             </div>
@@ -29,8 +29,8 @@
                             <div>
                                 <label>Описание проекта</label>
                             </div>
-                            <div>
-                                <p-editor [(ngModel)]="projectDetails"  [style]="{'height':'320px'}"></p-editor>
+                            <div class="control-textarea-big-width">
+                                <p-editor [(ngModel)]="projectDetails" [style]="{'height':'320px'}"></p-editor>
                             </div>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                   <div>
                     <label>Условия</label>
                   </div>
-                  <div>
+                  <div class="control-input-text-worksheet">
                     <p-editor [(ngModel)]="conditions" [style]="{'height':'320px'}"></p-editor>
                   </div>
                 </div>
@@ -79,7 +79,7 @@
                   <div>
                     <label>Требования</label>
                   </div>
-                  <div>
+                  <div class="control-input-text-worksheet">
                     <p-editor [(ngModel)]="demands" [style]="{'height':'320px'}"></p-editor>
                   </div>
                 </div>

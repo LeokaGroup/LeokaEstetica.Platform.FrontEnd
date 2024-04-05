@@ -1,5 +1,6 @@
 @use "/src/app/common/styles/spaces.scss";
 @use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
 
 // Медиа-запросы.
 @media (max-width: 575px) {}
@@ -54,5 +55,5 @@
 @media (min-width: 1200px) {
   .worksheet-panel {
     margin-left: 10px;
-  } 
+  }
 }
