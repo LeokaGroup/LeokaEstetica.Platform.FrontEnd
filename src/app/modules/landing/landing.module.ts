@@ -18,6 +18,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ToastModule } from 'primeng/toast';
 import { TicketComponent } from '../ticket/components/landing/ticket.component';
 import { WisheOfferComponent } from '../ticket/components/wishe-offer/wishe-offer.component';
+import { ButtonModule } from 'primeng/button';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { WisheOfferComponent } from '../ticket/components/wishe-offer/wishe-offe
         ScrollTopModule,
         DropdownModule,
         InputTextareaModule,
-        ToastModule
+        ToastModule,
+        ButtonModule
     ],
 
     exports: [],

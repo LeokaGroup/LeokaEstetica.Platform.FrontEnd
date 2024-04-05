@@ -70,6 +70,27 @@
     }
 }
 
+.control-input-text-worksheet{
+    position: relative;
+}
+.control-input-text-star::after{
+    content: '*';
+    color: red;
+    position: absolute;
+    top: -10px;
+    left: -10px;
+}
+.p-panel-el{
+    position: relative;
+}
+.p-panel-el::after{
+    content: '*';
+    color: red;
+    position: absolute;
+    top: 10px;
+    left: 8px;
+}
+
 @media screen and (max-width: 576px) {
     .product-item {
         flex-wrap: wrap;
@@ -84,24 +105,6 @@
             width: 100px;
         }
     }
-}
-
-::ng-deep .p-button-link {
-    padding: 0 0;
-    color: white!important;
-    text-decoration: underline;
-}
-
-.invite-telegram {
-    background-color: #827ffe;
-    color: white;
-    width: 100%;
-}
-
-.block-invite {
-    display: flex;
-    justify-content: center;
-    padding: 5px;
 }
 
 // Медиа-запросы.
@@ -156,4 +159,29 @@
 /* xl (>=1200) */
 @media (min-width: 1200px) {
 
+}
+
+::ng-deep .control-textarea-big-width {
+  max-width: 690px;
+}
+
+.control-required-field{
+    position: relative;
+}
+.control-required-field::after{
+    content: '*';
+    color: red;
+    position: absolute;
+    top: -10px;
+    left: -10px;
+}
+.p-panel-el{
+    position: relative;
+}
+.p-panel-el::after{
+    content: '*';
+    color: red;
+    position: absolute;
+    top: 8px;
+    left: 9px;
 }

@@ -55,7 +55,24 @@ export class ProjectManagementSignalrService {
    */
   public listenSuccessPlaningSprint() {
     (<HubConnection>this.hubConnection).on("SendNotifySuccessPlaningSprint", (data: any) => {
-      debugger;
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает уведомления успешного планирования эпика.
+   */
+  public listenSuccessSuccessIncludeEpicTask() {
+    (<HubConnection>this.hubConnection).on("SendNotifySuccessIncludeEpicTask", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает уведомления ошибки планирования эпика.
+   */
+  public listenErrorSuccessIncludeEpicTask() {
+    (<HubConnection>this.hubConnection).on("SendNotifyErrorIncludeEpicTask", (data: any) => {
       this.$allFeed.next(data);
     });
   };

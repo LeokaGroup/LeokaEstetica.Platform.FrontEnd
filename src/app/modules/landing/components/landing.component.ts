@@ -178,4 +178,8 @@ private async availableProjectManagmentAsync() {
             console.log("Доступность модуля УП: ", this.availableProjectManagment$.value);
         });
 };
+
+    public onCreateInviteLinkTelegramAsync() {
+        window.location.href = "https://t.me/leoka_estetica";
+    };
 }

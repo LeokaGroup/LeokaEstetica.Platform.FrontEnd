@@ -61,6 +61,7 @@
   font-size: 24px;
   font-weight: 400;
   max-width: 50%;
+  height: -50px;
 }
 
 .task-name-title {
@@ -68,6 +69,7 @@
   margin: 0;
   font-size: 24px;
   line-height: 28px;
+  display: inline-block;
 }
 
 :host ::ng-deep .p-inplace-content {

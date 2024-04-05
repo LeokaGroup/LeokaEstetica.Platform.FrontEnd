@@ -1,25 +1,27 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, tap } from 'rxjs';
-import { API_URL } from 'src/app/core/core-urls/api-urls';
-import { ChangeTaskDetailsInput } from '../task/models/input/change-task-details-input';
-import { ChangeTaskNameInput } from '../task/models/input/change-task-name-input';
-import { ChangeTaskStatusInput } from '../task/models/input/change-task-status-input';
-import { ConfigSpaceSettingInput } from '../task/models/input/config-space-setting-input';
-import { CreateProjectManagementTaskInput } from '../task/models/input/create-task-input';
-import { CreateTaskStatusInput } from '../task/models/input/create-task-status-input';
-import { FixationStrategyInput } from '../task/models/input/fixation-strategy-input';
-import { ProjectTaskExecutorInput } from '../task/models/input/project-task-executor-input';
-import { ProjectTaskTagInput } from '../task/models/input/project-task-tag-input';
-import { ProjectTaskWatcherInput } from '../task/models/input/project-task-watcher-input';
-import { TaskLinkInput } from '../task/models/input/task-link-input';
-import { TaskPriorityInput } from '../task/models/input/task-priority-input';
-import { UserTaskTagInput } from '../task/models/input/user-task-tag-input';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, tap} from 'rxjs';
+import {API_URL} from 'src/app/core/core-urls/api-urls';
+import {ChangeTaskDetailsInput} from '../task/models/input/change-task-details-input';
+import {ChangeTaskNameInput} from '../task/models/input/change-task-name-input';
+import {ChangeTaskStatusInput} from '../task/models/input/change-task-status-input';
+import {ConfigSpaceSettingInput} from '../task/models/input/config-space-setting-input';
+import {CreateProjectManagementTaskInput} from '../task/models/input/create-task-input';
+import {CreateTaskStatusInput} from '../task/models/input/create-task-status-input';
+import {FixationStrategyInput} from '../task/models/input/fixation-strategy-input';
+import {ProjectTaskExecutorInput} from '../task/models/input/project-task-executor-input';
+import {ProjectTaskTagInput} from '../task/models/input/project-task-tag-input';
+import {ProjectTaskWatcherInput} from '../task/models/input/project-task-watcher-input';
+import {TaskLinkInput} from '../task/models/input/task-link-input';
+import {TaskPriorityInput} from '../task/models/input/task-priority-input';
+import {UserTaskTagInput} from '../task/models/input/user-task-tag-input';
 import {Router} from "@angular/router";
-import { TaskCommentInput } from '../task/models/input/task-comment-input';
+import {TaskCommentInput} from '../task/models/input/task-comment-input';
 import {TaskCommentExtendedInput} from "../task/models/input/task-comment-extended-input";
 import {IncludeTaskEpicInput} from "../task/models/input/include-task-epic-input";
 import {PlaningSprintInput} from "../task/models/input/planing-sprint-input";
+import {UpdateTaskSprintInput} from '../task/models/input/update-task-sprint-input';
+import {SearchAgileObjectTypeEnum} from '../../enums/search-agile-object-type-enum';
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -65,6 +67,7 @@ export class ProjectManagmentService {
     public userStoryStatuses$ = new BehaviorSubject<any>(null);
     public searchSprintTasks$ = new BehaviorSubject<any>(null);
     public sprintTask$ = new BehaviorSubject<any>(null);
+    public epicTasks$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -687,9 +690,7 @@ export class ProjectManagmentService {
 
   /**
    * Функция добавляет задачу в эпик.
-   * @param epicId - Id эпика.
-   * @param projectId - Id проекта.
-   * @param projectTaskId - Id задачи в рамках проекта.
+   * @param includeTaskEpicInput - Входная модель.
    */
   public async includeTaskEpicAsync(includeTaskEpicInput: IncludeTaskEpicInput) {
     return await this._http.post(this.apiUrl + `/project-management/task-epic`, includeTaskEpicInput).pipe(
@@ -718,12 +719,41 @@ export class ProjectManagmentService {
   };
 
   /**
-   * Функция ищет задачи, истории, эпики, ошибки по разным критериям.
+   * Функция находит Agile-объект. Это может быть задача, эпик, история, ошибка.
    */
-  public async searchIncludeSprintTaskAsync(searchText: string, isSearchByProjectTaskId: boolean, isSearchByTaskName: boolean, isSearchByTaskDescription: boolean, projectId: number) {
-    return await this._http.get(this.apiUrl + `/project-management-search/include-sprint-task?searchText=${searchText}&isSearchByProjectTaskId=${isSearchByProjectTaskId}&isSearchByTaskName=${isSearchByTaskName}&isSearchByTaskDescription=${isSearchByTaskDescription}&projectId=${projectId}`).pipe(
-      tap(data => this.searchSprintTasks$.next(data))
-    );
+  public async searchAgileObjectAsync(searchText: string,
+                                      isSearchByProjectTaskId: boolean,
+                                      isSearchByTaskName: boolean,
+                                      isSearchByTaskDescription: boolean,
+                                      projectId: number,
+                                      searchAgileObjectType: SearchAgileObjectTypeEnum) {
+    if (searchAgileObjectType == SearchAgileObjectTypeEnum.Sprint) {
+      return await this._http.get(this.apiUrl +
+        `/project-management-search/search-agile-object?searchText=${searchText}
+      &isSearchByProjectTaskId=${isSearchByProjectTaskId}
+      &isSearchByTaskName=${isSearchByTaskName}
+      &isSearchByTaskDescription=${isSearchByTaskDescription}
+      &projectId=${projectId}
+      &searchAgileObjectType=${searchAgileObjectType}`).pipe(
+        tap(data => this.searchSprintTasks$.next(data))
+      );
+    }
+
+    if (searchAgileObjectType == SearchAgileObjectTypeEnum.Epic) {
+      return await this._http.get(this.apiUrl +
+        `/project-management-search/search-agile-object?searchText=${searchText}
+      &isSearchByProjectTaskId=${isSearchByProjectTaskId}
+      &isSearchByTaskName=${isSearchByTaskName}
+      &isSearchByTaskDescription=${isSearchByTaskDescription}
+      &projectId=${projectId}
+      &searchAgileObjectType=${searchAgileObjectType}`).pipe(
+        tap(data => this.epicTasks$.next(data))
+      );
+    }
+
+    else {
+      throw new Error("Неизвестный тип поиска.");
+    }
   };
 
   /**
@@ -735,6 +765,27 @@ export class ProjectManagmentService {
   public async getAvailableProjectSprintsAsync(projectId: number, projectTaskId: string) {
     return await this._http.get(this.apiUrl + `/project-management/available-sprints?projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
       tap(data => this.sprintTask$.next(data))
+    );
+  };
+
+  /**
+   * Функция обновляет спринт, в который входит задача.
+   * @param UudateTaskSprintInput - Входная модель.
+   */
+  public async updateTaskSprintAsync(updateTaskSprintInput: UpdateTaskSprintInput) {
+    return await this._http.put(this.apiUrl + `/project-management/task/sprint`, updateTaskSprintInput).pipe(
+      tap(_ => console.log("Спринт задачи успешно обновлен"))
+    );
+  };
+
+  /**
+   * Функция получает задачи эпика.
+   * @param projectId - Id проекта.
+   * @param epicId - Id эпика.
+   */
+  public async getEpicTasksAsync(projectId: number, epicId: number) {
+    return await this._http.get(this.apiUrl + `/project-management/epic-task?projectId=${projectId}&epicId=${epicId}`).pipe(
+      tap(data => this.epicTasks$.next(data))
     );
   };
 }
