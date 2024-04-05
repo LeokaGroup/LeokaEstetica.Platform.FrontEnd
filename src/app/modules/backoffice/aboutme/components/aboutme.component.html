@@ -46,9 +46,9 @@
     <div class="worksheet-panel">
       <p-panel header="Контактная информация" [toggleable]="true">
         <div class="block-contact">
-            <div class="control-input-text-worksheet control-input-text-star">
+            <div class="control-input-text-worksheet control-input-text-star control-required-field">
                 <input type="text"
-                        class="p-inputtext-sm input-control-worksheet"
+                        class="p-inputtext-sm input-control-worksheet "
                         placeholder="Фамилия"
                         pInputText
                         autocomplete="new-password"
@@ -81,7 +81,7 @@
                 </div> -->
             </div>
 
-            <div class="control-input-text-worksheet control-input-text-star">
+            <div class="control-input-text-worksheet control-input-text-star control-required-field">
                 <input type="text"
                         class="p-inputtext-sm input-control-worksheet"
                         placeholder="Имя"
@@ -232,7 +232,7 @@
     <div class="worksheet-panel space-top">
       <p-panel header="О себе" [toggleable]="true">
         <div class="d-flex worksheet-line">
-            <div class="control-input-text-worksheet control-input-text-star">
+            <div class="control-input-text-worksheet control-input-text-star control-required-field">
                 <textarea input-control-worksheet
                             rows="5"
                             cols="100"
@@ -253,7 +253,7 @@
         </div>
 
         <div class="d-flex worksheet-line">
-            <div class="control-input-text-worksheet control-input-text-star">
+            <div class="control-input-text-worksheet control-input-text-star control-required-field">
                 <input type="text"
                         class="p-inputtext-sm input-control-worksheet "
                         placeholder="Должность"
@@ -270,7 +270,7 @@
             </div>
 
             <!-- TODO: Передавать это поле на бэк, когда там будет оно добавлено. -->
-            <div class="control-input-text-worksheet control-input-text-star">
+            <div class="control-input-text-worksheet control-input-text-star control-required-field">
                 <input type="text"
                         class="p-inputtext-sm input-control-worksheet"
                         placeholder="Опыт (стаж)"

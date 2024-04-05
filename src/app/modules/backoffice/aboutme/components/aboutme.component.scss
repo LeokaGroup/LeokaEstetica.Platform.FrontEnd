@@ -143,3 +143,24 @@
 ::ng-deep .control-textarea-big-width {
   max-width: 690px;
 }
+
+.control-required-field{
+    position: relative;
+}
+.control-required-field::after{
+    content: '*';
+    color: red;
+    position: absolute;
+    top: -10px;
+    left: -10px;
+}
+.p-panel-el{
+    position: relative;
+}
+.p-panel-el::after{
+    content: '*';
+    color: red;
+    position: absolute;
+    top: 8px;
+    left: 9px;
+}
