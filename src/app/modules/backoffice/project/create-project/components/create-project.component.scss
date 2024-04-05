@@ -57,3 +57,13 @@
     margin-left: 10px;
   }
 }
+.create-project-required-field{
+  position: relative;
+}
+.create-project-required-field::after{
+  content: "*";
+  position: absolute;
+  color: red;
+  left: -7px;
+  top: -5px;
+}
