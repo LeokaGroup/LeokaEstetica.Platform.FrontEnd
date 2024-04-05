@@ -16,8 +16,10 @@ import {TaskCommentInput} from "../../models/input/task-comment-input";
 import {TaskCommentExtendedInput} from "../../models/input/task-comment-extended-input";
 import {IncludeTaskEpicInput} from "../../models/input/include-task-epic-input";
 import {UpdateTaskSprintInput} from "../../models/input/update-task-sprint-input";
+import {TaskDetailTypeEnum} from "../../../../Enums/task-detail-type";
 import {SearchAgileObjectTypeEnum} from "../../../../enums/search-agile-object-type-enum";
-import { TaskDetailTypeEnum } from "src/app/modules/enums/task-detail-type";
+import { ProjectManagementSignalrService } from "src/app/modules/notifications/signalr/services/project-magement-signalr.service";
+import { MessageService } from "primeng/api";
 
 @Component({
     selector: "",
@@ -29,10 +31,12 @@ import { TaskDetailTypeEnum } from "src/app/modules/enums/task-detail-type";
  * Класс модуля управления проектами (детали задачи).
  */
 export class TaskDetailsComponent implements OnInit {
-    constructor(private readonly _projectManagmentService: ProjectManagmentService,
-        private readonly _router: Router,
-        private readonly _activatedRoute: ActivatedRoute) {
-    }
+  constructor(private readonly _projectManagmentService: ProjectManagmentService,
+              private readonly _router: Router,
+              private readonly _activatedRoute: ActivatedRoute,
+              private readonly _projectManagementSignalrService: ProjectManagementSignalrService,
+              private readonly _messageService: MessageService) {
+  }
 
     public readonly taskDetails$ = this._projectManagmentService.taskDetails$;
     public readonly taskStatuses$ = this._projectManagmentService.taskStatuses$;
@@ -146,6 +150,28 @@ export class TaskDetailsComponent implements OnInit {
       await this.getTaskCommentsAsync(),
       await this.getAvailableSprintsAsync()
     ]).subscribe();
+
+    // Подключаемся.
+    this._projectManagementSignalrService.startConnection().then(() => {
+      console.log("Подключились");
+
+      this.listenAllHubsNotifications();
+    });
+
+    // Подписываемся на получение всех сообщений.
+    this._projectManagementSignalrService.AllFeedObservable
+      .subscribe((response: any) => {
+        console.log("Подписались на сообщения", response);
+
+        // Если пришел тип уведомления, то просто показываем его.
+        if (response.notificationLevel !== undefined) {
+          this._messageService.add({
+            severity: response.notificationLevel,
+            summary: response.title,
+            detail: response.message
+          });
+        }
+      });
   };
 
     private async checkUrlParams() {
@@ -157,6 +183,14 @@ export class TaskDetailsComponent implements OnInit {
                 this.projectTaskId = params["taskId"];
             });
     };
+
+  /**
+   * Функция слушает все хабы.
+   */
+  private listenAllHubsNotifications() {
+    this._projectManagementSignalrService.listenSuccessSuccessIncludeEpicTask();
+    this._projectManagementSignalrService.listenErrorSuccessIncludeEpicTask();
+  };
 
     /**
     * Функция получает детали задачи по ее Id.
@@ -716,8 +750,7 @@ export class TaskDetailsComponent implements OnInit {
   public async onChangeAvailableEpicsAsync() {
     let includeTaskEpicInput = new IncludeTaskEpicInput();
     includeTaskEpicInput.epicId = this.selectedEpic.epicId;
-    includeTaskEpicInput.projectId = +this.projectId;
-    includeTaskEpicInput.projectTaskId = this.projectTaskId;
+    includeTaskEpicInput.projectTaskIds = [this.projectTaskId];
 
     (await this._projectManagmentService.includeTaskEpicAsync(includeTaskEpicInput))
       .subscribe(_ => {
@@ -799,7 +832,34 @@ export class TaskDetailsComponent implements OnInit {
       });
   };
 
+  /**
+   * Функция выбирает задачу и добавляет в массив задач эпика для дальнейшего включения этих задач в эпик.
+   */
   public onSelectTask() {
     this.aEpicTasks.push(this.selectedTask);
+  };
+
+  /**
+   * Функция добавляет задачи в эпик.
+   */
+  public async onIncludeEpicTaskAsync() {
+    let includeTaskEpicInput = new IncludeTaskEpicInput();
+    includeTaskEpicInput.epicId = this.projectTaskId;
+    includeTaskEpicInput.projectTaskIds = this.aEpicTasks.map(x => x.fullProjectTaskId);
+
+    (await this._projectManagmentService.includeTaskEpicAsync(includeTaskEpicInput))
+      .subscribe(_ => {
+        console.log("Добавили задачу в эпик: ", this.includeEpic$.value);
+
+        let projectId = this.projectId;
+
+        setTimeout(() => {
+          this._router.navigate(["/project-management/space"], {
+            queryParams: {
+              projectId
+            }
+          });
+        }, 4000);
+      });
   };
 }

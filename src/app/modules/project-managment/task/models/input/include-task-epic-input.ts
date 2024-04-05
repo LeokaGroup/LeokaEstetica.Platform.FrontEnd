@@ -5,15 +5,10 @@ export class IncludeTaskEpicInput {
   /**
    * Id эпика.
    */
-  epicId: number = 0;
+  epicId: string = "";
 
   /**
-   * Id проекта.
+   * Id задач в рамках проекта.
    */
-  projectId: number = 0;
-
-  /**
-   * Id проекта в рамках задачи.
-   */
-  projectTaskId: string = "";
+  projectTaskIds: string[] = [];
 }

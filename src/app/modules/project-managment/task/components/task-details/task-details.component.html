@@ -1,3 +1,5 @@
+<p-toast></p-toast>
+
 <div class="task-details mt-3">
   <!-- Название задачи. -->
   <div class="task-name">
@@ -29,6 +31,36 @@
           *ngIf="isActiveTaskName"
           (click)="isActiveTaskName=!isActiveTaskName">
   </button>
+  </div>
+
+  <div>
+    <hr>
+  </div>
+
+  <!-- Блок с кнопками действий. -->
+  <div class="mt-3 mb-3 d-flex block-task-actions">
+    <div>
+      <button type="button"
+              pButton
+              icon="pi pi-save"
+              label="Спланировать эпик"
+              class="p-button-text p-button-success p-button-sm control-sprint-strong"
+              pTooltip="Планирование эпика"
+              tooltipPosition="bottom"
+              (click)="onIncludeEpicTaskAsync()">
+      </button>
+    </div>
+
+    <div>
+      <button type="button"
+              pButton
+              icon="pi pi-arrow-down"
+              label="Возможные действия"
+              class="p-button-text p-button-primary p-button-sm task-actions"
+              (click)="menu.toggle($event)">
+      </button>
+      <p-menu #menu [popup]="true" [model]="aAvailableActions"></p-menu>
+    </div>
   </div>
 
   <div>
@@ -234,24 +266,6 @@
         </div>
       </div>
       </div>
-    </div>
-  </div>
-
-  <div>
-    <hr>
-  </div>
-
-  <!-- Блок с кнопками действий. -->
-  <div class="mt-3 mb-3 d-flex block-task-actions">
-    <div>
-      <button type="button"
-              pButton
-              icon="pi pi-arrow-down"
-              label="Возможные действия"
-              class="p-button-text p-button-primary p-button-sm task-actions"
-              (click)="menu.toggle($event)">
-      </button>
-      <p-menu #menu [popup]="true" [model]="aAvailableActions"></p-menu>
     </div>
   </div>
 
@@ -733,7 +747,7 @@
 
   <div class="mt-3 block-sprint" *ngIf="taskTypeId == 4">
     <div class="mb-3">
-      <p-autoComplete [(ngModel)]="selectedEpic"
+      <p-autoComplete [(ngModel)]="selectedTask"
                       [suggestions]="epicTasks$.value"
                       (completeMethod)="onSearchIncludeEpicTaskAsync($event)"
                       [showEmptyMessage]="true"
@@ -741,7 +755,9 @@
                       field="findText"
                       [minLength]="0"
                       placeholder="Добавить задачу в эпик"
-                      (onSelect)="onSelectTask()">
+                      (onSelect)="onSelectTask()"
+                      pTooltip="Поиск задачи для добавления ее в эпик. Добавить можно задачу, которая еще не была включена в другие активные эпики."
+                      tooltipPosition="bottom">
 
       </p-autoComplete>
 
@@ -801,26 +817,26 @@
       <ng-template pTemplate="body" let-t>
         <tr>
           <td class="link">
-            <div (click)="onSelectTaskLink(t?.fullTaskId)">{{t?.fullProjectTaskId}}</div>
+            <div (click)="onSelectTaskLink(t.fullProjectTaskId)">{{t.fullProjectTaskId}}</div>
           </td>
 
           <td>
-            <div>{{t?.taskTypeName}}</div>
+            <div>{{t.taskTypeName}}</div>
           </td>
 
           <td>
-            <div>{{t?.name}}</div>
+            <div>{{t.name}}</div>
           </td>
 
           <td>
             <div class="smaller-text">
-              {{t?.statusName}}
+              {{t.statusName}}
             </div>
           </td>
 
           <td>
             <div class="smaller-text">
-              {{t?.executorName}}
+              {{t.executorName}}
             </div>
           </td>
 
