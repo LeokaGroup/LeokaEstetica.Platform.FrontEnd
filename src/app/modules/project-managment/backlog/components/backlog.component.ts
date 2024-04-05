@@ -45,11 +45,6 @@ export class BacklogComponent implements OnInit {
       });
   };
 
-  public onSelectPanelMenu() {
-    console.log("onSelectPanelMenu");
-    this._projectManagmentService.isLeftPanel = true;
-  };
-
   private async getBacklogTasksAsync() {
     (await this._projectManagmentService.getBacklogTasksAsync(+this.selectedProjectId))
       .subscribe(_ => {
@@ -143,5 +138,13 @@ export class BacklogComponent implements OnInit {
         projectId
       }
     });
+  };
+
+  public onSelectPanelMenu() {
+    this._projectManagmentService.isLeftPanel = true;
+  };
+
+  public onClosePanelMenu() {
+    this._projectManagmentService.isLeftPanel = false;
   };
 }
