@@ -16,10 +16,10 @@ import {TaskCommentInput} from "../../models/input/task-comment-input";
 import {TaskCommentExtendedInput} from "../../models/input/task-comment-extended-input";
 import {IncludeTaskEpicInput} from "../../models/input/include-task-epic-input";
 import {UpdateTaskSprintInput} from "../../models/input/update-task-sprint-input";
-import {TaskDetailTypeEnum} from "../../../../Enums/task-detail-type";
 import {SearchAgileObjectTypeEnum} from "../../../../enums/search-agile-object-type-enum";
 import { ProjectManagementSignalrService } from "src/app/modules/notifications/signalr/services/project-magement-signalr.service";
 import { MessageService } from "primeng/api";
+import { TaskDetailTypeEnum } from "src/app/modules/enums/task-detail-type";
 
 @Component({
     selector: "",
