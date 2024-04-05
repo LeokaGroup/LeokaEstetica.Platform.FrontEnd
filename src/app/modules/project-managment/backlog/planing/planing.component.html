@@ -116,7 +116,10 @@
                          field="findText"
                          [minLength]="0"
                           placeholder="Добавить задачу в спринт"
-                         (onSelect)="onSelectTask()">
+                         (onSelect)="onSelectTask()"
+                         [style]="{'width':'500px'}"
+                         [inputStyle]="{'width':'100%'}"
+         >
 
          </p-autoComplete>
 
