@@ -11,6 +11,8 @@ export class SignalrService {
   private hubConnection: any;
   public $allFeed: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
+  public isConnected: boolean = false;
+
   public constructor(private readonly _redisService: RedisService,
                      private readonly _router: Router) {
     this.hubConnection = new HubConnectionBuilder()
@@ -30,12 +32,14 @@ export class SignalrService {
               await (await this._redisService.addConnectionIdCacheAsync(this.hubConnection.connectionId))
                 .subscribe(_ => {
                   console.log("Записали ConnectionId");
+                  this.isConnected = true;
                 });
             }
 
             return resolve(true);
           })
           .catch((err: any) => {
+            this.isConnected = false;
             console.log("Ошибка соединения: " + err);
             reject(err);
           });
