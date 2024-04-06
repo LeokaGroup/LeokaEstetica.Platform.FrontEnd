@@ -1,11 +1,12 @@
-import { Component, OnInit } from "@angular/core";
-import { forkJoin } from "rxjs";
+import {Component, OnDestroy, OnInit} from "@angular/core";
+import { forkJoin, Subscription } from "rxjs";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { MessageService } from "primeng/api";
 import { Router } from "@angular/router";
 import { VacancyService } from "../vacancy/services/vacancy.service";
 import { BackOfficeService } from "../services/backoffice.service";
 import { AddVacancyArchiveInput } from "../models/input/vacancy/add-vacancy-archive-input";
+import {take} from "rxjs/operators";
 
 
 @Component({
@@ -17,7 +18,7 @@ import { AddVacancyArchiveInput } from "../models/input/vacancy/add-vacancy-arch
 /**
  * Класс список вакансии пользователя.
  */
-export class MyVacancyComponent implements OnInit {
+export class MyVacancyComponent implements OnInit, OnDestroy {
 
   public readonly listVacancy$ = this._backofficeService.listVacancy$;
   public readonly deleteVacancy$ = this._backofficeService.deleteVacancy$;
@@ -28,7 +29,8 @@ export class MyVacancyComponent implements OnInit {
   vacancyId: number = 0;
   vacancyName: string = "";
   isDeleteVacancy: boolean = false;
-  
+  subscription?: Subscription;
+
   constructor(
     private readonly _signalrService: SignalrService,
     private readonly _messageService: MessageService,
@@ -42,11 +44,29 @@ export class MyVacancyComponent implements OnInit {
        await this.getUserVacanciesAsync()
     ]).subscribe();
 
-    // Подключаемся.
-    this._signalrService.startConnection().then(() => {
-      console.log("Подключились");
-      this.listenAllHubsNotifications();
-    });
+    if (!this._signalrService.isConnected) {
+      // Подключаемся.
+      this._signalrService.startConnection().then(() => {
+        console.log("Подключились");
+
+        this.listenAllHubsNotifications();
+      });
+    }
+
+    // Подписываемся на получение всех сообщений.
+    this.subscription = this._signalrService.AllFeedObservable
+      .subscribe((response: any) => {
+        console.log("Подписались на сообщения", response);
+
+        // Если пришел тип уведомления, то просто показываем его.
+        if (response.notificationLevel !== undefined) {
+          this._messageService.add({
+            severity: response.notificationLevel,
+            summary: response.title,
+            detail: response.message
+          });
+        }
+      });
   };
 
 
@@ -114,7 +134,7 @@ export class MyVacancyComponent implements OnInit {
                 summary: this._signalrService.AllFeedObservable.value.title,
                 detail: this._signalrService.AllFeedObservable.value.message
               });
-        
+
         await this.getUserVacanciesAsync();
       });
   };
@@ -135,7 +155,7 @@ export class MyVacancyComponent implements OnInit {
 
     (await this._vacancyService.addArchiveVacancyAsync(vacancyArchiveInput))
       .subscribe(async _ => {
-        console.log("Вакансия добавлена в архив", this.archivedVacancy$.value);  
+        console.log("Вакансия добавлена в архив", this.archivedVacancy$.value);
 
         this._messageService.add({
           severity: this._signalrService.AllFeedObservable.value.notificationLevel,
@@ -143,7 +163,11 @@ export class MyVacancyComponent implements OnInit {
           detail: this._signalrService.AllFeedObservable.value.message
         });
 
-        await this.getUserVacanciesAsync();  
+        await this.getUserVacanciesAsync();
       });
   };
+
+  ngOnDestroy() {
+    this.subscription?.unsubscribe();
+  }
 }

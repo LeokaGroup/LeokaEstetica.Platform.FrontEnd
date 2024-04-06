@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { Subscription } from "rxjs";
@@ -18,7 +18,7 @@ import { VacancyService } from "../services/vacancy.service";
 /**
  * Класс компонента создания вакансии.
  */
-export class CreateVacancyComponent implements OnInit {
+export class CreateVacancyComponent implements OnInit, OnDestroy {
     constructor( private readonly _router: Router,
         private readonly _vacancyService: VacancyService,
         private readonly _signalrService: SignalrService,
@@ -50,17 +50,20 @@ export class CreateVacancyComponent implements OnInit {
     selectedProject: any;
     demands: string = "";
     conditions: string = "";
+    subscription?: Subscription;
 
     public async ngOnInit() {
-      // Подключаемся.
-      this._signalrService.startConnection().then(() => {
-        console.log("Подключились");
+      if (!this._signalrService.isConnected) {
+        // Подключаемся.
+        this._signalrService.startConnection().then(() => {
+          console.log("Подключились");
 
-        this.listenAllHubsNotifications();
-      });
+          this.listenAllHubsNotifications();
+        });
+      }
 
       // Подписываемся на получение всех сообщений.
-      this._signalrService.AllFeedObservable
+      this.subscription = this._signalrService.AllFeedObservable
         .subscribe((response: any) => {
           console.log("Подписались на сообщения", response);
 
@@ -192,10 +195,6 @@ export class CreateVacancyComponent implements OnInit {
         return model;
     };
 
-    public ngOnDestroy(): void {
-        (<Subscription>this.allFeedSubscription)?.unsubscribe();
-    };
-
     private checkUrlParams() {
         this._activatedRoute.queryParams
         .subscribe(params => {
@@ -216,4 +215,8 @@ export class CreateVacancyComponent implements OnInit {
             console.log("Проекты пользователя:", this.userProjects$.value);
         });
     };
+
+  ngOnDestroy() {
+    this.subscription?.unsubscribe();
+  }
 }
