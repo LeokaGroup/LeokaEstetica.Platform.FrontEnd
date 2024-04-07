@@ -16,4 +16,9 @@ export class ChangeTaskStatusInput {
      * Id задачи (здесь имеется в виду Id задачи в рамках проекта).
      */
     taskId: number = 0;
+
+  /**
+   * Тип детализации.
+   */
+  taskDetailType: number = 0;
 }
