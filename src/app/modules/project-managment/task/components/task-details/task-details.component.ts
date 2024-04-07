@@ -286,6 +286,7 @@ export class TaskDetailsComponent implements OnInit {
         changeTaskStatusInput.projectId = this.projectId;
         changeTaskStatusInput.taskId = this.projectTaskId;
         changeTaskStatusInput.changeStatusId = this.selectedStatus.taskStatusId;
+        changeTaskStatusInput.taskDetailType = this.taskTypeId;
 
         (await this._projectManagmentService.changeTaskStatusAsync(changeTaskStatusInput))
             .subscribe(async _ => {
