@@ -4,7 +4,7 @@ import { forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
 import { CreateProjectManagementTaskInput } from "../../models/input/create-task-input";
 import { TranslateService } from '@ngx-translate/core';
-import { PrimeNGConfig } from "primeng/api";
+import {MessageService, PrimeNGConfig} from "primeng/api";
 
 @Component({
     selector: "",
@@ -19,9 +19,9 @@ export class CreateTaskComponent implements OnInit {
   constructor(private readonly _projectManagmentService: ProjectManagmentService,
               private readonly _router: Router,
               private readonly _activatedRoute: ActivatedRoute,
-              private _config: PrimeNGConfig,
-              private _translateService: TranslateService
-  ) {
+              private readonly _config: PrimeNGConfig,
+              private readonly _translateService: TranslateService,
+              private readonly _messageService: MessageService) {
 
   }
 
@@ -252,12 +252,21 @@ export class CreateTaskComponent implements OnInit {
         let createTaskInput = this.createProjectManagementTaskRequest();
 
         (await this._projectManagmentService.createProjectTaskAsync(createTaskInput))
-        .subscribe(_ => {
-            // TODO: Добавить вывод ошибок в уведомлялку с бэка при ошибках создания задачи.
+        .subscribe((response: any) => {
             console.log("Задача создана: ", this.createdTask$.value);
 
-            // Редиректим к списку задач.
-            window.location.href = this.createdTask$.value.redirectUrl;
+          if (response.errors !== null && response.errors.length > 0) {
+            response.errors.forEach((item: any) => {
+              this._messageService.add({ severity: "error", summary: "Что то не так", detail: item.errorMessage });
+            });
+          }
+
+          else {
+            setTimeout(() => {
+              // Редиректим в раб.пространство.
+              window.location.href = this.createdTask$.value.redirectUrl;
+            }, 4000);
+          }
         });
     };
 
