@@ -83,7 +83,7 @@
 .p-panel-el{
     position: relative;
 }
-.p-panel-el::after{
+.p-panel-el-after::after{
     content: '*';
     color: red;
     position: absolute;
@@ -174,7 +174,7 @@
 .p-panel-el{
     position: relative;
 }
-.p-panel-el::after{
+.p-panel-el-after::after{
     content: '*';
     color: red;
     position: absolute;

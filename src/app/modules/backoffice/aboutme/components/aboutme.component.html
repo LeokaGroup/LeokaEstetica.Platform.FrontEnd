@@ -46,7 +46,8 @@
     <div class="worksheet-panel">
       <p-panel header="Контактная информация" [toggleable]="true">
         <div class="block-contact">
-            <div class="control-input-text-worksheet control-input-text-star control-required-field">
+            <div [ngClass]="{'control-input-text-star':isModeEdit, 'control-required-field':isModeEdit}"
+                  class="control-input-text-worksheet" >
                 <input type="text"
                         class="p-inputtext-sm input-control-worksheet "
                         placeholder="Фамилия"
@@ -81,7 +82,8 @@
                 </div> -->
             </div>
 
-            <div class="control-input-text-worksheet control-input-text-star control-required-field">
+            <div [ngClass]="{'control-input-text-star':isModeEdit, 'control-required-field':isModeEdit}"
+                  class="control-input-text-worksheet">
                 <input type="text"
                         class="p-inputtext-sm input-control-worksheet"
                         placeholder="Имя"
@@ -133,7 +135,8 @@
                 <span *ngIf="isModeView">{{profileInfo$.value.email}}</span>
             </div>
 
-            <div class="control-input-text-worksheet control-required-field">
+            <div [ngClass]="{'control-required-field':isModeEdit}"
+                  class="control-input-text-worksheet">
                 <input type="text"
                         class="p-inputtext-sm input-control-worksheet"
                         placeholder="Номер телефона"
@@ -232,7 +235,8 @@
     <div class="worksheet-panel space-top">
       <p-panel header="О себе" [toggleable]="true">
         <div class="d-flex worksheet-line">
-            <div class="control-input-text-worksheet control-input-text-star control-required-field">
+            <div [ngClass]="{'control-required-field':isModeEdit}"
+                  class="control-input-text-worksheet">
                 <textarea input-control-worksheet
                             rows="5"
                             cols="100"
@@ -253,7 +257,8 @@
         </div>
 
         <div class="d-flex worksheet-line">
-            <div class="control-input-text-worksheet control-input-text-star control-required-field">
+            <div [ngClass]="{'control-required-field':isModeEdit}"
+                  class="control-input-text-worksheet">
                 <input type="text"
                         class="p-inputtext-sm input-control-worksheet "
                         placeholder="Должность"
@@ -270,7 +275,8 @@
             </div>
 
             <!-- TODO: Передавать это поле на бэк, когда там будет оно добавлено. -->
-            <div class="control-input-text-worksheet control-input-text-star control-required-field">
+            <div [ngClass]="{'control-required-field':isModeEdit}"
+                  class="control-input-text-worksheet">
                 <input type="text"
                         class="p-inputtext-sm input-control-worksheet"
                         placeholder="Опыт (стаж)"
@@ -299,7 +305,8 @@
     </div>
 
     <div class="worksheet-panel space-top">
-      <div class="p-panel-el">
+      <div [ngClass]="{'p-panel-el-after':isModeEdit}" 
+            class="p-panel-el">
         <p-panel header="Навыки" [toggleable]="true" >
           <div *ngIf="isModeEdit; else elseBlockSkills">
           <p-pickList [source]="profileSkillsItems$.value"
@@ -348,7 +355,8 @@
 
 
     <div class="worksheet-panel space-top">
-      <div class="p-panel-el">
+      <div [ngClass]="{'p-panel-el-after':isModeEdit}"
+            class="p-panel-el">
         <p-panel header="Цели на платформе" [toggleable]="true" >
           <div *ngIf="isModeEdit; else elseBlockIntents">
           <p-pickList [source]="profileIntentsItems$.value"
