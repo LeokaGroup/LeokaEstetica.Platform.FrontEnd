@@ -86,6 +86,11 @@
     text-align: center;
   }
 
+  .text-paragraph {
+    width: 100%;
+    word-break: break-all;
+  }
+
   // Медиа-запросы.
 @media (max-width: 575px) {}
 
