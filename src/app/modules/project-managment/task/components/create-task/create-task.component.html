@@ -119,8 +119,8 @@
                           [(ngModel)]="selectedExecutor"
                           optionLabel="fullName"
                           [showClear]="true"
-                          placeholder="Выберите исполнителя"
-                          [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                          placeholder="Выберите исполнителя"       
+                          [emptyMessage]="(taskPeople$ | async)?.length === 0 ? 'Результатов не найдено' : 'Загрузка...'"
                           (onClick)="onGetSelectTaskPeopleAsync()">
               </p-dropdown>
               <button pButton
@@ -145,7 +145,7 @@
                           optionLabel="fullName"
                           [showClear]="true"
                           placeholder="Выберите наблюдателя"
-                          [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                          [emptyMessage]="(taskPeople$ | async)?.length === 0 ? 'Результатов не найдено' : 'Загрузка...'"
                           (onClick)="onGetSelectTaskPeopleAsync()"
                           (onChange)="onSelectWachers()">
               </p-dropdown>
