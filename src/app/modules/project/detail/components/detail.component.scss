@@ -60,6 +60,11 @@
     color: #999;
 }
 
+.control-input-text-worksheet,
+.worksheet-line {
+  width: 100%;
+}
+
 ::ng-deep.p-splitter-panel-nested .p-splitter-panel {
     display: block;
   }
