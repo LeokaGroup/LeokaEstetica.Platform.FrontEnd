@@ -139,3 +139,7 @@
 @media (min-width: 1200px) {
 
 }
+
+::ng-deep .control-textarea-big-width {
+  max-width: 690px;
+}
