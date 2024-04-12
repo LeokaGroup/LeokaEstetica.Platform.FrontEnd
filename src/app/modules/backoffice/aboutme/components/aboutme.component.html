@@ -115,7 +115,7 @@
         </div>
 
         <div class="d-flex worksheet-line justify-content-between">
-            <div class="control-input-text-worksheet control-required-field">
+            <div class="control-input-text-worksheet">
                 <input type="text"
                         class="p-inputtext-sm input-control-worksheet"
                         placeholder="Email"
@@ -126,7 +126,7 @@
                         <br>
                 <small *ngIf="!isModeView">При изменении Email, Вам нужно будет авторизоваться повторно.<br> Вы будете перенаправлены автоматически.</small>
                 <div *ngIf="isModeView">
-                  <label>
+                  <label class="control-required-field">
                     <strong>Email</strong>
                   </label>
                 </div>
