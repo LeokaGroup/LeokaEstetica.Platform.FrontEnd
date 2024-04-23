@@ -16,19 +16,19 @@ import { LandingService } from "../services/landing.service";
  */
 export class LandingComponent implements OnInit {
     public readonly fonData$ = this._landingService.fonData$;
-    public readonly platformOffers$ = this._landingService.platformOffers$;    
-    public readonly timelines$ = this._landingService.timelines$;    
-    public readonly knowledgeLanding$ = this._landingService.knowledgeLanding$;    
-    public readonly newUsers$ = this._landingService.newUsers$;    
-    public readonly lastProjectComments$ = this._landingService.lastProjectComments$; 
-    public readonly platformCondituions$ = this._landingService.platformCondituions$;   
-    public readonly availableProjectManagment$ = this._projectManagmentService.availableProjectManagment$; 
+    public readonly platformOffers$ = this._landingService.platformOffers$;
+    public readonly timelines$ = this._landingService.timelines$;
+    public readonly knowledgeLanding$ = this._landingService.knowledgeLanding$;
+    public readonly newUsers$ = this._landingService.newUsers$;
+    public readonly lastProjectComments$ = this._landingService.lastProjectComments$;
+    public readonly platformCondituions$ = this._landingService.platformCondituions$;
+    public readonly availableProjectManagment$ = this._projectManagmentService.availableProjectManagment$;
 
     aCreateProject: any[] = [];
     aSearchProject: any[] = [];
     aCreateVacancy: any[] = [];
     aSearchVacancy: any[] = [];
-    aSearchTeam: any[] = [];    
+    aSearchTeam: any[] = [];
     allFeedSubscription: any;
     responsiveOptions: boolean = true;
     aNewUsers: any[] = [];
@@ -48,9 +48,9 @@ export class LandingComponent implements OnInit {
             await this.getKnowledgeLandingAsync(),
             await this.getNewUsersAsync(),
             await this.getLastProjectCommentsAsync(),
-            await this.getPlatformConditionsAsync(),
-            await this.availableProjectManagmentAsync()
-        ]).subscribe();        
+            await this.getPlatformConditionsAsync()
+            // await this.availableProjectManagmentAsync() // TODO: Закоментил пока не починим.
+        ]).subscribe();
 
         // Подключаемся.
         this._signalrService.startConnection().then(async () => {
@@ -102,7 +102,7 @@ export class LandingComponent implements OnInit {
         (await this._landingService.getTimelinesAsync())
         .subscribe(_ => {
             console.log("Список таймлайнов: ", this.timelines$.value);
-            this.fillTimelines();            
+            this.fillTimelines();
         });
     };
 
@@ -122,7 +122,7 @@ export class LandingComponent implements OnInit {
      private async getKnowledgeLandingAsync() {
         (await this._landingService.getKnowledgeLandingAsync())
         .subscribe(_ => {
-            console.log("Список частых вопросов: ", this.knowledgeLanding$.value);       
+            console.log("Список частых вопросов: ", this.knowledgeLanding$.value);
         });
     };
 
