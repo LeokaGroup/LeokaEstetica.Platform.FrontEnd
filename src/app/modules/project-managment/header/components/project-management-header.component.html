@@ -1,0 +1,60 @@
+<!-- Меню хидера (меню УП). -->
+<nav class="navbar navbar-light justify-content-evenly">
+  <div class="form-inline">
+    <p-menubar [model]="aHeaderItems" class="second-menu" (click)="onSelectMenu($event)">
+      <ng-template pTemplate="start">
+
+      </ng-template>
+
+      <ng-template pTemplate="end">
+        <!-- Поиск задачи. -->
+        <div class="search" pTooltip="Поиск" tooltipPosition="bottom" (click)="isSearch = true">
+          <i class="pi pi-search"></i>
+        </div>
+      </ng-template>
+    </p-menubar>
+  </div>
+</nav>
+
+<!-- Хлебные крошки. -->
+<div class="block-task">
+  <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+</div>
+
+<p-sidebar [(visible)]="isSearch" [fullScreen]="true">
+  <h5 class="search-text">Найти</h5>
+
+ <div class="col-lg-12 d-flex">
+   <div class="auto-complete-line col-lg-8">
+     <p-autoComplete [(ngModel)]="searchText"
+                     [suggestions]="searchTasks$.value"
+                     [showEmptyMessage]="true"
+                     emptyMessage="Результатов не найдено"
+                     field="findText"
+                     [minLength]="0"
+                     (completeMethod)="onSearchProjectTasksAsync($event)"
+                     placeholder="Поиск..."
+                     (onSelect)="onSelectTask($event)">
+     </p-autoComplete>
+
+     <div class="flex align-items-center">
+       <p-checkbox label="Поиск по Id задачи" [binary]="true" inputId="binary" [(ngModel)]="searchById"></p-checkbox>
+     </div>
+
+     <div class="flex align-items-center">
+       <p-checkbox label="Искать в названии" [binary]="true" inputId="binary" [(ngModel)]="searchByName"></p-checkbox>
+     </div>
+
+     <div class="flex align-items-center">
+       <p-checkbox label="Искать в описании" [binary]="true" inputId="binary" [(ngModel)]="searchByDescription"></p-checkbox>
+     </div>
+   </div>
+
+   <div style="border-left:1px solid #C0C6CF;height:100vh;margin-left: 20px">&nbsp;</div>
+
+   <div class="col-lg-4 optional-line">
+     <h5 class="search-text-filter">Фильтрация по проекту</h5>
+   </div>
+ </div>
+  <!--  <p class="">Найдено задач: {{catalog$.value.total ?? rowsCount}}</p>-->
+</p-sidebar>

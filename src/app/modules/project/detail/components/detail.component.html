@@ -5,7 +5,7 @@
 
   </div>
 
-  <div class="block-worksheet">    
+  <div class="block-worksheet">
     <div *ngIf="isShowRemarks" class="mb-1">
       <strong>Имеются замечания. Проект не будет опубликован, пока замечания не будут исправлены и приняты модератором.</strong>
     </div>
@@ -17,7 +17,7 @@
     </div>
 
     <div class="worksheet-panel">
-      <p-panel header="Заполнение информации о проекте" [toggleable]="true" [collapsed]="true">
+      <p-panel header="Просмотр информации о проекте" [toggleable]="true" [collapsed]="false">
         <div class="d-flex">
           <div class="control-input-text-worksheet">
             <div>
@@ -36,6 +36,22 @@
           </div>
         </div>
 
+        <div class="control-input-text-worksheet mt-3">
+          <div>
+            <strong>Название в управлении проектом</strong>
+          </div>
+          <div *ngIf="isEditMode; else blockTwo">
+            <input type="text"
+                   class="p-inputtext-sm input-control-worksheet control-project"
+                   placeholder="Название в модуле управления проектом"
+                   pInputText
+                   autocomplete="new-password"
+                   [(ngModel)]="selectedProject$.value.projectManagementName"
+                   [disabled]="!isEditMode"/>
+          </div>
+          <ng-template #blockTwo>{{selectedProject$.value.projectManagementName == null ? 'Не указано' : selectedProject$.value.projectManagementName}}</ng-template>
+        </div>
+
         <div class="d-flex mt-3">
             <div class="control-input-text-worksheet">
                 <div class="control-input-text-worksheet">
@@ -52,7 +68,7 @@
                                </p-editor>
                           </div>
                           <ng-template #blockTwo>
-                            {{selectedProject$.value.projectDetails}}
+                            <p class="white-space">{{selectedProject$.value.projectDetails}}</p>
                           </ng-template>
                         </div>
                     </div>
@@ -74,7 +90,7 @@
                           [disabled]="!isEditMode">
               </p-dropdown>
             </div>
-            <ng-template #blockTree >
+            <ng-template #blockTree>
                 {{selectedProject$.value.stageName}}
             </ng-template>
           </div>
@@ -96,7 +112,7 @@
                     </p-editor>
                   </div>
                   <div *ngIf="!isEditMode">
-                    {{selectedProject$.value.demands}}
+                    <p class="white-space text-paragraph">{{selectedProject$.value.demands}}</p>
                   </div>
                 </div>
               </div>
@@ -104,25 +120,21 @@
           </div>
         </div>
 
-        <div class="d-flex mt-3">
-          <div class="control-input-text-worksheet">
+        <div class="d-flex">
+          <div class="d-flex worksheet-line">
             <div class="control-input-text-worksheet">
-              <div class="d-flex worksheet-line">
-                <div class="control-input-text-worksheet">
-                  <div>
-                    <strong>Условия</strong>
-                  </div>
-                  <div *ngIf="isEditMode">
-                    <p-editor autocomplete="new-password"
-                              [(ngModel)]="selectedProject$.value.demands"
-                              [style]="{'height':'320px'}"
-                              [readonly]="!isEditMode">
-                    </p-editor>
-                  </div>
-                  <div *ngIf="!isEditMode">
-                    {{selectedProject$.value.conditions}}
-                  </div>
-                </div>
+              <div>
+                <strong>Условия</strong>
+              </div>
+              <div *ngIf="isEditMode">
+                <p-editor autocomplete="new-password"
+                          [(ngModel)]="selectedProject$.value.demands"
+                          [style]="{'height':'320px'}"
+                          [readonly]="!isEditMode">
+                </p-editor>
+              </div>
+              <div *ngIf="!isEditMode">
+                <p class="white-space text-paragraph">{{selectedProject$.value.conditions}}</p>
               </div>
             </div>
           </div>
@@ -141,7 +153,7 @@
     </div>
 
     <div class="worksheet-panel space-top-80 space-bottom-50 d-flex" *ngIf="!isEditMode">
-      <p-panel header="Действия" [toggleable]="true" [collapsed]="true">
+      <p-panel header="Действия" [toggleable]="true" [collapsed]="false">
         <div class="d-flex">
           <div class="control-input-text-worksheet">
             <div class="mb-3">
@@ -223,7 +235,7 @@
     </div>
 
     <div class="worksheet-panel space-top-80 d-flex">
-      <p-panel header="Вакансии проекта" [toggleable]="true" [collapsed]="true">
+      <p-panel header="Вакансии проекта" [toggleable]="true" [collapsed]="false">
         <div>
           <p-table [value]="projectVacancies$.value.projectVacancies"
                   [(selection)]="selectedProjectVacancy"
@@ -310,7 +322,7 @@
 
     <!-- Область с чатом. -->
     <div class="worksheet-panel space-top-80 space-bottom-50 d-flex">
-    <p-panel header="Чат с владельцем проекта" [toggleable]="true" [collapsed]="isCollapsed">
+    <p-panel header="Чат с владельцем проекта" [toggleable]="true" [collapsed]="false">
       <div class="d-flex">
         <div class="control-input-text-worksheet">
           <div class="mb-3">
@@ -397,7 +409,7 @@
 
     <!-- Команда проекта. -->
     <div class="worksheet-panel space-top-80 space-bottom-50">
-      <p-panel header="Команда проекта" [toggleable]="true" [collapsed]="true">
+      <p-panel header="Команда проекта" [toggleable]="true" [collapsed]="false">
         <div class="d-flex">
           <div class="d-flex">
             <div class="control-input-text-worksheet">
@@ -458,7 +470,7 @@
 
     <!-- Комментарии к проекту. -->
      <div class="worksheet-panel space-top-80 space-bottom-50">
-      <p-panel header="Комментарии к проекту" [toggleable]="true" [collapsed]="true">
+      <p-panel header="Комментарии к проекту" [toggleable]="true" [collapsed]="false">
         <div class="">
           <div class="">
             <div class="control-input-text-worksheet">
@@ -750,7 +762,7 @@
                   <p-dropdown [options]="availableInviteVacancies"
                               [(ngModel)]="selectedInviteVacancy"
                               optionLabel="userVacancy.vacancyName"
-                              [disabled]="!selectedInviteVariant 
+                              [disabled]="!selectedInviteVariant
                               || isVacancyInvite"
                               emptyMessage="Нет данных">
                   </p-dropdown>

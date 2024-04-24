@@ -1,0 +1,37 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+@use "/src/app/modules/project-managment/task/components/task-details/task-details.component.scss";
+
+::ng-deep .p-dropdown-label {
+    padding: 0 10px;
+}
+
+::ng-deep .p-inputtext {
+  padding: 0;
+}
+
+::ng-deep .p-inputtextarea-resizable {
+    width: 100%;
+    min-height: 200px;
+}
+
+.control-task-name {
+    min-width: 900px;
+}
+
+::ng-deep .p-inplace-display {
+    font-size: 34px;
+}
+
+.tag {
+    padding: 5px 0px;
+}
+
+::ng-deep .p-chip-text {
+    font-size: smaller;
+}
+
+.wacher {
+    padding: 5px 0px;
+}

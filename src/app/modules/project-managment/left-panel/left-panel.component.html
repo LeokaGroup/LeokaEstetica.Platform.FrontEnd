@@ -1,0 +1,20 @@
+<!-- Выдвижное меню. -->
+<p-sidebar #sidebarRef (onHide)="onClose()" [(visible)]="isPanelMenu" class="sidebar">
+  <ng-template pTemplate="headless">
+    <div class="">
+      <div class="logo">
+        <span class="">
+           <a class="navbar-brand" routerLink="">
+            <img style="width: 150px;" src="../../../../assets/images/logo/logo.png">
+          </a>
+        </span>
+      </div>
+
+      <div class="left-panel mt-5">
+        <p-menu [model]="aPanelItems[0].items"
+                [style]="{width: '100%', border: 'none'}"
+                (click)="onSelectMenu($event)"></p-menu>
+      </div>
+    </div>
+  </ng-template>
+</p-sidebar>

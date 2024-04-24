@@ -70,6 +70,27 @@
     }
 }
 
+.control-input-text-worksheet{
+    position: relative;
+}
+.control-input-text-star::after{
+    content: '*';
+    color: red;
+    position: absolute;
+    top: -10px;
+    left: -10px;
+}
+.p-panel-el{
+    position: relative;
+}
+.p-panel-el-after::after{
+    content: '*';
+    color: red;
+    position: absolute;
+    top: 10px;
+    left: 8px;
+}
+
 @media screen and (max-width: 576px) {
     .product-item {
         flex-wrap: wrap;
@@ -138,4 +159,25 @@
 /* xl (>=1200) */
 @media (min-width: 1200px) {
 
+}
+
+.control-required-field{
+    position: relative;
+}
+.control-required-field::after{
+    content: '*';
+    color: red;
+    position: absolute;
+    top: -10px;
+    left: -10px;
+}
+.p-panel-el{
+    position: relative;
+}
+.p-panel-el-after::after{
+    content: '*';
+    color: red;
+    position: absolute;
+    top: 8px;
+    left: 9px;
 }

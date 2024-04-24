@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { Subscription } from "rxjs";
@@ -18,7 +18,7 @@ import { VacancyService } from "../services/vacancy.service";
 /**
  * Класс компонента создания вакансии.
  */
-export class CreateVacancyComponent implements OnInit {
+export class CreateVacancyComponent implements OnInit, OnDestroy {
     constructor( private readonly _router: Router,
         private readonly _vacancyService: VacancyService,
         private readonly _signalrService: SignalrService,
@@ -50,28 +50,32 @@ export class CreateVacancyComponent implements OnInit {
     selectedProject: any;
     demands: string = "";
     conditions: string = "";
+    subscription?: Subscription;
 
     public async ngOnInit() {
+      if (!this._signalrService.isConnected) {
         // Подключаемся.
         this._signalrService.startConnection().then(() => {
-            console.log("Подключились");
+          console.log("Подключились");
 
-            console.log(this.expirienceVariants);
-
-
-            this.listenAllHubsNotifications();
+          this.listenAllHubsNotifications();
         });
+      }
 
-         // Подписываемся на получение всех сообщений.
-    this._signalrService.AllFeedObservable
-    .subscribe((response: any) => {
-        console.log("Подписались на сообщения", response);
-        
-        // Если пришел тип уведомления, то просто показываем его.
-        if (response.notificationLevel !== undefined) {
-            this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
-        }
-    });
+      // Подписываемся на получение всех сообщений.
+      this.subscription = this._signalrService.AllFeedObservable
+        .subscribe((response: any) => {
+          console.log("Подписались на сообщения", response);
+
+          // Если пришел тип уведомления, то просто показываем его.
+          if (response.notificationLevel !== undefined) {
+            this._messageService.add({
+              severity: response.notificationLevel,
+              summary: response.title,
+              detail: response.message
+            });
+          }
+        });
 
         this.checkUrlParams();
         await this.getUserProjectsAsync();
@@ -82,6 +86,8 @@ export class CreateVacancyComponent implements OnInit {
      */
      private listenAllHubsNotifications() {
         this._signalrService.listenSuccessCreatedUserVacancyInfo();
+        this._signalrService.listenWarningLimitFareRuleVacancies();
+        this._signalrService.listenErrorCreateVacancy();
     };
 
 
@@ -189,10 +195,6 @@ export class CreateVacancyComponent implements OnInit {
         return model;
     };
 
-    public ngOnDestroy(): void {
-        (<Subscription>this.allFeedSubscription)?.unsubscribe();
-    };
-
     private checkUrlParams() {
         this._activatedRoute.queryParams
         .subscribe(params => {
@@ -207,10 +209,14 @@ export class CreateVacancyComponent implements OnInit {
      * Функция получает список проектов пользователя.
      * @returns Список проектов.
      */
-     private async getUserProjectsAsync() {        
+     private async getUserProjectsAsync() {
         (await this._backofficeService.getUserProjectsAsync(true))
         .subscribe(_ => {
             console.log("Проекты пользователя:", this.userProjects$.value);
         });
     };
+
+  ngOnDestroy() {
+    this.subscription?.unsubscribe();
+  }
 }

@@ -3,7 +3,7 @@ import { forkJoin } from "rxjs";
 import { BackOfficeService } from "../../services/backoffice.service";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { ProfileInfoInput } from "../models/input/profile-info-input";
-import { ActivatedRoute } from "@angular/router";
+import { NavigationStart, Router, Event as NavigationEvent, ActivatedRoute } from "@angular/router";
 import { MessageService } from "primeng/api";
 
 @Component({
@@ -44,21 +44,24 @@ export class AboutmeComponent implements OnInit {
     isModeEdit: boolean = false;
     aResumeRemarks: any[] = [];
     isShowRemarks: boolean = false;
+    isEmptyProfile: boolean = false;
+    userCode: any;
+    currentUrl: any;
+    isVisibleNotifyChat: boolean = false;
 
-    constructor(private readonly _backofficeService: BackOfficeService,
-        private readonly _signalrService: SignalrService,
-        private readonly _activatedRoute: ActivatedRoute,
-        private readonly _messageService: MessageService) {
+  constructor(private readonly _backofficeService: BackOfficeService,
+              private readonly _signalrService: SignalrService,
+              private readonly _activatedRoute: ActivatedRoute,
+              private readonly _messageService: MessageService,
+              private readonly _router: Router) {
 
-    }
+  }
 
     public async ngOnInit() {
         forkJoin([
             await this.getProfileSkillsAsync(),
             await this.getProfileIntentsAsync(),
             await this.getProfileInfoAsync(),
-            await this.getSelectedUserSkillsAsync(),
-            await this.getSelectedUserIntentsAsync(),
             await this.getResumeRemarksAsync()
         ]).subscribe();
 
@@ -67,20 +70,13 @@ export class AboutmeComponent implements OnInit {
             console.log("Подключились");
 
             this.listenAllHubsNotifications();
-
-            // Подписываемся на получение всех сообщений.
-            // this.allFeedSubscription = this._signalrService.AllFeedObservable
-            //     .subscribe((response: any) => {
-            //         console.log("Подписались на сообщения", response);
-            //         this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
-            //     });
         });
 
         // Подписываемся на получение всех сообщений.
         this._signalrService.AllFeedObservable
         .subscribe((response: any) => {
             console.log("Подписались на сообщения", response);
-            
+
             // Если пришел тип уведомления, то просто показываем его.
             if (response.notificationLevel !== undefined) {
                 this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
@@ -104,36 +100,44 @@ export class AboutmeComponent implements OnInit {
         this._signalrService.listenWarningUserIntentsInfo();
     };
 
-    private checkUrlParams() {
-        this._activatedRoute.queryParams
-        .subscribe(async params => {
-            let mode = params["mode"];
-            console.log("mode: ", mode);
+  private checkUrlParams() {
+    this._activatedRoute.queryParams
+      .subscribe(async params => {
+        let mode = params["mode"];
+        console.log("mode: ", mode);
 
-            if (mode == "view") {
-                this.isModeView = true;
-            }
-            else {
-                this.isModeView = false;
-            }
+        if (params["uc"] == undefined || params["uc"] == null) {
+          this.userCode = "";
+        } else {
+          this.userCode = params["uc"];
+        }
 
-            if (mode == "edit") {
-                this.isModeEdit = true;
-            }
+        if (mode == "view") {
+          this.isModeView = true;
+        } else {
+          this.isModeView = false;
+        }
 
-            else {
-                this.isModeEdit = false;
-            }
+        if (mode == "edit") {
+          this.isModeEdit = true;
+        } else {
+          this.isModeEdit = false;
+        }
 
-            if ((mode == "view" || mode == "edit") && !params["uc"]) {
-                (await this._backofficeService.getProfileInfoAsync())
-                .subscribe(_ => {
-                    console.log("Данные анкеты: ", this.profileInfo$.value);
-                    this.setEditFields();
-                });
-            }
-          });
-    };
+        if ((mode == "view" || mode == "edit") && !params["uc"]) {
+          (await this._backofficeService.getProfileInfoAsync())
+            .subscribe(_ => {
+              console.log("Данные анкеты: ", this.profileInfo$.value);
+              this.isEmptyProfile = this.profileInfo$.value.isEmptyProfile;
+              this.setEditFields();
+              this.isVisibleNotifyChat = true;
+            });
+        }
+
+        await this.getSelectedUserSkillsAsync();
+        await this.getSelectedUserIntentsAsync();
+      });
+  };
 
     /**
      * Функция подтягивает данные в поля анкеты в режиме изменения.
@@ -194,7 +198,7 @@ export class AboutmeComponent implements OnInit {
                 });
 
                 return;
-            }           
+            }
 
             await this.getSelectedUserSkillsAsync();
             await this.getSelectedUserIntentsAsync();
@@ -203,7 +207,7 @@ export class AboutmeComponent implements OnInit {
                 setTimeout(() => {
                     localStorage["u_e"] = response.email;
                     localStorage["t_n"] = response.token;
-                }, 4000);  
+                }, 4000);
             }
         });
     };
@@ -259,7 +263,7 @@ export class AboutmeComponent implements OnInit {
     * @returns - Список навыков.
     */
       private async getSelectedUserSkillsAsync() {
-        (await this._backofficeService.getSelectedUserSkillsAsync())
+        (await this._backofficeService.getSelectedUserSkillsAsync(this.userCode))
             .subscribe(_ => {
                 console.log("Список выбранных навыков: ", this.selectedSkillsItems$.value);
                 this.aSelectedSkills = this.selectedSkillsItems$.value;
@@ -271,7 +275,7 @@ export class AboutmeComponent implements OnInit {
     * @returns - Список навыков.
     */
       private async getSelectedUserIntentsAsync() {
-        (await this._backofficeService.getSelectedUserIntentsAsync())
+        (await this._backofficeService.getSelectedUserIntentsAsync(this.userCode))
             .subscribe(_ => {
                 console.log("Список выбранных целей: ", this.selectedIntentsItems$.value);
                 this.aSelectedIntents = this.selectedIntentsItems$.value;
