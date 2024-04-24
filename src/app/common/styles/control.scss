@@ -161,6 +161,13 @@
     width: 100%;
 }
 
-.control-input-text-worksheet {
-  max-width: 680px;
+::ng-deep .p-button-text {
+    &:focus {
+        box-shadow: none !important;
+    }
+}
+
+::ng-deep .control-textarea-big-width {
+  max-width: 690px;
+  word-break: break-all;
 }

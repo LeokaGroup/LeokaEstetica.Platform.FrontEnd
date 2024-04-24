@@ -1,54 +1,10 @@
 @use "/src/app/common/styles/spaces.scss";
 @use "/src/app/common/styles/control.scss";
 @use "/src/app/common/styles/styles.scss";
-@use "/src/app/modules/header/components/header.component.scss";
-
-// FIXME: Отрефачить, вынести в общие стили.
-::ng-deep .second-menu .p-component {
-  border: none;
-}
-
-::ng-deep .second-menu .p-component .p-menubar-root-list .p-menuitem {
-  .p-menuitem-text {
-    color: #717D94;
-    font-size: 15px;
-    font-weight: 700;
-  }
-}
-
-.search-line {
-  &:focus {
-    box-shadow: none;
-  }
-}
-
-::ng-deep .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:focus {
-  box-shadow: none;
-  color: #717D94;
-}
-
-::ng-deep .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:hover {
-  box-shadow: none;
-  color: #717D94;
-}
-
-::ng-deep .p-menubar .p-menuitem-link:focus {
-  box-shadow: none;
-  color: #717D94;
-}
-
-::ng-deep .p-menubar .p-menuitem-link:hover {
-  box-shadow: none;
-  color: #717D94!important;
-}
-
-.p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:hover {
-  color: #717D94;
-}
 
 .block-tasks {
-  min-height: 500px;
-  max-height: 510px;
+  // min-height: 500px;
+  // max-height: 510px;
   // overflow-x: scroll;
   overflow-y: scroll;
 }
@@ -96,7 +52,8 @@
   border: 2px solid #dedede;
 
   &:hover {
-    background: #ffffff1a;
+    //background: #ffffff1a;
+    background: #DEEBFF;
     // box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   }
 }
@@ -107,4 +64,112 @@
   font-weight: 400;
   line-height: 1.43;
   letter-spacing: 0.01071em;
+}
+
+.block-scrum-task-list {
+  font-size: smaller;
+}
+
+.scrum-task-line {
+  padding: 7px 0px;
+}
+
+.laconic-text {
+  font-size: 13px;
+  line-height: 16px;
+  padding: 4px 8px;
+}
+
+.selected-task-row {
+  cursor: pointer;
+
+  &:hover {
+    box-shadow:
+      -5px -7px 2px -5px #6c757d,
+      -5px 7px 2px -5px #6c757d,
+      5px -7px 2px -5px #6c757d,
+      5px 7px 2px -5px #6c757d;
+    position: relative;
+  }
+}
+
+.low {
+  background: #F7F7F7;
+}
+
+.medium {
+  background: #C6E2FF;
+}
+
+.high {
+  background: #FFE1D7;
+}
+
+.urgent {
+  background: #FFD6C8;
+}
+
+.blocker {
+  background: #FF9696;
+}
+
+.line-see-more {
+  width: 100%;
+}
+
+.control-see-more {
+  font-weight: 500;
+}
+
+:host ::ng-deep .p-chip {
+  font-size: smaller;
+}
+
+.info-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .info-line-number {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .space-line-number {
+    margin-right: 7px;
+  }
+}
+
+.scrum-info-line {
+  display: flex;
+  //justify-content: space-between;
+  align-items: center;
+  //margin-right: 1px;
+}
+
+:host ::ng-deep .p-menuitem-link {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+:host ::ng-deep .p-menu .p-menuitem-link .p-menuitem-text {
+  color: #717D94;
+}
+
+:host ::ng-deep .p-menu .p-menuitem-link {
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+.panel-text {
+  color: #717D94;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
 }

@@ -1,0 +1,83 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+@use "/src/app/modules/header/components/header.component.scss";
+
+body {
+  overflow-x: hidden;
+}
+
+::ng-deep .second-menu .p-component {
+    border: none;
+  }
+
+  ::ng-deep .second-menu .p-component .p-menubar-root-list .p-menuitem {
+    .p-menuitem-text {
+      color: #717D94;
+      font-size: 15px;
+      font-weight: 700;
+    }
+  }
+
+  .search-line {
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  ::ng-deep .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:focus {
+    box-shadow: none;
+    color: #717D94;
+  }
+
+  ::ng-deep .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:hover {
+    box-shadow: none;
+    color: #717D94;
+  }
+
+  ::ng-deep .p-menubar .p-menuitem-link:focus {
+    box-shadow: none;
+    color: #717D94;
+  }
+
+  ::ng-deep .p-menubar .p-menuitem-link:hover {
+    box-shadow: none;
+    color: #717D94!important;
+  }
+
+  .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:hover {
+    color: #717D94;
+  }
+
+  .search {
+    padding: 7px;
+    color: #717D94;
+    font-size: 15px;
+    font-weight: 700;
+
+    &:hover {
+      background: #e9ecef;
+      cursor: pointer;
+    }
+  }
+
+:host ::ng-deep .p-inputwrapper {
+  span {
+    width: 100%;
+
+    input {
+      width: 100%;
+    }
+  }
+}
+
+.optional-line {
+  //justify-content: center;
+  //align-items: center;
+  //display: flex;
+}
+
+.search-text-filter {
+  //color: #717DAE;
+  margin-left: 20px
+}

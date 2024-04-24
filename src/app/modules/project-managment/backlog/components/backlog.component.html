@@ -1,0 +1,168 @@
+<div class="left-panel" (mouseover)="onSelectPanelMenu()">
+  <div style="border-left:1px solid #C0C6CF;height:1500px;width: 50px;position: absolute;"></div>
+</div>
+
+<left-panel></left-panel>
+
+<div class="">
+  <h3 class="block-sprint">Бэклог</h3>
+
+  <div>
+    <hr>
+  </div>
+
+  <!-- Блок с кнопками действий. -->
+  <div class="mt-3 mb-3 d-flex block-task-actions block-sprint col-lg-12">
+    <div>
+      <button pButton type="button"
+              icon="pi pi-list"
+              label="Активные спринты"
+              class="p-button-text p-button-success task-actions p-button-sm control-sprint-strong">
+      </button>
+    </div>
+
+    <div>
+      <button pButton type="button"
+              icon="pi pi-list"
+              label="Все спринты"
+              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong">
+      </button>
+    </div>
+
+    <div>
+      <button pButton type="button"
+              icon="pi pi-plus"
+              label="Спланировать спринт"
+              class="p-button-text p-button-primary task-actions p-button-sm control-sprint-strong"
+              (click)="onRoutePlaningSprint()">
+      </button>
+    </div>
+
+    <div>
+      <button pButton type="button"
+              icon="pi pi-plus"
+              label="Добавить задачу в спринт"
+              class="p-button-text p-button-primary task-actions p-button-sm control-sprint-strong">
+      </button>
+    </div>
+
+    <div>
+      <button pButton type="button"
+              icon="pi pi-filter"
+              label="Фильтровать по историям"
+              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong">
+      </button>
+    </div>
+
+    <div>
+      <button pButton type="button"
+              icon="pi pi-filter"
+              label="Фильтровать по эпикам"
+              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong">
+      </button>
+    </div>
+
+    <div>
+      <button pButton type="button"
+              icon="pi pi-filter"
+              label="Фильтровать по задачам"
+              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong">
+      </button>
+    </div>
+
+    <div>
+      <button pButton type="button"
+              icon="pi pi-filter"
+              label="Фильтровать по ошибкам"
+              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong">
+      </button>
+    </div>
+  </div>
+
+  <div>
+    <hr>
+  </div>
+
+  <div class="d-flex mt-3 block-sprint">
+    <strong>Задачи</strong>
+    <!--    &nbsp; <small>{{backlogData$.value.tasks.length}} задач</small>-->
+  </div>
+
+  <div class="">
+    <div class="block-worksheet block-scrum-task-list col-lg-12">
+      <div class="block-task">
+        <hr>
+        <div class="d-flex justify-content-between">
+          <div class="col-lg-2">&nbsp;</div>
+          <strong class="col-lg-2">Ключ</strong>
+          <strong class="col-lg-2">Задача</strong>
+          <strong class="col-lg-2">Приоритет</strong>
+          <strong class="col-lg-2">Исполнитель</strong>
+          <strong class="col-lg-2">Обновлено</strong>
+        </div>
+        <hr>
+        <div class="task-ver-line" *ngFor="let st of backlogData$.value?.projectManagmentTaskStatuses">
+          <div class="d-flex justify-content-between status-name pt-3">
+            {{st.statusName.toUpperCase()}}
+            {{st.total}}
+          </div>
+
+          <!-- Блок с задачами Scrum. -->
+          <div *ngFor="let t of st.projectManagmentTasks">
+            <!-- Блок с каждой задачей Scrum. -->
+            <div class="task">
+              <div [ngClass]="{
+            low:t.priorityId == 1,
+            medium:t.priorityId == 2,
+            high:t.priorityId == 3,
+            urgent:t.priorityId == 4,
+            blocker:t.priorityId == 5}"
+                   class="selected-task-row"
+                   (click)="onSelectTask(t.fullProjectTaskId)">
+                <div class="scrum-task-line">
+                  <div class="d-flex justify-content-between">
+                    <div class="col-lg-2 laconic-text">{{t.taskTypeName}}</div>
+                    <div class="col-lg-2">{{t.fullProjectTaskId}}</div>
+                    <div class="col-lg-2 laconic-text">{{t.name}}</div>
+                    <div class="col-lg-2 laconic-text">{{t.priorityName}}</div>
+                    <div class="col-lg-2 laconic-text scrum-info-line">
+                      <div>
+                        <p-avatar [image]="t.executor.avatar?.ava" size="small" shape="circle"></p-avatar>
+                      </div>
+                      &nbsp;
+                      <div>
+                        {{t.executor.executorName}}
+                      </div>
+                    </div>
+                    <div class="col-lg-2 laconic-text">{{t.updated}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="line-see-more" *ngIf="st.projectManagmentTasks == null">
+              <div>Нет данных.</div>
+            </div>
+
+            <div *ngIf="st.projectManagmentTasks !== null && st.total > 10 && st.paginator.hasNextPage">
+              <div class="mt-2">
+                <button pButton type="button"
+                        label="Показать больше"
+                        class="p-button-outlined p-button-secondary p-button-sm line-see-more control-see-more"
+                        [loading]="isLoading"
+                        (click)="onGetConfigurationWorkSpaceBySelectedTemplateAsync(st.paginator.pageNumber, st.taskStatusId)">
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<left-panel
+  (mouseleave)="onClosePanelMenu()"
+></left-panel>

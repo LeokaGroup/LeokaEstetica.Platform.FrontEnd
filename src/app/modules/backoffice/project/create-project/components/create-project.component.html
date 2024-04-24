@@ -11,7 +11,7 @@
         <div class="d-flex">
           <div class="control-input-text-worksheet">
             <div>
-                <label>Название проекта</label>
+                <label class="create-project-required-field">Название проекта</label>
             </div>
             <div>
                 <input type="text" class="p-inputtext-sm input-control-worksheet control-project"
@@ -27,7 +27,7 @@
                     <div class="d-flex worksheet-line">
                         <div class="control-input-text-worksheet">
                             <div>
-                                <label>Описание проекта</label>
+                                <label class="create-project-required-field">Описание проекта</label>
                             </div>
                             <div class="control-textarea-big-width">
                                 <p-editor [(ngModel)]="projectDetails" [style]="{'height':'320px'}"></p-editor>
@@ -41,7 +41,7 @@
         <div class="d-flex mt-3">
           <div class="control-input-text-worksheet">
             <div>
-                <label>Стадия проекта</label>
+                <label class="create-project-required-field">Стадия проекта</label>
             </div>
             <div>
               <p-dropdown [options]="this.projectStages$.value"

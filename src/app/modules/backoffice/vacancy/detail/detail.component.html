@@ -102,10 +102,13 @@
                                       <p-editor
                                       [(ngModel)]="vacancyText"
                                       [style]="{'height':'320px'}"
-                                      [readonly]="!isEditMode"></p-editor>
+                                      [readonly]="!isEditMode"
+                                      class="control-textarea-big-width"></p-editor>
                                   </div>
                                 <ng-template #blockFive>
-                                  <p class="white-space">{{vacancyText}}</p>
+                                  <div>
+                                    <p class="white-space control-textarea-big-width">{{vacancyText}}</p>
+                                  </div>
                                 </ng-template>
                               </div>
                           </div>
@@ -125,11 +128,12 @@
                                     <p-editor
                                     [(ngModel)]="conditions"
                                     [style]="{'height':'320px'}"
-                                    [readonly]="!isEditMode"></p-editor>
+                                    [readonly]="!isEditMode"
+                                    class="control-textarea-big-width"></p-editor>
                                 </div>
-                             
+
                                 <div *ngIf="!isEditMode">
-                                  <p class="white-space">{{conditions}}</p>
+                                  <p class="white-space control-textarea-big-width">{{conditions}}</p>
                                 </div>
                             </div>
                         </div>
@@ -149,11 +153,12 @@
                                   <p-editor
                                   [(ngModel)]="demands"
                                   [style]="{'height':'320px'}"
-                                  [readonly]="!isEditMode"></p-editor>
+                                  [readonly]="!isEditMode"
+                                  class="control-textarea-big-width"></p-editor>
                               </div>
-                           
+
                               <div *ngIf="!isEditMode">
-                                <p class="white-space">{{demands}}</p>
+                                <p class="white-space control-textarea-big-width">{{demands}}</p>
                               </div>
                           </div>
                       </div>
