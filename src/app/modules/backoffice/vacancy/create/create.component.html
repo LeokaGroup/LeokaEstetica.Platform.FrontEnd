@@ -83,7 +83,10 @@
               <p-dropdown [options]="userProjects$.value.userProjects"
                           [(ngModel)]="selectedProject"
                           optionLabel="projectName"
-                          class="control-project-stages">
+                          [showClear]="true"
+                          class="control-project-stages"
+                          [emptyMessage]="(userProjects$ | async) === true ? 'У вас нет проектов' : 'Загрузка...'"
+                          (onClick)="getUserProjectsAsync()">
               </p-dropdown>
             </div>
           </div>
