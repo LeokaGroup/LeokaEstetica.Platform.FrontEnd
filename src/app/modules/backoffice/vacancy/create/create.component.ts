@@ -209,7 +209,7 @@ export class CreateVacancyComponent implements OnInit, OnDestroy {
      * Функция получает список проектов пользователя.
      * @returns Список проектов.
      */
-     private async getUserProjectsAsync() {
+     public async getUserProjectsAsync() {
         (await this._backofficeService.getUserProjectsAsync(true))
         .subscribe(_ => {
             console.log("Проекты пользователя:", this.userProjects$.value);
