@@ -46,7 +46,7 @@ export class LandingComponent implements OnInit {
             await this.getPlatformOffersAsync(),
             await this.getTimelinesAsync(),
             await this.getKnowledgeLandingAsync(),
-            // await this.getNewUsersAsync(),
+            await this.getNewUsersAsync(),
             await this.getLastProjectCommentsAsync(),
             await this.getPlatformConditionsAsync()
             // await this.availableProjectManagmentAsync() // TODO: Закоментил пока не починим.
