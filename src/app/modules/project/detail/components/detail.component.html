@@ -436,6 +436,7 @@
                       <th *ngFor="let item of projectTeamColumns">
                         {{item.columnName}}</th>
                         <th>Исключение</th>
+                        <th>Должность</th>
                     </tr>
                   </ng-template>
 
@@ -454,6 +455,7 @@
                                   *ngIf="team.isVisibleActionDeleteProjectTeamMember">
                         </p-button>
                       </td>
+                      <td>{{team.role}}</td>
                     </tr>
                   </ng-template>
 
