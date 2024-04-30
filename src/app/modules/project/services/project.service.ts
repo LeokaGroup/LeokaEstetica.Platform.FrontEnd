@@ -39,7 +39,7 @@ export class ProjectService {
     public archivedProject$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
-        
+
     }
 
     /**
@@ -239,7 +239,7 @@ export class ProjectService {
         );
     };
 
-  /** 
+  /**
    * Функция удаляет выбранную вакансию проекта реализовал .
    */
   public async deleteVacancyInProjectAsync(projectId:number, vacancyId:number) {
@@ -248,7 +248,7 @@ export class ProjectService {
     );
   };
 
-  /** 
+  /**
    * Функция получает список вакансий доступных для отклика.
    */
    public async availableVacanciesProjectResponseAsync(projectId: number) {
@@ -298,4 +298,16 @@ export class ProjectService {
             tap(data => this.archivedProject$.next(data))
         );
     };
+
+  /**
+   * Функция назначает роль участнику команды проекта.
+   * @param userId - Id пользователя.
+   * @param role - Название роли.
+   * @param projectId - Id проекта.
+   */
+  public async setProjectTeamMemberRoleAsync(userId: number, role: string, projectId: number) {
+    return await this.http.patch(API_URL.apiUrl + `/projects/team-member-role?userId=${userId}&role=${role}&projectId=${projectId}`, {}).pipe(
+      tap(_ => console.log("Роль успешно назначена"))
+    );
+  };
 }
