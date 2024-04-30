@@ -238,7 +238,7 @@ export class BackOfficeService {
     return await this.http.get(API_URL.apiUrl + "/orders/history").pipe(
       tap(data => this.histories$.next(data))
     );
-  };  
+  };
 
    /**
      * Функция получает список проектов в архиве.
@@ -289,7 +289,7 @@ export class BackOfficeService {
       tap(data => this.sendedRestoreCode$.next(data))
     );
   };
-      
+
   /**
      * Функция проверяет переход по ссылке восстановления пароля.
      * @param confirmCode - Код для проверки.
