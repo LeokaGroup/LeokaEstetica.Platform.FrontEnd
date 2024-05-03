@@ -27,6 +27,11 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
   projectId: number = 0;
   selectedSprint: any;
   projectSprintId: number = 0;
+  comment: string = "";
+  sprintName: string = "";
+  isActiveSprintName: boolean = false;
+  isActiveSprintDetails: boolean = false;
+  sprintDetails: string = "";
 
   public async ngOnInit() {
     if (!this._signalrService.isConnected) {
@@ -84,7 +89,21 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
     (await this._projectManagmentService.getSprintDetailsAsync(this.projectId, this.projectSprintId))
       .subscribe(_ => {
         console.log("Детали спринта:", this.sprintDetails$.value);
+
+        this.sprintName = this.sprintDetails$.value.sprintName;
       });
+  };
+
+  public async onCreateSprintCommentAsync(comment: string) {
+
+  };
+
+  public onActivateSprintName() {
+
+  };
+
+  public onActivateSprintDetails() {
+
   };
 
   ngOnDestroy() {
