@@ -55,7 +55,8 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { PlaningSprintComponent } from './backlog/planing/planing.component';
 import { ProjectManagementSignalrService } from '../notifications/signalr/services/project-magement-signalr.service';
 import { EpicDetailsComponent } from './task/components/epic/epic-details.component';
-import { SprintComponent } from './sprint/sprint.component';
+import { SprintComponent } from './sprint/components/sprint.component';
+import {SprintDetailsComponent} from "./sprint-details/components/sprint-details.component";
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { SprintComponent } from './sprint/sprint.component';
     LeftPanelComponent,
     PlaningSprintComponent,
     EpicDetailsComponent,
-    SprintComponent
+    SprintComponent,
+    SprintDetailsComponent
   ],
 
   imports: [

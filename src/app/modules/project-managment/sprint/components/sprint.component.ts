@@ -2,8 +2,9 @@ import {Component, OnDestroy, OnInit} from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { Subscription } from "rxjs";
-import { SignalrService } from "../../notifications/signalr/services/signalr.service";
-import {ProjectManagmentService} from "../services/project-managment.service";
+import { SignalrService } from "../../../notifications/signalr/services/signalr.service";
+import {ProjectManagmentService} from "../../services/project-managment.service";
+import { forkJoin } from "rxjs";
 
 @Component({
   selector: "sprints",
@@ -25,6 +26,7 @@ export class SprintComponent implements OnInit, OnDestroy {
   subscription?: Subscription;
   projectId: number = 0;
   selectedSprint: any;
+  projectSprintId: number = 0;
 
   public async ngOnInit() {
     if (!this._signalrService.isConnected) {
@@ -51,8 +53,10 @@ export class SprintComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.checkUrlParams();
-    await this.getUserProjectsAsync();
+    forkJoin([
+      this.checkUrlParams(),
+      await this.getProjectSprintsAsync()
+    ]).subscribe();
   };
 
   /**
@@ -67,6 +71,7 @@ export class SprintComponent implements OnInit, OnDestroy {
       .subscribe(params => {
         if (params["projectId"]) {
           this.projectId = params["projectId"];
+          this.projectSprintId = params["projectSprintId"];
         }
       });
   };
@@ -75,15 +80,38 @@ export class SprintComponent implements OnInit, OnDestroy {
    * Функция получает список спринтов.
    * @returns Список спринтов.
    */
-  private async getUserProjectsAsync() {
+  private async getProjectSprintsAsync() {
     (await this._projectManagmentService.getSprintsAsync(this.projectId))
       .subscribe(_ => {
         console.log("Список спринтов:", this.sprints$.value);
       });
   };
 
-  public onSelectSprint() {
+  /**
+   * Функция получает выбранный спринт и переходит на страницу просмотра данных спринта.
+   */
+  public onSelectSprint(event: any, selectedProjectSprintId: number | null) {
+    let projectSprintId
 
+    // Берем из ивента, если выбрали чекбокс.
+    if (selectedProjectSprintId == null) {
+      projectSprintId = event.data.projectSprintId;
+    }
+
+    // Если кликнули по ссылкам, то берем переданный selectedProjectSprintId.
+    else {
+      projectSprintId = selectedProjectSprintId;
+    }
+
+    let projectId = this.projectId;
+    console.log("onSelectSprint", event);
+
+    this._router.navigate(["/project-management/sprints/sprint/details"], {
+      queryParams: {
+        projectId,
+        projectSprintId
+      }
+    });
   };
 
   ngOnDestroy() {
