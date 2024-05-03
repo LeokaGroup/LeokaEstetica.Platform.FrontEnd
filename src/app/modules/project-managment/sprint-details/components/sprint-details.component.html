@@ -350,73 +350,59 @@
 
       </div>
       <div class="">
-<!--        <p-table [value]="sprintDetails$.value"-->
-<!--                 styleClass="p-datatable-sm"-->
-<!--                 [tableStyle]="{'min-width': '50rem'}"-->
-<!--                 [rows]="10"-->
-<!--                 responsiveLayout="scroll">-->
-<!--          <ng-template pTemplate="header">-->
-<!--            <tr>-->
-<!--              <th>Ключ</th>-->
-<!--              <th>Название спринта</th>-->
-<!--&lt;!&ndash;              <th>Статус</th>&ndash;&gt;-->
-<!--&lt;!&ndash;              <th>Исполнитель</th>&ndash;&gt;-->
-<!--&lt;!&ndash;              <th>Обновлено</th>&ndash;&gt;-->
-<!--&lt;!&ndash;              <th>Разорвать связь</th>&ndash;&gt;-->
-<!--            </tr>-->
-<!--          </ng-template>-->
-<!--          <ng-template pTemplate="body" let-t>-->
-<!--            <tr>-->
-<!--&lt;!&ndash;              <td class="link">&ndash;&gt;-->
-<!--&lt;!&ndash;                <div (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId ?? 'Не указан'}}</div>&ndash;&gt;-->
-<!--&lt;!&ndash;              </td>&ndash;&gt;-->
+        <p-table [value]="sprintDetails$.value.sprintTasks"
+                 styleClass="p-datatable-sm"
+                 [tableStyle]="{'min-width': '50rem'}"
+                 [rows]="10"
+                 responsiveLayout="scroll">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Ключ</th>
+              <th>Тип</th>
+              <th>Название</th>
+              <th>Статус</th>
+              <th>Приоритет</th>
+            </tr>
+          </ng-template>
 
-<!--              <td>-->
-<!--                <div>{{t.taskName}}</div>-->
-<!--              </td>-->
+          <ng-template pTemplate="body" let-sp>
+            <tr>
+              <td class="link">
+                <div>{{sp.fullTaskId ?? 'Не указан'}}</div>
+              </td>
 
-<!--              <td>-->
-<!--&lt;!&ndash;                <div class="smaller-text">&ndash;&gt;-->
-<!--&lt;!&ndash;                  {{t.taskStatusName}}&ndash;&gt;-->
-<!--&lt;!&ndash;                </div>&ndash;&gt;-->
-<!--              </td>-->
+              <td>
+                <div>{{sp.taskTypeName}}</div>
+              </td>
 
-<!--              <td>-->
-<!--&lt;!&ndash;                <div class="smaller-text">&ndash;&gt;-->
-<!--&lt;!&ndash;                  {{t.executorName}}&ndash;&gt;-->
-<!--&lt;!&ndash;                </div>&ndash;&gt;-->
-<!--              </td>-->
+              <td>
+                <div>{{sp.name}}</div>
+              </td>
 
-<!--              <td>-->
-<!--&lt;!&ndash;                <div class="smaller-text">&ndash;&gt;-->
-<!--&lt;!&ndash;                  {{t.lastUpdated}}&ndash;&gt;-->
-<!--&lt;!&ndash;                </div>&ndash;&gt;-->
-<!--              </td>-->
+              <td>
+                <div class="smaller-text">
+                  {{sp.taskStatusName}}
+                </div>
+              </td>
 
-<!--&lt;!&ndash;              <td>&ndash;&gt;-->
-<!--&lt;!&ndash;                <div class="cancel">&ndash;&gt;-->
-<!--&lt;!&ndash;                  <button pButton type="button"&ndash;&gt;-->
-<!--&lt;!&ndash;                          icon="pi pi-times"&ndash;&gt;-->
-<!--&lt;!&ndash;                          class="p-button-danger p-button-sm p-button-text"&ndash;&gt;-->
-<!--&lt;!&ndash;                          (click)="onRemoveTaskLinkAsync(t.taskId, 'Link')"&ndash;&gt;-->
-<!--&lt;!&ndash;                          pTooltip="Удалить связь"&ndash;&gt;-->
-<!--&lt;!&ndash;                          tooltipPosition="bottom">&ndash;&gt;-->
-<!--&lt;!&ndash;                  </button>&ndash;&gt;-->
-<!--&lt;!&ndash;                </div>&ndash;&gt;-->
-<!--&lt;!&ndash;              </td>&ndash;&gt;-->
-<!--            </tr>-->
-<!--          </ng-template>-->
+              <td>
+                <div class="smaller-text">
+                  {{sp.priorityName}}
+                </div>
+              </td>
+            </tr>
+          </ng-template>
 
-<!--          <ng-template pTemplate="emptymessage">-->
-<!--            <tr>-->
-<!--              <td colspan="7">-->
-<!--                <div>-->
-<!--                  Связей нет.-->
-<!--                </div>-->
-<!--              </td>-->
-<!--            </tr>-->
-<!--          </ng-template>-->
-<!--        </p-table>-->
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">
+                <div>
+                  Связей нет.
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
       </div>
     </div>
   </div>
