@@ -1,0 +1,61 @@
+<p-toast></p-toast>
+
+<div class="d-flex block-profile space-top-50">
+<!--  <div class="profile-left-menu col-lg-3 col-xl-3 col-xxl-3">-->
+
+<!--  </div>-->
+
+  <div class="worksheet-panel block-worksheet profile-table">
+    <p-table [value]="sprints$.value"
+             [(selection)]="selectedSprint"
+             dataKey="projectId"
+             [paginator]="sprints$.value.length > 0"
+             [rows]="10"
+             styleClass="p-datatable-gridlines"
+             responsiveLayout="scroll"
+             (click)="onSelectSprint()">
+      <ng-template pTemplate="caption">
+        <h3>Спринты проекта</h3>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th></th>
+          <th>ID</th>
+          <th>Название</th>
+          <th>Дата начала</th>
+          <th>Дата окончания</th>
+          <th>Статус</th>
+          <th></th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-sp>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="sp"></p-tableCheckbox>
+          </td>
+          <td class="table-header-item">{{sp.projectSprintId}}</td>
+          <td class="table-header-item">{{sp.sprintName}}</td>
+          <td class="table-header-item">{{sp.dateStart ?? 'Не задана'}}</td>
+          <td class="table-header-item">{{sp.dateEnd ?? 'Не задана'}}</td>
+          <td class="table-header-item">{{sp.sprintStatusName}}</td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="summary">
+        Всего: {{sprints$.value.length}}
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7">
+            <div class="empty-projects">
+              Вы не спланировали еще ни одного спринта.
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

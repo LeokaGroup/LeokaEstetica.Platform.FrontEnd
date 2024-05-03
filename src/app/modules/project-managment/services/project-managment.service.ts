@@ -68,6 +68,7 @@ export class ProjectManagmentService {
     public searchSprintTasks$ = new BehaviorSubject<any>(null);
     public sprintTask$ = new BehaviorSubject<any>(null);
     public epicTasks$ = new BehaviorSubject<any>(null);
+    public sprints = new BehaviorSubject<any>(null);
     public sprintDetails$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
@@ -787,6 +788,16 @@ export class ProjectManagmentService {
   public async getEpicTasksAsync(projectId: number, epicId: number) {
     return await this._http.get(this.apiUrl + `/project-management/epic-task?projectId=${projectId}&epicId=${epicId}`).pipe(
       tap(data => this.epicTasks$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает список спринтов для бэклога проекта.
+   * @param projectId - Id проекта.
+   */
+  public async getSprintsAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/sprints/sprint-list?projectId=${projectId}`).pipe(
+      tap(data => this.sprints.next(data))
     );
   };
 
