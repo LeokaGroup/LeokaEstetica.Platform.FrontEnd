@@ -68,6 +68,7 @@ export class ProjectManagmentService {
     public searchSprintTasks$ = new BehaviorSubject<any>(null);
     public sprintTask$ = new BehaviorSubject<any>(null);
     public epicTasks$ = new BehaviorSubject<any>(null);
+    public sprintDetails$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -786,6 +787,17 @@ export class ProjectManagmentService {
   public async getEpicTasksAsync(projectId: number, epicId: number) {
     return await this._http.get(this.apiUrl + `/project-management/epic-task?projectId=${projectId}&epicId=${epicId}`).pipe(
       tap(data => this.epicTasks$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает задачи эпика.
+   * @param projectId - Id проекта.
+   * @param projectSprintId - Id спринта проекта.
+   */
+  public async getSprintDetailsAsync(projectId: number, projectSprintId: number) {
+    return await this._http.get(this.apiUrl + `/project-management/sprints/sprint?projectId=${projectId}&projectSprintId=${projectSprintId}`).pipe(
+      tap(data => this.sprintDetails$.next(data))
     );
   };
 }
