@@ -8,12 +8,12 @@
   <div class="worksheet-panel block-worksheet profile-table">
     <p-table [value]="sprints$.value"
              [(selection)]="selectedSprint"
-             dataKey="projectId"
+             selectionMode="single"
              [paginator]="sprints$.value.length > 0"
              [rows]="10"
              styleClass="p-datatable-gridlines"
              responsiveLayout="scroll"
-             (click)="onSelectSprint()">
+             (onRowSelect)="onSelectSprint($event, null)">
       <ng-template pTemplate="caption">
         <h3>Спринты проекта</h3>
       </ng-template>
@@ -35,11 +35,19 @@
           <td>
             <p-tableCheckbox [value]="sp"></p-tableCheckbox>
           </td>
-          <td class="table-header-item">{{sp.projectSprintId}}</td>
-          <td class="table-header-item">{{sp.sprintName}}</td>
-          <td class="table-header-item">{{sp.dateStart ?? 'Не задана'}}</td>
-          <td class="table-header-item">{{sp.dateEnd ?? 'Не задана'}}</td>
-          <td class="table-header-item">{{sp.sprintStatusName}}</td>
+          <td class="">
+            <div class="btn btn-link" (click)="onSelectSprint($event, sp.projectSprintId)">
+              {{sp.projectSprintId}}
+            </div>
+          </td>
+          <td class="">
+            <div class="btn btn-link" (click)="onSelectSprint($event, sp.projectSprintId)">
+              {{sp.sprintName}}
+            </div>
+          </td>
+          <td class="">{{sp.dateStart ?? 'Не задана'}}</td>
+          <td class="">{{sp.dateEnd ?? 'Не задана'}}</td>
+          <td class="">{{sp.sprintStatusName}}</td>
         </tr>
       </ng-template>
 
