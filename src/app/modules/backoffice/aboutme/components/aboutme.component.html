@@ -277,7 +277,7 @@
             <!-- TODO: Передавать это поле на бэк, когда там будет оно добавлено. -->
             <div [ngClass]="{'control-required-field':isModeEdit}"
                   class="control-input-text-worksheet">
-                <input type="text"
+                <input type="number"
                         class="p-inputtext-sm input-control-worksheet"
                         placeholder="Опыт (стаж)"
                         pInputText
@@ -305,7 +305,7 @@
     </div>
 
     <div class="worksheet-panel space-top">
-      <div [ngClass]="{'p-panel-el-after':isModeEdit}" 
+      <div [ngClass]="{'p-panel-el-after':isModeEdit}"
             class="p-panel-el">
         <p-panel header="Навыки" [toggleable]="true" >
           <div *ngIf="isModeEdit; else elseBlockSkills">
@@ -395,7 +395,7 @@
           </ng-template>
         </p-panel>
       </div>
-        
+
       </div>
 
       <div class="d-flex worksheet-line worksheet-panel mb-3">
