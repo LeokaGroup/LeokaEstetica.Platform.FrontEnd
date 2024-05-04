@@ -71,110 +71,7 @@
   <div class="block-task-lines col-lg-12 d-flex">
     <div class="col-lg-4">
       <strong>Детали спринта</strong>
-<!--      <div class="d-flex line">-->
-<!--        <div class="line-item d-flex">-->
-<!--          <label class="control-label-task-item">Тип:</label>-->
-<!--          <p class="line-item-value">{{taskDetails$.value?.taskTypeName}}</p>-->
-<!--        </div>-->
-<!--      </div>-->
-
-<!--      <form class="d-flex line" [formGroup]="formPriorities" *ngIf="taskTypeId == 1 || taskTypeId == 2 || taskTypeId == 4">-->
-<!--        <label class="control-label-task-item">Приоритет:</label>-->
-
-<!--        <p-dropdown [options]="priorities$.value"-->
-<!--                    [(ngModel)]="selectedPriority"-->
-<!--                    optionLabel="priorityName"-->
-<!--                    [showClear]="true"-->
-<!--                    placeholder="Выберите приоритет"-->
-<!--                    [emptyMessage]="(priorities$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"-->
-<!--                    formControlName="priorityName"-->
-<!--                    (onChange)="onChangeTaskPriorityAsync()">-->
-<!--        </p-dropdown>-->
-<!--      </form>-->
-
-
-<!-- TODO: Этот блок раскоментим, когда добавим спринту еще полей.-->
-<!--      <div class="d-flex line">-->
-<!--        <label class="control-label-task-item">Метки:</label>-->
-
-<!--        <div class="chip-block">-->
-<!--          <div *ngFor="let lbl of taskDetails$.value?.tagNames">-->
-<!--            <div class="chip-item">-->
-<!--              <p-chip label="{{lbl ?? 'Нет'}}" [removable]="true" (onRemove)="onDetachTaskTagAsync(lbl)"></p-chip>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-
-<!--        <p-overlayPanel #op [style]="{'min-width': '300px'}">-->
-<!--          <ng-template pTemplate>-->
-<!--            <div>-->
-<!--              <p-dropdown [options]="this.projectTags$.value"-->
-<!--                          [(ngModel)]="selectedTag"-->
-<!--                          optionLabel="tagName"-->
-<!--                          class="control-project-stages"-->
-<!--                          placeholder="Выберите тег"-->
-<!--                          (onChange)="onAttachTaskTagAsync()">-->
-<!--              </p-dropdown>-->
-<!--            </div>-->
-<!--          </ng-template>-->
-<!--        </p-overlayPanel>-->
-
-<!--        <button pButton-->
-<!--                pRipple-->
-<!--                icon="pi pi-plus"-->
-<!--                type="button"-->
-<!--                class="p-button-secondary p-button-text p-button-sm"-->
-<!--                (click)="op.toggle($event)">-->
-<!--        </button>-->
-<!--      </div>-->
-
-<!--      <div class="col-lg-4 mt-3" *ngIf="taskTypeId == 1 || taskTypeId == 2">-->
-<!--        <strong>Agile</strong>-->
-<!--        <form class="d-flex line" [formGroup]="formEpic">-->
-<!--          <label class="control-label-task-item">Эпик:</label>-->
-
-<!--          <div>-->
-<!--            <p-dropdown [options]="availableEpics$.value"-->
-<!--                        [(ngModel)]="selectedEpic"-->
-<!--                        optionLabel="epicName"-->
-<!--                        class="control-project-stages"-->
-<!--                        placeholder="Добавить задачу в эпик"-->
-<!--                        [emptyMessage]="(availableEpics$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"-->
-<!--                        (onClick)="onGetAvailableEpicsAsync()"-->
-<!--                        (onChange)="onChangeAvailableEpicsAsync()"-->
-<!--                        formControlName="epicName">-->
-<!--            </p-dropdown>-->
-<!--            <button pButton pRipple label="Перейти к эпику"-->
-<!--                    class="p-button-link"-->
-<!--                    (click)="onRouteEpic()">-->
-
-<!--            </button>-->
-<!--          </div>-->
-<!--        </form>-->
-
-<!--        <form class="d-flex line" [formGroup]="formSprint">-->
-<!--          <label class="control-label-task-item">Спринт:</label>-->
-
-<!--          <div>-->
-<!--            <p-dropdown [options]="sprintTask$.value"-->
-<!--                        [(ngModel)]="selectedSprint"-->
-<!--                        optionLabel="sprintName"-->
-<!--                        class="control-project-stages"-->
-<!--                        placeholder="Добавить задачу в спринт"-->
-<!--                        [emptyMessage]="(sprintTask$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"-->
-<!--                        (onChange)="onChangeAvailableSprintsAsync(selectedSprint.sprintId)"-->
-<!--                        formControlName="sprintName">-->
-<!--            </p-dropdown>-->
-<!--            <button pButton pRipple label="Перейти к спринту"-->
-<!--                    class="p-button-link">-->
-
-<!--            </button>-->
-<!--          </div>-->
-<!--        </form>-->
-<!--      </div>-->
     </div>
-
-    <!--    TODO: Этот блок раскоментим, когда выведем статус спринта в выпадающий список.-->
 
 <!--    <form class="col-lg-4" [formGroup]="formStatuses">-->
 <!--      <div class="line-item d-flex">-->
@@ -191,88 +88,86 @@
 <!--      </div>-->
 <!--    </form>-->
 
-<!--    TODO: Этот блок раскоментим, когда добавим спринту еще полей.-->
+    <div class="col-lg-4">
+      <strong>Люди</strong>
+      <div>
+        <div class="line-item d-flex">
+          <label class="control-label-task-item">Автор:</label>
+          <p class="line-item-value">{{sprintDetails$.value?.authorName}}</p>
+        </div>
 
-<!--    <div class="col-lg-4">-->
-<!--      <strong>Люди</strong>-->
-<!--      <div>-->
-<!--        <div class="line-item d-flex">-->
-<!--          <label class="control-label-task-item">Автор:</label>-->
-<!--          <p class="line-item-value">{{taskDetails$.value?.authorName}}</p>-->
-<!--        </div>-->
+        <form class="line-item d-flex" [formGroup]="formExecutors">
+          <label class="control-label-task-item">Исполнитель:</label>
+          <div>
+            <p-dropdown [options]="taskPeople$.value"
+                        [(ngModel)]="selectedExecutor"
+                        optionLabel="fullName"
+                        [showClear]="true"
+                        placeholder="Выберите исполнителя"
+                        [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                        formControlName="executorName"
+                        (onChange)="onChangeTaskExecutorAsync()">
+            </p-dropdown>
+            <!--            <button pButton pRipple label="Назначить меня" class="p-button-link control-button-executor-me"></button>-->
+          </div>
+        </form>
 
-<!--        <form class="line-item d-flex" [formGroup]="formExecutors">-->
-<!--          <label class="control-label-task-item">Исполнитель:</label>-->
-<!--          <div>-->
-<!--            <p-dropdown [options]="taskPeople$.value"-->
-<!--                        [(ngModel)]="selectedExecutor"-->
-<!--                        optionLabel="fullName"-->
-<!--                        [showClear]="true"-->
-<!--                        placeholder="Выберите исполнителя"-->
-<!--                        [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"-->
-<!--                        formControlName="executorName"-->
-<!--                        (onChange)="onChangeTaskExecutorAsync()">-->
-<!--            </p-dropdown>-->
-<!--            &lt;!&ndash;            <button pButton pRipple label="Назначить меня" class="p-button-link control-button-executor-me"></button>&ndash;&gt;-->
-<!--          </div>-->
-<!--        </form>-->
+        <div class="line-item d-flex">
+          <div>
+            <label class="control-label-task-item">Наблюдатели:</label>
+          </div>
 
-<!--        <div class="line-item d-flex">-->
-<!--          <div>-->
-<!--            <label class="control-label-task-item">Наблюдатели:</label>-->
-<!--          </div>-->
+          <div>
+            <div class="chip-block">
+              <div *ngFor="let lbl of sprintDetails$.value?.watcherNames; index as i">
+                <div class="chip-item">
+                  <p-chip label="{{lbl ?? 'Нет'}}" [removable]="true" (onRemove)="onDetachTaskWatcherAsync(lbl, i)"></p-chip>
+                </div>
+              </div>
+            </div>
 
-<!--          <div>-->
-<!--            <div class="chip-block">-->
-<!--              <div *ngFor="let lbl of taskDetails$.value?.watcherNames; index as i">-->
-<!--                <div class="chip-item">-->
-<!--                  <p-chip label="{{lbl ?? 'Нет'}}" [removable]="true" (onRemove)="onDetachTaskWatcherAsync(lbl, i)"></p-chip>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
+            <p-overlayPanel #wa [style]="{'min-width': '300px'}">
+              <ng-template pTemplate>
+                <div>
+                  <p-dropdown [options]="taskPeople$.value"
+                              [(ngModel)]="selectedWatcher"
+                              optionLabel="fullName"
+                              class="control-project-stages"
+                              placeholder="Выберите наблюдателя"
+                              [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                              (onChange)="onAttachTaskWatcherAsync()">
+                  </p-dropdown>
+                </div>
+              </ng-template>
+            </p-overlayPanel>
 
-<!--            <p-overlayPanel #wa [style]="{'min-width': '300px'}">-->
-<!--              <ng-template pTemplate>-->
-<!--                <div>-->
-<!--                  <p-dropdown [options]="taskPeople$.value"-->
-<!--                              [(ngModel)]="selectedWatcher"-->
-<!--                              optionLabel="fullName"-->
-<!--                              class="control-project-stages"-->
-<!--                              placeholder="Выберите наблюдателя"-->
-<!--                              [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"-->
-<!--                              (onChange)="onAttachTaskWatcherAsync()">-->
-<!--                  </p-dropdown>-->
-<!--                </div>-->
-<!--              </ng-template>-->
-<!--            </p-overlayPanel>-->
+            <button pButton
+                    pRipple
+                    icon="pi pi-plus"
+                    type="button"
+                    class="p-button-secondary p-button-text p-button-sm"
+                    (click)="wa.toggle($event)">
+            </button>
+            <!-- <button pButton pRipple label="Добавить меня" class="p-button-link control-button-executor-me"></button> -->
+          </div>
+        </div>
+      </div>
 
-<!--            <button pButton-->
-<!--                    pRipple-->
-<!--                    icon="pi pi-plus"-->
-<!--                    type="button"-->
-<!--                    class="p-button-secondary p-button-text p-button-sm"-->
-<!--                    (click)="wa.toggle($event)">-->
-<!--            </button>-->
-<!--            &lt;!&ndash; <button pButton pRipple label="Добавить меня" class="p-button-link control-button-executor-me"></button> &ndash;&gt;-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
+      <div class="mt-3">
+        <strong>Даты</strong>
+        <div>
+          <div class="line-item d-flex">
+            <label class="control-label-task-item">Создано:</label>
+            <p class="line-item-value">{{sprintDetails$.value?.createdAt}}</p>
+          </div>
 
-<!--      <div class="mt-3">-->
-<!--        <strong>Даты</strong>-->
-<!--        <div>-->
-<!--          <div class="line-item d-flex">-->
-<!--            <label class="control-label-task-item">Создано:</label>-->
-<!--            <p class="line-item-value">{{taskDetails$.value?.created}}</p>-->
-<!--          </div>-->
-
-<!--          <div class="line-item d-flex">-->
-<!--            <label class="control-label-task-item">Обновлено:</label>-->
-<!--            <p class="line-item-value">{{taskDetails$.value?.updated}}</p>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+          <div class="line-item d-flex">
+            <label class="control-label-task-item">Обновлено:</label>
+            <p class="line-item-value">{{sprintDetails$.value?.updatedAt}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div>

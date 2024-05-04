@@ -5,6 +5,9 @@ import { Subscription } from "rxjs";
 import { SignalrService } from "../../../notifications/signalr/services/signalr.service";
 import {ProjectManagmentService} from "../../services/project-managment.service";
 import { forkJoin } from "rxjs";
+import {ProjectTaskExecutorInput} from "../../task/models/input/project-task-executor-input";
+import {ProjectTaskWatcherInput} from "../../task/models/input/project-task-watcher-input";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: "sprint-details",
@@ -22,6 +25,7 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
                private readonly _activatedRoute: ActivatedRoute,
                private readonly _projectManagmentService: ProjectManagmentService) { }
   public readonly sprintDetails$ = this._projectManagmentService.sprintDetails$;
+  public readonly taskPeople$ = this._projectManagmentService.taskExecutors$;
 
   subscription?: Subscription;
   projectId: number = 0;
@@ -32,6 +36,15 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
   isActiveSprintName: boolean = false;
   isActiveSprintDetails: boolean = false;
   sprintDetails: string = "";
+  aPeople: any[] = [];
+  selectedExecutor: any;
+  selectedWatcher: any;
+
+  formExecutors: FormGroup = new FormGroup({
+    "executorName": new FormControl("", [
+      Validators.required
+    ])
+  });
 
   public async ngOnInit() {
     if (!this._signalrService.isConnected) {
@@ -104,6 +117,75 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
 
   public onActivateSprintDetails() {
 
+  };
+
+  /**
+   * TODO: Эта логика дублируется.
+   * Функция получает исполнителей для выбора.
+   * @returns - Список статусов.
+   */
+  public async onGetSelectTaskPeopleAsync() {
+    (await this._projectManagmentService.getSelectTaskPeopleAsync(this.projectId))
+      .subscribe(_ => {
+        console.log("Исполнители и наблюдатели для выбора: ", this.taskPeople$.value);
+        this.aPeople = this.taskPeople$.value;
+      });
+  };
+
+  /**
+   * TODO: Эта логика дублируется.
+   * Функция обновляет исполнителя задачи.
+   */
+  public async onChangeTaskExecutorAsync() {
+    let projectTaskExecutorInput = new ProjectTaskExecutorInput();
+    projectTaskExecutorInput.projectId = +this.projectId;
+
+    // TODO: Тут будет сохраняться в таблицу спринта, не в задачи и название не projectTaskId, аналогично и для исполнителя.
+    projectTaskExecutorInput.projectTaskId = this.projectSprintId;
+    projectTaskExecutorInput.executorId = this.selectedExecutor.userId;
+
+    (await this._projectManagmentService.changeTaskExecutorAsync(projectTaskExecutorInput))
+      .subscribe(async _ => {
+        await this.getSprintDetailsAsync();
+      });
+  };
+
+  /**
+   * TODO: Эта логика дублируется.
+   * Функция отвязывает наблюдателя задачи.
+   * @param removedValue - Удаляемое значение.
+   * @param i - Индекс.
+   */
+  public async onDetachTaskWatcherAsync(removedValue: string, i: number) {
+    let projectTaskTagInput = new ProjectTaskWatcherInput();
+    projectTaskTagInput.projectId = +this.projectId;
+
+    // TODO: Тут будет сохраняться в таблицу спринта, не в задачи и название не projectTaskId. Аналогично и для наблюдателей.
+    projectTaskTagInput.projectTaskId = this.projectSprintId;
+    projectTaskTagInput.watcherId = this.taskPeople$.value[i].userId;
+
+    (await this._projectManagmentService.detachTaskWatcherAsync(projectTaskTagInput))
+      .subscribe(async _ => {
+        await this.getSprintDetailsAsync();
+      });
+  };
+
+  /**
+   * TODO: Эта логика дублируется.
+   * Функция привязывает наблюдателя задачи.
+   */
+  public async onAttachTaskWatcherAsync() {
+    let projectTaskExecutorInput = new ProjectTaskWatcherInput();
+    projectTaskExecutorInput.projectId = +this.projectId;
+
+    // TODO: Тут будет сохраняться в таблицу спринта, не в задачи и название не projectTaskId. Аналогично и для наблюдателей.
+    projectTaskExecutorInput.projectTaskId = this.projectSprintId;
+    projectTaskExecutorInput.watcherId = this.selectedWatcher.userId;
+
+    (await this._projectManagmentService.attachTaskWatcherAsync(projectTaskExecutorInput))
+      .subscribe(async _ => {
+        await this.getSprintDetailsAsync();
+      });
   };
 
   ngOnDestroy() {
