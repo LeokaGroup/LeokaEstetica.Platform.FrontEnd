@@ -39,4 +39,14 @@ export class PlaningSprintInput {
    * Признак автоматического начала спринта после его планирования.
    */
   isAuthStartSprint: boolean = false;
+
+  /**
+   * Id исполнителя спринта (кто ответственный за спринт).
+   */
+  executorId?: number | null;
+
+  /**
+   * Id наблюдателей спринта.
+   */
+  watcherIds?: number[] | null;
 }

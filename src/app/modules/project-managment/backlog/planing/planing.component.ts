@@ -31,6 +31,7 @@ export class PlaningSprintComponent implements OnInit {
 
   public readonly sprintTasks = this._projectManagmentService.sprintTasks$;
   public readonly searchSprintTasks$ = this._projectManagmentService.searchSprintTasks$;
+  public readonly taskPeople$ = this._projectManagmentService.taskExecutors$;
 
   selectedProjectId: number = 0;
   isLoading: boolean = false;
@@ -48,6 +49,10 @@ export class PlaningSprintComponent implements OnInit {
   isSearchByTaskName: boolean = false;
   isSearchByTaskDescription: boolean = false;
   aAddedTaskSprint: any[] = [];
+  selectedExecutor: any;
+  aPeople: any[] = [];
+  selectedWatcher: any;
+  aSelectedWachers: Set<any> = new Set<any>();
 
   public async ngOnInit() {
     this._projectManagmentService.isLeftPanel = false;
@@ -143,6 +148,13 @@ export class PlaningSprintComponent implements OnInit {
       planingSprintInput.projectTaskIds = this.aAddedTaskSprint.map(x => x.projectTaskId);
     }
 
+    let aWatchers = Array.from(this.aSelectedWachers).map(x => {
+      return x.userId;
+    });
+
+    planingSprintInput.watcherIds = aWatchers;
+    planingSprintInput.executorId = this.selectedExecutor?.userId ?? null;
+
     (await this._projectManagmentService.planingSprintAsync(planingSprintInput))
       .subscribe(async (_: any) => {
         setTimeout(() => {
@@ -183,5 +195,89 @@ export class PlaningSprintComponent implements OnInit {
 
     let deletedItemIdx = this.aAddedTaskSprint.findIndex(x => x.projectTaskId == projectTaskId);
     this.aAddedTaskSprint.splice(deletedItemIdx, 1);
+  };
+
+  /**
+   * Функция получает исполнителей для выбора.
+   * @returns - Список статусов.
+   */
+  public async onGetSelectTaskPeopleAsync() {
+    (await this._projectManagmentService.getSelectTaskPeopleAsync(this.selectedProjectId))
+      .subscribe(_ => {
+        console.log("Исполнители и наблюдатели для выбора: ", this.taskPeople$.value);
+        this.aPeople = this.taskPeople$.value;
+      });
+  };
+
+  // TODO: Эта логика дублируется.
+  public async onSetMeExecutor() {
+    // Если еще не подгружали, то подгрузим, затем сделаем текущего пользователя исполнителем.
+    if (this.aPeople.length == 0) {
+      new Promise(function (resolve, reject) {
+        setTimeout(() => resolve(1), 500); // TODO: Должны ставить задержку, иначе не успевает подгрузиться.
+      }).then(async () => {
+        await this.onGetSelectTaskPeopleAsync()
+
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            let findUser = this.aPeople.find(x => x.userCode == localStorage["u_c"]);
+
+            if (findUser !== undefined && findUser !== null) {
+              this.selectedExecutor = findUser;
+            }
+          }, 500); // TODO: Должны ставить задержку, иначе не успевает подгрузиться.
+        });
+
+      });
+    }
+
+    else {
+      let findUser = this.aPeople.find(x => x.userCode == localStorage["u_c"]);
+
+      if (findUser !== undefined && findUser !== null) {
+        this.selectedExecutor = findUser;
+      }
+    }
+  };
+
+  // TODO: Эта логика дублируется.
+  public onSelectWachers() {
+    console.log("selectedWatcher", this.selectedWatcher);
+
+    let checkDublicate = Array.from(this.aSelectedWachers).find(x => x.userId == this.selectedWatcher.userId);
+    if (checkDublicate == undefined || checkDublicate == null) {
+      this.aSelectedWachers.add(this.selectedWatcher);
+    }
+  };
+
+  // TODO: Эта логика дублируется.
+  public async onSetMeWatcher() {
+    // Если еще не подгружали, то подгрузим, затем сделаем текущего пользователя наблюдателем.
+    if (this.aPeople.length == 0) {
+      new Promise(function (resolve, reject) {
+        setTimeout(() => resolve(1), 500); // TODO: Должны ставить задержку, иначе не успевает подгрузиться.
+      }).then(async () => {
+        await this.onGetSelectTaskPeopleAsync()
+
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            let findUser = this.aPeople.find(x => x.userCode == localStorage["u_c"]);
+
+            if (findUser !== undefined && findUser !== null) {
+              this.aSelectedWachers.add(findUser);
+            }
+          }, 500); // TODO: Должны ставить задержку, иначе не успевает подгрузиться.
+        });
+
+      });
+    }
+
+    else {
+      let findUser = this.aPeople.find(x => x.userCode == localStorage["u_c"]);
+
+      if (findUser !== undefined && findUser !== null) {
+        this.aSelectedWachers.add(findUser);
+      }
+    }
   };
 }
