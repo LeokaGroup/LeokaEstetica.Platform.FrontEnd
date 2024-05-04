@@ -42,7 +42,7 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
 
   formExecutors: FormGroup = new FormGroup({
     "executorName": new FormControl("", [
-      Validators.required
+
     ])
   });
 

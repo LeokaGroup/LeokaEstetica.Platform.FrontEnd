@@ -106,7 +106,7 @@
                         placeholder="Выберите исполнителя"
                         [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
                         formControlName="executorName"
-                        (onChange)="onChangeTaskExecutorAsync()">
+                        (onChange)="onGetSelectTaskPeopleAsync()">
             </p-dropdown>
             <!--            <button pButton pRipple label="Назначить меня" class="p-button-link control-button-executor-me"></button>-->
           </div>
@@ -135,6 +135,7 @@
                               class="control-project-stages"
                               placeholder="Выберите наблюдателя"
                               [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                              (onClick)="onGetSelectTaskPeopleAsync()"
                               (onChange)="onAttachTaskWatcherAsync()">
                   </p-dropdown>
                 </div>
