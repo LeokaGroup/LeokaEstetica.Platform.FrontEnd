@@ -706,7 +706,7 @@ export class ProjectManagmentService {
    * @param planingSprintInput - Входная модель.
    */
   public async planingSprintAsync(planingSprintInput: PlaningSprintInput) {
-    return await this._http.post(this.apiUrl + `/project-management/sprint/planing`, planingSprintInput).pipe(
+    return await this._http.post(this.apiUrl + `/project-management/sprints/sprint/planing`, planingSprintInput).pipe(
       tap(_ => console.log("Спринт успешно спланирован"))
     );
   };

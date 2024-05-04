@@ -198,6 +198,7 @@ export class PlaningSprintComponent implements OnInit {
   };
 
   /**
+   * TODO: Эта логика дублируется.
    * Функция получает исполнителей для выбора.
    * @returns - Список статусов.
    */

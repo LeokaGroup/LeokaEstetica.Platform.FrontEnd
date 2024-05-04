@@ -400,6 +400,7 @@ export class TaskDetailsComponent implements OnInit {
     };
 
     /**
+     * TODO: Эта логика дублируется.
      * Функция обновляет исполнителя задачи.
      */
     public async onChangeTaskExecutorAsync() {
@@ -415,6 +416,7 @@ export class TaskDetailsComponent implements OnInit {
     };
 
       /**
+       * TODO: Эта логика дублируется.
      * Функция отвязывает наблюдателя задачи.
      * @param removedValue - Удаляемое значение.
      * @param i - Индекс.
@@ -432,6 +434,7 @@ export class TaskDetailsComponent implements OnInit {
     };
 
     /**
+     * TODO: Эта логика дублируется.
     * Функция привязывает наблюдателя задачи.
     */
     public async onAttachTaskWatcherAsync() {
