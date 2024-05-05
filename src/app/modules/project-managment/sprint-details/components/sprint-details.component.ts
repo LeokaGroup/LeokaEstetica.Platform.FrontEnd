@@ -7,7 +7,8 @@ import {ProjectManagmentService} from "../../services/project-managment.service"
 import { forkJoin } from "rxjs";
 import {ProjectTaskExecutorInput} from "../../task/models/input/project-task-executor-input";
 import {ProjectTaskWatcherInput} from "../../task/models/input/project-task-watcher-input";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
+import {UpdateSprintNameInput} from "../../sprint/models/update-sprint-name-input";
 
 @Component({
   selector: "sprint-details",
@@ -186,6 +187,20 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
       .subscribe(async _ => {
         await this.getSprintDetailsAsync();
       });
+  };
+
+  /**
+   * Функция обновляет название спринта.
+   * @param sprintName - Название спринта.
+   */
+  public async onSaveSprintNameAsync(sprintName: string) {
+    let updateSprintInput = new UpdateSprintNameInput();
+    updateSprintInput.projectId = +this.projectId;
+    updateSprintInput.sprintName = sprintName;
+    updateSprintInput.projectSprintId = +this.projectSprintId;
+
+    (await this._projectManagmentService.updateSprintNameAsync(updateSprintInput))
+      .subscribe(async _ => {});
   };
 
   ngOnDestroy() {

@@ -22,6 +22,7 @@ import {IncludeTaskEpicInput} from "../task/models/input/include-task-epic-input
 import {PlaningSprintInput} from "../task/models/input/planing-sprint-input";
 import {UpdateTaskSprintInput} from '../task/models/input/update-task-sprint-input';
 import {SearchAgileObjectTypeEnum} from '../../enums/search-agile-object-type-enum';
+import {UpdateSprintNameInput} from "../sprint/models/update-sprint-name-input";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -809,6 +810,16 @@ export class ProjectManagmentService {
   public async getSprintDetailsAsync(projectId: number, projectSprintId: number) {
     return await this._http.get(this.apiUrl + `/project-management/sprints/sprint?projectId=${projectId}&projectSprintId=${projectSprintId}`).pipe(
       tap(data => this.sprintDetails$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает задачи эпика.
+   * @param updateSprintNameInput
+   */
+  public async updateSprintNameAsync(updateSprintNameInput: UpdateSprintNameInput) {
+    return await this._http.patch(this.apiUrl + `/project-management/sprints/sprint-name`, updateSprintNameInput).pipe(
+      tap(_ => console.log("Название спринта успешно обновлено."))
     );
   };
 }
