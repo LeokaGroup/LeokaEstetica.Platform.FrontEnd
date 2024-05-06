@@ -89,12 +89,24 @@ export class CatalogVacancyComponent implements OnInit {
     private setDefaultFilters() {
         this.selectedSalary = this.aSalaries[0];
     };
-    public resetFilters() {
-        this.selectedSalary = this.aSalaries[0]; 
-        this.selectedPay = null; 
-        this.selectedExperience = null; 
-        this.selectedEmployment = null; 
-      }
+    /**
+     * Функция сбрасывает фильтры 
+     */
+    public async onResetFilters() {
+        this.selectedSalary = null;
+        this.selectedPay = null;
+        this.selectedExperience = null;
+        this.selectedEmployment = null;
+         // Перезагрузка списка вакансий
+        await this.loadCatalogVacanciesAsync();
+
+
+    }
+        /**
+ * Функция загружает список вакансий для каталога.
+ * @returns - Список вакансий.
+ */
+   
    /**
      * Функция загружает список вакансий для каталога.
      * @returns - Список вакансий.
