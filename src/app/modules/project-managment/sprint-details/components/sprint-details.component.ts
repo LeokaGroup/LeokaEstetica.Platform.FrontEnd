@@ -7,7 +7,11 @@ import {ProjectManagmentService} from "../../services/project-managment.service"
 import { forkJoin } from "rxjs";
 import {ProjectTaskExecutorInput} from "../../task/models/input/project-task-executor-input";
 import {ProjectTaskWatcherInput} from "../../task/models/input/project-task-watcher-input";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
+import {UpdateSprintNameInput} from "../../sprint/models/update-sprint-name-input";
+import {UpdateSprintDetailsInput} from "../../sprint/models/update-sprint-details-input";
+import {UpdateSprintExecutorInput} from "../../sprint/models/update-sprint-executor-input";
+import {UpdateSprintWatchersInput} from "../../sprint/models/update-sprint-watchers-input";
 
 @Component({
   selector: "sprint-details",
@@ -100,10 +104,13 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
    */
   private async getSprintDetailsAsync() {
     (await this._projectManagmentService.getSprintDetailsAsync(this.projectId, this.projectSprintId))
-      .subscribe(_ => {
+      .subscribe(async _ => {
         console.log("Детали спринта:", this.sprintDetails$.value);
 
         this.sprintName = this.sprintDetails$.value.sprintName;
+        this.sprintDetails = this.sprintDetails$.value.sprintGoal;
+
+        await this.onGetSelectTaskPeopleAsync(true);
       });
   };
 
@@ -112,11 +119,11 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
   };
 
   public onActivateSprintName() {
-
+    this.isActiveSprintName = !this.isActiveSprintName;
   };
 
   public onActivateSprintDetails() {
-
+    this.isActiveSprintDetails = !this.isActiveSprintDetails;
   };
 
   /**
@@ -124,11 +131,17 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
    * Функция получает исполнителей для выбора.
    * @returns - Список статусов.
    */
-  public async onGetSelectTaskPeopleAsync() {
+  public async onGetSelectTaskPeopleAsync(isLoadExecutors: boolean = false) {
     (await this._projectManagmentService.getSelectTaskPeopleAsync(this.projectId))
       .subscribe(_ => {
         console.log("Исполнители и наблюдатели для выбора: ", this.taskPeople$.value);
         this.aPeople = this.taskPeople$.value;
+
+        // Если необходимо заполнить список исполнителей ранее сохраненным исполнителем.
+        if (isLoadExecutors) {
+          let value = this.taskPeople$.value.find((st: any) => st.userId == this.sprintDetails$.value.executorId);
+          this.formExecutors.get("executorName")?.setValue(value);
+        }
       });
   };
 
@@ -152,11 +165,11 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
 
   /**
    * TODO: Эта логика дублируется.
-   * Функция отвязывает наблюдателя задачи.
+   * Функция отвязывает наблюдателя спринта.
    * @param removedValue - Удаляемое значение.
    * @param i - Индекс.
    */
-  public async onDetachTaskWatcherAsync(removedValue: string, i: number) {
+  public async onDetachSprintWatcherAsync(removedValue: string, i: number) {
     let projectTaskTagInput = new ProjectTaskWatcherInput();
     projectTaskTagInput.projectId = +this.projectId;
 
@@ -185,6 +198,70 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
     (await this._projectManagmentService.attachTaskWatcherAsync(projectTaskExecutorInput))
       .subscribe(async _ => {
         await this.getSprintDetailsAsync();
+      });
+  };
+
+  /**
+   * Функция обновляет название спринта.
+   * @param sprintName - Название спринта.
+   */
+  public async onSaveSprintNameAsync(sprintName: string) {
+    let updateSprintInput = new UpdateSprintNameInput();
+    updateSprintInput.projectId = +this.projectId;
+    updateSprintInput.sprintName = sprintName;
+    updateSprintInput.projectSprintId = +this.projectSprintId;
+
+    (await this._projectManagmentService.updateSprintNameAsync(updateSprintInput))
+      .subscribe(_ => {
+        this.isActiveSprintName = false;
+      });
+  };
+
+  /**
+   * Функция обновляет название спринта.
+   * @param sprintDetails - Описание спринта.
+   */
+  public async onSaveSprintDetailsAsync(sprintDetails: string) {
+    let updateSprintDetailsInput = new UpdateSprintDetailsInput();
+    updateSprintDetailsInput.projectId = +this.projectId;
+    updateSprintDetailsInput.sprintDetails = sprintDetails;
+    updateSprintDetailsInput.projectSprintId = +this.projectSprintId;
+
+    (await this._projectManagmentService.updateSprintDetailsAsync(updateSprintDetailsInput))
+      .subscribe(_ => {
+        this.isActiveSprintDetails = false;
+      });
+  };
+
+  /**
+   * Функция обновляет исполнителя спринта (ответственный за выполнение спринта).
+   * @param executorId - Id исполнителя спринта.
+   */
+  public async onSaveSprintExecutorAsync(executorId: number) {
+    let updateSprintExecutorInput = new UpdateSprintExecutorInput();
+    updateSprintExecutorInput.projectId = +this.projectId;
+    updateSprintExecutorInput.executorId = executorId;
+    updateSprintExecutorInput.projectSprintId = +this.projectSprintId;
+
+    (await this._projectManagmentService.updateSprintExecutorAsync(updateSprintExecutorInput))
+      .subscribe(_ => {
+
+      });
+  };
+
+  /**
+   * Функция обновляет наблюдателей спринта.
+   * @param watcherIds - Наблюдатели спринта.
+   */
+  public async onSaveSprintWatchersAsync(watchers: any) {
+    let updateSprintWatchersInput = new UpdateSprintWatchersInput();
+    updateSprintWatchersInput.projectId = +this.projectId;
+    updateSprintWatchersInput.watcherIds = [watchers.userId];
+    updateSprintWatchersInput.projectSprintId = +this.projectSprintId;
+
+    (await this._projectManagmentService.updateSprintWatchersAsync(updateSprintWatchersInput))
+      .subscribe(_ => {
+
       });
   };
 
