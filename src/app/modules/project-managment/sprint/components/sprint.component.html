@@ -1,5 +1,29 @@
 <p-toast></p-toast>
 
+<div class="block-actions d-flex" *ngIf="isShowAvailableActions">
+ <div class="d-flex actions-line">
+   <div>
+     <button pButton
+             pRipple
+             icon="pi pi-play"
+             type="button"
+             label="Начать спринт"
+             class="p-button-success p-button-text p-button-sm">
+     </button>
+   </div>
+
+   <div>
+     <button pButton
+             pRipple
+             icon="pi pi-stop"
+             type="button"
+             label="Остановить спринт"
+             class="p-button-secondary p-button-text p-button-sm">
+     </button>
+   </div>
+ </div>
+</div>
+
 <div class="d-flex block-profile space-top-50">
 <!--  <div class="profile-left-menu col-lg-3 col-xl-3 col-xxl-3">-->
 
@@ -12,8 +36,7 @@
              [paginator]="sprints$.value.length > 0"
              [rows]="10"
              styleClass="p-datatable-gridlines"
-             responsiveLayout="scroll"
-             (onRowSelect)="onSelectSprint($event, null)">
+             responsiveLayout="scroll">
       <ng-template pTemplate="caption">
         <h3>Спринты проекта</h3>
       </ng-template>
@@ -33,7 +56,7 @@
       <ng-template pTemplate="body" let-sp>
         <tr>
           <td>
-            <p-tableCheckbox [value]="sp"></p-tableCheckbox>
+            <p-tableCheckbox [value]="sp" (click)="isShowAvailableActions = !isShowAvailableActions"></p-tableCheckbox>
           </td>
           <td class="">
             <div class="btn btn-link" (click)="onSelectSprint($event, sp.projectSprintId)">
