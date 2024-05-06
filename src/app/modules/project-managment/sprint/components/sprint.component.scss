@@ -149,3 +149,15 @@ p-inplace {
   max-width: 690px;
   word-break: break-all;
 }
+
+// Блок возможных действий.
+.block-actions {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 70px;
+  background: #FAFAFA;
+  z-index: 10;
+  color: white;
+  align-items: center;
+}

@@ -27,6 +27,7 @@ export class SprintComponent implements OnInit, OnDestroy {
   projectId: number = 0;
   selectedSprint: any;
   projectSprintId: number = 0;
+  isShowAvailableActions: boolean = false;
 
   public async ngOnInit() {
     if (!this._signalrService.isConnected) {
