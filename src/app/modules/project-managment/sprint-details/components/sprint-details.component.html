@@ -106,7 +106,8 @@
                         placeholder="Выберите исполнителя"
                         [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
                         formControlName="executorName"
-                        (onChange)="onGetSelectTaskPeopleAsync()">
+                        (onClick)="onGetSelectTaskPeopleAsync()"
+                        (onChange)="onSaveSprintExecutorAsync(selectedExecutor.userId)">
             </p-dropdown>
             <!--            <button pButton pRipple label="Назначить меня" class="p-button-link control-button-executor-me"></button>-->
           </div>
@@ -121,7 +122,7 @@
             <div class="chip-block">
               <div *ngFor="let lbl of sprintDetails$.value?.watcherNames; index as i">
                 <div class="chip-item">
-                  <p-chip label="{{lbl ?? 'Нет'}}" [removable]="true" (onRemove)="onDetachTaskWatcherAsync(lbl, i)"></p-chip>
+                  <p-chip label="{{lbl ?? 'Нет'}}" [removable]="true" (onRemove)="onDetachSprintWatcherAsync(lbl, i)"></p-chip>
                 </div>
               </div>
             </div>
@@ -136,7 +137,7 @@
                               placeholder="Выберите наблюдателя"
                               [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
                               (onClick)="onGetSelectTaskPeopleAsync()"
-                              (onChange)="onAttachTaskWatcherAsync()">
+                              (onChange)="onSaveSprintWatchersAsync(selectedWatcher)">
                   </p-dropdown>
                 </div>
               </ng-template>
@@ -203,15 +204,15 @@
             </textarea>
 
           <div>
-<!--            <button pButton-->
-<!--                    pRipple-->
-<!--                    icon="pi pi-times"-->
-<!--                    type="button"-->
-<!--                    label="Сохранить"-->
-<!--                    class="p-button-success p-button-text p-button-sm"-->
-<!--                    *ngIf="isActiveTaskDetails"-->
-<!--                    (click)="onSaveTaskDetailsAsync(taskDetails)">-->
-<!--            </button>-->
+            <button pButton
+                    pRipple
+                    icon="pi pi-times"
+                    type="button"
+                    label="Сохранить"
+                    class="p-button-success p-button-text p-button-sm"
+                    *ngIf="isActiveSprintDetails"
+                    (click)="onSaveSprintDetailsAsync(sprintDetails)">
+            </button>
 
             <button pButton
                     pRipple
