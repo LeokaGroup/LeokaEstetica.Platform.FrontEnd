@@ -10,6 +10,8 @@ export class ProjectManagementSignalrService {
   private hubConnection: any;
   public $allFeed: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
+  public isConnected: boolean = false;
+
   public constructor(private readonly _redisService: RedisService,
                      private readonly _router: Router) {
     this.hubConnection = new HubConnectionBuilder()
@@ -73,6 +75,24 @@ export class ProjectManagementSignalrService {
    */
   public listenErrorSuccessIncludeEpicTask() {
     (<HubConnection>this.hubConnection).on("SendNotifyErrorIncludeEpicTask", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает уведомление об успешном начале спринта.
+   */
+  public listenSuccessStartSprint() {
+    (<HubConnection>this.hubConnection).on("SendNotificationSuccessStartSprint", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает уведомление об успешном начале спринта.
+   */
+  public listenWarningStartSprint() {
+    (<HubConnection>this.hubConnection).on("SendNotificationWarningStartSprint", (data: any) => {
       this.$allFeed.next(data);
     });
   };
