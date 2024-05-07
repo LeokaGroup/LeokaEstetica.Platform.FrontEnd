@@ -17,6 +17,7 @@ import { ProjectResponseInput } from "../models/input/project-response-input";
 import { UpdateProjectInput } from "../models/input/update-project-input";
 import { AddProjectArchiveInput } from "src/app/modules/backoffice/models/input/project/add-project-archive-input";
 import { DialogInput } from "src/app/modules/messages/chat/models/input/dialog-input";
+import {ChangeTaskNameInput} from "../../../project-managment/task/models/input/change-task-name-input";
 
 @Component({
     selector: "detail",
@@ -38,7 +39,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         private readonly _messagesService: ChatMessagesService,
         private readonly _searchProjectService: SearchProjectService,
         private readonly _redirectService: RedirectService) {
-            
+
     }
 
     public readonly selectedProject$ = this._projectService.selectedProject$;
@@ -114,6 +115,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     aDialogs: any[] = [];
     lastMessage: any;
     isCollapsed: boolean = true;
+    isActiveRole: boolean = false;
 
   public async ngOnInit() {
         forkJoin([
@@ -140,25 +142,25 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         this._signalrService.AllFeedObservable
         .subscribe((response: any) => {
             console.log("Подписались на сообщения", response);
-            
+
             // Если пришел тип уведомления, то просто показываем его.
             if (response.notificationLevel !== undefined) {
                 this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
             }
 
-            
+
             else if (response.actionType == "All" && response.dialogs.length > 0) {
                 console.log("Сообщения чата проекта: ", response);
-                this.aDialogs = response.dialogs;     
-                this.aMessages = response.dialogs;    
+                this.aDialogs = response.dialogs;
+                this.aMessages = response.dialogs;
             }
 
             else if (response.actionType == "Concrete") {
-                console.log("Сообщения диалога: ", response.messages);    
+                console.log("Сообщения диалога: ", response.messages);
 
-                this.aMessages = response.messages;          
-                let lastMessage = response.messages[response.messages.length - 1];   
-                this.lastMessage = lastMessage;  
+                this.aMessages = response.messages;
+                let lastMessage = response.messages[response.messages.length - 1];
+                this.lastMessage = lastMessage;
 
                 // Делаем небольшую задержку, чтобы диалог успел открыться, прежде чем будем скролить к низу.
                 setTimeout(() => {
@@ -174,13 +176,13 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
             else if (response.actionType == "Message") {
                 console.log("Сообщения диалога: ", this.aMessages);
 
-                this.message = ""; 
+                this.message = "";
                 let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
-                let lastMessage = response.messages[response.messages.length - 1];   
-                this.lastMessage = lastMessage;  
+                let lastMessage = response.messages[response.messages.length - 1];
+                this.lastMessage = lastMessage;
                 this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
 
-                this.aMessages = response.messages;    
+                this.aMessages = response.messages;
 
                 this.aMessages.forEach((msg: any) => {
                     if (msg.userCode !== localStorage["u_c"]) {
@@ -190,7 +192,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
                         msg.isMyMessage = true;
                     }
                 });
-                
+
                 setTimeout(() => {
                     let block = document.getElementById("#idMessages");
                     block!.scrollBy({
@@ -479,7 +481,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
      */
     public async onShowProjectResponseWithVacancyModal(isResponseVacancy: boolean) {
         this.isResponseVacancy = isResponseVacancy;
-        
+
         (await this._projectService.availableVacanciesProjectResponseAsync(this.projectId))
         .subscribe((response: any) => {
             this.availableAttachVacancies = response;
@@ -561,8 +563,8 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     public async onSendMessageAsync() {
         let dialogInput = new DialogMessageInput();
         dialogInput.Message = this.message;
-        dialogInput.DialogId = this.dialogId;       
-        
+        dialogInput.DialogId = this.dialogId;
+
         this._signalrService.sendMessageAsync(this.message, this.dialogId);
     };
 
@@ -761,7 +763,23 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
             });
     };
 
-    public ngOnDestroy() { 
+    public onActivateRole() {
+      this.isActiveRole = !this.isActiveRole;
+    };
+
+  /**
+   * Функция сохраняет роль участника проекта
+   * @param userId - Id участника команды проекта, которому назначают роль.
+   * @param role - Роль.
+   */
+  public async onSetProjectTeamMemberRoleAsync(userId: number, role: string) {
+    (await this._projectService.setProjectTeamMemberRoleAsync(userId, role, this.projectId))
+      .subscribe(_ => {
+        this.isActiveRole = false;
+      });
+  };
+
+    public ngOnDestroy() {
         this._signalrService.NewAllFeedObservable;
-    }; 
+    };
 }

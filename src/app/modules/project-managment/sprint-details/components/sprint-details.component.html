@@ -1,0 +1,585 @@
+<p-toast></p-toast>
+
+<div class="task-details mt-3">
+  <!-- Название спринта. -->
+  <div class="task-name">
+    <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveSprintName" (onActivate)="onActivateSprintName()">
+      <ng-template pTemplate="display">
+        <h1 class="task-name-title">{{sprintName}}</h1>
+      </ng-template>
+      <ng-template pTemplate="content">
+        <input type="text" [(ngModel)]="sprintName" value="{{sprintName}}" pInputText>
+      </ng-template>
+    </p-inplace>
+
+    <button pButton
+            pRipple
+            icon="pi pi-save"
+            type="button"
+            label="Сохранить"
+            class="p-button-success p-button-text p-button-sm"
+            *ngIf="isActiveSprintName"
+            (click)="onSaveSprintNameAsync(sprintName)">
+    </button>
+
+    <button pButton
+            pRipple
+            icon="pi pi-times"
+            type="button"
+            label="Отмена"
+            class="p-button-secondary p-button-text p-button-sm"
+            *ngIf="isActiveSprintName"
+            (click)="isActiveSprintName=!isActiveSprintName">
+    </button>
+  </div>
+
+<!--  <div>-->
+<!--    <hr>-->
+<!--  </div>-->
+
+  <!-- Блок с кнопками действий. -->
+<!--  <div class="mt-3 mb-3 d-flex block-task-actions">-->
+<!--    <div>-->
+<!--      <button type="button"-->
+<!--              pButton-->
+<!--              icon="pi pi-save"-->
+<!--              label="Спланировать эпик"-->
+<!--              class="p-button-text p-button-success p-button-sm control-sprint-strong"-->
+<!--              pTooltip="Планирование эпика"-->
+<!--              tooltipPosition="bottom"-->
+<!--              (click)="onIncludeEpicTaskAsync()">-->
+<!--      </button>-->
+<!--    </div>-->
+
+<!--    <div>-->
+<!--      <button type="button"-->
+<!--              pButton-->
+<!--              icon="pi pi-arrow-down"-->
+<!--              label="Возможные действия"-->
+<!--              class="p-button-text p-button-primary p-button-sm task-actions"-->
+<!--              (click)="menu.toggle($event)">-->
+<!--      </button>-->
+<!--      <p-menu #menu [popup]="true" [model]="aAvailableActions"></p-menu>-->
+<!--    </div>-->
+<!--  </div>-->
+
+  <div>
+    <hr>
+  </div>
+
+  <!-- Детали спринта. -->
+  <div class="block-task-lines col-lg-12 d-flex">
+    <div class="col-lg-4">
+      <strong>Детали спринта</strong>
+    </div>
+
+<!--    <form class="col-lg-4" [formGroup]="formStatuses">-->
+<!--      <div class="line-item d-flex">-->
+<!--        <label class="control-label-task-item">Статус:</label>-->
+<!--        <p-dropdown [options]="availableTransitions$.value"-->
+<!--                    [(ngModel)]="selectedStatus"-->
+<!--                    optionLabel="statusName"-->
+<!--                    [showClear]="true"-->
+<!--                    placeholder="Выберите статус"-->
+<!--                    [emptyMessage]="(availableTransitions$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"-->
+<!--                    formControlName="statusName"-->
+<!--                    (onChange)="onChangeStatusAsync()">-->
+<!--        </p-dropdown>-->
+<!--      </div>-->
+<!--    </form>-->
+
+    <div class="col-lg-4">
+      <strong>Люди</strong>
+      <div>
+        <div class="line-item d-flex">
+          <label class="control-label-task-item">Автор:</label>
+          <p class="line-item-value">{{sprintDetails$.value?.authorName}}</p>
+        </div>
+
+        <form class="line-item d-flex" [formGroup]="formExecutors">
+          <label class="control-label-task-item">Исполнитель:</label>
+          <div>
+            <p-dropdown [options]="taskPeople$.value"
+                        [(ngModel)]="selectedExecutor"
+                        optionLabel="fullName"
+                        [showClear]="true"
+                        placeholder="Выберите исполнителя"
+                        [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                        formControlName="executorName"
+                        (onClick)="onGetSelectTaskPeopleAsync()"
+                        (onChange)="onSaveSprintExecutorAsync(selectedExecutor.userId)">
+            </p-dropdown>
+            <!--            <button pButton pRipple label="Назначить меня" class="p-button-link control-button-executor-me"></button>-->
+          </div>
+        </form>
+
+        <div class="line-item d-flex">
+          <div>
+            <label class="control-label-task-item">Наблюдатели:</label>
+          </div>
+
+          <div>
+            <div class="chip-block">
+              <div *ngFor="let lbl of sprintDetails$.value?.watcherNames; index as i">
+                <div class="chip-item">
+                  <p-chip label="{{lbl ?? 'Нет'}}" [removable]="true" (onRemove)="onDetachSprintWatcherAsync(lbl, i)"></p-chip>
+                </div>
+              </div>
+            </div>
+
+            <p-overlayPanel #wa [style]="{'min-width': '300px'}">
+              <ng-template pTemplate>
+                <div>
+                  <p-dropdown [options]="taskPeople$.value"
+                              [(ngModel)]="selectedWatcher"
+                              optionLabel="fullName"
+                              class="control-project-stages"
+                              placeholder="Выберите наблюдателя"
+                              [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                              (onClick)="onGetSelectTaskPeopleAsync()"
+                              (onChange)="onSaveSprintWatchersAsync(selectedWatcher)">
+                  </p-dropdown>
+                </div>
+              </ng-template>
+            </p-overlayPanel>
+
+            <button pButton
+                    pRipple
+                    icon="pi pi-plus"
+                    type="button"
+                    class="p-button-secondary p-button-text p-button-sm"
+                    (click)="wa.toggle($event)">
+            </button>
+            <!-- <button pButton pRipple label="Добавить меня" class="p-button-link control-button-executor-me"></button> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <strong>Даты</strong>
+        <div>
+          <div class="line-item d-flex">
+            <label class="control-label-task-item">Создано:</label>
+            <p class="line-item-value">{{sprintDetails$.value?.createdAt}}</p>
+          </div>
+
+          <div class="line-item d-flex">
+            <label class="control-label-task-item">Обновлено:</label>
+            <p class="line-item-value">{{sprintDetails$.value?.updatedAt}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <hr>
+  </div>
+
+  <!-- Описание задачи. -->
+  <div class="block-task-lines col-lg-12 d-flex">
+    <div class="col-lg-8">
+      <div>
+        <strong>Описание</strong>
+      </div>
+
+      <p-inplace [style]="{'min-height':'30px'}" [active]="isActiveSprintDetails" (onActivate)="onActivateSprintDetails()">
+        <ng-template pTemplate="display">
+          <span class="empty-task-details" *ngIf="sprintDetails == null || sprintDetails == ''">
+            Добавьте описание спринта, чтобы другим было понятно, что включает в себя данный спринт.
+          </span>
+          <span class="task-name-title">{{sprintDetails}}</span>
+        </ng-template>
+        <ng-template pTemplate="content">
+            <textarea input-control-worksheet
+                      rows="5"
+                      cols="100"
+                      pInputTextarea
+                      [autoResize]="true"
+                      autocomplete="new-password"
+                      placeholder="Описание спринта"
+                      [(ngModel)]="sprintDetails"
+                      class="input-about-me"
+                      value="{{sprintDetails}}">
+            </textarea>
+
+          <div>
+            <button pButton
+                    pRipple
+                    icon="pi pi-times"
+                    type="button"
+                    label="Сохранить"
+                    class="p-button-success p-button-text p-button-sm"
+                    *ngIf="isActiveSprintDetails"
+                    (click)="onSaveSprintDetailsAsync(sprintDetails)">
+            </button>
+
+            <button pButton
+                    pRipple
+                    icon="pi pi-times"
+                    type="button"
+                    label="Отмена"
+                    class="p-button-secondary p-button-text p-button-sm"
+                    *ngIf="isActiveSprintDetails"
+                    (click)="isActiveSprintDetails=!isActiveSprintDetails">
+            </button>
+          </div>
+        </ng-template>
+      </p-inplace>
+    </div>
+
+    <div class="col-lg-4">
+
+    </div>
+  </div>
+
+  <div>
+    <hr>
+  </div>
+
+  <!-- Что включает в себя спринт. -->
+  <div class="block-task-lines d-flex">
+    <div class="">
+      <div class="d-flex justify-content-between">
+        <div class="space-bottom-10">
+          <strong>Спринт включает в себя</strong>
+        </div>
+
+      </div>
+      <div class="">
+        <p-table [value]="sprintDetails$.value.sprintTasks"
+                 styleClass="p-datatable-sm"
+                 [tableStyle]="{'min-width': '50rem'}"
+                 [rows]="10"
+                 responsiveLayout="scroll">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Ключ</th>
+              <th>Тип</th>
+              <th>Название</th>
+              <th>Статус</th>
+              <th>Приоритет</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-sp>
+            <tr>
+              <td class="link">
+                <div>{{sp.fullTaskId ?? 'Не указан'}}</div>
+              </td>
+
+              <td>
+                <div>{{sp.taskTypeName}}</div>
+              </td>
+
+              <td>
+                <div>{{sp.name}}</div>
+              </td>
+
+              <td>
+                <div class="smaller-text">
+                  {{sp.taskStatusName}}
+                </div>
+              </td>
+
+              <td>
+                <div class="smaller-text">
+                  {{sp.priorityName}}
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">
+                <div>
+                  Связей нет.
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <hr>
+  </div>
+
+<!--  <div class="mt-3 block-sprint">-->
+<!--    <div>-->
+<!--      <strong>Задачи спринта</strong>-->
+<!--    </div>-->
+<!--  </div>-->
+
+  <div class="mt-3 block-sprint">
+<!--    <div class="mb-3">-->
+<!--      <p-autoComplete [(ngModel)]="selectedTask"-->
+<!--                      [suggestions]="epicTasks$.value"-->
+<!--                      (completeMethod)="onSearchIncludeEpicTaskAsync($event)"-->
+<!--                      [showEmptyMessage]="true"-->
+<!--                      emptyMessage="Результатов не найдено"-->
+<!--                      field="findText"-->
+<!--                      [minLength]="0"-->
+<!--                      placeholder="Добавить задачу в эпик"-->
+<!--                      (onSelect)="onSelectTask()">-->
+
+<!--      </p-autoComplete>-->
+
+<!--      <div class="d-flex mt-1">-->
+<!--        <div>-->
+<!--          <p-checkbox inputId="searchByTaskId"-->
+<!--                      [value]="isSearchByTaskId"-->
+<!--                      (onChange)="isSearchByTaskId = !isSearchByTaskId"-->
+<!--                      [binary]="true">-->
+
+<!--          </p-checkbox>-->
+<!--          <label for="searchByTaskId">&nbsp;&nbsp;Искать по ID задачи</label>-->
+<!--        </div>-->
+
+<!--        &nbsp;-->
+
+<!--        <div>-->
+<!--          <p-checkbox inputId="searchByTaskName"-->
+<!--                      [value]="isSearchByTaskName"-->
+<!--                      (onChange)="isSearchByTaskName = !isSearchByTaskName"-->
+<!--                      [binary]="true">-->
+
+<!--          </p-checkbox>-->
+<!--          <label for="searchByTaskName">&nbsp;&nbsp;Искать в названии задачи</label>-->
+<!--        </div>-->
+
+<!--        &nbsp;-->
+
+<!--        <div>-->
+<!--          <p-checkbox inputId="sprintTasksDescription"-->
+<!--                      [value]="isSearchByTaskDescription"-->
+<!--                      (onChange)="isSearchByTaskDescription = !isSearchByTaskDescription"-->
+<!--                      [binary]="true">-->
+
+<!--          </p-checkbox>-->
+<!--          <label for="sprintTasksDescription">&nbsp;&nbsp;Искать в описании задачи</label>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    <p-table [value]="aEpicTasks"-->
+<!--             styleClass="p-datatable-sm"-->
+<!--             [tableStyle]="{'min-width': '50rem'}"-->
+<!--             [rows]="10"-->
+<!--             responsiveLayout="scroll"-->
+<!--             [paginator]="aEpicTasks.length > 0">-->
+<!--      <ng-template pTemplate="header">-->
+<!--        <tr>-->
+<!--          <th>Ключ</th>-->
+<!--          <th>Тип задачи</th>-->
+<!--          <th>Название задачи</th>-->
+<!--          <th>Статус</th>-->
+<!--          <th>Исполнитель</th>-->
+<!--          <th>Исключение из эпика</th>-->
+<!--        </tr>-->
+<!--      </ng-template>-->
+<!--      <ng-template pTemplate="body" let-t>-->
+<!--        <tr>-->
+<!--          <td class="link">-->
+<!--            <div (click)="onSelectTaskLink(t.fullProjectTaskId)">{{t.fullProjectTaskId}}</div>-->
+<!--          </td>-->
+
+<!--          <td>-->
+<!--            <div>{{t.taskTypeName}}</div>-->
+<!--          </td>-->
+
+<!--          <td>-->
+<!--            <div>{{t.name}}</div>-->
+<!--          </td>-->
+
+<!--          <td>-->
+<!--            <div class="smaller-text">-->
+<!--              {{t.statusName}}-->
+<!--            </div>-->
+<!--          </td>-->
+
+<!--          <td>-->
+<!--            <div class="smaller-text">-->
+<!--              {{t.executorName}}-->
+<!--            </div>-->
+<!--          </td>-->
+
+<!--          <td>-->
+<!--            <div class="cancel">-->
+<!--              <button pButton type="button"-->
+<!--                      icon="pi pi-times"-->
+<!--                      class="p-button-danger p-button-sm p-button-text"-->
+<!--                      pTooltip="Исключить задачу из эпика"-->
+<!--                      tooltipPosition="bottom"-->
+<!--                      (click)="onRemoveAddedTask(t.projectTaskId)">-->
+<!--              </button>-->
+<!--            </div>-->
+<!--          </td>-->
+<!--        </tr>-->
+<!--      </ng-template>-->
+
+<!--      <ng-template pTemplate="emptymessage">-->
+<!--        <tr>-->
+<!--          <td colspan="7">-->
+<!--            <div>-->
+<!--              Нет данных.-->
+<!--            </div>-->
+<!--          </td>-->
+<!--        </tr>-->
+<!--      </ng-template>-->
+<!--    </p-table>-->
+  </div>
+
+<!--  <div *ngIf="taskTypeId == 1 || taskTypeId == 2 || taskTypeId == 4">-->
+<!--    <hr>-->
+<!--  </div>-->
+
+  <!-- Файлы спринта. -->
+<!--  <div class="block-task-lines col-lg-12 d-flex">-->
+<!--    <div class="col-lg-8">-->
+<!--      <strong>Прикрепить файлы</strong>-->
+<!--      <p-fileUpload [multiple]="true"-->
+<!--                    (onSelect)="onSelectTaskFiles($event)"-->
+<!--                    (uploadHandler)="onUploadTaskFilesAsync()"-->
+<!--                    [customUpload]="true"-->
+<!--                    chooseLabel="Прикрепить файл"-->
+<!--                    uploadLabel="Сохранить"-->
+<!--                    cancelLabel="Отменить"-->
+<!--                    uploadIcon="pi pi-save">-->
+<!--      </p-fileUpload>-->
+<!--    </div>-->
+
+<!--    <div class="col-lg-4 block-attached-files" *ngIf="taskFiles$?.value?.length">-->
+<!--      <div class="card block-task-files mt-4">-->
+<!--        <strong>Файлы спринта</strong>-->
+<!--        <ul *ngFor="let tf of taskFiles$?.value">-->
+<!--          <li>-->
+<!--            <div class="d-flex">-->
+<!--              <div>-->
+<!--                {{tf.documentName}}-->
+<!--              </div>-->
+
+<!--              <div class="cancel">-->
+<!--                <button pButton type="button"-->
+<!--                        icon="pi pi-cloud-download"-->
+<!--                        class="p-button-primary p-button-sm p-button-text"-->
+<!--                        pTooltip="Скачать файл"-->
+<!--                        tooltipPosition="bottom"-->
+<!--                        (click)="onDownloadFileAsync(tf.documentId, tf.documentName)">-->
+<!--                </button>-->
+
+<!--                <button pButton type="button"-->
+<!--                        icon="pi pi-times"-->
+<!--                        class="p-button-danger p-button-sm p-button-text"-->
+<!--                        pTooltip="Удалить файл"-->
+<!--                        tooltipPosition="bottom"-->
+<!--                        (click)="onRemoveTaskFileAsync(tf.documentId)">-->
+<!--                </button>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div>-->
+<!--    <hr>-->
+<!--  </div>-->
+
+  <!-- Комментарии задачи. -->
+<!--  <div class="block-task-lines col-lg-12 d-flex">-->
+<!--    <div class="col-lg-8">-->
+<!--      <p-tabView>-->
+<!--        <p-tabPanel header="Комментарии">-->
+<!--          <div *ngFor="let c of taskComments$.value">-->
+<!--            <div>&nbsp;</div>-->
+
+<!--            <p-panel header="Добавлено: {{c.userName}}">-->
+<!--              <div class="">-->
+<!--                <div class="block-comments">-->
+<!--                  <p-inplace [style]="{'min-height':'33px'}"-->
+<!--                             [active]="c.isActiveTaskComment"-->
+<!--                             (onActivate)="c.isActiveTaskComment = !c.isActiveTaskComment">-->
+<!--                    <ng-template pTemplate="display">-->
+<!--                      <span class="task-name-title">{{c.comment}}</span>-->
+<!--                    </ng-template>-->
+
+<!--                    <ng-template pTemplate="content">-->
+<!--                      <input type="text" [(ngModel)]="c.comment" value="{{c.comment}}" pInputText class="comment">-->
+<!--                    </ng-template>-->
+<!--                  </p-inplace>-->
+
+<!--                  <button pButton-->
+<!--                          pRipple-->
+<!--                          icon="pi pi-save"-->
+<!--                          type="button"-->
+<!--                          label="Сохранить"-->
+<!--                          class="p-button-success p-button-text p-button-sm"-->
+<!--                          *ngIf="c.isActiveTaskComment"-->
+<!--                          (click)="onUpdateSprintCommentAsync(c.commentId, c.comment)">-->
+<!--                  </button>-->
+
+<!--                  <button pButton-->
+<!--                          pRipple-->
+<!--                          icon="pi pi-times"-->
+<!--                          type="button"-->
+<!--                          label="Отмена"-->
+<!--                          class="p-button-secondary p-button-text p-button-sm"-->
+<!--                          *ngIf="c.isActiveTaskComment"-->
+<!--                          (click)="c.isActiveSprintComment=!c.isActiveTaskComment">-->
+<!--                  </button>-->
+
+<!--                  <button pButton type="button"-->
+<!--                          icon="pi pi-times"-->
+<!--                          class="p-button-danger p-button-sm p-button-text"-->
+<!--                          (click)="onDeleteSprintCommentAsync(c.commentId)"-->
+<!--                          pTooltip="Удалить комментарий"-->
+<!--                          tooltipPosition="bottom">-->
+<!--                  </button>-->
+<!--                </div>-->
+
+<!--                <div class="control-comment mt-1">-->
+<!--                  <p-button label="Отправить"-->
+<!--                            icon="pi pi-arrow-up-right"-->
+<!--                            [hidden]="comment == undefined || comment == '' || comment == null"-->
+<!--                            (click)="onCreateTaskCommentAsync(comment)"-->
+<!--                            class="p-button-sm">-->
+<!--                  </p-button>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </p-panel>-->
+<!--          </div>-->
+
+<!--          &lt;!&ndash; Оставить комментарий. &ndash;&gt;-->
+<!--          <div class="mt-3">-->
+<!--            <p-card header="Оставить комментарий" [style]="{width: '100%'}">-->
+<!--              <div>-->
+<!--                <p-editor [(ngModel)]="comment" [style]="{width: '100%'}"></p-editor>-->
+<!--              </div>-->
+
+<!--              <div class="control-comment mt-1">-->
+<!--                <p-button label="Отправить"-->
+<!--                          icon="pi pi-arrow-up-right"-->
+<!--                          [hidden]="comment == undefined || comment == '' || comment == null"-->
+<!--                          (click)="onCreateSprintCommentAsync(comment)">-->
+<!--                </p-button>-->
+<!--              </div>-->
+<!--            </p-card>-->
+<!--          </div>-->
+<!--        </p-tabPanel>-->
+
+<!--        <p-tabPanel header="История">-->
+
+<!--        </p-tabPanel>-->
+<!--      </p-tabView>-->
+<!--    </div>-->
+
+<!--    <div class="col-lg-4">-->
+
+<!--    </div>-->
+<!--  </div>-->
+</div>

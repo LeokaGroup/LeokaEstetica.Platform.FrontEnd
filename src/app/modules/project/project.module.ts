@@ -30,6 +30,7 @@ import { TagModule } from 'primeng/tag';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { CardModule } from 'primeng/card';
+import {InplaceModule} from 'primeng/inplace';
 
 @NgModule({
     declarations: [
@@ -58,12 +59,13 @@ import { CardModule } from 'primeng/card';
         SplitterModule,
         OverlayPanelModule,
         AutoCompleteModule,
-        PaginatorModule,    
+        PaginatorModule,
         RadioButtonModule,
         TagModule,
         MessagesModule,
         MessageModule,
-        CardModule
+        CardModule,
+        InplaceModule
     ],
 
     exports: [],

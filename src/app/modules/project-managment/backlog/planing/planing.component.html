@@ -230,42 +230,110 @@
     </div>
   </div>
 
-  <div class="col-lg-5">
-    <strong>Даты</strong>
+  <div class="col-lg-4">
+    <strong>Люди</strong>
     <div>
-      <p-checkbox inputId="sprintDates"
-                  [value]="isSprintDates"
-                  (onChange)="isSprintDates = !isSprintDates"
-                  [binary]="true">
-
-      </p-checkbox>
-      <label for="sprintDates">&nbsp;Указать даты спринта</label>
-
-      <div class="mt-3" *ngIf="isSprintDates">
-        <div class="line-item">
-          <label class="control-label-task-item">Дата начала спринта:</label>
-          <br>
-          <p-calendar [(ngModel)]="dateStart"
-                      dateFormat="dd.mm.yy"
-                      [showTime]="true"
-                      icon="pi pi-calendar"
-                      [showIcon]="true"
-                      [locale]="locale">
-
-          </p-calendar>
+      <div class="line-item d-flex">
+        <label class="control-label-task-item">Исполнитель:</label>
+        <div>
+          <p-dropdown [options]="taskPeople$.value"
+                      [(ngModel)]="selectedExecutor"
+                      optionLabel="fullName"
+                      [showClear]="true"
+                      placeholder="Выберите исполнителя"
+                      [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                      (onClick)="onGetSelectTaskPeopleAsync()">
+          </p-dropdown>
+          <button pButton
+                  pRipple
+                  label="Назначить меня"
+                  class="p-button-link control-button-executor-me"
+                  (click)="onSetMeExecutor()">
+          </button>
         </div>
+      </div>
 
-        <div class="line-item mt-1">
-          <label class="control-label-task-item">Дата окончания спринта:</label>
-          <br>
-          <p-calendar [(ngModel)]="dateEnd"
-                      icon="pi pi-calendar"
-                      [showIcon]="true"
-                      dateFormat="dd.mm.yy"
-                      [showTime]="true"
-                      [locale]="locale">
+      <div class="line-item d-flex">
+        <label class="control-label-task-item">Автор:</label>
+        <p>Заполняется автоматически.</p>
+      </div>
 
-          </p-calendar>
+      <div class="line-item d-flex">
+        <label class="control-label-task-item">Наблюдатели:</label>
+        <div>
+          <p-dropdown [options]="taskPeople$.value"
+                      [(ngModel)]="selectedWatcher"
+                      optionLabel="fullName"
+                      [showClear]="true"
+                      placeholder="Выберите наблюдателя"
+                      [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                      (onClick)="onGetSelectTaskPeopleAsync()"
+                      (onChange)="onSelectWachers()">
+          </p-dropdown>
+          <button pButton
+                  pRipple
+                  label="Добавить меня"
+                  class="p-button-link control-button-executor-me"
+                  (click)="onSetMeWatcher()">
+          </button>
+
+          <div *ngFor="let w of aSelectedWachers">
+            <div class="wacher">
+              <p-chip label="{{w.fullName}}" [removable]="true"></p-chip>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <strong>Даты</strong>
+
+      <div class="line-item d-flex">
+        <label class="control-label-task-item">Создано:</label>
+        <p>Заполняется автоматически.</p>
+      </div>
+
+      <div class="line-item d-flex">
+        <label class="control-label-task-item">Обновлено:</label>
+        <p>Заполняется автоматически.</p>
+      </div>
+
+      <div>
+        <p-checkbox inputId="sprintDates"
+                    [value]="isSprintDates"
+                    (onChange)="isSprintDates = !isSprintDates"
+                    [binary]="true">
+
+        </p-checkbox>
+        <label for="sprintDates">&nbsp;Указать даты спринта</label>
+
+        <div class="mt-3" *ngIf="isSprintDates">
+          <div class="line-item">
+            <label class="control-label-task-item">Дата начала спринта:</label>
+            <br>
+            <p-calendar [(ngModel)]="dateStart"
+                        dateFormat="dd.mm.yy"
+                        [showTime]="true"
+                        icon="pi pi-calendar"
+                        [showIcon]="true"
+                        [locale]="locale">
+
+            </p-calendar>
+          </div>
+
+          <div class="line-item mt-1">
+            <label class="control-label-task-item">Дата окончания спринта:</label>
+            <br>
+            <p-calendar [(ngModel)]="dateEnd"
+                        icon="pi pi-calendar"
+                        [showIcon]="true"
+                        dateFormat="dd.mm.yy"
+                        [showTime]="true"
+                        [locale]="locale">
+
+            </p-calendar>
+          </div>
         </div>
       </div>
     </div>

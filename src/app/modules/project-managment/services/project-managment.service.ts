@@ -22,6 +22,10 @@ import {IncludeTaskEpicInput} from "../task/models/input/include-task-epic-input
 import {PlaningSprintInput} from "../task/models/input/planing-sprint-input";
 import {UpdateTaskSprintInput} from '../task/models/input/update-task-sprint-input';
 import {SearchAgileObjectTypeEnum} from '../../enums/search-agile-object-type-enum';
+import {UpdateSprintNameInput} from "../sprint/models/update-sprint-name-input";
+import { UpdateSprintDetailsInput } from '../sprint/models/update-sprint-details-input';
+import { UpdateSprintExecutorInput } from '../sprint/models/update-sprint-executor-input';
+import { UpdateSprintWatchersInput } from '../sprint/models/update-sprint-watchers-input';
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -68,6 +72,8 @@ export class ProjectManagmentService {
     public searchSprintTasks$ = new BehaviorSubject<any>(null);
     public sprintTask$ = new BehaviorSubject<any>(null);
     public epicTasks$ = new BehaviorSubject<any>(null);
+    public sprints = new BehaviorSubject<any>(null);
+    public sprintDetails$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -704,7 +710,7 @@ export class ProjectManagmentService {
    * @param planingSprintInput - Входная модель.
    */
   public async planingSprintAsync(planingSprintInput: PlaningSprintInput) {
-    return await this._http.post(this.apiUrl + `/project-management/sprint/planing`, planingSprintInput).pipe(
+    return await this._http.post(this.apiUrl + `/project-management/sprints/sprint/planing`, planingSprintInput).pipe(
       tap(_ => console.log("Спринт успешно спланирован"))
     );
   };
@@ -786,6 +792,67 @@ export class ProjectManagmentService {
   public async getEpicTasksAsync(projectId: number, epicId: number) {
     return await this._http.get(this.apiUrl + `/project-management/epic-task?projectId=${projectId}&epicId=${epicId}`).pipe(
       tap(data => this.epicTasks$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает список спринтов для бэклога проекта.
+   * @param projectId - Id проекта.
+   */
+  public async getSprintsAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management/sprints/sprint-list?projectId=${projectId}`).pipe(
+      tap(data => this.sprints.next(data))
+    );
+  };
+
+  /**
+   * Функция получает детали эпика.
+   * @param projectId - Id проекта.
+   * @param projectSprintId - Id спринта проекта.
+   */
+  public async getSprintDetailsAsync(projectId: number, projectSprintId: number) {
+    return await this._http.get(this.apiUrl + `/project-management/sprints/sprint?projectId=${projectId}&projectSprintId=${projectSprintId}`).pipe(
+      tap(data => this.sprintDetails$.next(data))
+    );
+  };
+
+  /**
+   * Функция обновляет название спринта.
+   * @param updateSprintNameInput - Входная модель.
+   */
+  public async updateSprintNameAsync(updateSprintNameInput: UpdateSprintNameInput) {
+    return await this._http.patch(this.apiUrl + `/project-management/sprints/sprint-name`, updateSprintNameInput).pipe(
+      tap(_ => console.log("Название спринта успешно обновлено."))
+    );
+  };
+
+  /**
+   * Функция побновляет описание спринта.
+   * @param updateSprintDetailsInput - Входная модель.
+   */
+  public async updateSprintDetailsAsync(updateSprintDetailsInput: UpdateSprintDetailsInput) {
+    return await this._http.patch(this.apiUrl + `/project-management/sprints/sprint-details`, updateSprintDetailsInput).pipe(
+      tap(_ => console.log("Описание спринта успешно обновлено."))
+    );
+  };
+
+  /**
+   * Функция побновляет исполнителя спринта (ответственный за выполнение спринта).
+   * @param updateSprintExecutorInput
+   */
+  public async updateSprintExecutorAsync(updateSprintExecutorInput: UpdateSprintExecutorInput) {
+    return await this._http.patch(this.apiUrl + `/project-management/sprints/sprint-executor`, updateSprintExecutorInput).pipe(
+      tap(_ => console.log("Исполнитель спринта успешно обновлен."))
+    );
+  };
+
+  /**
+   * Функция побновляет наблюдателей спринта.
+   * @param updateSprintWatchersInput
+   */
+  public async updateSprintWatchersAsync(updateSprintWatchersInput: UpdateSprintWatchersInput) {
+    return await this._http.patch(this.apiUrl + `/project-management/sprints/sprint-watcher`, updateSprintWatchersInput).pipe(
+      tap(_ => console.log("Наблюдатели спринта успешно обновлены."))
     );
   };
 }

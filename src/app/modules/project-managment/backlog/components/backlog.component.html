@@ -16,16 +16,9 @@
     <div>
       <button pButton type="button"
               icon="pi pi-list"
-              label="Активные спринты"
-              class="p-button-text p-button-success task-actions p-button-sm control-sprint-strong">
-      </button>
-    </div>
-
-    <div>
-      <button pButton type="button"
-              icon="pi pi-list"
-              label="Все спринты"
-              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong">
+              label="Спринты"
+              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong"
+              (click)="onRouteSprints()">
       </button>
     </div>
 
@@ -38,45 +31,46 @@
       </button>
     </div>
 
-    <div>
-      <button pButton type="button"
-              icon="pi pi-plus"
-              label="Добавить задачу в спринт"
-              class="p-button-text p-button-primary task-actions p-button-sm control-sprint-strong">
-      </button>
-    </div>
+<!--  TODO: Эта кнопка будет при выборе чекбокса каждой задачи в доп.блоке отображаться.  -->
+<!--    <div>-->
+<!--      <button pButton type="button"-->
+<!--              icon="pi pi-plus"-->
+<!--              label="Добавить задачу в спринт"-->
+<!--              class="p-button-text p-button-primary task-actions p-button-sm control-sprint-strong">-->
+<!--      </button>-->
+<!--    </div>-->
 
-    <div>
-      <button pButton type="button"
-              icon="pi pi-filter"
-              label="Фильтровать по историям"
-              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong">
-      </button>
-    </div>
+<!--    <div>-->
+<!--      <button pButton type="button"-->
+<!--              icon="pi pi-filter"-->
+<!--              label="Фильтровать по историям"-->
+<!--              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong">-->
+<!--      </button>-->
+<!--    </div>-->
 
-    <div>
-      <button pButton type="button"
-              icon="pi pi-filter"
-              label="Фильтровать по эпикам"
-              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong">
-      </button>
-    </div>
+<!--    <div>-->
+<!--      <button pButton type="button"-->
+<!--              icon="pi pi-filter"-->
+<!--              label="Фильтровать по эпикам"-->
+<!--              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong">-->
+<!--      </button>-->
+<!--    </div>-->
 
-    <div>
-      <button pButton type="button"
-              icon="pi pi-filter"
-              label="Фильтровать по задачам"
-              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong">
-      </button>
-    </div>
+<!--    <div>-->
+<!--      <button pButton type="button"-->
+<!--              icon="pi pi-filter"-->
+<!--              label="Фильтровать по задачам"-->
+<!--              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong">-->
+<!--      </button>-->
+<!--    </div>-->
 
-    <div>
-      <button pButton type="button"
-              icon="pi pi-filter"
-              label="Фильтровать по ошибкам"
-              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong">
-      </button>
-    </div>
+<!--    <div>-->
+<!--      <button pButton type="button"-->
+<!--              icon="pi pi-filter"-->
+<!--              label="Фильтровать по ошибкам"-->
+<!--              class="p-button-text p-button-secondary task-actions p-button-sm control-sprint-strong">-->
+<!--      </button>-->
+<!--    </div>-->
   </div>
 
   <div>

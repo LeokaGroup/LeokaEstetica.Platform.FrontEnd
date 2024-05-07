@@ -10,6 +10,8 @@ import { BacklogComponent } from './backlog/components/backlog.component';
 import { LeftPanelComponent } from './left-panel/left-panel.component';
 import { PlaningSprintComponent } from './backlog/planing/planing.component';
 import { EpicDetailsComponent } from './task/components/epic/epic-details.component';
+import { SprintComponent } from './sprint/components/sprint.component';
+import { SprintDetailsComponent } from './sprint-details/components/sprint-details.component';
 
 const routes: Routes = [
   {
@@ -50,6 +52,14 @@ const routes: Routes = [
 
   {
     path: 'space/epic', component: EpicDetailsComponent
+  },
+
+  {
+    path: 'sprints', component: SprintComponent
+  },
+
+  {
+    path: 'sprints/sprint/details', component: SprintDetailsComponent
   }
 ];
 

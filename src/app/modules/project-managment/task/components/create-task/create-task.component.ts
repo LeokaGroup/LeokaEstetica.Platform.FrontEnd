@@ -176,6 +176,7 @@ export class CreateTaskComponent implements OnInit {
         }
     };
 
+    // TODO: Эта логика дублируется.
     public onSelectWachers() {
         console.log("selectedWatcher", this.selectedWatcher);
 
@@ -185,6 +186,7 @@ export class CreateTaskComponent implements OnInit {
         }
     };
 
+  // TODO: Эта логика дублируется.
     public async onSetMeWatcher() {
          // Если еще не подгружали, то подгрузим, затем сделаем текущего пользователя наблюдателем.
          if (this.aPeople.length == 0) {
@@ -215,6 +217,7 @@ export class CreateTaskComponent implements OnInit {
         }
     };
 
+    // TODO: Эта логика дублируется.
     public async onSetMeExecutor() {
         // Если еще не подгружали, то подгрузим, затем сделаем текущего пользователя исполнителем.
         if (this.aPeople.length == 0) {
