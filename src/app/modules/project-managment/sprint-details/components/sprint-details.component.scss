@@ -1,0 +1,151 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+
+.task-details {
+  margin-left: 10px;
+}
+
+// FIXME: Вынесем в общие стили, если еще где то будет использоваться.
+.control-label-task-item {
+  color: #929292;
+  margin: 0px 10px 0px 0px;
+  padding: 0;
+}
+
+.line-item {
+  margin: 0px 100px 0px 0px;
+}
+
+.line-item-value {
+  padding: 0;
+  margin: 0;
+  font-size: 15px;
+  line-height: 20px;
+  font-family: "YS Text","Helvetica Neue","Arial","Helvetica",sans-serif;
+  text-align: start;
+}
+
+// FIXME: Вынесем в общие стили, если еще где то будет использоваться.
+.control-button-executor-me {
+  padding: 0;
+}
+
+.line {
+  padding: 5px 0px;
+}
+
+:host ::ng-deep .p-button {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px;
+}
+
+.task-actions {
+  margin: 0 10px 0 0;
+}
+
+.task-name {
+  font-size: 24px;
+  font-weight: 400;
+  max-width: 50%;
+}
+
+.empty-task-details {
+  color: #929292;
+  font-size: 15px;
+  max-width: 640px;
+}
+
+::ng-deep .p-inplace {
+  display: flex;
+}
+
+:host ::ng-deep .p-inplace-display {
+  font-size: 24px;
+  font-weight: 400;
+  height: -50px;
+}
+
+.task-name-title {
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+  font-size: 24px;
+  line-height: 28px;
+}
+
+:host ::ng-deep .p-inplace-content {
+  input {
+    width: 100%;
+  }
+}
+
+:host ::ng-deep .p-inplace span {
+  font-size: 14px;
+}
+
+:host ::ng-deep .p-dropdown-label {
+  margin: -5px 10px -5px -5px;
+}
+
+.chip-block {
+  display: flex;
+  flex-wrap: wrap;
+
+  .chip-item {
+    padding: 2px 2px;
+  }
+}
+
+::ng-deep .p-chip-text {
+  font-size: smaller;
+}
+
+.smaller-text {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 700px;
+  font-size: smaller;
+}
+
+::ng-deep .ng-star-inserted .cancel {
+  text-align: center;
+}
+
+.only-smaller-text {
+  font-size: smaller;
+}
+
+.block-task-files {
+  padding: 0 10px;
+}
+
+.block-attached-files {
+  padding: 0 10px;
+}
+
+.link {
+  cursor: pointer;
+  color:blue;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+
+.control-comment {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.block-comments {
+  display: flex;
+  justify-content: space-between;
+}
+
+p-inplace {
+  max-width: 690px;
+  word-break: break-all;
+}

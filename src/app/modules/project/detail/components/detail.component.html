@@ -321,7 +321,7 @@
     </div>
 
     <!-- Область с чатом. -->
-    <div class="worksheet-panel space-top-80 space-bottom-50 d-flex">
+    <div class="worksheet-panel space-top-80 space-bottom-50 d-flex" *ngIf="aDialogs.length > 0">
     <p-panel header="Чат с владельцем проекта" [toggleable]="true" [collapsed]="false">
       <div class="d-flex">
         <div class="control-input-text-worksheet">
@@ -436,6 +436,7 @@
                       <th *ngFor="let item of projectTeamColumns">
                         {{item.columnName}}</th>
                         <th>Исключение</th>
+                        <th>Должность</th>
                     </tr>
                   </ng-template>
 
@@ -453,6 +454,36 @@
                                   styleClass="p-button-danger p-button-text"
                                   *ngIf="team.isVisibleActionDeleteProjectTeamMember">
                         </p-button>
+                      </td>
+                      <td>
+                        <p-inplace [style]="{'min-width':'100px'}" [active]="isActiveRole" (onActivate)="onActivateRole()">
+                          <ng-template pTemplate="display">
+                            <span>{{team.role}}</span>
+                          </ng-template>
+                          <ng-template pTemplate="content">
+                            <input type="text" [(ngModel)]="team.role" value="{{team.role}}" pInputText>
+                          </ng-template>
+                        </p-inplace>
+
+                        <button pButton
+                                pRipple
+                                icon="pi pi-save"
+                                type="button"
+                                label="Сохранить"
+                                class="p-button-success p-button-text p-button-sm"
+                                *ngIf="isActiveRole"
+                                (click)="onSetProjectTeamMemberRoleAsync(team.userId, team.role)">
+                        </button>
+
+                        <button pButton
+                                pRipple
+                                icon="pi pi-times"
+                                type="button"
+                                label="Отмена"
+                                class="p-button-danger p-button-text p-button-sm"
+                                *ngIf="isActiveRole"
+                                (click)="isActiveRole=!isActiveRole">
+                        </button>
                       </td>
                     </tr>
                   </ng-template>

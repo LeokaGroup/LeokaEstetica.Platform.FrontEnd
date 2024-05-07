@@ -147,4 +147,17 @@ export class BacklogComponent implements OnInit {
   public onClosePanelMenu() {
     this._projectManagmentService.isLeftPanel = false;
   };
+
+  /**
+   * Функция переходит на страницу спринтов.
+   */
+  public async onRouteSprints() {
+    let projectId = this.selectedProjectId;
+
+    this._router.navigate(["/project-management/sprints"], {
+      queryParams: {
+        projectId
+      }
+    });
+  };
 }
