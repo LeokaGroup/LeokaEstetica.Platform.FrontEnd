@@ -126,6 +126,14 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
     this.isActiveSprintDetails = !this.isActiveSprintDetails;
   };
 
+  public onSelectPanelMenu() {
+    this._projectManagmentService.isLeftPanel = true;
+  };
+
+  public onClosePanelMenu() {
+    this._projectManagmentService.isLeftPanel = false;
+  };
+
   /**
    * TODO: Эта логика дублируется.
    * Функция получает исполнителей для выбора.

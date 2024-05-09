@@ -1,5 +1,11 @@
 <p-toast></p-toast>
 
+<div class="left-panel" (mouseover)="onSelectPanelMenu()">
+  <div style="border-left:1px solid #C0C6CF;height:1500px;position: absolute;"></div>
+</div>
+
+<left-panel></left-panel>
+
 <div class="task-details mt-3">
   <!-- Название спринта. -->
   <div class="task-name">
@@ -583,3 +589,7 @@
 <!--    </div>-->
 <!--  </div>-->
 </div>
+
+<left-panel
+  (mouseleave)="onClosePanelMenu()"
+></left-panel>
