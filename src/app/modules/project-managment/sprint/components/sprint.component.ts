@@ -6,6 +6,7 @@ import {ProjectManagmentService} from "../../services/project-managment.service"
 import { forkJoin } from "rxjs";
 import {SprintInput} from "../models/sprint-input";
 import { ProjectManagementSignalrService } from "src/app/modules/notifications/signalr/services/project-magement-signalr.service";
+import {ManualCompleteSprintInput} from "../models/manual-complete-sprint-input";
 
 @Component({
   selector: "sprints",
@@ -29,6 +30,11 @@ export class SprintComponent implements OnInit, OnDestroy {
   selectedSprint: any;
   projectSprintId: number = 0;
   isShowAvailableActions: boolean = false;
+  aVariants: any[] = [];
+  isShowAvailableSprints: boolean = false;
+  selectedVariant: any;
+  aAvailableSprints: any[] = [];
+  selectedAvailableSprint: any;
 
   public async ngOnInit() {
     if (!this._projectManagementSignalrService.isConnected) {
@@ -135,11 +141,41 @@ export class SprintComponent implements OnInit, OnDestroy {
     sprintInput.projectId = +this.projectId;
     sprintInput.projectSprintId = +this.projectSprintId;
 
-
     (await this._projectManagmentService.runSprintAsync(sprintInput))
       .subscribe(async _ => {
         await this.getProjectSprintsAsync();
       });
+  };
+
+  /**
+   * Функция завершает спринт (ручное завершение).
+   */
+  public async onManualCompleteSprintAsync(isProcessedAction: boolean = false) {
+    let sprintInput = new ManualCompleteSprintInput();
+    sprintInput.projectId = +this.projectId;
+    sprintInput.projectSprintId = +this.projectSprintId;
+
+    (await this._projectManagmentService.nanualCompleteSprintAsync(sprintInput))
+      .subscribe(async (response: any) => {
+        console.log(response);
+        this.isShowAvailableSprints = true;
+        if (response.needSprintAction.isNeedUserAction && !response.isProcessedAction) {
+          this.aVariants = response.needSprintAction.actionVariants;
+
+        }
+        // Если выбрали в один из спринтов, то получаем список спринтов доступных для переноса незавершенных задач в один из них.
+        await this.getProjectSprintsAsync();
+      });
+  }
+
+  public async onSelectVariantAsync() {
+    if (this.selectedVariant.variantSysName == "Prospective") {
+      (await this._projectManagmentService.getAvailableNextSprintsAsync(+this.projectId, +this.projectSprintId))
+        .subscribe(async (response: any) => {
+          console.log(response);
+          this.aAvailableSprints = response;
+        });
+    }
   };
 
   ngOnDestroy() {
