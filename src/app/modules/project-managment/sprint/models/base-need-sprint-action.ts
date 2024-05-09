@@ -46,4 +46,14 @@ export class NeedSprintActionVariants {
    * Подсказка причины неактивности варианта действия.
    */
   notAvailableTooltip: string = "";
+
+  /**
+   * Id спринта для переноса в него задач.
+   */
+  moveSprintId: number = 0;
+
+  /**
+   * Название нового спринта для переноса в него задач.
+   */
+  moveSprintName: string = "";
 }

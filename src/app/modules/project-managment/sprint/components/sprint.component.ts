@@ -35,6 +35,10 @@ export class SprintComponent implements OnInit, OnDestroy {
   selectedVariant: any;
   aAvailableSprints: any[] = [];
   selectedAvailableSprint: any;
+  aNotCompletedSprintTaskIds: number[] = [];
+  moveSprintName: string = "";
+  isNewSprint: boolean = false;
+  isNextSprint: boolean = false;
 
   public async ngOnInit() {
     if (!this._projectManagementSignalrService.isConnected) {
@@ -150,31 +154,90 @@ export class SprintComponent implements OnInit, OnDestroy {
   /**
    * Функция завершает спринт (ручное завершение).
    */
-  public async onManualCompleteSprintAsync(isProcessedAction: boolean = false) {
+  public async onManualCompleteSprintAsync(isProcessed: boolean) {
     let sprintInput = new ManualCompleteSprintInput();
     sprintInput.projectId = +this.projectId;
     sprintInput.projectSprintId = +this.projectSprintId;
 
-    (await this._projectManagmentService.nanualCompleteSprintAsync(sprintInput))
-      .subscribe(async (response: any) => {
-        console.log(response);
-        this.isShowAvailableSprints = true;
-        if (response.needSprintAction.isNeedUserAction && !response.isProcessedAction) {
-          this.aVariants = response.needSprintAction.actionVariants;
+    // Если действие выбрано - обрабатываем его.
+    if (isProcessed) {
+      sprintInput.isProcessedAction = true;
+      sprintInput.notCompletedSprintTaskIds = this.aNotCompletedSprintTaskIds;
+      sprintInput.needSprintAction.actionVariants = this.aVariants;
 
-        }
-        // Если выбрали в один из спринтов, то получаем список спринтов доступных для переноса незавершенных задач в один из них.
-        await this.getProjectSprintsAsync();
-      });
+      let selectedVariant = sprintInput.needSprintAction.actionVariants
+        .filter((x: any) => x.variantSysName == this.selectedVariant.variantSysName)[0];
+      selectedVariant.isSelected = true;
+
+      // В будущий спринт.
+      if (this.selectedVariant.variantSysName == "Prospective") {
+        sprintInput.moveSprintId = +this.selectedAvailableSprint.projectSprintId;
+      }
+
+      // В новый спринт
+      else if (this.selectedVariant.variantSysName == "NewSprint") {
+        sprintInput.moveSprintName = this.selectedAvailableSprint.sprintName;
+      }
+
+      (await this._projectManagmentService.nanualCompleteSprintAsync(sprintInput))
+        .subscribe(async (response: any) => {
+          console.log(response);
+
+          this.isShowAvailableSprints = false;
+          await this.getProjectSprintsAsync();
+        });
+    }
+
+    else {
+      (await this._projectManagmentService.nanualCompleteSprintAsync(sprintInput))
+        .subscribe(async (response: any) => {
+          console.log(response);
+
+          // Если есть незавершенные задачи у спринта, то показываем возможные действия.
+          if (response.notCompletedSprintTaskIds.length > 0) {
+            this.isShowAvailableSprints = true;
+            this.aNotCompletedSprintTaskIds = response.notCompletedSprintTaskIds;
+
+            if (response.needSprintAction.isNeedUserAction && !response.isProcessedAction) {
+              this.aVariants = response.needSprintAction.actionVariants;
+
+              return;
+            }
+          }
+
+          await this.getProjectSprintsAsync();
+        });
+    }
   }
 
+  /**
+   * Функция выбирает вариант переноса незавершенных задач спринта.
+   * Подготовка данных для обработки бэком при завершении спринта.
+   */
   public async onSelectVariantAsync() {
+    // В будущий спринт.
     if (this.selectedVariant.variantSysName == "Prospective") {
+      this.isNewSprint = false;
+      this.isNextSprint = true;
+
       (await this._projectManagmentService.getAvailableNextSprintsAsync(+this.projectId, +this.projectSprintId))
         .subscribe(async (response: any) => {
           console.log(response);
+
           this.aAvailableSprints = response;
         });
+    }
+
+    // В новый спринт
+    else if (this.selectedVariant.variantSysName == "NewSprint") {
+      this.isNewSprint = true;
+      this.isNextSprint = false;
+    }
+
+    // В бэклог.
+    else if (this.selectedVariant.variantSysName == "Backlog") {
+      this.isNewSprint = false;
+      this.isNextSprint = false;
     }
   };
 

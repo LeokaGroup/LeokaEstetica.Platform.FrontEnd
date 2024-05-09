@@ -8,7 +8,7 @@ export class ManualCompleteSprintInput extends SprintInput {
   /**
    * Данные действий пользователя, если они есть.
    */
-  baseNeedSprintAction?: BaseNeedSprintAction;
+  needSprintAction: BaseNeedSprintAction = new BaseNeedSprintAction();
 
   /**
    * Признак обработанного действия пользователем (т.е. если он выбрал действие уже).
