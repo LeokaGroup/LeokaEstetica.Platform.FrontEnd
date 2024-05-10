@@ -27,6 +27,7 @@ import { UpdateSprintDetailsInput } from '../sprint/models/update-sprint-details
 import { UpdateSprintExecutorInput } from '../sprint/models/update-sprint-executor-input';
 import { UpdateSprintWatchersInput } from '../sprint/models/update-sprint-watchers-input';
 import { SprintInput } from '../sprint/models/sprint-input';
+import {ManualCompleteSprintInput} from "../sprint/models/manual-complete-sprint-input";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -864,6 +865,27 @@ export class ProjectManagmentService {
   public async runSprintAsync(sprintInput: SprintInput) {
     return await this._http.patch(this.apiUrl + `/project-management/sprints/sprint/start`, sprintInput).pipe(
       tap(_ => console.log("Спринт успешно начат."))
+    );
+  };
+
+  /**
+   * Функция завершает спринт (ручное завершение).
+   * @param sprintInput - Входная модель.
+   */
+  public async nanualCompleteSprintAsync(sprintInput: SprintInput) {
+    return await this._http.patch(this.apiUrl + `/project-management/sprints/sprint/manual-complete`, sprintInput).pipe(
+      tap(_ => console.log("Спринт успешно завершен."))
+    );
+  };
+
+  /**
+   * Функция получает список спринтов доступных для переноса незавершенных задач в один из них.
+   * @param projectId - Id проекта.
+   * @param projectSprintId - Id спринта проекта.
+   */
+  public async getAvailableNextSprintsAsync(projectId: number, projectSprintId: number) {
+    return await this._http.get(this.apiUrl + `/project-management/sprints/available-next-sprints?projectSprintId=${projectSprintId}&projectId=${projectId}`).pipe(
+      tap(_ => console.log("Будущие спринты для переноса нерешенных задач."))
     );
   };
 }
