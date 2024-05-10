@@ -31,4 +31,47 @@
       </div>
     </div>
   </div>
+
+  <!-- Настройки Scrum -->
+  <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowScrumSettings">
+    <h3>Настройки Scrum в проекте</h3>
+    <div class="scrum">
+      <div>
+        <div class="flex flex-column gap-3">
+          <!-- Настройки длительности спринтов -->
+          <div>
+            <strong>Настройки длительности спринтов</strong>
+            <div *ngFor="let s of sprintDurationSettings$.value" class="field-checkbox">
+              <div class="d-flex mt-3">
+                <div>
+                  <div>
+                    {{s.name}} {{s.label}}
+                  </div>
+                  <div>
+                    <p-inputSwitch [(ngModel)]="s.checked" [disabled]="s.disabled"></p-inputSwitch>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <strong>Автоматически перемещать незавершенные задачи спринта в:</strong>
+            <div *ngFor="let s of sprintMoveNotCompletedTasksSettings$.value" class="field-checkbox">
+              <div class="d-flex mt-3">
+                <div>
+                  <div>
+                    {{s.name}} {{s.label}}
+                  </div>
+                  <div>
+                    <p-inputSwitch [(ngModel)]="s.checked" [disabled]="s.disabled"></p-inputSwitch>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

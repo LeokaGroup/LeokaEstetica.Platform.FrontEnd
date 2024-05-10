@@ -76,6 +76,8 @@ export class ProjectManagmentService {
     public epicTasks$ = new BehaviorSubject<any>(null);
     public sprints = new BehaviorSubject<any>(null);
     public sprintDetails$ = new BehaviorSubject<any>(null);
+    public sprintDurationSettings$ = new BehaviorSubject<any>(null);
+    public sprintMoveNotCompletedTasksSettings$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -886,6 +888,26 @@ export class ProjectManagmentService {
   public async getAvailableNextSprintsAsync(projectId: number, projectSprintId: number) {
     return await this._http.get(this.apiUrl + `/project-management/sprints/available-next-sprints?projectSprintId=${projectSprintId}&projectId=${projectId}`).pipe(
       tap(_ => console.log("Будущие спринты для переноса нерешенных задач."))
+    );
+  };
+
+  /**
+   * Функция получает настройки длительности спринтов проекта.
+   * @param projectId - Id проекта.
+   */
+  public async getScrumDurationSettingsAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-settings/sprint-duration-settings?projectId=${projectId}`).pipe(
+      tap(data => this.sprintDurationSettings$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает настройки автоматического перемещения нерешенных задач спринта.
+   * @param projectId - Id проекта.
+   */
+  public async getProjectSprintsMoveNotCompletedTasksSettingsAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-settings/sprint-move-not-completed-tasks-settings?projectId=${projectId}`).pipe(
+      tap(data => this.sprintMoveNotCompletedTasksSettings$.next(data))
     );
   };
 }
