@@ -26,6 +26,7 @@ import {UpdateSprintNameInput} from "../sprint/models/update-sprint-name-input";
 import { UpdateSprintDetailsInput } from '../sprint/models/update-sprint-details-input';
 import { UpdateSprintExecutorInput } from '../sprint/models/update-sprint-executor-input';
 import { UpdateSprintWatchersInput } from '../sprint/models/update-sprint-watchers-input';
+import { SprintInput } from '../sprint/models/sprint-input';
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -853,6 +854,16 @@ export class ProjectManagmentService {
   public async updateSprintWatchersAsync(updateSprintWatchersInput: UpdateSprintWatchersInput) {
     return await this._http.patch(this.apiUrl + `/project-management/sprints/sprint-watcher`, updateSprintWatchersInput).pipe(
       tap(_ => console.log("Наблюдатели спринта успешно обновлены."))
+    );
+  };
+
+  /**
+   * Функция начинает спринт проекта.
+   * @param sprintInput - Входная модель.
+   */
+  public async runSprintAsync(sprintInput: SprintInput) {
+    return await this._http.patch(this.apiUrl + `/project-management/sprints/sprint/start`, sprintInput).pipe(
+      tap(_ => console.log("Спринт успешно начат."))
     );
   };
 }
