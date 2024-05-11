@@ -57,6 +57,7 @@ import { ProjectManagementSignalrService } from '../notifications/signalr/servic
 import { EpicDetailsComponent } from './task/components/epic/epic-details.component';
 import { SprintComponent } from './sprint/components/sprint.component';
 import {SprintDetailsComponent} from "./sprint-details/components/sprint-details.component";
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @NgModule({
   declarations: [
@@ -123,7 +124,8 @@ import {SprintDetailsComponent} from "./sprint-details/components/sprint-details
         useFactory: createTranslateLoader,
         deps: [HttpClient]
       }
-    })
+    }),
+    InputSwitchModule
   ],
 
   exports: [],

@@ -25,11 +25,16 @@ export class ProjectSettingsComponent implements OnInit {
   }
 
   public readonly downloadUserAvatarFile$ = this._projectManagmentService.downloadUserAvatarFile$;
+  public readonly sprintDurationSettings$ = this._projectManagmentService.sprintDurationSettings$;
+  public readonly sprintMoveNotCompletedTasksSettings$ = this._projectManagmentService.sprintMoveNotCompletedTasksSettings$;
 
   projectId: number = 0;
   userAvatarLink: any;
   isShowProfile: boolean = false;
   avatarFormData = new FormData();
+  isShowScrumSettings: boolean = false;
+  selectedSetting: any;
+  checked: boolean = true;
 
   items: any[] = [{
     label: 'Общие',
@@ -37,10 +42,28 @@ export class ProjectSettingsComponent implements OnInit {
       label: 'Настройки профиля',
       command: () => {
         this.isShowProfile = true;
+        this.isShowScrumSettings = false;
       }
     }
     ]
-  }];
+  },
+    {
+      label: 'Управление проектом',
+      items: [{
+        label: 'Настройки Scrum',
+        command: async () => {
+          this.isShowProfile = false;
+          this.isShowScrumSettings = true;
+
+          await this.getScrumDurationSettingsAsync();
+          await this.getProjectSprintsMoveNotCompletedTasksSettingsAsync();
+        }
+      }
+      ]
+    }];
+
+  aScrumDurationSettings: any[] = [];
+  aMoveNotCompletedTasksSettings: any[] = [];
 
   public async ngOnInit() {
     forkJoin([
@@ -97,6 +120,20 @@ export class ProjectSettingsComponent implements OnInit {
     (await this._projectManagmentService.uploadUserAvatarFilesAsync(this.avatarFormData))
       .subscribe(async _ => {
         await this.getFileUserAvatarAsync();
+      });
+  };
+
+  private async getScrumDurationSettingsAsync() {
+    (await this._projectManagmentService.getScrumDurationSettingsAsync(this.projectId))
+      .subscribe(async _ => {
+        console.log("Настройки длительности спринтов проекта: ", this.sprintDurationSettings$.value);
+      });
+  };
+
+  private async getProjectSprintsMoveNotCompletedTasksSettingsAsync() {
+    (await this._projectManagmentService.getProjectSprintsMoveNotCompletedTasksSettingsAsync(this.projectId))
+      .subscribe(async _ => {
+        console.log("Настройки автоматического перемещения нерешенных задач спринта: ", this.sprintMoveNotCompletedTasksSettings$.value);
       });
   };
 }
