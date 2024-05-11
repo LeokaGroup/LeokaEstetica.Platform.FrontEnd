@@ -286,7 +286,7 @@
                 </td>
                 <td>{{vacancy.vacancyId}}</td>
                 <td>{{vacancy.userVacancy.vacancyName}}</td>
-                <td>{{vacancy.userVacancy.vacancyText}}</td>
+                <td><div [innerHTML]="vacancy.userVacancy.vacancyText"></div></td>
                 <td>{{vacancy.userVacancy.vacancyStatusName}}</td>
                 <td><button pButton type="button"
                             label="Просмотр"
