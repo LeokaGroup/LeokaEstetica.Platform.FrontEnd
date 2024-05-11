@@ -28,6 +28,8 @@ import { UpdateSprintExecutorInput } from '../sprint/models/update-sprint-execut
 import { UpdateSprintWatchersInput } from '../sprint/models/update-sprint-watchers-input';
 import { SprintInput } from '../sprint/models/sprint-input';
 import {ManualCompleteSprintInput} from "../sprint/models/manual-complete-sprint-input";
+import {SprintDurationSettingInput} from "../sprint/models/sprint-duration-setting-input";
+import {SprintMoveNotCompletedTaskSettingInput} from "../sprint/models/sprint-move-not-completed-task-setting-input";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -908,6 +910,26 @@ export class ProjectManagmentService {
   public async getProjectSprintsMoveNotCompletedTasksSettingsAsync(projectId: number) {
     return await this._http.get(this.apiUrl + `/project-management-settings/sprint-move-not-completed-tasks-settings?projectId=${projectId}`).pipe(
       tap(data => this.sprintMoveNotCompletedTasksSettings$.next(data))
+    );
+  };
+
+  /**
+   * Функция обновляет настройки длительности спринтов проекта.
+   * @param sprintDurationSettingInput - Входная модель.
+   */
+  public async updateScrumDurationSettingsAsync(sprintDurationSettingInput: SprintDurationSettingInput) {
+    return await this._http.patch(this.apiUrl + `/project-management-settings/sprint-duration-settings`, sprintDurationSettingInput).pipe(
+      tap(_ => console.log("Настройка длительности спринтов успешно изменена."))
+    );
+  };
+
+  /**
+   * Функция обновляет настройки перемещения нерешенных задач спринтов проекта.
+   * @param sprintMoveNotCompletedTaskSettingInput - Входная модель.
+   */
+  public async updateProjectSprintsMoveNotCompletedTasksSettingsAsync(sprintMoveNotCompletedTaskSettingInput: SprintMoveNotCompletedTaskSettingInput) {
+    return await this._http.patch(this.apiUrl + `/project-management-settings/sprint-move-not-completed-tasks-settings`, sprintMoveNotCompletedTaskSettingInput).pipe(
+      tap(_ => console.log("Настройка перемещения нерешенных задач спринтов успешно изменена."))
     );
   };
 }
