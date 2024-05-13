@@ -58,6 +58,8 @@ import { EpicDetailsComponent } from './task/components/epic/epic-details.compon
 import { SprintComponent } from './sprint/components/sprint.component';
 import {SprintDetailsComponent} from "./sprint-details/components/sprint-details.component";
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { WorkSpaceComponent } from './workspace/components/workspace.component';
+import { DataViewModule } from 'primeng/dataview';
 
 @NgModule({
   declarations: [
@@ -72,7 +74,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     PlaningSprintComponent,
     EpicDetailsComponent,
     SprintComponent,
-    SprintDetailsComponent
+    SprintDetailsComponent,
+    WorkSpaceComponent
   ],
 
   imports: [
@@ -125,7 +128,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
         deps: [HttpClient]
       }
     }),
-    InputSwitchModule
+    InputSwitchModule,
+    DataViewModule
   ],
 
   exports: [],

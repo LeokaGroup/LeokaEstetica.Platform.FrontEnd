@@ -27,7 +27,6 @@ import { UpdateSprintDetailsInput } from '../sprint/models/update-sprint-details
 import { UpdateSprintExecutorInput } from '../sprint/models/update-sprint-executor-input';
 import { UpdateSprintWatchersInput } from '../sprint/models/update-sprint-watchers-input';
 import { SprintInput } from '../sprint/models/sprint-input';
-import {ManualCompleteSprintInput} from "../sprint/models/manual-complete-sprint-input";
 import {SprintDurationSettingInput} from "../sprint/models/sprint-duration-setting-input";
 import {SprintMoveNotCompletedTaskSettingInput} from "../sprint/models/sprint-move-not-completed-task-setting-input";
 
@@ -80,6 +79,7 @@ export class ProjectManagmentService {
     public sprintDetails$ = new BehaviorSubject<any>(null);
     public sprintDurationSettings$ = new BehaviorSubject<any>(null);
     public sprintMoveNotCompletedTasksSettings$ = new BehaviorSubject<any>(null);
+    public workspaces$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -930,6 +930,15 @@ export class ProjectManagmentService {
   public async updateProjectSprintsMoveNotCompletedTasksSettingsAsync(sprintMoveNotCompletedTaskSettingInput: SprintMoveNotCompletedTaskSettingInput) {
     return await this._http.patch(this.apiUrl + `/project-management-settings/sprint-move-not-completed-tasks-settings`, sprintMoveNotCompletedTaskSettingInput).pipe(
       tap(_ => console.log("Настройка перемещения нерешенных задач спринтов успешно изменена."))
+    );
+  };
+
+  /**
+   * Функция получает все раб.пространства, в которых есть текущий пользователь.
+   */
+  public async getWorkSpacesAsync() {
+    return await this._http.get(this.apiUrl + `/project-management/workspaces`).pipe(
+      tap(data => this.workspaces$.next(data))
     );
   };
 }
