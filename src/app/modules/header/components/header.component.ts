@@ -121,7 +121,7 @@ export class HeaderComponent implements OnInit {
         this.isHideAuthButtons = true;
     };
 
-  private async getBuildProjectSpaceSettingsAsync(event: any) {
+  private async getBuildProjectSpaceSettingsAsync(menuItemUrl: any) {
     (await this._projectManagmentService.getBuildProjectSpaceSettingsAsync())
       .subscribe(_ => {
         console.log("projectWorkspaceSettings", this.projectWorkspaceSettings$.value);
@@ -133,7 +133,7 @@ export class HeaderComponent implements OnInit {
         }
 
         else {
-          this._router.navigate([event.menuItemUrl]);
+          this._router.navigate([menuItemUrl]);
         }
       });
   };

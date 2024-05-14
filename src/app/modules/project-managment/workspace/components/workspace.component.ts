@@ -38,4 +38,12 @@ export class WorkSpaceComponent implements OnInit {
         this.aWorkspaces = this.workspaces$.value;
       });
   };
+
+  /**
+   * Функция переходит в раб.пространство проекта из общего пространства.
+   * Проверка фиксации настроек проекта уже произведена ранее в компоненте хидера.
+   */
+  public onRouteWorkSpace() {
+    this._router.navigate(["/project-management/start"]);
+  };
 }
