@@ -38,8 +38,7 @@ export class StartProjectManagmentComponent implements OnInit {
         forkJoin([
             await this.getUseProjectsAsync(),
             await this.getViewStrategiesAsync(),
-            await this.getProjectManagmentTemplatesAsync(),
-            await this.getBuildProjectSpaceSettingsAsync()
+            await this.getProjectManagmentTemplatesAsync()
         ]).subscribe();
     };
 
@@ -149,18 +148,6 @@ export class StartProjectManagmentComponent implements OnInit {
      */
     public onSelectProject() {
         this.isSelectedProject = this.selectedProject !== undefined && this.selectedProject?.projectId > 0;
-    };
-
-    private async getBuildProjectSpaceSettingsAsync() {
-        (await this._projectManagmentService.getBuildProjectSpaceSettingsAsync())
-        .subscribe(_ => {
-            console.log("projectWorkspaceSettings", this.projectWorkspaceSettings$.value);
-
-            // Если настройки были зафиксированы, то переходим сразу в раб.пространство проекта.
-            if (this.projectWorkspaceSettings$.value.isCommitProjectSettings) {
-                window.location.href = this.projectWorkspaceSettings$.value.projectManagmentSpaceUrl;
-            }
-        });
     };
 
     public onUpdateProjectManagementProjectName() {

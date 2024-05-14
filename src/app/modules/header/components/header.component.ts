@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { HeaderService } from "../services/header.service";
+import {ProjectManagmentService} from "../../project-managment/services/project-managment.service";
 
 @Component({
     selector: "header",
@@ -10,10 +11,11 @@ import { HeaderService } from "../services/header.service";
 })
 
 /**
- * Класс календаря пользователя.
+ * Класс компонента хидера (верхнее меню).
  */
 export class HeaderComponent implements OnInit {
     public readonly headerData$ = this._headerService.headerData$;
+    public readonly projectWorkspaceSettings$ = this._projectManagmentService.projectWorkspaceSettings$;
 
     isHideAuthButtons: boolean = false;
     items: any[] = [
@@ -28,38 +30,39 @@ export class HeaderComponent implements OnInit {
         //     command: () => {
 
         //     }
-        // },       
+        // },
         {
             label: 'Заявки в поддержку',
             command: () => {
                 this._router.navigate(["/profile/tickets"])
             }
-        },   
+        },
         {
             label: 'Выйти',
             command: () => {
                 localStorage.clear();
-                this._router.navigate(["/user/signin"]).then(() => {  
-                    this._redirectService.redirect("user/signin");                
+                this._router.navigate(["/user/signin"]).then(() => {
+                    this._redirectService.redirect("user/signin");
                 });
             }
         }
     ];
 
-    constructor(private readonly _headerService: HeaderService,
-        private readonly _router: Router,
-        private readonly _activatedRoute: ActivatedRoute,
-        private readonly _redirectService: RedirectService,
-        private changeDetectorRef: ChangeDetectorRef) {
-    }
+  constructor(private readonly _headerService: HeaderService,
+              private readonly _router: Router,
+              private readonly _activatedRoute: ActivatedRoute,
+              private readonly _redirectService: RedirectService,
+              private changeDetectorRef: ChangeDetectorRef,
+              private readonly _projectManagmentService: ProjectManagmentService) {
+  }
 
-    public async ngOnInit() {
-        await this.getHeaderItemsAsync();
-        await this._headerService.refreshTokenAsync();
-        this.checkUrlParams();
+  public async ngOnInit() {
+    await this.getHeaderItemsAsync();
+    await this._headerService.refreshTokenAsync();
+    this.checkUrlParams();
 
-        this.isHideAuthButtons = localStorage["t_n"] ? true : false;        
-    }
+    this.isHideAuthButtons = localStorage["t_n"] ? true : false;
+  };
 
     /**
      * Функция получит список элементов хидера.
@@ -83,15 +86,16 @@ export class HeaderComponent implements OnInit {
      * Функция редиректит на форму авторизации.
      */
     public onRouteSignIn() {
-        this._router.navigate(["/user/signin"]).then(() => {  
-            this._redirectService.redirect("user/signin");                
+        this._router.navigate(["/user/signin"]).then(() => {
+            this._redirectService.redirect("user/signin");
         });
     };
 
-    public onSelectHeaderItem(e: any) {
-        console.log(e.menuItemUrl);
-        this._router.navigate([e.menuItemUrl]);
-    };
+  public async onSelectHeaderItem(e: any) {
+    console.log(e.menuItemUrl);
+    // this._router.navigate([e.menuItemUrl]);
+    await this.getBuildProjectSpaceSettingsAsync(e.menuItemUrl);
+  };
 
     private checkUrlParams() {
         this._activatedRoute.queryParams
@@ -116,4 +120,21 @@ export class HeaderComponent implements OnInit {
         this.changeDetectorRef.detectChanges();
         this.isHideAuthButtons = true;
     };
+
+  private async getBuildProjectSpaceSettingsAsync(event: any) {
+    (await this._projectManagmentService.getBuildProjectSpaceSettingsAsync())
+      .subscribe(_ => {
+        console.log("projectWorkspaceSettings", this.projectWorkspaceSettings$.value);
+
+        // Если настройки были зафиксированы, то переходим сразу в раб.пространство проекта.
+        if (this.projectWorkspaceSettings$.value.isCommitProjectSettings) {
+          // Чтобы страница прогрузилась - сделано через window.location.href.
+          window.location.href = this.projectWorkspaceSettings$.value.projectManagmentSpaceUrl;
+        }
+
+        else {
+          this._router.navigate([event.menuItemUrl]);
+        }
+      });
+  };
 }

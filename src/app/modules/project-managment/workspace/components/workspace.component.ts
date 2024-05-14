@@ -37,5 +37,5 @@ export class WorkSpaceComponent implements OnInit {
         console.log("Список раб.пространств проектов: ", this.workspaces$.value);
         this.aWorkspaces = this.workspaces$.value;
       });
-  }
+  };
 }
