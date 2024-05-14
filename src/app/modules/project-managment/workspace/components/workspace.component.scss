@@ -12,5 +12,7 @@
 }
 
 .workspace-project-name {
-  cursor: pointer;
+  &:hover {
+    cursor: pointer;
+  }
 }
