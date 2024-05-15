@@ -121,6 +121,7 @@ export class HeaderComponent implements OnInit {
         this.isHideAuthButtons = true;
     };
 
+  // TODO: Дублируется.
   private async getBuildProjectSpaceSettingsAsync(menuItemUrl: any) {
     if (menuItemUrl == "/project-management/workspaces") {
       (await this._projectManagmentService.getBuildProjectSpaceSettingsAsync())
