@@ -122,19 +122,21 @@ export class HeaderComponent implements OnInit {
     };
 
   private async getBuildProjectSpaceSettingsAsync(menuItemUrl: any) {
-    (await this._projectManagmentService.getBuildProjectSpaceSettingsAsync())
-      .subscribe(_ => {
-        console.log("projectWorkspaceSettings", this.projectWorkspaceSettings$.value);
+    if (menuItemUrl == "/project-management/workspaces") {
+      (await this._projectManagmentService.getBuildProjectSpaceSettingsAsync())
+        .subscribe(_ => {
+          console.log("projectWorkspaceSettings", this.projectWorkspaceSettings$.value);
 
-        // Если настройки были зафиксированы, то переходим сразу в раб.пространство проекта.
-        if (this.projectWorkspaceSettings$.value.isCommitProjectSettings) {
-          // Чтобы страница прогрузилась - сделано через window.location.href.
-          window.location.href = this.projectWorkspaceSettings$.value.projectManagmentSpaceUrl;
-        }
+          // Если настройки были зафиксированы, то переходим сразу в раб.пространство проекта.
+          if (this.projectWorkspaceSettings$.value.isCommitProjectSettings) {
+            // Чтобы страница прогрузилась - сделано через window.location.href.
+            window.location.href = this.projectWorkspaceSettings$.value.projectManagmentSpaceUrl;
+          }
+        });
+    }
 
-        else {
-          this._router.navigate([menuItemUrl]);
-        }
-      });
+    else {
+      this._router.navigate([menuItemUrl]);
+    }
   };
 }
