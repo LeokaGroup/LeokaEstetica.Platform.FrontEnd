@@ -8,6 +8,9 @@ import {RedisService} from 'src/app/modules/redis/services/redis.service';
 
 @Injectable()
 export class SignalrService {
+  checkDuplicateTask() {
+    throw new Error("Method not implemented.");
+  }
   private hubConnection: any;
   public $allFeed: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
@@ -605,4 +608,25 @@ export class SignalrService {
       this.$allFeed.next(data);
     });
   };
+
+  /**
+   * Функция слушает уведомления ошибки при создании дубликата задачи.
+   */
+  public async listenDuplicateTask(taskName: string, taskType: string, projectId: number): Promise<boolean> {
+    if (this.hubConnection.state !== "Connected") {
+      try {
+        await this.startConnection();
+      } catch (err) {
+        console.error('Ошибка при установке соединения:', err);
+        return false;
+      }
+    }
+  
+    return this.hubConnection.invoke("SendNotifyWarningDublicateProjectTask", taskName, taskType, projectId)
+      .then((isDuplicate: boolean) => isDuplicate)
+      .catch((err: any) => {
+        console.error('Ошибка при проверке дублирования задачи:', err);
+        return false;
+      });
+  }
 }

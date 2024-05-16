@@ -5,6 +5,7 @@ import { ProjectManagmentService } from "../../../services/project-managment.ser
 import { CreateProjectManagementTaskInput } from "../../models/input/create-task-input";
 import { TranslateService } from '@ngx-translate/core';
 import {MessageService, PrimeNGConfig} from "primeng/api";
+import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 
 @Component({
     selector: "",
@@ -21,7 +22,8 @@ export class CreateTaskComponent implements OnInit {
               private readonly _activatedRoute: ActivatedRoute,
               private readonly _config: PrimeNGConfig,
               private readonly _translateService: TranslateService,
-              private readonly _messageService: MessageService) {
+              private readonly _messageService: MessageService,
+              private readonly _signalrService: SignalrService) {
 
   }
 
@@ -252,15 +254,21 @@ export class CreateTaskComponent implements OnInit {
      * Функция создает задачу.
      */
     public async onCreateProjectTaskAsync() {
-        let createTaskInput = this.createProjectManagementTaskRequest();
+      const isDuplicate = await this._signalrService.listenDuplicateTask(this.taskName, this.selectedTaskType, this.projectId);
+      let createTaskInput = this.createProjectManagementTaskRequest();
 
-        (await this._projectManagmentService.createProjectTaskAsync(createTaskInput))
+      if (isDuplicate) {
+        this._messageService.add({ severity: "warn", summary: "Дубликат задачи", detail: "Задача c таким названием и типом уже существует в проекте." });
+        return;
+      }
+
+      (await this._projectManagmentService.createProjectTaskAsync(createTaskInput))
         .subscribe((response: any) => {
-            console.log("Задача создана: ", this.createdTask$.value);
+          console.log("Задача создана: ", this.createdTask$.value);
 
           if (response.errors !== null && response.errors.length > 0) {
             response.errors.forEach((item: any) => {
-              this._messageService.add({ severity: "error", summary: "Что то не так", detail: item.errorMessage });
+              this._messageService.add({ severity: "warn", summary: "Что то не так", detail: item.errorMessage });
             });
           }
 
@@ -270,7 +278,7 @@ export class CreateTaskComponent implements OnInit {
               window.location.href = this.createdTask$.value.redirectUrl;
             }, 4000);
           }
-        });
+      });
     };
 
     /**
