@@ -48,6 +48,7 @@ import { SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CheckboxModule } from 'primeng/checkbox';
+import { AssistantAIComponent } from './modules/project-managment/components/assistant-ai/assistant-ai.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     LeftMenuComponent,
     FooterComponent,
     ForbiddenComponent,
-    ProjectManagementHeaderComponent
+    ProjectManagementHeaderComponent,
+    AssistantAIComponent,
   ],
 
   imports: [

@@ -1,0 +1,89 @@
+.chat-widget {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  display: flex;
+  width: 300px;
+  min-height: 300px;
+  max-height: 600px;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  transform: translateY(100%);
+  transition: transform .3s ease;
+  background-color: red;
+  
+  &.open {
+    transform: translateY(0);
+  }
+
+  .chat-header {
+    color: white;
+    padding: 10px;
+    padding-right: 15px;
+    background-color: black;
+    cursor: pointer;
+  }
+
+  .chat-body {
+    flex: 1;
+    padding: 10px;
+    background-color: #f8f9fa;
+    overflow-y: auto;
+
+    .user {
+      text-align: right;
+
+      .message {
+        display: inline-block;
+        font-size: 16px;
+        line-height: 17px;
+        color: white;
+        padding: 5px 10px;
+        margin-bottom: 5px;
+        border-radius: 10px;
+        background-color: blue;
+      }
+    }
+
+    .bot {
+      text-align: left;
+
+      .message {
+        display: inline-block;
+        font-size: 16px;
+        line-height: 17px;
+        padding: 5px 10px;
+        margin-bottom: 5px;
+        border-radius: 10px;
+        background-color: #e9ecef;
+      }
+    }
+  }
+
+  .chat-footer {
+    display: flex;
+    padding: 10px;
+    background-color: #e9ecef;
+
+    input {
+      flex: 1;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      display: block;
+      width: 36px;
+      height: 36px;
+      border: none;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg fill='%23000000' height='36px' width='36px' version='1.1' id='Capa_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='-99 -99 693.00 693.00' xml:space='preserve' stroke='%23000000' stroke-width='0.00495003' transform='rotate(0)matrix(1, 0, 0, 1, 0, 0)'%3E%3Cg id='SVGRepo_bgCarrier' stroke-width='0'%3E%3C/g%3E%3Cg id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round' stroke='%23CCCCCC' stroke-width='44.55027'%3E%3Cg id='XMLID_51_'%3E%3Cpath id='XMLID_53_' d='M164.711,456.687c0,2.966,1.647,5.686,4.266,7.072c2.617,1.385,5.799,1.207,8.245-0.468l55.09-37.616 l-67.6-32.22V456.687z'%3E%3C/path%3E%3Cpath id='XMLID_52_' d='M492.431,32.443c-1.513-1.395-3.466-2.125-5.44-2.125c-1.19,0-2.377,0.264-3.5,0.816L7.905,264.422 c-4.861,2.389-7.937,7.353-7.904,12.783c0.033,5.423,3.161,10.353,8.057,12.689l125.342,59.724l250.62-205.99L164.455,364.414 l156.145,74.4c1.918,0.919,4.012,1.376,6.084,1.376c1.768,0,3.519-0.322,5.186-0.977c3.637-1.438,6.527-4.318,7.97-7.956 L494.436,41.257C495.66,38.188,494.862,34.679,492.431,32.443z'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3Cg id='SVGRepo_iconCarrier'%3E%3Cg id='XMLID_51_'%3E%3Cpath id='XMLID_53_' d='M164.711,456.687c0,2.966,1.647,5.686,4.266,7.072c2.617,1.385,5.799,1.207,8.245-0.468l55.09-37.616 l-67.6-32.22V456.687z'%3E%3C/path%3E%3Cpath id='XMLID_52_' d='M492.431,32.443c-1.513-1.395-3.466-2.125-5.44-2.125c-1.19,0-2.377,0.264-3.5,0.816L7.905,264.422 c-4.861,2.389-7.937,7.353-7.904,12.783c0.033,5.423,3.161,10.353,8.057,12.689l125.342,59.724l250.62-205.99L164.455,364.414 l156.145,74.4c1.918,0.919,4.012,1.376,6.084,1.376c1.768,0,3.519-0.322,5.186-0.977c3.637-1.438,6.527-4.318,7.97-7.956 L494.436,41.257C495.66,38.188,494.862,34.679,492.431,32.443z'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+}
+  

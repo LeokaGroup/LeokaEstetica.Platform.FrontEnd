@@ -75,7 +75,7 @@ import { DataViewModule } from 'primeng/dataview';
     EpicDetailsComponent,
     SprintComponent,
     SprintDetailsComponent,
-    WorkSpaceComponent
+    WorkSpaceComponent,
   ],
 
   imports: [
