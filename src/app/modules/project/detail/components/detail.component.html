@@ -517,7 +517,7 @@
                     </div>
                   </div>
 
-                  <div>
+                  <!-- <div>
                     <input type="text"
                     class="p-inputtext-sm input-control-worksheet control-project"
                     placeholder="Введите сообщение"
@@ -525,6 +525,16 @@
                     autocomplete="new-password"
                     [(ngModel)]="projectComment"
                     (keyup.enter)="onCreateProjectCommentAsync()" />
+                </div> -->
+
+                <div>
+                  <textarea id="comment-input"
+                            class="textarea-control p-inputtext-sm input-control-worksheet control-project"
+                            placeholder="Введите сообщение"
+                            autocomplete="new-password"
+                            [(ngModel)]="projectComment"
+                            (keyup.enter)="onCreateProjectCommentAsync()">
+                  </textarea>
                 </div>
 
                   <!-- <div class="d-flex justify-content-end">

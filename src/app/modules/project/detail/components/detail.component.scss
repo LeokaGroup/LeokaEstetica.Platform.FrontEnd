@@ -60,10 +60,28 @@
     color: #999;
 }
 
-.control-input-text-worksheet,
-.worksheet-line {
+// .control-input-text-worksheet,
+// .worksheet-line {
+//   width: 100%;
+// }
+
+
+/* textarea */
+
+.textarea-control {
   width: 100%;
+  height: 200px;
+  padding: 10px;
+  border-radius: 2px;
+  border: 1px solid #dee2e6;
 }
+
+.textarea-control:hover ,
+.textarea-control:focus {
+  border: 1px solid #2196F3;
+  box-shadow: 0 0 5px #719ECE;
+}
+
 
 ::ng-deep.p-splitter-panel-nested .p-splitter-panel {
     display: block;
