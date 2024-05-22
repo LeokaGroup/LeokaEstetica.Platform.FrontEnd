@@ -173,3 +173,11 @@
   display: flex;
   justify-content: center;
 }
+
+.chat-ai {
+  min-height: calc(100vh - 90%);
+  position: fixed;
+  bottom: 0;
+  width: 5%;
+  right: 0;
+}
