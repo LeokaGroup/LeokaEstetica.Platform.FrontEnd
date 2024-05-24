@@ -1,0 +1,117 @@
+<div class="chat-ai">
+  <p-button icon="pi pi-question-circle"
+            styleClass="p-button-primary p-button-text"
+            (click)="onShowScrumMasterAiAssist()">
+  </p-button>
+</div>
+
+<div>
+  <p-sidebar [(visible)]="isShowScrumMasterAiAssistModal" [fullScreen]="true">
+    <div>
+      <h3>Задайте вопрос - наш ИИ постарается Вам помочь.</h3>
+    </div>
+
+    <!--    <div>-->
+    <!--      <p-splitter-->
+    <!--        [panelSizes]="[25, 75]"-->
+    <!--        [style]="{ height: '100vh' }"-->
+    <!--        styleClass="mb-5">-->
+    <!--        <ng-template pTemplate>-->
+    <!--          <div class="col flex align-items-center justify-content-center">-->
+    <!--            Panel 1-->
+    <!--          </div>-->
+    <!--        </ng-template>-->
+    <!--        <ng-template pTemplate>-->
+    <!--          <div class="col flex align-items-center justify-content-center">-->
+    <!--            Panel 2-->
+    <!--          </div>-->
+    <!--        </ng-template>-->
+    <!--      </p-splitter>-->
+    <!--    </div>-->
+
+    <!--  Чат с ИИ.  -->
+    <div class="worksheet-panel space-top-80 space-bottom-50 d-flex">
+      <div class="d-flex">
+        <div class="control-input-text-worksheet">
+          <div class="mb-3">
+            <div>
+              <p-splitter [style]="{'height': '300px'}"
+                          [panelSizes]="[20,80]"
+                          [minSizes]="[10,0]"
+                          styleClass="mb-5"
+                          class="chat">
+                <!-- <ng-template pTemplate>
+                    <div class="col flex align-items-center justify-content-center">
+                        {{userName}}
+                    </div>
+                </ng-template> -->
+                <ng-template pTemplate>
+                  <p-splitter layout="vertical" [panelSizes]="[15,85]">
+                    <!-- <ng-template pTemplate>
+                        <div class="col flex align-items-center justify-content-center">
+
+                        </div>
+                    </ng-template> -->
+                    <ng-template pTemplate>
+                      <p-splitter [panelSizes]="[20,80]" [style]="{'width': '800px'}">
+                        <!-- Левая область чата. -->
+                        <ng-template pTemplate>
+                          <div class="col flex align-items-center justify-content-center"
+                               *ngFor="let item of aDialogs">
+                            <div class="block-message" (click)="onGetDialogAsync(item.dialogId)">
+                              <div class="d-flex justify-content-between">
+                                <div>
+                                  <div>
+                                    <strong>{{item.fullName}}</strong>
+                                  </div>
+
+                                  <div>
+                                    <span class="message">{{item.lastMessage}}</span>
+                                  </div>
+                                </div>
+
+                                <div>
+                                  {{item.calcShortDate}}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+<!--                          <div class="not-communication" *ngIf="aDialogs.length == 0">-->
+<!--                            <strong>Задайте вопрос - наш ИИ постарается Вам помочь.</strong>-->
+<!--                          </div>-->
+                        </ng-template>
+
+                        <!-- Основная область чата. -->
+                        <ng-template pTemplate>
+                          <div id="#idMessages" class="block-messages">
+                            <div *ngFor="let item of aMessages">
+                              <div class="d-flex justify-content-between" [ngClass]="{blockMessage: item.isMyMessage}">
+                                <p>{{item.message}}</p>
+                                <span class="time-right">{{item.created}}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div>
+                            <input type="text"
+                                   class="p-inputtext-sm input-control-worksheet control-project"
+                                   placeholder="Введите сообщение"
+                                   pInputText
+                                   autocomplete="new-password"
+                                   [(ngModel)]="message"
+                                   (keyup.enter)="onSendMessageAsync()"/>
+                          </div>
+                        </ng-template>
+                      </p-splitter>
+                    </ng-template>
+                  </p-splitter>
+                </ng-template>
+              </p-splitter>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </p-sidebar>
+</div>

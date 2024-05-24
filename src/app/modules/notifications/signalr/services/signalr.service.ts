@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
+import {HttpTransportType, HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
 import {BehaviorSubject} from 'rxjs';
 import {API_URL} from 'src/app/core/core-urls/api-urls';
 import {DialogInput} from 'src/app/modules/messages/chat/models/input/dialog-input';
@@ -16,7 +16,7 @@ export class SignalrService {
   public constructor(private readonly _redisService: RedisService,
                      private readonly _router: Router) {
     this.hubConnection = new HubConnectionBuilder()
-      .withUrl(API_URL.apiUrl + "/notify", 4)
+      .withUrl(API_URL.apiUrl + "/notify", HttpTransportType.LongPolling)
       .build();
   }
 

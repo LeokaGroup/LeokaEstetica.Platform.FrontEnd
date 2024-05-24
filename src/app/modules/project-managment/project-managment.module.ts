@@ -60,6 +60,7 @@ import {SprintDetailsComponent} from "./sprint-details/components/sprint-details
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { WorkSpaceComponent } from './workspace/components/workspace.component';
 import { DataViewModule } from 'primeng/dataview';
+import { ScrumMasterAiAssistComponent } from './scrum-master-ai/components/scrum-master-ai-assist.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { DataViewModule } from 'primeng/dataview';
     EpicDetailsComponent,
     SprintComponent,
     SprintDetailsComponent,
-    WorkSpaceComponent
+    WorkSpaceComponent,
+    ScrumMasterAiAssistComponent
   ],
 
   imports: [

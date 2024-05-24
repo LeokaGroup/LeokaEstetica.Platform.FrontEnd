@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
+import {HttpTransportType, HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
 import {BehaviorSubject} from 'rxjs';
 import {API_URL} from 'src/app/core/core-urls/api-urls';
 import {RedisService} from 'src/app/modules/redis/services/redis.service';
@@ -15,7 +15,7 @@ export class ProjectManagementSignalrService {
   public constructor(private readonly _redisService: RedisService,
                      private readonly _router: Router) {
     this.hubConnection = new HubConnectionBuilder()
-      .withUrl(API_URL.apiUrlProjectManagment + "/project-management-notify", 4)
+      .withUrl(API_URL.apiUrlProjectManagment + "/project-management-notify", HttpTransportType.LongPolling)
       .build();
   }
 
@@ -95,5 +95,21 @@ export class ProjectManagementSignalrService {
     (<HubConnection>this.hubConnection).on("SendNotificationWarningStartSprint", (data: any) => {
       this.$allFeed.next(data);
     });
+  };
+
+  /**
+   * Функция получает диалоги с нейросетью Scrum Master AI.
+   */
+  public listenGetDialogs() {
+    (<HubConnection>this.hubConnection).on("listenGetDialogs", (response: any) => {
+      this.$allFeed.next(response);
+    });
+  };
+
+  public getDialogsAsync() {
+    <HubConnection>this.hubConnection.invoke("GetDialogsAsync", localStorage["u_e"], localStorage["t_n"], null)
+      .catch((err: any) => {
+        console.error(err);
+      });
   };
 }
