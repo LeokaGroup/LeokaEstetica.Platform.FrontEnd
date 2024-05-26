@@ -4,6 +4,8 @@ import { forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../services/project-managment.service";
 import {MessageService} from "primeng/api";
 import { ProjectManagementSignalrService } from "src/app/modules/notifications/signalr/services/project-magement-signalr.service";
+import {DialogInput} from "../../../messages/chat/models/input/dialog-input";
+import {DialogMessageInput} from "../../../messages/chat/models/input/dialog-message-input";
 
 @Component({
   selector: "scrum-master-ai-assist",
@@ -27,7 +29,7 @@ export class ScrumMasterAiAssistComponent implements OnInit {
   aDialogs: any[] = [];
   aMessages: any[] = [];
   lastMessage: any;
-  dialogId: number = 0;
+  dialogId?: number | null;
 
   public async ngOnInit() {
     forkJoin([
@@ -113,10 +115,8 @@ export class ScrumMasterAiAssistComponent implements OnInit {
    */
   private listenAllHubsNotifications() {
     this._projectManagementSignalrService.listenGetDialogs();
-    // this._signalrService.listenGetProjectDialogs();
-
-    // this._signalrService.listenGetDialog();
-    // this._signalrService.listenSendMessage();
+    this._projectManagementSignalrService.listenGetDialog();
+    this._projectManagementSignalrService.listenSendMessage();
   };
 
   private async checkUrlParams() {
@@ -126,14 +126,37 @@ export class ScrumMasterAiAssistComponent implements OnInit {
       });
   };
 
+  /**
+   * Функия отправляет сообщение.
+   */
   public async onSendMessageAsync() {
+    let dialogInput = new DialogMessageInput();
+    dialogInput.Message = this.message;
+    dialogInput.DialogId = this.dialogId;
 
+    this._projectManagementSignalrService.sendMessageAsync(this.message, this.dialogId);
   };
 
-  public async onGetDialogAsync(dialogId: number) {
+  /**
+   * Функция получает диалог и его сообщения.
+   * @param discussionTypeId - Id типа обсуждения.
+   * @returns - Диалог и его сообщения.
+   */
+  public async onGetDialogAsync(dialogId: number | null, isManualNewDialog: boolean) {
+    let dialogInput = new DialogInput();
+    dialogInput.DialogId = dialogId;
+    dialogInput.DiscussionType = "ScrumMasterAi";
+    dialogInput.DiscussionTypeId = null;
+    dialogInput.isManualNewDialog = isManualNewDialog;
 
+    this._projectManagementSignalrService.getDialogAsync(dialogInput);
+
+    this.dialogId = dialogId;
   };
 
+  /**
+   * Функция отображает модалку чата с нейросетью.
+   */
   public onShowScrumMasterAiAssist() {
     this.isShowScrumMasterAiAssistModal = !this.isShowScrumMasterAiAssistModal
 

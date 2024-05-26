@@ -78,8 +78,9 @@
 }
 
 .block-messages {
-  height: 300px;
+  //height: 300px;
   overflow-y: scroll;
+  height: 100vh;
 }
 
 .block-message {
@@ -164,4 +165,8 @@
   .worksheet-panel {
     margin-left: 10px;
   }
+}
+
+.block-chat {
+  width: 100%
 }

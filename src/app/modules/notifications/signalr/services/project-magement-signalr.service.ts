@@ -4,6 +4,7 @@ import {HttpTransportType, HubConnection, HubConnectionBuilder} from '@microsoft
 import {BehaviorSubject} from 'rxjs';
 import {API_URL} from 'src/app/core/core-urls/api-urls';
 import {RedisService} from 'src/app/modules/redis/services/redis.service';
+import {DialogInput} from "../../../messages/chat/models/input/dialog-input";
 
 @Injectable()
 export class ProjectManagementSignalrService {
@@ -111,5 +112,44 @@ export class ProjectManagementSignalrService {
       .catch((err: any) => {
         console.error(err);
       });
+  };
+
+  /**
+   * Функция получает диалог нейросети.
+   * @param diaalogId - Id диалога.
+   */
+  public getDialogAsync(dialogInput: DialogInput) {
+    <HubConnection>this.hubConnection.invoke("GetDialogAsync", localStorage["u_e"], localStorage["t_n"], JSON.stringify(dialogInput))
+      .catch((err: any) => {
+        console.error(err);
+      });
+  };
+
+  /**
+   * Функция слушает получение диалога нейросети.
+   */
+  public listenGetDialog() {
+    (<HubConnection>this.hubConnection).on("listenGetDialog", (response: any) => {
+      this.$allFeed.next(response);
+    });
+  };
+
+  /**
+   * Функция отправляет сообщение.
+   */
+  public sendMessageAsync(message: string, dialogId?: number | null) {
+    <HubConnection>this.hubConnection.invoke("SendMessageAsync", message, dialogId, localStorage["u_e"], localStorage["t_n"])
+      .catch((err: any) => {
+        console.error(err);
+      });
+  };
+
+  /**
+   * Функция слушает отправку сообщений.
+   */
+  public listenSendMessage() {
+    (<HubConnection>this.hubConnection).on("listenSendMessage", (response: any) => {
+      this.$allFeed.next(response);
+    });
   };
 }

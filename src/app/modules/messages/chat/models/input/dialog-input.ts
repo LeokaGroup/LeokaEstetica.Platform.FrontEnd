@@ -1,7 +1,9 @@
 export class DialogInput {
-    DialogId?: number = 0;
+    DialogId?: number | null;
 
     DiscussionType: string = "";
 
-    DiscussionTypeId: number = 0;
+    DiscussionTypeId?: number | null;
+
+    isManualNewDialog: boolean = false;
 }
