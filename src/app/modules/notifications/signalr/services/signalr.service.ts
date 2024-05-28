@@ -517,7 +517,7 @@ export class SignalrService {
    * Функция отправляет сообщение.
    */
   public sendMessageAsync(message: string, dialogId: number) {
-    <HubConnection>this.hubConnection.invoke("SendMessageAsync", message, dialogId, localStorage["u_e"], localStorage["t_n"])
+    <HubConnection>this.hubConnection.invoke("SendMessageAsync", message, dialogId, localStorage["u_e"], localStorage["t_n"], API_URL.apiUrl)
       .catch((err: any) => {
         console.error(err);
       });

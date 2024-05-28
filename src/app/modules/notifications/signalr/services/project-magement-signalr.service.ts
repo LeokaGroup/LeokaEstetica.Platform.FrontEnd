@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {HttpTransportType, HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
 import {BehaviorSubject} from 'rxjs';
 import {API_URL} from 'src/app/core/core-urls/api-urls';
+import { ProjectManagmentService } from 'src/app/modules/project-managment/services/project-managment.service';
 import {RedisService} from 'src/app/modules/redis/services/redis.service';
 import {DialogInput} from "../../../messages/chat/models/input/dialog-input";
 
@@ -14,7 +15,8 @@ export class ProjectManagementSignalrService {
   public isConnected: boolean = false;
 
   public constructor(private readonly _redisService: RedisService,
-                     private readonly _router: Router) {
+                     private readonly _router: Router,
+                     private readonly _projectManagmentService: ProjectManagmentService) {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(API_URL.apiUrlProjectManagment + "/project-management-notify", HttpTransportType.LongPolling)
       .build();
@@ -138,7 +140,7 @@ export class ProjectManagementSignalrService {
    * Функция отправляет сообщение.
    */
   public sendMessageAsync(message: string, dialogId?: number | null) {
-    <HubConnection>this.hubConnection.invoke("SendMessageAsync", message, dialogId, localStorage["u_e"], localStorage["t_n"])
+    <HubConnection>this.hubConnection.invoke("SendMessageAsync", message, dialogId, localStorage["u_e"], localStorage["t_n"], this._projectManagmentService.apiUrl)
       .catch((err: any) => {
         console.error(err);
       });
@@ -149,6 +151,15 @@ export class ProjectManagementSignalrService {
    */
   public listenSendMessage() {
     (<HubConnection>this.hubConnection).on("listenSendMessage", (response: any) => {
+      this.$allFeed.next(response);
+    });
+  };
+
+  /**
+   * Функция слушает ответы нейросети.
+   */
+  public listenClassificationNetworkMessageResponse() {
+    (<HubConnection>this.hubConnection).on("SendClassificationNetworkMessageResult", (response: any) => {
       this.$allFeed.next(response);
     });
   };

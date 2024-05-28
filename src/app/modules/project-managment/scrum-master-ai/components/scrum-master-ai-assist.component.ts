@@ -45,67 +45,76 @@ export class ScrumMasterAiAssistComponent implements OnInit {
 
     // Подписываемся на получение всех сообщений.
     this._projectManagementSignalrService.AllFeedObservable
-      .subscribe((response: any) => {
+      .subscribe(async (response: any) => {
         console.log("Подписались на сообщения", response);
 
-        // Если пришел тип уведомления, то просто показываем его.
-        if (response.notificationLevel !== undefined) {
-          this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
-        }
-
-
-        else if (response.actionType == "All" && response.dialogs.length > 0) {
-          console.log("Сообщения чата проекта: ", response);
-          this.aDialogs = response.dialogs;
-          this.aMessages = response.dialogs;
-        }
-
-        else if (response.actionType == "Concrete") {
-          console.log("Сообщения диалога: ", response.messages);
-
-          this.aMessages = response.messages;
-          let lastMessage = response.messages[response.messages.length - 1];
-          this.lastMessage = lastMessage;
-
-          // Делаем небольшую задержку, чтобы диалог успел открыться, прежде чем будем скролить к низу.
-          setTimeout(() => {
-            let block = document.getElementById("#idMessages");
-            block!.scrollBy({
-              left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
-              top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
-              behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
-            });
-          }, 1);
-        }
-
-        else if (response.actionType == "Message") {
-          console.log("Сообщения диалога: ", this.aMessages);
+        if (response.scrumMasterAiEventType != null && response.scrumMasterAiEventType != undefined) {
+          await this.onGetDialogAsync(response.dialogId, false);
 
           this.message = "";
-          let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
-          let lastMessage = response.messages[response.messages.length - 1];
-          this.lastMessage = lastMessage;
-          this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
+        }
 
-          this.aMessages = response.messages;
+        // Если это не ответ нейросети, то обрабатываем сообщения как обычно.
+        else {
+          // Если пришел тип уведомления, то просто показываем его.
+          if (response.notificationLevel !== undefined) {
+            this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
+          }
 
-          this.aMessages.forEach((msg: any) => {
-            if (msg.userCode !== localStorage["u_c"]) {
-              msg.isMyMessage = false;
-            }
-            else {
-              msg.isMyMessage = true;
-            }
-          });
 
-          setTimeout(() => {
-            let block = document.getElementById("#idMessages");
-            block!.scrollBy({
-              left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
-              top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
-              behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
+          else if (response.actionType == "All" && response.dialogs.length > 0) {
+            console.log("Сообщения чата проекта: ", response);
+            this.aDialogs = response.dialogs;
+            this.aMessages = response.dialogs;
+          }
+
+          else if (response.actionType == "Concrete") {
+            console.log("Сообщения диалога: ", response.messages);
+
+            this.aMessages = response.messages;
+            let lastMessage = response.messages[response.messages.length - 1];
+            this.lastMessage = lastMessage;
+
+            // Делаем небольшую задержку, чтобы диалог успел открыться, прежде чем будем скролить к низу.
+            setTimeout(() => {
+              let block = document.getElementById("#idMessages");
+              block!.scrollBy({
+                left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
+                top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
+                behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
+              });
+            }, 1);
+          }
+
+          else if (response.actionType == "Message") {
+            console.log("Сообщения диалога: ", this.aMessages);
+
+            this.message = "";
+            let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
+            let lastMessage = response.messages[response.messages.length - 1];
+            this.lastMessage = lastMessage;
+            this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
+
+            this.aMessages = response.messages;
+
+            this.aMessages.forEach((msg: any) => {
+              if (msg.userCode !== localStorage["u_c"]) {
+                msg.isMyMessage = false;
+              }
+              else {
+                msg.isMyMessage = true;
+              }
             });
-          }, 1);
+
+            setTimeout(() => {
+              let block = document.getElementById("#idMessages");
+              block!.scrollBy({
+                left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
+                top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
+                behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
+              });
+            }, 1);
+          }
         }
       });
   };
@@ -117,6 +126,7 @@ export class ScrumMasterAiAssistComponent implements OnInit {
     this._projectManagementSignalrService.listenGetDialogs();
     this._projectManagementSignalrService.listenGetDialog();
     this._projectManagementSignalrService.listenSendMessage();
+    this._projectManagementSignalrService.listenClassificationNetworkMessageResponse();
   };
 
   private async checkUrlParams() {
