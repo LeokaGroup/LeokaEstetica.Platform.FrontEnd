@@ -936,7 +936,7 @@
                              [active]="c.isActiveTaskComment"
                              (onActivate)="c.isActiveTaskComment = !c.isActiveTaskComment">
                     <ng-template pTemplate="display">
-                      <span class="task-name-title">{{c.comment}}</span>
+                      <span class="task-name-title" [innerHTML]="c.comment"></span>
                     </ng-template>
 
                     <ng-template pTemplate="content">
