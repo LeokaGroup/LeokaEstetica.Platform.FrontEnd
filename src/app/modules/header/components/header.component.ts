@@ -128,9 +128,12 @@ export class HeaderComponent implements OnInit {
         .subscribe(_ => {
           console.log("projectWorkspaceSettings", this.projectWorkspaceSettings$.value);
 
-          // Если настройки были зафиксированы, то переходим сразу в раб.пространство проекта.
-          if (this.projectWorkspaceSettings$.value.isCommitProjectSettings) {
-            // Чтобы страница прогрузилась - сделано через window.location.href.
+          // Редирект в общее пространство.
+          if (this.projectWorkspaceSettings$.value.isDefaultSpaceUrl) {
+            this._router.navigate(["/project-management/workspaces"]);
+          }
+
+          else {
             window.location.href = this.projectWorkspaceSettings$.value.projectManagmentSpaceUrl;
           }
         });

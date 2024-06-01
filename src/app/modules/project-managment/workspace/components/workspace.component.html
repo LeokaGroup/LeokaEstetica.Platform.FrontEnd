@@ -6,7 +6,7 @@
 
   <div class="card">
     <p-dataView #dv [value]="workspaces$.value"
-                [paginator]="true"
+                [paginator]="isPaginator"
                 [rows]="10"
                 layout="list"
                 emptyMessage="Проектов еще не создано...">
