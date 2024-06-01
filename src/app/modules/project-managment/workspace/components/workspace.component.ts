@@ -22,6 +22,7 @@ export class WorkSpaceComponent implements OnInit {
   public readonly projectWorkspaceSettings$ = this._projectManagmentService.projectWorkspaceSettings$;
 
   aWorkspaces: any[] = [];
+  isPaginator: boolean = false;
 
   public async ngOnInit() {
     forkJoin([
@@ -37,6 +38,7 @@ export class WorkSpaceComponent implements OnInit {
       .subscribe(_ => {
         console.log("Список раб.пространств проектов: ", this.workspaces$.value);
         this.aWorkspaces = this.workspaces$.value;
+        this.isPaginator = this.workspaces$.value.length > 0;
       });
   };
 
