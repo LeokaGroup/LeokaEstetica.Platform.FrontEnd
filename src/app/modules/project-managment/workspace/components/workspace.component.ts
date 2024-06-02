@@ -52,7 +52,7 @@ export class WorkSpaceComponent implements OnInit {
 
   // TODO: Дублируется.
   private async getBuildProjectSpaceSettingsAsync(projectId: number) {
-    (await this._projectManagmentService.getBuildProjectSpaceSettingsAsync())
+    (await this._projectManagmentService.getBuildProjectSpaceSettingsAsync(projectId))
       .subscribe(_ => {
         console.log("projectWorkspaceSettings", this.projectWorkspaceSettings$.value);
 
