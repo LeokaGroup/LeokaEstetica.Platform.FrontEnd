@@ -112,7 +112,7 @@
                     </p-editor>
                   </div>
                   <div *ngIf="!isEditMode">
-                    <p class="white-space text-paragraph">{{selectedProject$.value.demands}}</p>
+                    <p class="white-space text-paragraph" [innerHTML]="selectedProject$.value.demands"></p>
                   </div>
                 </div>
               </div>
@@ -128,13 +128,13 @@
               </div>
               <div *ngIf="isEditMode">
                 <p-editor autocomplete="new-password"
-                          [(ngModel)]="selectedProject$.value.demands"
+                          [(ngModel)]="selectedProject$.value.conditions"
                           [style]="{'height':'320px'}"
                           [readonly]="!isEditMode">
                 </p-editor>
               </div>
               <div *ngIf="!isEditMode">
-                <p class="white-space text-paragraph">{{selectedProject$.value.conditions}}</p>
+                <p class="white-space text-paragraph" [innerHTML]="selectedProject$.value.conditions"></p>
               </div>
             </div>
           </div>
