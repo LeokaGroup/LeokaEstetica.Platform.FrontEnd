@@ -870,4 +870,12 @@ export class TaskDetailsComponent implements OnInit {
         }, 4000);
       });
   };
+
+  public onClosePanelMenu() {
+    this._projectManagmentService.isLeftPanel = false;
+  };
+
+  public onSelectPanelMenu() {
+    this._projectManagmentService.isLeftPanel = true;
+  };
 }
