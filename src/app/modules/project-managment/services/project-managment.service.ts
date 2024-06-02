@@ -276,10 +276,18 @@ export class ProjectManagmentService {
     * Если ее нет, то предлагаем к выбору шаблон, стратегию представления.
     * @returns - Выходная модель.
     */
-      public async getBuildProjectSpaceSettingsAsync() {
-        return await this._http.get(this.apiUrl + "/project-management/config/build-project-space").pipe(
+      public async getBuildProjectSpaceSettingsAsync(projectId: number | null) {
+        if (projectId !== null) {
+          return await this._http.get(this.apiUrl + `/project-management/config/build-project-space?projectId=${projectId}`).pipe(
             tap(data => this.projectWorkspaceSettings$.next(data))
-        );
+          );
+        }
+
+        else {
+          return await this._http.get(this.apiUrl + `/project-management/config/build-project-space`).pipe(
+            tap(data => this.projectWorkspaceSettings$.next(data))
+          );
+        }
     };
 
     /**
