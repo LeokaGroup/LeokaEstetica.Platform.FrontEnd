@@ -191,7 +191,13 @@ export class DetailVacancyComponent implements OnInit, OnDestroy {
                 response.errors.forEach((item: any) => {
                     this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item.errorMessage });
                 });
-            }
+            } else {
+              setTimeout(() => {
+                  this._router.navigate(["/vacancies/my"]).then(() => {
+                      this._redirectService.redirect("vacancies/my");
+                    });
+              }, 4000);
+          }
         });
     };
 

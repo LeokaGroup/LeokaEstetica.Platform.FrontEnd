@@ -356,6 +356,10 @@ export class TaskDetailsComponent implements OnInit {
     * @param projectTaskTagInput - Входная модель.
     */
     public async onAttachTaskTagAsync() {
+        // Проверка на отсутствие дубликатов тегов
+        let isDublicate = this.taskDetails$.value.tagIds.find((item: any) => item === this.selectedTag.tagId);
+
+        if(isDublicate === undefined){
         let projectTaskTagInput = new ProjectTaskTagInput();
         projectTaskTagInput.projectId = +this.projectId;
         projectTaskTagInput.projectTaskId = this.projectTaskId;
@@ -365,8 +369,8 @@ export class TaskDetailsComponent implements OnInit {
             .subscribe(async _ => {
                 await this.getProjectTaskDetailsAsync();
             });
+        };
     };
-
     /**
     * Функция привязывает тег к задаче проекта.
     * Выбор происходит из набора тегов проекта.
@@ -865,5 +869,13 @@ export class TaskDetailsComponent implements OnInit {
           });
         }, 4000);
       });
+  };
+
+  public onClosePanelMenu() {
+    this._projectManagmentService.isLeftPanel = false;
+  };
+
+  public onSelectPanelMenu() {
+    this._projectManagmentService.isLeftPanel = true;
   };
 }

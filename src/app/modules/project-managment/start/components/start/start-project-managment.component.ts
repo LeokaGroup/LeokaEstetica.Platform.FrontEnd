@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
 import { ConfigSpaceSettingInput } from "../../../task/models/input/config-space-setting-input";
@@ -29,19 +29,28 @@ export class StartProjectManagmentComponent implements OnInit {
     isSelectedProject: boolean = false;
     projectManagementProjectName: string = "";
     projectManagementProjectNamePrefix: string = "";
+    projectId: number = 0;
 
-    constructor(private readonly _projectManagmentService: ProjectManagmentService,
-        private readonly _router: Router) {
-    }
+  constructor(private readonly _projectManagmentService: ProjectManagmentService,
+              private readonly _router: Router,
+              private readonly _activatedRoute: ActivatedRoute) {
+  }
 
     public async ngOnInit() {
         forkJoin([
+            this.checkUrlParams(),
             await this.getUseProjectsAsync(),
             await this.getViewStrategiesAsync(),
-            await this.getProjectManagmentTemplatesAsync(),
-            await this.getBuildProjectSpaceSettingsAsync()
+            await this.getProjectManagmentTemplatesAsync()
         ]).subscribe();
     };
+
+  private checkUrlParams() {
+    this._activatedRoute.queryParams
+      .subscribe(params => {
+        this.projectId = params["projectId"];
+      });
+  };
 
     /**
   * Функция получает список проектов пользователя.
@@ -67,7 +76,7 @@ export class StartProjectManagmentComponent implements OnInit {
 
     /**
      * Функция переходит в рабочее пространство проекта.
-     * Если пользователь ранее выбирал настройки, то не отображаем к выбору стратегию и шаблон, а применяем ссылку с бэка.
+     * Если пользователь ранее выбирал настройки, то не отображаем к выбору настройки, а применяем ссылку с бэка.
      */
     public async onRouteWorkSpace() {
         console.log("selectedProject", this.selectedProject);
@@ -76,8 +85,7 @@ export class StartProjectManagmentComponent implements OnInit {
         // Можем взять templateId от любого статуса, так как все статусы будут принадлежать одному шаблону,
         // который выбран пользователем.
         let configSpaceSettingInput = new ConfigSpaceSettingInput();
-        let projectId = this.selectedProject.projectId;
-        configSpaceSettingInput.projectId = projectId;
+        configSpaceSettingInput.projectId = this.projectId;
         configSpaceSettingInput.projectManagementName = this.projectManagementProjectName;
         configSpaceSettingInput.projectManagementNamePrefix = this.projectManagementProjectNamePrefix;
 
@@ -149,18 +157,6 @@ export class StartProjectManagmentComponent implements OnInit {
      */
     public onSelectProject() {
         this.isSelectedProject = this.selectedProject !== undefined && this.selectedProject?.projectId > 0;
-    };
-
-    private async getBuildProjectSpaceSettingsAsync() {
-        (await this._projectManagmentService.getBuildProjectSpaceSettingsAsync())
-        .subscribe(_ => {
-            console.log("projectWorkspaceSettings", this.projectWorkspaceSettings$.value);
-
-            // Если настройки были зафиксированы, то переходим сразу в раб.пространство проекта.
-            if (this.projectWorkspaceSettings$.value.isCommitProjectSettings) {
-                window.location.href = this.projectWorkspaceSettings$.value.projectManagmentSpaceUrl;
-            }
-        });
     };
 
     public onUpdateProjectManagementProjectName() {

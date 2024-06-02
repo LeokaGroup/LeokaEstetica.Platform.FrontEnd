@@ -47,6 +47,7 @@
               <p-dropdown [options]="this.projectStages$.value"
                           [(ngModel)]="selectedStage"
                           optionLabel="stageName"
+                          appendTo="body"
                           class="control-project-stages"
                           (onChange)="onSelectProjectStage()">
               </p-dropdown>

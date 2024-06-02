@@ -1,0 +1,18 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+
+.task-details {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.data-line {
+  padding: 0 15px;
+}
+
+.workspace-project-name {
+  &:hover {
+    cursor: pointer;
+  }
+}

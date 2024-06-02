@@ -104,6 +104,13 @@ export class SpaceComponent implements OnInit {
     * @returns - Данные конфигурации.
     */
     private async getConfigurationWorkSpaceBySelectedTemplateAsync() {
+        // Если нет проекта, то редиректим в общее пространство.
+        if (!this.selectedProjectId) {
+          this._router.navigate(["/project-management/workspaces"]);
+
+          return;
+        }
+
         (await this._projectManagmentService.getConfigurationWorkSpaceBySelectedTemplateAsync(this.selectedProjectId,
             null, 1, "Space"))
             .subscribe(_ => {

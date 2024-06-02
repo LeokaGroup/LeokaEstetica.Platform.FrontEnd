@@ -265,6 +265,14 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
       });
   };
 
+  public onSelectPanelMenu() {
+    this._projectManagmentService.isLeftPanel = true;
+  };
+
+  public onClosePanelMenu() {
+    this._projectManagmentService.isLeftPanel = false;
+  };
+
   ngOnDestroy() {
     this.subscription?.unsubscribe();
   }

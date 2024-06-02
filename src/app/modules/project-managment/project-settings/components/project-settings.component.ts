@@ -5,6 +5,8 @@ import { forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { ProjectManagmentService } from "../../services/project-managment.service";
 import {ProjectUserAvatarFileInput} from "../../task/models/input/project-user-avatar-file-input";
+import {SprintDurationSettingInput} from "../../sprint/models/sprint-duration-setting-input";
+import {SprintMoveNotCompletedTaskSettingInput} from "../../sprint/models/sprint-move-not-completed-task-setting-input";
 
 @Component({
   selector: "",
@@ -25,11 +27,17 @@ export class ProjectSettingsComponent implements OnInit {
   }
 
   public readonly downloadUserAvatarFile$ = this._projectManagmentService.downloadUserAvatarFile$;
+  public readonly sprintDurationSettings$ = this._projectManagmentService.sprintDurationSettings$;
+  public readonly sprintMoveNotCompletedTasksSettings$ = this._projectManagmentService.sprintMoveNotCompletedTasksSettings$;
 
   projectId: number = 0;
   userAvatarLink: any;
   isShowProfile: boolean = false;
   avatarFormData = new FormData();
+  isShowScrumSettings: boolean = false;
+  selectedDurationSetting: any;
+  selectedMoveSetting: any;
+  checked: boolean = true;
 
   items: any[] = [{
     label: 'Общие',
@@ -37,10 +45,28 @@ export class ProjectSettingsComponent implements OnInit {
       label: 'Настройки профиля',
       command: () => {
         this.isShowProfile = true;
+        this.isShowScrumSettings = false;
       }
     }
     ]
-  }];
+  },
+    {
+      label: 'Управление проектом',
+      items: [{
+        label: 'Настройки Scrum',
+        command: async () => {
+          this.isShowProfile = false;
+          this.isShowScrumSettings = true;
+
+          await this.getScrumDurationSettingsAsync();
+          await this.getProjectSprintsMoveNotCompletedTasksSettingsAsync();
+        }
+      }
+      ]
+    }];
+
+  aScrumDurationSettings: any[] = [];
+  aMoveNotCompletedTasksSettings: any[] = [];
 
   public async ngOnInit() {
     forkJoin([
@@ -98,5 +124,49 @@ export class ProjectSettingsComponent implements OnInit {
       .subscribe(async _ => {
         await this.getFileUserAvatarAsync();
       });
+  };
+
+  private async getScrumDurationSettingsAsync() {
+    (await this._projectManagmentService.getScrumDurationSettingsAsync(this.projectId))
+      .subscribe(async _ => {
+        console.log("Настройки длительности спринтов проекта: ", this.sprintDurationSettings$.value);
+        this.aScrumDurationSettings = this.sprintDurationSettings$.value;
+      });
+  };
+
+  private async getProjectSprintsMoveNotCompletedTasksSettingsAsync() {
+    (await this._projectManagmentService.getProjectSprintsMoveNotCompletedTasksSettingsAsync(this.projectId))
+      .subscribe(async _ => {
+        console.log("Настройки автоматического перемещения нерешенных задач спринта: ", this.sprintMoveNotCompletedTasksSettings$.value);
+        this.aMoveNotCompletedTasksSettings = this.sprintMoveNotCompletedTasksSettings$.value;
+      });
+  };
+
+  public async onUpdateScrumDurationSettingsAsync(checked: boolean, sysName: string, i: number) {
+    let sprintDurationSettingInput = new SprintDurationSettingInput();
+    sprintDurationSettingInput.projectId = +this.projectId;
+    sprintDurationSettingInput.isSettingSelected = checked;
+    sprintDurationSettingInput.sysName = sysName;
+
+    (await this._projectManagmentService.updateScrumDurationSettingsAsync(sprintDurationSettingInput))
+      .subscribe(async _ => {
+        await this.getScrumDurationSettingsAsync();
+      });
+  }
+
+  public async onUpdateProjectSprintsMoveNotCompletedTasksSettingsAsync(checked: boolean, sysName: string, i: number) {
+    let sprintMoveNotCompletedTaskSettingInput = new SprintMoveNotCompletedTaskSettingInput();
+    sprintMoveNotCompletedTaskSettingInput.projectId = +this.projectId;
+    sprintMoveNotCompletedTaskSettingInput.isSettingSelected = checked;
+    sprintMoveNotCompletedTaskSettingInput.sysName = sysName;
+
+    (await this._projectManagmentService.updateProjectSprintsMoveNotCompletedTasksSettingsAsync(sprintMoveNotCompletedTaskSettingInput))
+      .subscribe(async _ => {
+        await this.getProjectSprintsMoveNotCompletedTasksSettingsAsync();
+      });
+  };
+
+  public onSelect(event: any) {
+    console.log(event);
   };
 }
