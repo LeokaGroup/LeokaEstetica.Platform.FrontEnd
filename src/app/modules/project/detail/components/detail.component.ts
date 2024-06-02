@@ -17,7 +17,6 @@ import { ProjectResponseInput } from "../models/input/project-response-input";
 import { UpdateProjectInput } from "../models/input/update-project-input";
 import { AddProjectArchiveInput } from "src/app/modules/backoffice/models/input/project/add-project-archive-input";
 import { DialogInput } from "src/app/modules/messages/chat/models/input/dialog-input";
-import {ChangeTaskNameInput} from "../../../project-managment/task/models/input/change-task-name-input";
 
 @Component({
     selector: "detail",
@@ -535,6 +534,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         dialogInput.DialogId = dialogId;
         dialogInput.DiscussionType = "Project";
         dialogInput.DiscussionTypeId = this.projectId;
+        dialogInput.isManualNewDialog = false;
 
         this._signalrService.getDialogAsync(dialogInput);
 
