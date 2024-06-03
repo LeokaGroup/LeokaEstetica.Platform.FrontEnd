@@ -176,6 +176,20 @@ export class CreateTaskComponent implements OnInit {
         }
     };
 
+    /**
+    * Функция получает список исполнителей для выбора для полей "Исполнитель" и "Наблюдатели".
+    * @returns{string} - Список статусов.
+    */
+    public getEmptyMessageToTaskPeople(): string {
+      if (!this.taskPeople$.value) {
+        return 'Загрузка...';
+      } else if (this.aPeople.length === 0) {
+        return 'Нет других пользователей';
+      } else {
+        return '';
+      }
+    }
+
     // TODO: Эта логика дублируется.
     public onSelectWachers() {
         console.log("selectedWatcher", this.selectedWatcher);
