@@ -95,6 +95,14 @@ export class LeftPanelComponent implements OnInit, DoCheck {
         });
         break;
 
+      case "Задачи":
+        this._router.navigate(["/project-management/space"], {
+          queryParams: {
+            projectId
+          }
+        });
+        break;
+
       case "Пространства":
         this._router.navigate(["/project-management/workspaces"]);
         break;
