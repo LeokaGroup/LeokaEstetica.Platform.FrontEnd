@@ -125,51 +125,67 @@
     </div>
   </div>
 
-  <!-- Настройки списка пользователей компании. -->
-  <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowScrumSettings">
-    <h3>Настройки Scrum в проекте</h3>
+  <!-- Настройки списка пользователей проекта компании. -->
+  <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowUsers">
+    <h3>Пользователи проекта компании</h3>
     <div class="scrum">
       <div>
-        <div class="flex flex-column gap-3">
-          <!-- Настройки длительности спринтов -->
-          <div>
-            <strong>Настройки длительности спринтов</strong>
-            <div *ngFor="let s of aScrumDurationSettings; index as i" class="field-checkbox">
-              <div class="d-flex mt-3">
-                <div>
-                  <div>
-                    {{s.name}} {{s.label}}
-                  </div>
-                  <div>
-                    <p-inputSwitch [(ngModel)]="s.checked"
-                                   [disabled]="s.disabled"
-                                   (onChange)="onUpdateScrumDurationSettingsAsync(s.checked, s.key, i)">
-                    </p-inputSwitch>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <p-table [value]="settingUsers.value"
+                 [(selection)]="selectedUser"
+                 dataKey="userId"
+                 [paginator]="settingUsers.value.length > 0"
+                 [rows]="10"
+                 styleClass="p-datatable-gridlines"
+                 responsiveLayout="scroll">
 
-          <div class="mt-3">
-            <strong>Автоматически перемещать незавершенные задачи спринта в:</strong>
-            <div *ngFor="let s of aMoveNotCompletedTasksSettings; index as i" class="field-checkbox">
-              <div class="d-flex mt-3">
-                <div>
-                  <div>
-                    {{s.name}} {{s.label}}
-                  </div>
-                  <div>
-                    <p-inputSwitch [(ngModel)]="s.checked"
-                                   [disabled]="s.disabled"
-                                   (onChange)="onUpdateProjectSprintsMoveNotCompletedTasksSettingsAsync(s.checked, s.key, i)">
-                    </p-inputSwitch>
-                  </div>
+<!--          <ng-template pTemplate="caption">-->
+<!--            <h3>Пользователи</h3>-->
+<!--          </ng-template>-->
+
+          <ng-template pTemplate="header">
+            <tr>
+              <!-- <th></th> -->
+              <th>Полное имя</th>
+              <th>Эл. почта</th>
+              <th>Роль</th>
+              <th>Последняя активность</th>
+              <!-- <th>Редактирование</th> -->
+              <!-- <th>Удаление</th> -->
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-u>
+            <tr>
+              <!-- <td>
+                <p-tableCheckbox [value]="order"></p-tableCheckbox>
+              </td> -->
+              <td>{{u.fullName}}</td>
+              <td>{{u.email}}</td>
+              <td>{{u.role}}</td>
+              <td>{{u.lastAutorization}}</td>
+<!--              <td><button pButton type="button"-->
+<!--                          label="Подробнее"-->
+<!--                          class="p-button-outlined p-button-primaryproject.projectId"-->
+<!--                          (click)="onRouteViewOrder(order.orderId)">-->
+<!--              </button>-->
+<!--              </td>-->
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="summary">
+            Всего: {{settingUsers.value.length}}
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">
+                <div class="empty-orders">
+                  Пользователей нет.
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
       </div>
     </div>
   </div>

@@ -80,6 +80,7 @@ export class ProjectManagmentService {
     public sprintDurationSettings$ = new BehaviorSubject<any>(null);
     public sprintMoveNotCompletedTasksSettings$ = new BehaviorSubject<any>(null);
     public workspaces$ = new BehaviorSubject<any>(null);
+    public settingUsers = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -947,6 +948,15 @@ export class ProjectManagmentService {
   public async getWorkSpacesAsync() {
     return await this._http.get(this.apiUrl + `/project-management/workspaces`).pipe(
       tap(data => this.workspaces$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает список пользователей для настроек.
+   */
+  public async getSettingUsersAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-settings/company-project-users?projectId=${projectId}`).pipe(
+      tap(data => this.settingUsers.next(data))
     );
   };
 }
