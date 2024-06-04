@@ -757,6 +757,7 @@
                       [suggestions]="epicTasks$.value"
                       (completeMethod)="onSearchIncludeEpicTaskAsync($event)"
                       [showEmptyMessage]="true"
+                      [disabled]="!isSearchByTaskId && !isSearchByTaskName && !isSearchByTaskDescription"
                       emptyMessage="Результатов не найдено"
                       field="findText"
                       [minLength]="0"
