@@ -60,14 +60,14 @@
                             <div>
                                 <strong>Описание проекта</strong>
                             </div>
-                          <div *ngIf="isEditMode; else blockTwo">
+                          <div *ngIf="isEditMode; else blockThree">
                                <p-editor autocomplete="new-password"
                                     [(ngModel)]="selectedProject$.value.projectDetails"
                                     [style]="{'height':'320px'}"
                                     [readonly]="!isEditMode">
                                </p-editor>
                           </div>
-                          <ng-template #blockTwo>
+                          <ng-template #blockThree>
                             <p class="white-space">{{selectedProject$.value.projectDetails}}</p>
                           </ng-template>
                         </div>
@@ -81,7 +81,7 @@
             <div>
                 <strong>Стадия проекта</strong>
             </div>
-            <div *ngIf="isEditMode; else blockTree">
+            <div *ngIf="isEditMode; else blockFour">
               <p-dropdown [options]="projectStages$.value"
                           [(ngModel)]="selectedStage"
                           optionLabel="stageName"
@@ -90,7 +90,7 @@
                           [disabled]="!isEditMode">
               </p-dropdown>
             </div>
-            <ng-template #blockTree>
+            <ng-template #blockFour>
                 {{selectedProject$.value.stageName}}
             </ng-template>
           </div>
