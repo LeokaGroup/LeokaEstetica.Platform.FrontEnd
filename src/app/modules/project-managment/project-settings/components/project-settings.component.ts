@@ -63,6 +63,20 @@ export class ProjectSettingsComponent implements OnInit {
         }
       }
       ]
+    },
+    {
+      label: 'Администрирование',
+      items: [{
+        label: 'Пользователи',
+        command: async () => {
+          // this.isShowProfile = false;
+          // this.isShowScrumSettings = true;
+          //
+          // await this.getScrumDurationSettingsAsync();
+          // await this.getProjectSprintsMoveNotCompletedTasksSettingsAsync();
+        }
+      }
+      ]
     }];
 
   aScrumDurationSettings: any[] = [];
