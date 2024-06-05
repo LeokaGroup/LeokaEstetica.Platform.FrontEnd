@@ -1,38 +1,47 @@
 <p-toast></p-toast>
 
 <div class="d-flex block-profile space-top-80">
-  <div class="profile-left-menu col-lg-3">
-
-  </div>
+  <div class="profile-left-menu col-lg-3"></div>
 
   <div class="block-worksheet">
     <div *ngIf="isShowRemarks" class="mb-1">
-      <strong>Имеются замечания. Проект не будет опубликован, пока замечания не будут исправлены и приняты модератором.</strong>
+      <strong
+        >Имеются замечания. Проект не будет опубликован, пока замечания не будут
+        исправлены и приняты модератором.</strong
+      >
     </div>
 
     <div class="" *ngFor="let r of selectedProject$.value.projectRemarks">
       <div class="mb-1">
-        <p-message severity="warn" text="{{r.remarkText}}"></p-message>
+        <p-message severity="warn" text="{{ r.remarkText }}"></p-message>
       </div>
     </div>
 
     <div class="worksheet-panel">
-      <p-panel header="Просмотр информации о проекте" [toggleable]="true" [collapsed]="false">
+      <p-panel
+        header="Просмотр информации о проекте"
+        [toggleable]="true"
+        [collapsed]="false"
+      >
         <div class="d-flex">
           <div class="control-input-text-worksheet">
             <div>
-                <strong>Название проекта</strong>
+              <strong>Название проекта</strong>
             </div>
             <div *ngIf="isEditMode; else blockOne">
-              <input type="text"
-                     class="p-inputtext-sm input-control-worksheet control-project"
-                     placeholder="Название проекта"
-                     pInputText
-                     autocomplete="new-password"
-                     [(ngModel)]="selectedProject$.value.projectName"
-                     [disabled]="!isEditMode"/>
+              <input
+                type="text"
+                class="p-inputtext-sm input-control-worksheet control-project"
+                placeholder="Название проекта"
+                pInputText
+                autocomplete="new-password"
+                [(ngModel)]="selectedProject$.value.projectName"
+                [disabled]="!isEditMode"
+              />
             </div>
-            <ng-template #blockOne>{{selectedProject$.value.projectName}}</ng-template>
+            <ng-template #blockOne>{{
+              selectedProject$.value.projectName
+            }}</ng-template>
           </div>
         </div>
 
@@ -41,57 +50,69 @@
             <strong>Название в управлении проектом</strong>
           </div>
           <div *ngIf="isEditMode; else blockTwo">
-            <input type="text"
-                   class="p-inputtext-sm input-control-worksheet control-project"
-                   placeholder="Название в модуле управления проектом"
-                   pInputText
-                   autocomplete="new-password"
-                   [(ngModel)]="selectedProject$.value.projectManagementName"
-                   [disabled]="!isEditMode"/>
+            <input
+              type="text"
+              class="p-inputtext-sm input-control-worksheet control-project"
+              placeholder="Название в модуле управления проектом"
+              pInputText
+              autocomplete="new-password"
+              [(ngModel)]="selectedProject$.value.projectManagementName"
+              [disabled]="!isEditMode"
+            />
           </div>
-          <ng-template #blockTwo>{{selectedProject$.value.projectManagementName == null ? 'Не указано' : selectedProject$.value.projectManagementName}}</ng-template>
+          <ng-template #blockTwo>{{
+            selectedProject$.value.projectManagementName == null
+              ? "Не указано"
+              : selectedProject$.value.projectManagementName
+          }}</ng-template>
         </div>
 
         <div class="d-flex mt-3">
+          <div class="control-input-text-worksheet">
             <div class="control-input-text-worksheet">
+              <div class="d-flex worksheet-line">
                 <div class="control-input-text-worksheet">
-                    <div class="d-flex worksheet-line">
-                        <div class="control-input-text-worksheet">
-                            <div>
-                                <strong>Описание проекта</strong>
-                            </div>
-                          <div *ngIf="isEditMode; else blockThree">
-                               <p-editor autocomplete="new-password"
-                                    [(ngModel)]="selectedProject$.value.projectDetails"
-                                    [style]="{'height':'320px'}"
-                                    [readonly]="!isEditMode">
-                               </p-editor>
-                          </div>
-                          <ng-template #blockThree>
-                            <p class="white-space">{{selectedProject$.value.projectDetails}}</p>
-                          </ng-template>
-                        </div>
-                    </div>
+                  <div>
+                    <strong>Описание проекта</strong>
                   </div>
+                  <div *ngIf="isEditMode; else blockThree">
+                    <p-editor
+                      autocomplete="new-password"
+                      [(ngModel)]="selectedProject$.value.projectDetails"
+                      [style]="{ height: '320px' }"
+                      [readonly]="!isEditMode"
+                    >
+                    </p-editor>
+                  </div>
+                  <ng-template #blockThree>
+                    <p class="white-space">
+                      {{ selectedProject$.value.projectDetails }}
+                    </p>
+                  </ng-template>
+                </div>
               </div>
+            </div>
+          </div>
         </div>
 
         <div class="d-flex mt-3">
           <div class="control-input-text-worksheet">
             <div>
-                <strong>Стадия проекта</strong>
+              <strong>Стадия проекта</strong>
             </div>
             <div *ngIf="isEditMode; else blockFour">
-              <p-dropdown [options]="projectStages$.value"
-                          [(ngModel)]="selectedStage"
-                          optionLabel="stageName"
-                          placeholder="{{selectedProject$.value.stageName}}"
-                          (onChange)="onSelectProjectStage()"
-                          [disabled]="!isEditMode">
+              <p-dropdown
+                [options]="projectStages$.value"
+                [(ngModel)]="selectedStage"
+                optionLabel="stageName"
+                placeholder="{{ selectedProject$.value.stageName }}"
+                (onChange)="onSelectProjectStage()"
+                [disabled]="!isEditMode"
+              >
               </p-dropdown>
             </div>
             <ng-template #blockFour>
-                {{selectedProject$.value.stageName}}
+              {{ selectedProject$.value.stageName }}
             </ng-template>
           </div>
         </div>
@@ -105,14 +126,19 @@
                     <strong>Требования</strong>
                   </div>
                   <div *ngIf="isEditMode">
-                    <p-editor autocomplete="new-password"
-                              [(ngModel)]="selectedProject$.value.demands"
-                              [style]="{'height':'320px'}"
-                              [readonly]="!isEditMode">
+                    <p-editor
+                      autocomplete="new-password"
+                      [(ngModel)]="selectedProject$.value.demands"
+                      [style]="{ height: '320px' }"
+                      [readonly]="!isEditMode"
+                    >
                     </p-editor>
                   </div>
                   <div *ngIf="!isEditMode">
-                    <p class="white-space text-paragraph" [innerHTML]="selectedProject$.value.demands"></p>
+                    <p
+                      class="white-space text-paragraph"
+                      [innerHTML]="selectedProject$.value.demands"
+                    ></p>
                   </div>
                 </div>
               </div>
@@ -127,14 +153,19 @@
                 <strong>Условия</strong>
               </div>
               <div *ngIf="isEditMode">
-                <p-editor autocomplete="new-password"
-                          [(ngModel)]="selectedProject$.value.conditions"
-                          [style]="{'height':'320px'}"
-                          [readonly]="!isEditMode">
+                <p-editor
+                  autocomplete="new-password"
+                  [(ngModel)]="selectedProject$.value.conditions"
+                  [style]="{ height: '320px' }"
+                  [readonly]="!isEditMode"
+                >
                 </p-editor>
               </div>
               <div *ngIf="!isEditMode">
-                <p class="white-space text-paragraph" [innerHTML]="selectedProject$.value.conditions"></p>
+                <p
+                  class="white-space text-paragraph"
+                  [innerHTML]="selectedProject$.value.conditions"
+                ></p>
               </div>
             </div>
           </div>
@@ -142,9 +173,12 @@
 
         <div class="d-flex worksheet-line mt-3">
           <div class="control-input-text-worksheet">
-            <button type="button" class="btn btn-primary button-action-pur-control-worksheet"
+            <button
+              type="button"
+              class="btn btn-primary button-action-pur-control-worksheet"
               (click)="onUpdateProjectAsync()"
-              *ngIf="isEditMode">
+              *ngIf="isEditMode"
+            >
               Сохранить
             </button>
           </div>
@@ -152,80 +186,90 @@
       </p-panel>
     </div>
 
-    <div class="worksheet-panel space-top-80 space-bottom-50 d-flex" *ngIf="!isEditMode">
+    <div
+      class="worksheet-panel space-top-80 space-bottom-50 d-flex"
+      *ngIf="!isEditMode"
+    >
       <p-panel header="Действия" [toggleable]="true" [collapsed]="false">
         <div class="d-flex">
           <div class="control-input-text-worksheet">
             <div class="mb-3">
               <div>
                 <div>
-                  <button pButton
-                          type="button"
-                          label="Откликнуться на проект (без указания вакансии)"
-                          class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onShowProjectResponseNotVacancyModal(true)"
-                          *ngIf="isVisibleActionProjectButtons">
-                  </button>
+                  <button
+                    pButton
+                    type="button"
+                    label="Откликнуться на проект (без указания вакансии)"
+                    class="p-button-outlined p-button-secondary p-button-text"
+                    (click)="onShowProjectResponseNotVacancyModal(true)"
+                    *ngIf="isVisibleActionProjectButtons"
+                  ></button>
                 </div>
 
                 <div>
-                  <button pButton
-                          type="button"
-                          label="Откликнуться на проект (с указанием вакансии)"
-                          class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onShowProjectResponseWithVacancyModal(true)"
-                          *ngIf="isVisibleActionProjectButtons && totalVacancies > 0">
-                  </button>
+                  <button
+                    pButton
+                    type="button"
+                    label="Откликнуться на проект (с указанием вакансии)"
+                    class="p-button-outlined p-button-secondary p-button-text"
+                    (click)="onShowProjectResponseWithVacancyModal(true)"
+                    *ngIf="isVisibleActionProjectButtons && totalVacancies > 0"
+                  ></button>
                 </div>
 
                 <div>
-                  <button pButton
-                          type="button"
-                          label="Написать владельцу"
-                          class="p-button-outlined p-button-secondary p-button-text"
-                          (click)="onWriteOwnerDialogAsync()"
-                          *ngIf="isVisibleActionProjectButtons">
-                  </button>
+                  <button
+                    pButton
+                    type="button"
+                    label="Написать владельцу"
+                    class="p-button-outlined p-button-secondary p-button-text"
+                    (click)="onWriteOwnerDialogAsync()"
+                    *ngIf="isVisibleActionProjectButtons"
+                  ></button>
                 </div>
 
                 <div>
-                  <button pButton
-                          type="button"
-                          label="Пригласить в проект"
-                          class="p-button-secondary p-button-text"
-                          (click)="isProjectInvite=true"
-                          *ngIf="isVisibleDeleteButton">
-                  </button>
+                  <button
+                    pButton
+                    type="button"
+                    label="Пригласить в проект"
+                    class="p-button-secondary p-button-text"
+                    (click)="isProjectInvite = true"
+                    *ngIf="isVisibleDeleteButton"
+                  ></button>
                 </div>
 
                 <div>
-                  <button pButton
-                          type="button"
-                          label="Покинуть проект"
-                          class="p-button-secondary p-button-text"
-                          (click)="onShowLeaveProjectTeamMemberModal()"
-                          *ngIf="isVisibleActionLeaveProjectTeam">
-                  </button>
+                  <button
+                    pButton
+                    type="button"
+                    label="Покинуть проект"
+                    class="p-button-secondary p-button-text"
+                    (click)="onShowLeaveProjectTeamMemberModal()"
+                    *ngIf="isVisibleActionLeaveProjectTeam"
+                  ></button>
                 </div>
 
                 <div>
-                  <button pButton
-                          type="button"
-                          label="Добавить проект в архив"
-                          class="p-button-warning p-button-text"
-                          (click)="onAddArchiveProjectAsync()"
-                          *ngIf="isVisibleActionAddProjectArchive">
-                  </button>
+                  <button
+                    pButton
+                    type="button"
+                    label="Добавить проект в архив"
+                    class="p-button-warning p-button-text"
+                    (click)="onAddArchiveProjectAsync()"
+                    *ngIf="isVisibleActionAddProjectArchive"
+                  ></button>
                 </div>
 
                 <div>
-                  <button pButton
-                          type="button"
-                          label="Удалить проект"
-                          class="p-button-danger p-button-text"
-                          (click)="isDeleteProject=true"
-                          *ngIf="isVisibleDeleteButton">
-                  </button>
+                  <button
+                    pButton
+                    type="button"
+                    label="Удалить проект"
+                    class="p-button-danger p-button-text"
+                    (click)="isDeleteProject = true"
+                    *ngIf="isVisibleDeleteButton"
+                  ></button>
                 </div>
               </div>
             </div>
@@ -235,48 +279,59 @@
     </div>
 
     <div class="worksheet-panel space-top-80 d-flex">
-      <p-panel header="Вакансии проекта" [toggleable]="true" [collapsed]="false">
+      <p-panel
+        header="Вакансии проекта"
+        [toggleable]="true"
+        [collapsed]="false"
+      >
         <div>
-          <p-table [value]="projectVacancies$.value.projectVacancies"
-                  [(selection)]="selectedProjectVacancy"
-                  dataKey="userVacancy.vacancyId"
-                  [paginator]="false"
-                  [rows]="10"
-                  styleClass="p-datatable-gridlines"
-                  responsiveLayout="scroll">
+          <p-table
+            [value]="projectVacancies$.value.projectVacancies"
+            [(selection)]="selectedProjectVacancy"
+            dataKey="userVacancy.vacancyId"
+            [paginator]="false"
+            [rows]="10"
+            styleClass="p-datatable-gridlines"
+            responsiveLayout="scroll"
+          >
             <ng-template pTemplate="caption">
-             <div class="d-flex">
-               <div>
-                 <button pButton type="button"
-                          label="Добавить"
-                          class="p-button-outlined"
-                          (click)="onRouteCreateProjectVacancy()"
-                          *ngIf="isVisibleActionVacancyButton">
-                 </button>
-               </div>
-               &nbsp;&nbsp;&nbsp;
-               <div>
-                 <button pButton type="button"
-                          label="Привязать"
-                          class="p-button-outlined p-button-secondary"
-                          (click)="onShowAttachModel()"
-                          *ngIf="isVisibleActionVacancyButton">
-                 </button>
-               </div>
-             </div>
+              <div class="d-flex">
+                <div>
+                  <button
+                    pButton
+                    type="button"
+                    label="Добавить"
+                    class="p-button-outlined"
+                    (click)="onRouteCreateProjectVacancy()"
+                    *ngIf="isVisibleActionVacancyButton"
+                  ></button>
+                </div>
+                &nbsp;&nbsp;&nbsp;
+                <div>
+                  <button
+                    pButton
+                    type="button"
+                    label="Привязать"
+                    class="p-button-outlined p-button-secondary"
+                    (click)="onShowAttachModel()"
+                    *ngIf="isVisibleActionVacancyButton"
+                  ></button>
+                </div>
+              </div>
             </ng-template>
 
             <ng-template pTemplate="header">
-                <tr>
-                  <th style="width: 4rem">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                  </th>
-                    <th *ngFor="let item of projectVacanciesColumns$.value">
-                      {{item.columnName}}</th>
-                    <th>Просмотр</th>
-                    <th>Редактирование</th>
-                    <th>Удаление</th>
-                </tr>
+              <tr>
+                <th style="width: 4rem">
+                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th *ngFor="let item of projectVacanciesColumns$.value">
+                  {{ item.columnName }}
+                </th>
+                <th>Просмотр</th>
+                <th>Редактирование</th>
+                <th>Удаление</th>
+              </tr>
             </ng-template>
 
             <ng-template pTemplate="body" let-vacancy>
@@ -284,36 +339,52 @@
                 <td>
                   <p-tableCheckbox [value]="vacancy"></p-tableCheckbox>
                 </td>
-                <td>{{vacancy.vacancyId}}</td>
-                <td>{{vacancy.userVacancy.vacancyName}}</td>
-                <td><div [innerHTML]="vacancy.userVacancy.vacancyText"></div></td>
-                <td>{{vacancy.userVacancy.vacancyStatusName}}</td>
-                <td><button pButton type="button"
-                            label="Просмотр"
-                            class="p-button-text"
-                            (click)="onShowVacancyModal(vacancy.vacancyId, false)">
-                </button>
+                <td>{{ vacancy.vacancyId }}</td>
+                <td>{{ vacancy.userVacancy.vacancyName }}</td>
+                <td>
+                  <div [innerHTML]="vacancy.userVacancy.vacancyText"></div>
                 </td>
-                <td><button pButton type="button"
-                            label="Редактировать"
-                            class="p-button-secondary p-button-text"
-                            (click)="onShowVacancyModal(vacancy.vacancyId, true)"
-                            *ngIf="isVisibleActionVacancyButton">
-                </button>
+                <td>{{ vacancy.userVacancy.vacancyStatusName }}</td>
+                <td>
+                  <button
+                    pButton
+                    type="button"
+                    label="Просмотр"
+                    class="p-button-text"
+                    (click)="onShowVacancyModal(vacancy.vacancyId, false)"
+                  ></button>
+                </td>
+                <td>
+                  <button
+                    pButton
+                    type="button"
+                    label="Редактировать"
+                    class="p-button-secondary p-button-text"
+                    (click)="onShowVacancyModal(vacancy.vacancyId, true)"
+                    *ngIf="isVisibleActionVacancyButton"
+                  ></button>
                 </td>
 
-                <td><button pButton
-                            type="button"
-                            label="Удалить"
-                            class="p-button-outlined p-button-danger"
-                            (click)="onBeforeDeleteProjectVacancy(vacancy.vacancyId, vacancy.userVacancy.vacancyName)"
-                            *ngIf="isVisibleActionVacancyButton">
-                </button></td>
+                <td>
+                  <button
+                    pButton
+                    type="button"
+                    label="Удалить"
+                    class="p-button-outlined p-button-danger"
+                    (click)="
+                      onBeforeDeleteProjectVacancy(
+                        vacancy.vacancyId,
+                        vacancy.userVacancy.vacancyName
+                      )
+                    "
+                    *ngIf="isVisibleActionVacancyButton"
+                  ></button>
+                </td>
               </tr>
             </ng-template>
 
             <ng-template pTemplate="summary">
-              Всего: {{totalVacancies}}
+              Всего: {{ totalVacancies }}
             </ng-template>
           </p-table>
         </div>
@@ -321,90 +392,122 @@
     </div>
 
     <!-- Область с чатом. -->
-    <div class="worksheet-panel space-top-80 space-bottom-50 d-flex" *ngIf="aDialogs.length > 0">
-    <p-panel header="Чат с владельцем проекта" [toggleable]="true" [collapsed]="false">
-      <div class="d-flex">
-        <div class="control-input-text-worksheet">
-          <div class="mb-3">
-            <div>
-              <p-splitter [style]="{'height': '300px'}"
-                  [panelSizes]="[20,80]"
-                  [minSizes]="[10,0]"
+    <div
+      class="worksheet-panel space-top-80 space-bottom-50 d-flex"
+      *ngIf="isVisibleDeleteButton"
+    >
+      <p-panel
+        header="Чат с владельцем проекта"
+        [toggleable]="true"
+        [collapsed]="true"
+      >
+        <div class="d-flex">
+          <div class="control-input-text-worksheet">
+            <div class="mb-3">
+              <div>
+                <p-splitter
+                  [style]="{ height: '300px' }"
+                  [panelSizes]="[20, 80]"
+                  [minSizes]="[10, 0]"
                   styleClass="mb-5"
-                  class="chat">
-        <!-- <ng-template pTemplate>
+                  class="chat"
+                >
+                  <!-- <ng-template pTemplate>
             <div class="col flex align-items-center justify-content-center">
                 {{userName}}
             </div>
-        </ng-template> -->
-        <ng-template pTemplate>
-            <p-splitter layout="vertical" [panelSizes]="[15,85]">
-                <!-- <ng-template pTemplate>
+            </ng-template> -->
+                  <ng-template pTemplate>
+                    <p-splitter layout="vertical" [panelSizes]="[15, 85]">
+                      <!-- <ng-template pTemplate>
                     <div class="col flex align-items-center justify-content-center">
 
                     </div>
                 </ng-template> -->
-                <ng-template pTemplate>
-                    <p-splitter [panelSizes]="[20,80]" [style]="{'width': '800px'}">
-                      <!-- Левая область чата. -->
-                        <ng-template pTemplate>
-                            <div class="col flex align-items-center justify-content-center"
-                                *ngFor="let item of aDialogs">
-                                <div class="block-message" (click)="onGetDialogAsync(item.dialogId)">
-                                  <div class="d-flex justify-content-between">
+                      <ng-template pTemplate>
+                        <p-splitter
+                          [panelSizes]="[20, 80]"
+                          [style]="{ width: '800px' }"
+                        >
+                          <!-- Левая область чата. -->
+                          <ng-template pTemplate>
+                            <div
+                              class="col flex align-items-center justify-content-center"
+                              *ngFor="let item of aDialogs"
+                            >
+                              <div
+                                class="block-message"
+                                (click)="onGetDialogAsync(item.dialogId)"
+                              >
+                                <div class="d-flex justify-content-between">
+                                  <div>
                                     <div>
-                                      <div>
-                                        <strong>{{item.fullName}}</strong>
-                                      </div>
-
-                                      <div>
-                                        <span class="message">{{item.lastMessage}}</span>
-                                      </div>
+                                      <strong>{{ item.fullName }}</strong>
                                     </div>
 
                                     <div>
-                                      {{item.calcShortDate}}
+                                      <span class="message">{{
+                                        item.lastMessage
+                                      }}</span>
                                     </div>
                                   </div>
+
+                                  <div>
+                                    {{ item.calcShortDate }}
+                                  </div>
                                 </div>
+                              </div>
                             </div>
 
-                            <div class="not-communication" *ngIf="aDialogs.length == 0">
-                              <strong>Вы еще не общались с владельцем проекта. Самое время начать обсуждение.</strong>
+                            <div
+                              class="not-communication"
+                              *ngIf="aDialogs.length == 0"
+                            >
+                              <strong
+                                >Вы еще не общались с владельцем проекта. Самое
+                                время начать обсуждение.</strong
+                              >
                             </div>
-                        </ng-template>
+                          </ng-template>
 
-                        <!-- Основная область чата. -->
-                        <ng-template pTemplate>
+                          <!-- Основная область чата. -->
+                          <ng-template pTemplate>
                             <div id="#idMessages" class="block-messages">
                               <div *ngFor="let item of aMessages">
-                                <div class="d-flex justify-content-between" [ngClass]="{blockMessage: item.isMyMessage}">
-                                  <p>{{item.message}}</p>
-                                  <span class="time-right">{{item.created}}</span>
+                                <div
+                                  class="d-flex justify-content-between"
+                                  [ngClass]="{ blockMessage: item.isMyMessage }"
+                                >
+                                  <p>{{ item.message }}</p>
+                                  <span class="time-right">{{
+                                    item.created
+                                  }}</span>
                                 </div>
                               </div>
                             </div>
 
                             <div>
-                              <input type="text"
-                              class="p-inputtext-sm input-control-worksheet control-project"
-                              placeholder="Введите сообщение"
-                              pInputText
-                              autocomplete="new-password"
-                              [(ngModel)]="message"
-                              (keyup.enter)="onSendMessageAsync()" />
+                              <input
+                                type="text"
+                                class="p-inputtext-sm input-control-worksheet control-project"
+                                placeholder="Введите сообщение"
+                                pInputText
+                                autocomplete="new-password"
+                                [(ngModel)]="message"
+                                (keyup.enter)="onSendMessageAsync()"
+                              />
                             </div>
-                        </ng-template>
+                          </ng-template>
+                        </p-splitter>
+                      </ng-template>
                     </p-splitter>
-                </ng-template>
-            </p-splitter>
-        </ng-template>
-    </p-splitter>
+                  </ng-template>
+                </p-splitter>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </p-panel>
+      </p-panel>
     </div>
 
     <!-- Команда проекта. -->
@@ -414,15 +517,20 @@
           <div class="d-flex">
             <div class="control-input-text-worksheet">
               <div class="mb-3">
-                <p-table [value]="projectTeam" [(selection)]="selectedProjectVacancy"
-                  dataKey="userVacancy.vacancyId" [paginator]="false" [rows]="10" styleClass="p-datatable-gridlines"
-                  responsiveLayout="scroll">
+                <p-table
+                  [value]="projectTeam"
+                  [(selection)]="selectedProjectVacancy"
+                  dataKey="userVacancy.vacancyId"
+                  [paginator]="false"
+                  [rows]="10"
+                  styleClass="p-datatable-gridlines"
+                  responsiveLayout="scroll"
+                >
                   <ng-template pTemplate="caption">
                     <div class="d-flex">
                       <div>
                         <p-overlayPanel #op>
-                          <ng-template pTemplate>
-                          </ng-template>
+                          <ng-template pTemplate> </ng-template>
                         </p-overlayPanel>
                       </div>
                     </div>
@@ -434,9 +542,10 @@
                         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                       </th>
                       <th *ngFor="let item of projectTeamColumns">
-                        {{item.columnName}}</th>
-                        <th>Исключение</th>
-                        <th>Должность</th>
+                        {{ item.columnName }}
+                      </th>
+                      <th>Исключение</th>
+                      <th>Должность</th>
                     </tr>
                   </ng-template>
 
@@ -445,45 +554,68 @@
                       <td>
                         <p-tableCheckbox [value]="team"></p-tableCheckbox>
                       </td>
-                      <td>{{team.vacancyName}}</td>
-                      <td>{{team.member}}</td>
-                      <td>{{team.joined}}</td>
+                      <td>{{ team.vacancyName }}</td>
+                      <td>{{ team.member }}</td>
+                      <td>{{ team.joined }}</td>
                       <td>
-                        <p-button (click)="onShowDeleteProjectTeamMemberModal(team.member, team.userId)"
-                                  label="Исключить"
-                                  styleClass="p-button-danger p-button-text"
-                                  *ngIf="team.isVisibleActionDeleteProjectTeamMember">
+                        <p-button
+                          (click)="
+                            onShowDeleteProjectTeamMemberModal(
+                              team.member,
+                              team.userId
+                            )
+                          "
+                          label="Исключить"
+                          styleClass="p-button-danger p-button-text"
+                          *ngIf="team.isVisibleActionDeleteProjectTeamMember"
+                        >
                         </p-button>
                       </td>
                       <td>
-                        <p-inplace [style]="{'min-width':'100px'}" [active]="isActiveRole" (onActivate)="onActivateRole()">
+                        <p-inplace
+                          [style]="{ 'min-width': '100px' }"
+                          [active]="isActiveRole"
+                          (onActivate)="onActivateRole()"
+                        >
                           <ng-template pTemplate="display">
-                            <span>{{team.role}}</span>
+                            <span>{{ team.role }}</span>
                           </ng-template>
                           <ng-template pTemplate="content">
-                            <input type="text" [(ngModel)]="team.role" value="{{team.role}}" pInputText>
+                            <input
+                              type="text"
+                              [(ngModel)]="team.role"
+                              value="{{ team.role }}"
+                              pInputText
+                            />
                           </ng-template>
                         </p-inplace>
 
-                        <button pButton
-                                pRipple
-                                icon="pi pi-save"
-                                type="button"
-                                label="Сохранить"
-                                class="p-button-success p-button-text p-button-sm"
-                                *ngIf="isActiveRole"
-                                (click)="onSetProjectTeamMemberRoleAsync(team.userId, team.role)">
-                        </button>
+                        <button
+                          pButton
+                          pRipple
+                          icon="pi pi-save"
+                          type="button"
+                          label="Сохранить"
+                          class="p-button-success p-button-text p-button-sm"
+                          *ngIf="isActiveRole"
+                          (click)="
+                            onSetProjectTeamMemberRoleAsync(
+                              team.userId,
+                              team.role
+                            )
+                          "
+                        ></button>
 
-                        <button pButton
-                                pRipple
-                                icon="pi pi-times"
-                                type="button"
-                                label="Отмена"
-                                class="p-button-danger p-button-text p-button-sm"
-                                *ngIf="isActiveRole"
-                                (click)="isActiveRole=!isActiveRole">
-                        </button>
+                        <button
+                          pButton
+                          pRipple
+                          icon="pi pi-times"
+                          type="button"
+                          label="Отмена"
+                          class="p-button-danger p-button-text p-button-sm"
+                          *ngIf="isActiveRole"
+                          (click)="isActiveRole = !isActiveRole"
+                        ></button>
                       </td>
                     </tr>
                   </ng-template>
@@ -500,8 +632,12 @@
     </div>
 
     <!-- Комментарии к проекту. -->
-     <div class="worksheet-panel space-top-80 space-bottom-50">
-      <p-panel header="Комментарии к проекту" [toggleable]="true" [collapsed]="false">
+    <div class="worksheet-panel space-top-80 space-bottom-50">
+      <p-panel
+        header="Комментарии к проекту"
+        [toggleable]="true"
+        [collapsed]="false"
+      >
         <div class="">
           <div class="">
             <div class="control-input-text-worksheet">
@@ -511,21 +647,23 @@
                     <div *ngFor="let item of aProjectComments">
                       <div class="d-flex justify-content-between">
                         <!-- <img src="/w3images/bandmember.jpg" alt="Avatar"> -->
-                        <p>{{item.comment}}</p>
-                        <span class="time-right">{{item.created}}</span>
+                        <p>{{ item.comment }}</p>
+                        <span class="time-right">{{ item.created }}</span>
                       </div>
                     </div>
                   </div>
 
                   <div>
-                    <input type="text"
-                    class="p-inputtext-sm input-control-worksheet control-project"
-                    placeholder="Введите сообщение"
-                    pInputText
-                    autocomplete="new-password"
-                    [(ngModel)]="projectComment"
-                    (keyup.enter)="onCreateProjectCommentAsync()" />
-                </div>
+                    <input
+                      type="text"
+                      class="p-inputtext-sm input-control-worksheet control-project"
+                      placeholder="Введите сообщение"
+                      pInputText
+                      autocomplete="new-password"
+                      [(ngModel)]="projectComment"
+                      (keyup.enter)="onCreateProjectCommentAsync()"
+                    />
+                  </div>
 
                   <!-- <div class="d-flex justify-content-end">
                     <button pButton type="button"
@@ -544,62 +682,71 @@
   </div>
 </div>
 
-
-
 <!-- Диалог привязки вакансии к проекту. -->
-<p-dialog header="Привязка вакансии к проекту"
-          [(visible)]="isShowAttachVacancyModal"
-          [modal]="true"
-          [style]="{width: '50vw', height: '50vw'}"
-          [maximizable]="false"
-          [draggable]="false"
-          [resizable]="false"
-          emptyMessage="Нет данных">
-
+<p-dialog
+  header="Привязка вакансии к проекту"
+  [(visible)]="isShowAttachVacancyModal"
+  [modal]="true"
+  [style]="{ width: '50vw', height: '50vw' }"
+  [maximizable]="false"
+  [draggable]="false"
+  [resizable]="false"
+  emptyMessage="Нет данных"
+>
   <div class="d-flex mt-3">
     <div class="control-input-text-worksheet">
       <div>
-          <label>Выберите вакансию для привязки</label>
+        <label>Выберите вакансию для привязки</label>
       </div>
       <div>
-        <p-dropdown [options]="availableAttachVacancies$.value.projectVacancies"
-                    [(ngModel)]="selectedVacancy"
-                    optionLabel="userVacancy.vacancyName"
-                    (onChange)="onSelectVacancy()">
+        <p-dropdown
+          [options]="availableAttachVacancies$.value.projectVacancies"
+          [(ngModel)]="selectedVacancy"
+          optionLabel="userVacancy.vacancyName"
+          (onChange)="onSelectVacancy()"
+        >
         </p-dropdown>
       </div>
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <p-button icon="pi pi-check" (click)="onSaveProjectVacancyAsync()" label="Привязать вакансию" styleClass="p-button-text">
+    <p-button
+      icon="pi pi-check"
+      (click)="onSaveProjectVacancyAsync()"
+      label="Привязать вакансию"
+      styleClass="p-button-text"
+    >
     </p-button>
   </ng-template>
 </p-dialog>
 
 <!-- Диалог вакансии. -->
-<p-dialog header="Просмотр вакансии"
-          [(visible)]="isShowVacancyModal"
-          [modal]="true"
-          [style]="{width: '50vw', height: '50vw'}"
-          [maximizable]="false"
-          [draggable]="false"
-          [resizable]="false">
-
+<p-dialog
+  header="Просмотр вакансии"
+  [(visible)]="isShowVacancyModal"
+  [modal]="true"
+  [style]="{ width: '50vw', height: '50vw' }"
+  [maximizable]="false"
+  [draggable]="false"
+  [resizable]="false"
+>
   <div class="d-flex mt-3">
     <div class="control-input-text-worksheet">
       <div class="d-flex">
         <div class="control-input-text-worksheet">
           <div>
-              <strong>Название вакансии</strong>
+            <strong>Название вакансии</strong>
           </div>
           <div>
-              <input type="text"
+            <input
+              type="text"
               class="p-inputtext-sm input-control-worksheet control-project"
               placeholder="Название вакансии"
               pInputText
               autocomplete="new-password"
               [(ngModel)]="vacancyName"
-              [disabled]="!isEditMode" />
+              [disabled]="!isEditMode"
+            />
           </div>
         </div>
       </div>
@@ -610,13 +757,15 @@
             <strong>Опыт</strong>
           </div>
           <div>
-            <input type="text"
-                    class="p-inputtext-sm input-control-worksheet control-vacancy"
-                    placeholder="1–3 года"
-                    pInputText
-                    autocomplete="new-password"
-                    [(ngModel)]="workExperience"
-                    [disabled]="!isEditMode" />
+            <input
+              type="text"
+              class="p-inputtext-sm input-control-worksheet control-vacancy"
+              placeholder="1–3 года"
+              pInputText
+              autocomplete="new-password"
+              [(ngModel)]="workExperience"
+              [disabled]="!isEditMode"
+            />
           </div>
         </div>
 
@@ -625,13 +774,15 @@
             <strong>Занятость</strong>
           </div>
           <div>
-            <input type="text"
-                    class="p-inputtext-sm input-control-worksheet control-vacancy"
-                    placeholder="Полная занятость, удаленная работа"
-                    pInputText
-                    autocomplete="new-password"
-                    [(ngModel)]="employment"
-                    [disabled]="!isEditMode" />
+            <input
+              type="text"
+              class="p-inputtext-sm input-control-worksheet control-vacancy"
+              placeholder="Полная занятость, удаленная работа"
+              pInputText
+              autocomplete="new-password"
+              [(ngModel)]="employment"
+              [disabled]="!isEditMode"
+            />
           </div>
         </div>
 
@@ -640,223 +791,314 @@
             <strong>Оплата</strong>
           </div>
           <div>
-            <input type="text"
-                    class="p-inputtext-sm input-control-worksheet control-vacancy"
-                    placeholder="20 000 – 40 000 руб."
-                    pInputText
-                    autocomplete="new-password"
-                    [(ngModel)]="payment"
-                    [disabled]="!isEditMode" />
+            <input
+              type="text"
+              class="p-inputtext-sm input-control-worksheet control-vacancy"
+              placeholder="20 000 – 40 000 руб."
+              pInputText
+              autocomplete="new-password"
+              [(ngModel)]="payment"
+              [disabled]="!isEditMode"
+            />
           </div>
         </div>
       </div>
 
       <div class="d-flex mt-3">
+        <div class="control-input-text-worksheet">
           <div class="control-input-text-worksheet">
+            <div class="d-flex worksheet-line">
               <div class="control-input-text-worksheet">
-                  <div class="d-flex worksheet-line">
-                      <div class="control-input-text-worksheet">
-                          <div>
-                              <strong>Описание вакансии</strong>
-                          </div>
-                          <div>
-                              <p-editor autocomplete="new-password"
-                                        [(ngModel)]="vacancyText"
-                                        [style]="{'height':'320px'}"
-                                        [readonly]="!isEditMode">
-                              </p-editor>
-                          </div>
-                      </div>
-                  </div>
+                <div>
+                  <strong>Описание вакансии</strong>
                 </div>
+                <div>
+                  <p-editor
+                    autocomplete="new-password"
+                    [(ngModel)]="vacancyText"
+                    [style]="{ height: '320px' }"
+                    [readonly]="!isEditMode"
+                  >
+                  </p-editor>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <p-button icon="pi pi-check"
-              (click)="onUpdateVacancyAsync()"
-              label="Сохранить"
-              styleClass="p-button-text"
-              *ngIf="isEditMode">
+    <p-button
+      icon="pi pi-check"
+      (click)="onUpdateVacancyAsync()"
+      label="Сохранить"
+      styleClass="p-button-text"
+      *ngIf="isEditMode"
+    >
     </p-button>
   </ng-template>
 </p-dialog>
 
- <!-- Диалог выбора способа отклика на проект (с вакансией либо без ее указания). -->
- <p-dialog header="Отклик на проект с указанием вакансии"
-          [(visible)]="isResponseVacancy"
-          [modal]="true"
-          [style]="{width: '50vw', height: '50vw'}"
-          [maximizable]="false"
-          [draggable]="false"
-          [resizable]="false">
-
+<!-- Диалог выбора способа отклика на проект (с вакансией либо без ее указания). -->
+<p-dialog
+  header="Отклик на проект с указанием вакансии"
+  [(visible)]="isResponseVacancy"
+  [modal]="true"
+  [style]="{ width: '50vw', height: '50vw' }"
+  [maximizable]="false"
+  [draggable]="false"
+  [resizable]="false"
+>
   <div class="d-flex mt-3">
     <div class="control-input-text-worksheet">
       <div>
-          <label>Выберите вакансию</label>
+        <label>Выберите вакансию</label>
       </div>
       <div>
-        <p-dropdown [options]="availableAttachVacancies"
-                    [(ngModel)]="selectedVacancy"
-                    optionLabel="userVacancy.vacancyName"
-                    (onChange)="onSelectVacancy()">
+        <p-dropdown
+          [options]="availableAttachVacancies"
+          [(ngModel)]="selectedVacancy"
+          optionLabel="userVacancy.vacancyName"
+          (onChange)="onSelectVacancy()"
+        >
         </p-dropdown>
       </div>
     </div>
   </div>
   <ng-template pTemplate="footer">
-    <p-button icon="pi pi-check"
-              (click)="onProjectResponseAsync()"
-              label="Откликнуться на проект"
-              styleClass="p-button-text">
+    <p-button
+      icon="pi pi-check"
+      (click)="onProjectResponseAsync()"
+      label="Откликнуться на проект"
+      styleClass="p-button-text"
+    >
     </p-button>
   </ng-template>
 </p-dialog>
 
 <!-- Диалог отклика без вакансии. -->
-<p-dialog header="Отклик на проект без указания вакансии"
-          [(visible)]="isResponseNotVacancy"
-          [breakpoints]="{'960px': '75vw'}"
-          [style]="{width: '50vw'}"
-          [draggable]="false"
-          [resizable]="false">
-        <p>Откликнуться без вакансии?</p>
-        <ng-template pTemplate="footer">
-        <p-button (click)="isResponseNotVacancy=false" label="Нет" styleClass="p-button-text isResponseNotVacancy"></p-button>
-        <p-button (click)="onProjectResponseAsync()" label="Да" styleClass="p-button-text"></p-button>
-        </ng-template>
+<p-dialog
+  header="Отклик на проект без указания вакансии"
+  [(visible)]="isResponseNotVacancy"
+  [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <p>Откликнуться без вакансии?</p>
+  <ng-template pTemplate="footer">
+    <p-button
+      (click)="isResponseNotVacancy = false"
+      label="Нет"
+      styleClass="p-button-text isResponseNotVacancy"
+    ></p-button>
+    <p-button
+      (click)="onProjectResponseAsync()"
+      label="Да"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
 </p-dialog>
 
 <!-- Диалог удаления проекта. -->
-<p-dialog header="Удаление проекта"
-          [(visible)]="isDeleteProject"
-          [breakpoints]="{'960px': '75vw'}"
-          [style]="{width: '50vw'}"
-          [draggable]="false"
-          [resizable]="false">
-        <p>Удалить проект {{selectedProject$.value.projectName}}?</p>
-        <p>При удалении проекта будут удалены привязанные к проекту вакансии,
-          сообщения чата проекта,
-          все участники команды проекта и
-          комментарии к проекту.</p>
-        <ng-template pTemplate="footer">
-        <p-button (click)="isDeleteProject=false" label="Отменить" styleClass="p-button-text"></p-button>
-        <p-button (click)="onDeleteProjectAsync()" label="Удалить" styleClass="p-button-danger p-button-text"></p-button>
-        </ng-template>
+<p-dialog
+  header="Удаление проекта"
+  [(visible)]="isDeleteProject"
+  [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <p>Удалить проект {{ selectedProject$.value.projectName }}?</p>
+  <p>
+    При удалении проекта будут удалены привязанные к проекту вакансии, сообщения
+    чата проекта, все участники команды проекта и комментарии к проекту.
+  </p>
+  <ng-template pTemplate="footer">
+    <p-button
+      (click)="isDeleteProject = false"
+      label="Отменить"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      (click)="onDeleteProjectAsync()"
+      label="Удалить"
+      styleClass="p-button-danger p-button-text"
+    ></p-button>
+  </ng-template>
 </p-dialog>
 
 <!-- Диалог удаления вакансии проекта. -->
-<p-dialog header="Удаление вакансии проекта" [(visible)]="isDeleteVacancyInProject" [breakpoints]="{'960px': '75vw'}"
-  [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
-  <p>При удалении вакансии она не будет удалена из ваших вакансий и каталога.
-    Она будет удалена из проекта.</p>
-  <p>Вы уверены, что хотите удалить вакансию проекта <strong>{{vacancyNameForDelete}}</strong>?</p>
+<p-dialog
+  header="Удаление вакансии проекта"
+  [(visible)]="isDeleteVacancyInProject"
+  [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <p>
+    При удалении вакансии она не будет удалена из ваших вакансий и каталога. Она
+    будет удалена из проекта.
+  </p>
+  <p>
+    Вы уверены, что хотите удалить вакансию проекта
+    <strong>{{ vacancyNameForDelete }}</strong
+    >?
+  </p>
   <ng-template pTemplate="footer">
-    <p-button (click)="isDeleteVacancyInProject=false" label="Отменить" styleClass="p-button-text"></p-button>
-    <p-button (click)="onDeleteVacancyInProjectAsync()" label="Удалить" styleClass="p-button-danger p-button-text">
+    <p-button
+      (click)="isDeleteVacancyInProject = false"
+      label="Отменить"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      (click)="onDeleteVacancyInProjectAsync()"
+      label="Удалить"
+      styleClass="p-button-danger p-button-text"
+    >
     </p-button>
   </ng-template>
 </p-dialog>
 
 <!-- Диалог инвайта в проект. -->
-<p-dialog header="Приглашение пользователя в проект"
-          [(visible)]="isProjectInvite"
-          [breakpoints]="{'960px': '75vw'}"
-          [style]="{width: '60%', height: '60%'}"
-          [draggable]="false"
-          [resizable]="false">
-          <div class="d-flex justify-content-around">
-            <div>
-              <div *ngFor="let variant of aProjectInviteVarians" class="field-checkbox mb-3 mt-3">
-                <p-radioButton [inputId]="variant.key"
-                                name="variant"
-                                [value]="variant"
-                                [(ngModel)]="selectedInviteVariant">
+<p-dialog
+  header="Приглашение пользователя в проект"
+  [(visible)]="isProjectInvite"
+  [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '60%', height: '60%' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="d-flex justify-content-around">
+    <div>
+      <div
+        *ngFor="let variant of aProjectInviteVarians"
+        class="field-checkbox mb-3 mt-3"
+      >
+        <p-radioButton
+          [inputId]="variant.key"
+          name="variant"
+          [value]="variant"
+          [(ngModel)]="selectedInviteVariant"
+        >
+        </p-radioButton>
 
-                </p-radioButton>
+        <label [for]="variant.key">{{ variant.name }}</label>
+      </div>
+    </div>
 
-                <label [for]="variant.key">{{variant.name}}</label>
-              </div>
-
-
-            </div>
-
-            <div>
-              <div>
-                <div class="mb-3 mt-3">
-                  <div>
-                    <label>Выберите вакансию для приглашения</label>
-                </div>
-                <div>
-                  <p-dropdown [options]="availableInviteVacancies"
-                              [(ngModel)]="selectedInviteVacancy"
-                              optionLabel="userVacancy.vacancyName"
-                              [disabled]="!selectedInviteVariant
-                              || isVacancyInvite"
-                              emptyMessage="Нет данных">
-                  </p-dropdown>
-                </div>
-
-                <div class="field-checkbox mb-3">
-                  <p-checkbox [binary]="true"
-                              inputId="binary"
-                              (onChange)="isVacancyInvite=!isVacancyInvite">
-                </p-checkbox>
-                  <label for="binary">
-                      <small>Пригласить без указания вакансии</small>
-                  </label>
-              </div>
-                </div>
-
-                <div class="d-flex">
-                  <span class="p-fluid">
-                    <p-autoComplete [(ngModel)]="searchText"
-                                    [suggestions]="aProjectInvitesUsers"
-                                    (completeMethod)="onSearchInviteProjectMembersAsync($event)"
-                                    field="displayName"
-                                    [multiple]="false"
-                                    (onSelect)="onSelectProjectMember($event)"
-                                    placeholder="Введите для поиска пользователя"
-                                    [disabled]="!selectedInviteVariant">
-                    </p-autoComplete>
-                  </span>
-                </div>
-              </div>
-            </div>
+    <div>
+      <div>
+        <div class="mb-3 mt-3">
+          <div>
+            <label>Выберите вакансию для приглашения</label>
           </div>
-<ng-template pTemplate="footer">
-<p-button (click)="isProjectInvite=false" label="Отменить" styleClass="p-button-text p-button-danger"></p-button>
-<p-button (click)="onSendInviteProjectTeamAsync()" label="Отправить приглашение" styleClass="p-button-text p-button-text">
-</p-button>
-</ng-template>
+          <div>
+            <p-dropdown
+              [options]="availableInviteVacancies"
+              [(ngModel)]="selectedInviteVacancy"
+              optionLabel="userVacancy.vacancyName"
+              [disabled]="!selectedInviteVariant || isVacancyInvite"
+              emptyMessage="Нет данных"
+            >
+            </p-dropdown>
+          </div>
+
+          <div class="field-checkbox mb-3">
+            <p-checkbox
+              [binary]="true"
+              inputId="binary"
+              (onChange)="isVacancyInvite = !isVacancyInvite"
+            >
+            </p-checkbox>
+            <label for="binary">
+              <small>Пригласить без указания вакансии</small>
+            </label>
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <span class="p-fluid">
+            <p-autoComplete
+              [(ngModel)]="searchText"
+              [suggestions]="aProjectInvitesUsers"
+              (completeMethod)="onSearchInviteProjectMembersAsync($event)"
+              field="displayName"
+              [multiple]="false"
+              (onSelect)="onSelectProjectMember($event)"
+              placeholder="Введите для поиска пользователя"
+              [disabled]="!selectedInviteVariant"
+            >
+            </p-autoComplete>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button
+      (click)="isProjectInvite = false"
+      label="Отменить"
+      styleClass="p-button-text p-button-danger"
+    ></p-button>
+    <p-button
+      (click)="onSendInviteProjectTeamAsync()"
+      label="Отправить приглашение"
+      styleClass="p-button-text p-button-text"
+    >
+    </p-button>
+  </ng-template>
 </p-dialog>
 
 <!-- Диалог исключения участника команды проекта. -->
-<p-dialog header="Исключение участника из команды проекта"
-          [(visible)]="isDeleteProjectTeamMember"
-          [breakpoints]="{'960px': '75vw'}"
-          [style]="{width: '50vw'}"
-          [draggable]="false"
-          [resizable]="false">
-<p>Вы уверены, что хотите исключить участника <strong>{{deleteMember}}</strong> из команды проекта?</p>
-<ng-template pTemplate="footer">
-<p-button (click)="isDeleteProjectTeamMember=false" label="Отменить" styleClass="p-button-text"></p-button>
-<p-button (click)="onDeleteProjectTeamAsync()" label="Исключить" styleClass="p-button-danger p-button-text"></p-button>
-</ng-template>
+<p-dialog
+  header="Исключение участника из команды проекта"
+  [(visible)]="isDeleteProjectTeamMember"
+  [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <p>
+    Вы уверены, что хотите исключить участника
+    <strong>{{ deleteMember }}</strong> из команды проекта?
+  </p>
+  <ng-template pTemplate="footer">
+    <p-button
+      (click)="isDeleteProjectTeamMember = false"
+      label="Отменить"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      (click)="onDeleteProjectTeamAsync()"
+      label="Исключить"
+      styleClass="p-button-danger p-button-text"
+    ></p-button>
+  </ng-template>
 </p-dialog>
 
 <!-- Диалог покидания команды проекта. -->
-<p-dialog header="Покинуть проект"
-          [(visible)]="isLeaveProjectTeamMember"
-          [breakpoints]="{'960px': '75vw'}"
-          [style]="{width: '50vw'}"
-          [draggable]="false"
-          [resizable]="false">
-<p>Вы уверены, что хотите покинуть проект?</p>
-<ng-template pTemplate="footer">
-<p-button (click)="isLeaveProjectTeamMember=false" label="Отменить" styleClass="p-button-text"></p-button>
-<p-button (click)="onLeaveProjectTeamAsync()" label="Покинуть проект" styleClass="p-button-danger p-button-text"></p-button>
-</ng-template>
+<p-dialog
+  header="Покинуть проект"
+  [(visible)]="isLeaveProjectTeamMember"
+  [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <p>Вы уверены, что хотите покинуть проект?</p>
+  <ng-template pTemplate="footer">
+    <p-button
+      (click)="isLeaveProjectTeamMember = false"
+      label="Отменить"
+      styleClass="p-button-text"
+    ></p-button>
+    <p-button
+      (click)="onLeaveProjectTeamAsync()"
+      label="Покинуть проект"
+      styleClass="p-button-danger p-button-text"
+    ></p-button>
+  </ng-template>
 </p-dialog>
