@@ -58,8 +58,8 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
       this.aHeaderItems[0].disabled = disableButtons;
     }
 
-    else {
-      this.aHeaderItems[0].disabled = false;
+    if (this.aHeaderItems[this.aHeaderItems.length - 1]) {
+      this.aHeaderItems[this.aHeaderItems.length - 1].disabled = disableButtons;
     }
   };
 
