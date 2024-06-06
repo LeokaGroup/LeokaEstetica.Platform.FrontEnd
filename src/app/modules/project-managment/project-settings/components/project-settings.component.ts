@@ -29,6 +29,7 @@ export class ProjectSettingsComponent implements OnInit {
   public readonly downloadUserAvatarFile$ = this._projectManagmentService.downloadUserAvatarFile$;
   public readonly sprintDurationSettings$ = this._projectManagmentService.sprintDurationSettings$;
   public readonly sprintMoveNotCompletedTasksSettings$ = this._projectManagmentService.sprintMoveNotCompletedTasksSettings$;
+  public readonly settingUsers = this._projectManagmentService.settingUsers;
 
   projectId: number = 0;
   userAvatarLink: any;
@@ -38,6 +39,8 @@ export class ProjectSettingsComponent implements OnInit {
   selectedDurationSetting: any;
   selectedMoveSetting: any;
   checked: boolean = true;
+  isShowUsers: boolean = false;
+  selectedUser: any;
 
   items: any[] = [{
     label: 'Общие',
@@ -46,6 +49,7 @@ export class ProjectSettingsComponent implements OnInit {
       command: () => {
         this.isShowProfile = true;
         this.isShowScrumSettings = false;
+        this.isShowUsers = false;
       }
     }
     ]
@@ -57,11 +61,45 @@ export class ProjectSettingsComponent implements OnInit {
         command: async () => {
           this.isShowProfile = false;
           this.isShowScrumSettings = true;
+          this.isShowUsers = false;
 
           await this.getScrumDurationSettingsAsync();
           await this.getProjectSprintsMoveNotCompletedTasksSettingsAsync();
         }
       }
+      ]
+    },
+    {
+      label: 'Администрирование',
+      items: [{
+        label: 'Пользователи',
+        command: async () => {
+          this.isShowProfile = false;
+          this.isShowScrumSettings = false;
+          this.isShowUsers = true;
+          await this.getSettingUsersAsync();
+        }
+      },
+        {
+          label: 'Роли',
+          command: async () => {
+            // this.isShowProfile = false;
+            // this.isShowScrumSettings = true;
+            //
+            // await this.getScrumDurationSettingsAsync();
+            // await this.getProjectSprintsMoveNotCompletedTasksSettingsAsync();
+          }
+        },
+        {
+          label: 'Приглашения',
+          command: async () => {
+            // this.isShowProfile = false;
+            // this.isShowScrumSettings = true;
+            //
+            // await this.getScrumDurationSettingsAsync();
+            // await this.getProjectSprintsMoveNotCompletedTasksSettingsAsync();
+          }
+        }
       ]
     }];
 
@@ -168,5 +206,15 @@ export class ProjectSettingsComponent implements OnInit {
 
   public onSelect(event: any) {
     console.log(event);
+  };
+
+  /**
+   * Функция получает список пользователей для настроек.
+   */
+  private async getSettingUsersAsync() {
+    (await this._projectManagmentService.getSettingUsersAsync(+this.projectId))
+      .subscribe(async _ => {
+        console.log("Список пользователей: ", this.settingUsers.value);
+      });
   };
 }

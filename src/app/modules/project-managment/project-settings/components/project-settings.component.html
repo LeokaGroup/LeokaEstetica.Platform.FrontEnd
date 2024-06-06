@@ -124,4 +124,69 @@
       </div>
     </div>
   </div>
+
+  <!-- Настройки списка пользователей проекта компании. -->
+  <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowUsers">
+    <h3>Пользователи проекта компании</h3>
+    <div class="scrum">
+      <div>
+        <p-table [value]="settingUsers.value"
+                 [(selection)]="selectedUser"
+                 dataKey="userId"
+                 [paginator]="settingUsers.value.length > 0"
+                 [rows]="10"
+                 styleClass="p-datatable-gridlines"
+                 responsiveLayout="scroll">
+
+<!--          <ng-template pTemplate="caption">-->
+<!--            <h3>Пользователи</h3>-->
+<!--          </ng-template>-->
+
+          <ng-template pTemplate="header">
+            <tr>
+              <!-- <th></th> -->
+              <th>Полное имя</th>
+              <th>Эл. почта</th>
+              <th>Роль</th>
+              <th>Последняя активность</th>
+              <!-- <th>Редактирование</th> -->
+              <!-- <th>Удаление</th> -->
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-u>
+            <tr>
+              <!-- <td>
+                <p-tableCheckbox [value]="order"></p-tableCheckbox>
+              </td> -->
+              <td>{{u.fullName}}</td>
+              <td>{{u.email}}</td>
+              <td>{{u.role}}</td>
+              <td>{{u.lastAutorization}}</td>
+<!--              <td><button pButton type="button"-->
+<!--                          label="Подробнее"-->
+<!--                          class="p-button-outlined p-button-primaryproject.projectId"-->
+<!--                          (click)="onRouteViewOrder(order.orderId)">-->
+<!--              </button>-->
+<!--              </td>-->
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="summary">
+            Всего: {{settingUsers.value.length}}
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">
+                <div class="empty-orders">
+                  Пользователей нет.
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
 </div>
