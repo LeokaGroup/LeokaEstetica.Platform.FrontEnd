@@ -30,6 +30,7 @@ export class ProjectSettingsComponent implements OnInit {
   public readonly sprintDurationSettings$ = this._projectManagmentService.sprintDurationSettings$;
   public readonly sprintMoveNotCompletedTasksSettings$ = this._projectManagmentService.sprintMoveNotCompletedTasksSettings$;
   public readonly settingUsers = this._projectManagmentService.settingUsers;
+  public readonly settingUserRoles = this._projectManagmentService.settingUserRoles;
 
   projectId: number = 0;
   userAvatarLink: any;
@@ -41,6 +42,7 @@ export class ProjectSettingsComponent implements OnInit {
   checked: boolean = true;
   isShowUsers: boolean = false;
   selectedUser: any;
+  isShowUserRoles: boolean = false;
 
   items: any[] = [{
     label: 'Общие',
@@ -50,6 +52,7 @@ export class ProjectSettingsComponent implements OnInit {
         this.isShowProfile = true;
         this.isShowScrumSettings = false;
         this.isShowUsers = false;
+        this.isShowUserRoles = false;
       }
     }
     ]
@@ -62,6 +65,7 @@ export class ProjectSettingsComponent implements OnInit {
           this.isShowProfile = false;
           this.isShowScrumSettings = true;
           this.isShowUsers = false;
+          this.isShowUserRoles = false;
 
           await this.getScrumDurationSettingsAsync();
           await this.getProjectSprintsMoveNotCompletedTasksSettingsAsync();
@@ -77,27 +81,25 @@ export class ProjectSettingsComponent implements OnInit {
           this.isShowProfile = false;
           this.isShowScrumSettings = false;
           this.isShowUsers = true;
+          this.isShowUserRoles = false;
+
           await this.getSettingUsersAsync();
         }
       },
         {
           label: 'Роли',
           command: async () => {
-            // this.isShowProfile = false;
-            // this.isShowScrumSettings = true;
-            //
-            // await this.getScrumDurationSettingsAsync();
-            // await this.getProjectSprintsMoveNotCompletedTasksSettingsAsync();
+            this.isShowProfile = false;
+            this.isShowScrumSettings = false;
+            this.isShowUsers = false;
+            this.isShowUserRoles = true;
+
+            await this.getUsersRolesAsync();
           }
         },
         {
           label: 'Приглашения',
           command: async () => {
-            // this.isShowProfile = false;
-            // this.isShowScrumSettings = true;
-            //
-            // await this.getScrumDurationSettingsAsync();
-            // await this.getProjectSprintsMoveNotCompletedTasksSettingsAsync();
           }
         }
       ]
@@ -215,6 +217,16 @@ export class ProjectSettingsComponent implements OnInit {
     (await this._projectManagmentService.getSettingUsersAsync(+this.projectId))
       .subscribe(async _ => {
         console.log("Список пользователей: ", this.settingUsers.value);
+      });
+  };
+
+  /**
+   * Функция получает список ролей пользователей для настроек.
+   */
+  private async getUsersRolesAsync() {
+    (await this._projectManagmentService.getSettingUsersRolesAsync(+this.projectId))
+      .subscribe(async _ => {
+        console.log("Список ролей пользователей: ", this.settingUserRoles.value);
       });
   };
 }

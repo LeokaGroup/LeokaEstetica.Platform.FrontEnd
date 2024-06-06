@@ -81,6 +81,8 @@ export class ProjectManagmentService {
     public sprintMoveNotCompletedTasksSettings$ = new BehaviorSubject<any>(null);
     public workspaces$ = new BehaviorSubject<any>(null);
     public settingUsers = new BehaviorSubject<any>(null);
+    public userRoles = new BehaviorSubject<any>(null);
+    public settingUserRoles = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -957,6 +959,24 @@ export class ProjectManagmentService {
   public async getSettingUsersAsync(projectId: number) {
     return await this._http.get(this.apiUrl + `/project-management-settings/company-project-users?projectId=${projectId}`).pipe(
       tap(data => this.settingUsers.next(data))
+    );
+  };
+
+  /**
+   * Функция получает список ролей пользователя.
+   */
+  public async getUserRolesAsync() {
+    return await this._http.get(this.apiUrl + `/project-management-role/user-roles`).pipe(
+      tap(data => this.userRoles.next(data))
+    );
+  };
+
+  /**
+   * Функция получает список ролей пользователей для настроек.
+   */
+  public async getSettingUsersRolesAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-role/roles?projectId=${projectId}`).pipe(
+      tap(data => this.settingUserRoles.next(data))
     );
   };
 }
