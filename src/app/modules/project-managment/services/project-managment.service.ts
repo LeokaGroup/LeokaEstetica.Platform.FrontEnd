@@ -29,6 +29,7 @@ import { UpdateSprintWatchersInput } from '../sprint/models/update-sprint-watche
 import { SprintInput } from '../sprint/models/sprint-input';
 import {SprintDurationSettingInput} from "../sprint/models/sprint-duration-setting-input";
 import {SprintMoveNotCompletedTaskSettingInput} from "../sprint/models/sprint-move-not-completed-task-setting-input";
+import {UpdateRoleInput} from "../models/input/update-role-input";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -976,6 +977,15 @@ export class ProjectManagmentService {
    */
   public async getSettingUsersRolesAsync(projectId: number) {
     return await this._http.get(this.apiUrl + `/project-management-role/roles?projectId=${projectId}`).pipe(
+      tap(data => this.settingUserRoles.next(data))
+    );
+  };
+
+  /**
+   * Функция обновляет роли.
+   */
+  public async updateRolesAsync(updated: UpdateRoleInput[]) {
+    return await this._http.put(this.apiUrl + `/project-management-role/roles`, updated).pipe(
       tap(data => this.settingUserRoles.next(data))
     );
   };

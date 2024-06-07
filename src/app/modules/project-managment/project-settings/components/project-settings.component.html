@@ -1,3 +1,5 @@
+<p-toast></p-toast>
+
 <div class="d-flex">
   <div class="d-flex mt-3 col-lg-3">
     <div class="block-worksheet col-lg-12">
@@ -192,7 +194,7 @@
 
   <!-- Роли пользователей проекта. -->
   <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowUserRoles">
-    <h3>Роли пользователей проекта</h3>
+    <h3>Настройки ролевой модели пользователей проекта</h3>
     <div class="scrum">
       <div>
         <p-table [value]="settingUserRoles.value"
@@ -203,12 +205,21 @@
                  styleClass="p-datatable-gridlines"
                  responsiveLayout="scroll">
 
+          <ng-template pTemplate="caption">
+            <button pButton type="button"
+                    label="Сохранить"
+                    class="p-button-outlined p-button-success"
+                    size="small"
+                    (click)="onUpdateRolesAsync(settingUserRoles.value)">
+            </button>
+          </ng-template>
+
           <ng-template pTemplate="header">
             <tr>
               <!-- <th></th> -->
-              <th>ID</th>
               <th>Пользователь</th>
               <th>Название роли</th>
+              <th>Наличие роли</th>
             </tr>
           </ng-template>
 
@@ -217,10 +228,17 @@
               <!-- <td>
                 <p-tableCheckbox [value]="order"></p-tableCheckbox>
               </td> -->
-              <td>{{u.organizationMemberId}}</td>
-              <td>Название </td>
+              <td>{{u.email}} </td>
               <td>{{u.roleName}}</td>
-              <td>{{u.lastAutorization}}</td>
+              <td>
+                <p-checkbox
+                  [(ngModel)]="u.isEnabled"
+                  [binary]="true"
+                  inputId="binary"
+                  (onChange)="onSelectRole(u.organizationMemberId)">
+
+                </p-checkbox>
+              </td>
             </tr>
           </ng-template>
 
