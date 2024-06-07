@@ -163,4 +163,13 @@ export class ProjectManagementSignalrService {
       this.$allFeed.next(response);
     });
   };
+
+  /**
+   * Функция слушает уведомление об успешном изменении ролей.
+   */
+  public listenSendNotifySuccessUpdateRoles() {
+    (<HubConnection>this.hubConnection).on("SendNotifySuccessUpdateRoles", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
 }

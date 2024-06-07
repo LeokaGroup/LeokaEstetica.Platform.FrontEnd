@@ -1,3 +1,5 @@
+<p-toast></p-toast>
+
 <div class="d-flex">
   <div class="d-flex mt-3 col-lg-3">
     <div class="block-worksheet col-lg-12">
@@ -181,6 +183,74 @@
               <td colspan="7">
                 <div class="empty-orders">
                   Пользователей нет.
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Роли пользователей проекта. -->
+  <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowUserRoles">
+    <h3>Настройки ролевой модели пользователей проекта</h3>
+    <div class="scrum">
+      <div>
+        <p-table [value]="settingUserRoles.value"
+                 [(selection)]="selectedUser"
+                 dataKey="userId"
+                 [paginator]="settingUserRoles.value.length > 0"
+                 [rows]="10"
+                 styleClass="p-datatable-gridlines"
+                 responsiveLayout="scroll">
+
+          <ng-template pTemplate="caption">
+            <button pButton type="button"
+                    label="Сохранить"
+                    class="p-button-outlined p-button-success"
+                    size="small"
+                    (click)="onUpdateRolesAsync(settingUserRoles.value)">
+            </button>
+          </ng-template>
+
+          <ng-template pTemplate="header">
+            <tr>
+              <!-- <th></th> -->
+              <th>Пользователь</th>
+              <th>Название роли</th>
+              <th>Наличие роли</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-u>
+            <tr>
+              <!-- <td>
+                <p-tableCheckbox [value]="order"></p-tableCheckbox>
+              </td> -->
+              <td>{{u.email}} </td>
+              <td>{{u.roleName}}</td>
+              <td>
+                <p-checkbox
+                  [(ngModel)]="u.isEnabled"
+                  [binary]="true"
+                  inputId="binary"
+                  (onChange)="onSelectRole(u.organizationMemberId)">
+
+                </p-checkbox>
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="summary">
+            Всего: {{settingUserRoles.value.length}}
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">
+                <div class="empty-orders">
+                  Ролей нет.
                 </div>
               </td>
             </tr>
