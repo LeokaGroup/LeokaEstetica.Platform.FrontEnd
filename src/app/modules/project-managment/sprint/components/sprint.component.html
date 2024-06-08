@@ -46,8 +46,7 @@
 <!--  <div class="profile-left-menu col-lg-3 col-xl-3 col-xxl-3">-->
 
 <!--  </div>-->
-<!-- отцентрирована таблица-->
-  <div class="worksheet-panel block-worksheet profile-table" style="text-align: center">
+  <div class="worksheet-panel block-worksheet profile-table">
     <p-table [value]="sprints$.value"
              [(selection)]="selectedSprint"
              selectionMode="single"
@@ -76,12 +75,12 @@
           <td>
             <p-tableCheckbox [value]="sp" (click)="onSelectRowSprint(sp.projectSprintId)"></p-tableCheckbox>
           </td>
-          <td class="">
+          <td class="table-data">
             <div class="btn btn-link" (click)="onSelectSprint($event, sp.projectSprintId)">
               {{sp.projectSprintId}}
             </div>
           </td>
-          <td class="">
+          <td class="table-data">
             <div class="btn btn-link" (click)="onSelectSprint($event, sp.projectSprintId)">
               {{sp.sprintName}}
             </div>
