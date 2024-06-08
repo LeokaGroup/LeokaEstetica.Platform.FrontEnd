@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
-import { forkJoin } from "rxjs";
+import { Subscription, forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { DialogMessageInput } from "src/app/modules/messages/chat/models/input/dialog-message-input";
 import { ChatMessagesService } from "src/app/modules/messages/chat/services/chat-messages.service";
@@ -38,7 +38,6 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         private readonly _messagesService: ChatMessagesService,
         private readonly _searchProjectService: SearchProjectService,
         private readonly _redirectService: RedirectService) {
-
     }
 
     public readonly selectedProject$ = this._projectService.selectedProject$;
@@ -57,7 +56,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     projectName: string = "";
     projectDetails: string = "";
     projectId: number = 0;
-    allFeedSubscription: any;
+    allFeedSubscription!: Subscription;
     isEditMode: boolean = false;
     selectedStage: any;
     selectedProjectVacancy: any;
@@ -130,15 +129,14 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         await this.getProjectRemarksAsync()
         ]).subscribe();
 
-         // Подключаемся.
-         this._signalrService.startConnection().then(async () => {
+        // Подключаемся.
+        this._signalrService.startConnection().then(async () => {
             console.log("Подключились");
-
             this.listenAllHubsNotifications();
         });
 
         // Подписываемся на получение всех сообщений.
-        this._signalrService.AllFeedObservable
+        this.allFeedSubscription = this._signalrService.AllFeedObservable
         .subscribe((response: any) => {
             console.log("Подписались на сообщения", response);
 
@@ -158,12 +156,12 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
                 console.log("Сообщения диалога: ", response.messages);
 
                 this.aMessages = response.messages;
-                let lastMessage = response.messages[response.messages.length - 1];
+                const lastMessage = response.messages[response.messages.length - 1];
                 this.lastMessage = lastMessage;
 
                 // Делаем небольшую задержку, чтобы диалог успел открыться, прежде чем будем скролить к низу.
                 setTimeout(() => {
-                    let block = document.getElementById("#idMessages");
+                    const block = document.getElementById("#idMessages");
                     block!.scrollBy({
                         left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
                         top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
@@ -176,8 +174,8 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
                 console.log("Сообщения диалога: ", this.aMessages);
 
                 this.message = "";
-                let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
-                let lastMessage = response.messages[response.messages.length - 1];
+                const dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
+                const lastMessage = response.messages[response.messages.length - 1];
                 this.lastMessage = lastMessage;
                 this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
 
@@ -193,7 +191,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
                 });
 
                 setTimeout(() => {
-                    let block = document.getElementById("#idMessages");
+                    const block = document.getElementById("#idMessages");
                     block!.scrollBy({
                         left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
                         top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
@@ -204,7 +202,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         });
     };
 
-     /**
+    /**
      * Функция слушает все хабы.
      */
     private listenAllHubsNotifications() {
@@ -238,7 +236,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     private checkUrlParams() {
         this._activatedRoute.queryParams
         .subscribe(params => {
-            let mode = params["mode"];
+            const mode = params["mode"];
 
             if (mode == "view") {
                 this.getEditProjectAsync(params["projectId"], "View");
@@ -254,13 +252,13 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
           });
     };
 
-     /**
+    /**
      * Функция загружает список вакансий для каталога.
      * @param projectId - Id проекта.
      * @param mode - Режим. Чтение или изменение.
      * @returns - Список вакансий.
      */
-      private async getEditProjectAsync(projectId: number, mode: string) {
+    private async getEditProjectAsync(projectId: number, mode: string) {
         (await this._projectService.getProjectAsync(projectId, mode))
         .subscribe((response: any) => {
             console.log("Получили проект: ", this.selectedProject$.value);
@@ -285,7 +283,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
      * @returns - Обновленные данные проекта.
      */
     public async onUpdateProjectAsync() {
-        let model = new UpdateProjectInput();
+        const model = new UpdateProjectInput();
         model.ProjectName = this.selectedProject$.value.projectName;
         model.ProjectDetails = this.selectedProject$.value.projectDetails;
         model.ProjectId = this.projectId;
@@ -336,10 +334,10 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
             });
     };
 
-     /**
-    // * Функция получает поля таблицы проектов пользователя.
-    // * @returns - Список полей.
-    */
+    /**
+     * Функция получает поля таблицы проектов пользователя.
+     * @returns - Список полей.
+     */
     private async getProjectVacanciesColumnNamesAsync() {
         (await this._projectService.getProjectVacanciesColumnNamesAsync())
             .subscribe(_ => {
@@ -351,7 +349,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
      * Функция переходит на страницу создания вакансии проекта. Передавая Id проекта, к которому будет привязана вакансия автоматически.
      */
     public onRouteCreateProjectVacancy() {
-        let projectId = this.projectId;
+        const projectId = this.projectId;
 
         this._router.navigate(["/vacancies/create"], {
             queryParams: {
@@ -368,9 +366,9 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     };
 
     /**
-    // * Функция получает список вакансий пользователя, которые можно прикрепить к проекту
-    // * @returns - Список вакансий.
-    */
+     * Функция получает список вакансий пользователя, которые можно прикрепить к проекту
+     * @returns - Список вакансий.
+     */
     private async getAvailableAttachVacanciesAsync() {
         (await this._projectService.getAvailableAttachVacanciesAsync(this.projectId))
             .subscribe(_ => {
@@ -380,9 +378,9 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     };
 
     /**
-    // * Функция получает список вакансий пользователя, по которым можно пригласить пользователя в проект.
-    // * @returns - Список вакансий.
-    */
+     * Функция получает список вакансий пользователя, по которым можно пригласить пользователя в проект.
+     * @returns - Список вакансий.
+     */
     private async getAvailableInviteVacanciesAsync() {
         (await this._projectService.getAvailableInviteVacanciesAsync(this.projectId))
             .subscribe(_ => {
@@ -399,7 +397,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
      * Функция прикрепляет вакансию к проекту.
      */
     public async onSaveProjectVacancyAsync() {
-        let attachModel = new AttachProjectVacancyInput();
+        const attachModel = new AttachProjectVacancyInput();
         attachModel.ProjectId = this.selectedVacancy.projectId;
         attachModel.VacancyId = this.selectedVacancy.vacancyId;
 
@@ -438,13 +436,13 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         });
     };
 
-     /**
-      * TODO: Вынести куда-нибудь, а то дублируется с вакансиями вне проекта.
+    /**
+     * TODO: Вынести куда-нибудь, а то дублируется с вакансиями вне проекта.
      * Функция обновляет вакансию.
      * @returns - Данные вакансии.
      */
-      public async onUpdateVacancyAsync() {
-        let model = this.createUpdateVacancyModel();
+    public async onUpdateVacancyAsync() {
+        const model = this.createUpdateVacancyModel();
 
         (await this._vacancyService.updateVacancyAsync(model))
         .subscribe((response: any) => {
@@ -462,7 +460,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
      * @returns - Входная модель вакансии.
      */
      private createUpdateVacancyModel(): VacancyInput {
-        let model = new VacancyInput();
+        const model = new VacancyInput();
         model.VacancyName = this.vacancyName;
         model.VacancyText = this.vacancyText;
         model.Employment = this.employment;
@@ -502,7 +500,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
      * @returns - Данные отклика на проект.
      */
     public async onProjectResponseAsync() {
-        let model = new ProjectResponseInput();
+        const model = new ProjectResponseInput();
         model.ProjectId = this.projectId;
 
         if (this.vacancyId == 0 && this.isResponseVacancy) {
@@ -530,7 +528,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
      * @returns - Диалог и его сообщения.
      */
     public async onGetDialogAsync(dialogId: number) {
-        let dialogInput = new DialogInput();
+        const dialogInput = new DialogInput();
         dialogInput.DialogId = dialogId;
         dialogInput.DiscussionType = "Project";
         dialogInput.DiscussionTypeId = this.projectId;
@@ -544,7 +542,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     public async onWriteOwnerDialogAsync() {
         this.isCollapsed = false;
 
-        let dialogInput = new DialogInput();
+        const dialogInput = new DialogInput();
         dialogInput.DiscussionTypeId = this.projectId;
         dialogInput.DiscussionType = "Project";
 
@@ -561,7 +559,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     };
 
     public async onSendMessageAsync() {
-        let dialogInput = new DialogMessageInput();
+        const dialogInput = new DialogMessageInput();
         dialogInput.Message = this.message;
         dialogInput.DialogId = this.dialogId;
 
@@ -572,7 +570,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
      * Функция создает комментарий к проекту.
      */
     public async onCreateProjectCommentAsync() {
-        let createProjectCommentInput = new CreateProjectCommentInput();
+        const createProjectCommentInput = new CreateProjectCommentInput();
         createProjectCommentInput.ProjectId = this.projectId;
         createProjectCommentInput.Comment = this.projectComment;
 
@@ -611,7 +609,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
      * Функция получает данные для таблицы команда проекта
      * @returns - Данные для таблицы команда проекта.
      */
-     private async getProjectTeamAsync() {
+    private async getProjectTeamAsync() {
         (await this._projectService.getProjectTeamAsync(this.projectId))
         .subscribe(async (response: any) => {
             console.log("Данные команды проекта: ", response);
@@ -624,7 +622,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
      * @param event - Событие. Чтобы достать текст, надо вызвать event.query.
      * @returns - Данные для таблицы команда проекта.
      */
-     public async onSearchInviteProjectMembersAsync(event: any) {
+    public async onSearchInviteProjectMembersAsync(event: any) {
         (await this._searchProjectService.searchInviteProjectMembersAsync(event.query))
         .subscribe(async (response: any) => {
             console.log("Пользователи для добавления в команду проекта: ", response);
@@ -641,7 +639,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
      * Функция отправляет приглашение в команду проекта пользователю.
      */
     public async onSendInviteProjectTeamAsync() {
-        let inviteProjectTeamMemberInput = new InviteProjectTeamMemberInput();
+        const inviteProjectTeamMemberInput = new InviteProjectTeamMemberInput();
         inviteProjectTeamMemberInput.ProjectId = this.projectId;
         inviteProjectTeamMemberInput.InviteText = this.selectedInviteUser;
         inviteProjectTeamMemberInput.VacancyId = !this.isVacancyInvite ? this.selectedInviteVacancy.vacancyId : null;
@@ -679,42 +677,42 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     };
 
 
-  /**
-   * Функция удаляет Вакансию из Вакансии проекта при нажатии Удалить.
-   * @param vacancyNameForDelete - Название вакансии.
-   * @param vacancyId = Id вакансии
-   */
-  /** при вервом нажатии на кнопку Удалить выскакивает диалог-удалить/отменить */
-  public onBeforeDeleteProjectVacancy(vacancyId: number, vacancyNameForDelete: any) {
-    this.vacancyId = vacancyId;
-    this.isDeleteVacancyInProject = true;
-    this.vacancyNameForDelete = vacancyNameForDelete;
-    this.vacancyNameForDelete = vacancyNameForDelete;
-  };
+    /**
+     * Функция удаляет Вакансию из Вакансии проекта при нажатии Удалить.
+     * @param vacancyNameForDelete - Название вакансии.
+     * @param vacancyId = Id вакансии
+     */
+    /** при вервом нажатии на кнопку Удалить выскакивает диалог-удалить/отменить */
+    public onBeforeDeleteProjectVacancy(vacancyId: number, vacancyNameForDelete: any) {
+        this.vacancyId = vacancyId;
+        this.isDeleteVacancyInProject = true;
+        this.vacancyNameForDelete = vacancyNameForDelete;
+        this.vacancyNameForDelete = vacancyNameForDelete;
+    };
 
-  /** реализация нажатия кнопки-удалить */
-  public async onDeleteVacancyInProjectAsync() {
-    (await this._projectService.deleteVacancyInProjectAsync(this.projectId, this.vacancyId))
-      .subscribe(async _ => {
-        this.isDeleteVacancyInProject = false;
-        await this.getProjectVacanciesAsync();
-      });
-  };
+    /** реализация нажатия кнопки-удалить */
+    public async onDeleteVacancyInProjectAsync() {
+        (await this._projectService.deleteVacancyInProjectAsync(this.projectId, this.vacancyId))
+        .subscribe(async _ => {
+            this.isDeleteVacancyInProject = false;
+            await this.getProjectVacanciesAsync();
+        });
+    };
 
-  public onShowDeleteProjectTeamMemberModal(member: string, userId: number) {
-    this.isDeleteProjectTeamMember = true;
-    this.deleteMember = member;
-    this.userId = userId;
-  };
+    public onShowDeleteProjectTeamMemberModal(member: string, userId: number) {
+        this.isDeleteProjectTeamMember = true;
+        this.deleteMember = member;
+        this.userId = userId;
+    };
 
-  public onShowLeaveProjectTeamMemberModal() {
-    this.isLeaveProjectTeamMember = true;
-  };
+    public onShowLeaveProjectTeamMemberModal() {
+        this.isLeaveProjectTeamMember = true;
+    };
 
-  /**
-   * Функция удаляет пользователя из команды проекта.
-   * @param userId - Id участника проекта, которого будем удалять.
-   */
+    /**
+     * Функция удаляет пользователя из команды проекта.
+     * @param userId - Id участника проекта, которого будем удалять.
+     */
     public async onDeleteProjectTeamAsync() {
         (await this._projectService.deleteProjectTeamAsync(this.projectId, this.userId))
             .subscribe(async _ => {
@@ -724,9 +722,9 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     };
 
     /**
-   * Функция покидания команды проекта.
-   */
-     public async onLeaveProjectTeamAsync() {
+     * Функция покидания команды проекта.
+     */
+    public async onLeaveProjectTeamAsync() {
         (await this._projectService.leaveProjectTeamAsync(this.projectId))
             .subscribe(async _ => {
                 this.isLeaveProjectTeamMember = false;
@@ -736,10 +734,10 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     };
 
     /**
- * Функция получает список замечаний проекта.
- * @param projectId - Id проекта.
- * @returns - Список замечаний проекта.
- */
+     * Функция получает список замечаний проекта.
+     * @param projectId - Id проекта.
+     * @returns - Список замечаний проекта.
+     */
     private async getProjectRemarksAsync() {
         (await this._projectService.getProjectRemarksAsync(this.projectId))
             .subscribe(async _ => {
@@ -748,12 +746,12 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
             });
     };
 
-    // /**
-    //  * Функция добавляет проект в архив.
-    //  * @param archiveInput - Входная модель.
-    //  */
+    /**
+     * Функция добавляет проект в архив.
+     * @param archiveInput - Входная модель.
+     */
     public async onAddArchiveProjectAsync() {
-        let addArchiveInput = new AddProjectArchiveInput();
+        const addArchiveInput = new AddProjectArchiveInput();
         addArchiveInput.projectId = this.projectId;
 
         (await this._projectService.addArchiveProjectAsync(addArchiveInput))
@@ -764,22 +762,22 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     };
 
     public onActivateRole() {
-      this.isActiveRole = !this.isActiveRole;
+        this.isActiveRole = !this.isActiveRole;
     };
 
-  /**
-   * Функция сохраняет роль участника проекта
-   * @param userId - Id участника команды проекта, которому назначают роль.
-   * @param role - Роль.
-   */
-  public async onSetProjectTeamMemberRoleAsync(userId: number, role: string) {
+    /**
+     * Функция сохраняет роль участника проекта
+     * @param userId - Id участника команды проекта, которому назначают роль.
+     * @param role - Роль.
+     */
+    public async onSetProjectTeamMemberRoleAsync(userId: number, role: string) {
     (await this._projectService.setProjectTeamMemberRoleAsync(userId, role, this.projectId))
-      .subscribe(_ => {
-        this.isActiveRole = false;
-      });
+        .subscribe(_ => {
+            this.isActiveRole = false;
+        });
   };
 
     public ngOnDestroy() {
-        this._signalrService.NewAllFeedObservable;
+        this.allFeedSubscription.unsubscribe();
     };
 }
