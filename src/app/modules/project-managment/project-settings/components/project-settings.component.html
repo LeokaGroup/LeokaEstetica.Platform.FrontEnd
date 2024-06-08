@@ -8,7 +8,9 @@
       </div>
     </div>
   </div>
-
+  <div class="settings-area" *ngIf="!selectedSettings">
+    <p>Выберите настройки, которые хотите изменить</p>
+  </div>
   <div class="block-create-tag col-lg-9 mt-3" *ngIf="isShowProfile">
     <h3>Загрузка изображения профиля</h3>
     <div class="status">
@@ -31,7 +33,6 @@
       </div>
     </div>
   </div>
-
   <!-- Настройки Scrum -->
   <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowScrumSettings">
     <h3>Настройки Scrum в проекте</h3>
@@ -175,7 +176,6 @@
           <ng-template pTemplate="summary">
             Всего: {{settingUsers.value.length}}
           </ng-template>
-
           <ng-template pTemplate="emptymessage">
             <tr>
               <td colspan="7">

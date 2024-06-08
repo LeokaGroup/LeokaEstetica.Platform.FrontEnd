@@ -41,6 +41,7 @@ export class ProjectSettingsComponent implements OnInit {
   checked: boolean = true;
   isShowUsers: boolean = false;
   selectedUser: any;
+  selectedSettings:any;
 
   items: any[] = [{
     label: 'Общие',
@@ -50,6 +51,7 @@ export class ProjectSettingsComponent implements OnInit {
         this.isShowProfile = true;
         this.isShowScrumSettings = false;
         this.isShowUsers = false;
+        this.selectedSettings = true;
       }
     }
     ]
@@ -62,6 +64,7 @@ export class ProjectSettingsComponent implements OnInit {
           this.isShowProfile = false;
           this.isShowScrumSettings = true;
           this.isShowUsers = false;
+          this.selectedSettings = true;
 
           await this.getScrumDurationSettingsAsync();
           await this.getProjectSprintsMoveNotCompletedTasksSettingsAsync();
@@ -77,6 +80,7 @@ export class ProjectSettingsComponent implements OnInit {
           this.isShowProfile = false;
           this.isShowScrumSettings = false;
           this.isShowUsers = true;
+          this.selectedSettings = true;
           await this.getSettingUsersAsync();
         }
       },
@@ -112,7 +116,6 @@ export class ProjectSettingsComponent implements OnInit {
       await this.getFileUserAvatarAsync()
     ]).subscribe();
   };
-
   private async checkUrlParams() {
     this._activatedRoute.queryParams
       .subscribe(async params => {
