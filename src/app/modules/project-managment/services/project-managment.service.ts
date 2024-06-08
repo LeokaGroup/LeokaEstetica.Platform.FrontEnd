@@ -26,6 +26,10 @@ import {UpdateSprintNameInput} from "../sprint/models/update-sprint-name-input";
 import { UpdateSprintDetailsInput } from '../sprint/models/update-sprint-details-input';
 import { UpdateSprintExecutorInput } from '../sprint/models/update-sprint-executor-input';
 import { UpdateSprintWatchersInput } from '../sprint/models/update-sprint-watchers-input';
+import { SprintInput } from '../sprint/models/sprint-input';
+import {SprintDurationSettingInput} from "../sprint/models/sprint-duration-setting-input";
+import {SprintMoveNotCompletedTaskSettingInput} from "../sprint/models/sprint-move-not-completed-task-setting-input";
+import {UpdateRoleInput} from "../models/input/update-role-input";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -74,6 +78,12 @@ export class ProjectManagmentService {
     public epicTasks$ = new BehaviorSubject<any>(null);
     public sprints = new BehaviorSubject<any>(null);
     public sprintDetails$ = new BehaviorSubject<any>(null);
+    public sprintDurationSettings$ = new BehaviorSubject<any>(null);
+    public sprintMoveNotCompletedTasksSettings$ = new BehaviorSubject<any>(null);
+    public workspaces$ = new BehaviorSubject<any>(null);
+    public settingUsers = new BehaviorSubject<any>(null);
+    public userRoles = new BehaviorSubject<any>(null);
+    public settingUserRoles = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -270,10 +280,18 @@ export class ProjectManagmentService {
     * Если ее нет, то предлагаем к выбору шаблон, стратегию представления.
     * @returns - Выходная модель.
     */
-      public async getBuildProjectSpaceSettingsAsync() {
-        return await this._http.get(this.apiUrl + "/project-management/config/build-project-space").pipe(
+      public async getBuildProjectSpaceSettingsAsync(projectId: number | null) {
+        if (projectId !== null) {
+          return await this._http.get(this.apiUrl + `/project-management/config/build-project-space?projectId=${projectId}`).pipe(
             tap(data => this.projectWorkspaceSettings$.next(data))
-        );
+          );
+        }
+
+        else {
+          return await this._http.get(this.apiUrl + `/project-management/config/build-project-space`).pipe(
+            tap(data => this.projectWorkspaceSettings$.next(data))
+          );
+        }
     };
 
     /**
@@ -853,6 +871,122 @@ export class ProjectManagmentService {
   public async updateSprintWatchersAsync(updateSprintWatchersInput: UpdateSprintWatchersInput) {
     return await this._http.patch(this.apiUrl + `/project-management/sprints/sprint-watcher`, updateSprintWatchersInput).pipe(
       tap(_ => console.log("Наблюдатели спринта успешно обновлены."))
+    );
+  };
+
+  /**
+   * Функция начинает спринт проекта.
+   * @param sprintInput - Входная модель.
+   */
+  public async runSprintAsync(sprintInput: SprintInput) {
+    return await this._http.patch(this.apiUrl + `/project-management/sprints/sprint/start`, sprintInput).pipe(
+      tap(_ => console.log("Спринт успешно начат."))
+    );
+  };
+
+  /**
+   * Функция завершает спринт (ручное завершение).
+   * @param sprintInput - Входная модель.
+   */
+  public async nanualCompleteSprintAsync(sprintInput: SprintInput) {
+    return await this._http.patch(this.apiUrl + `/project-management/sprints/sprint/manual-complete`, sprintInput).pipe(
+      tap(_ => console.log("Спринт успешно завершен."))
+    );
+  };
+
+  /**
+   * Функция получает список спринтов доступных для переноса незавершенных задач в один из них.
+   * @param projectId - Id проекта.
+   * @param projectSprintId - Id спринта проекта.
+   */
+  public async getAvailableNextSprintsAsync(projectId: number, projectSprintId: number) {
+    return await this._http.get(this.apiUrl + `/project-management/sprints/available-next-sprints?projectSprintId=${projectSprintId}&projectId=${projectId}`).pipe(
+      tap(_ => console.log("Будущие спринты для переноса нерешенных задач."))
+    );
+  };
+
+  /**
+   * Функция получает настройки длительности спринтов проекта.
+   * @param projectId - Id проекта.
+   */
+  public async getScrumDurationSettingsAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-settings/sprint-duration-settings?projectId=${projectId}`).pipe(
+      tap(data => this.sprintDurationSettings$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает настройки автоматического перемещения нерешенных задач спринта.
+   * @param projectId - Id проекта.
+   */
+  public async getProjectSprintsMoveNotCompletedTasksSettingsAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-settings/sprint-move-not-completed-tasks-settings?projectId=${projectId}`).pipe(
+      tap(data => this.sprintMoveNotCompletedTasksSettings$.next(data))
+    );
+  };
+
+  /**
+   * Функция обновляет настройки длительности спринтов проекта.
+   * @param sprintDurationSettingInput - Входная модель.
+   */
+  public async updateScrumDurationSettingsAsync(sprintDurationSettingInput: SprintDurationSettingInput) {
+    return await this._http.patch(this.apiUrl + `/project-management-settings/sprint-duration-settings`, sprintDurationSettingInput).pipe(
+      tap(_ => console.log("Настройка длительности спринтов успешно изменена."))
+    );
+  };
+
+  /**
+   * Функция обновляет настройки перемещения нерешенных задач спринтов проекта.
+   * @param sprintMoveNotCompletedTaskSettingInput - Входная модель.
+   */
+  public async updateProjectSprintsMoveNotCompletedTasksSettingsAsync(sprintMoveNotCompletedTaskSettingInput: SprintMoveNotCompletedTaskSettingInput) {
+    return await this._http.patch(this.apiUrl + `/project-management-settings/sprint-move-not-completed-tasks-settings`, sprintMoveNotCompletedTaskSettingInput).pipe(
+      tap(_ => console.log("Настройка перемещения нерешенных задач спринтов успешно изменена."))
+    );
+  };
+
+  /**
+   * Функция получает все раб.пространства, в которых есть текущий пользователь.
+   */
+  public async getWorkSpacesAsync() {
+    return await this._http.get(this.apiUrl + `/project-management/workspaces`).pipe(
+      tap(data => this.workspaces$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает список пользователей для настроек.
+   */
+  public async getSettingUsersAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-settings/company-project-users?projectId=${projectId}`).pipe(
+      tap(data => this.settingUsers.next(data))
+    );
+  };
+
+  /**
+   * Функция получает список ролей пользователя.
+   */
+  public async getUserRolesAsync() {
+    return await this._http.get(this.apiUrl + `/project-management-role/user-roles`).pipe(
+      tap(data => this.userRoles.next(data))
+    );
+  };
+
+  /**
+   * Функция получает список ролей пользователей для настроек.
+   */
+  public async getSettingUsersRolesAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-role/roles?projectId=${projectId}`).pipe(
+      tap(data => this.settingUserRoles.next(data))
+    );
+  };
+
+  /**
+   * Функция обновляет роли.
+   */
+  public async updateRolesAsync(updated: UpdateRoleInput[]) {
+    return await this._http.put(this.apiUrl + `/project-management-role/roles`, updated).pipe(
+      tap(data => this.settingUserRoles.next(data))
     );
   };
 }

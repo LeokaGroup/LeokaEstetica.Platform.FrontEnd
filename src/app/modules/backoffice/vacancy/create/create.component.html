@@ -80,7 +80,7 @@
                 <label class="vacancy-required-field">Ваши проекты</label>
             </div>
             <div>
-              <p-dropdown [options]="userProjects$.value.userProjects"
+              <p-dropdown [options]="userProjects$.value.userProjects.length > 0 ? userProjects$.value.userProjects : [{projectName: 'У вас нет проектов'}]"
                           [(ngModel)]="selectedProject"
                           optionLabel="projectName"
                           class="control-project-stages">

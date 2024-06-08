@@ -119,6 +119,7 @@
                          (onSelect)="onSelectTask()"
                          [style]="{'width':'500px'}"
                          [inputStyle]="{'width':'100%'}"
+                         [disabled]="!isSearchByTaskId && !isSearchByTaskName && !isSearchByTaskDescription"
          >
 
          </p-autoComplete>

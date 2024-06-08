@@ -1,5 +1,11 @@
 <p-toast></p-toast>
 
+<div class="left-panel" (mouseover)="onSelectPanelMenu()">
+  <div style="border-left:1px solid #C0C6CF;height:1500px;width: 50px;position: absolute;"></div>
+</div>
+
+<left-panel></left-panel>
+
 <div class="task-details mt-3">
   <!-- Название задачи. -->
   <div class="task-name">
@@ -751,6 +757,7 @@
                       [suggestions]="epicTasks$.value"
                       (completeMethod)="onSearchIncludeEpicTaskAsync($event)"
                       [showEmptyMessage]="true"
+                      [disabled]="!isSearchByTaskId && !isSearchByTaskName && !isSearchByTaskDescription"
                       emptyMessage="Результатов не найдено"
                       field="findText"
                       [minLength]="0"
@@ -936,7 +943,7 @@
                              [active]="c.isActiveTaskComment"
                              (onActivate)="c.isActiveTaskComment = !c.isActiveTaskComment">
                     <ng-template pTemplate="display">
-                      <span class="task-name-title">{{c.comment}}</span>
+                      <span class="task-name-title" [innerHTML]="c.comment"></span>
                     </ng-template>
 
                     <ng-template pTemplate="content">
@@ -1097,3 +1104,7 @@
         </p-button>
         </ng-template>
 </p-dialog>
+
+<left-panel
+  (mouseleave)="onClosePanelMenu()"
+></left-panel>

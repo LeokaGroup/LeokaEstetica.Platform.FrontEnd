@@ -57,6 +57,10 @@ import { ProjectManagementSignalrService } from '../notifications/signalr/servic
 import { EpicDetailsComponent } from './task/components/epic/epic-details.component';
 import { SprintComponent } from './sprint/components/sprint.component';
 import {SprintDetailsComponent} from "./sprint-details/components/sprint-details.component";
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { WorkSpaceComponent } from './workspace/components/workspace.component';
+import { DataViewModule } from 'primeng/dataview';
+import { ScrumMasterAiAssistComponent } from './scrum-master-ai/components/scrum-master-ai-assist.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +75,9 @@ import {SprintDetailsComponent} from "./sprint-details/components/sprint-details
     PlaningSprintComponent,
     EpicDetailsComponent,
     SprintComponent,
-    SprintDetailsComponent
+    SprintDetailsComponent,
+    WorkSpaceComponent,
+    ScrumMasterAiAssistComponent
   ],
 
   imports: [
@@ -123,7 +129,9 @@ import {SprintDetailsComponent} from "./sprint-details/components/sprint-details
         useFactory: createTranslateLoader,
         deps: [HttpClient]
       }
-    })
+    }),
+    InputSwitchModule,
+    DataViewModule
   ],
 
   exports: [],
