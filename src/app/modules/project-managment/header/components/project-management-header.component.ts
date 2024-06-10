@@ -22,6 +22,12 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   public readonly headerItems$ = this._projectManagmentService.headerItems$;
   public readonly searchTasks$ = this._projectManagmentService.searchTasks$;
 
+  /**
+   * для задачи 34460898
+   */
+  public readonly selectedWorkSpace$ = this._projectManagmentService.selectedWorkSpace$;
+
+
   projectId: number = 0;
   projectTaskId: number = 0;
   home: string = "project name";
@@ -64,10 +70,42 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
     this._activatedRoute.queryParams
       .subscribe(async params => {
         console.log("params: ", params);
-
         this.projectId = params["projectId"];
+        if (params["projectId"]) {
+          this.projectId = Number(params["projectId"]);
+          await this.getSelectedWorkSpaceAsync(this.projectId);
+        } else {
+          this.updateBreadcrumbLabel("[Тут будет название проекта]");
+        }
+
       });
   };
+
+  /**
+   * для задачи 34460898
+   * Функция получает выбранное раб.пространство.
+   */
+  private async getSelectedWorkSpaceAsync(projectId: number) {
+    (await this._projectManagmentService.getSelectedWorkSpaceAsync(projectId))
+      .subscribe(_ => {
+        console.log("Выбранное раб.пространство: ", this._projectManagmentService.selectedWorkSpace$.value);
+        if (this.selectedWorkSpace$.value.projectManagementName) {
+          this.updateBreadcrumbLabel(this.selectedWorkSpace$.value.projectManagementName);
+        }
+      });
+  }
+
+  /**
+   * для задачи 34460898
+   * Функция меняет items для breadcrumb.
+   */
+  private async updateBreadcrumbLabel(projectName: string) {
+    this.items = [
+      {
+        label: projectName
+      }
+    ];
+  }
 
   /**
    * Функция получает список элементов меню хидера (верхнее меню).
