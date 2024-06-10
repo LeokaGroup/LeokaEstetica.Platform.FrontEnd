@@ -33,7 +33,7 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   home: string = "project name";
   items: any[] = [
     {
-      label: "[Тут будет название проекта]"
+      label: "Проект не выбран."
     }
   ];
 
@@ -75,7 +75,7 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
           this.projectId = Number(params["projectId"]);
           await this.getSelectedWorkSpaceAsync(this.projectId);
         } else {
-          this.updateBreadcrumbLabel("[Тут будет название проекта]");
+          this.updateBreadcrumbLabel("Проект не выбран.");
         }
 
       });
