@@ -20,27 +20,11 @@ export class WikiComponent implements OnInit {
   public readonly wikiTreeItems$ = this._projectManagmentService.wikiTreeItems$;
 
   projectId: number = 0;
-  aTreeItems: any[] = [
-    {
-      key: '0',
-      label: 'Node 0',
-      leaf: false
-    },
-    {
-      key: '1',
-      label: 'Node 1',
-      leaf: false
-    },
-    {
-      key: '2',
-      label: 'Node 2',
-      leaf: false
-    }
-  ];
+  aTreeItems: any[] = [];
 
   public async ngOnInit() {
     this.checkUrlParams();
-    // await this.getTreeAsync();
+    await this.getTreeAsync();
   };
 
   private checkUrlParams() {
@@ -59,7 +43,7 @@ export class WikiComponent implements OnInit {
     (await this._projectManagmentService.getWikiTreeItemsAsync(this.projectId))
       .subscribe(_ => {
         console.log("Дерево: ", this.wikiTreeItems$.value);
-        // this.oTreeItems = this.wikiTreeItems$.value[0];
+        this.aTreeItems = this.wikiTreeItems$.value;
       });
   };
 
