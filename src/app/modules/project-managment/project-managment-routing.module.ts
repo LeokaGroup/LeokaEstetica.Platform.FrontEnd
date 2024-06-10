@@ -13,6 +13,7 @@ import { EpicDetailsComponent } from './task/components/epic/epic-details.compon
 import { SprintComponent } from './sprint/components/sprint.component';
 import { SprintDetailsComponent } from './sprint-details/components/sprint-details.component';
 import { WorkSpaceComponent } from './workspace/components/workspace.component';
+import { WikiComponent } from './wiki/components/wiki.component';
 
 const routes: Routes = [
   {
@@ -65,6 +66,10 @@ const routes: Routes = [
 
   {
     path: 'workspaces', component: WorkSpaceComponent
+  },
+
+  {
+    path: 'wiki', component: WikiComponent
   }
 ];
 

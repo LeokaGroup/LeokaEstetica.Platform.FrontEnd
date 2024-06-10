@@ -84,6 +84,7 @@ export class ProjectManagmentService {
     public settingUsers = new BehaviorSubject<any>(null);
     public userRoles = new BehaviorSubject<any>(null);
     public settingUserRoles = new BehaviorSubject<any>(null);
+    public wikiTreeItems$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -987,6 +988,15 @@ export class ProjectManagmentService {
   public async updateRolesAsync(updated: UpdateRoleInput[]) {
     return await this._http.put(this.apiUrl + `/project-management-role/roles`, updated).pipe(
       tap(data => this.settingUserRoles.next(data))
+    );
+  };
+
+  /**
+   * Функция получает дерево Wiki модуля УП.
+   */
+  public async getWikiTreeItemsAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-wiki/tree?projectId=${projectId}`).pipe(
+      tap(data => this.wikiTreeItems$.next(data))
     );
   };
 }
