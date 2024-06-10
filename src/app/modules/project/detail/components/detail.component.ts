@@ -281,7 +281,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
 
             /**
              * для задачи 34074393
-             * значение видимости чата
+             * получаем значение видимости чата
              */
             this.isChatVisible = response.isVisibleDeleteButton
 
