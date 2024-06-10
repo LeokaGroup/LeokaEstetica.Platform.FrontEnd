@@ -29,6 +29,7 @@ import { UpdateSprintWatchersInput } from '../sprint/models/update-sprint-watche
 import { SprintInput } from '../sprint/models/sprint-input';
 import {SprintDurationSettingInput} from "../sprint/models/sprint-duration-setting-input";
 import {SprintMoveNotCompletedTaskSettingInput} from "../sprint/models/sprint-move-not-completed-task-setting-input";
+import {UpdateRoleInput} from "../models/input/update-role-input";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -80,6 +81,9 @@ export class ProjectManagmentService {
     public sprintDurationSettings$ = new BehaviorSubject<any>(null);
     public sprintMoveNotCompletedTasksSettings$ = new BehaviorSubject<any>(null);
     public workspaces$ = new BehaviorSubject<any>(null);
+    public settingUsers = new BehaviorSubject<any>(null);
+    public userRoles = new BehaviorSubject<any>(null);
+    public settingUserRoles = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -947,6 +951,42 @@ export class ProjectManagmentService {
   public async getWorkSpacesAsync() {
     return await this._http.get(this.apiUrl + `/project-management/workspaces`).pipe(
       tap(data => this.workspaces$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает список пользователей для настроек.
+   */
+  public async getSettingUsersAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-settings/company-project-users?projectId=${projectId}`).pipe(
+      tap(data => this.settingUsers.next(data))
+    );
+  };
+
+  /**
+   * Функция получает список ролей пользователя.
+   */
+  public async getUserRolesAsync() {
+    return await this._http.get(this.apiUrl + `/project-management-role/user-roles`).pipe(
+      tap(data => this.userRoles.next(data))
+    );
+  };
+
+  /**
+   * Функция получает список ролей пользователей для настроек.
+   */
+  public async getSettingUsersRolesAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-role/roles?projectId=${projectId}`).pipe(
+      tap(data => this.settingUserRoles.next(data))
+    );
+  };
+
+  /**
+   * Функция обновляет роли.
+   */
+  public async updateRolesAsync(updated: UpdateRoleInput[]) {
+    return await this._http.put(this.apiUrl + `/project-management-role/roles`, updated).pipe(
+      tap(data => this.settingUserRoles.next(data))
     );
   };
 }

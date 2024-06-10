@@ -1,12 +1,13 @@
 import { Component, OnInit, Sanitizer } from "@angular/core";
-import { DomSanitizer } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
-import { RedirectService } from "src/app/common/services/redirect.service";
 import { ProjectManagmentService } from "../../services/project-managment.service";
 import {ProjectUserAvatarFileInput} from "../../task/models/input/project-user-avatar-file-input";
 import {SprintDurationSettingInput} from "../../sprint/models/sprint-duration-setting-input";
 import {SprintMoveNotCompletedTaskSettingInput} from "../../sprint/models/sprint-move-not-completed-task-setting-input";
+import { UpdateRoleInput } from "../../models/input/update-role-input";
+import { ProjectManagementSignalrService } from "src/app/modules/notifications/signalr/services/project-magement-signalr.service";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: "",
@@ -20,15 +21,17 @@ import {SprintMoveNotCompletedTaskSettingInput} from "../../sprint/models/sprint
 export class ProjectSettingsComponent implements OnInit {
   constructor(private readonly _projectManagmentService: ProjectManagmentService,
               private readonly _router: Router,
-              private readonly _redirectService: RedirectService,
               private readonly _activatedRoute: ActivatedRoute,
               private readonly _domSanitizer: DomSanitizer,
-              private readonly _sanitizer: Sanitizer) {
+              private readonly _sanitizer: Sanitizer,
+              private readonly _projectManagementSignalrService: ProjectManagementSignalrService) {
   }
 
   public readonly downloadUserAvatarFile$ = this._projectManagmentService.downloadUserAvatarFile$;
   public readonly sprintDurationSettings$ = this._projectManagmentService.sprintDurationSettings$;
   public readonly sprintMoveNotCompletedTasksSettings$ = this._projectManagmentService.sprintMoveNotCompletedTasksSettings$;
+  public readonly settingUsers = this._projectManagmentService.settingUsers;
+  public readonly settingUserRoles = this._projectManagmentService.settingUserRoles;
 
   projectId: number = 0;
   userAvatarLink: any;
@@ -38,6 +41,10 @@ export class ProjectSettingsComponent implements OnInit {
   selectedDurationSetting: any;
   selectedMoveSetting: any;
   checked: boolean = true;
+  isShowUsers: boolean = false;
+  selectedUser: any;
+  isShowUserRoles: boolean = false;
+  aUpdatedRoles: Set<number> = new Set();
 
   items: any[] = [{
     label: 'Общие',
@@ -46,6 +53,8 @@ export class ProjectSettingsComponent implements OnInit {
       command: () => {
         this.isShowProfile = true;
         this.isShowScrumSettings = false;
+        this.isShowUsers = false;
+        this.isShowUserRoles = false;
       }
     }
     ]
@@ -57,11 +66,44 @@ export class ProjectSettingsComponent implements OnInit {
         command: async () => {
           this.isShowProfile = false;
           this.isShowScrumSettings = true;
+          this.isShowUsers = false;
+          this.isShowUserRoles = false;
 
           await this.getScrumDurationSettingsAsync();
           await this.getProjectSprintsMoveNotCompletedTasksSettingsAsync();
         }
       }
+      ]
+    },
+    {
+      label: 'Администрирование',
+      items: [{
+        label: 'Пользователи',
+        command: async () => {
+          this.isShowProfile = false;
+          this.isShowScrumSettings = false;
+          this.isShowUsers = true;
+          this.isShowUserRoles = false;
+
+          await this.getSettingUsersAsync();
+        }
+      },
+        {
+          label: 'Роли',
+          command: async () => {
+            this.isShowProfile = false;
+            this.isShowScrumSettings = false;
+            this.isShowUsers = false;
+            this.isShowUserRoles = true;
+
+            await this.getUsersRolesAsync();
+          }
+        },
+        {
+          label: 'Приглашения',
+          command: async () => {
+          }
+        }
       ]
     }];
 
@@ -73,6 +115,20 @@ export class ProjectSettingsComponent implements OnInit {
       this.checkUrlParams(),
       await this.getFileUserAvatarAsync()
     ]).subscribe();
+
+    // Подключаемся.
+    this._projectManagementSignalrService.startConnection().then(() => {
+      console.log("Подключились");
+
+      this.listenAllHubsNotifications();
+    });
+  };
+
+  /**
+   * Функция слушает все хабы.
+   */
+  private listenAllHubsNotifications() {
+    this._projectManagementSignalrService.listenSendNotifySuccessUpdateRoles();
   };
 
   private async checkUrlParams() {
@@ -169,4 +225,49 @@ export class ProjectSettingsComponent implements OnInit {
   public onSelect(event: any) {
     console.log(event);
   };
+
+  /**
+   * Функция получает список пользователей для настроек.
+   */
+  private async getSettingUsersAsync() {
+    (await this._projectManagmentService.getSettingUsersAsync(+this.projectId))
+      .subscribe(async _ => {
+        console.log("Список пользователей: ", this.settingUsers.value);
+      });
+  };
+
+  /**
+   * Функция получает список ролей пользователей для настроек.
+   */
+  private async getUsersRolesAsync() {
+    (await this._projectManagmentService.getSettingUsersRolesAsync(+this.projectId))
+      .subscribe(async _ => {
+        console.log("Список ролей пользователей: ", this.settingUserRoles.value);
+      });
+  };
+
+  public async onUpdateRolesAsync(roles: any) {
+    let updated: UpdateRoleInput[] = [];
+    roles.forEach((x: any) => {
+      if (this.aUpdatedRoles.has(x.organizationMemberId)) {
+        let obj = new UpdateRoleInput();
+        obj.userId = x.organizationMemberId;
+        obj.isEnabled = x.isEnabled;
+        obj.roleId = x.roleId;
+
+        updated.push(obj);
+      }
+    });
+
+    (await this._projectManagmentService.updateRolesAsync(updated))
+      .subscribe(async _ => {
+        console.log("спешно обновили роли пользователей.");
+        await this.getUsersRolesAsync();
+      });
+  };
+
+  public onSelectRole(userId: number) {
+    this.aUpdatedRoles.add(userId);
+    console.log("userId",this.aUpdatedRoles);
+  }
 }
