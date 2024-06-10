@@ -91,6 +91,12 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     isVisibleActionProjectButtons: boolean = false;
     isVisibleActionAddProjectArchive: boolean = false;
     isVisibleDeleteButton: boolean = false;
+    /**
+     * для задачи 34074393
+     * значение видимости чата
+     */
+    isChatVisible: boolean = false;
+
     isProjectInvite: boolean = false;
     aProjectInviteVarians: any[] = [
         { name: 'По ссылке', key: 'Link' },
@@ -272,6 +278,13 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
             }
 
             this.isVisibleDeleteButton = response.isVisibleDeleteButton;
+
+            /**
+             * для задачи 34074393
+             * значение видимости чата
+             */
+            this.isChatVisible = response.isVisibleDeleteButton
+
             this.isVisibleActionProjectButtons = response.isVisibleActionProjectButtons;
             this.isVisibleActionDeleteProjectTeamMember = response.isVisibleActionDeleteProjectTeamMember;
             this.isVisibleActionLeaveProjectTeam = response.isVisibleActionLeaveProjectTeam;
@@ -543,6 +556,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
 
     public async onWriteOwnerDialogAsync() {
         this.isCollapsed = false;
+        this.isChatVisible = true;
 
         let dialogInput = new DialogInput();
         dialogInput.DiscussionTypeId = this.projectId;
