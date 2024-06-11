@@ -54,14 +54,27 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
     let projectId = this.projectId;
     const disableButtons = this._router.url !== `/project-management/space?projectId=${projectId}`;
 
-    if (this.aHeaderItems[0]) {
-      this.aHeaderItems[0].disabled = disableButtons;
-    }
-
-    if (this.aHeaderItems[this.aHeaderItems.length - 1]) {
-      this.aHeaderItems[this.aHeaderItems.length - 1].disabled = disableButtons;
-    }
+    this.disableButtonIfNeeded('Strategy', disableButtons);
+    this.disableButtonIfNeeded('Settings', disableButtons);
   };
+
+  /**
+   * Функция отключает кнопку хидера, если не выбран проект.
+   */
+  private disableButtonIfNeeded(buttonId: string, disabled: boolean) {
+    const button = this.findButton(buttonId);
+    if (button) {
+      button.disabled = disabled;
+    }
+  }
+
+  /**
+   * Функция ищет необходимый элемент Хидера.
+   * @returns - искомый элемент хидера.
+   */
+  private findButton = (id: string) => {
+    return this.aHeaderItems.find(headerItem => headerItem.id === id);
+  }
 
   private async checkUrlParams() {
     this._activatedRoute.queryParams
@@ -71,6 +84,8 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
         this.projectId = params["projectId"];
       });
   };
+
+ 
 
   /**
    * Функция получает список элементов меню хидера (верхнее меню).
