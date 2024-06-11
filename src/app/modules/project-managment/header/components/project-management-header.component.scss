@@ -81,3 +81,12 @@ body {
   //color: #717DAE;
   margin-left: 20px
 }
+
+
+// для задачи 34460898
+.block-task {
+  ::ng-deep .breadcrumb-heading-font .p-breadcrumb {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+}

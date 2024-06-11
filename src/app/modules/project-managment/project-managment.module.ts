@@ -61,6 +61,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { WorkSpaceComponent } from './workspace/components/workspace.component';
 import { DataViewModule } from 'primeng/dataview';
 import { ScrumMasterAiAssistComponent } from './scrum-master-ai/components/scrum-master-ai-assist.component';
+import { WikiComponent } from './wiki/components/wiki.component';
+import { TreeModule } from 'primeng/tree';
 
 @NgModule({
   declarations: [
@@ -77,7 +79,8 @@ import { ScrumMasterAiAssistComponent } from './scrum-master-ai/components/scrum
     SprintComponent,
     SprintDetailsComponent,
     WorkSpaceComponent,
-    ScrumMasterAiAssistComponent
+    ScrumMasterAiAssistComponent,
+    WikiComponent
   ],
 
   imports: [
@@ -131,7 +134,8 @@ import { ScrumMasterAiAssistComponent } from './scrum-master-ai/components/scrum
       }
     }),
     InputSwitchModule,
-    DataViewModule
+    DataViewModule,
+    TreeModule
   ],
 
   exports: [],

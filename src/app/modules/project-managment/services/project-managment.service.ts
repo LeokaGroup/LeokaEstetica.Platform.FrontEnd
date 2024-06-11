@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, tap} from 'rxjs';
+import {BehaviorSubject, map, tap} from 'rxjs';
 import {API_URL} from 'src/app/core/core-urls/api-urls';
 import {ChangeTaskDetailsInput} from '../task/models/input/change-task-details-input';
 import {ChangeTaskNameInput} from '../task/models/input/change-task-name-input';
@@ -81,9 +81,15 @@ export class ProjectManagmentService {
     public sprintDurationSettings$ = new BehaviorSubject<any>(null);
     public sprintMoveNotCompletedTasksSettings$ = new BehaviorSubject<any>(null);
     public workspaces$ = new BehaviorSubject<any>(null);
+
+    /**
+   * для задачи 34460898
+   */
+    public selectedWorkSpace$ = new BehaviorSubject<any>(null);
     public settingUsers = new BehaviorSubject<any>(null);
     public userRoles = new BehaviorSubject<any>(null);
     public settingUserRoles = new BehaviorSubject<any>(null);
+    public wikiTreeItems$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -955,6 +961,16 @@ export class ProjectManagmentService {
   };
 
   /**
+   * для задачи 34460898
+   * Функция получает выбранное раб.пространство.
+   */
+  public async getSelectedWorkSpaceAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management/workspaces`).pipe(
+      tap(data => this.selectedWorkSpace$.next((data as any[]).find((project: any) => project.projectId === projectId)))
+    );
+  }
+
+  /**
    * Функция получает список пользователей для настроек.
    */
   public async getSettingUsersAsync(projectId: number) {
@@ -987,6 +1003,15 @@ export class ProjectManagmentService {
   public async updateRolesAsync(updated: UpdateRoleInput[]) {
     return await this._http.put(this.apiUrl + `/project-management-role/roles`, updated).pipe(
       tap(data => this.settingUserRoles.next(data))
+    );
+  };
+
+  /**
+   * Функция получает дерево Wiki модуля УП.
+   */
+  public async getWikiTreeItemsAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-wiki/tree?projectId=${projectId}`).pipe(
+      tap(data => this.wikiTreeItems$.next(data))
     );
   };
 }

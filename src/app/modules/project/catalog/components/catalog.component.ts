@@ -83,7 +83,14 @@ export class CatalogProjectsComponent implements OnInit {
             this.rowsCount = this.catalog$.value.total;
         });
     };
-
+    /**Функция сброса фильтров. */
+    public onResetFilters() {
+        this.selectedDate = null;
+        this.isAnyVacancies = false;
+        this.selectedStage = null;
+      /**Функция подзагружает проекты.*/
+        this.onFilterProjectsAsync();
+    }
     /**
      * Функция переходит к проекту, который выбрали.
      * @param projectId - Id проекта.

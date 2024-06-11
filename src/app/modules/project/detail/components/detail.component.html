@@ -305,7 +305,7 @@
                 <td><button pButton
                             type="button"
                             label="Удалить"
-                            class="p-button-outlined p-button-danger"
+                            class="p-button-text p-button-danger"
                             (click)="onBeforeDeleteProjectVacancy(vacancy.vacancyId, vacancy.userVacancy.vacancyName)"
                             *ngIf="isVisibleActionVacancyButton">
                 </button></td>
@@ -436,7 +436,8 @@
                       <th *ngFor="let item of projectTeamColumns">
                         {{item.columnName}}</th>
                         <th>Исключение</th>
-                        <th>Должность</th>
+                        <th pTooltip="Роль участника проекта" tooltipPosition="bottom">Должность</th>
+
                     </tr>
                   </ng-template>
 
@@ -445,7 +446,7 @@
                       <td>
                         <p-tableCheckbox [value]="team"></p-tableCheckbox>
                       </td>
-                      <td>{{team.vacancyName}}</td>
+                      <td >{{team.vacancyName}}</td>
                       <td>{{team.member}}</td>
                       <td>{{team.joined}}</td>
                       <td>
@@ -458,7 +459,7 @@
                       <td>
                         <p-inplace [style]="{'min-width':'100px'}" [active]="isActiveRole" (onActivate)="onActivateRole()">
                           <ng-template pTemplate="display">
-                            <span>{{team.role}}</span>
+                            <span pTooltip="Роль участника проекта" tooltipPosition="top">{{team.role}}</span>
                           </ng-template>
                           <ng-template pTemplate="content">
                             <input type="text" [(ngModel)]="team.role" value="{{team.role}}" pInputText>
