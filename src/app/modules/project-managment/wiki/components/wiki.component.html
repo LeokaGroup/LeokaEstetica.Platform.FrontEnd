@@ -5,7 +5,8 @@
       scrollHeight="250px"
       [virtualScroll]="true"
       [value]="aTreeItems"
-      (onNodeExpand)="onSelect($event)">
+      (onNodeExpand)="onSelect($event)"
+      [style]="{'min-width': '300px'}">
 
     </p-tree>
   </div>
