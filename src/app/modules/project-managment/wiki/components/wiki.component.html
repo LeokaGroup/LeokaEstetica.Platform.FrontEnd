@@ -15,7 +15,7 @@
   <!-- Контент папки. -->
   <div class="col-lg-9 block-wiki-content" *ngIf="isSelectedFolder">
     <!--  Смотрим лишь 1 уровень, так как выбрали одну папку.  -->
-    <div *ngFor="let page of folderItems[0].children">
+    <div *ngFor="let page of wikiTreeFolderItems$.value[0].children">
       <div>
         <!-- TODO: Как отработает, если будут вложенные папки? Надо проверить будет. -->
         <div class="page">
@@ -32,6 +32,24 @@
 
   <!-- Контент страницы. -->
   <div class="col-lg-9 block-wiki-content" *ngIf="isSelectedFolderPage">
-    test2
+    <div>
+      <div>
+        <!-- TODO: Как отработает, если будут вложенные папки? Надо проверить будет. -->
+        <div class="page">
+          <div class="tree-item-line">
+            <i [ngClass]="wikiTreeFolderPage$.value.icon" style="font-size: 1rem"></i>
+            &nbsp;
+            <div>
+              <h1>{{wikiTreeFolderPage$.value.label}}</h1>
+            </div>
+          </div>
+
+          <div>
+            {{wikiTreeFolderPage$.value.pageDescription}}
+          </div>
+        </div>
+        <br>
+      </div>
+    </div>
   </div>
 </div>

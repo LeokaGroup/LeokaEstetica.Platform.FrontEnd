@@ -91,6 +91,7 @@ export class ProjectManagmentService {
     public settingUserRoles = new BehaviorSubject<any>(null);
     public wikiTreeItems$ = new BehaviorSubject<any>(null);
     public wikiTreeFolderItems$ = new BehaviorSubject<any>(null);
+    public wikiTreeFolderPage$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -1024,6 +1025,16 @@ export class ProjectManagmentService {
   public async getTreeItemFolderAsync(projectId: number, folderId: number) {
     return await this._http.get(this.apiUrl + `/project-management-wiki/tree-item-folder?projectId=${projectId}&folderId=${folderId}`).pipe(
       tap(data => this.wikiTreeFolderItems$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает содержимое страницы.
+   * @param pageId - Id страницы.
+   */
+  public async getTreeItemPageAsync(pageId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-wiki/tree-item-page?pageId=${pageId}`).pipe(
+      tap(data => this.wikiTreeFolderPage$.next(data))
     );
   };
 }

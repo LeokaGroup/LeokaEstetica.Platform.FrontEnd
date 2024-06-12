@@ -19,6 +19,7 @@ export class WikiComponent implements OnInit {
 
   public readonly wikiTreeItems$ = this._projectManagmentService.wikiTreeItems$;
   public readonly wikiTreeFolderItems$ = this._projectManagmentService.wikiTreeFolderItems$;
+  public readonly wikiTreeFolderPage$ = this._projectManagmentService.wikiTreeFolderPage$;
 
   projectId: number = 0;
   aTreeItems: any[] = [];
@@ -65,14 +66,17 @@ export class WikiComponent implements OnInit {
           console.log("Выбранная папка и ее структура: ", this.wikiTreeFolderItems$.value);
           this.isSelectedFolder = true;
           this.isSelectedFolderPage = false;
-          this.folderItems = this.wikiTreeFolderItems$.value;
         });
     }
 
     // Иначе выбрали страницу.
     else {
-      this.isSelectedFolderPage = true;
-      this.isSelectedFolder = false;
+      (await this._projectManagmentService.getTreeItemPageAsync(e.node.pageId))
+        .subscribe(_ => {
+          console.log("Выбранная страница: ", this.wikiTreeFolderPage$.value);
+          this.isSelectedFolderPage = true;
+          this.isSelectedFolder = false;
+        });
     }
   }
 }
