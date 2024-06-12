@@ -7,9 +7,12 @@ import { ProjectManagmentService } from 'src/app/modules/project-managment/servi
 import {RedisService} from 'src/app/modules/redis/services/redis.service';
 import {DialogInput} from "../../../messages/chat/models/input/dialog-input";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
+
 export class ProjectManagementSignalrService {
-  private hubConnection: any;
+  private hubConnection: HubConnection;
   public $allFeed: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   public isConnected: boolean = false;
@@ -29,8 +32,9 @@ export class ProjectManagementSignalrService {
           .then(async () => {
             console.log("Соединение установлено");
             console.log("ConnectionId:", this.hubConnection.connectionId);
+            this.isConnected = true;
 
-            if (this._router.url !== "/user/signin") {
+            if (this._router.url !== "/user/signin" && this.hubConnection.connectionId) {
               await (await this._redisService.addConnectionIdCacheAsync(this.hubConnection.connectionId))
                 .subscribe(_ => {
                   console.log("Записали ConnectionId");
@@ -59,16 +63,23 @@ export class ProjectManagementSignalrService {
    * Функция слушает уведомления успешного планирования спринта.
    */
   public listenSuccessPlaningSprint() {
-    (<HubConnection>this.hubConnection).on("SendNotifySuccessPlaningSprint", (data: any) => {
+    this.hubConnection.on("SendNotifySuccessPlaningSprint", (data: any) => {
       this.$allFeed.next(data);
     });
+  };
+
+    /**
+   * Функция закрывает слушатель уведомления успешного планирования спринта.
+   */
+  public offlistenSuccessPlaningSprint() {
+    this.hubConnection.off("SendNotifySuccessPlaningSprint");
   };
 
   /**
    * Функция слушает уведомления успешного планирования эпика.
    */
   public listenSuccessSuccessIncludeEpicTask() {
-    (<HubConnection>this.hubConnection).on("SendNotifySuccessIncludeEpicTask", (data: any) => {
+    this.hubConnection.on("SendNotifySuccessIncludeEpicTask", (data: any) => {
       this.$allFeed.next(data);
     });
   };
@@ -77,7 +88,7 @@ export class ProjectManagementSignalrService {
    * Функция слушает уведомления ошибки планирования эпика.
    */
   public listenErrorSuccessIncludeEpicTask() {
-    (<HubConnection>this.hubConnection).on("SendNotifyErrorIncludeEpicTask", (data: any) => {
+    this.hubConnection.on("SendNotifyErrorIncludeEpicTask", (data: any) => {
       this.$allFeed.next(data);
     });
   };
@@ -86,7 +97,7 @@ export class ProjectManagementSignalrService {
    * Функция слушает уведомление об успешном начале спринта.
    */
   public listenSuccessStartSprint() {
-    (<HubConnection>this.hubConnection).on("SendNotificationSuccessStartSprint", (data: any) => {
+    this.hubConnection.on("SendNotificationSuccessStartSprint", (data: any) => {
       this.$allFeed.next(data);
     });
   };
@@ -95,7 +106,7 @@ export class ProjectManagementSignalrService {
    * Функция слушает уведомление об успешном начале спринта.
    */
   public listenWarningStartSprint() {
-    (<HubConnection>this.hubConnection).on("SendNotificationWarningStartSprint", (data: any) => {
+    this.hubConnection.on("SendNotificationWarningStartSprint", (data: any) => {
       this.$allFeed.next(data);
     });
   };
@@ -104,13 +115,13 @@ export class ProjectManagementSignalrService {
    * Функция получает диалоги с нейросетью Scrum Master AI.
    */
   public listenGetDialogs() {
-    (<HubConnection>this.hubConnection).on("listenGetDialogs", (response: any) => {
+    this.hubConnection.on("listenGetDialogs", (response: any) => {
       this.$allFeed.next(response);
     });
   };
 
   public getDialogsAsync() {
-    <HubConnection>this.hubConnection.invoke("GetDialogsAsync", localStorage["u_e"], localStorage["t_n"], null)
+    this.hubConnection.invoke("GetDialogsAsync", localStorage["u_e"], localStorage["t_n"], null)
       .catch((err: any) => {
         console.error(err);
       });
@@ -121,7 +132,7 @@ export class ProjectManagementSignalrService {
    * @param diaalogId - Id диалога.
    */
   public getDialogAsync(dialogInput: DialogInput) {
-    <HubConnection>this.hubConnection.invoke("GetDialogAsync", localStorage["u_e"], localStorage["t_n"], JSON.stringify(dialogInput))
+    this.hubConnection.invoke("GetDialogAsync", localStorage["u_e"], localStorage["t_n"], JSON.stringify(dialogInput))
       .catch((err: any) => {
         console.error(err);
       });
@@ -131,7 +142,7 @@ export class ProjectManagementSignalrService {
    * Функция слушает получение диалога нейросети.
    */
   public listenGetDialog() {
-    (<HubConnection>this.hubConnection).on("listenGetDialog", (response: any) => {
+    this.hubConnection.on("listenGetDialog", (response: any) => {
       this.$allFeed.next(response);
     });
   };
@@ -140,7 +151,7 @@ export class ProjectManagementSignalrService {
    * Функция отправляет сообщение.
    */
   public sendMessageAsync(message: string, dialogId?: number | null) {
-    <HubConnection>this.hubConnection.invoke("SendMessageAsync", message, dialogId, localStorage["u_e"], localStorage["t_n"], this._projectManagmentService.apiUrl)
+    this.hubConnection.invoke("SendMessageAsync", message, dialogId, localStorage["u_e"], localStorage["t_n"], this._projectManagmentService.apiUrl)
       .catch((err: any) => {
         console.error(err);
       });
@@ -150,7 +161,7 @@ export class ProjectManagementSignalrService {
    * Функция слушает отправку сообщений.
    */
   public listenSendMessage() {
-    (<HubConnection>this.hubConnection).on("listenSendMessage", (response: any) => {
+    this.hubConnection.on("listenSendMessage", (response: any) => {
       this.$allFeed.next(response);
     });
   };
@@ -159,7 +170,7 @@ export class ProjectManagementSignalrService {
    * Функция слушает ответы нейросети.
    */
   public listenClassificationNetworkMessageResponse() {
-    (<HubConnection>this.hubConnection).on("SendClassificationNetworkMessageResult", (response: any) => {
+    this.hubConnection.on("SendClassificationNetworkMessageResult", (response: any) => {
       this.$allFeed.next(response);
     });
   };
@@ -168,7 +179,7 @@ export class ProjectManagementSignalrService {
    * Функция слушает уведомление об успешном изменении ролей.
    */
   public listenSendNotifySuccessUpdateRoles() {
-    (<HubConnection>this.hubConnection).on("SendNotifySuccessUpdateRoles", (data: any) => {
+    this.hubConnection.on("SendNotifySuccessUpdateRoles", (data: any) => {
       this.$allFeed.next(data);
     });
   };

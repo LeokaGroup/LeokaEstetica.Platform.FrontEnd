@@ -1,6 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { forkJoin } from "rxjs";
+import { Subscription, forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../services/project-managment.service";
 import {MessageService} from "primeng/api";
 import { ProjectManagementSignalrService } from "src/app/modules/notifications/signalr/services/project-magement-signalr.service";
@@ -16,7 +16,7 @@ import {DialogMessageInput} from "../../../messages/chat/models/input/dialog-mes
 /**
  * Класс компонента чата с нейросетью Scrum Master AI.
  */
-export class ScrumMasterAiAssistComponent implements OnInit {
+export class ScrumMasterAiAssistComponent implements OnInit, OnDestroy {
   constructor(private readonly _projectManagmentService: ProjectManagmentService,
               private readonly _router: Router,
               private readonly _activatedRoute: ActivatedRoute,
@@ -30,21 +30,27 @@ export class ScrumMasterAiAssistComponent implements OnInit {
   aMessages: any[] = [];
   lastMessage: any;
   dialogId?: number | null;
+  allFeedSubscription!: Subscription;
 
   public async ngOnInit() {
     forkJoin([
       // this.checkUrlParams(),
     ]).subscribe();
 
-    // Подключаемся.
-    this._projectManagementSignalrService.startConnection().then(async () => {
-      console.log("Подключились");
+    if(!this._projectManagementSignalrService.isConnected) {
+      // Подключаемся.
+      this._projectManagementSignalrService.startConnection().then(() => {
+        console.log("Подключились");
 
+        this.listenAllHubsNotifications();
+      }) 
+    } else {
       this.listenAllHubsNotifications();
-    });
+    }
+
 
     // Подписываемся на получение всех сообщений.
-    this._projectManagementSignalrService.AllFeedObservable
+    this.allFeedSubscription = this._projectManagementSignalrService.AllFeedObservable
       .subscribe(async (response: any) => {
         console.log("Подписались на сообщения", response);
 
@@ -172,4 +178,8 @@ export class ScrumMasterAiAssistComponent implements OnInit {
 
     this._projectManagementSignalrService.getDialogsAsync();
   };
+
+  ngOnDestroy(): void {
+    this.allFeedSubscription.unsubscribe();
+  }
 }
