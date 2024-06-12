@@ -129,11 +129,14 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         await this.getProjectRemarksAsync()
         ]).subscribe();
 
-        // Подключаемся.
-        this._signalrService.startConnection().then(async () => {
-            console.log("Подключились");
-            this.listenAllHubsNotifications();
-        });
+        if (!this._signalrService.isConnected) {
+            // Подключаемся.
+            this._signalrService.startConnection().then(() => {
+              console.log("Подключились");
+    
+              this.listenAllHubsNotifications();
+            });
+          }
 
         // Подписываемся на получение всех сообщений.
         this.allFeedSubscription = this._signalrService.AllFeedObservable
