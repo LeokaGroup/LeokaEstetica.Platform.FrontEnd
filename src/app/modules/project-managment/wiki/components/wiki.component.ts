@@ -18,9 +18,13 @@ export class WikiComponent implements OnInit {
   }
 
   public readonly wikiTreeItems$ = this._projectManagmentService.wikiTreeItems$;
+  public readonly wikiTreeFolderItems$ = this._projectManagmentService.wikiTreeFolderItems$;
 
   projectId: number = 0;
   aTreeItems: any[] = [];
+  folderItems: any;
+  isSelectedFolder: boolean = false;
+  isSelectedFolderPage: boolean = false;
 
   public async ngOnInit() {
     this.checkUrlParams();
@@ -47,7 +51,28 @@ export class WikiComponent implements OnInit {
       });
   };
 
-  public onSelect(e: any) {
+  /**
+   * Функция ивента по элементу дерева.
+   * @param e - Событие.
+   */
+  public async onSelectTreeItemAsync(e: any) {
+    console.log(e.node);
 
+    // Значит выбрали папку.
+    if (e.node.projectId > 0) {
+      (await this._projectManagmentService.getTreeItemFolderAsync(e.node.projectId, e.node.folderId))
+        .subscribe(_ => {
+          console.log("Выбранная папка и ее структура: ", this.wikiTreeFolderItems$.value);
+          this.isSelectedFolder = true;
+          this.isSelectedFolderPage = false;
+          this.folderItems = this.wikiTreeFolderItems$.value;
+        });
+    }
+
+    // Иначе выбрали страницу.
+    else {
+      this.isSelectedFolderPage = true;
+      this.isSelectedFolder = false;
+    }
   }
 }

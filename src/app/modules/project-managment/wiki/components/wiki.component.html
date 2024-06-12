@@ -1,17 +1,37 @@
 <div class="d-flex block-profile space-top-80">
-  <div class="profile-left-menu">
+  <div class="profile-left-menu col-lg-3">
     <p-tree
       class="w-full md:w-30rem"
-      scrollHeight="250px"
+      scrollHeight="50vh"
       [virtualScroll]="true"
       [value]="aTreeItems"
-      (onNodeExpand)="onSelect($event)"
-      [style]="{'min-width': '300px'}">
+      [style]="{'min-width': '300px'}"
+      selectionMode="single"
+      (onNodeSelect)="onSelectTreeItemAsync($event)">
 
     </p-tree>
   </div>
 
-  <div class="">
+  <!-- Контент папки. -->
+  <div class="col-lg-9 block-wiki-content" *ngIf="isSelectedFolder">
+    <!--  Смотрим лишь 1 уровень, так как выбрали одну папку.  -->
+    <div *ngFor="let page of folderItems[0].children">
+      <div>
+        <!-- TODO: Как отработает, если будут вложенные папки? Надо проверить будет. -->
+        <div class="page">
+          <div class="tree-item-line">
+            <i [ngClass]="page.icon" style="font-size: 1rem"></i>
+            &nbsp;
+            {{page.label}}
+          </div>
+        </div>
+        <br>
+      </div>
+    </div>
+  </div>
 
+  <!-- Контент страницы. -->
+  <div class="col-lg-9 block-wiki-content" *ngIf="isSelectedFolderPage">
+    test2
   </div>
 </div>
