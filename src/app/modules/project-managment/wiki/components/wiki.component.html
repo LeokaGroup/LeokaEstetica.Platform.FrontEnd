@@ -15,7 +15,7 @@
   <!-- Контент папки. -->
   <div class="col-lg-9 block-wiki-content" *ngIf="isSelectedFolder">
     <div>
-      <div class="task-name">
+      <div class="">
         <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveFolderName" (onActivate)="onActivateFolderName()">
           <ng-template pTemplate="display">
             <h1>{{folderName}}</h1>
@@ -73,12 +73,70 @@
             <i [ngClass]="wikiTreeFolderPage$.value.icon" style="font-size: 1rem"></i>
             &nbsp;
             <div>
-              <h1>{{wikiTreeFolderPage$.value.label}}</h1>
+              <div class="">
+                <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveFolderPageName" (onActivate)="onActivateFolderPageName()">
+                  <ng-template pTemplate="display">
+                    <h1>{{wikiTreeFolderPage$.value.label}}</h1>
+                  </ng-template>
+                  <ng-template pTemplate="content">
+                    <input type="text" [(ngModel)]="pageName" value="{{pageName}}" pInputText>
+                  </ng-template>
+                </p-inplace>
+
+                <button pButton
+                        pRipple
+                        icon="pi pi-save"
+                        type="button"
+                        label="Сохранить"
+                        class="p-button-success p-button-text p-button-sm"
+                        *ngIf="isActiveFolderPageName"
+                        (click)="onSaveFolderPageNameAsync()">
+                </button>
+
+                <button pButton
+                        pRipple
+                        icon="pi pi-times"
+                        type="button"
+                        label="Отмена"
+                        class="p-button-secondary p-button-text p-button-sm"
+                        *ngIf="isActiveFolderPageName"
+                        (click)="isActiveFolderPageName=!isActiveFolderPageName">
+                </button>
+              </div>
             </div>
           </div>
 
           <div>
-            {{wikiTreeFolderPage$.value.pageDescription}}
+            <div class="">
+              <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveFolderPageDescription" (onActivate)="onActivateFolderPageDescription()">
+                <ng-template pTemplate="display">
+                  {{wikiTreeFolderPage$.value.pageDescription}}
+                </ng-template>
+                <ng-template pTemplate="content">
+                  <input type="text" [(ngModel)]="pageDescription" value="{{pageDescription}}" pInputText>
+                </ng-template>
+              </p-inplace>
+
+              <button pButton
+                      pRipple
+                      icon="pi pi-save"
+                      type="button"
+                      label="Сохранить"
+                      class="p-button-success p-button-text p-button-sm"
+                      *ngIf="isActiveFolderPageDescription"
+                      (click)="onSaveFolderPageDescriptionAsync()">
+              </button>
+
+              <button pButton
+                      pRipple
+                      icon="pi pi-times"
+                      type="button"
+                      label="Отмена"
+                      class="p-button-secondary p-button-text p-button-sm"
+                      *ngIf="isActiveFolderPageDescription"
+                      (click)="isActiveFolderPageDescription=!isActiveFolderPageDescription">
+              </button>
+            </div>
           </div>
         </div>
         <br>
