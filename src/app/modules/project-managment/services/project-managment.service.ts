@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, map, tap} from 'rxjs';
+import {BehaviorSubject, tap} from 'rxjs';
 import {API_URL} from 'src/app/core/core-urls/api-urls';
 import {ChangeTaskDetailsInput} from '../task/models/input/change-task-details-input';
 import {ChangeTaskNameInput} from '../task/models/input/change-task-name-input';
@@ -90,6 +90,8 @@ export class ProjectManagmentService {
     public userRoles = new BehaviorSubject<any>(null);
     public settingUserRoles = new BehaviorSubject<any>(null);
     public wikiTreeItems$ = new BehaviorSubject<any>(null);
+    public wikiTreeFolderItems$ = new BehaviorSubject<any>(null);
+    public wikiTreeFolderPage$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -1012,6 +1014,27 @@ export class ProjectManagmentService {
   public async getWikiTreeItemsAsync(projectId: number) {
     return await this._http.get(this.apiUrl + `/project-management-wiki/tree?projectId=${projectId}`).pipe(
       tap(data => this.wikiTreeItems$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает папку (и ее структуру - вложенные папки и страницы).
+   * @param projectId - Id проекта.
+   * @param folderId - Id папки.
+   */
+  public async getTreeItemFolderAsync(projectId: number, folderId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-wiki/tree-item-folder?projectId=${projectId}&folderId=${folderId}`).pipe(
+      tap(data => this.wikiTreeFolderItems$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает содержимое страницы.
+   * @param pageId - Id страницы.
+   */
+  public async getTreeItemPageAsync(pageId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-wiki/tree-item-page?pageId=${pageId}`).pipe(
+      tap(data => this.wikiTreeFolderPage$.next(data))
     );
   };
 }
