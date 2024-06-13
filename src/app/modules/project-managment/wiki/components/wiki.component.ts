@@ -1,6 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ProjectManagmentService} from "../../services/project-managment.service";
+import {UpdateFolderNameInput} from "../../models/input/update-folder-name-input";
 
 @Component({
   selector: "wiki",
@@ -26,6 +27,9 @@ export class WikiComponent implements OnInit {
   folderItems: any;
   isSelectedFolder: boolean = false;
   isSelectedFolderPage: boolean = false;
+  isActiveFolderName: boolean = false;
+  folderName: string = "";
+  folderId: number = 0;
 
   public async ngOnInit() {
     this.checkUrlParams();
@@ -61,11 +65,14 @@ export class WikiComponent implements OnInit {
 
     // Значит выбрали папку.
     if (e.node.projectId > 0) {
+      this.folderId = e.node.folderId;
+
       (await this._projectManagmentService.getTreeItemFolderAsync(e.node.projectId, e.node.folderId))
         .subscribe(_ => {
           console.log("Выбранная папка и ее структура: ", this.wikiTreeFolderItems$.value);
           this.isSelectedFolder = true;
           this.isSelectedFolderPage = false;
+          this.folderName = this.wikiTreeFolderItems$.value[0].label;
         });
     }
 
@@ -79,4 +86,27 @@ export class WikiComponent implements OnInit {
         });
     }
   }
+
+  /**
+   * Функция изменяет название папки.
+   */
+  public async onSaveFolderNameAsync() {
+    let updateFolderNameInput = new UpdateFolderNameInput();
+    updateFolderNameInput.folderId = this.folderId;
+    updateFolderNameInput.folderName = this.folderName;
+
+    (await this._projectManagmentService.updateFolderNameAsync(updateFolderNameInput))
+      .subscribe(async _ => {
+        (await this._projectManagmentService.getTreeItemFolderAsync(+this.projectId, this.folderId))
+          .subscribe(_ => {
+            console.log("Выбранная папка и ее структура: ", this.wikiTreeFolderItems$.value);
+            this.folderName = this.wikiTreeFolderItems$.value[0].label;
+            this.isActiveFolderName = false;
+          });
+      });
+  };
+
+  public onActivateFolderName() {
+    this.isActiveFolderName = !this.isActiveFolderName;
+  };
 }

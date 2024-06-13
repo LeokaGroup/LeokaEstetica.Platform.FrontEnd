@@ -14,6 +14,39 @@
 
   <!-- Контент папки. -->
   <div class="col-lg-9 block-wiki-content" *ngIf="isSelectedFolder">
+    <div>
+      <div class="task-name">
+        <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveFolderName" (onActivate)="onActivateFolderName()">
+          <ng-template pTemplate="display">
+            <h1>{{folderName}}</h1>
+          </ng-template>
+          <ng-template pTemplate="content">
+            <input type="text" [(ngModel)]="folderName" value="{{folderName}}" pInputText>
+          </ng-template>
+        </p-inplace>
+
+        <button pButton
+                pRipple
+                icon="pi pi-save"
+                type="button"
+                label="Сохранить"
+                class="p-button-success p-button-text p-button-sm"
+                *ngIf="isActiveFolderName"
+                (click)="onSaveFolderNameAsync()">
+        </button>
+
+        <button pButton
+                pRipple
+                icon="pi pi-times"
+                type="button"
+                label="Отмена"
+                class="p-button-secondary p-button-text p-button-sm"
+                *ngIf="isActiveFolderName"
+                (click)="isActiveFolderName=!isActiveFolderName">
+        </button>
+      </div>
+    </div>
+
     <!--  Смотрим лишь 1 уровень, так как выбрали одну папку.  -->
     <div *ngFor="let page of wikiTreeFolderItems$.value[0].children">
       <div>
