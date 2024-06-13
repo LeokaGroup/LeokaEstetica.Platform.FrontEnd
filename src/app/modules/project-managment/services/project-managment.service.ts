@@ -1,4 +1,4 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, tap} from 'rxjs';
 import {API_URL} from 'src/app/core/core-urls/api-urls';
@@ -30,6 +30,7 @@ import { SprintInput } from '../sprint/models/sprint-input';
 import {SprintDurationSettingInput} from "../sprint/models/sprint-duration-setting-input";
 import {SprintMoveNotCompletedTaskSettingInput} from "../sprint/models/sprint-move-not-completed-task-setting-input";
 import {UpdateRoleInput} from "../models/input/update-role-input";
+import { UpdateFolderNameInput } from '../models/input/update-folder-name-input';
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -1035,6 +1036,16 @@ export class ProjectManagmentService {
   public async getTreeItemPageAsync(pageId: number) {
     return await this._http.get(this.apiUrl + `/project-management-wiki/tree-item-page?pageId=${pageId}`).pipe(
       tap(data => this.wikiTreeFolderPage$.next(data))
+    );
+  };
+
+  /**
+   * Функция изменяет название папки.
+   * @param updateFolderNameInput
+   */
+  public async updateFolderNameAsync(updateFolderNameInput: UpdateFolderNameInput) {
+    return await this._http.patch(this.apiUrl + `/project-management-wiki/tree-item-folder`, updateFolderNameInput).pipe(
+      tap(data => this.wikiTreeFolderItems$.next(data))
     );
   };
 }
