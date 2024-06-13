@@ -31,6 +31,8 @@ import {SprintDurationSettingInput} from "../sprint/models/sprint-duration-setti
 import {SprintMoveNotCompletedTaskSettingInput} from "../sprint/models/sprint-move-not-completed-task-setting-input";
 import {UpdateRoleInput} from "../models/input/update-role-input";
 import { UpdateFolderNameInput } from '../models/input/update-folder-name-input';
+import { UpdateFolderPageNameInput } from '../models/input/update-folder-page-name-input';
+import { UpdateFolderPageDescriptionInput } from '../models/input/update-folder-page-description-input';
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -1041,11 +1043,31 @@ export class ProjectManagmentService {
 
   /**
    * Функция изменяет название папки.
-   * @param updateFolderNameInput
+   * @param updateFolderNameInput - Входная модель.
    */
   public async updateFolderNameAsync(updateFolderNameInput: UpdateFolderNameInput) {
     return await this._http.patch(this.apiUrl + `/project-management-wiki/tree-item-folder`, updateFolderNameInput).pipe(
       tap(data => this.wikiTreeFolderItems$.next(data))
+    );
+  };
+
+  /**
+   * Функция изменяет название страницы папки.
+   * @param updateFolderPageNameInput
+   */
+  public async updateFolderPageNameAsync(updateFolderPageNameInput: UpdateFolderPageNameInput) {
+    return await this._http.patch(this.apiUrl + `/project-management-wiki/tree-item-folder-page-name`, updateFolderPageNameInput).pipe(
+      tap(data => this.wikiTreeFolderPage$.next(data))
+    );
+  };
+
+  /**
+   * Функция изменяет название страницы папки.
+   * @param updateFolderPageDescriptionInput
+   */
+  public async updateFolderPageDescriptionAsync(updateFolderPageDescriptionInput: UpdateFolderPageDescriptionInput) {
+    return await this._http.patch(this.apiUrl + `/project-management-wiki/tree-item-folder-page-description`, updateFolderPageDescriptionInput).pipe(
+      tap(data => this.wikiTreeFolderPage$.next(data))
     );
   };
 }
