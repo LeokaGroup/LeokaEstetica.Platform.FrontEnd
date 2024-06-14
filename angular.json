@@ -74,10 +74,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "LeokaEstetica.Platform.FrontEnd:build:production"
+              "buildTarget": "LeokaEstetica.Platform.FrontEnd:build:production"
             },
             "development": {
-              "browserTarget": "LeokaEstetica.Platform.FrontEnd:build:development"
+              "buildTarget": "LeokaEstetica.Platform.FrontEnd:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -85,7 +85,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "LeokaEstetica.Platform.FrontEnd:build"
+            "buildTarget": "LeokaEstetica.Platform.FrontEnd:build"
           }
         },
         "test": {
