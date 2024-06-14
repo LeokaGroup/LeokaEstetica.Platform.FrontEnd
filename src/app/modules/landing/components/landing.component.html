@@ -34,7 +34,7 @@
 </div>
 
 <p-carousel [value]="platformOffers$.value.platformOfferItems" [numVisible]="3" [numScroll]="3" [circular]="true"
-  [responsiveOptions]="platformOffers$.value.platformOfferItems" orientation="{{carouselType}}">
+  [responsiveOptions]="platformOffers$.value.platformOfferItems" [orientation]="carouselType">
   <ng-template let-item pTemplate="item">
     <div class="border-1 surface-border border-round m-2 text-center py-5 px-3">
       <div class="mb-3">
@@ -59,7 +59,7 @@
 </div>
 
 <p-carousel [value]="platformCondituions$.value" [numVisible]="3" [numScroll]="3" [circular]="true"
-  [responsiveOptions]="platformCondituions$.value" orientation="{{carouselType}}">
+  [responsiveOptions]="platformCondituions$.value" [orientation]="carouselType">
   <ng-template let-item pTemplate="item">
     <div class="border-1 surface-border border-round m-2 text-center py-5 px-3">
       <div class="mb-3">

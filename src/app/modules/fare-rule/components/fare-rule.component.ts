@@ -22,7 +22,7 @@ export class FareRuleComponent implements OnInit {
     responsiveOptions: any;
     numVisible: number = 3;
     numScroll: number = 3;
-    carouselType: string = "";
+    carouselType: "horizontal" | "vertical" = "horizontal";
     isAvailableFareRule: boolean = false;
 
     public async ngOnInit() {
