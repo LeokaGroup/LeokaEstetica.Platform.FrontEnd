@@ -1,5 +1,5 @@
 <div class="d-flex block-profile space-top-80">
-  <div class="profile-left-menu col-lg-3">
+  <div class="profile-left-menu col-lg-3 d-flex">
     <p-tree
       class="w-full md:w-30rem"
       scrollHeight="50vh"
@@ -7,9 +7,13 @@
       [value]="aTreeItems"
       [style]="{'min-width': '300px'}"
       selectionMode="single"
-      (onNodeSelect)="onSelectTreeItemAsync($event)">
+      (onNodeSelect)="onSelectTreeItemAsync($event)"
+      [contextMenu]="cm"
+      [(selection)]="selectedTreeItem"
+      (selectionChange)="onSelectContextTreeItem($event)">
 
     </p-tree>
+    <p-contextMenu #cm [model]="aContextMenuActions"></p-contextMenu>
   </div>
 
   <!-- Контент папки. -->
@@ -18,7 +22,9 @@
       <div class="">
         <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveFolderName" (onActivate)="onActivateFolderName()">
           <ng-template pTemplate="display">
-            <h1>{{folderName}}</h1>
+            <div class="d-flex align-items-center">
+              <h1>{{folderName}}</h1>
+            </div>
           </ng-template>
           <ng-template pTemplate="content">
             <input type="text" [(ngModel)]="folderName" value="{{folderName}}" pInputText>

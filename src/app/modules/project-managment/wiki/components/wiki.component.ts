@@ -23,6 +23,7 @@ export class WikiComponent implements OnInit {
   public readonly wikiTreeItems$ = this._projectManagmentService.wikiTreeItems$;
   public readonly wikiTreeFolderItems$ = this._projectManagmentService.wikiTreeFolderItems$;
   public readonly wikiTreeFolderPage$ = this._projectManagmentService.wikiTreeFolderPage$;
+  public readonly wikiContextMenu$ = this._projectManagmentService.wikiContextMenu$;
 
   projectId: number = 0;
   aTreeItems: any[] = [];
@@ -37,6 +38,8 @@ export class WikiComponent implements OnInit {
   pageName: string = "";
   pageDescription: string = "";
   isActiveFolderPageDescription: boolean = false;
+  selectedTreeItem: any;
+  aContextMenuActions: any[] = [];
 
   public async ngOnInit() {
     this.checkUrlParams();
@@ -165,5 +168,29 @@ export class WikiComponent implements OnInit {
 
   public onActivateFolderPageDescription() {
     this.isActiveFolderPageDescription = !this.isActiveFolderPageDescription;
+  };
+
+  /**
+   * Функция
+   * @param e
+   */
+  public async onSelectContextTreeItem(e: any) {
+    console.log(e);
+
+    // Если выбрали папку.
+    if (e.projectId > 0) {
+      (await this._projectManagmentService.getContextMenuAsync(e.projectId, null))
+        .subscribe(_ => {
+          this.aContextMenuActions = this.wikiContextMenu$.value;
+        });
+    }
+
+    // Если выбрали страницу.
+    else if (e.pageId > 0) {
+      (await this._projectManagmentService.getContextMenuAsync(null, e.pageId))
+        .subscribe(_ => {
+          this.aContextMenuActions = this.wikiContextMenu$.value;
+        });
+    }
   };
 }
