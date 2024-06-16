@@ -33,6 +33,7 @@ import {UpdateRoleInput} from "../models/input/update-role-input";
 import { UpdateFolderNameInput } from '../models/input/update-folder-name-input';
 import { UpdateFolderPageNameInput } from '../models/input/update-folder-page-name-input';
 import { UpdateFolderPageDescriptionInput } from '../models/input/update-folder-page-description-input';
+import { CreateWikiFolderInput } from '../models/input/create-folder-input';
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -1086,6 +1087,16 @@ export class ProjectManagmentService {
 
     return await this._http.get(this.apiUrl + `/project-management-wiki/context-menu?pageId=${pageId}`).pipe(
       tap(data => this.wikiContextMenu$.next(data))
+    );
+  };
+
+  /**
+   * Функция создает папку.
+   * @param createWikiFolderInput - Входная модель.
+   */
+  public async createFolderAsync(createWikiFolderInput: CreateWikiFolderInput) {
+    return await this._http.post(this.apiUrl + `/project-management-wiki/tree-item-folder-page`, createWikiFolderInput).pipe(
+      tap(_ => console.log("Папка успешно создана."))
     );
   };
 }

@@ -4,6 +4,7 @@ import {ProjectManagmentService} from "../../services/project-managment.service"
 import {UpdateFolderNameInput} from "../../models/input/update-folder-name-input";
 import {UpdateFolderPageNameInput} from "../../models/input/update-folder-page-name-input";
 import {UpdateFolderPageDescriptionInput} from "../../models/input/update-folder-page-description-input";
+import {CreateWikiFolderInput} from "../../models/input/create-folder-input";
 
 @Component({
   selector: "wiki",
@@ -40,6 +41,11 @@ export class WikiComponent implements OnInit {
   isActiveFolderPageDescription: boolean = false;
   selectedTreeItem: any;
   aContextMenuActions: any[] = [];
+  isVisibleContextMenuAction: boolean = false;
+  isCreateFolder: boolean = false;
+  isCreateFolderPage: boolean = false;
+  selectedFolderName: string = "";
+  selectedFolderPageName: string = "";
 
   public async ngOnInit() {
     this.checkUrlParams();
@@ -171,16 +177,28 @@ export class WikiComponent implements OnInit {
   };
 
   /**
-   * Функция
-   * @param e
+   * Функция отображает контекстное меню.
+   * @param e - ивент.
    */
   public async onSelectContextTreeItem(e: any) {
     console.log(e);
+
+    let _this = this; // Важно для сохранения контекста, внутри command он теряется.
 
     // Если выбрали папку.
     if (e.projectId > 0) {
       (await this._projectManagmentService.getContextMenuAsync(e.projectId, null))
         .subscribe(_ => {
+          this.wikiContextMenu$.value.forEach((x: any) => {
+            x.command = function (e: any) {
+              console.log(e);
+
+              _this.isCreateFolder = true;
+              _this.isCreateFolderPage = false;
+              _this.isVisibleContextMenuAction = true;
+            };
+          });
+
           this.aContextMenuActions = this.wikiContextMenu$.value;
         });
     }
@@ -189,8 +207,44 @@ export class WikiComponent implements OnInit {
     else if (e.pageId > 0) {
       (await this._projectManagmentService.getContextMenuAsync(null, e.pageId))
         .subscribe(_ => {
+          this.wikiContextMenu$.value.forEach((x: any) => {
+            x.command = function (e: any) {
+              console.log(e);
+
+              _this.isCreateFolder = false;
+              _this.isCreateFolderPage = true;
+              _this.isVisibleContextMenuAction = true;
+            };
+          });
+
           this.aContextMenuActions = this.wikiContextMenu$.value;
         });
     }
+  };
+
+  /**
+   * Функция создает папку.
+   */
+  public async onCreateFolderAsync() {
+    console.log("selectedTreeItem",this.selectedTreeItem);
+
+    let createWikiFolderInput = new CreateWikiFolderInput();
+    createWikiFolderInput.wikiTreeId = this.selectedTreeItem.wikiTreeId;
+    createWikiFolderInput.parentId = this.selectedTreeItem.folderId;
+    createWikiFolderInput.folderName = this.selectedFolderName;
+
+    (await this._projectManagmentService.createFolderAsync(createWikiFolderInput))
+      .subscribe(async _ => {
+        (await this._projectManagmentService.getTreeItemFolderAsync(this.selectedTreeItem.projectId, this.selectedTreeItem.folderId))
+          .subscribe(_ => {
+            this.isVisibleContextMenuAction = false;
+            this.isActiveFolderPageName = false;
+            this.pageName = this.wikiTreeFolderPage$.value.label;
+          });
+      });
+  };
+
+  public async onCreateFolderPageAsync() {
+
   };
 }

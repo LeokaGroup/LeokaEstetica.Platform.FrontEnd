@@ -150,3 +150,64 @@
     </div>
   </div>
 </div>
+
+<!-- Диалог выбора действия создать папку или страницу. -->
+<p-dialog header="{{isCreateFolder ? 'Создание новой папки' : 'Создание новой страницы'}}"
+          [modal]="true"
+          [(visible)]="isVisibleContextMenuAction"
+          [style]="{ width: '500px' }"
+          [draggable]="false" >
+
+  <div class="flex align-items-center gap-3 mb-3">
+    <div>
+      <label for="username" class="font-semibold w-6rem">{{isCreateFolder ? 'Название папки' : 'Название страницы'}}</label>
+    </div>
+
+    <div *ngIf="isCreateFolder">
+      <input pInputText
+             class="flex-auto"
+             autocomplete="off"
+             [(ngModel)]="selectedFolderName"
+             [style]="{ width: '350px' }">
+    </div>
+
+    <div *ngIf="isCreateFolderPage">
+      <input pInputText
+             class="flex-auto"
+             autocomplete="off"
+             [(ngModel)]="selectedFolderPageName"
+             [style]="{ width: '350px' }">
+    </div>
+  </div>
+
+  <div class="flex justify-content-end gap-2">
+    <button pButton
+            pRipple
+            icon="pi pi-save"
+            type="button"
+            label="Сохранить"
+            class="p-button-success p-button-text p-button-sm"
+            (click)="onCreateFolderAsync()"
+            *ngIf="isCreateFolder">
+    </button>
+
+    <button pButton
+            pRipple
+            icon="pi pi-save"
+            type="button"
+            label="Сохранить"
+            class="p-button-success p-button-text p-button-sm"
+            (click)="onCreateFolderPageAsync()"
+            *ngIf="isCreateFolderPage">
+    </button>
+
+    <button pButton
+            pRipple
+            icon="pi pi-times"
+            type="button"
+            label="Отмена"
+            class="p-button-secondary p-button-text p-button-sm"
+            (click)="isVisibleContextMenuAction = !isVisibleContextMenuAction">
+    </button>
+  </div>
+</p-dialog>

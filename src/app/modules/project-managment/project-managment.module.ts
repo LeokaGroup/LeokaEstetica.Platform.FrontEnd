@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MessageService} from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
 import {UserService} from '../user/services/user.service';
 import {PanelMenuModule} from 'primeng/panelmenu';
@@ -64,6 +63,7 @@ import { ScrumMasterAiAssistComponent } from './scrum-master-ai/components/scrum
 import { WikiComponent } from './wiki/components/wiki.component';
 import { TreeModule } from 'primeng/tree';
 import { ContextMenuModule } from 'primeng/contextmenu';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
