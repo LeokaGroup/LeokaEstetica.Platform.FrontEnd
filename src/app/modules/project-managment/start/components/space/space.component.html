@@ -19,6 +19,7 @@
             <div class="card card-task" (click)="onSelectTask(t.projectTaskId, t.taskTypeId)">
               <div class="title">
                 {{t.name}}
+                <button class="pi pi-ellipsis-v button-context-menu"></button>
 
                 <div class="tags" *ngFor="let tag of t.tagNames">
                   <p-chip>{{tag}}</p-chip>
