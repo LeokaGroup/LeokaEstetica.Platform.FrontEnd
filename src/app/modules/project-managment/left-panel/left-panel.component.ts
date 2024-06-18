@@ -85,6 +85,7 @@ export class LeftPanelComponent implements OnInit, DoCheck {
             projectId
           }
         });
+        this.onClose();
         break;
 
       case "Спринты":
@@ -93,6 +94,7 @@ export class LeftPanelComponent implements OnInit, DoCheck {
             projectId
           }
         });
+        this.onClose();
         break;
 
       case "Задачи":
@@ -101,10 +103,12 @@ export class LeftPanelComponent implements OnInit, DoCheck {
             projectId
           }
         });
+        this.onClose();
         break;
 
       case "Пространства":
         this._router.navigate(["/project-management/workspaces"]);
+        this.onClose();
         break;
 
       case "Wiki":
@@ -113,6 +117,7 @@ export class LeftPanelComponent implements OnInit, DoCheck {
             projectId
           }
         });
+        this.onClose();
         break;
 
       default:
