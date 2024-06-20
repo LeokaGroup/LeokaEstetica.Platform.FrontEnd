@@ -103,6 +103,7 @@ export class LeftMenuComponent implements OnInit {
     public async onSelectMenu(event: any) {
         console.log("event", event);
         let text = event.target.textContent;
+        event.preventDefault();
 
         (await this._backOfficeService.selectProfileMenuAsync(text))
             .subscribe(_ => {
