@@ -26,7 +26,7 @@
        <div class="project-text-item">
         <div class="d-flex">
           <div>
-            <p-tag styleClass="mr-2" severity="primary" value="{{item.payment == '' ? 'Без оплаты' : item.payment + '₽'}}"></p-tag>
+            <p-tag styleClass="mr-2" severity="secondary" value="{{item.payment == '' ? 'Без оплаты' : item.payment + '₽'}}"></p-tag>
           </div>
 
           <div class="tag">
@@ -38,7 +38,7 @@
           </div>
 
           <div class="tag" *ngIf="item.tagColor !== null && item.tagValue !== null">
-            <p-tag severity="{{item.tagColor}}" value="{{item.tagValue}}"></p-tag>
+            <p-tag [severity]="item.tagColor" value="{{item.tagValue}}"></p-tag>
           </div>
         </div>
 

@@ -35,9 +35,7 @@
             ],
             "styles": [
               "src/styles.scss",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/primeng/resources/themes/saga-blue/theme.css",
-              "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
               "node_modules/quill/dist/quill.core.css",
               "node_modules/quill/dist/quill.snow.css"
@@ -74,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "LeokaEstetica.Platform.FrontEnd:build:production"
+              "buildTarget": "LeokaEstetica.Platform.FrontEnd:build:production"
             },
             "development": {
-              "browserTarget": "LeokaEstetica.Platform.FrontEnd:build:development"
+              "buildTarget": "LeokaEstetica.Platform.FrontEnd:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -85,7 +83,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "LeokaEstetica.Platform.FrontEnd:build"
+            "buildTarget": "LeokaEstetica.Platform.FrontEnd:build"
           }
         },
         "test": {
@@ -108,6 +106,5 @@
         }
       }
     }
-  },
-  "defaultProject": "LeokaEstetica.Platform.FrontEnd"
+  }
 }

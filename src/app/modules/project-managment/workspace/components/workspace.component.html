@@ -12,65 +12,15 @@
                 [rows]="10"
                 layout="list"
                 emptyMessage="Проектов еще не создано...">
-      <!--    <ng-template pTemplate="header">-->
-      <!--      <div class="flex flex-column md:flex-row md:justify-content-between">-->
-      <!--&lt;!&ndash;        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By Price" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown>&ndash;&gt;-->
-      <!--&lt;!&ndash;        <span class="p-input-icon-left mb-2 md:mb-0">&ndash;&gt;-->
-      <!--&lt;!&ndash;                    <i class="pi pi-search"></i>&ndash;&gt;-->
-      <!--&lt;!&ndash;&lt;!&ndash;                    <input type="search" pInputText placeholder="Search by Name" (input)="dv.filter($event.target.value)">&ndash;&gt;&ndash;&gt;-->
-      <!--&lt;!&ndash;                </span>&ndash;&gt;-->
-      <!--&lt;!&ndash;        <p-dataViewLayoutOptions></p-dataViewLayoutOptions>&ndash;&gt;-->
-      <!--      </div>-->
-      <!--    </ng-template>-->
-      <ng-template let-w pTemplate="listItem">
-        <div class="col-12 data-line">
-          <div class="product-list-item">
-            <!--          <img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.name"/>-->
-            <div class="product-list-detail">
-              <div class="product-name mt-3">
-                <h5 class="workspace-project-name" (click)="onRouteWorkSpaceAsync(w.projectId)">{{w.projectManagementName}}</h5>
-              </div>
-              <!--            <div class="product-description">{{product.description}}</div>-->
-              <!--            <p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating>-->
-              <!--            <i class="pi pi-tag product-category-icon"></i><span class="product-category">{{product.category}}</span>-->
-            </div>
-            <div class="product-list-action">
-              <!--            <span class="product-price">${{product.price}}</span>-->
-              <!--            <p-button icon="pi pi-shopping-cart" label="Add to Cart" [disabled]="product.inventoryStatus === 'OUTOFSTOCK'"></p-button>-->
-              <!--            <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span>-->
+      <ng-template let-ws pTemplate="list">
+        <div class="grid grid-nogutter">
+          <div class="col-12 data-line" *ngFor="let w of ws">
+            <div class="mt-3 mb-3">
+              <h5 class="workspace-project-name" (click)="onRouteWorkSpaceAsync(w.projectId)">{{w.projectManagementName}}</h5>
             </div>
           </div>
         </div>
       </ng-template>
-
-<!--   TODO: Если нужно будет отображать в виде грида, то этот блок использовать.   -->
-<!--      <ng-template let-w pTemplate="gridItem">-->
-<!--        <div class="col-12 md:col-4">-->
-<!--          <div class="product-grid-item card">-->
-<!--            <div class="product-grid-item-top">-->
-<!--              <div>-->
-<!--                <i class="pi pi-tag product-category-icon"></i>-->
-<!--                &lt;!&ndash;              <span class="product-category">{{product.category}}</span>&ndash;&gt;-->
-<!--              </div>-->
-<!--              &lt;!&ndash;            <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span>&ndash;&gt;-->
-<!--            </div>-->
-<!--            <div class="product-grid-item-content">-->
-<!--              &lt;!&ndash;            <img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.name"/>&ndash;&gt;-->
-<!--              <div class="product-name ">-->
-<!--                <div class="workspace-project-name" (click)="onRouteWorkSpace()">-->
-<!--                  {{w.projectManagementName}}-->
-<!--                </div>-->
-<!--              </div>-->
-<!--              &lt;!&ndash;            <div class="product-description">{{product.description}}</div>&ndash;&gt;-->
-<!--              &lt;!&ndash;            <p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating>&ndash;&gt;-->
-<!--            </div>-->
-<!--            <div class="product-grid-item-bottom">-->
-<!--              &lt;!&ndash;            <span class="product-price">${{product.price}}</span>&ndash;&gt;-->
-<!--              &lt;!&ndash;            <p-button icon="pi pi-shopping-cart" [disabled]="product.inventoryStatus === 'OUTOFSTOCK'"></p-button>&ndash;&gt;-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </ng-template>-->
     </p-dataView>
   </div>
 </div>

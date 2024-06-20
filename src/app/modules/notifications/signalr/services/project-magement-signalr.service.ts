@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {Router} from '@angular/router';
 import {HttpTransportType, HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
 import {BehaviorSubject} from 'rxjs';
 import {API_URL} from 'src/app/core/core-urls/api-urls';
 import { ProjectManagmentService } from 'src/app/modules/project-managment/services/project-managment.service';
 import {RedisService} from 'src/app/modules/redis/services/redis.service';
 import {DialogInput} from "../../../messages/chat/models/input/dialog-input";
+import { Router } from '@angular/router';
 
 @Injectable()
 export class ProjectManagementSignalrService {
@@ -14,7 +14,7 @@ export class ProjectManagementSignalrService {
 
   public isConnected: boolean = false;
 
-  public constructor(private readonly _redisService: RedisService,
+  constructor(private readonly _redisService: RedisService,
                      private readonly _router: Router,
                      private readonly _projectManagmentService: ProjectManagmentService) {
     this.hubConnection = new HubConnectionBuilder()
@@ -22,7 +22,7 @@ export class ProjectManagementSignalrService {
       .build();
   }
 
-  public async startConnection() {
+  public async startConnection(): Promise<boolean | void>  {
     if (this.hubConnection.state !== "Connected") {
       return await new Promise(async (resolve, reject) => {
         this.hubConnection.start()
