@@ -38,8 +38,6 @@ export class ProjectSettingsComponent implements OnInit {
   isShowProfile: boolean = false;
   avatarFormData = new FormData();
   isShowScrumSettings: boolean = false;
-  selectedDurationSetting: any;
-  selectedMoveSetting: any;
   checked: boolean = true;
   isShowUsers: boolean = false;
   selectedUser: any;
