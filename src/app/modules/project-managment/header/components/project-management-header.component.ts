@@ -56,15 +56,31 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   };
 
   ngDoCheck() {
-    // Если роут не Kanban или Scrum, то дизейблим пункт меню стратегия представления.
-    if (this._router.url !== "/project-management/space?projectId=274") {
-      this.aHeaderItems[0].disabled = true;
-    }
+    // Если роут не Kanban или Scrum, то дизейблим пункты меню стратегия представления и настройки.
+    let projectId = this.projectId;
+    const disableButtons = this._router.url !== `/project-management/space?projectId=${projectId}`;
 
-    else {
-      this.aHeaderItems[0].disabled = false;
-    }
+    this.disableButtonIfNeeded('Strategy', disableButtons);
+    this.disableButtonIfNeeded('Settings', disableButtons);
   };
+
+  /**
+   * Функция отключает кнопку хидера, если не выбран проект.
+   */
+  private disableButtonIfNeeded(buttonId: string, disabled: boolean) {
+    const button = this.findButton(buttonId);
+    if (button) {
+      button.disabled = disabled;
+    }
+  }
+
+  /**
+   * Функция ищет необходимый элемент Хидера.
+   * @returns - искомый элемент хидера.
+   */
+  private findButton = (id: string) => {
+    return this.aHeaderItems.find(headerItem => headerItem.id === id);
+  }
 
   private async checkUrlParams() {
     this._activatedRoute.queryParams
@@ -80,6 +96,8 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
 
       });
   };
+
+ 
 
   /**
    * для задачи 34460898
