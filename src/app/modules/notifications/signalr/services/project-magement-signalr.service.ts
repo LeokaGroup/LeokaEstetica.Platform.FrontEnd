@@ -165,10 +165,19 @@ export class ProjectManagementSignalrService {
   };
 
   /**
-   * Функция слушает уведомление об успешном изменении ролей.
+   * Функция слушает уведомление о предупреждении невозможности изменения статуса эпика на недопустимый статус.
    */
-  public listenSendNotifySuccessUpdateRoles() {
-    (<HubConnection>this.hubConnection).on("SendNotifySuccessUpdateRoles", (data: any) => {
+  public listenSendNotifyWarningChangeEpicStatus() {
+    (<HubConnection>this.hubConnection).on("SendNotifyWarningChangeEpicStatus", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает уведомление о предупреждении невозможности изменения статуса истории на недопустимый статус.
+   */
+  public listenSendNotifyWarningChangeStoryStatus() {
+    (<HubConnection>this.hubConnection).on("SendNotifyWarningChangeStoryStatus", (data: any) => {
       this.$allFeed.next(data);
     });
   };
