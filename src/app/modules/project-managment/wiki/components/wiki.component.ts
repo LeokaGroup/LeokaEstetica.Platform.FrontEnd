@@ -26,7 +26,6 @@ export class WikiComponent implements OnInit {
 
   projectId: number = 0;
   aTreeItems: any[] = [];
-  folderItems: any;
   isSelectedFolder: boolean = false;
   isSelectedFolderPage: boolean = false;
   isActiveFolderName: boolean = false;
@@ -79,7 +78,7 @@ export class WikiComponent implements OnInit {
           console.log("Выбранная папка и ее структура: ", this.wikiTreeFolderItems$.value);
           this.isSelectedFolder = true;
           this.isSelectedFolderPage = false;
-          this.folderName = this.wikiTreeFolderItems$.value[0].label;
+          this.folderName = e.node.label;
         });
     }
 

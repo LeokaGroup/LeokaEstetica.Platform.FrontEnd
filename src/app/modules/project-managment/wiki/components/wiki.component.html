@@ -48,7 +48,7 @@
     </div>
 
     <!--  Смотрим лишь 1 уровень, так как выбрали одну папку.  -->
-    <div *ngFor="let page of wikiTreeFolderItems$.value[0].children">
+    <div *ngFor="let page of wikiTreeFolderItems$.value">
       <div>
         <!-- TODO: Как отработает, если будут вложенные папки? Надо проверить будет. -->
         <div class="page">
