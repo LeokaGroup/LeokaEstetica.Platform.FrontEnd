@@ -12,7 +12,7 @@
 
     <div class="" *ngFor="let r of selectedProject$.value.projectRemarks">
       <div class="mb-1">
-        <p-message severity="warn" text="{{r.remarkText}}"></p-message>
+        <p-message severity="warning" text="{{r.remarkText}}"></p-message>
       </div>
     </div>
 
@@ -526,15 +526,17 @@
                     autocomplete="new-password"
                     [(ngModel)]="projectComment"
                     (keyup.enter)="onCreateProjectCommentAsync()" />
+                
                 </div>
-
-                  <!-- <div class="d-flex justify-content-end">
-                    <button pButton type="button"
-                      label="Отправить"
-                      class="p-button-outlined"
-                      (click)="onCreateProjectCommentAsync()">
-                    </button>
-                  </div> -->
+                <button
+                pButton
+                type="button"
+                class="button-send-description p-button-outlined p-button-primary"
+                (click)="onCreateProjectCommentAsync()"
+              >
+                Отправить
+              </button>
+              
                 </div>
               </div>
             </div>

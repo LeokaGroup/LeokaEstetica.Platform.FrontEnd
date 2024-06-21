@@ -15,7 +15,7 @@ import {ProjectTaskWatcherInput} from '../task/models/input/project-task-watcher
 import {TaskLinkInput} from '../task/models/input/task-link-input';
 import {TaskPriorityInput} from '../task/models/input/task-priority-input';
 import {UserTaskTagInput} from '../task/models/input/user-task-tag-input';
-import {Router} from "@angular/router";
+
 import {TaskCommentInput} from '../task/models/input/task-comment-input';
 import {TaskCommentExtendedInput} from "../task/models/input/task-comment-extended-input";
 import {IncludeTaskEpicInput} from "../task/models/input/include-task-epic-input";
@@ -34,6 +34,7 @@ import { UpdateFolderNameInput } from '../models/input/update-folder-name-input'
 import { UpdateFolderPageNameInput } from '../models/input/update-folder-page-name-input';
 import { UpdateFolderPageDescriptionInput } from '../models/input/update-folder-page-description-input';
 import { CreateWikiFolderInput } from '../models/input/create-folder-input';
+import { Router } from '@angular/router';
 
 /**
  * Класс сервиса модуля управления проектами.

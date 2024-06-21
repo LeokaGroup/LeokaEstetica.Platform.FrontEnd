@@ -11,4 +11,9 @@ export class UserTaskTagInput {
      * Описание метки (тега).
      */
     tagDescription: string = "";
+    
+    /**
+     * id проекта.
+     */
+    projectId: number | null = null;
 }

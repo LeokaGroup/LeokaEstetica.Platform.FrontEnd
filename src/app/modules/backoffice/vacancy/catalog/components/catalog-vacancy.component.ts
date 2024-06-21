@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
 import { FilterVacancyInput } from "../../models/input/filter-vacancy-input";
 import { VacancyService } from "../../services/vacancy.service";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
     selector: "",

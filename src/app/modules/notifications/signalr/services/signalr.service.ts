@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import {HttpTransportType, HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
 import {BehaviorSubject} from 'rxjs';
 import {API_URL} from 'src/app/core/core-urls/api-urls';
@@ -20,7 +20,7 @@ export class SignalrService {
       .build();
   }
 
-  public async startConnection() {
+  public async startConnection(): Promise<boolean | void> {
     if (this.hubConnection.state !== "Connected") {
       return await new Promise(async (resolve, reject) => {
         this.hubConnection.start()
@@ -44,7 +44,7 @@ export class SignalrService {
             reject(err);
           });
       });
-    }
+    };
   };
 
   public get AllFeedObservable() {

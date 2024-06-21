@@ -6,7 +6,7 @@
   // min-height: 500px;
   // max-height: 510px;
   // overflow-x: scroll;
-  overflow-y: scroll;
+  //overflow-y: scroll;
 }
 
 .block-task {
@@ -59,6 +59,7 @@
 }
 
 .title {
+  position: relative;
   margin: 10px 10px 10px 10px;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-weight: 400;
@@ -172,4 +173,14 @@
 .logo {
   display: flex;
   justify-content: center;
+}
+
+.button-context-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  color: #878787;
 }
