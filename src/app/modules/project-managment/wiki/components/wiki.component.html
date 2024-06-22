@@ -1,5 +1,5 @@
 <div class="d-flex block-profile space-top-80">
-  <div class="profile-left-menu col-lg-3">
+  <div class="profile-left-menu col-lg-3 d-flex">
     <p-tree
       class="w-full md:w-30rem"
       scrollHeight="50vh"
@@ -7,9 +7,13 @@
       [value]="aTreeItems"
       [style]="{'min-width': '300px'}"
       selectionMode="single"
-      (onNodeSelect)="onSelectTreeItemAsync($event)">
+      (onNodeSelect)="onSelectTreeItemAsync($event)"
+      [contextMenu]="cm"
+      [(selection)]="selectedTreeItem"
+      (selectionChange)="onSelectContextTreeItem($event)">
 
     </p-tree>
+    <p-contextMenu #cm [model]="aContextMenuActions"></p-contextMenu>
   </div>
 
   <!-- Контент папки. -->
@@ -18,7 +22,9 @@
       <div class="">
         <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveFolderName" (onActivate)="onActivateFolderName()">
           <ng-template pTemplate="display">
-            <h1>{{folderName}}</h1>
+            <div class="d-flex align-items-center">
+              <h1>{{folderName}}</h1>
+            </div>
           </ng-template>
           <ng-template pTemplate="content">
             <input class="input-folder-name" type="text" [(ngModel)]="folderName" value="{{folderName}}" pInputText >
@@ -144,3 +150,64 @@
     </div>
   </div>
 </div>
+
+<!-- Диалог выбора действия создать папку или страницу. -->
+<p-dialog header="{{isCreateFolder ? 'Создание новой папки' : 'Создание новой страницы'}}"
+          [modal]="true"
+          [(visible)]="isVisibleContextMenuAction"
+          [style]="{ width: '500px' }"
+          [draggable]="false" >
+
+  <div class="flex align-items-center gap-3 mb-3">
+    <div>
+      <label for="username" class="font-semibold w-6rem">{{isCreateFolder ? 'Название папки' : 'Название страницы'}}</label>
+    </div>
+
+    <div *ngIf="isCreateFolder">
+      <input pInputText
+             class="flex-auto"
+             autocomplete="off"
+             [(ngModel)]="selectedFolderName"
+             [style]="{ width: '350px' }">
+    </div>
+
+    <div *ngIf="isCreateFolderPage">
+      <input pInputText
+             class="flex-auto"
+             autocomplete="off"
+             [(ngModel)]="selectedFolderPageName"
+             [style]="{ width: '350px' }">
+    </div>
+  </div>
+
+  <div class="flex justify-content-end gap-2">
+    <button pButton
+            pRipple
+            icon="pi pi-save"
+            type="button"
+            label="Сохранить"
+            class="p-button-success p-button-text p-button-sm"
+            (click)="onCreateFolderAsync()"
+            *ngIf="isCreateFolder">
+    </button>
+
+    <button pButton
+            pRipple
+            icon="pi pi-save"
+            type="button"
+            label="Сохранить"
+            class="p-button-success p-button-text p-button-sm"
+            (click)="onCreateFolderPageAsync()"
+            *ngIf="isCreateFolderPage">
+    </button>
+
+    <button pButton
+            pRipple
+            icon="pi pi-times"
+            type="button"
+            label="Отмена"
+            class="p-button-secondary p-button-text p-button-sm"
+            (click)="isVisibleContextMenuAction = !isVisibleContextMenuAction">
+    </button>
+  </div>
+</p-dialog>

@@ -1,4 +1,4 @@
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, tap} from 'rxjs';
 import {API_URL} from 'src/app/core/core-urls/api-urls';
@@ -33,6 +33,7 @@ import {UpdateRoleInput} from "../models/input/update-role-input";
 import { UpdateFolderNameInput } from '../models/input/update-folder-name-input';
 import { UpdateFolderPageNameInput } from '../models/input/update-folder-page-name-input';
 import { UpdateFolderPageDescriptionInput } from '../models/input/update-folder-page-description-input';
+import { CreateWikiFolderInput } from '../models/input/create-folder-input';
 import { Router } from '@angular/router';
 
 /**
@@ -85,6 +86,7 @@ export class ProjectManagmentService {
     public sprintDurationSettings$ = new BehaviorSubject<any>(null);
     public sprintMoveNotCompletedTasksSettings$ = new BehaviorSubject<any>(null);
     public workspaces$ = new BehaviorSubject<any>(null);
+    public wikiContextMenu$ = new BehaviorSubject<any>(null);
 
     /**
    * для задачи 34460898
@@ -1069,6 +1071,33 @@ export class ProjectManagmentService {
   public async updateFolderPageDescriptionAsync(updateFolderPageDescriptionInput: UpdateFolderPageDescriptionInput) {
     return await this._http.patch(this.apiUrl + `/project-management-wiki/tree-item-folder-page-description`, updateFolderPageDescriptionInput).pipe(
       tap(data => this.wikiTreeFolderPage$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает элементы контекстного меню.
+   * @param projectId - Id проекта, если передан.
+   * @param pageId - Id страницы, если передан.
+   */
+  public async getContextMenuAsync(projectId: number | null = null, pageId: number | null) {
+    if (projectId != null && projectId > 0) {
+      return await this._http.get(this.apiUrl + `/project-management-wiki/context-menu?projectId=${projectId}`).pipe(
+        tap(data => this.wikiContextMenu$.next(data))
+      );
+    }
+
+    return await this._http.get(this.apiUrl + `/project-management-wiki/context-menu?pageId=${pageId}`).pipe(
+      tap(data => this.wikiContextMenu$.next(data))
+    );
+  };
+
+  /**
+   * Функция создает папку.
+   * @param createWikiFolderInput - Входная модель.
+   */
+  public async createFolderAsync(createWikiFolderInput: CreateWikiFolderInput) {
+    return await this._http.post(this.apiUrl + `/project-management-wiki/tree-item-folder-page`, createWikiFolderInput).pipe(
+      tap(_ => console.log("Папка успешно создана."))
     );
   };
 }
