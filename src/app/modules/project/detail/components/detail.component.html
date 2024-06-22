@@ -388,7 +388,8 @@
                             <div>
                               <input type="text"
                               class="p-inputtext-sm input-control-worksheet control-project"
-                              placeholder="Введите сообщение"
+                              placeholder="{{!dialogId ? 'Выберите диалог слева' : 'Напишите сообщение'}}"
+                              [disabled]="!dialogId"
                               pInputText
                               autocomplete="new-password"
                               [(ngModel)]="message"
