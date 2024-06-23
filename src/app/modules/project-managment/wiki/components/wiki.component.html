@@ -1,9 +1,6 @@
 <div class="d-flex block-profile space-top-80">
   <div class="profile-left-menu col-lg-3 d-flex">
     <p-tree
-      class="w-full md:w-30rem"
-      scrollHeight="50vh"
-      [virtualScroll]="true"
       [value]="aTreeItems"
       [style]="{'min-width': '300px'}"
       selectionMode="single"
@@ -14,6 +11,10 @@
 
     </p-tree>
     <p-contextMenu #cm [model]="aContextMenuActions"></p-contextMenu>
+
+    &nbsp;
+
+    <p-button icon="pi pi-plus" [rounded]="true" [text]="true" [severity]="'secondary'" />
   </div>
 
   <!-- Контент папки. -->
@@ -53,15 +54,24 @@
       </div>
     </div>
 
-    <!--  Смотрим лишь 1 уровень, так как выбрали одну папку.  -->
-    <div *ngFor="let page of wikiTreeFolderItems$.value">
+    <div *ngFor="let f of wikiTreeFolderItems$.value">
       <div>
-        <!-- TODO: Как отработает, если будут вложенные папки? Надо проверить будет. -->
         <div class="page">
-          <div class="tree-item-line">
-            <i [ngClass]="page.icon" style="font-size: 1rem"></i>
+          <div class="tree-item-line" *ngIf="f?.children == null">
+            <i [ngClass]="f.icon" style="font-size: 1rem"></i>
             &nbsp;
-            {{page.label}}
+            {{f.label}}
+          </div>
+
+          <div class="tree-item-line" *ngIf="f?.children != null">
+            <div *ngFor="let item of f.children">
+             <div>
+               <i [ngClass]="item.icon" style="font-size: 1rem"></i>
+               &nbsp;
+               {{item.label}}
+             </div>
+              <br>
+            </div>
           </div>
         </div>
         <br>
@@ -197,7 +207,6 @@
             type="button"
             label="Сохранить"
             class="p-button-success p-button-text p-button-sm"
-            (click)="onCreateFolderPageAsync()"
             *ngIf="isCreateFolderPage">
     </button>
 
