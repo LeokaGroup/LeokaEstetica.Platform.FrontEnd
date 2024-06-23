@@ -6,6 +6,7 @@ import {UpdateFolderPageNameInput} from "../../models/input/update-folder-page-n
 import {UpdateFolderPageDescriptionInput} from "../../models/input/update-folder-page-description-input";
 import {CreateWikiFolderInput} from "../../models/input/create-folder-input";
 import {ContextMenu} from "primeng/contextmenu";
+import {CreateWikiPageInput} from "../../models/input/create-page-input";
 
 @Component({
   selector: "wiki",
@@ -187,41 +188,26 @@ export class WikiComponent implements OnInit {
 
     let _this = this; // Важно для сохранения контекста, внутри command он теряется.
 
-    // Если выбрали папку.
-    if (e.projectId > 0) {
-      (await this._projectManagmentService.getContextMenuAsync(e.projectId, null))
-        .subscribe(_ => {
-          this.wikiContextMenu$.value.forEach((x: any) => {
-            x.command = function (e: any) {
-              console.log(e);
+    (await this._projectManagmentService.getContextMenuAsync(e.projectId, null))
+      .subscribe(_ => {
+        this.wikiContextMenu$.value.forEach((x: any) => {
+          x.command = function (e: any) {
+            console.log(e);
 
+            if (e.item.key == "CreateFolder") {
               _this.isCreateFolder = true;
-              _this.isCreateFolderPage = false;
-              _this.isVisibleContextMenuAction = true;
-            };
-          });
+            }
 
-          this.aContextMenuActions = this.wikiContextMenu$.value;
-        });
-    }
-
-    // Если выбрали страницу.
-    else if (e.pageId > 0) {
-      (await this._projectManagmentService.getContextMenuAsync(null, e.pageId))
-        .subscribe(_ => {
-          this.wikiContextMenu$.value.forEach((x: any) => {
-            x.command = function (e: any) {
-              console.log(e);
-
+            else if (e.item.key == "CreateFolderPage") {
               _this.isCreateFolder = false;
-              _this.isCreateFolderPage = true;
-              _this.isVisibleContextMenuAction = true;
-            };
-          });
+            }
 
-          this.aContextMenuActions = this.wikiContextMenu$.value;
+            _this.isCreateFolderPage = false;
+          };
         });
-    }
+
+        this.aContextMenuActions = this.wikiContextMenu$.value;
+      });
   };
 
   /**
@@ -259,9 +245,13 @@ export class WikiComponent implements OnInit {
       });
   };
 
-  public async onCreateFolderWithoutParentAsync(cm: ContextMenu, e: any) {
+  /**
+   * Функция создает папку или страницу вне родителя.
+   * @param cm - Контекстное меню.
+   * @param e - Ивент.
+   */
+  public async onCreateWithoutParentAsync(cm: ContextMenu, e: any) {
     this.isParentFolder = false;
-    this.isWithoutParentFolder = true;
 
     let _this = this; // Важно для сохранения контекста, внутри command он теряется.
 
@@ -271,8 +261,16 @@ export class WikiComponent implements OnInit {
           x.command = function (e: any) {
             console.log(e);
 
-            _this.isCreateFolder = true;
-            _this.isCreateFolderPage = false;
+            if (e.item.key == "CreateFolder") {
+              _this.isCreateFolder = true;
+              _this.isWithoutParentFolder = true;
+            }
+
+            else if (e.item.key == "CreateFolderPage") {
+              _this.isCreateFolder = false;
+              _this.isWithoutParentFolder = false;
+            }
+
             _this.isVisibleContextMenuAction = true;
           };
         });
@@ -281,5 +279,26 @@ export class WikiComponent implements OnInit {
       });
 
     cm.show(e);
+  };
+
+  /**
+   * Функция создает страницу.
+   */
+  public async onCreatePageAsync() {
+    console.log("selectedTreeItem",this.selectedTreeItem);
+
+    let createWikiPageInput = new CreateWikiPageInput();
+    createWikiPageInput.wikiTreeId = this.isParentFolder && !this.isWithoutParentFolder ? this.selectedTreeItem.wikiTreeId : this.aTreeItems[0].wikiTreeId;
+    createWikiPageInput.parentId = this.isParentFolder && !this.isWithoutParentFolder ? this.selectedTreeItem.folderId : null;
+    createWikiPageInput.pageName = this.selectedFolderPageName;
+
+    (await this._projectManagmentService.createPageAsync(createWikiPageInput))
+      .subscribe(async _ => {
+        this.isParentFolder = false;
+        this.isVisibleContextMenuAction = false;
+        this.isActiveFolderPageName = false;
+
+        await this.getTreeAsync();
+      });
   };
 }
