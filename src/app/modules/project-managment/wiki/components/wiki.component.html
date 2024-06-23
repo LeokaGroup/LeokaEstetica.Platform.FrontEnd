@@ -14,7 +14,13 @@
 
     &nbsp;
 
-    <p-button icon="pi pi-plus" [rounded]="true" [text]="true" [severity]="'secondary'" />
+    <p-button icon="pi pi-plus"
+              [rounded]="true"
+              [text]="true"
+              [severity]="'secondary'"
+              (click)="onCreateFolderWithoutParentAsync(cm, $event)">
+
+    </p-button>
   </div>
 
   <!-- Контент папки. -->

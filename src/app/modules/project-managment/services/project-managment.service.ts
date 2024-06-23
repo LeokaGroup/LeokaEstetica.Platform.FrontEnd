@@ -1079,7 +1079,13 @@ export class ProjectManagmentService {
    * @param projectId - Id проекта, если передан.
    * @param pageId - Id страницы, если передан.
    */
-  public async getContextMenuAsync(projectId: number | null = null, pageId: number | null) {
+  public async getContextMenuAsync(projectId: number | null = null, pageId: number | null, isParentFolder: boolean = false) {
+    if (isParentFolder) {
+      return await this._http.get(this.apiUrl + `/project-management-wiki/context-menu?projectId=${projectId}&isParentFolder=${isParentFolder}`).pipe(
+        tap(data => this.wikiContextMenu$.next(data))
+      );
+    }
+
     if (projectId != null && projectId > 0) {
       return await this._http.get(this.apiUrl + `/project-management-wiki/context-menu?projectId=${projectId}`).pipe(
         tap(data => this.wikiContextMenu$.next(data))
