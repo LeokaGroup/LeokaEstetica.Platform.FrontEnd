@@ -235,15 +235,13 @@ export class WikiComponent implements OnInit {
     (await this._projectManagmentService.createFolderAsync(createWikiFolderInput))
       .subscribe(async _ => {
         (await this._projectManagmentService.getTreeItemFolderAsync(this.selectedTreeItem.projectId, this.selectedTreeItem.folderId))
-          .subscribe(_ => {
+          .subscribe(async (_) => {
             this.isVisibleContextMenuAction = false;
             this.isActiveFolderPageName = false;
             this.pageName = this.wikiTreeFolderPage$.value.label;
+
+            await this.getTreeAsync();
           });
       });
-  };
-
-  public async onCreateFolderPageAsync() {
-
   };
 }
