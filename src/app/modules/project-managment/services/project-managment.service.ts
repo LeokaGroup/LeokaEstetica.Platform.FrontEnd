@@ -35,6 +35,7 @@ import { UpdateFolderPageNameInput } from '../models/input/update-folder-page-na
 import { UpdateFolderPageDescriptionInput } from '../models/input/update-folder-page-description-input';
 import { CreateWikiFolderInput } from '../models/input/create-folder-input';
 import { Router } from '@angular/router';
+import {CreateWikiPageInput} from "../models/input/create-page-input";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -1104,6 +1105,16 @@ export class ProjectManagmentService {
   public async createFolderAsync(createWikiFolderInput: CreateWikiFolderInput) {
     return await this._http.post(this.apiUrl + `/project-management-wiki/tree-item-folder-page`, createWikiFolderInput).pipe(
       tap(_ => console.log("Папка успешно создана."))
+    );
+  };
+
+  /**
+   * Функция создает страницу.
+   * @param createWikiPageInput - Входная модель.
+   */
+  public async createPageAsync(createWikiPageInput: CreateWikiPageInput) {
+    return await this._http.post(this.apiUrl + `/project-management-wiki/tree-item-page`, createWikiPageInput).pipe(
+      tap(_ => console.log("Страница успешно создана."))
     );
   };
 }

@@ -18,7 +18,7 @@
               [rounded]="true"
               [text]="true"
               [severity]="'secondary'"
-              (click)="onCreateFolderWithoutParentAsync(cm, $event)">
+              (click)="onCreateWithoutParentAsync(cm, $event)">
 
     </p-button>
   </div>
@@ -187,7 +187,7 @@
              [style]="{ width: '350px' }">
     </div>
 
-    <div *ngIf="isCreateFolderPage">
+    <div *ngIf="!isCreateFolder">
       <input pInputText
              class="flex-auto"
              autocomplete="off"
@@ -213,7 +213,8 @@
             type="button"
             label="Сохранить"
             class="p-button-success p-button-text p-button-sm"
-            *ngIf="isCreateFolderPage">
+            *ngIf="!isCreateFolder"
+            (click)="onCreatePageAsync()">
     </button>
 
     <button pButton
