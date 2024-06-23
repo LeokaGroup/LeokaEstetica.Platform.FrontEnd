@@ -321,7 +321,7 @@
     </div>
 
     <!-- Область с чатом. -->
-    <div class="worksheet-panel space-top-80 space-bottom-50 d-flex" *ngIf="aDialogs.length > 0">
+    <div class="worksheet-panel space-top-80 space-bottom-50 d-flex">
     <p-panel header="Чат с владельцем проекта" [toggleable]="true" [collapsed]="false">
       <div class="d-flex">
         <div class="control-input-text-worksheet">
@@ -370,7 +370,9 @@
                             </div>
 
                             <div class="not-communication" *ngIf="aDialogs.length == 0">
-                              <strong>Вы еще не общались с владельцем проекта. Самое время начать обсуждение.</strong>
+                              <strong>{{!isVisibleDeleteButton
+                                ? "Вы еще не общались с владельцем проекта. Самое время начать обсуждение." 
+                                : "С вами еще никто не общался."}}</strong>
                             </div>
                         </ng-template>
 
