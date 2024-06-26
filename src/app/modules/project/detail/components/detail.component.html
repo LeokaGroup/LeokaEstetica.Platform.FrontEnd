@@ -10,7 +10,7 @@
       <strong>Имеются замечания. Проект не будет опубликован, пока замечания не будут исправлены и приняты модератором.</strong>
     </div>
 
-    <div class="" *ngFor="let r of selectedProject$.value.projectRemarks">
+    <div class="" *ngFor="let r of selectedProject$.value?.projectRemarks">
       <div class="mb-1">
         <p-message severity="warning" text="{{r.remarkText}}"></p-message>
       </div>
@@ -32,7 +32,7 @@
                      [(ngModel)]="selectedProject$.value.projectName"
                      [disabled]="!isEditMode"/>
             </div>
-            <ng-template #blockOne>{{selectedProject$.value.projectName}}</ng-template>
+            <ng-template #blockOne>{{selectedProject$.value?.projectName}}</ng-template>
           </div>
         </div>
 
@@ -49,7 +49,7 @@
                    [(ngModel)]="selectedProject$.value.projectManagementName"
                    [disabled]="!isEditMode"/>
           </div>
-          <ng-template #blockTwo>{{selectedProject$.value.projectManagementName == null ? 'Не указано' : selectedProject$.value.projectManagementName}}</ng-template>
+          <ng-template #blockTwo>{{selectedProject$.value?.projectManagementName == null ? 'Не указано' : selectedProject$.value.projectManagementName}}</ng-template>
         </div>
 
         <div class="d-flex mt-3">
@@ -68,7 +68,7 @@
                                </p-editor>
                           </div>
                           <ng-template #blockThree>
-                            <p class="white-space">{{selectedProject$.value.projectDetails}}</p>
+                            <p class="white-space">{{selectedProject$.value?.projectDetails}}</p>
                           </ng-template>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
               </p-dropdown>
             </div>
             <ng-template #blockFour>
-                {{selectedProject$.value.stageName}}
+                {{selectedProject$.value?.stageName}}
             </ng-template>
           </div>
         </div>
@@ -112,7 +112,7 @@
                     </p-editor>
                   </div>
                   <div *ngIf="!isEditMode">
-                    <p class="white-space text-paragraph" [innerHTML]="selectedProject$.value.demands"></p>
+                    <p class="white-space text-paragraph" [innerHTML]="selectedProject$.value?.demands"></p>
                   </div>
                 </div>
               </div>
@@ -134,7 +134,7 @@
                 </p-editor>
               </div>
               <div *ngIf="!isEditMode">
-                <p class="white-space text-paragraph" [innerHTML]="selectedProject$.value.conditions"></p>
+                <p class="white-space text-paragraph" [innerHTML]="selectedProject$.value?.conditions"></p>
               </div>
             </div>
           </div>
@@ -237,7 +237,7 @@
     <div class="worksheet-panel space-top-80 d-flex">
       <p-panel header="Вакансии проекта" [toggleable]="true" [collapsed]="false">
         <div>
-          <p-table [value]="projectVacancies$.value.projectVacancies"
+          <p-table [value]="projectVacancies$.value?.projectVacancies"
                   [(selection)]="selectedProjectVacancy"
                   dataKey="userVacancy.vacancyId"
                   [paginator]="false"
@@ -321,7 +321,7 @@
     </div>
 
     <!-- Область с чатом. -->
-    <div class="worksheet-panel space-top-80 space-bottom-50 d-flex" *ngIf="aDialogs.length > 0">
+    <div class="worksheet-panel space-top-80 space-bottom-50 d-flex">
     <p-panel header="Чат с владельцем проекта" [toggleable]="true" [collapsed]="false">
       <div class="d-flex">
         <div class="control-input-text-worksheet">
@@ -370,7 +370,9 @@
                             </div>
 
                             <div class="not-communication" *ngIf="aDialogs.length == 0">
-                              <strong>Вы еще не общались с владельцем проекта. Самое время начать обсуждение.</strong>
+                              <strong>{{!isVisibleDeleteButton
+                                ? "Вы еще не общались с владельцем проекта. Самое время начать обсуждение." 
+                                : "С вами еще никто не общался."}}</strong>
                             </div>
                         </ng-template>
 
@@ -565,7 +567,7 @@
           <label>Выберите вакансию для привязки</label>
       </div>
       <div>
-        <p-dropdown [options]="availableAttachVacancies$.value.projectVacancies"
+        <p-dropdown [options]="availableAttachVacancies$.value?.projectVacancies"
                     [(ngModel)]="selectedVacancy"
                     optionLabel="userVacancy.vacancyName"
                     (onChange)="onSelectVacancy()">
@@ -739,7 +741,7 @@
           [style]="{width: '50vw'}"
           [draggable]="false"
           [resizable]="false">
-        <p>Удалить проект {{selectedProject$.value.projectName}}?</p>
+        <p>Удалить проект {{selectedProject$.value?.projectName}}?</p>
         <p>При удалении проекта будут удалены привязанные к проекту вакансии,
           сообщения чата проекта,
           все участники команды проекта и

@@ -128,7 +128,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         await this.getProjectTeamColumnsNamesAsync(),
         await this.getProjectTeamAsync(),
         await this.getProjectRemarksAsync()
-        ]).subscribe();
+        ]);
 
          // Подключаемся.
          this._signalrService.startConnection().then(async () => {
@@ -141,6 +141,8 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         this._signalrService.AllFeedObservable
         .subscribe((response: any) => {
             console.log("Подписались на сообщения", response);
+
+            if (!response?.notificationLevel) return;
 
             // Если пришел тип уведомления, то просто показываем его.
             if (response.notificationLevel !== undefined) {
