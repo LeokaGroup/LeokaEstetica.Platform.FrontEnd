@@ -65,7 +65,6 @@ export class ScrumMasterAiAssistComponent implements OnInit {
           else if (response.actionType == "All" && response.dialogs.length > 0) {
             console.log("Сообщения чата проекта: ", response);
             this.aDialogs = response.dialogs;
-            this.aMessages = response.dialogs;
           }
 
           else if (response.actionType == "Concrete") {
