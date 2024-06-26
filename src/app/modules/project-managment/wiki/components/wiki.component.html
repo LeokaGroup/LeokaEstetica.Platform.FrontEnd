@@ -167,16 +167,16 @@
   </div>
 </div>
 
-<!-- Диалог выбора действия создать папку или страницу. -->
-<p-dialog header="{{isCreateFolder ? 'Создание новой папки' : 'Создание новой страницы'}}"
+<!-- Диалог выбора действия создать папку. -->
+<p-dialog header="Создание новой папки"
           [modal]="true"
-          [(visible)]="isVisibleContextMenuAction"
+          [(visible)]="isCreateFolder"
           [style]="{ width: '500px' }"
           [draggable]="false" >
 
   <div class="flex align-items-center gap-3 mb-3">
     <div>
-      <label for="username" class="font-semibold w-6rem">{{isCreateFolder ? 'Название папки' : 'Название страницы'}}</label>
+      <label class="font-semibold w-6rem">Название папки</label>
     </div>
 
     <div *ngIf="isCreateFolder">
@@ -184,14 +184,6 @@
              class="flex-auto"
              autocomplete="off"
              [(ngModel)]="selectedFolderName"
-             [style]="{ width: '350px' }">
-    </div>
-
-    <div *ngIf="!isCreateFolder">
-      <input pInputText
-             class="flex-auto"
-             autocomplete="off"
-             [(ngModel)]="selectedFolderPageName"
              [style]="{ width: '350px' }">
     </div>
   </div>
@@ -209,11 +201,43 @@
 
     <button pButton
             pRipple
+            icon="pi pi-times"
+            type="button"
+            label="Отмена"
+            class="p-button-secondary p-button-text p-button-sm"
+            (click)="isVisibleContextMenuAction = !isVisibleContextMenuAction">
+    </button>
+  </div>
+</p-dialog>
+
+<!-- Диалог выбора действия создать страницу. -->
+<p-dialog header="Создание новой страницы"
+          [modal]="true"
+          [(visible)]="isCreateFolderPage"
+          [style]="{ width: '500px' }"
+          [draggable]="false" >
+
+  <div class="flex align-items-center gap-3 mb-3">
+    <div>
+      <label class="font-semibold w-6rem">Название страницы</label>
+    </div>
+
+    <div>
+      <input pInputText
+             class="flex-auto"
+             autocomplete="off"
+             [(ngModel)]="selectedFolderPageName"
+             [style]="{ width: '350px' }">
+    </div>
+  </div>
+
+  <div class="flex justify-content-end gap-2">
+    <button pButton
+            pRipple
             icon="pi pi-save"
             type="button"
             label="Сохранить"
             class="p-button-success p-button-text p-button-sm"
-            *ngIf="!isCreateFolder"
             (click)="onCreatePageAsync()">
     </button>
 
@@ -224,6 +248,40 @@
             label="Отмена"
             class="p-button-secondary p-button-text p-button-sm"
             (click)="isVisibleContextMenuAction = !isVisibleContextMenuAction">
+    </button>
+  </div>
+</p-dialog>
+
+<!-- Диалог подтверждения удаления папки. -->
+<p-dialog header="{{'Удаление папки'}}"
+          [modal]="true"
+          [(visible)]="isNeedUserAction"
+          [style]="{ width: '500px' }"
+          [draggable]="false" >
+
+  <div class="flex align-items-center gap-3 mb-3">
+    <div>
+      <p>{{removeFolderResponse$.value?.responseText}}</p>
+    </div>
+  </div>
+
+  <div class="flex justify-content-end gap-2">
+    <button pButton
+            pRipple
+            icon="pi pi-check"
+            type="button"
+            label="Удалить"
+            class="p-button-success p-button-text p-button-sm"
+            (click)="onRemoveFolderAsync()">
+    </button>
+
+    <button pButton
+            pRipple
+            icon="pi pi-times"
+            type="button"
+            label="Отмена"
+            class="p-button-secondary p-button-text p-button-sm"
+            (click)="isNeedUserAction = !isNeedUserAction">
     </button>
   </div>
 </p-dialog>
