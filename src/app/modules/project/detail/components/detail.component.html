@@ -416,8 +416,8 @@
           <div class="d-flex">
             <div class="control-input-text-worksheet">
               <div class="mb-3">
-                <p-table [value]="projectTeam" [(selection)]="selectedProjectVacancy"
-                  dataKey="userVacancy.vacancyId" [paginator]="false" [rows]="10" styleClass="p-datatable-gridlines"
+                <p-table [value]="projectTeam" [(selection)]="selectedProjectTeamMember"
+                  dataKey="userId" [paginator]="false" [rows]="10" styleClass="p-datatable-gridlines"
                   responsiveLayout="scroll">
                   <ng-template pTemplate="caption">
                     <div class="d-flex">
