@@ -371,7 +371,7 @@
 
                             <div class="not-communication" *ngIf="aDialogs.length == 0">
                               <strong>{{!isVisibleDeleteButton
-                                ? "Вы еще не общались с владельцем проекта. Самое время начать обсуждение." 
+                                ? "Вы еще не общались с владельцем проекта. Самое время начать обсуждение."
                                 : "С вами еще никто не общался."}}</strong>
                             </div>
                         </ng-template>
@@ -456,7 +456,7 @@
                         <p-button (click)="onShowDeleteProjectTeamMemberModal(team.member, team.userId)"
                                   label="Исключить"
                                   styleClass="p-button-danger p-button-text"
-                                  *ngIf="team.isVisibleActionDeleteProjectTeamMember">
+                                  *ngIf="isVisibleDeleteButton">
                         </p-button>
                       </td>
                       <td>
@@ -529,7 +529,7 @@
                     autocomplete="new-password"
                     [(ngModel)]="projectComment"
                     (keyup.enter)="onCreateProjectCommentAsync()" />
-                
+
                 </div>
                 <button
                 pButton
@@ -539,7 +539,7 @@
               >
                 Отправить
               </button>
-              
+
                 </div>
               </div>
             </div>

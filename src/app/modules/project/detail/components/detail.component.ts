@@ -276,7 +276,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
 
             this.isVisibleDeleteButton = response.isVisibleDeleteButton;
             this.isVisibleActionProjectButtons = response.isVisibleActionProjectButtons;
-            this.isVisibleActionDeleteProjectTeamMember = response.isVisibleActionDeleteProjectTeamMember;
+            // this.isVisibleActionDeleteProjectTeamMember = response.isVisibleActionDeleteProjectTeamMember;
             this.isVisibleActionLeaveProjectTeam = response.isVisibleActionLeaveProjectTeam;
             this.isVisibleActionAddProjectArchive = response.isVisibleActionAddProjectArchive;
             this.isShowRemarks = this.selectedProject$.value.projectRemarks.length > 0;
