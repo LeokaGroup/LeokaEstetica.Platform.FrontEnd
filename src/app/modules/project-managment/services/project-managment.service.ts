@@ -15,7 +15,6 @@ import {ProjectTaskWatcherInput} from '../task/models/input/project-task-watcher
 import {TaskLinkInput} from '../task/models/input/task-link-input';
 import {TaskPriorityInput} from '../task/models/input/task-priority-input';
 import {UserTaskTagInput} from '../task/models/input/user-task-tag-input';
-
 import {TaskCommentInput} from '../task/models/input/task-comment-input';
 import {TaskCommentExtendedInput} from "../task/models/input/task-comment-extended-input";
 import {IncludeTaskEpicInput} from "../task/models/input/include-task-epic-input";
@@ -88,10 +87,6 @@ export class ProjectManagmentService {
     public sprintMoveNotCompletedTasksSettings$ = new BehaviorSubject<any>(null);
     public workspaces$ = new BehaviorSubject<any>(null);
     public wikiContextMenu$ = new BehaviorSubject<any>(null);
-
-    /**
-   * для задачи 34460898
-   */
     public selectedWorkSpace$ = new BehaviorSubject<any>(null);
     public settingUsers = new BehaviorSubject<any>(null);
     public userRoles = new BehaviorSubject<any>(null);
@@ -99,6 +94,7 @@ export class ProjectManagmentService {
     public wikiTreeItems$ = new BehaviorSubject<any>(null);
     public wikiTreeFolderItems$ = new BehaviorSubject<any>(null);
     public wikiTreeFolderPage$ = new BehaviorSubject<any>(null);
+    public removeFolderResponse$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -1087,13 +1083,13 @@ export class ProjectManagmentService {
       );
     }
 
-    if (projectId != null && projectId > 0) {
+    if ((projectId != null && projectId > 0) && (pageId == null || pageId <= 0)) {
       return await this._http.get(this.apiUrl + `/project-management-wiki/context-menu?projectId=${projectId}`).pipe(
         tap(data => this.wikiContextMenu$.next(data))
       );
     }
 
-    return await this._http.get(this.apiUrl + `/project-management-wiki/context-menu?pageId=${pageId}`).pipe(
+    return await this._http.get(this.apiUrl + `/project-management-wiki/context-menu?projectId=${projectId}&pageId=${pageId}`).pipe(
       tap(data => this.wikiContextMenu$.next(data))
     );
   };
@@ -1115,6 +1111,26 @@ export class ProjectManagmentService {
   public async createPageAsync(createWikiPageInput: CreateWikiPageInput) {
     return await this._http.post(this.apiUrl + `/project-management-wiki/tree-item-page`, createWikiPageInput).pipe(
       tap(_ => console.log("Страница успешно создана."))
+    );
+  };
+
+  /**
+   * Функция удаляет папку.
+   * @param createWikiPageInput - Входная модель.
+   */
+  public async removeFolderAsync(folderId: number, isApprove: boolean) {
+    return await this._http.delete(this.apiUrl + `/project-management-wiki/tree-item-folder?folderId=${folderId}&isApprove=${isApprove}`).pipe(
+      tap(data => this.removeFolderResponse$.next(data))
+    );
+  };
+
+  /**
+   * Функция удаляет страницу.
+   * @param pageId - Id страницы.
+   */
+  public async removePageAsync(pageId: number) {
+    return await this._http.delete(this.apiUrl + `/project-management-wiki/tree-item-page?pageId=${pageId}`).pipe(
+      tap(_ => console.log("Страница успешно удалена."))
     );
   };
 }

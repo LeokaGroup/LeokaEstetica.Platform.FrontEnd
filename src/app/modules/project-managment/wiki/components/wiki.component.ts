@@ -7,6 +7,7 @@ import {UpdateFolderPageDescriptionInput} from "../../models/input/update-folder
 import {CreateWikiFolderInput} from "../../models/input/create-folder-input";
 import {ContextMenu} from "primeng/contextmenu";
 import {CreateWikiPageInput} from "../../models/input/create-page-input";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: "wiki",
@@ -20,13 +21,15 @@ import {CreateWikiPageInput} from "../../models/input/create-page-input";
 export class WikiComponent implements OnInit {
   constructor(private readonly _router: Router,
               private readonly _activatedRoute: ActivatedRoute,
-              private readonly _projectManagmentService: ProjectManagmentService) {
+              private readonly _projectManagmentService: ProjectManagmentService,
+              private readonly _messageService: MessageService) {
   }
 
   public readonly wikiTreeItems$ = this._projectManagmentService.wikiTreeItems$;
   public readonly wikiTreeFolderItems$ = this._projectManagmentService.wikiTreeFolderItems$;
   public readonly wikiTreeFolderPage$ = this._projectManagmentService.wikiTreeFolderPage$;
   public readonly wikiContextMenu$ = this._projectManagmentService.wikiContextMenu$;
+  public readonly removeFolderResponse$ = this._projectManagmentService.removeFolderResponse$;
 
   projectId: number = 0;
   aTreeItems: any[] = [];
@@ -49,6 +52,7 @@ export class WikiComponent implements OnInit {
   selectedFolderPageName: string = "";
   isParentFolder: boolean = false;
   isWithoutParentFolder: boolean = false;
+  isNeedUserAction: boolean = false;
 
   public async ngOnInit() {
     this.checkUrlParams();
@@ -188,25 +192,46 @@ export class WikiComponent implements OnInit {
 
     let _this = this; // Важно для сохранения контекста, внутри command он теряется.
 
-    (await this._projectManagmentService.getContextMenuAsync(e.projectId, null))
+    (await _this._projectManagmentService.getContextMenuAsync(e.projectId > 0 ? e.projectId : _this.projectId , e.pageId > 0 ? e.pageId : null))
       .subscribe(_ => {
-        this.wikiContextMenu$.value.forEach((x: any) => {
-          x.command = function (e: any) {
+        _this.wikiContextMenu$.value.forEach((x: any) => {
+          x.command = async function (e: any) {
             console.log(e);
 
             if (e.item.key == "CreateFolder") {
+              _this.isCreateFolderPage = false;
               _this.isCreateFolder = true;
             }
 
             else if (e.item.key == "CreateFolderPage") {
               _this.isCreateFolder = false;
+              _this.isCreateFolderPage = true;
             }
 
-            _this.isCreateFolderPage = false;
+            else if (e.item.key == "RemoveFolder") {
+              (await _this._projectManagmentService.removeFolderAsync(_this.selectedTreeItem.folderId, _this.removeFolderResponse$.value?.isNeedUserAction ?? false))
+                .subscribe(async (_: any) => {
+                  if ((_this.removeFolderResponse$.value?.isNeedUserAction ?? false)) {
+                    _this.isNeedUserAction = true;
+                  }
+
+                  else {
+                    _this.isNeedUserAction = false;
+
+                    await _this.getTreeAsync();
+                  }
+                });
+            }
+
+            else if (e.item.key == "RemoveFolderPage") {
+              await _this.removePageAsync().then(async (_: any) => {
+                await _this.getTreeAsync();
+              });
+            }
           };
         });
 
-        this.aContextMenuActions = this.wikiContextMenu$.value;
+        _this.aContextMenuActions = _this.wikiContextMenu$.value;
       });
   };
 
@@ -231,13 +256,14 @@ export class WikiComponent implements OnInit {
             .subscribe(async (_) => {
               this.isVisibleContextMenuAction = false;
               this.isActiveFolderPageName = false;
-              this.pageName = this.wikiTreeFolderPage$.value.label;
+              this.isCreateFolder = false;
 
               await this.getTreeAsync();
             });
         }
 
        else {
+          this.isCreateFolder = false;
           this.isVisibleContextMenuAction = false;
           this.isActiveFolderPageName = false;
           await this.getTreeAsync();
@@ -263,12 +289,14 @@ export class WikiComponent implements OnInit {
 
             if (e.item.key == "CreateFolder") {
               _this.isCreateFolder = true;
+              _this.isCreateFolderPage = false;
               _this.isWithoutParentFolder = true;
             }
 
             else if (e.item.key == "CreateFolderPage") {
               _this.isCreateFolder = false;
               _this.isWithoutParentFolder = false;
+              _this.isCreateFolderPage = true;
             }
 
             _this.isVisibleContextMenuAction = true;
@@ -289,7 +317,7 @@ export class WikiComponent implements OnInit {
 
     let createWikiPageInput = new CreateWikiPageInput();
     createWikiPageInput.wikiTreeId = this.isParentFolder && !this.isWithoutParentFolder ? this.selectedTreeItem.wikiTreeId : this.aTreeItems[0].wikiTreeId;
-    createWikiPageInput.parentId = this.isParentFolder && !this.isWithoutParentFolder ? this.selectedTreeItem.folderId : null;
+    createWikiPageInput.parentId = this.selectedTreeItem.folderId;
     createWikiPageInput.pageName = this.selectedFolderPageName;
 
     (await this._projectManagmentService.createPageAsync(createWikiPageInput))
@@ -297,8 +325,36 @@ export class WikiComponent implements OnInit {
         this.isParentFolder = false;
         this.isVisibleContextMenuAction = false;
         this.isActiveFolderPageName = false;
+        this.isCreateFolderPage = false;
 
         await this.getTreeAsync();
+      });
+  };
+
+  /**
+   * Функция удаляет папку.
+   */
+  public async onRemoveFolderAsync() {
+    (await this._projectManagmentService.removeFolderAsync(this.selectedTreeItem.folderId, this.removeFolderResponse$.value?.isNeedUserAction ?? false))
+      .subscribe(async (_: any) => {
+        if ((this.removeFolderResponse$.value?.isNeedUserAction ?? false)) {
+          this.isNeedUserAction = true;
+        }
+
+        else {
+          this.isNeedUserAction = false;
+
+          await this.getTreeAsync();
+        }
+      });
+  };
+
+  /**
+   * Функция удаляет страницу.
+   */
+  private async removePageAsync() {
+    (await this._projectManagmentService.removePageAsync(this.selectedTreeItem.pageId))
+      .subscribe(async (_: any) => {
       });
   };
 }
