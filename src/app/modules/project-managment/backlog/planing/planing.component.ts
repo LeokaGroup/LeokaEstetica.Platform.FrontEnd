@@ -1,6 +1,6 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { forkJoin } from "rxjs";
+import { Subscription, forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { ProjectManagmentService } from "../../services/project-managment.service";
 import {MessageService, PrimeNGConfig} from "primeng/api";
@@ -18,7 +18,7 @@ import { SearchAgileObjectTypeEnum } from "src/app/modules/enums/search-agile-ob
 /**
  * Класс компонента спринтов (планирование спринта).
  */
-export class PlaningSprintComponent implements OnInit {
+export class PlaningSprintComponent implements OnInit, OnDestroy {
   constructor(private readonly _projectManagmentService: ProjectManagmentService,
               private readonly _router: Router,
               private readonly _redirectService: RedirectService,
@@ -42,7 +42,8 @@ export class PlaningSprintComponent implements OnInit {
   dateStart: any = null;
   dateEnd: any = null;
   isSprintTasks: boolean = false;
-  allFeedSubscription: any;
+  allFeedSubscription!: Subscription;
+  startConnectionSubscription!: Subscription;
   selectedTask: any;
   aSearchTasks: any[] = [];
   isSearchByTaskId: boolean = false;
@@ -61,20 +62,22 @@ export class PlaningSprintComponent implements OnInit {
       this.checkUrlParams()
     ]).subscribe();
 
-    // Подключаемся.
-    this._projectManagementSignalrService.startConnection().then(() => {
-      console.log("Подключились");
-
+    if (!this._projectManagementSignalrService.isConnected) {
+      // Подключаемся.
+      this._projectManagementSignalrService.startConnection().then(() => {
+        console.log("Подключились");
+      });
+    } else {
       this.listenAllHubsNotifications();
-    });
+    }
 
     // Подписываемся на получение всех сообщений.
-    this._projectManagementSignalrService.AllFeedObservable
+    this.allFeedSubscription = this._projectManagementSignalrService.AllFeedObservable
       .subscribe((response: any) => {
         console.log("Подписались на сообщения", response);
 
         // Если пришел тип уведомления, то просто показываем его.
-        if (response.notificationLevel !== undefined) {
+        if (response?.notificationLevel) {
           this._messageService.add({
             severity: response.notificationLevel,
             summary: response.title,
@@ -281,4 +284,9 @@ export class PlaningSprintComponent implements OnInit {
       }
     }
   };
+
+  ngOnDestroy(): void {
+    this.allFeedSubscription.unsubscribe();
+    this._projectManagementSignalrService.offlistenSuccessPlaningSprint();
+  }
 }
