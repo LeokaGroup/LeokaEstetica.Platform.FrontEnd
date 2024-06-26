@@ -64,6 +64,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     totalVacancies: number = 0;
     isShowAttachVacancyModal: boolean = false;
     selectedVacancy: any;
+    selectedProjectTeamMember: any;
     vacancyName: string = "";
     vacancyText: string = "";
     workExperience: string = "";
