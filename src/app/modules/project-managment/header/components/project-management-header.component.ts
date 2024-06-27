@@ -58,10 +58,11 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   ngDoCheck() {
     // Если роут не Kanban или Scrum, то дизейблим пункты меню стратегия представления и настройки.
     let projectId = this.projectId;
-    const disableButtons = this._router.url !== `/project-management/space?projectId=${projectId}`;
+    const disableButtonSettings = this._router.url.indexOf(`projectId=${projectId}`) < 0;
+    const disableButtonStrategy = this._router.url !== `/project-management/space?projectId=${projectId}`;
 
-    this.disableButtonIfNeeded('Strategy', disableButtons);
-    this.disableButtonIfNeeded('Settings', disableButtons);
+    this.disableButtonIfNeeded('Strategy', disableButtonStrategy);
+    this.disableButtonIfNeeded('Settings', disableButtonSettings);
   };
 
   /**
