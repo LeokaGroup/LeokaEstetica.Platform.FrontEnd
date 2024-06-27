@@ -95,6 +95,7 @@ export class ProjectManagmentService {
     public wikiTreeFolderItems$ = new BehaviorSubject<any>(null);
     public wikiTreeFolderPage$ = new BehaviorSubject<any>(null);
     public removeFolderResponse$ = new BehaviorSubject<any>(null);
+    public projectInvites$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -1131,6 +1132,16 @@ export class ProjectManagmentService {
   public async removePageAsync(pageId: number) {
     return await this._http.delete(this.apiUrl + `/project-management-wiki/tree-item-page?pageId=${pageId}`).pipe(
       tap(_ => console.log("Страница успешно удалена."))
+    );
+  };
+
+  /**
+   * Функция получает список приглашений в проект.
+   * @param projectId - Id проекта.
+   */
+  public async getProjectInvitesAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-settings/project-invites?projectId=${projectId}`).pipe(
+      tap(data => this.projectInvites$.next(data))
     );
   };
 }

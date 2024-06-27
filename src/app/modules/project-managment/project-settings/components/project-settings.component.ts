@@ -32,6 +32,7 @@ export class ProjectSettingsComponent implements OnInit {
   public readonly sprintMoveNotCompletedTasksSettings$ = this._projectManagmentService.sprintMoveNotCompletedTasksSettings$;
   public readonly settingUsers = this._projectManagmentService.settingUsers;
   public readonly settingUserRoles = this._projectManagmentService.settingUserRoles;
+  public readonly projectInvites$ = this._projectManagmentService.projectInvites$;
 
   projectId: number = 0;
   userAvatarLink: any;
@@ -44,6 +45,7 @@ export class ProjectSettingsComponent implements OnInit {
   isShowUserRoles: boolean = false;
   aUpdatedRoles: Set<number> = new Set();
   isShowInvite: boolean = false;
+  selectedInvite: any;
 
   items: any[] = [{
     label: 'Общие',
@@ -110,6 +112,8 @@ export class ProjectSettingsComponent implements OnInit {
             this.isShowUsers = false;
             this.isShowUserRoles = false;
             this.isShowInvite = true;
+
+            await this.getProjectInvitesAsync();
           }
         }
       ]
@@ -277,5 +281,15 @@ export class ProjectSettingsComponent implements OnInit {
   public onSelectRole(userId: number) {
     this.aUpdatedRoles.add(userId);
     console.log("userId",this.aUpdatedRoles);
-  }
+  };
+
+  /**
+   * Функция получает список приглашений в проект.
+   */
+  private async getProjectInvitesAsync() {
+    (await this._projectManagmentService.getProjectInvitesAsync(+this.projectId))
+      .subscribe(async _ => {
+        console.log("Список приглашений: ", this.projectInvites$.value);
+      });
+  };
 }
