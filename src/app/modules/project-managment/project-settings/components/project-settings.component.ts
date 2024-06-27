@@ -8,6 +8,10 @@ import {SprintMoveNotCompletedTaskSettingInput} from "../../sprint/models/sprint
 import { UpdateRoleInput } from "../../models/input/update-role-input";
 import { ProjectManagementSignalrService } from "src/app/modules/notifications/signalr/services/project-magement-signalr.service";
 import { DomSanitizer } from "@angular/platform-browser";
+import {ProjectService} from "../../../project/services/project.service";
+import {SearchProjectService} from "../../../search/services/search-project-service";
+import {InviteProjectTeamMemberInput} from "../../../project/detail/models/input/invite-project-team-member-input";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: "",
@@ -24,7 +28,10 @@ export class ProjectSettingsComponent implements OnInit {
               private readonly _activatedRoute: ActivatedRoute,
               private readonly _domSanitizer: DomSanitizer,
               private readonly _sanitizer: Sanitizer,
-              private readonly _projectManagementSignalrService: ProjectManagementSignalrService) {
+              private readonly _projectManagementSignalrService: ProjectManagementSignalrService,
+              private readonly _projectService: ProjectService,
+              private readonly _searchProjectService: SearchProjectService,
+              private readonly _messageService: MessageService) {
   }
 
   public readonly downloadUserAvatarFile$ = this._projectManagmentService.downloadUserAvatarFile$;
@@ -32,6 +39,8 @@ export class ProjectSettingsComponent implements OnInit {
   public readonly sprintMoveNotCompletedTasksSettings$ = this._projectManagmentService.sprintMoveNotCompletedTasksSettings$;
   public readonly settingUsers = this._projectManagmentService.settingUsers;
   public readonly settingUserRoles = this._projectManagmentService.settingUserRoles;
+  public readonly projectInvites$ = this._projectManagmentService.projectInvites$;
+  public readonly availableInviteVacancies$ = this._projectService.availableInviteVacancies$;
 
   projectId: number = 0;
   userAvatarLink: any;
@@ -44,6 +53,8 @@ export class ProjectSettingsComponent implements OnInit {
   isShowUserRoles: boolean = false;
   aUpdatedRoles: Set<number> = new Set();
   isShowInvite: boolean = false;
+  selectedInvite: any;
+  isProjectInvite: boolean = false;
 
   items: any[] = [{
     label: 'Общие',
@@ -110,6 +121,9 @@ export class ProjectSettingsComponent implements OnInit {
             this.isShowUsers = false;
             this.isShowUserRoles = false;
             this.isShowInvite = true;
+
+            await this.getProjectInvitesAsync();
+            await this.getAvailableInviteVacanciesAsync();
           }
         }
       ]
@@ -117,6 +131,19 @@ export class ProjectSettingsComponent implements OnInit {
 
   aScrumDurationSettings: any[] = [];
   aMoveNotCompletedTasksSettings: any[] = [];
+  aProjectInviteVarians: any[] = [
+    // { name: 'По ссылке', key: 'Link' },
+    { name: 'По почте', key: 'Email' },
+    // { name: 'По номеру телефона', key: 'PhoneNumber' },
+    { name: 'По логину', key: 'Login' }
+  ];
+  selectedInviteVariant: any;
+  availableInviteVacancies: any[] = [];
+  selectedInviteVacancy: any;
+  isVacancyInvite: boolean = false;
+  searchText: string = "";
+  aProjectInvitesUsers: any[] = [];
+  selectedInviteUser: string = "";
 
   public async ngOnInit() {
     forkJoin([
@@ -277,5 +304,68 @@ export class ProjectSettingsComponent implements OnInit {
   public onSelectRole(userId: number) {
     this.aUpdatedRoles.add(userId);
     console.log("userId",this.aUpdatedRoles);
-  }
+  };
+
+  /**
+   * Функция получает список приглашений в проект.
+   */
+  private async getProjectInvitesAsync() {
+    (await this._projectManagmentService.getProjectInvitesAsync(+this.projectId))
+      .subscribe(async _ => {
+        console.log("Список приглашений: ", this.projectInvites$.value);
+      });
+  };
+
+
+  /**
+   // * Функция получает список вакансий пользователя, по которым можно пригласить пользователя в проект.
+   // * @returns - Список вакансий.
+   */
+  private async getAvailableInviteVacanciesAsync() {
+    (await this._projectService.getAvailableInviteVacanciesAsync(this.projectId))
+      .subscribe(_ => {
+        console.log("Доступные к приглашению в проект вакансии: ", this.availableInviteVacancies$.value);
+        this.availableInviteVacancies = this.availableInviteVacancies$.value.projectVacancies;
+      });
+  };
+
+  /**
+   * Функция получает данные для таблицы команда проекта.
+   * @param event - Событие. Чтобы достать текст, надо вызвать event.query.
+   * @returns - Данные для таблицы команда проекта.
+   */
+  public async onSearchInviteProjectMembersAsync(event: any) {
+    (await this._searchProjectService.searchInviteProjectMembersAsync(event.query))
+      .subscribe(async (response: any) => {
+        console.log("Пользователи для добавления в команду проекта: ", response);
+        this.aProjectInvitesUsers = response;
+      });
+  };
+
+  public onSelectProjectMember(event: any) {
+    console.log(event);
+    this.selectedInviteUser = event.value.displayName;
+  };
+
+  /**
+   * Функция отправляет приглашение в команду проекта пользователю.
+   */
+  public async onSendInviteProjectTeamAsync() {
+    let inviteProjectTeamMemberInput = new InviteProjectTeamMemberInput();
+    inviteProjectTeamMemberInput.ProjectId = this.projectId;
+    inviteProjectTeamMemberInput.InviteText = this.selectedInviteUser;
+    inviteProjectTeamMemberInput.VacancyId = !this.isVacancyInvite ? this.selectedInviteVacancy.vacancyId : null;
+    inviteProjectTeamMemberInput.InviteType = this.selectedInviteVariant.key;
+
+    (await this._projectService.sendInviteProjectTeamAsync(inviteProjectTeamMemberInput))
+      .subscribe(async (response: any) => {
+        console.log("Добавленный в команду пользователь: ", response);
+
+        // TODO: Костыль для бага ререндера уведомлений.
+        // TODO: Не можем отображать уведомления без обновления страницы после роута из проектов пользователя.
+        this._messageService.add({ severity: 'success', summary: "Все хорошо", detail: response.successMessage });
+      });
+
+    this.isProjectInvite = false;
+  };
 }

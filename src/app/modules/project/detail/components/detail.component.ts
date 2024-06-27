@@ -94,9 +94,9 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     isVisibleDeleteButton: boolean = false;
     isProjectInvite: boolean = false;
     aProjectInviteVarians: any[] = [
-        { name: 'По ссылке', key: 'Link' },
+        // { name: 'По ссылке', key: 'Link' },
         { name: 'По почте', key: 'Email' },
-        { name: 'По номеру телефона', key: 'PhoneNumber' },
+        // { name: 'По номеру телефона', key: 'PhoneNumber' },
         { name: 'По логину', key: 'Login' }
     ];
     selectedInviteVariant: any;
