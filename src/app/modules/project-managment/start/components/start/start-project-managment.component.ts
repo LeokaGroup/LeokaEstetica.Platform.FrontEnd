@@ -30,6 +30,7 @@ export class StartProjectManagmentComponent implements OnInit {
     projectManagementProjectName: string = "";
     projectManagementProjectNamePrefix: string = "";
     projectId: number = 0;
+    active: number = 0;
 
   constructor(private readonly _projectManagmentService: ProjectManagmentService,
               private readonly _router: Router,

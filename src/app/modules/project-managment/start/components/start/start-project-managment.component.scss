@@ -2,13 +2,66 @@
 @use "/src/app/common/styles/control.scss";
 @use "/src/app/common/styles/styles.scss";
 
-::ng-deep .p-listbox-item {
-    &:focus {
-        box-shadow: none!important;
-        outline: none!important;
-      }
+::ng-deep {
+  .p-tooltip {
+    max-width: fit-content;
+  }
+  
+  .p-stepper .p-stepper-nav {
+    max-width: 32rem;
+    margin: 0 auto;
+    margin-top: 30px;
+  }
+
+  .p-stepper .p-stepper-panels {
+    color: black;
+  }
+
+  .field-checkbox {
+    margin: 0;
+  }
+
+  .p-chip {
+    padding: 0 16px;
+  }
+
+  .btn {
+    border-color: #DEE2E6;
+  }
+  .btn-check:checked+.btn {
+    border-color: #0D89EC;
+    border-width: 2px;
+  }
 }
 
-.block-select-project-name {
-  padding: 0 10px;
+.stepper-stage-button {
+  background-color: transparent;
+  border: none;
+}
+
+.icon-white {
+  color: white;
+}
+
+.icon-black {
+  color: black;
+}
+
+.button-border {
+  border: solid 2px rgb(222,226,230);
+  border-radius: 0.375rem;
+}
+
+.button-inactive {
+  background-color: transparent;
+  border-color: #DEE2E6;
+}
+
+.button-active {
+  background-color: #0D89EC;
+  border-color: #0D89EC;
+}
+
+.caption {
+  text-align: center;
 }

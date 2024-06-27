@@ -63,6 +63,9 @@ import { DataViewModule } from 'primeng/dataview';
 import { ScrumMasterAiAssistComponent } from './scrum-master-ai/components/scrum-master-ai-assist.component';
 import { WikiComponent } from './wiki/components/wiki.component';
 import { TreeModule } from 'primeng/tree';
+import { StepperModule } from 'primeng/stepper';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 
 @NgModule({
   declarations: [
@@ -135,7 +138,10 @@ import { TreeModule } from 'primeng/tree';
     }),
     InputSwitchModule,
     DataViewModule,
-    TreeModule
+    TreeModule,
+    StepperModule,
+    IconFieldModule,
+    InputIconModule
   ],
 
   exports: [],
