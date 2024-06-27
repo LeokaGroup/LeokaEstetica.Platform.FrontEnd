@@ -124,10 +124,9 @@
     </ng-template>
     <ng-template pTemplate="content" let-prevCallback="prevCallback">
       <div class="flex flex-column gap-2 mx-auto" style="min-height: 16rem; max-width: 32rem">
-        <div class="text-center mt-3 mb-3 text-xl font-semibold">Выберите шаблон стратегии</div>
+        <div class="text-center mt-3 text-xl font-semibold">Выберите шаблон стратегии</div>
         <div class="flex flex-column justify-content-center gap-2">
           <div class="flex flex-column align-items-center">
-            <strong class="mb-1 text-center">Выберите шаблон</strong>
 
             <div class="flex flex-row gap-3 py-3 align-items-center">
               <div *ngFor="let pmt of projectManagmentTemplates$.value">
