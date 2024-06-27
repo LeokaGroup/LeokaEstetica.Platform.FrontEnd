@@ -43,6 +43,7 @@ export class ProjectSettingsComponent implements OnInit {
   selectedUser: any;
   isShowUserRoles: boolean = false;
   aUpdatedRoles: Set<number> = new Set();
+  isShowInvite: boolean = false;
 
   items: any[] = [{
     label: 'Общие',
@@ -53,6 +54,7 @@ export class ProjectSettingsComponent implements OnInit {
         this.isShowScrumSettings = false;
         this.isShowUsers = false;
         this.isShowUserRoles = false;
+        this.isShowInvite = false;
       }
     }
     ]
@@ -66,6 +68,7 @@ export class ProjectSettingsComponent implements OnInit {
           this.isShowScrumSettings = true;
           this.isShowUsers = false;
           this.isShowUserRoles = false;
+          this.isShowInvite = false;
 
           await this.getScrumDurationSettingsAsync();
           await this.getProjectSprintsMoveNotCompletedTasksSettingsAsync();
@@ -82,6 +85,7 @@ export class ProjectSettingsComponent implements OnInit {
           this.isShowScrumSettings = false;
           this.isShowUsers = true;
           this.isShowUserRoles = false;
+          this.isShowInvite = false;
 
           await this.getSettingUsersAsync();
         }
@@ -93,6 +97,7 @@ export class ProjectSettingsComponent implements OnInit {
             this.isShowScrumSettings = false;
             this.isShowUsers = false;
             this.isShowUserRoles = true;
+            this.isShowInvite = false;
 
             await this.getUsersRolesAsync();
           }
@@ -100,6 +105,11 @@ export class ProjectSettingsComponent implements OnInit {
         {
           label: 'Приглашения',
           command: async () => {
+            this.isShowProfile = false;
+            this.isShowScrumSettings = false;
+            this.isShowUsers = false;
+            this.isShowUserRoles = false;
+            this.isShowInvite = true;
           }
         }
       ]

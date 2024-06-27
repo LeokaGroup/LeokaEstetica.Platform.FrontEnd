@@ -259,4 +259,86 @@
       </div>
     </div>
   </div>
+
+  <!-- Приглашения. -->
+  <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowInvite">
+    <h3>Приглашения</h3>
+    <div class="scrum">
+      <div>
+        <p-tabView>
+          <p-tabPanel header="Header I">
+            <p>
+              Lorem ipsum dolor sit amet...
+            </p>
+          </p-tabPanel>
+          <p-tabPanel header="Header II">
+            <p>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium...
+            </p>
+          </p-tabPanel>
+          <p-tabPanel header="Header III">
+            <p>
+              At vero eos et accusamus et iusto odio dignissimos...
+            </p>
+          </p-tabPanel>
+        </p-tabView>
+<!--        <p-table [value]="settingUserRoles.value"-->
+<!--                 [(selection)]="selectedUser"-->
+<!--                 dataKey="userId"-->
+<!--                 [paginator]="settingUserRoles.value.length > 0"-->
+<!--                 [rows]="10"-->
+<!--                 styleClass="p-datatable-gridlines"-->
+<!--                 responsiveLayout="scroll">-->
+
+<!--          <ng-template pTemplate="caption">-->
+<!--            <button pButton type="button"-->
+<!--                    label="Пригласить"-->
+<!--                    class="p-button-outlined p-button-success"-->
+<!--                    size="small">-->
+<!--            </button>-->
+<!--          </ng-template>-->
+
+<!--          <ng-template pTemplate="header">-->
+<!--            <tr>-->
+<!--              &lt;!&ndash; <th></th> &ndash;&gt;-->
+<!--              <th>Пользователь</th>-->
+<!--              <th>Название роли</th>-->
+<!--              <th>Наличие роли</th>-->
+<!--            </tr>-->
+<!--          </ng-template>-->
+
+<!--          <ng-template pTemplate="body" let-u>-->
+<!--            <tr>-->
+<!--              &lt;!&ndash; <td>-->
+<!--                <p-tableCheckbox [value]="order"></p-tableCheckbox>-->
+<!--              </td> &ndash;&gt;-->
+<!--              <td>{{u.email}} </td>-->
+<!--              <td>{{u.roleName}}</td>-->
+<!--              <td>-->
+<!--                <p-checkbox-->
+<!--                  [binary]="true"-->
+<!--                  inputId="binary">-->
+
+<!--                </p-checkbox>-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--          </ng-template>-->
+
+<!--          <ng-template pTemplate="summary">-->
+<!--&lt;!&ndash;            Всего: {{settingUserRoles.value.length}}&ndash;&gt;-->
+<!--          </ng-template>-->
+
+<!--          <ng-template pTemplate="emptymessage">-->
+<!--            <tr>-->
+<!--              <td colspan="7">-->
+<!--                <div class="empty-orders">-->
+<!--                  Ролей нет.-->
+<!--                </div>-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--          </ng-template>-->
+<!--        </p-table>-->
+      </div>
+    </div>
+  </div>
 </div>
