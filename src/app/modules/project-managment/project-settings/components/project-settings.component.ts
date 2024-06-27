@@ -124,6 +124,7 @@ export class ProjectSettingsComponent implements OnInit {
 
             await this.getProjectInvitesAsync();
             await this.getAvailableInviteVacanciesAsync();
+            await this.getProjectTeamAsync();
           }
         }
       ]
@@ -144,6 +145,11 @@ export class ProjectSettingsComponent implements OnInit {
   searchText: string = "";
   aProjectInvitesUsers: any[] = [];
   selectedInviteUser: string = "";
+  isDeleteProjectTeamMember: boolean = false;
+  deleteMember: string = "";
+  userId: number = 0;
+  projectTeam: any;
+  teamMember: any;
 
   public async ngOnInit() {
     forkJoin([
@@ -367,5 +373,35 @@ export class ProjectSettingsComponent implements OnInit {
       });
 
     this.isProjectInvite = false;
+  };
+
+  public onShowDeleteProjectTeamMemberModal(member: string, userId: number) {
+    this.isDeleteProjectTeamMember = true;
+    this.deleteMember = member;
+    this.userId = userId;
+  };
+
+  /**
+   * Функция удаляет пользователя из команды проекта.
+   * @param userId - Id участника проекта, которого будем удалять.
+   */
+  public async onDeleteProjectTeamAsync() {
+    (await this._projectService.deleteProjectTeamAsync(this.projectId, this.userId))
+      .subscribe(async _ => {
+        this.isDeleteProjectTeamMember = false;
+        await this.getProjectTeamAsync();
+      });
+  };
+
+  /**
+   * Функция получает данные для таблицы команда проекта
+   * @returns - Данные для таблицы команда проекта.
+   */
+  private async getProjectTeamAsync() {
+    (await this._projectService.getProjectTeamAsync(this.projectId))
+      .subscribe(async (response: any) => {
+        console.log("Данные команды проекта: ", response);
+        this.projectTeam = response;
+      });
   };
 }

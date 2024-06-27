@@ -275,7 +275,7 @@
                      styleClass="p-datatable-gridlines"
                      responsiveLayout="scroll">
 
-              <ng-template pTemplate="caption">
+              <ng-template pTemplate="caption" let-teamMember>
                 <button pButton type="button"
                         label="Пригласить"
                         class="p-button-outlined p-button-success"
@@ -287,18 +287,29 @@
               <ng-template pTemplate="header">
                 <tr>
                   <!-- <th></th> -->
+<!--                  <th style="width: 4rem"><p-tableHeaderCheckbox /></th>-->
                   <th>Пользователь</th>
                   <th>Дата приглашения</th>
+                  <th>Исключение</th>
                 </tr>
               </ng-template>
 
               <ng-template pTemplate="body" let-u>
                 <tr>
-                  <!-- <td>
-                    <p-tableCheckbox [value]="order"></p-tableCheckbox>
-                  </td> -->
+<!--                  <td>-->
+<!--                    <p-tableCheckbox [value]="teamMember"></p-tableCheckbox>-->
+<!--                  </td>-->
+<!--                  <td>-->
+<!--                    <p-tableCheckbox [value]="u" />-->
+<!--                  </td>-->
                   <td>{{u.email}} </td>
                   <td>{{u.createdAt}}</td>
+                  <td>
+                    <p-button (click)="onShowDeleteProjectTeamMemberModal(u.email, u.userId)"
+                              label="Исключить"
+                              styleClass="p-button-danger p-button-text">
+                    </p-button>
+                  </td>
                 </tr>
               </ng-template>
 
@@ -395,3 +406,17 @@
     </p-button>
   </ng-template>
 </p-dialog>
+
+<!-- Диалог исключения участника команды проекта. -->
+<!--<p-dialog header="Исключение участника из команды проекта"-->
+<!--          [(visible)]="isDeleteProjectTeamMember"-->
+<!--          [breakpoints]="{'960px': '75vw'}"-->
+<!--          [style]="{width: '50vw'}"-->
+<!--          [draggable]="false"-->
+<!--          [resizable]="false">-->
+<!--  <p>Вы уверены, что хотите исключить участника <strong>{{deleteMember}}</strong> из команды проекта?</p>-->
+<!--  <ng-template pTemplate="footer">-->
+<!--    <p-button (click)="isDeleteProjectTeamMember=false" label="Отменить" styleClass="p-button-text"></p-button>-->
+<!--    <p-button (click)="onDeleteProjectTeamAsync()" label="Исключить" styleClass="p-button-danger p-button-text"></p-button>-->
+<!--  </ng-template>-->
+<!--</p-dialog>-->
