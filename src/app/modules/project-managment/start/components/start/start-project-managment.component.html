@@ -1,5 +1,5 @@
-<!-- Ввод названия проекта. -->
 <p-stepper [(activeStep)]="active">
+  <!-- Ввод названия проекта. -->
   <p-stepperPanel>
     <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
       <button
@@ -44,13 +44,13 @@
           </div>
 
           <div class="flex pt-4 justify-content-end">
-              <p-button (onClick)="nextCallback.emit()" label="Далее" icon="pi pi-arrow-right" iconPos="right" />
+              <p-button (onClick)="nextCallback.emit()" label="Далее" icon="pi pi-arrow-right" iconPos="right" [disabled]="!projectManagementProjectName || !projectManagementProjectNamePrefix"/>
           </div>
         </div>
       </div>
     </ng-template>
   </p-stepperPanel>
-
+<!-- Выбор стратегии проекта. -->
   <p-stepperPanel>
     <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
       <button
@@ -59,7 +59,8 @@
         [ngClass]="{
           'button-active': index <= active,
           'button-inactive': index > active
-      }">
+      }"
+      [disabled]="!projectManagementProjectName || !projectManagementProjectNamePrefix">
         <i class="pi pi-wrench"
           [ngClass]="{
             'icon-white': index <= active,
@@ -83,11 +84,11 @@
               <div class="block-view-strategy">
                 <div class="flex flex-row gap-3 justify-content-center">
                   <div *ngFor="let str of viewStrategies$.value" class="field-checkbox">
-                    <input type="radio" class="btn-check" [value]="str" name="str" id="{{str.strategyId}}" autocomplete="off" [(ngModel)]="selectedStrategy" />
+                    <input type="radio" class="btn-check" [value]="str" name="str" id="{{str.strategyId}}" autocomplete="off" [(ngModel)]="selectedStrategy" (change)="onSelectStrategy()"  />
                     <label class="btn m-0" for="{{str.strategyId}}">
-                      <div class="flex flex-column gap-3 py-3">
+                      <div class="flex flex-column gap-3 py-3"> 
                         <h4 class="stragegy-name">{{str.viewStrategyName}}</h4>
-                        <p>На бэке пока не сделана логика</p>
+                        <p>На бэке пока не сделана логика </p>
                         <p-button label="Подробнее" [outlined]="true" />
                       </div>
                     </label>
@@ -95,7 +96,7 @@
                 </div>
                 <div class="flex pt-4 justify-content-between">
                   <p-button (onClick)="prevCallback.emit()" label="Назад" severity="secondary" icon="pi pi-arrow-left" />
-                  <p-button (onClick)="nextCallback.emit()" label="Далее" icon="pi pi-arrow-right" iconPos="right" />
+                  <p-button (onClick)="nextCallback.emit()" label="Далее" icon="pi pi-arrow-right" iconPos="right" [disabled]="!isSelectedStrategy" />
                 </div>
               </div>
             </div>
@@ -104,7 +105,7 @@
       </div>
     </ng-template>
   </p-stepperPanel>
-
+<!-- Выбор шаблона стратегии. -->
   <p-stepperPanel>
     <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
       <button
@@ -113,7 +114,8 @@
         [ngClass]="{
           'button-active': index <= active,
           'button-inactive': index > active
-        }">
+        }"
+        [disabled]="!isSelectedStrategy">
           <i class="pi pi-pencil"
             [ngClass]="{
               'icon-white': index <= active,
@@ -127,18 +129,10 @@
         <div class="text-center mt-3 text-xl font-semibold">Выберите шаблон стратегии</div>
         <div class="flex flex-column justify-content-center gap-2">
           <div class="flex flex-column align-items-center">
-
             <div class="flex flex-row gap-3 py-3 align-items-center">
-              <div *ngFor="let pmt of projectManagmentTemplates$.value">
-                <p-radioButton
-                    [inputId]="pmt.templateId"
-                    name="pmt"
-                    [value]="pmt"
-                    [(ngModel)]="selectedTemplate"
-                    (onClick)="onChangeTemplate()" />
-                <label [for]="pmt.templateId" class="ml-2">
-                    {{ pmt.templateName }}
-                </label>
+              <div *ngFor="let pmt of projectManagmentTemplates$.value" class="field-checkbox">
+                <input type="radio" class="btn-check" [value]="pmt" name="pmt" id="{{pmt.templateName}}" autocomplete="off" [(ngModel)]="selectedTemplate" (change)="onChangeTemplate()"  />
+                <label class="btn m-0" for="{{pmt.templateName}}">{{pmt.templateName}}</label>
               </div>
             </div>
           </div>
@@ -158,16 +152,14 @@
 
         <div class="flex mt-4 justify-content-between">
           <p-button (onClick)="prevCallback.emit()" label="Назад" severity="secondary" icon="pi pi-arrow-left" />
-          <p-button (onClick)="onSelectTemplate()" label="Сохранить шаблон" severity="primary" icon="pi pi-check" />
+          <p-button type="submit"
+            styleClass="justify-content-center w-full"
+            (onClick)="onRouteWorkSpace()"
+            [disabled]="!isSelectedTemplate || !projectManagementProjectName || !projectManagementProjectNamePrefix"
+            severity="success">
+            Сохранить и перейти в рабочее пространство
+          </p-button>
         </div>
-
-        <p-button type="submit"
-          styleClass="mt-4 justify-content-center w-full"
-          (onClick)="onRouteWorkSpace()"
-          [disabled]="!isSelectedTemplate || !projectManagementProjectName || !projectManagementProjectNamePrefix"
-          severity="success">
-          Перейти в рабочее пространство
-        </p-button>
       </div>
     </ng-template>
   </p-stepperPanel>

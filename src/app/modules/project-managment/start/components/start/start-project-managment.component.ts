@@ -22,8 +22,8 @@ export class StartProjectManagmentComponent implements OnInit {
 
     selectedProject: any;
     selectedStrategy: any;
+    isSelectedStrategy: boolean = false;
     selectedTemplate: any;
-    isSelectTemplate: boolean = false;
     aSelectedStatuses: any[] = [];
     isSelectedTemplate: boolean = false;
     isSelectedProject: boolean = false;
@@ -112,10 +112,10 @@ export class StartProjectManagmentComponent implements OnInit {
     };
 
     /**
-     * Функция отображает модалку выбора шаблона.
+     * Функция фиксирует выбор стратегии пользователем.
      */
     public onSelectStrategy() {
-        this.isSelectTemplate = true;
+        this.isSelectedStrategy = true;
     };
 
     /**
@@ -123,6 +123,7 @@ export class StartProjectManagmentComponent implements OnInit {
      */
     public onChangeTemplate() {
         this.aSelectedStatuses = [];
+        this.onSelectTemplate()
 
         // Перебираем статусы выбранного шаблона, чтобы добавить их в массив статусов и отобразить на UI.
         this.selectedTemplate.projectManagmentTaskStatusTemplates.forEach((el: any) => {
@@ -135,9 +136,9 @@ export class StartProjectManagmentComponent implements OnInit {
     };
 
     /**
-* Функция получает список шаблонов со статусами для выбора пользователю
-* @returns - Список шаблонов.
-*/
+     * Функция получает список шаблонов со статусами для выбора пользователю
+     * @returns - Список шаблонов.
+     */
     private async getProjectManagmentTemplatesAsync() {
         (await this._projectManagmentService.getProjectManagmentTemplatesAsync())
             .subscribe(_ => {
@@ -150,7 +151,6 @@ export class StartProjectManagmentComponent implements OnInit {
      */
     public onSelectTemplate() {
         this.isSelectedTemplate = true;
-        this.isSelectTemplate = false;
     };
 
     /**
