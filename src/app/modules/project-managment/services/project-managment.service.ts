@@ -1154,4 +1154,15 @@ export class ProjectManagmentService {
       tap(_ => console.log("Приглашение успешно отменено."))
     );
   };
+
+  /**
+   * Функция отменяет приглашение.
+   * @param userId - Id пользователя.
+   * @param projectId - Id проекта.
+   */
+  public async removeUserProjectTeamAsync(userId: number, projectId: number) {
+    return await this._http.delete(this.apiUrl + `/project-management-settings/remove-project-team?userId=${userId}&projectId=${projectId}`).pipe(
+      tap(_ => console.log("Участник исключен из команды."))
+    );
+  };
 }

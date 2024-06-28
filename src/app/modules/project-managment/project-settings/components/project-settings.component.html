@@ -151,8 +151,7 @@
               <th>Эл. почта</th>
               <th>Роль</th>
               <th>Последняя активность</th>
-              <!-- <th>Редактирование</th> -->
-              <!-- <th>Удаление</th> -->
+              <th>Исключение</th>
             </tr>
           </ng-template>
 
@@ -165,12 +164,13 @@
               <td>{{u.email}}</td>
               <td>{{u.role}}</td>
               <td>{{u.lastAutorization}}</td>
-<!--              <td><button pButton type="button"-->
-<!--                          label="Подробнее"-->
-<!--                          class="p-button-outlined p-button-primaryproject.projectId"-->
-<!--                          (click)="onRouteViewOrder(order.orderId)">-->
-<!--              </button>-->
-<!--              </td>-->
+              <td>
+                <p-button (click)="onRemoveUserProjectTeamAsync(u.userId)"
+                          label="Исключить"
+                          styleClass="p-button-text p-button-danger">
+
+                </p-button>
+              </td>
             </tr>
           </ng-template>
 
