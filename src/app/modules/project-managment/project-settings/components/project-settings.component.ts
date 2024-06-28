@@ -379,4 +379,15 @@ export class ProjectSettingsComponent implements OnInit {
         await this.getProjectInvitesAsync();
       });
   };
+
+  /**
+   * Функция отменяет приглашение.
+   * @param userId - Id пользователя.
+   */
+  public async onRemoveUserProjectTeamAsync(userId: number) {
+    (await this._projectManagmentService.removeUserProjectTeamAsync(userId, +this.projectId))
+      .subscribe(async (_: any) => {
+        await this.getSettingUsersAsync();
+      });
+  };
 }
