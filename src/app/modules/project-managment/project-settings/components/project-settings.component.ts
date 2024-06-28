@@ -368,4 +368,15 @@ export class ProjectSettingsComponent implements OnInit {
 
     this.isProjectInvite = false;
   };
+
+  /**
+   * Функция отменяет приглашение.
+   * @param notificationId - Id уведомления.
+   */
+  public async onCancelProjectInviteAsync(notificationId: number) {
+    (await this._projectManagmentService.cancelProjectInviteAsync(notificationId))
+      .subscribe(async (_: any) => {
+        await this.getProjectInvitesAsync();
+      });
+  };
 }
