@@ -1144,4 +1144,14 @@ export class ProjectManagmentService {
       tap(data => this.projectInvites$.next(data))
     );
   };
+
+  /**
+   * Функция отменяет приглашение.
+   * @param notificationId - Id уведомления.
+   */
+  public async cancelProjectInviteAsync(notificationId: number) {
+    return await this._http.delete(this.apiUrl + `/project-management-settings/cancel-project-invite?notificationId=${notificationId}`).pipe(
+      tap(_ => console.log("Приглашение успешно отменено."))
+    );
+  };
 }
