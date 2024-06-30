@@ -45,7 +45,7 @@
 
   <!-- Блок с кнопками действий. -->
   <div class="mt-3 mb-3 d-flex block-task-actions">
-    <div>
+    <div *ngIf="taskTypeId == 4">
       <button type="button"
               pButton
               icon="pi pi-save"
