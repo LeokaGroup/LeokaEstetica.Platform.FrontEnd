@@ -160,15 +160,12 @@ export class StartProjectManagmentComponent implements OnInit {
     };
 
     public onUpdateProjectManagementProjectName() {
-      this.projectManagementProjectNamePrefix = this.projectManagementProjectName.slice(0, 2).toUpperCase();
-      // сли есть пробел, то берем по 1 букве с каждого слова.
-      // if (this.projectManagementProjectName.includes(" ")) {
-      //   let arr = this.projectManagementProjectName.split(" ");
-      // }
-      //
-      // // Иначе просто берем 2 буквы.
-      // else {
-      //   this.projectManagementProjectNamePrefix = this.projectManagementProjectName.slice(0, 2).toUpperCase();
-      // }
+      if (this.projectManagementProjectName.includes(" ")) {
+        let arr = this.projectManagementProjectName.split(" ");
+        this.projectManagementProjectNamePrefix = arr.map((el: string) => el.slice(0, 1).toUpperCase()).join("");
+
+      } else {
+        this.projectManagementProjectNamePrefix = this.projectManagementProjectName.slice(0, 2).toUpperCase();
+      }
     };
 }

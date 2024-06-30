@@ -26,7 +26,7 @@
       <div class="project-text-block" [ngClass]="{selectedColor: item.isSelectedColor}">
         <div class="d-flex">
           <div class="tag" *ngIf="item.tagColor !== null && item.tagValue !== null">
-            <p-tag severity="{{item.tagColor}}" value="{{item.tagValue}}"></p-tag>
+            <p-tag [severity]="item.tagColor" value="{{item.tagValue}}"></p-tag>
           </div>
         </div>
 
@@ -115,5 +115,6 @@
       </div>
       </div>
     </div>
+    <button class="btn btn-secondary mt-3" (click)="onResetFilters()">Сбросить фильтры</button>
   </div>
 </div>

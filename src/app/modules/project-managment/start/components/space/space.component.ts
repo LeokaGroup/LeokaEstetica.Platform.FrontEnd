@@ -5,6 +5,7 @@ import { RedirectService } from "src/app/common/services/redirect.service";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {FixationStrategyInput} from "../../../task/models/input/fixation-strategy-input";
+import {ChangeTaskStatusInput} from "../../../task/models/input/change-task-status-input";
 
 @Component({
     selector: "",
@@ -40,6 +41,7 @@ export class SpaceComponent implements OnInit {
     isBlocker: boolean = false;
     isLoading: boolean = false;
     isPanelMenu: boolean = false;
+    dragged: DraggedTask = null;
 
     items: any[] = [
         {
@@ -192,4 +194,45 @@ export class SpaceComponent implements OnInit {
     public onClosePanelMenu() {
       this._projectManagmentService.isLeftPanel = false;
     };
+
+    dragStart(task: any, fromStatus: any) {
+      this.dragged = {
+        task: task,
+        fromStatus: fromStatus,
+      } as DraggedTask
+    }
+
+  async onDropAsync(toStatus: any) {
+    if (this.dragged) {
+      const movedTask = this.dragged.task;
+      const fromStatus = this.dragged.fromStatus;
+      console.log(fromStatus, toStatus);
+
+      if (toStatus.statusId !== fromStatus.statusId) {
+        let changeTaskStatusInput = new ChangeTaskStatusInput();
+        changeTaskStatusInput.projectId = this.selectedProjectId;
+        changeTaskStatusInput.taskId = movedTask.projectTaskId;
+        changeTaskStatusInput.taskDetailType = movedTask.taskTypeId;
+        changeTaskStatusInput.changeStatusId = toStatus.statusId;
+
+        (await this._projectManagmentService.changeTaskStatusAsync(changeTaskStatusInput))
+          .subscribe(async _ => {
+            fromStatus.projectManagmentTasks = fromStatus.projectManagmentTasks.filter((task: any) => task.taskId !== movedTask.taskId);
+            fromStatus.total = fromStatus.projectManagmentTasks.length;
+            toStatus.projectManagmentTasks = [movedTask, ...(toStatus.projectManagmentTasks ?? [])];
+            toStatus.total = toStatus.projectManagmentTasks.length;
+          });
+      }
+    }
+  }
+
+  dragEnd() {
+    this.dragged = null;
+  }
+
 }
+
+type DraggedTask = {
+  task: any;
+  fromStatus: any;
+} | null

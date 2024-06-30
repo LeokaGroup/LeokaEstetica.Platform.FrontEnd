@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { RedirectService } from "src/app/common/services/redirect.service";
@@ -20,14 +20,14 @@ export class SignUpComponent implements OnInit {
         private readonly _messageService: MessageService,
         private readonly _redirectService: RedirectService) { }
 
-    formSignUp: FormGroup = new FormGroup({
+    formSignUp: UntypedFormGroup = new UntypedFormGroup({
 
-        "email": new FormControl("", [
+        "email": new UntypedFormControl("", [
             Validators.required,
             Validators.email
         ]),
 
-        "password": new FormControl("", [
+        "password": new UntypedFormControl("", [
             Validators.required,
             Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)
         ])

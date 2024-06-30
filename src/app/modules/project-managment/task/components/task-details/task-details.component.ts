@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
@@ -91,32 +91,32 @@ export class TaskDetailsComponent implements OnInit {
       }
     ];
 
-    formStatuses: FormGroup = new FormGroup({
-        "statusName": new FormControl("", [
+    formStatuses: UntypedFormGroup = new UntypedFormGroup({
+        "statusName": new UntypedFormControl("", [
             Validators.required
         ])
     });
 
-    formPriorities: FormGroup = new FormGroup({
-        "priorityName": new FormControl("", [
+    formPriorities: UntypedFormGroup = new UntypedFormGroup({
+        "priorityName": new UntypedFormControl("", [
             Validators.required
         ])
     });
 
-    formExecutors: FormGroup = new FormGroup({
-        "executorName": new FormControl("", [
+    formExecutors: UntypedFormGroup = new UntypedFormGroup({
+        "executorName": new UntypedFormControl("", [
             Validators.required
         ])
     });
 
-    formEpic: FormGroup = new FormGroup({
-      "epicName": new FormControl("", [
+    formEpic: UntypedFormGroup = new UntypedFormGroup({
+      "epicName": new UntypedFormControl("", [
         Validators.required
       ])
   });
 
-  formSprint: FormGroup = new FormGroup({
-    "sprintName": new FormControl("", [
+  formSprint: UntypedFormGroup = new UntypedFormGroup({
+    "sprintName": new UntypedFormControl("", [
       Validators.required
     ])
   });

@@ -36,7 +36,7 @@
             </td>
             <td class="table-header-item">{{project.projectId}}</td>
             <td class="table-header-item">{{project.projectName}}</td>
-            <td class="table-header-item">{{project.projectDetails}}</td>
+            <td class="table-header-item" [innerHTML]="project.projectDetails"></td>
             <td class="table-header-item">{{project.projectStatusName}}</td>
             <td><button pButton type="button"
               label="Просмотр"

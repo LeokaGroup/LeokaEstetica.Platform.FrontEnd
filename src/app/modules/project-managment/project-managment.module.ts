@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MessageService} from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
 import {UserService} from '../user/services/user.service';
 import {PanelMenuModule} from 'primeng/panelmenu';
@@ -61,6 +60,10 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { WorkSpaceComponent } from './workspace/components/workspace.component';
 import { DataViewModule } from 'primeng/dataview';
 import { ScrumMasterAiAssistComponent } from './scrum-master-ai/components/scrum-master-ai-assist.component';
+import { WikiComponent } from './wiki/components/wiki.component';
+import { TreeModule } from 'primeng/tree';
+import { ContextMenuModule } from 'primeng/contextmenu';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -77,7 +80,8 @@ import { ScrumMasterAiAssistComponent } from './scrum-master-ai/components/scrum
     SprintComponent,
     SprintDetailsComponent,
     WorkSpaceComponent,
-    ScrumMasterAiAssistComponent
+    ScrumMasterAiAssistComponent,
+    WikiComponent
   ],
 
   imports: [
@@ -131,7 +135,9 @@ import { ScrumMasterAiAssistComponent } from './scrum-master-ai/components/scrum
       }
     }),
     InputSwitchModule,
-    DataViewModule
+    DataViewModule,
+    TreeModule,
+    ContextMenuModule
   ],
 
   exports: [],

@@ -163,3 +163,11 @@ p-inplace {
   color: white;
   align-items: center;
 }
+.btn-link {
+  text-align: center;
+}
+
+// Стилизация ячейки 
+tr > td.table-data {
+  text-align: center;
+}

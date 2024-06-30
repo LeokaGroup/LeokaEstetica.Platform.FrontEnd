@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {Router} from '@angular/router';
 import {HttpTransportType, HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
 import {BehaviorSubject} from 'rxjs';
 import {API_URL} from 'src/app/core/core-urls/api-urls';
 import { ProjectManagmentService } from 'src/app/modules/project-managment/services/project-managment.service';
 import {RedisService} from 'src/app/modules/redis/services/redis.service';
 import {DialogInput} from "../../../messages/chat/models/input/dialog-input";
+import { Router } from '@angular/router';
 
 @Injectable()
 export class ProjectManagementSignalrService {
@@ -14,7 +14,7 @@ export class ProjectManagementSignalrService {
 
   public isConnected: boolean = false;
 
-  public constructor(private readonly _redisService: RedisService,
+  constructor(private readonly _redisService: RedisService,
                      private readonly _router: Router,
                      private readonly _projectManagmentService: ProjectManagmentService) {
     this.hubConnection = new HubConnectionBuilder()
@@ -22,7 +22,7 @@ export class ProjectManagementSignalrService {
       .build();
   }
 
-  public async startConnection() {
+  public async startConnection(): Promise<boolean | void>  {
     if (this.hubConnection.state !== "Connected") {
       return await new Promise(async (resolve, reject) => {
         this.hubConnection.start()
@@ -161,6 +161,33 @@ export class ProjectManagementSignalrService {
   public listenClassificationNetworkMessageResponse() {
     (<HubConnection>this.hubConnection).on("SendClassificationNetworkMessageResult", (response: any) => {
       this.$allFeed.next(response);
+    });
+  };
+
+  /**
+   * Функция слушает уведомление о предупреждении невозможности изменения статуса эпика на недопустимый статус.
+   */
+  public listenSendNotifyWarningChangeEpicStatus() {
+    (<HubConnection>this.hubConnection).on("SendNotifyWarningChangeEpicStatus", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает уведомление о предупреждении невозможности изменения статуса истории на недопустимый статус.
+   */
+  public listenSendNotifyWarningChangeStoryStatus() {
+    (<HubConnection>this.hubConnection).on("SendNotifyWarningChangeStoryStatus", (data: any) => {
+      this.$allFeed.next(data);
+    });
+  };
+
+  /**
+   * Функция слушает уведомление об успешном обновлении ролей.
+   */
+  public listenSendNotifySuccessUpdateRoles() {
+    (<HubConnection>this.hubConnection).on("SendNotifySuccessUpdateRoles", (data: any) => {
+      this.$allFeed.next(data);
     });
   };
 }

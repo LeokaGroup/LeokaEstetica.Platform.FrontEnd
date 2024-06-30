@@ -5,7 +5,7 @@
 @use "/src/app/modules/project-managment/start/components/space/space.component.scss";
 
 .task-details {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 // FIXME: Вынесем в общие стили, если еще где то будет использоваться.
@@ -24,7 +24,7 @@
   margin: 0;
   font-size: 15px;
   line-height: 20px;
-  font-family: "YS Text","Helvetica Neue","Arial","Helvetica",sans-serif;
+  font-family: "YS Text", "Helvetica Neue", "Arial", "Helvetica", sans-serif;
   text-align: start;
 }
 
@@ -81,6 +81,10 @@
   input {
     width: 100%;
   }
+
+  .input-name-task {
+    width: 320px;
+  }
 }
 
 :host ::ng-deep .p-inplace span {
@@ -129,7 +133,7 @@
 
 .link {
   cursor: pointer;
-  color:blue;
+  color: blue;
 
   &:hover {
     cursor: pointer;

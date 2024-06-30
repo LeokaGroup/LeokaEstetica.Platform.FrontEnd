@@ -1,5 +1,5 @@
 <p-carousel [numVisible]="numVisible" [numScroll]="numScroll" [circular]="true" [responsiveOptions]="responsiveOptions"
-  [value]="fareRules$.value" orientation="{{carouselType}}">
+  [value]="fareRules$.value" [orientation]="carouselType">
   <ng-template let-fare pTemplate="item">
 
     <div class="tarifs">

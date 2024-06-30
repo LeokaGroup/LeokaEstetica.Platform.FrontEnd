@@ -32,7 +32,7 @@ export class LandingComponent implements OnInit {
     allFeedSubscription: any;
     responsiveOptions: boolean = true;
     aNewUsers: any[] = [];
-    carouselType: string = "";
+    carouselType: "horizontal" | "vertical" = "horizontal";
 
     constructor(private readonly _landingService: LandingService,
         private readonly _signalrService: SignalrService,
