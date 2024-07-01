@@ -335,7 +335,7 @@
 <p-dialog header="Приглашение пользователя в проект"
           [(visible)]="isProjectInvite"
           [breakpoints]="{'960px': '75vw'}"
-          [style]="{width: '60%', height: '60%'}"
+          [style]="{width: '80%', height: '80%'}"
           [draggable]="false"
           [resizable]="false">
   <div class="d-flex justify-content-around">
@@ -390,7 +390,9 @@
                                     [multiple]="false"
                                     (onSelect)="onSelectProjectMember($event)"
                                     placeholder="Введите для поиска пользователя"
-                                    [disabled]="!selectedInviteVariant">
+                                    [disabled]="!selectedInviteVariant"
+                                    [showEmptyMessage]="true"
+                                    emptyMessage="Результатов не найдено">
                     </p-autoComplete>
                   </span>
         </div>
