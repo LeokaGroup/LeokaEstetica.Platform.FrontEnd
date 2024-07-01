@@ -62,6 +62,12 @@ export class BacklogComponent implements OnInit {
     (await this._projectManagmentService.getConfigurationWorkSpaceBySelectedTemplateAsync(this.selectedProjectId,
       null, 1, "Backlog"))
       .subscribe(_ => {
+        // Нет доступа к раб.пространству проекта.
+        if (!this.backlogData$.value.isAccess) {
+          this._router.navigate(["/forbidden"]);
+          return;
+        }
+
         console.log("Конфигурация рабочего пространства: ", this.backlogData$.value);
 
         this.backlogData$.value?.projectManagmentTaskStatuses?.forEach((p1: any) => {
@@ -92,6 +98,12 @@ export class BacklogComponent implements OnInit {
     (await this._projectManagmentService.getConfigurationWorkSpaceBySelectedTemplateAsync(this.selectedProjectId,
       taskStatusId, ++pageNumber, "Backlog"))
       .subscribe(_ => {
+        // Нет доступа к раб.пространству проекта.
+        if (!this.backlogData$.value.isAccess) {
+          this._router.navigate(["/forbidden"]);
+          return;
+        }
+
         console.log("Конфигурация рабочего пространства: ", this.backlogData$.value);
 
         this.backlogData$.value?.projectManagmentTaskStatuses?.forEach((p1: any) => {
