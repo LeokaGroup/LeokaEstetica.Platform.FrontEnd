@@ -201,6 +201,12 @@ export class TaskDetailsComponent implements OnInit {
         .subscribe(async _ => {
           console.log("Детали задачи: ", this.taskDetails$.value);
 
+          // Нет доступа к просмотру задачи.
+          if (!this.taskDetails$.value.isAccess) {
+            this._router.navigate(["/forbidden"]);
+            return;
+          }
+
           (await this._projectManagmentService.getAvailableEpicsAsync(+this.projectId))
             .subscribe(_ => {
               console.log("Доступные эпики: ", this.availableEpics$.value);
