@@ -116,6 +116,12 @@ export class SpaceComponent implements OnInit {
         (await this._projectManagmentService.getConfigurationWorkSpaceBySelectedTemplateAsync(this.selectedProjectId,
             null, 1, "Space"))
             .subscribe(_ => {
+              // Нет доступа к раб.пространству проекта.
+              if (!this.workSpaceConfig$.value.isAccess) {
+                this._router.navigate(["/forbidden"]);
+                return;
+              }
+
                 console.log("Конфигурация рабочего пространства: ", this.workSpaceConfig$.value);
                 this.mode = this.workSpaceConfig$.value.strategy;
 
@@ -147,6 +153,12 @@ export class SpaceComponent implements OnInit {
     (await this._projectManagmentService.getConfigurationWorkSpaceBySelectedTemplateAsync(this.selectedProjectId,
       taskStatusId, ++pageNumber, "Space"))
       .subscribe(_ => {
+        // Нет доступа к раб.пространству проекта.
+        if (!this.workSpaceConfig$.value.isAccess) {
+          this._router.navigate(["/forbidden"]);
+          return;
+        }
+
         console.log("Конфигурация рабочего пространства: ", this.workSpaceConfig$.value);
 
         this.mode = this.workSpaceConfig$.value.strategy;
