@@ -903,7 +903,7 @@ export class TaskDetailsComponent implements OnInit {
    * @param projectTaskId - Id задачи в рамках проекта.
    */
   private async onRemoveProjectTaskAsync() {
-    (await this._projectManagmentService.removeProjectTaskAsync(+this.projectId, this.projectTaskId))
+    (await this._projectManagmentService.removeProjectTaskAsync(+this.projectId, this.projectTaskId, TaskDetailTypeEnum[localStorage["t_t_i"]]))
       .subscribe(_ => {
         let projectId = this.projectId;
 
