@@ -35,6 +35,7 @@ import { UpdateFolderPageDescriptionInput } from '../models/input/update-folder-
 import { CreateWikiFolderInput } from '../models/input/create-folder-input';
 import { Router } from '@angular/router';
 import {CreateWikiPageInput} from "../models/input/create-page-input";
+import {TaskDetailTypeEnum} from "../../enums/task-detail-type";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -1170,9 +1171,10 @@ export class ProjectManagmentService {
    * Функция удаляет задачу.
    * @param projectId - Id проекта.
    * @param projectTaskId - Id задачи в рамках проекта.
+   * @param TaskDetailTypeEnum - Тип задачи.
    */
-  public async removeProjectTaskAsync(projectId: number, projectTaskId: string) {
-    return await this._http.delete(this.apiUrl + `/project-management/task?projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
+  public async removeProjectTaskAsync(projectId: number, projectTaskId: string, taskType: string) {
+    return await this._http.delete(this.apiUrl + `/project-management/task?projectId=${projectId}&projectTaskId=${projectTaskId}&taskType=${taskType}`).pipe(
       tap(_ => console.log("Задача успешно удалена."))
     );
   };
