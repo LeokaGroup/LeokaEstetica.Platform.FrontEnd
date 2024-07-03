@@ -88,7 +88,19 @@ export class TaskDetailsComponent implements OnInit {
           visible: true
         }],
         visible: true
-      }
+      },
+      {
+        label: 'Действия над задачей',
+        items: [{
+          label: 'Удалить задачу',
+          icon: 'pi pi-times',
+          command: async () => {
+            await this.onRemoveProjectTaskAsync();
+          },
+          visible: true
+        }],
+        visible: true
+      },
     ];
 
     formStatuses: UntypedFormGroup = new UntypedFormGroup({
@@ -883,5 +895,25 @@ export class TaskDetailsComponent implements OnInit {
 
   public onSelectPanelMenu() {
     this._projectManagmentService.isLeftPanel = true;
+  };
+
+  /**
+   * Функция удаляет задачу.
+   * @param projectId - Id проекта.
+   * @param projectTaskId - Id задачи в рамках проекта.
+   */
+  private async onRemoveProjectTaskAsync() {
+    (await this._projectManagmentService.removeProjectTaskAsync(+this.projectId, this.projectTaskId))
+      .subscribe(_ => {
+        let projectId = this.projectId;
+
+        setTimeout(() => {
+          this._router.navigate(["/project-management/space"], {
+            queryParams: {
+              projectId
+            }
+          });
+        }, 4000);
+      });
   };
 }

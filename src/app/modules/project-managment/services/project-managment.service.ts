@@ -1165,4 +1165,15 @@ export class ProjectManagmentService {
       tap(_ => console.log("Участник исключен из команды."))
     );
   };
+
+  /**
+   * Функция удаляет задачу.
+   * @param projectId - Id проекта.
+   * @param projectTaskId - Id задачи в рамках проекта.
+   */
+  public async removeProjectTaskAsync(projectId: number, projectTaskId: string) {
+    return await this._http.delete(this.apiUrl + `/project-management/task?projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
+      tap(_ => console.log("Задача успешно удалена."))
+    );
+  };
 }
