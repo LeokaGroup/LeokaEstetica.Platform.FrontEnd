@@ -98,7 +98,7 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
       });
   };
 
- 
+
 
   /**
    * для задачи 34460898
@@ -136,6 +136,12 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
         console.log("Хидер УП: ", this.headerItems$.value);
         this.aHeaderItems = this.headerItems$.value.headerItems;
         this.aPanelItems = this.headerItems$.value.panelItems;
+
+        this.aHeaderItems.forEach(x => {
+          if (x.destination == "Filters") {
+            x.visible = false;
+          }
+        })
       });
   };
 
