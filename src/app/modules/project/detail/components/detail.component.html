@@ -239,7 +239,7 @@
         <div>
           <p-table [value]="projectVacancies$.value?.projectVacancies"
                   [(selection)]="selectedProjectVacancy"
-                  dataKey="userVacancy.vacancyId"
+                  dataKey="vacancyId"
                   [paginator]="false"
                   [rows]="10"
                   styleClass="p-datatable-gridlines"
@@ -285,9 +285,9 @@
                   <p-tableCheckbox [value]="vacancy"></p-tableCheckbox>
                 </td>
                 <td>{{vacancy.vacancyId}}</td>
-                <td>{{vacancy.userVacancy.vacancyName}}</td>
-                <td><div [innerHTML]="vacancy.userVacancy.vacancyText"></div></td>
-                <td>{{vacancy.userVacancy.vacancyStatusName}}</td>
+                <td>{{vacancy.vacancyName}}</td>
+                <td><div [innerHTML]="vacancy.vacancyText"></div></td>
+                <td>{{vacancy.vacancyStatusName}}</td>
                 <td><button pButton type="button"
                             label="Просмотр"
                             class="p-button-text"
@@ -306,7 +306,7 @@
                             type="button"
                             label="Удалить"
                             class="p-button-text p-button-danger"
-                            (click)="onBeforeDeleteProjectVacancy(vacancy.vacancyId, vacancy.userVacancy.vacancyName)"
+                            (click)="onBeforeDeleteProjectVacancy(vacancy.vacancyId, vacancy.vacancyName)"
                             *ngIf="isVisibleActionVacancyButton">
                 </button></td>
               </tr>
@@ -570,7 +570,7 @@
       <div>
         <p-dropdown [options]="availableAttachVacancies$.value?.projectVacancies"
                     [(ngModel)]="selectedVacancy"
-                    optionLabel="userVacancy.vacancyName"
+                    optionLabel="vacancyName"
                     (onChange)="onSelectVacancy()">
         </p-dropdown>
       </div>
@@ -706,7 +706,7 @@
       <div>
         <p-dropdown [options]="availableAttachVacancies"
                     [(ngModel)]="selectedVacancy"
-                    optionLabel="userVacancy.vacancyName"
+                    optionLabel="vacancyName"
                     (onChange)="onSelectVacancy()">
         </p-dropdown>
       </div>
@@ -798,7 +798,7 @@
                 <div>
                   <p-dropdown [options]="availableInviteVacancies"
                               [(ngModel)]="selectedInviteVacancy"
-                              optionLabel="userVacancy.vacancyName"
+                              optionLabel="vacancyName"
                               [disabled]="!selectedInviteVariant
                               || isVacancyInvite"
                               emptyMessage="Нет данных">
