@@ -1,3 +1,5 @@
+<p-toast></p-toast>
+
 <div class="d-flex">
   <div class="d-flex mt-3 col-lg-3">
     <div class="block-worksheet col-lg-12">
@@ -124,4 +126,282 @@
       </div>
     </div>
   </div>
+
+  <!-- Настройки списка пользователей проекта компании. -->
+  <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowUsers">
+    <h3>Пользователи проекта компании</h3>
+    <div class="scrum">
+      <div>
+        <p-table [value]="settingUsers.value"
+                 [(selection)]="selectedUser"
+                 dataKey="userId"
+                 [paginator]="settingUsers.value.length > 0"
+                 [rows]="10"
+                 styleClass="p-datatable-gridlines"
+                 responsiveLayout="scroll">
+
+<!--          <ng-template pTemplate="caption">-->
+<!--            <h3>Пользователи</h3>-->
+<!--          </ng-template>-->
+
+          <ng-template pTemplate="header">
+            <tr>
+              <!-- <th></th> -->
+              <th>Полное имя</th>
+              <th>Эл. почта</th>
+              <th>Роль</th>
+              <th>Последняя активность</th>
+              <th>Исключение</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-u>
+            <tr>
+              <!-- <td>
+                <p-tableCheckbox [value]="order"></p-tableCheckbox>
+              </td> -->
+              <td>{{u.fullName}}</td>
+              <td>{{u.email}}</td>
+              <td>{{u.role}}</td>
+              <td>{{u.lastAutorization}}</td>
+              <td>
+                <p-button (click)="onRemoveUserProjectTeamAsync(u.userId)"
+                          label="Исключить"
+                          styleClass="p-button-text p-button-danger">
+
+                </p-button>
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="summary">
+            Всего: {{settingUsers.value.length}}
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">
+                <div class="empty-orders">
+                  Пользователей нет.
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Роли пользователей проекта. -->
+  <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowUserRoles">
+    <h3>Настройки ролевой модели пользователей проекта</h3>
+    <div class="scrum">
+      <div>
+        <p-table [value]="settingUserRoles.value"
+                 [(selection)]="selectedUser"
+                 dataKey="userId"
+                 [paginator]="settingUserRoles.value.length > 0"
+                 [rows]="10"
+                 styleClass="p-datatable-gridlines"
+                 responsiveLayout="scroll">
+
+          <ng-template pTemplate="caption">
+            <button pButton type="button"
+                    label="Сохранить"
+                    class="p-button-outlined p-button-success"
+                    size="small"
+                    (click)="onUpdateRolesAsync(settingUserRoles.value)">
+            </button>
+          </ng-template>
+
+          <ng-template pTemplate="header">
+            <tr>
+              <!-- <th></th> -->
+              <th>Пользователь</th>
+              <th>Название роли</th>
+              <th>Наличие роли</th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-u>
+            <tr>
+              <!-- <td>
+                <p-tableCheckbox [value]="order"></p-tableCheckbox>
+              </td> -->
+              <td>{{u.email}} </td>
+              <td>{{u.roleName}}</td>
+              <td>
+                <p-checkbox
+                  [(ngModel)]="u.isEnabled"
+                  [binary]="true"
+                  inputId="binary"
+                  (onChange)="onSelectRole(u.organizationMemberId)">
+
+                </p-checkbox>
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="summary">
+            Всего: {{settingUserRoles.value.length}}
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7">
+                <div class="empty-orders">
+                  Ролей нет.
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Приглашения. -->
+  <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowInvite">
+    <h3>Приглашения</h3>
+    <div class="scrum">
+      <div>
+        <p-tabView>
+          <p-tabPanel header="Активные">
+            <p-table [value]="projectInvites$.value"
+                     [(selection)]="selectedInvite"
+                     dataKey="userId"
+                     [paginator]="projectInvites$.value.length > 0"
+                     [rows]="10"
+                     styleClass="p-datatable-gridlines"
+                     responsiveLayout="scroll">
+
+              <ng-template pTemplate="caption">
+                <button pButton type="button"
+                        label="Пригласить"
+                        class="p-button-outlined p-button-success"
+                        size="small"
+                        (click)="isProjectInvite=true">
+                </button>
+              </ng-template>
+
+              <ng-template pTemplate="header">
+                <tr>
+                  <!-- <th></th> -->
+                  <th>Пользователь</th>
+                  <th>Дата приглашения</th>
+                  <th>Отменить</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-u>
+                <tr>
+                  <!-- <td>
+                    <p-tableCheckbox [value]="order"></p-tableCheckbox>
+                  </td> -->
+                  <td>{{u.email}} </td>
+                  <td>{{u.createdAt}}</td>
+                  <td>
+                    <p-button (click)="onCancelProjectInviteAsync(u.notificationId)"
+                              label="Отменить"
+                              styleClass="p-button-text p-button-danger">
+
+                    </p-button>
+                  </td>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="summary">
+                            Всего: {{projectInvites$.value.length}}
+              </ng-template>
+
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="7">
+                    <div class="empty-orders">
+                      Приглашений нет.
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </p-tabPanel>
+        </p-tabView>
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- Диалог инвайта в проект. -->
+<p-dialog header="Приглашение пользователя в проект"
+          [(visible)]="isProjectInvite"
+          [breakpoints]="{'960px': '75vw'}"
+          [style]="{width: '80%', height: '80%'}"
+          [draggable]="false"
+          [resizable]="false">
+  <div class="d-flex justify-content-around">
+    <div>
+      <div *ngFor="let variant of aProjectInviteVarians" class="field-checkbox mb-3 mt-3">
+        <p-radioButton [inputId]="variant.key"
+                       name="variant"
+                       [value]="variant"
+                       [(ngModel)]="selectedInviteVariant">
+
+        </p-radioButton>
+
+        <label [for]="variant.key">{{variant.name}}</label>
+      </div>
+
+
+    </div>
+
+    <div>
+      <div>
+        <div class="mb-3 mt-3">
+          <div>
+            <label>Выберите вакансию для приглашения</label>
+          </div>
+          <div>
+            <p-dropdown [options]="availableInviteVacancies"
+                        [(ngModel)]="selectedInviteVacancy"
+                        optionLabel="userVacancy.vacancyName"
+                        [disabled]="!selectedInviteVariant
+                              || isVacancyInvite"
+                        emptyMessage="Нет данных">
+            </p-dropdown>
+          </div>
+
+          <div class="field-checkbox mb-3">
+            <p-checkbox [binary]="true"
+                        inputId="binary"
+                        (onChange)="isVacancyInvite=!isVacancyInvite">
+            </p-checkbox>
+            <label for="binary">
+              <small>Пригласить без указания вакансии</small>
+            </label>
+          </div>
+        </div>
+
+        <div class="d-flex">
+                  <span class="p-fluid">
+                    <p-autoComplete [(ngModel)]="searchText"
+                                    [suggestions]="aProjectInvitesUsers"
+                                    (completeMethod)="onSearchInviteProjectMembersAsync($event)"
+                                    field="displayName"
+                                    [multiple]="false"
+                                    (onSelect)="onSelectProjectMember($event)"
+                                    placeholder="Введите для поиска пользователя"
+                                    [disabled]="!selectedInviteVariant"
+                                    [showEmptyMessage]="true"
+                                    emptyMessage="Результатов не найдено">
+                    </p-autoComplete>
+                  </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button (click)="isProjectInvite=false" label="Отменить" styleClass="p-button-text p-button-danger"></p-button>
+    <p-button (click)="onSendInviteProjectTeamAsync()" label="Отправить приглашение" styleClass="p-button-text p-button-text">
+    </p-button>
+  </ng-template>
+</p-dialog>

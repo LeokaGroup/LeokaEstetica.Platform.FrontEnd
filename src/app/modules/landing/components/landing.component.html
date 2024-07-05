@@ -34,7 +34,7 @@
 </div>
 
 <p-carousel [value]="platformOffers$.value.platformOfferItems" [numVisible]="3" [numScroll]="3" [circular]="true"
-  [responsiveOptions]="platformOffers$.value.platformOfferItems" orientation="{{carouselType}}">
+  [responsiveOptions]="platformOffers$.value.platformOfferItems" [orientation]="carouselType">
   <ng-template let-item pTemplate="item">
     <div class="border-1 surface-border border-round m-2 text-center py-5 px-3">
       <div class="mb-3">
@@ -59,7 +59,7 @@
 </div>
 
 <p-carousel [value]="platformCondituions$.value" [numVisible]="3" [numScroll]="3" [circular]="true"
-  [responsiveOptions]="platformCondituions$.value" orientation="{{carouselType}}">
+  [responsiveOptions]="platformCondituions$.value" [orientation]="carouselType">
   <ng-template let-item pTemplate="item">
     <div class="border-1 surface-border border-round m-2 text-center py-5 px-3">
       <div class="mb-3">
@@ -81,10 +81,12 @@
 <!-- Тарифы. -->
 <div class="mt-5 mb-5">
   <div class="col-lg-12 d-flex justify-content-center">
-    <h3>Тарифы модуля «Старт»</h3>
+<!--    <h3>Тарифы модуля «Старт»</h3>-->
+        <h3>Тарифы</h3>
   </div>
   <div>
-    <fare-rule></fare-rule>
+<!--    <fare-rule></fare-rule>-->
+    <span class="d-flex justify-content-center">В процессе формирования</span>
   </div>
 </div>
 

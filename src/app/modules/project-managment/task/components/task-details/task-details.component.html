@@ -14,7 +14,7 @@
         <h1 class="task-name-title">{{taskName}}</h1>
       </ng-template>
       <ng-template pTemplate="content">
-          <input type="text" [(ngModel)]="taskName" value="{{taskName}}" pInputText>
+          <input class="input-name-task" type="text" [(ngModel)]="taskName" value="{{taskName}}" pInputText>
       </ng-template>
   </p-inplace>
 
@@ -45,7 +45,7 @@
 
   <!-- Блок с кнопками действий. -->
   <div class="mt-3 mb-3 d-flex block-task-actions">
-    <div>
+    <div *ngIf="taskDetails$.value.taskTypeId == 4">
       <button type="button"
               pButton
               icon="pi pi-save"
@@ -84,7 +84,7 @@
         </div>
       </div>
 
-      <form class="d-flex line" [formGroup]="formPriorities" *ngIf="taskTypeId == 1 || taskTypeId == 2 || taskTypeId == 4">
+      <form class="d-flex line" [formGroup]="formPriorities" *ngIf="taskDetails$.value.taskTypeId == 1 || taskDetails$.value.taskTypeId == 2 || taskDetails$.value.taskTypeId == 4">
         <label class="control-label-task-item">Приоритет:</label>
 
         <p-dropdown [options]="priorities$.value"
@@ -132,7 +132,7 @@
         </button>
       </div>
 
-      <div class="col-lg-4 mt-3" *ngIf="taskTypeId == 1 || taskTypeId == 2">
+      <div class="col-lg-4 mt-3" *ngIf="taskDetails$.value.taskTypeId == 1 || taskDetails$.value.taskTypeId == 2">
         <strong>Agile</strong>
         <form class="d-flex line" [formGroup]="formEpic">
           <label class="control-label-task-item">Эпик:</label>
@@ -341,7 +341,7 @@
   </div>
 
   <!-- Связанные задачи (обычные связи). -->
-  <div class="block-task-lines d-flex" *ngIf="taskTypeId == 1 || taskTypeId == 2">
+  <div class="block-task-lines d-flex" *ngIf="taskDetails$.value.taskTypeId == 1 || taskDetails$.value.taskTypeId == 2 || taskDetails$.value.taskTypeId == 3">
     <div class="">
       <div class="d-flex justify-content-between">
         <div class="space-bottom-10">
@@ -422,12 +422,12 @@
     </div>
   </div>
 
-  <div *ngIf="taskTypeId == 1 || taskTypeId == 2">
+  <div *ngIf="taskDetails$.value.taskTypeId == 1 || taskDetails$.value.taskTypeId == 2 || taskDetails$.value.taskTypeId == 3">
     <hr>
   </div>
 
    <!-- Связанные задачи (родительские связи). -->
-   <div class="block-task-lines d-flex" *ngIf="taskTypeId == 1 || taskTypeId == 2">
+   <div class="block-task-lines d-flex" *ngIf="taskDetails$.value.taskTypeId == 1 || taskDetails$.value.taskTypeId == 2 || taskDetails$.value.taskTypeId == 3">
     <div class="">
       <div class="d-flex justify-content-between">
         <div class="space-bottom-10">
@@ -504,12 +504,12 @@
     </div>
   </div>
 
-  <div *ngIf="taskTypeId == 1 || taskTypeId == 2">
+  <div *ngIf="taskDetails$.value.taskTypeId == 1 || taskDetails$.value.taskTypeId == 2 || taskDetails$.value.taskTypeId == 3">
     <hr>
   </div>
 
    <!-- Связанные задачи (дочерние связи). -->
-   <div class="block-task-lines d-flex" *ngIf="taskTypeId == 1 || taskTypeId == 2">
+   <div class="block-task-lines d-flex" *ngIf="taskDetails$.value.taskTypeId == 1 || taskDetails$.value.taskTypeId == 2 || taskDetails$.value.taskTypeId == 3">
     <div class="">
       <div class="d-flex justify-content-between">
         <div class="space-bottom-10">
@@ -586,12 +586,12 @@
     </div>
   </div>
 
-  <div *ngIf="taskTypeId == 1 || taskTypeId == 2">
+  <div *ngIf="taskDetails$.value.taskTypeId == 1 || taskDetails$.value.taskTypeId == 2 || taskDetails$.value.taskTypeId == 3">
     <hr>
   </div>
 
    <!-- Связанные задачи (связи зависит от). -->
-   <div class="block-task-lines d-flex" *ngIf="taskTypeId == 1 || taskTypeId == 2">
+   <div class="block-task-lines d-flex" *ngIf="taskDetails$.value.taskTypeId == 1 || taskDetails$.value.taskTypeId == 2 || taskDetails$.value.taskTypeId == 3">
     <div class="">
       <div class="d-flex justify-content-between">
         <div class="space-bottom-10">
@@ -668,12 +668,12 @@
     </div>
   </div>
 
-  <div *ngIf="taskTypeId == 1 || taskTypeId == 2">
+  <div *ngIf="taskDetails$.value.taskTypeId == 1 || taskDetails$.value.taskTypeId == 2 || taskDetails$.value.taskTypeId == 3">
     <hr>
   </div>
 
   <!-- Связанные задачи (связи блокирует). -->
-  <div class="block-task-lines d-flex" *ngIf="taskTypeId == 1 || taskTypeId == 2">
+  <div class="block-task-lines d-flex" *ngIf="taskDetails$.value.taskTypeId == 1 || taskDetails$.value.taskTypeId == 2 || taskDetails$.value.taskTypeId == 3">
     <div class="">
       <div class="d-flex justify-content-between">
         <div class="space-bottom-10">
@@ -745,18 +745,19 @@
     </div>
   </div>
 
-  <div class="mt-3 block-sprint" *ngIf="taskTypeId == 4">
+  <div class="mt-3 block-sprint" *ngIf="taskDetails$.value.taskTypeId == 4">
     <div>
       <strong>Задачи эпика</strong>
     </div>
   </div>
 
-  <div class="mt-3 block-sprint" *ngIf="taskTypeId == 4">
+  <div class="mt-3 block-sprint" *ngIf="taskDetails$.value.taskTypeId == 4">
     <div class="mb-3">
       <p-autoComplete [(ngModel)]="selectedTask"
                       [suggestions]="epicTasks$.value"
                       (completeMethod)="onSearchIncludeEpicTaskAsync($event)"
                       [showEmptyMessage]="true"
+                      [disabled]="!isSearchByTaskId && !isSearchByTaskName && !isSearchByTaskDescription"
                       emptyMessage="Результатов не найдено"
                       field="findText"
                       [minLength]="0"
@@ -870,7 +871,7 @@
     </p-table>
   </div>
 
-  <div *ngIf="taskTypeId == 1 || taskTypeId == 2 || taskTypeId == 4">
+  <div *ngIf="taskDetails$.value.taskTypeId == 1 || taskDetails$.value.taskTypeId == 2 || taskDetails$.value.taskTypeId == 4">
     <hr>
   </div>
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
@@ -88,35 +88,47 @@ export class TaskDetailsComponent implements OnInit {
           visible: true
         }],
         visible: true
-      }
+      },
+      {
+        label: 'Действия над задачей',
+        items: [{
+          label: 'Удалить задачу',
+          icon: 'pi pi-times',
+          command: async () => {
+            await this.onRemoveProjectTaskAsync();
+          },
+          visible: true
+        }],
+        visible: true
+      },
     ];
 
-    formStatuses: FormGroup = new FormGroup({
-        "statusName": new FormControl("", [
+    formStatuses: UntypedFormGroup = new UntypedFormGroup({
+        "statusName": new UntypedFormControl("", [
             Validators.required
         ])
     });
 
-    formPriorities: FormGroup = new FormGroup({
-        "priorityName": new FormControl("", [
+    formPriorities: UntypedFormGroup = new UntypedFormGroup({
+        "priorityName": new UntypedFormControl("", [
             Validators.required
         ])
     });
 
-    formExecutors: FormGroup = new FormGroup({
-        "executorName": new FormControl("", [
+    formExecutors: UntypedFormGroup = new UntypedFormGroup({
+        "executorName": new UntypedFormControl("", [
             Validators.required
         ])
     });
 
-    formEpic: FormGroup = new FormGroup({
-      "epicName": new FormControl("", [
+    formEpic: UntypedFormGroup = new UntypedFormGroup({
+      "epicName": new UntypedFormControl("", [
         Validators.required
       ])
   });
 
-  formSprint: FormGroup = new FormGroup({
-    "sprintName": new FormControl("", [
+  formSprint: UntypedFormGroup = new UntypedFormGroup({
+    "sprintName": new UntypedFormControl("", [
       Validators.required
     ])
   });
@@ -200,6 +212,12 @@ export class TaskDetailsComponent implements OnInit {
       (await this._projectManagmentService.getTaskDetailsByTaskIdAsync(+this.projectId, this.projectTaskId, TaskDetailTypeEnum[localStorage["t_t_i"]]))
         .subscribe(async _ => {
           console.log("Детали задачи: ", this.taskDetails$.value);
+
+          // Нет доступа к просмотру задачи.
+          if (!this.taskDetails$.value.isAccess) {
+            this._router.navigate(["/forbidden"]);
+            return;
+          }
 
           (await this._projectManagmentService.getAvailableEpicsAsync(+this.projectId))
             .subscribe(_ => {
@@ -877,5 +895,25 @@ export class TaskDetailsComponent implements OnInit {
 
   public onSelectPanelMenu() {
     this._projectManagmentService.isLeftPanel = true;
+  };
+
+  /**
+   * Функция удаляет задачу.
+   * @param projectId - Id проекта.
+   * @param projectTaskId - Id задачи в рамках проекта.
+   */
+  private async onRemoveProjectTaskAsync() {
+    (await this._projectManagmentService.removeProjectTaskAsync(+this.projectId, this.projectTaskId, TaskDetailTypeEnum[localStorage["t_t_i"]]))
+      .subscribe(_ => {
+        let projectId = this.projectId;
+
+        setTimeout(() => {
+          this._router.navigate(["/project-management/space"], {
+            queryParams: {
+              projectId
+            }
+          });
+        }, 4000);
+      });
   };
 }

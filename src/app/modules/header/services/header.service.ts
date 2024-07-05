@@ -24,9 +24,9 @@ export class HeaderService {
 
     // Функция обновит токена пользователя.
     public async refreshTokenAsync() {
-        setInterval(async () => {
+        const interval = setInterval(async () => {
             if (!localStorage["t_n"]) {
-                clearInterval();
+                clearInterval(interval);
                 return;
             }
 

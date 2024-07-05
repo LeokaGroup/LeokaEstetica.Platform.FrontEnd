@@ -129,6 +129,19 @@ export class AppComponent implements OnInit {
       this.isVisibleMenu = false;
     }
 
+    if (currentUrl.indexOf("press/offer") >= 0) {
+      this.isVisibleMenu = false;
+    }
+
+    if (currentUrl.indexOf("project-management") >= 0) {
+      this.isVisibleProjectManagementMenu = true;
+      this.isVisibleMenu = false;
+    }
+
+    if (currentUrl === "/") {
+      this.isVisibleProjectManagementMenu = false;
+    }
+
     this._activatedRoute.queryParams
       .subscribe(params => {
         // Для просмотра анкеты другого пользователя.
@@ -143,19 +156,6 @@ export class AppComponent implements OnInit {
 
         if (params["page"]) {
           this.isVisibleMenu = true;
-        }
-
-        if (currentUrl.indexOf("press/offer") >= 0) {
-          this.isVisibleMenu = false;
-        }
-
-        if (currentUrl.indexOf("project-management") >= 0) {
-          this.isVisibleProjectManagementMenu = true;
-          this.isVisibleMenu = false;
-        }
-
-        if (currentUrl === "/") {
-          this.isVisibleProjectManagementMenu = false;
         }
       });
   };

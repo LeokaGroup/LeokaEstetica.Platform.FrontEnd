@@ -22,12 +22,18 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   public readonly headerItems$ = this._projectManagmentService.headerItems$;
   public readonly searchTasks$ = this._projectManagmentService.searchTasks$;
 
+  /**
+   * для задачи 34460898
+   */
+  public readonly selectedWorkSpace$ = this._projectManagmentService.selectedWorkSpace$;
+
+
   projectId: number = 0;
   projectTaskId: number = 0;
   home: string = "project name";
   items: any[] = [
     {
-      label: "[Тут будет название проекта]"
+      label: "Проект не выбран."
     }
   ];
 
@@ -50,24 +56,75 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   };
 
   ngDoCheck() {
-    // Если роут не Kanban или Scrum, то дизейблим пункт меню стратегия представления.
-    if (this._router.url !== "/project-management/space?projectId=274") {
-      this.aHeaderItems[0].disabled = true;
-    }
+    // Если роут не Kanban или Scrum, то дизейблим пункты меню стратегия представления и настройки.
+    let projectId = this.projectId;
+    const disableButtonSettings = this._router.url.indexOf(`projectId=${projectId}`) < 0;
+    const disableButtonStrategy = this._router.url !== `/project-management/space?projectId=${projectId}`;
 
-    else {
-      this.aHeaderItems[0].disabled = false;
-    }
+    this.disableButtonIfNeeded('Strategy', disableButtonStrategy);
+    this.disableButtonIfNeeded('Settings', disableButtonSettings);
   };
+
+  /**
+   * Функция отключает кнопку хидера, если не выбран проект.
+   */
+  private disableButtonIfNeeded(buttonId: string, disabled: boolean) {
+    const button = this.findButton(buttonId);
+    if (button) {
+      button.disabled = disabled;
+    }
+  }
+
+  /**
+   * Функция ищет необходимый элемент Хидера.
+   * @returns - искомый элемент хидера.
+   */
+  private findButton = (id: string) => {
+    return this.aHeaderItems.find(headerItem => headerItem.id === id);
+  }
 
   private async checkUrlParams() {
     this._activatedRoute.queryParams
       .subscribe(async params => {
         console.log("params: ", params);
-
         this.projectId = params["projectId"];
+        if (params["projectId"]) {
+          this.projectId = Number(params["projectId"]);
+          await this.getSelectedWorkSpaceAsync(this.projectId);
+        } else {
+          this.updateBreadcrumbLabel("Проект не выбран.");
+        }
+
       });
   };
+
+
+
+  /**
+   * для задачи 34460898
+   * Функция получает выбранное раб.пространство.
+   */
+  private async getSelectedWorkSpaceAsync(projectId: number) {
+    (await this._projectManagmentService.getSelectedWorkSpaceAsync(projectId))
+      .subscribe(_ => {
+        console.log("Выбранное раб.пространство: ", this._projectManagmentService.selectedWorkSpace$.value);
+        if (this.selectedWorkSpace$.value.projectManagementName) {
+          this.updateBreadcrumbLabel(this.selectedWorkSpace$.value.projectManagementName);
+        }
+      });
+  }
+
+  /**
+   * для задачи 34460898
+   * Функция меняет items для breadcrumb.
+   */
+  private async updateBreadcrumbLabel(projectName: string) {
+    this.items = [
+      {
+        label: projectName
+      }
+    ];
+  }
 
   /**
    * Функция получает список элементов меню хидера (верхнее меню).
@@ -79,6 +136,12 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
         console.log("Хидер УП: ", this.headerItems$.value);
         this.aHeaderItems = this.headerItems$.value.headerItems;
         this.aPanelItems = this.headerItems$.value.panelItems;
+
+        this.aHeaderItems.forEach(x => {
+          if (x.destination == "Filters") {
+            x.visible = false;
+          }
+        })
       });
   };
 

@@ -6,7 +6,7 @@
 <div class="d-flex" *ngIf="mode == 'kn'">
   <div class="block-worksheet col-lg-12">
     <div class="d-flex block-task">
-      <div class="task-ver-line" *ngFor="let st of workSpaceConfig$.value?.projectManagmentTaskStatuses">
+      <div class="task-ver-line" *ngFor="let st of workSpaceConfig$.value?.projectManagmentTaskStatuses" pDroppable="kanban-tasks" (onDrop)="onDropAsync(st)" dropEffect="move">
         <div class="status-name">
           {{st.statusName.toUpperCase()}}
           {{st.total}}
@@ -16,9 +16,16 @@
         <div class="block-tasks" *ngFor="let t of st.projectManagmentTasks">
           <!-- Блок с каждой задачей Kanban. -->
           <div class="task scrum-row">
-            <div class="card card-task" (click)="onSelectTask(t.projectTaskId, t.taskTypeId)">
+            <div class="card card-task"
+                 (click)="onSelectTask(t.projectTaskId, t.taskTypeId)"
+                 pDraggable="kanban-tasks"
+                 (onDragStart)="dragStart(t, st)"
+                 (onDragEnd)="dragEnd()"
+                 dragEffect="move"
+            >
               <div class="title">
                 {{t.name}}
+                <button class="pi pi-ellipsis-v button-context-menu"></button>
 
                 <div class="tags" *ngFor="let tag of t.tagNames">
                   <p-chip>{{tag}}</p-chip>
@@ -35,7 +42,7 @@
                     </div>
 
                     <div>
-                      <p-avatar [image]="t.executor.avatar?.ava" styleClass="mr-2" size="small" shape="circle"></p-avatar>
+                      <p-avatar [image]="t.executor.avatar?.ava" styleClass="mr-2" size="normal" shape="circle"></p-avatar>
                     </div>
                   </div>
                 </div>
@@ -89,7 +96,7 @@
                   <div class="col-lg-2 laconic-text">{{t.priorityName}}</div>
                   <div class="col-lg-2 laconic-text scrum-info-line">
                     <div>
-                      <p-avatar [image]="t.executor.avatar?.ava" size="small" shape="circle"></p-avatar>
+                      <p-avatar [image]="t.executor.avatar?.ava" size="normal" shape="circle"></p-avatar>
                     </div>
                     &nbsp;
                     <div>

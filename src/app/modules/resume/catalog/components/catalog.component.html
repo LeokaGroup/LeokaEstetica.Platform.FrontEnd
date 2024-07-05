@@ -1,7 +1,7 @@
 <p-toast></p-toast>
 
 <div class="d-flex justify-content-center">
-  <p-message severity="warn" text="{{availableText}}" *ngIf="!isAvailable">
+  <p-message severity="warning" text="{{availableText}}" *ngIf="!isAvailable">
   </p-message>
 </div>
 
@@ -31,7 +31,7 @@
       <div class="project-text-block" [ngClass]="{selectedColor: item.isSelectedColor}">
         <div class="d-flex">
           <div class="tag" *ngIf="item.tagColor !== null && item.tagValue !== null">
-            <p-tag severity="{{item.tagColor}}" value="{{item.tagValue}}"></p-tag>
+            <p-tag [severity]="item.tagColor" value="{{item.tagValue}}"></p-tag>
           </div>
         </div>
 
