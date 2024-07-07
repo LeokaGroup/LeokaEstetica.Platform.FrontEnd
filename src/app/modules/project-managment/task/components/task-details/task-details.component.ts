@@ -694,8 +694,8 @@ export class TaskDetailsComponent implements OnInit {
      * Функция удаляет файл задачи.
       * @param documentId - Id документа.
      */
-    public async onRemoveTaskFileAsync(documentId: number) {
-        (await this._projectManagmentService.removeTaskFileAsync(documentId, +this.projectId, this.projectTaskId))
+    public async onRemoveTaskFileAsync(mongoDocumentId: string) {
+        (await this._projectManagmentService.removeTaskFileAsync(mongoDocumentId))
         .subscribe(async (_: any) => {
             await this.getTaskFilesAsync();
         });
