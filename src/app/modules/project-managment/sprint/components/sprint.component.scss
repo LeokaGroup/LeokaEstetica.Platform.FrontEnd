@@ -167,7 +167,11 @@ p-inplace {
   text-align: center;
 }
 
-// Стилизация ячейки 
+// Стилизация ячейки
 tr > td.table-data {
   text-align: center;
+}
+
+.sprints-table {
+  padding: 1rem;
 }

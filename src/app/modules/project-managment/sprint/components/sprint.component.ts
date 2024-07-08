@@ -241,12 +241,12 @@ export class SprintComponent implements OnInit, OnDestroy {
     }
   };
 
-  public onSelectPanelMenu() {
-    this._projectManagmentService.isLeftPanel = true;
-  };
-
   public onClosePanelMenu() {
     this._projectManagmentService.isLeftPanel = false;
+  };
+
+  public onSelectPanelMenu() {
+    this._projectManagmentService.isLeftPanel = true;
   };
 
   ngOnDestroy() {
