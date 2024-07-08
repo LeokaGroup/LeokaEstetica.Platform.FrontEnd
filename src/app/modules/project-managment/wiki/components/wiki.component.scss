@@ -12,6 +12,14 @@
   //text-decoration-line: underline;
 }
 
+::ng-deep .folder-name-container .p-inplace .p-inplace-display,
+::ng-deep .folder-name-container .p-inplace .p-inplace-display:active,
+::ng-deep .page-name-container .p-inplace .p-inplace-display,
+::ng-deep .page-name-container .p-inplace .p-inplace-display:active {
+  background: none;
+  box-shadow: none;
+}
+
 .tree-item-line {
   //display: flex;
   //align-items: center;

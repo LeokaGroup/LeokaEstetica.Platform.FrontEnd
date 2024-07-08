@@ -26,7 +26,7 @@
   <!-- Контент папки. -->
   <div class="col-lg-9 block-wiki-content" *ngIf="isSelectedFolder">
     <div>
-      <div class="">
+      <div class="folder-name-container">
         <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveFolderName" (onActivate)="onActivateFolderName()">
           <ng-template pTemplate="display">
             <div class="d-flex align-items-center">
@@ -95,7 +95,7 @@
             <i [ngClass]="wikiTreeFolderPage$.value.icon" style="font-size: 1rem"></i>
             &nbsp;
             <div>
-              <div class="">
+              <div class="page-name-container">
                 <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveFolderPageName" (onActivate)="onActivateFolderPageName()">
                   <ng-template pTemplate="display">
                     <h1>{{wikiTreeFolderPage$.value.label}}</h1>
