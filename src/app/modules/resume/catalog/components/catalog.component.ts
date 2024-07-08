@@ -10,7 +10,7 @@ import { ResumeService } from "../services/resume.service";
 })
 
 /**
- * Класс базы резюме.
+ * Класс компонента анкет пользователей.
  */
 export class CatalogResumeComponent implements OnInit {
     constructor(private readonly _router: Router,
@@ -30,7 +30,7 @@ export class CatalogResumeComponent implements OnInit {
     isAvailable: boolean = false;
 
     public async ngOnInit() {
-        forkJoin([          
+        forkJoin([
            this.checkUrlParams(),
            await this.checkAvailableAccessResumesAsync()
         ]).subscribe();
@@ -57,7 +57,7 @@ export class CatalogResumeComponent implements OnInit {
     * Функция получает список базы резюме.
     * @returns - Список базы резюме.
     */
-      private async loadCatalogResumesAsync() {    
+      private async loadCatalogResumesAsync() {
         (await this._resumeService.loadCatalogResumesAsync())
         .subscribe(_ => {
             console.log("База резюме: ", this.catalogResumes$.value);
@@ -89,26 +89,41 @@ export class CatalogResumeComponent implements OnInit {
      * @param page - Номер страницы.
      * @returns - Список резюме.
      */
-     public async onGetResumesPaginationAsync(event: any) {                
-        console.log(event);
-        (await this._resumeService.getResumesPaginationAsync(event.page))
-            .subscribe(_ => {
-                console.log("Пагинация: ", this.pagination$.value), "page: " ;
-                this.setUrlParams(event.page + 1); // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
-            });
+    public async onGetResumesPaginationAsync(event: any) {
+      console.log(event);
+
+      let lastId;
+
+      // Получаем для бэка последнюю запись из выборки, чтобы он отсекал записи.
+      if (this.aResumesCatalog.length > 0) {
+        lastId = this.aResumesCatalog[this.aResumesCatalog.length - 1].profileInfoId;
+      }
+
+      // Если = 1, значит получают первую страницу.
+      if (lastId == 1) {
+        lastId = null;
+      }
+
+      (await this._resumeService.getResumesPaginationAsync(event.page, lastId))
+        .subscribe(_ => {
+          console.log("Пагинация: ", this.pagination$.value), "page: ";
+          this.aResumesCatalog = this.pagination$.value.resumes;
+          this.rowsCount = this.pagination$.value.total;
+          this.setUrlParams(event.page + 1); // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
+        });
     };
-    
+
     /**
      * Функция инициализации пагинации.
      */
-     private async initResumesPaginationAsync() {                
-        (await this._resumeService.getResumesPaginationAsync(0))
-            .subscribe(_ => {
-                console.log("Пагинация: ", this.pagination$.value), "page: " + this.page;
-                this.aResumesCatalog = this.pagination$.value.resumes;
-                this.rowsCount = this.pagination$.value.total;
-                this.setUrlParams(1);    
-            });
+    private async initResumesPaginationAsync() {
+      (await this._resumeService.getResumesPaginationAsync(0))
+        .subscribe(_ => {
+          console.log("Пагинация: ", this.pagination$.value), "page: " + this.page;
+          this.aResumesCatalog = this.pagination$.value.resumes;
+          this.rowsCount = this.pagination$.value.total;
+          this.setUrlParams(1);
+        });
     };
 
     /**
@@ -131,7 +146,7 @@ export class CatalogResumeComponent implements OnInit {
      * Функция проверяет доступ к базе резюме.
      * @returns - Доступ.
      */
-     private async checkAvailableAccessResumesAsync() {                
+     private async checkAvailableAccessResumesAsync() {
         (await this._resumeService.checkAvailableAccessResumesAsync())
             .subscribe(async (response: any) => {
                 console.log("Доступ: ", this.access$.value);
@@ -141,7 +156,7 @@ export class CatalogResumeComponent implements OnInit {
                 if (this.isAvailable) {
                     await this.loadCatalogResumesAsync();
                     await this.initResumesPaginationAsync();
-                }                
+                }
             });
     };
 }
