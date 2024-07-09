@@ -460,7 +460,7 @@
                         </p-button>
                       </td>
                       <td>
-                        <p-inplace [style]="{'min-width':'100px'}" [active]="isActiveRole" (onActivate)="onActivateRole()">
+                        <p-inplace [style]="{'min-width':'100px'}" [active]="isActiveRole" (onActivate)="onActivateRole()" [disabled]="!team.isVisibleActionDeleteProjectTeamMember">
                           <ng-template pTemplate="display">
                             <span pTooltip="Роль участника проекта" tooltipPosition="top">{{team.role}}</span>
                           </ng-template>
