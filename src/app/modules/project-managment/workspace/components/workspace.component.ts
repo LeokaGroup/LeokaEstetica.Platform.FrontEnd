@@ -109,4 +109,12 @@ export class WorkSpaceComponent implements OnInit {
         }
       });
   };
+
+  public onClosePanelMenu() {
+    this._projectManagmentService.isLeftPanel = false;
+  };
+
+  public onSelectPanelMenu() {
+    this._projectManagmentService.isLeftPanel = true;
+  };
 }
