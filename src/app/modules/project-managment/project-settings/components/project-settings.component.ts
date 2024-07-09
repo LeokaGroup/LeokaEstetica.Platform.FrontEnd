@@ -55,6 +55,7 @@ export class ProjectSettingsComponent implements OnInit {
   isShowInvite: boolean = false;
   selectedInvite: any;
   isProjectInvite: boolean = false;
+  isExistsRoleUserExclude: boolean = false;
 
   items: any[] = [{
     label: 'Общие',
@@ -98,6 +99,7 @@ export class ProjectSettingsComponent implements OnInit {
           this.isShowUserRoles = false;
           this.isShowInvite = false;
 
+          await this.getUserRolesAsync();
           await this.getSettingUsersAsync();
         }
       },
@@ -388,6 +390,20 @@ export class ProjectSettingsComponent implements OnInit {
     (await this._projectManagmentService.removeUserProjectTeamAsync(userId, +this.projectId))
       .subscribe(async (_: any) => {
         await this.getSettingUsersAsync();
+      });
+  };
+
+  private async getUserRolesAsync() {
+    (await this._projectManagmentService.getUserRolesAsync())
+      .subscribe((response: any) => {
+        console.log("user roles", response);
+
+        if (response.find((x: any) => x.roleSysName == "UserExclude") !== undefined) {
+          this.isExistsRoleUserExclude = true;
+        }
+        // if (response.filter((x: any) => x.roleSysName == "UserExclude").length > 0) {
+        //   this.isExistsRoleUserExclude = true;
+        // }
       });
   };
 }
