@@ -47,6 +47,11 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   searchByDescription: boolean = false;
   aHeaderItems: any[] = [];
   aPanelItems: any[] = [];
+  aDisabledHeaderPanelItems: any[] = [
+    "Create",
+    "Filters",
+    "Export"
+  ];
 
   public async ngOnInit() {
     forkJoin([
@@ -63,6 +68,13 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
 
     this.disableButtonIfNeeded('Strategy', disableButtonStrategy);
     this.disableButtonIfNeeded('Settings', disableButtonSettings);
+
+    this.aHeaderItems.forEach(x => {
+      if (this.aDisabledHeaderPanelItems.includes((x.id))
+        && this._router.url == "/project-management/workspaces") {
+        x.disabled = true;
+      }
+    })
   };
 
   /**
@@ -87,14 +99,17 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
     this._activatedRoute.queryParams
       .subscribe(async params => {
         console.log("params: ", params);
+
         this.projectId = params["projectId"];
+
         if (params["projectId"]) {
           this.projectId = Number(params["projectId"]);
           await this.getSelectedWorkSpaceAsync(this.projectId);
-        } else {
-          this.updateBreadcrumbLabel("Проект не выбран.");
         }
 
+        else {
+          this.updateBreadcrumbLabel("Проект не выбран.");
+        }
       });
   };
 
@@ -136,12 +151,6 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
         console.log("Хидер УП: ", this.headerItems$.value);
         this.aHeaderItems = this.headerItems$.value.headerItems;
         this.aPanelItems = this.headerItems$.value.panelItems;
-
-        this.aHeaderItems.forEach(x => {
-          if (x.destination == "Filters") {
-            x.visible = false;
-          }
-        })
       });
   };
 

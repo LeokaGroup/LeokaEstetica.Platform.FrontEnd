@@ -49,9 +49,9 @@
       <button type="button"
               pButton
               icon="pi pi-save"
-              label="Спланировать эпик"
+              label="Сохранить"
               class="p-button-text p-button-success p-button-sm control-sprint-strong"
-              pTooltip="Планирование эпика"
+              pTooltip="Сохранить изменения эпика"
               tooltipPosition="bottom"
               (click)="onIncludeEpicTaskAsync()">
       </button>
@@ -914,7 +914,7 @@
                       class="p-button-danger p-button-sm p-button-text"
                       pTooltip="Удалить файл"
                       tooltipPosition="bottom"
-                      (click)="onRemoveTaskFileAsync(tf.documentId)">
+                      (click)="onRemoveTaskFileAsync(tf.mongoDocumentId)">
               </button>
             </div>
            </div>

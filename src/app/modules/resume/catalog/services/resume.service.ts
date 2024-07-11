@@ -40,11 +40,19 @@ export class ResumeService {
     /**
      * Функция пагинации резюме.
      * @param page - Номер страницы.
+     * @param lastId - Id последней записи из выборки пагинации.
      * @returns - Список резюме.
      */
-     public async getResumesPaginationAsync(page: number) {
+     public async getResumesPaginationAsync(page: number, lastId: number | null = null) {
+       if (lastId !== null) {
+         // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
+         return await this.http.get(API_URL.apiUrl + `/resumes/pagination?page=${page + 1}&lastId=${lastId}`).pipe(
+           tap(data => this.pagination$.next(data))
+         );
+       }
+
         // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
-        return await this.http.get(API_URL.apiUrl + `/resumes/pagination/${page + 1}`).pipe(
+        return await this.http.get(API_URL.apiUrl + `/resumes/pagination?page=${page + 1}`).pipe(
             tap(data => this.pagination$.next(data))
         );
     };

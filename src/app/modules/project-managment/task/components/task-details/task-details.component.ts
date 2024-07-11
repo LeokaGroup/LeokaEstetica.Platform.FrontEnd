@@ -76,8 +76,11 @@ export class TaskDetailsComponent implements OnInit {
     isVisibleCreateTaskLink: boolean = false;
     selectedLinkType: any;
     selectedTaskLink: any;
+
+  // TODO: Перенести все это на бэк.
     aAvailableActions: any[] = [
       {
+        id: "Link",
         label: 'Связи',
         items: [{
           label: 'Добавить связь',
@@ -90,6 +93,7 @@ export class TaskDetailsComponent implements OnInit {
         visible: true
       },
       {
+        id: "Action",
         label: 'Действия над задачей',
         items: [{
           label: 'Удалить задачу',
@@ -217,6 +221,15 @@ export class TaskDetailsComponent implements OnInit {
           if (!this.taskDetails$.value.isAccess) {
             this._router.navigate(["/forbidden"]);
             return;
+          }
+
+          // Скрываем возможные действия, которые нужно исключить.
+          if (![1, 3].includes(this.taskDetails$.value.taskTypeId)) {
+            this.aAvailableActions.forEach(x => {
+              if (x.id == "Link") {
+                x.visible = false;
+              }
+            });
           }
 
           (await this._projectManagmentService.getAvailableEpicsAsync(+this.projectId))
@@ -694,8 +707,8 @@ export class TaskDetailsComponent implements OnInit {
      * Функция удаляет файл задачи.
       * @param documentId - Id документа.
      */
-    public async onRemoveTaskFileAsync(documentId: number) {
-        (await this._projectManagmentService.removeTaskFileAsync(documentId, +this.projectId, this.projectTaskId))
+    public async onRemoveTaskFileAsync(mongoDocumentId: string) {
+        (await this._projectManagmentService.removeTaskFileAsync(mongoDocumentId))
         .subscribe(async (_: any) => {
             await this.getTaskFilesAsync();
         });

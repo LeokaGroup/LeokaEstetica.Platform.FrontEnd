@@ -117,7 +117,7 @@ export class CreateTaskComponent implements OnInit {
             this.isCreateEpic = false;
             break;
 
-          case "History":
+          case "Story":
             this.isCreateTask = false;
             this.isCreateHistory = true;
             this.isCreateEpic = false;

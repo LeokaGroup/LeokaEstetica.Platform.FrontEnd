@@ -593,13 +593,11 @@ export class ProjectManagmentService {
 
     /**
    * Функция удаляет файл задачи.
-     * @param documentId - Id документа.
-   * @param projectId - Id проекта.
-   * @param projectTaskId - Id задачи в рамках проекта.
+     * @param mongoDocumentId - Id документа в MongoDB.
    */
-    public async removeTaskFileAsync(documentId: number, projectId: number, projectTaskId: string) {
+    public async removeTaskFileAsync(mongoDocumentId: string) {
         return await this._http.delete(this.apiUrl +
-            `/project-management/task-file?documentId=${documentId}&projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
+            `/project-management/task-file?mongoDocumentId=${mongoDocumentId}`).pipe(
             tap(_ => console.log("Файл задачи успешно удален"))
         );
     };
