@@ -10,33 +10,36 @@
 
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email</label>
-                <input type="email" 
-                        class="input-control" 
-                        aria-describedby="emailHelp" 
+                <input type="email"
+                        class="input-control"
+                        aria-describedby="emailHelp"
                         formControlName="email">
               </div>
 
               <div class="mb-3">
                 <label for="exampleInputPassword1">Пароль</label><br>
-                <input type="password" 
-                        class="input-control" 
+                <input type="password"
+                        class="input-control"
                         autocomplete="new-password"
                         formControlName="password">
               </div>
 
-              <div class="mb-3 form-check">
-                <p-button label="Забыли пароль?" styleClass="p-button-link" (click)="onRouteRestorePassword()"></p-button>
-              </div>
+<!-- TODO: Когда починим - раскоментить. -->
+<!--              <div class="mb-3 form-check">-->
+<!--                <button type="button" class="btn btn-link" (click)="onRouteRestorePassword()">-->
+<!--                  Забыли пароль?-->
+<!--                </button>-->
+<!--              </div>-->
 
-              <button type="submit" 
-                      class="btn btn-primary button-action-pur-control" 
+              <button type="submit"
+                      class="btn btn-primary button-action-pur-control"
                       (click)="onSendFormSignInAsync()">
                 Войти
-              </button>              
+              </button>
 
               <!-- Отображаем вход через Google. -->
               <div class="mt-3">
-                <div id="buttonDiv"></div> 
+                <div id="buttonDiv"></div>
               </div>
 
               <!-- Отображаем вход через VK. -->

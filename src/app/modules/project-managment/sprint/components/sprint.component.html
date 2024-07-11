@@ -1,5 +1,11 @@
 <p-toast></p-toast>
 
+<div class="left-panel" (mouseover)="onSelectPanelMenu()">
+  <div style="border-left:1px solid #C0C6CF;height:1500px;width: 50px;position: absolute;"></div>
+</div>
+
+<left-panel></left-panel>
+
 <div class="block-actions d-flex" *ngIf="isShowAvailableActions">
  <div class="d-flex actions-line">
    <div>
@@ -8,7 +14,8 @@
              icon="pi pi-play"
              type="button"
              label="Начать спринт"
-             class="p-button-success p-button-text p-button-sm">
+             class="p-button-success p-button-text p-button-sm"
+             (click)="onRunSprintAsync()">
      </button>
    </div>
 
@@ -17,20 +24,22 @@
              pRipple
              icon="pi pi-stop"
              type="button"
-             label="Остановить спринт"
-             class="p-button-secondary p-button-text p-button-sm">
+             label="Завершить спринт"
+             class="p-button-secondary p-button-text p-button-sm"
+             (click)="onManualCompleteSprintAsync(false)">
      </button>
    </div>
 
-   <div>
-     <button pButton
-             pRipple
-             icon="pi pi-time"
-             type="button"
-             label="Закрыть спринт"
-             class="p-button-danger p-button-text p-button-sm">
-     </button>
-   </div>
+<!-- TODO: Пока скрыл, так как не реализовали логику закрытия на бэке еще.  -->
+<!--   <div>-->
+<!--     <button pButton-->
+<!--             pRipple-->
+<!--             icon="pi pi-time"-->
+<!--             type="button"-->
+<!--             label="Закрыть спринт"-->
+<!--             class="p-button-danger p-button-text p-button-sm">-->
+<!--     </button>-->
+<!--   </div>-->
  </div>
 </div>
 
@@ -38,12 +47,11 @@
 <!--  <div class="profile-left-menu col-lg-3 col-xl-3 col-xxl-3">-->
 
 <!--  </div>-->
-
-  <div class="worksheet-panel block-worksheet profile-table">
+  <div class="worksheet-panel block-worksheet sprints-table">
     <p-table [value]="sprints$.value"
              [(selection)]="selectedSprint"
              selectionMode="single"
-             [paginator]="sprints$.value.length > 0"
+             [paginator]="sprints$.value?.length > 0"
              [rows]="10"
              styleClass="p-datatable-gridlines"
              responsiveLayout="scroll">
@@ -59,21 +67,20 @@
           <th>Дата начала</th>
           <th>Дата окончания</th>
           <th>Статус</th>
-          <th></th>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="body" let-sp>
         <tr>
           <td>
-            <p-tableCheckbox [value]="sp" (click)="isShowAvailableActions = !isShowAvailableActions"></p-tableCheckbox>
+            <p-tableCheckbox [value]="sp" (click)="onSelectRowSprint(sp.projectSprintId)"></p-tableCheckbox>
           </td>
-          <td class="">
+          <td class="table-data">
             <div class="btn btn-link" (click)="onSelectSprint($event, sp.projectSprintId)">
               {{sp.projectSprintId}}
             </div>
           </td>
-          <td class="">
+          <td class="table-data">
             <div class="btn btn-link" (click)="onSelectSprint($event, sp.projectSprintId)">
               {{sp.sprintName}}
             </div>
@@ -85,7 +92,7 @@
       </ng-template>
 
       <ng-template pTemplate="summary">
-        Всего: {{sprints$.value.length}}
+        Всего: {{sprints$.value?.length}}
       </ng-template>
 
       <ng-template pTemplate="emptymessage">
@@ -100,3 +107,64 @@
     </p-table>
   </div>
 </div>
+
+<!-- Модалка переноса нерешенных задач спринта. -->
+<p-dialog header="Куда перенести нерешенные задачи спринта?"
+          [(visible)]="isShowAvailableSprints"
+          [breakpoints]="{'960px': '75vw'}"
+          [style]="{width: '50vw', height: '50vw'}"
+          [draggable]="false"
+          [resizable]="false">
+  <p-dropdown
+    [options]="aVariants"
+    [(ngModel)]="selectedVariant"
+    optionLabel="variantName"
+    placeholder="Выберите куда перенести"
+    (click)="onSelectVariantAsync()">
+  </p-dropdown>
+
+  <div class="mt-3" *ngIf="aAvailableSprints.length > 0 && isNextSprint">
+    <div>
+      <strong>Выберите название спринта</strong>
+    </div>
+
+    <div>
+      <p-listbox
+        [options]="aAvailableSprints"
+        [(ngModel)]="selectedAvailableSprint"
+        optionLabel="sprintName"
+        [style]="{'width':'15rem'}"
+        [listStyle]="{'max-height': '220px'}">
+      </p-listbox>
+    </div>
+  </div>
+
+  <div class="mt-3">
+    <input type="text"
+           class="p-inputtext-sm input-control-worksheet "
+           placeholder="Введите название нового спринта"
+           pInputText
+           autocomplete="new-password"
+           [(ngModel)]="moveSprintName"
+           *ngIf="isNewSprint" />
+  </div>
+
+
+  <ng-template pTemplate="footer">
+    <button pButton type="button"
+            label="Закрыть"
+            class="p-button-outlined p-button-secondary"
+            (click)="isShowAvailableSprints = false">
+    </button>
+
+    <button pButton type="button"
+            label="Переместить и завершить"
+            class="p-button-outlined p-button-success"
+            (click)="onManualCompleteSprintAsync(true)">
+    </button>
+  </ng-template>
+</p-dialog>
+
+<left-panel
+  (mouseleave)="onClosePanelMenu()"
+></left-panel>

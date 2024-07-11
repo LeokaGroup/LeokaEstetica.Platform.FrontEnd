@@ -158,7 +158,7 @@ export class PlaningSprintComponent implements OnInit {
     (await this._projectManagmentService.planingSprintAsync(planingSprintInput))
       .subscribe(async (_: any) => {
         setTimeout(() => {
-          this._router.navigate(["/project-management/space/backlog"], {
+          this._router.navigate(["/project-management/sprints"], {
             queryParams: {
               projectId
             }

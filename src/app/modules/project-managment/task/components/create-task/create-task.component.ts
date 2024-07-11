@@ -108,6 +108,7 @@ export class CreateTaskComponent implements OnInit {
           case "Task":
             this.isCreateTask = true;
             this.isCreateHistory = false;
+            this.isCreateEpic = false;
             break;
 
           case "Error":
@@ -116,7 +117,7 @@ export class CreateTaskComponent implements OnInit {
             this.isCreateEpic = false;
             break;
 
-          case "History":
+          case "Story":
             this.isCreateTask = false;
             this.isCreateHistory = true;
             this.isCreateEpic = false;
@@ -175,6 +176,20 @@ export class CreateTaskComponent implements OnInit {
             this.aSelectedTags.add(this.selectedTag);
         }
     };
+
+    /**
+    * Функция получает список исполнителей для выбора для полей "Исполнитель" и "Наблюдатели".
+    * @returns{string} - Список статусов.
+    */
+    public getEmptyMessageToTaskPeople(): string {
+      if (!this.taskPeople$.value) {
+        return 'Загрузка...';
+      } else if (this.aPeople.length === 0) {
+        return 'Нет других пользователей';
+      } else {
+        return '';
+      }
+    }
 
     // TODO: Эта логика дублируется.
     public onSelectWachers() {

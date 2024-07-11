@@ -20,13 +20,13 @@
         <p class="vacancy-count">Найдено вакансий: {{ catalog$.value.total }}</p>
       </span>
     </div>
-    
+
     <div class="catalog-vacancies-item" *ngFor="let item of aCatalogVacancies">
       <div [ngClass]="{selectedColor: item.isSelectedColor}">
        <div class="project-text-item">
         <div class="d-flex">
           <div>
-            <p-tag styleClass="mr-2" severity="primary" value="{{item.payment == '' ? 'Без оплаты' : item.payment + '₽'}}"></p-tag>
+            <p-tag styleClass="mr-2" severity="secondary" value="{{item.payment == '' || item.payment == 'Без оплаты' || item.payment  == '0' ? 'Без оплаты или оплата не указана' : item.payment + ' ₽'}}"></p-tag>
           </div>
 
           <div class="tag">
@@ -38,13 +38,13 @@
           </div>
 
           <div class="tag" *ngIf="item.tagColor !== null && item.tagValue !== null">
-            <p-tag severity="{{item.tagColor}}" value="{{item.tagValue}}"></p-tag>
+            <p-tag [severity]="item.tagColor" value="{{item.tagValue}}"></p-tag>
           </div>
         </div>
 
         <div class="vacancy-text-block">
           <h3 class="vacancy-title" (click)="onRouteSelectedVacancy(item.vacancyId)">{{item.vacancyName}}</h3>
-          <div class="vacancy-text vacancy-text-wrap">{{item.vacancyText}}</div>
+          <div class="vacancy-text vacancy-text-wrap" [innerHTML]="item.vacancyText"></div>
 
           <div>
             <i class="pi pi-clock">&nbsp;{{item.displayDateCreated}}</i>
@@ -52,7 +52,7 @@
         </div>
        </div>
       </div>
-        
+
     </div>
 
     <!-- Пагинация. -->
@@ -74,7 +74,7 @@
     <div>
       <div class="">
         <div>
-          
+
         </div>
         <div>
           <div *ngFor="let item of aSalaries" class="field-checkbox">
@@ -140,7 +140,7 @@
       </div>
         </div>
       </div>
-
+      <button class="btn btn-secondary mt-3" (click)="onResetFilters()">Сбросить фильтры</button>
       <!-- TODO: этот тип фильтра будем использовать при поиске. Вне поиска решили не делать. -->
       <!-- <div class="mt-3">
         <div>

@@ -120,7 +120,7 @@
                           optionLabel="fullName"
                           [showClear]="true"
                           placeholder="Выберите исполнителя"
-                          [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                          [emptyMessage]="getEmptyMessageToTaskPeople()"
                           (onClick)="onGetSelectTaskPeopleAsync()">
               </p-dropdown>
               <button pButton
@@ -145,7 +145,7 @@
                           optionLabel="fullName"
                           [showClear]="true"
                           placeholder="Выберите наблюдателя"
-                          [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                          [emptyMessage]="getEmptyMessageToTaskPeople()"
                           (onClick)="onGetSelectTaskPeopleAsync()"
                           (onChange)="onSelectWachers()">
               </p-dropdown>

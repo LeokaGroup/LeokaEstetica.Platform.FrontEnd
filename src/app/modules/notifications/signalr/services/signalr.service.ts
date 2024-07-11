@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Router} from '@angular/router';
-import {HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
+import { Router } from '@angular/router';
+import {HttpTransportType, HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
 import {BehaviorSubject} from 'rxjs';
 import {API_URL} from 'src/app/core/core-urls/api-urls';
 import {DialogInput} from 'src/app/modules/messages/chat/models/input/dialog-input';
@@ -16,11 +16,11 @@ export class SignalrService {
   public constructor(private readonly _redisService: RedisService,
                      private readonly _router: Router) {
     this.hubConnection = new HubConnectionBuilder()
-      .withUrl(API_URL.apiUrl + "/notify", 4)
+      .withUrl(API_URL.apiUrl + "/notify", HttpTransportType.LongPolling)
       .build();
   }
 
-  public async startConnection() {
+  public async startConnection(): Promise<boolean | void> {
     if (this.hubConnection.state !== "Connected") {
       return await new Promise(async (resolve, reject) => {
         this.hubConnection.start()
@@ -44,7 +44,7 @@ export class SignalrService {
             reject(err);
           });
       });
-    }
+    };
   };
 
   public get AllFeedObservable() {
@@ -517,7 +517,7 @@ export class SignalrService {
    * Функция отправляет сообщение.
    */
   public sendMessageAsync(message: string, dialogId: number) {
-    <HubConnection>this.hubConnection.invoke("SendMessageAsync", message, dialogId, localStorage["u_e"], localStorage["t_n"])
+    <HubConnection>this.hubConnection.invoke("SendMessageAsync", message, dialogId, localStorage["u_e"], localStorage["t_n"], API_URL.apiUrl)
       .catch((err: any) => {
         console.error(err);
       });

@@ -17,7 +17,6 @@ import { ProjectResponseInput } from "../models/input/project-response-input";
 import { UpdateProjectInput } from "../models/input/update-project-input";
 import { AddProjectArchiveInput } from "src/app/modules/backoffice/models/input/project/add-project-archive-input";
 import { DialogInput } from "src/app/modules/messages/chat/models/input/dialog-input";
-import {ChangeTaskNameInput} from "../../../project-managment/task/models/input/change-task-name-input";
 
 @Component({
     selector: "detail",
@@ -65,6 +64,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     totalVacancies: number = 0;
     isShowAttachVacancyModal: boolean = false;
     selectedVacancy: any;
+    selectedProjectTeamMember: any;
     vacancyName: string = "";
     vacancyText: string = "";
     workExperience: string = "";
@@ -94,9 +94,9 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     isVisibleDeleteButton: boolean = false;
     isProjectInvite: boolean = false;
     aProjectInviteVarians: any[] = [
-        { name: 'По ссылке', key: 'Link' },
+        // { name: 'По ссылке', key: 'Link' },
         { name: 'По почте', key: 'Email' },
-        { name: 'По номеру телефона', key: 'PhoneNumber' },
+        // { name: 'По номеру телефона', key: 'PhoneNumber' },
         { name: 'По логину', key: 'Login' }
     ];
     selectedInviteVariant: any;
@@ -129,7 +129,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         await this.getProjectTeamColumnsNamesAsync(),
         await this.getProjectTeamAsync(),
         await this.getProjectRemarksAsync()
-        ]).subscribe();
+        ]);
 
          // Подключаемся.
          this._signalrService.startConnection().then(async () => {
@@ -142,6 +142,8 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         this._signalrService.AllFeedObservable
         .subscribe((response: any) => {
             console.log("Подписались на сообщения", response);
+
+            if (!response?.notificationLevel) return;
 
             // Если пришел тип уведомления, то просто показываем его.
             if (response.notificationLevel !== undefined) {
@@ -274,7 +276,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
 
             this.isVisibleDeleteButton = response.isVisibleDeleteButton;
             this.isVisibleActionProjectButtons = response.isVisibleActionProjectButtons;
-            this.isVisibleActionDeleteProjectTeamMember = response.isVisibleActionDeleteProjectTeamMember;
+            // this.isVisibleActionDeleteProjectTeamMember = response.isVisibleActionDeleteProjectTeamMember;
             this.isVisibleActionLeaveProjectTeam = response.isVisibleActionLeaveProjectTeam;
             this.isVisibleActionAddProjectArchive = response.isVisibleActionAddProjectArchive;
             this.isShowRemarks = this.selectedProject$.value.projectRemarks.length > 0;
@@ -535,6 +537,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         dialogInput.DialogId = dialogId;
         dialogInput.DiscussionType = "Project";
         dialogInput.DiscussionTypeId = this.projectId;
+        dialogInput.isManualNewDialog = false;
 
         this._signalrService.getDialogAsync(dialogInput);
 

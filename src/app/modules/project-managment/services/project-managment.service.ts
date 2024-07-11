@@ -15,7 +15,6 @@ import {ProjectTaskWatcherInput} from '../task/models/input/project-task-watcher
 import {TaskLinkInput} from '../task/models/input/task-link-input';
 import {TaskPriorityInput} from '../task/models/input/task-priority-input';
 import {UserTaskTagInput} from '../task/models/input/user-task-tag-input';
-import {Router} from "@angular/router";
 import {TaskCommentInput} from '../task/models/input/task-comment-input';
 import {TaskCommentExtendedInput} from "../task/models/input/task-comment-extended-input";
 import {IncludeTaskEpicInput} from "../task/models/input/include-task-epic-input";
@@ -26,6 +25,17 @@ import {UpdateSprintNameInput} from "../sprint/models/update-sprint-name-input";
 import { UpdateSprintDetailsInput } from '../sprint/models/update-sprint-details-input';
 import { UpdateSprintExecutorInput } from '../sprint/models/update-sprint-executor-input';
 import { UpdateSprintWatchersInput } from '../sprint/models/update-sprint-watchers-input';
+import { SprintInput } from '../sprint/models/sprint-input';
+import {SprintDurationSettingInput} from "../sprint/models/sprint-duration-setting-input";
+import {SprintMoveNotCompletedTaskSettingInput} from "../sprint/models/sprint-move-not-completed-task-setting-input";
+import {UpdateRoleInput} from "../models/input/update-role-input";
+import { UpdateFolderNameInput } from '../models/input/update-folder-name-input';
+import { UpdateFolderPageNameInput } from '../models/input/update-folder-page-name-input';
+import { UpdateFolderPageDescriptionInput } from '../models/input/update-folder-page-description-input';
+import { CreateWikiFolderInput } from '../models/input/create-folder-input';
+import { Router } from '@angular/router';
+import {CreateWikiPageInput} from "../models/input/create-page-input";
+import {TaskDetailTypeEnum} from "../../enums/task-detail-type";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -74,6 +84,19 @@ export class ProjectManagmentService {
     public epicTasks$ = new BehaviorSubject<any>(null);
     public sprints = new BehaviorSubject<any>(null);
     public sprintDetails$ = new BehaviorSubject<any>(null);
+    public sprintDurationSettings$ = new BehaviorSubject<any>(null);
+    public sprintMoveNotCompletedTasksSettings$ = new BehaviorSubject<any>(null);
+    public workspaces$ = new BehaviorSubject<any>(null);
+    public wikiContextMenu$ = new BehaviorSubject<any>(null);
+    public selectedWorkSpace$ = new BehaviorSubject<any>(null);
+    public settingUsers = new BehaviorSubject<any>(null);
+    public userRoles = new BehaviorSubject<any>(null);
+    public settingUserRoles = new BehaviorSubject<any>(null);
+    public wikiTreeItems$ = new BehaviorSubject<any>(null);
+    public wikiTreeFolderItems$ = new BehaviorSubject<any>(null);
+    public wikiTreeFolderPage$ = new BehaviorSubject<any>(null);
+    public removeFolderResponse$ = new BehaviorSubject<any>(null);
+    public projectInvites$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -270,10 +293,18 @@ export class ProjectManagmentService {
     * Если ее нет, то предлагаем к выбору шаблон, стратегию представления.
     * @returns - Выходная модель.
     */
-      public async getBuildProjectSpaceSettingsAsync() {
-        return await this._http.get(this.apiUrl + "/project-management/config/build-project-space").pipe(
+      public async getBuildProjectSpaceSettingsAsync(projectId: number | null) {
+        if (projectId !== null) {
+          return await this._http.get(this.apiUrl + `/project-management/config/build-project-space?projectId=${projectId}`).pipe(
             tap(data => this.projectWorkspaceSettings$.next(data))
-        );
+          );
+        }
+
+        else {
+          return await this._http.get(this.apiUrl + `/project-management/config/build-project-space`).pipe(
+            tap(data => this.projectWorkspaceSettings$.next(data))
+          );
+        }
     };
 
     /**
@@ -562,13 +593,11 @@ export class ProjectManagmentService {
 
     /**
    * Функция удаляет файл задачи.
-     * @param documentId - Id документа.
-   * @param projectId - Id проекта.
-   * @param projectTaskId - Id задачи в рамках проекта.
+     * @param mongoDocumentId - Id документа в MongoDB.
    */
-    public async removeTaskFileAsync(documentId: number, projectId: number, projectTaskId: string) {
+    public async removeTaskFileAsync(mongoDocumentId: string) {
         return await this._http.delete(this.apiUrl +
-            `/project-management/task-file?documentId=${documentId}&projectId=${projectId}&projectTaskId=${projectTaskId}`).pipe(
+            `/project-management/task-file?mongoDocumentId=${mongoDocumentId}`).pipe(
             tap(_ => console.log("Файл задачи успешно удален"))
         );
     };
@@ -853,6 +882,298 @@ export class ProjectManagmentService {
   public async updateSprintWatchersAsync(updateSprintWatchersInput: UpdateSprintWatchersInput) {
     return await this._http.patch(this.apiUrl + `/project-management/sprints/sprint-watcher`, updateSprintWatchersInput).pipe(
       tap(_ => console.log("Наблюдатели спринта успешно обновлены."))
+    );
+  };
+
+  /**
+   * Функция начинает спринт проекта.
+   * @param sprintInput - Входная модель.
+   */
+  public async runSprintAsync(sprintInput: SprintInput) {
+    return await this._http.patch(this.apiUrl + `/project-management/sprints/sprint/start`, sprintInput).pipe(
+      tap(_ => console.log("Спринт успешно начат."))
+    );
+  };
+
+  /**
+   * Функция завершает спринт (ручное завершение).
+   * @param sprintInput - Входная модель.
+   */
+  public async nanualCompleteSprintAsync(sprintInput: SprintInput) {
+    return await this._http.patch(this.apiUrl + `/project-management/sprints/sprint/manual-complete`, sprintInput).pipe(
+      tap(_ => console.log("Спринт успешно завершен."))
+    );
+  };
+
+  /**
+   * Функция получает список спринтов доступных для переноса незавершенных задач в один из них.
+   * @param projectId - Id проекта.
+   * @param projectSprintId - Id спринта проекта.
+   */
+  public async getAvailableNextSprintsAsync(projectId: number, projectSprintId: number) {
+    return await this._http.get(this.apiUrl + `/project-management/sprints/available-next-sprints?projectSprintId=${projectSprintId}&projectId=${projectId}`).pipe(
+      tap(_ => console.log("Будущие спринты для переноса нерешенных задач."))
+    );
+  };
+
+  /**
+   * Функция получает настройки длительности спринтов проекта.
+   * @param projectId - Id проекта.
+   */
+  public async getScrumDurationSettingsAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-settings/sprint-duration-settings?projectId=${projectId}`).pipe(
+      tap(data => this.sprintDurationSettings$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает настройки автоматического перемещения нерешенных задач спринта.
+   * @param projectId - Id проекта.
+   */
+  public async getProjectSprintsMoveNotCompletedTasksSettingsAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-settings/sprint-move-not-completed-tasks-settings?projectId=${projectId}`).pipe(
+      tap(data => this.sprintMoveNotCompletedTasksSettings$.next(data))
+    );
+  };
+
+  /**
+   * Функция обновляет настройки длительности спринтов проекта.
+   * @param sprintDurationSettingInput - Входная модель.
+   */
+  public async updateScrumDurationSettingsAsync(sprintDurationSettingInput: SprintDurationSettingInput) {
+    return await this._http.patch(this.apiUrl + `/project-management-settings/sprint-duration-settings`, sprintDurationSettingInput).pipe(
+      tap(_ => console.log("Настройка длительности спринтов успешно изменена."))
+    );
+  };
+
+  /**
+   * Функция обновляет настройки перемещения нерешенных задач спринтов проекта.
+   * @param sprintMoveNotCompletedTaskSettingInput - Входная модель.
+   */
+  public async updateProjectSprintsMoveNotCompletedTasksSettingsAsync(sprintMoveNotCompletedTaskSettingInput: SprintMoveNotCompletedTaskSettingInput) {
+    return await this._http.patch(this.apiUrl + `/project-management-settings/sprint-move-not-completed-tasks-settings`, sprintMoveNotCompletedTaskSettingInput).pipe(
+      tap(_ => console.log("Настройка перемещения нерешенных задач спринтов успешно изменена."))
+    );
+  };
+
+  /**
+   * Функция получает все раб.пространства, в которых есть текущий пользователь.
+   */
+  public async getWorkSpacesAsync() {
+    return await this._http.get(this.apiUrl + `/project-management/workspaces`).pipe(
+      tap(data => this.workspaces$.next(data))
+    );
+  };
+
+  /**
+   * для задачи 34460898
+   * Функция получает выбранное раб.пространство.
+   */
+  public async getSelectedWorkSpaceAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management/workspaces`).pipe(
+      tap(data => this.selectedWorkSpace$.next((data as any[]).find((project: any) => project.projectId === projectId)))
+    );
+  }
+
+  /**
+   * Функция получает список пользователей для настроек.
+   */
+  public async getSettingUsersAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-settings/company-project-users?projectId=${projectId}`).pipe(
+      tap(data => this.settingUsers.next(data))
+    );
+  };
+
+  /**
+   * Функция получает список ролей пользователя.
+   */
+  public async getUserRolesAsync() {
+    return await this._http.get(this.apiUrl + `/project-management-role/user-roles`).pipe(
+      tap(data => this.userRoles.next(data))
+    );
+  };
+
+  /**
+   * Функция получает список ролей пользователей для настроек.
+   */
+  public async getSettingUsersRolesAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-role/roles?projectId=${projectId}`).pipe(
+      tap(data => this.settingUserRoles.next(data))
+    );
+  };
+
+  /**
+   * Функция обновляет роли.
+   */
+  public async updateRolesAsync(updated: UpdateRoleInput[]) {
+    return await this._http.put(this.apiUrl + `/project-management-role/roles`, updated).pipe(
+      tap(data => this.settingUserRoles.next(data))
+    );
+  };
+
+  /**
+   * Функция получает дерево Wiki модуля УП.
+   */
+  public async getWikiTreeItemsAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-wiki/tree?projectId=${projectId}`).pipe(
+      tap(data => this.wikiTreeItems$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает папку (и ее структуру - вложенные папки и страницы).
+   * @param projectId - Id проекта.
+   * @param folderId - Id папки.
+   */
+  public async getTreeItemFolderAsync(projectId: number, folderId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-wiki/tree-item-folder?projectId=${projectId}&folderId=${folderId}`).pipe(
+      tap(data => this.wikiTreeFolderItems$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает содержимое страницы.
+   * @param pageId - Id страницы.
+   */
+  public async getTreeItemPageAsync(pageId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-wiki/tree-item-page?pageId=${pageId}`).pipe(
+      tap(data => this.wikiTreeFolderPage$.next(data))
+    );
+  };
+
+  /**
+   * Функция изменяет название папки.
+   * @param updateFolderNameInput - Входная модель.
+   */
+  public async updateFolderNameAsync(updateFolderNameInput: UpdateFolderNameInput) {
+    return await this._http.patch(this.apiUrl + `/project-management-wiki/tree-item-folder`, updateFolderNameInput).pipe(
+      tap(data => this.wikiTreeFolderItems$.next(data))
+    );
+  };
+
+  /**
+   * Функция изменяет название страницы папки.
+   * @param updateFolderPageNameInput
+   */
+  public async updateFolderPageNameAsync(updateFolderPageNameInput: UpdateFolderPageNameInput) {
+    return await this._http.patch(this.apiUrl + `/project-management-wiki/tree-item-folder-page-name`, updateFolderPageNameInput).pipe(
+      tap(data => this.wikiTreeFolderPage$.next(data))
+    );
+  };
+
+  /**
+   * Функция изменяет название страницы папки.
+   * @param updateFolderPageDescriptionInput
+   */
+  public async updateFolderPageDescriptionAsync(updateFolderPageDescriptionInput: UpdateFolderPageDescriptionInput) {
+    return await this._http.patch(this.apiUrl + `/project-management-wiki/tree-item-folder-page-description`, updateFolderPageDescriptionInput).pipe(
+      tap(data => this.wikiTreeFolderPage$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает элементы контекстного меню.
+   * @param projectId - Id проекта, если передан.
+   * @param pageId - Id страницы, если передан.
+   */
+  public async getContextMenuAsync(projectId: number | null = null, pageId: number | null, isParentFolder: boolean = false) {
+    if (isParentFolder) {
+      return await this._http.get(this.apiUrl + `/project-management-wiki/context-menu?projectId=${projectId}&isParentFolder=${isParentFolder}`).pipe(
+        tap(data => this.wikiContextMenu$.next(data))
+      );
+    }
+
+    if ((projectId != null && projectId > 0) && (pageId == null || pageId <= 0)) {
+      return await this._http.get(this.apiUrl + `/project-management-wiki/context-menu?projectId=${projectId}`).pipe(
+        tap(data => this.wikiContextMenu$.next(data))
+      );
+    }
+
+    return await this._http.get(this.apiUrl + `/project-management-wiki/context-menu?projectId=${projectId}&pageId=${pageId}`).pipe(
+      tap(data => this.wikiContextMenu$.next(data))
+    );
+  };
+
+  /**
+   * Функция создает папку.
+   * @param createWikiFolderInput - Входная модель.
+   */
+  public async createFolderAsync(createWikiFolderInput: CreateWikiFolderInput) {
+    return await this._http.post(this.apiUrl + `/project-management-wiki/tree-item-folder-page`, createWikiFolderInput).pipe(
+      tap(_ => console.log("Папка успешно создана."))
+    );
+  };
+
+  /**
+   * Функция создает страницу.
+   * @param createWikiPageInput - Входная модель.
+   */
+  public async createPageAsync(createWikiPageInput: CreateWikiPageInput) {
+    return await this._http.post(this.apiUrl + `/project-management-wiki/tree-item-page`, createWikiPageInput).pipe(
+      tap(_ => console.log("Страница успешно создана."))
+    );
+  };
+
+  /**
+   * Функция удаляет папку.
+   * @param createWikiPageInput - Входная модель.
+   */
+  public async removeFolderAsync(folderId: number, isApprove: boolean) {
+    return await this._http.delete(this.apiUrl + `/project-management-wiki/tree-item-folder?folderId=${folderId}&isApprove=${isApprove}`).pipe(
+      tap(data => this.removeFolderResponse$.next(data))
+    );
+  };
+
+  /**
+   * Функция удаляет страницу.
+   * @param pageId - Id страницы.
+   */
+  public async removePageAsync(pageId: number) {
+    return await this._http.delete(this.apiUrl + `/project-management-wiki/tree-item-page?pageId=${pageId}`).pipe(
+      tap(_ => console.log("Страница успешно удалена."))
+    );
+  };
+
+  /**
+   * Функция получает список приглашений в проект.
+   * @param projectId - Id проекта.
+   */
+  public async getProjectInvitesAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-settings/project-invites?projectId=${projectId}`).pipe(
+      tap(data => this.projectInvites$.next(data))
+    );
+  };
+
+  /**
+   * Функция отменяет приглашение.
+   * @param notificationId - Id уведомления.
+   */
+  public async cancelProjectInviteAsync(notificationId: number) {
+    return await this._http.delete(this.apiUrl + `/project-management-settings/cancel-project-invite?notificationId=${notificationId}`).pipe(
+      tap(_ => console.log("Приглашение успешно отменено."))
+    );
+  };
+
+  /**
+   * Функция отменяет приглашение.
+   * @param userId - Id пользователя.
+   * @param projectId - Id проекта.
+   */
+  public async removeUserProjectTeamAsync(userId: number, projectId: number) {
+    return await this._http.delete(this.apiUrl + `/project-management-settings/remove-project-team?userId=${userId}&projectId=${projectId}`).pipe(
+      tap(_ => console.log("Участник исключен из команды."))
+    );
+  };
+
+  /**
+   * Функция удаляет задачу.
+   * @param projectId - Id проекта.
+   * @param projectTaskId - Id задачи в рамках проекта.
+   * @param TaskDetailTypeEnum - Тип задачи.
+   */
+  public async removeProjectTaskAsync(projectId: number, projectTaskId: string, taskType: string) {
+    return await this._http.delete(this.apiUrl + `/project-management/task?projectId=${projectId}&projectTaskId=${projectTaskId}&taskType=${taskType}`).pipe(
+      tap(_ => console.log("Задача успешно удалена."))
     );
   };
 }

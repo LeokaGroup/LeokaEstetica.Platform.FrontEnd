@@ -55,7 +55,7 @@ export class CreateProjectComponent implements OnInit {
     this._signalrService.AllFeedObservable
     .subscribe((response: any) => {
         console.log("Подписались на сообщения", response);
-        
+
         // Если пришел тип уведомления, то просто показываем его.
         if (response.notificationLevel !== undefined) {
             this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
@@ -85,10 +85,11 @@ export class CreateProjectComponent implements OnInit {
   };
 
   /**
-   * Функция создает новый проект пользователя.
-   * @returns Данные проекта.
-   */
-  public async onCreateProjectAsync() {
+     * Функция создает модель для сохранения проекта.
+     * @returns - Входная модель проекта.
+     */
+
+  private createProjectModel() {
     let createProjectInput = new CreateProjectInput();
     createProjectInput.ProjectName = this.projectName;
     createProjectInput.ProjectDetails = this.projectDetails;
@@ -98,9 +99,19 @@ export class CreateProjectComponent implements OnInit {
 
     this.isCreateProject = true;
 
+    return createProjectInput;
+  }
+
+    /**
+   * Функция создает новый проект пользователя.
+   * @returns Данные проекта.
+   */
+
+  public async onCreateProjectAsync() {
+    let createProjectInput = this.createProjectModel();
+
     (await this._backofficeService.createProjectAsync(createProjectInput))
       .subscribe((response: any) => {
-        console.log("Создание проекта: ", this.projectData$.value);
 
         // this._messageService.add({
         //   severity: this._signalrService.AllFeedObservable.value.notificationLevel,
@@ -114,9 +125,9 @@ export class CreateProjectComponent implements OnInit {
           });
         } else {
           setTimeout(() => {
-            this._router.navigate(["/profile/projects/my"])
+            this._router.navigate(["/projects/my"])
               .then(() => {
-                this._redirectService.redirect("profile/projects/my");
+                this._redirectService.redirect("projects/my");
               });
           }, 4000);
         }

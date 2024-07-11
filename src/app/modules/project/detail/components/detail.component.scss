@@ -60,6 +60,11 @@
     color: #999;
 }
 
+.control-input-text-worksheet,
+.worksheet-line {
+  width: 100%;
+}
+
 ::ng-deep.p-splitter-panel-nested .p-splitter-panel {
     display: block;
   }
@@ -89,6 +94,12 @@
   .text-paragraph {
     width: 100%;
     word-break: break-all;
+  }
+
+  .button-send-description{
+    display: block;
+    margin-top: 10px;
+    margin-left: auto;
   }
 
   // Медиа-запросы.

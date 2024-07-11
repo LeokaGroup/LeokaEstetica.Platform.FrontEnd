@@ -69,11 +69,13 @@ export class LeftPanelComponent implements OnInit, DoCheck {
    * Функция обработки выбранного пункта меню модуля УП.
    * @param event - Событие.
    */
-  public async onSelectMenu(event: any) {
-    console.log("onSelectMenu", event.target.textContent);
+  public async onSelectMenu(event: MouseEvent) {
+    if (!(event.target instanceof HTMLElement)) return;
 
-    let selectedValue = event.target.textContent;
-    let projectId = this.selectedProjectId;
+    console.log("onSelectMenu", event.target?.textContent);
+
+    const selectedValue = event.target?.textContent;
+    const projectId = this.selectedProjectId;
 
     // Переход к бэклогу проекта.
     switch (selectedValue) {
@@ -83,6 +85,42 @@ export class LeftPanelComponent implements OnInit, DoCheck {
             projectId
           }
         });
+        this.onClose();
+        break;
+
+      case "Спринты":
+        this._router.navigate(["/project-management/sprints"], {
+          queryParams: {
+            projectId
+          }
+        });
+        this.onClose();
+        break;
+
+      case "Задачи":
+        this._router.navigate(["/project-management/space"], {
+          queryParams: {
+            projectId
+          }
+        });
+        this.onClose();
+        break;
+
+      case "Пространства":
+        this._router.navigate(["/project-management/workspaces"]);
+        this.onClose();
+        break;
+
+      case "Wiki":
+        this._router.navigate(["/project-management/wiki"], {
+          queryParams: {
+            projectId
+          }
+        });
+        this.onClose();
+        break;
+
+      default:
         break;
     }
   };

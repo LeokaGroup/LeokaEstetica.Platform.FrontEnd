@@ -1,0 +1,22 @@
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/styles.scss";
+@use "/src/app/modules/header/components/header.component.scss";
+@use "/src/app/modules/project-managment/start/components/space/space.component.scss";
+
+.task-details {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.data-line {
+  border: solid #e9ecef;
+  border-width: 0 0 1px 0;
+  padding: 0 15px;
+}
+
+.workspace-project-name {
+  &:hover {
+    cursor: pointer;
+  }
+}

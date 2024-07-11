@@ -6,7 +6,6 @@ import { RedirectService } from "src/app/common/services/redirect.service";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { VacancyService } from "src/app/modules/backoffice/vacancy/services/vacancy.service";
 import { VacancyInput } from "../models/input/vacancy-input";
-import {take} from "rxjs/operators";
 
 @Component({
     selector: "detail",
@@ -191,7 +190,13 @@ export class DetailVacancyComponent implements OnInit, OnDestroy {
                 response.errors.forEach((item: any) => {
                     this._messageService.add({ severity: 'error', summary: "Что то не так", detail: item.errorMessage });
                 });
-            }
+            } else {
+              setTimeout(() => {
+                  this._router.navigate(["/vacancies/my"]).then(() => {
+                      this._redirectService.redirect("vacancies/my");
+                    });
+              }, 4000);
+          }
         });
     };
 

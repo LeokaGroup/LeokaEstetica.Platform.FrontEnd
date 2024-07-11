@@ -1,7 +1,7 @@
 <!-- Меню хидера (меню УП). -->
 <nav class="navbar navbar-light justify-content-evenly">
   <div class="form-inline">
-    <p-menubar [model]="aHeaderItems" class="second-menu" (click)="onSelectMenu($event)">
+    <p-menubar [model]="aHeaderItems" autoDisplay="false" class="second-menu" (click)="onSelectMenu($event)">
       <ng-template pTemplate="start">
 
       </ng-template>
@@ -18,7 +18,7 @@
 
 <!-- Хлебные крошки. -->
 <div class="block-task">
-  <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+  <p-breadcrumb class="max-w-full breadcrumb-heading-font" [model]="items"></p-breadcrumb>
 </div>
 
 <p-sidebar [(visible)]="isSearch" [fullScreen]="true">

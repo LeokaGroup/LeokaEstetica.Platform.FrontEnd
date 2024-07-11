@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
@@ -22,13 +22,13 @@ export class SignInComponent implements OnInit {
             
         }
 
-    formSignUp: FormGroup = new FormGroup({
-        "email": new FormControl("", [
+    formSignUp: UntypedFormGroup = new UntypedFormGroup({
+        "email": new UntypedFormControl("", [
             Validators.required,
             Validators.email
         ]),
 
-        "password": new FormControl("", [
+        "password": new UntypedFormControl("", [
             Validators.required,
             Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)
         ])

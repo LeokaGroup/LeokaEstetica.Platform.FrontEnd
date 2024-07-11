@@ -7,7 +7,7 @@ import {ProjectManagmentService} from "../../services/project-managment.service"
 import { forkJoin } from "rxjs";
 import {ProjectTaskExecutorInput} from "../../task/models/input/project-task-executor-input";
 import {ProjectTaskWatcherInput} from "../../task/models/input/project-task-watcher-input";
-import {FormControl, FormGroup} from "@angular/forms";
+import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {UpdateSprintNameInput} from "../../sprint/models/update-sprint-name-input";
 import {UpdateSprintDetailsInput} from "../../sprint/models/update-sprint-details-input";
 import {UpdateSprintExecutorInput} from "../../sprint/models/update-sprint-executor-input";
@@ -44,8 +44,8 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
   selectedExecutor: any;
   selectedWatcher: any;
 
-  formExecutors: FormGroup = new FormGroup({
-    "executorName": new FormControl("", [
+  formExecutors: UntypedFormGroup = new UntypedFormGroup({
+    "executorName": new UntypedFormControl("", [
 
     ])
   });
@@ -263,6 +263,14 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
       .subscribe(_ => {
 
       });
+  };
+
+  public onSelectPanelMenu() {
+    this._projectManagmentService.isLeftPanel = true;
+  };
+
+  public onClosePanelMenu() {
+    this._projectManagmentService.isLeftPanel = false;
   };
 
   ngOnDestroy() {

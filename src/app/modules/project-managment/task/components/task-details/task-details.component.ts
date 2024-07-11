@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
@@ -76,8 +76,11 @@ export class TaskDetailsComponent implements OnInit {
     isVisibleCreateTaskLink: boolean = false;
     selectedLinkType: any;
     selectedTaskLink: any;
+
+  // TODO: Перенести все это на бэк.
     aAvailableActions: any[] = [
       {
+        id: "Link",
         label: 'Связи',
         items: [{
           label: 'Добавить связь',
@@ -88,35 +91,48 @@ export class TaskDetailsComponent implements OnInit {
           visible: true
         }],
         visible: true
-      }
+      },
+      {
+        id: "Action",
+        label: 'Действия над задачей',
+        items: [{
+          label: 'Удалить задачу',
+          icon: 'pi pi-times',
+          command: async () => {
+            await this.onRemoveProjectTaskAsync();
+          },
+          visible: true
+        }],
+        visible: true
+      },
     ];
 
-    formStatuses: FormGroup = new FormGroup({
-        "statusName": new FormControl("", [
+    formStatuses: UntypedFormGroup = new UntypedFormGroup({
+        "statusName": new UntypedFormControl("", [
             Validators.required
         ])
     });
 
-    formPriorities: FormGroup = new FormGroup({
-        "priorityName": new FormControl("", [
+    formPriorities: UntypedFormGroup = new UntypedFormGroup({
+        "priorityName": new UntypedFormControl("", [
             Validators.required
         ])
     });
 
-    formExecutors: FormGroup = new FormGroup({
-        "executorName": new FormControl("", [
+    formExecutors: UntypedFormGroup = new UntypedFormGroup({
+        "executorName": new UntypedFormControl("", [
             Validators.required
         ])
     });
 
-    formEpic: FormGroup = new FormGroup({
-      "epicName": new FormControl("", [
+    formEpic: UntypedFormGroup = new UntypedFormGroup({
+      "epicName": new UntypedFormControl("", [
         Validators.required
       ])
   });
 
-  formSprint: FormGroup = new FormGroup({
-    "sprintName": new FormControl("", [
+  formSprint: UntypedFormGroup = new UntypedFormGroup({
+    "sprintName": new UntypedFormControl("", [
       Validators.required
     ])
   });
@@ -200,6 +216,21 @@ export class TaskDetailsComponent implements OnInit {
       (await this._projectManagmentService.getTaskDetailsByTaskIdAsync(+this.projectId, this.projectTaskId, TaskDetailTypeEnum[localStorage["t_t_i"]]))
         .subscribe(async _ => {
           console.log("Детали задачи: ", this.taskDetails$.value);
+
+          // Нет доступа к просмотру задачи.
+          if (!this.taskDetails$.value.isAccess) {
+            this._router.navigate(["/forbidden"]);
+            return;
+          }
+
+          // Скрываем возможные действия, которые нужно исключить.
+          if (![1, 3].includes(this.taskDetails$.value.taskTypeId)) {
+            this.aAvailableActions.forEach(x => {
+              if (x.id == "Link") {
+                x.visible = false;
+              }
+            });
+          }
 
           (await this._projectManagmentService.getAvailableEpicsAsync(+this.projectId))
             .subscribe(_ => {
@@ -356,6 +387,10 @@ export class TaskDetailsComponent implements OnInit {
     * @param projectTaskTagInput - Входная модель.
     */
     public async onAttachTaskTagAsync() {
+        // Проверка на отсутствие дубликатов тегов
+        let isDublicate = this.taskDetails$.value.tagIds.find((item: any) => item === this.selectedTag.tagId);
+
+        if(isDublicate === undefined){
         let projectTaskTagInput = new ProjectTaskTagInput();
         projectTaskTagInput.projectId = +this.projectId;
         projectTaskTagInput.projectTaskId = this.projectTaskId;
@@ -365,8 +400,8 @@ export class TaskDetailsComponent implements OnInit {
             .subscribe(async _ => {
                 await this.getProjectTaskDetailsAsync();
             });
+        };
     };
-
     /**
     * Функция привязывает тег к задаче проекта.
     * Выбор происходит из набора тегов проекта.
@@ -672,8 +707,8 @@ export class TaskDetailsComponent implements OnInit {
      * Функция удаляет файл задачи.
       * @param documentId - Id документа.
      */
-    public async onRemoveTaskFileAsync(documentId: number) {
-        (await this._projectManagmentService.removeTaskFileAsync(documentId, +this.projectId, this.projectTaskId))
+    public async onRemoveTaskFileAsync(mongoDocumentId: string) {
+        (await this._projectManagmentService.removeTaskFileAsync(mongoDocumentId))
         .subscribe(async (_: any) => {
             await this.getTaskFilesAsync();
         });
@@ -855,6 +890,34 @@ export class TaskDetailsComponent implements OnInit {
       .subscribe(_ => {
         console.log("Добавили задачу в эпик: ", this.includeEpic$.value);
 
+        let projectId = this.projectId;
+
+        setTimeout(() => {
+          this._router.navigate(["/project-management/space"], {
+            queryParams: {
+              projectId
+            }
+          });
+        }, 4000);
+      });
+  };
+
+  public onClosePanelMenu() {
+    this._projectManagmentService.isLeftPanel = false;
+  };
+
+  public onSelectPanelMenu() {
+    this._projectManagmentService.isLeftPanel = true;
+  };
+
+  /**
+   * Функция удаляет задачу.
+   * @param projectId - Id проекта.
+   * @param projectTaskId - Id задачи в рамках проекта.
+   */
+  private async onRemoveProjectTaskAsync() {
+    (await this._projectManagmentService.removeProjectTaskAsync(+this.projectId, this.projectTaskId, TaskDetailTypeEnum[localStorage["t_t_i"]]))
+      .subscribe(_ => {
         let projectId = this.projectId;
 
         setTimeout(() => {
