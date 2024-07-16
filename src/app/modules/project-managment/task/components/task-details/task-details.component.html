@@ -25,6 +25,8 @@
           label="Сохранить"
           class="p-button-success p-button-text p-button-sm"
           *ngIf="isActiveTaskName"
+          pTooltip="Сохранить задачу"
+          tooltipPosition="bottom"
           (click)="onSaveTaskNameAsync(taskName)">
   </button>
 
@@ -35,6 +37,8 @@
           label="Отмена"
           class="p-button-secondary p-button-text p-button-sm"
           *ngIf="isActiveTaskName"
+          pTooltip="Отменить задачу"
+          tooltipPosition="bottom"
           (click)="isActiveTaskName=!isActiveTaskName">
   </button>
   </div>
@@ -63,6 +67,8 @@
               icon="pi pi-arrow-down"
               label="Возможные действия"
               class="p-button-text p-button-primary p-button-sm task-actions"
+              pTooltip="Возможные действия над задачей"
+              tooltipPosition="bottom"
               (click)="menu.toggle($event)">
       </button>
       <p-menu #menu [popup]="true" [model]="aAvailableActions"></p-menu>
@@ -314,6 +320,8 @@
                     label="Сохранить"
                     class="p-button-success p-button-text p-button-sm"
                     *ngIf="isActiveTaskDetails"
+                    pTooltip="Сохранить изменения"
+                    tooltipPosition="bottom"
                     (click)="onSaveTaskDetailsAsync(taskDetails)">
             </button>
 
@@ -324,6 +332,8 @@
                     label="Отмена"
                     class="p-button-secondary p-button-text p-button-sm"
                     *ngIf="isActiveTaskDetails"
+                    pTooltip="Отменить изменения"
+                    tooltipPosition="bottom"
                     (click)="isActiveTaskDetails=!isActiveTaskDetails">
             </button>
            </div>
@@ -958,6 +968,8 @@
                           label="Сохранить"
                           class="p-button-success p-button-text p-button-sm"
                           *ngIf="c.isActiveTaskComment"
+                          pTooltip="Сохранить комментарий"
+                          tooltipPosition="bottom"
                           (click)="onUpdateTaskCommentAsync(c.commentId, c.comment)">
                   </button>
 
@@ -968,6 +980,8 @@
                           label="Отмена"
                           class="p-button-secondary p-button-text p-button-sm"
                           *ngIf="c.isActiveTaskComment"
+                          pTooltip="Отменить комментарий"
+                          tooltipPosition="bottom"
                           (click)="c.isActiveTaskComment=!c.isActiveTaskComment">
                   </button>
 
