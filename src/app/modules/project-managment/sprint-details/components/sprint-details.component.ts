@@ -43,6 +43,7 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
   aPeople: any[] = [];
   selectedExecutor: any;
   selectedWatcher: any;
+  sprintTasks: any[] = [];
 
   formExecutors: UntypedFormGroup = new UntypedFormGroup({
     "executorName": new UntypedFormControl("", [
@@ -109,8 +110,29 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
 
         this.sprintName = this.sprintDetails$.value.sprintName;
         this.sprintDetails = this.sprintDetails$.value.sprintGoal;
+        // this.sprintTasks = this.sprintDetails$.value.sprintTasks;
+        
+        // console.log("Задачи спринта:", this.sprintTasks);
 
         await this.onGetSelectTaskPeopleAsync(true);
+      });
+  };
+
+    /**
+     * Функция переходит к деталям задачи.
+     * @param projectTaskId - Id задачи в рамках проекта.
+     * @param taskTypeId - Тип задачи.
+     */
+    public onSelectTask(projectTaskId: string, taskTypeId: number) {
+      let projectId = this.projectId;
+
+      localStorage["t_t_i"] = taskTypeId;
+
+      this._router.navigate(["/project-management/space/details"], {
+          queryParams: {
+              projectId,
+              taskId: projectTaskId
+          }
       });
   };
 
@@ -264,6 +286,8 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
 
       });
   };
+
+  
 
   public onSelectPanelMenu() {
     this._projectManagmentService.isLeftPanel = true;
