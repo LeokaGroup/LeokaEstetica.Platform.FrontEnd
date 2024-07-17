@@ -114,7 +114,7 @@ export class PlaningSprintComponent implements OnInit {
   public onSelectTaskLink(fullTaskId: string) {
     let projectId = this.selectedProjectId;
 
-    this._router.navigate(["/space/details"], {
+    this._router.navigate(["/project-management/space/details"], {
       queryParams: {
         projectId,
         taskId: fullTaskId
