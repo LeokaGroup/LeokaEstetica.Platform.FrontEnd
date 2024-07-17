@@ -369,7 +369,7 @@
           <ng-template pTemplate="body" let-t>
               <tr>
                   <td class="link">
-                    <div (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId ?? 'Не указан'}}</div>
+                    <div (click)="onSelectTaskLink(t.projectTaskId)">{{t.fullTaskId ?? 'Не указан'}}</div>
                   </td>
 
                   <td>
@@ -454,7 +454,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-t>
               <tr>
-                  <td class="link" (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId ?? 'Не указан'}}</td>
+                  <td class="link" (click)="onSelectTaskLink(t.projectTaskId)">{{t.fullTaskId ?? 'Не указан'}}</td>
                   <td>
                     <div class="smaller-text">{{t.taskName}}</div>
                   </td>
@@ -536,7 +536,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-t>
               <tr>
-                  <td class="link" (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId ?? 'Не указан'}}</td>
+                  <td class="link" (click)="onSelectTaskLink(t.projectTaskId)">{{t.fullTaskId ?? 'Не указан'}}</td>
                   <td>
                     <div class="smaller-text">{{t.taskName}}</div>
                   </td>
@@ -618,7 +618,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-t>
               <tr>
-                  <td class="link" (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId ?? 'Не указан'}}</td>
+                  <td class="link" (click)="onSelectTaskLink(t.projectTaskId)">{{t.fullTaskId ?? 'Не указан'}}</td>
                   <td>
                     <div class="smaller-text">{{t.taskName}}</div>
                   </td>
@@ -700,7 +700,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-t>
               <tr>
-                  <td class="link" (click)="onSelectTaskLink(t.fullTaskId)">{{t.fullTaskId ?? 'Не указан'}}</td>
+                  <td class="link" (click)="onSelectTaskLink(t.projectTaskId)">{{t.fullTaskId ?? 'Не указан'}}</td>
                   <td>
                     <div class="smaller-text">{{t.taskName}}</div>
                   </td>
