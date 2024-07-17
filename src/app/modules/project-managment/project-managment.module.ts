@@ -64,6 +64,7 @@ import { WikiComponent } from './wiki/components/wiki.component';
 import { TreeModule } from 'primeng/tree';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { MessageService } from 'primeng/api';
+import {AccessService} from "../access/access.service";
 
 @NgModule({
   declarations: [
@@ -147,7 +148,8 @@ import { MessageService } from 'primeng/api';
     MessageService,
     ProjectManagementSignalrService,
     TranslateService,
-    TranslateStore
+    TranslateStore,
+    AccessService
   ]
 })
 

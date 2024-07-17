@@ -33,11 +33,10 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ListboxModule } from 'primeng/listbox';
 import { DragDropModule } from 'primeng/dragdrop';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
-import { ProjectManagementHeaderComponent } from './components/project-management-header.component';
 
 @NgModule({
     declarations: [
-        ProjectManagementHeaderComponent
+
     ],
 
     imports: [
