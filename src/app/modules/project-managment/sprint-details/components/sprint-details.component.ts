@@ -121,12 +121,9 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
     /**
      * Функция переходит к деталям задачи.
      * @param projectTaskId - Id задачи в рамках проекта.
-     * @param taskTypeId - Тип задачи.
      */
-    public onSelectTask(projectTaskId: string, taskTypeId: number) {
+    public onSelectTask(projectTaskId: string) {
       let projectId = this.projectId;
-
-      localStorage["t_t_i"] = taskTypeId;
 
       this._router.navigate(["/project-management/space/details"], {
           queryParams: {
