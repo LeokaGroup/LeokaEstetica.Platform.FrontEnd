@@ -55,7 +55,7 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
     "Filters",
     "Export"
   ];
-  isVisibleFilterMenu: boolean = false;
+  isVisibleDropDownMenu: boolean = false;
   isVisibleAccessModal = false;
 
   public async ngOnInit() {
@@ -179,16 +179,21 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
 
             if (this.checkAccess$.value.isAccess) {
               // Отображаем выпадающее меню фильтров.
-              this.isVisibleFilterMenu = true;
+              this.isVisibleDropDownMenu = true;
               this.isVisibleAccessModal = false;
             }
 
             // Отображаем модалку запрета (тариф владельца проекта не прошел проверку).
             else {
-              this.isVisibleFilterMenu = false;
+              this.isVisibleDropDownMenu = false;
               this.isVisibleAccessModal = true;
             }
           });
+        break;
+
+      default:
+        this.isVisibleDropDownMenu = true;
+        break;
     }
 
     this.aHeaderItems.forEach((firstLevel: any) => {

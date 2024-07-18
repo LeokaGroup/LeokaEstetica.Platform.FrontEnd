@@ -92,6 +92,10 @@ body {
 }
 
 // Для видимости элемента меню [идера, чтобы не выпадал expand раньше времени.
-.isVisibleFilterMenu ::ng-deep .p-submenu-list {
+.isVisibleMenuHide ::ng-deep .p-submenu-list {
   visibility: hidden;
+}
+
+.isVisibleMenuShow ::ng-deep .p-submenu-list {
+  visibility: visible;
 }
