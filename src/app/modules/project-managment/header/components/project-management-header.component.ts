@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {forkJoin} from "rxjs";
 import {ProjectManagmentService} from "../../services/project-managment.service";
 import {FixationStrategyInput} from "../../task/models/input/fixation-strategy-input";
+import {AccessService} from "../../../access/access.service";
 
 @Component({
   selector: "project-management-header",
@@ -16,11 +17,13 @@ import {FixationStrategyInput} from "../../task/models/input/fixation-strategy-i
 export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   constructor(private readonly _projectManagmentService: ProjectManagmentService,
               private readonly _router: Router,
-              private readonly _activatedRoute: ActivatedRoute) {
+              private readonly _activatedRoute: ActivatedRoute,
+              private readonly _accessService: AccessService) {
   }
 
   public readonly headerItems$ = this._projectManagmentService.headerItems$;
   public readonly searchTasks$ = this._projectManagmentService.searchTasks$;
+  public readonly checkAccess$ = this._accessService.checkAccess$;
 
   /**
    * для задачи 34460898
@@ -52,6 +55,8 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
     "Filters",
     "Export"
   ];
+  isVisibleFilterMenu: boolean = false;
+  isVisibleAccessModal = false;
 
   public async ngOnInit() {
     forkJoin([
@@ -165,6 +170,27 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
     let projectId = this.projectId;
     let isNotRoute = false;
 
+    // Проверяем доступ к компонентам.
+    switch (selectedValue) {
+      case "Фильтры":
+        (await this._accessService.checkAccessProjectManagementModuleOrComponentAsync(this.projectId, "ProjectManagement", "ProjectTaskFilter"))
+          .subscribe(_ => {
+            console.log("Проверка доступа: ", this.checkAccess$.value);
+
+            if (this.checkAccess$.value.isAccess) {
+              // Отображаем выпадающее меню фильтров.
+              this.isVisibleFilterMenu = true;
+              this.isVisibleAccessModal = false;
+            }
+
+            // Отображаем модалку запрета (тариф владельца проекта не прошел проверку).
+            else {
+              this.isVisibleFilterMenu = false;
+              this.isVisibleAccessModal = true;
+            }
+          });
+    }
+
     this.aHeaderItems.forEach((firstLevel: any) => {
       // Если первый уровень выбран, то проверяем доступность тут.
       if (firstLevel.label == selectedValue) {
@@ -244,7 +270,7 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   };
 
   public async onSearchProjectTasksAsync(event: any) {
-    (await this._projectManagmentService.searchTasksAsync(event.query, [274], false, true, true))
+    (await this._projectManagmentService.searchTasksAsync(event.query, [this.projectId], false, true, true))
       .subscribe(_ => {
         console.log("Поиск: ", this.searchTasks$.value);
       });

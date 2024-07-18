@@ -48,6 +48,7 @@ import { SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CheckboxModule } from 'primeng/checkbox';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [
@@ -88,7 +89,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     SidebarModule,
     ButtonModule,
     AutoCompleteModule,
-    CheckboxModule
+    CheckboxModule,
+    DialogModule
   ],
 
   providers: [
