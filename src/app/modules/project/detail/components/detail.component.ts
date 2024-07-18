@@ -17,6 +17,7 @@ import { ProjectResponseInput } from "../models/input/project-response-input";
 import { UpdateProjectInput } from "../models/input/update-project-input";
 import { AddProjectArchiveInput } from "src/app/modules/backoffice/models/input/project/add-project-archive-input";
 import { DialogInput } from "src/app/modules/messages/chat/models/input/dialog-input";
+import {AccessService} from "../../../access/access.service";
 
 @Component({
     selector: "detail",
@@ -29,17 +30,18 @@ import { DialogInput } from "src/app/modules/messages/chat/models/input/dialog-i
  * Класс деталей проекта (используется для изменения и просмотра проекта).
  */
 export class DetailProjectComponent implements OnInit, OnDestroy {
-    constructor(private readonly _projectService: ProjectService,
-        private readonly _activatedRoute: ActivatedRoute,
-        private readonly _signalrService: SignalrService,
-        private readonly _messageService: MessageService,
-        private readonly _router: Router,
-        private readonly _vacancyService: VacancyService,
-        private readonly _messagesService: ChatMessagesService,
-        private readonly _searchProjectService: SearchProjectService,
-        private readonly _redirectService: RedirectService) {
+  constructor(private readonly _projectService: ProjectService,
+              private readonly _activatedRoute: ActivatedRoute,
+              private readonly _signalrService: SignalrService,
+              private readonly _messageService: MessageService,
+              private readonly _router: Router,
+              private readonly _vacancyService: VacancyService,
+              private readonly _messagesService: ChatMessagesService,
+              private readonly _searchProjectService: SearchProjectService,
+              private readonly _redirectService: RedirectService,
+              private readonly _accessService: AccessService) {
 
-    }
+  }
 
     public readonly selectedProject$ = this._projectService.selectedProject$;
     public readonly projectStages$ = this._projectService.projectStages$;
@@ -53,6 +55,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     public readonly availableVacansiesResponse$ = this._projectService.availableVacansiesResponse$;
     public readonly projectRemarks$ = this._projectService.projectRemarks$;
     public readonly archivedProject$ = this._projectService.archivedProject$;
+    public readonly checkAccess$ = this._accessService.checkAccess$;
 
     projectName: string = "";
     projectDetails: string = "";
@@ -116,6 +119,7 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     lastMessage: any;
     isCollapsed: boolean = true;
     isActiveRole: boolean = false;
+    isVisibleAccessModal = false;
 
   public async ngOnInit() {
         forkJoin([
@@ -276,7 +280,6 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
 
             this.isVisibleDeleteButton = response.isVisibleDeleteButton;
             this.isVisibleActionProjectButtons = response.isVisibleActionProjectButtons;
-            // this.isVisibleActionDeleteProjectTeamMember = response.isVisibleActionDeleteProjectTeamMember;
             this.isVisibleActionLeaveProjectTeam = response.isVisibleActionLeaveProjectTeam;
             this.isVisibleActionAddProjectArchive = response.isVisibleActionAddProjectArchive;
             this.isShowRemarks = this.selectedProject$.value.projectRemarks.length > 0;
@@ -653,6 +656,10 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         (await this._projectService.sendInviteProjectTeamAsync(inviteProjectTeamMemberInput))
         .subscribe(async (response: any) => {
             console.log("Добавленный в команду пользователь: ", response);
+
+            if (!response.isAccess) {
+              this.isVisibleAccessModal = true;
+            }
 
             // TODO: Костыль для бага ререндера уведомлений.
             // TODO: Не можем отображать уведомления без обновления страницы после роута из проектов пользователя.
