@@ -659,6 +659,8 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
 
             if (!response.isAccess) {
               this.isVisibleAccessModal = true;
+
+              return ;
             }
 
             // TODO: Костыль для бага ререндера уведомлений.

@@ -12,6 +12,7 @@ import {ProjectService} from "../../../project/services/project.service";
 import {SearchProjectService} from "../../../search/services/search-project-service";
 import {InviteProjectTeamMemberInput} from "../../../project/detail/models/input/invite-project-team-member-input";
 import {MessageService} from "primeng/api";
+import {AccessService} from "../../../access/access.service";
 
 @Component({
   selector: "",
@@ -31,7 +32,8 @@ export class ProjectSettingsComponent implements OnInit {
               private readonly _projectManagementSignalrService: ProjectManagementSignalrService,
               private readonly _projectService: ProjectService,
               private readonly _searchProjectService: SearchProjectService,
-              private readonly _messageService: MessageService) {
+              private readonly _messageService: MessageService,
+              private readonly _accessService: AccessService) {
   }
 
   public readonly downloadUserAvatarFile$ = this._projectManagmentService.downloadUserAvatarFile$;
@@ -41,6 +43,7 @@ export class ProjectSettingsComponent implements OnInit {
   public readonly settingUserRoles = this._projectManagmentService.settingUserRoles;
   public readonly projectInvites$ = this._projectManagmentService.projectInvites$;
   public readonly availableInviteVacancies$ = this._projectService.availableInviteVacancies$;
+  public readonly checkAccess$ = this._accessService.checkAccess$;
 
   projectId: number = 0;
   userAvatarLink: any;
@@ -146,6 +149,7 @@ export class ProjectSettingsComponent implements OnInit {
   searchText: string = "";
   aProjectInvitesUsers: any[] = [];
   selectedInviteUser: string = "";
+  isVisibleAccessModal = false;
 
   public async ngOnInit() {
     forkJoin([
@@ -362,6 +366,12 @@ export class ProjectSettingsComponent implements OnInit {
     (await this._projectService.sendInviteProjectTeamAsync(inviteProjectTeamMemberInput))
       .subscribe(async (response: any) => {
         console.log("Добавленный в команду пользователь: ", response);
+
+        if (!response.isAccess) {
+          this.isVisibleAccessModal = true;
+
+          return ;
+        }
 
         // TODO: Костыль для бага ререндера уведомлений.
         // TODO: Не можем отображать уведомления без обновления страницы после роута из проектов пользователя.
