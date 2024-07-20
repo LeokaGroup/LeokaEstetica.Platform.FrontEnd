@@ -56,10 +56,12 @@
   <div *ngFor="let fareRule of fareRules$.value">
     <div class="fare-rule-line">
       {{fareRule.ruleName}}
-    </div>
 
-    <div *ngFor="let attr in fareRule.fareRuleAttributes">
-
+      <div *ngFor="let attr of fareRule.fareRuleAttributes">
+        <div *ngFor="let attrValue of attr.fareRuleAttributeValues">
+          {{attrValue.minValue ?? 'Неограниченно'}}
+        </div>
+      </div>
     </div>
   </div>
 </div>
