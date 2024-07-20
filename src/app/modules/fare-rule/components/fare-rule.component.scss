@@ -37,5 +37,14 @@
 
 .control-fare-rule {
   position: absolute;
-  bottom: 30px;  
+  bottom: 30px;
+}
+
+.fare-rules-block {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.attr-names {
+  line-height: 3;
 }
