@@ -10,22 +10,11 @@ import { Router } from '@angular/router';
 @Injectable()
 export class AccessService {
   apiUrl: any;
-  public isShowModalAccess: boolean = false;
 
   public checkAccess$ = new BehaviorSubject<any>(null);
 
   constructor(private readonly _http: HttpClient,
               private readonly _router: Router) {
-
-    // Если используем ендпоинты модуля УП.
-    if (API_URL.apiUrlProjectManagment != null && API_URL.apiUrlProjectManagment != undefined) {
-      this.apiUrl = API_URL.apiUrlProjectManagment;
-    }
-
-    // Если используем основные ендпоинты.
-    else {
-      this.apiUrl = API_URL.apiUrl
-    }
   }
 
   /**
