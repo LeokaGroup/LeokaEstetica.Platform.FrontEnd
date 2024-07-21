@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ForbiddenComponent } from './modules/forbidden/forbidden.component';
+import {FareRuleComponent} from "./modules/fare-rule/components/fare-rule.component";
 
 const routes: Routes = [
   {
@@ -60,7 +61,11 @@ const routes: Routes = [
   {
     path: "project-management",
     loadChildren: () => import('./modules/project-managment/project-managment.module').then(m => m.ProjectManagmentModule)
-  }
+  },
+
+  {
+    path: 'fare-rules', component: FareRuleComponent
+  },
 ];
 
 @NgModule({

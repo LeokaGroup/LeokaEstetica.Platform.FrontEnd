@@ -37,5 +37,31 @@
 
 .control-fare-rule {
   position: absolute;
-  bottom: 30px;  
+  bottom: 30px;
+}
+
+.fare-rules-block {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.attr-names {
+  //line-height: 3;
+}
+
+.feature-space-first {
+  text-decoration: underline;
+}
+
+.feature-space-last {
+  text-decoration: overline;
+}
+
+.attr-value {
+  border: solid;
+}
+
+.fare-rule-title {
+  display: flex;
+  justify-content: center;
 }

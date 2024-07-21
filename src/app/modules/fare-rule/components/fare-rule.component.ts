@@ -4,15 +4,15 @@ import { forkJoin } from "rxjs";
 import { FareRuleService } from "../services/fare-rule.service";
 
 @Component({
-    selector: "fare-rule",
+    selector: "fare-rules",
     templateUrl: "./fare-rule.component.html",
     styleUrls: ["./fare-rule.component.scss"]
 })
 
 /**
- * Класс компонента правил тарифа.
+ * Класс компонента списка тарифа.
  */
-export class FareRuleComponent implements OnInit {    
+export class FareRuleComponent implements OnInit {
     constructor(private readonly _router: Router,
         private readonly _fareRuleService: FareRuleService) {
     }
@@ -24,6 +24,7 @@ export class FareRuleComponent implements OnInit {
     numScroll: number = 3;
     carouselType: "horizontal" | "vertical" = "horizontal";
     isAvailableFareRule: boolean = false;
+    aFareRuleAttributeNames: any[] = [];
 
     public async ngOnInit() {
         forkJoin([
@@ -31,27 +32,36 @@ export class FareRuleComponent implements OnInit {
         ]).subscribe();
 
         // Планшеты.
-        if (window.matchMedia('screen and (min-width: 600px) and (max-width: 992px)').matches) {
-            this.numVisible = 1;
-            this.numScroll = 1;
-            this.carouselType = "vertical";
-        }
-
-        if (localStorage["t_n"]) {
-            this.isAvailableFareRule = true;
-        }
+        // if (window.matchMedia('screen and (min-width: 600px) and (max-width: 992px)').matches) {
+        //     this.numVisible = 1;
+        //     this.numScroll = 1;
+        //     this.carouselType = "vertical";
+        // }
+        //
+        // if (localStorage["t_n"]) {
+        //     this.isAvailableFareRule = true;
+        // }
     };
 
      /**
      * Функция получает прафила тарифов.
      * @returns - Прафила тарифов.
      */
-      private async getFareRulesAsync() {
-        (await this._fareRuleService.getFareRulesAsync())
-        .subscribe(_ => {
-            console.log("Правила тарифов: ", this.fareRules$.value);
-        });
-    };    
+     private async getFareRulesAsync() {
+       (await this._fareRuleService.getFareRulesAsync())
+         .subscribe(_ => {
+           console.log("Правила тарифов: ", this.fareRules$.value);
+
+           // Заполняем названия атрибутов тарифов.
+           this.fareRules$.value.forEach((fareRules: any) => {
+             fareRules.fareRuleAttributes.forEach((attr: any) => {
+               if (this.aFareRuleAttributeNames.filter(x => x.attributeId == attr.attributeId).length == 0) {
+                 this.aFareRuleAttributeNames.push(attr);
+               }
+             });
+           });
+         });
+     };
 
     /**
      * Функция переходит на ФЗ.

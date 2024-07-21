@@ -1,45 +1,60 @@
-<p-carousel [numVisible]="numVisible" [numScroll]="numScroll" [circular]="true" [responsiveOptions]="responsiveOptions"
-  [value]="fareRules$.value" [orientation]="carouselType">
-  <ng-template let-fare pTemplate="item">
+<div class="mt-3 fare-rule-title">
+  <h3>Тарифные планы</h3>
+</div>
 
-    <div class="tarifs">
-      <div class="tarifs-body">
-        <p-card [style]="{ height: '1000px' }">
-          <div class="header">
-            <h3 class="title">
-              {{fare.name}}
-            </h3>
-
-            <h4 class="price">
-              {{fare.price}} ₽/мес.
-            </h4>
-
-            <h6 class="label">
-              {{fare.label}}
-            </h6>            
+<div class="fare-rules-block mt-3">
+  <div *ngFor="let fareRule of fareRules$.value">
+    <div class="">
+      <div *ngFor="let attr of fareRule.fareRuleAttributes">
+        <div class="">
+          <div>
+            <strong>{{attr.attributeDetails}}</strong>
           </div>
 
-          <div class="footer">
-            <strong style="text-align: center" class="text-content">Что входит в тариф:</strong>
-            <ul *ngFor="let item of fare.fareRuleItems" class="discription">
-              <li class="text-content">{{item.name}} {{item.label}}</li>
-            </ul>
+          <div *ngIf="attr.attributeId == 1">
+            {{fareRule.ruleName}}
+          </div>
+        </div>
 
-            <div class="d-flex justify-content-center">
-              <div class="control-fare-rule" *ngIf="fare.ruleId > 1">
-                <button type="submit" class="btn btn-primary button-action-pur-control"
-                  (click)="onRouteOrderInfoAsync(fare.publicId)"
-                  [disabled]="!isAvailableFareRule">
-                  Оформить
-                </button>
-                <div class="d-flex justify-content-center" *ngIf="!isAvailableFareRule">
-                  <small>Для оформления тарифа нужно быть авторизованными.</small>   
-                </div>
-              </div>  
-            </div>   
-          </div>         
-        </p-card>
+        <div *ngFor="let attrValue of attr.fareRuleAttributeValues">
+          <div
+            *ngIf="attrValue.attributeId == 2
+            || attrValue.attributeId == 4
+            || attrValue.attributeId == 5
+            || attrValue.attributeId == 6
+            || attrValue.attributeId == 7">
+            <div *ngIf="attrValue.attributeId == 2">
+              {{attrValue.measure}} {{attrValue.minValue ?? attrValue.content}}
+            </div>
+
+            <div *ngIf="attrValue.attributeId != 2">
+              {{attrValue.minValue}} {{attrValue.measure}}
+            </div>
+          </div>
+
+          <div *ngIf="attrValue.attributeId == 4 && attrValue.ruleId == 1">
+            {{attrValue.content}}
+          </div>
+
+          <div *ngIf="attrValue.attributeId == 1
+          || attrValue.attributeId == 3
+          || attrValue.attributeId == 5
+|| attrValue.attributeId == 6
+|| attrValue.attributeId == 7">
+            <div>
+              {{attrValue.contentTooltip}}
+            </div>
+
+<!--            <div *ngIf="attrValue.ruleId == 4">-->
+<!--              {{attrValue.content ?? 'Бесплатно'}}-->
+<!--            </div>-->
+
+            <div>
+              {{attrValue.content}}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </ng-template>
-</p-carousel>
+  </div>
+</div>

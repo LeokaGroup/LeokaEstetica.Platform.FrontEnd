@@ -16,8 +16,8 @@ export class FareRuleService {
     }
 
     /**
-     * Функция получает прафила тарифов.
-     * @returns - Прафила тарифов.
+     * Функция получает список тарифов.
+     * @returns - Список тарифов.
      */
     public async getFareRulesAsync() {
         return await this.http.get(API_URL.apiUrl + "/rules/get-rules").pipe(
