@@ -160,6 +160,12 @@ export class BacklogComponent implements OnInit {
    */
   public openTaskMenu() {
     let length = this.checkedTasks.length;
+    this.pluralForms();
+       
+    this.isActiveMenu = length !== 0 ? true : false;
+  }
+
+  public pluralForms() {
     let chooseWords = ['выбрана', 'выбрано', 'выбрано'];
     let taskWords = ['задача', 'задачи', 'задач']
     let i = (
@@ -168,7 +174,6 @@ export class BacklogComponent implements OnInit {
       length % 100 < 10 || length % 100 >= 20 ) ? 1 : 2
     );
 
-    this.isActiveMenu = length !== 0 ? true : false;
     this.taskCount = chooseWords[i] + " " + length + " " + taskWords[i];
   }
 
