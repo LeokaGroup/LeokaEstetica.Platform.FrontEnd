@@ -63,6 +63,8 @@
               icon="pi pi-arrow-down"
               label="Возможные действия"
               class="p-button-text p-button-primary p-button-sm task-actions"
+              pTooltip="Возможные действия над задачей"
+              tooltipPosition="right"
               (click)="menu.toggle($event)">
       </button>
       <p-menu #menu [popup]="true" [model]="aAvailableActions"></p-menu>
