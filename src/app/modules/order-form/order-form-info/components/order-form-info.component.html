@@ -10,28 +10,68 @@
     </div>
 
     <div class="fare-rule-details mt-5">
-        <p-panel header="Описание и условия тарифа">
-          <strong>Название тарифа:</strong>
-          <p>{{fareRuleInfo$.value.name}}</p>
+      <p-panel header="Описание и условия тарифа">
+        <div class="fare-rules-block mt-3">
+          <div class="">
+            <div *ngFor="let attr of fareRuleInfo$.value.fareRuleAttributes">
+              <div class="">
+                <div>
+                  <strong>{{attr.attributeDetails}}</strong>
+                </div>
 
-          <strong>Условия:</strong>
-          <ul *ngFor="let fr of fareRuleInfo$.value.fareRuleItems">
-            <li>{{fr.name}} {{fr.label}}</li>
-          </ul>
+                <div *ngIf="attr.attributeId == 1">
+                  {{fareRuleInfo$.value.ruleName}}
+                </div>
+              </div>
 
-          <strong>Цена:</strong>
-          <p>{{fareRuleInfo$.value.price + ' ' + '₽/мес.'}}</p>
-        </p-panel>
+              <div *ngFor="let attrValue of attr.fareRuleAttributeValues">
+                <div
+                  *ngIf="attrValue.attributeId == 2
+                  || attrValue.attributeId == 4
+                  || attrValue.attributeId == 5
+                  || attrValue.attributeId == 6
+                  || attrValue.attributeId == 7">
+                  <div *ngIf="attrValue.attributeId == 2">
+                    {{attrValue.measure}} {{attrValue.minValue ?? attrValue.content}}
+                  </div>
 
-        <div class="d-flex worksheet-line mt-3">
-            <div class="control-input-text-worksheet control-order-form">
-              <button type="button" 
-                      class="btn btn-primary button-action-pur-control"
-                      (click)="onRouteNextStepAsync()">
-                К выбору плана подписки
-              </button>
+                  <div *ngIf="attrValue.attributeId != 2">
+                    {{attrValue.minValue}} {{attrValue.measure}}
+                  </div>
+                </div>
+
+                <div *ngIf="attrValue.attributeId == 4 && attrValue.ruleId == 1">
+                  {{attrValue.content}}
+                </div>
+
+                <div *ngIf="attrValue.attributeId == 1
+          || attrValue.attributeId == 3
+          || attrValue.attributeId == 5
+          || attrValue.attributeId == 6
+          || attrValue.attributeId == 7">
+                  <div>
+                    {{attrValue.contentTooltip}}
+                  </div>
+
+                  <div>
+                    {{attrValue.content}}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
+      </p-panel>
+
+      <div class="d-flex worksheet-line mt-3">
+        <div class="control-input-text-worksheet control-order-form">
+          <button type="button"
+                  class="btn btn-primary button-action-pur-control"
+                  (click)="onRouteNextStepAsync()">
+            К настройкам тарифного плана
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
