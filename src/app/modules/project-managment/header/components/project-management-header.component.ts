@@ -287,7 +287,7 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
     this._router.navigate(["/project-management/space/details"], {
       queryParams: {
         projectId,
-        taskId: event.fullProjectTaskId
+        taskId: event.projectTaskId
       }
     });
 
