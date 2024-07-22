@@ -282,6 +282,8 @@
                         placeholder="Опыт (стаж)"
                         pInputText
                         autocomplete="new-password"
+                        min="0"
+                        (keydown)="blockNotNumber($event)"
                         [(ngModel)]="workExperience"
                         *ngIf="isModeEdit"  />
                 <div *ngIf="isModeView">
