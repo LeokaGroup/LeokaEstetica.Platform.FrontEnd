@@ -93,6 +93,12 @@
     @include purButton();
 }
 
+.button-action-pur-control-fare-rule {
+    height: 30px;
+    width: 150px;
+    @include purButton();
+}
+
 .button-action-danger-control-worksheet {
     width: 150px;
     height: 40px;
