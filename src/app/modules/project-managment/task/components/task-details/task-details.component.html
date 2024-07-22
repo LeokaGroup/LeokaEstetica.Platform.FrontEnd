@@ -228,7 +228,7 @@
             <div class="chip-block">
               <div *ngFor="let lbl of taskDetails$.value?.watcherNames; index as i">
                 <div class="chip-item">
-                  <p-chip label="{{lbl ?? 'Нет'}}" [removable]="true" (onRemove)="onDetachTaskWatcherAsync(lbl, i)"></p-chip>
+                  <p-chip label="{{lbl ?? 'Нет'}}" [removable]="true" (onRemove)="onDetachTaskWatcherAsync(i)"></p-chip>
                 </div>
               </div>
             </div>

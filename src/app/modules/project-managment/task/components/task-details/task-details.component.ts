@@ -456,12 +456,12 @@ export class TaskDetailsComponent implements OnInit {
      * @param removedValue - Удаляемое значение.
      * @param i - Индекс.
      */
-       public async onDetachTaskWatcherAsync(removedValue: string, i: number) {
+       public async onDetachTaskWatcherAsync(i: number) {
         let projectTaskTagInput = new ProjectTaskWatcherInput();
-        projectTaskTagInput.projectId = +this.projectId;
-        projectTaskTagInput.projectTaskId = this.projectTaskId;
-        projectTaskTagInput.watcherId = this.taskPeople$.value[i].userId;
-
+        projectTaskTagInput.projectId = Number(this.projectId);
+        projectTaskTagInput.projectTaskId = Number(this.projectTaskId);
+        projectTaskTagInput.watcherId = this.taskDetails$.value.watcherIds[i];
+        
         (await this._projectManagmentService.detachTaskWatcherAsync(projectTaskTagInput))
         .subscribe(async _ => {
             await this.getProjectTaskDetailsAsync();
