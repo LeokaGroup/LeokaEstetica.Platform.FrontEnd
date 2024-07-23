@@ -113,6 +113,7 @@
               urgent:t.priorityId == 4,
               blocker:t.priorityId == 5}"
               class="selected-task-row"
+              (click)="onSelectTask(t.projectTaskId)"
               >
                 <div class="scrum-task-line">
                   <div class="d-flex justify-content-between align-items-center">
@@ -121,13 +122,13 @@
                         [(ngModel)]="checkedTasks"
                         name="selectedTasks" 
                         [value]="t"
-                        (click)="openTaskMenu()"/>
+                        (click)="openTaskMenu($event)"/>
                     </div>
-                    <div class="col-lg-1 laconic-text" (click)="onSelectTask(t.projectTaskId)">{{t.taskTypeName}}</div>
-                    <div class="col-lg-2" (click)="onSelectTask(t.projectTaskId)">{{t.fullProjectTaskId}}</div>
-                    <div class="col-lg-2 laconic-text" (click)="onSelectTask(t.projectTaskId)">{{t.name}}</div>
-                    <div class="col-lg-2 laconic-text" (click)="onSelectTask(t.projectTaskId)">{{t.priorityName}}</div>
-                    <div class="col-lg-2 laconic-text scrum-info-line" (click)="onSelectTask(t.projectTaskId)">
+                    <div class="col-lg-1 laconic-text">{{t.taskTypeName}}</div>
+                    <div class="col-lg-2">{{t.fullProjectTaskId}}</div>
+                    <div class="col-lg-2 laconic-text">{{t.name}}</div>
+                    <div class="col-lg-2 laconic-text">{{t.priorityName}}</div>
+                    <div class="col-lg-2 laconic-text scrum-info-line">
                       <div>
                         <p-avatar [image]="t.executor.avatar?.ava" size="normal" shape="circle"></p-avatar>
                       </div>

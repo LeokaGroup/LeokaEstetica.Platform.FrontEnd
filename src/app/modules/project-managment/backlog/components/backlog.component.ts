@@ -158,23 +158,10 @@ export class BacklogComponent implements OnInit {
   /**
    * Функция проверяет есть ли выбранные задачи и, если да, открывает меню с кнопкой "Добавить в спринт"
    */
-  public openTaskMenu() {
-    let length = this.checkedTasks.length;
-    this.pluralForms();
-       
-    this.isActiveMenu = length !== 0 ? true : false;
-  }
-
-  public pluralForms() {
-    let chooseWords = ['выбрана', 'выбрано', 'выбрано'];
-    let taskWords = ['задача', 'задачи', 'задач']
-    let i = (
-      length % 10 == 1 && length % 100 != 11 ? 0 :
-      length % 10 >= 2 && length % 10 <= 4 && (
-      length % 100 < 10 || length % 100 >= 20 ) ? 1 : 2
-    );
-
-    this.taskCount = chooseWords[i] + " " + length + " " + taskWords[i];
+  public openTaskMenu(event: Event) {
+    event.stopPropagation();
+    this.isActiveMenu = this.checkedTasks.length !== 0 ? true : false;
+    console.log('выбранные задачи:', this.checkedTasks)
   }
 
    /**
