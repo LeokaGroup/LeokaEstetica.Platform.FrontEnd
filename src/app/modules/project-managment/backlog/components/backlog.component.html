@@ -170,10 +170,9 @@
   (mouseleave)="onClosePanelMenu()"
 ></left-panel>
 
-<div class="block-actions d-flex" *ngIf="isActiveMenu">
+<div class="block-actions d-flex" *ngIf="checkedTasks.length">
   <div class="d-flex actions-line">
     <div class="ps-3 d-flex align-items-center">
-      <p class="m-0 text-blue me-3">{{taskCount}}</p>
       <p-button label="Добавить в спринт"
                 icon="pi pi-plus"
                 (click)="addTasksToSprint()" />

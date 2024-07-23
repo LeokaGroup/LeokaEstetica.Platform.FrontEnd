@@ -27,7 +27,6 @@ export class BacklogComponent implements OnInit {
 
   selectedProjectId: number = 0;
   isLoading: boolean = false;
-  isActiveMenu: boolean = false;
   checkedTasks: any[] = [];
 
   public async ngOnInit() {
@@ -159,7 +158,6 @@ export class BacklogComponent implements OnInit {
    */
   public openTaskMenu(event: Event) {
     event.stopPropagation();
-    this.isActiveMenu = this.checkedTasks.length !== 0 ? true : false;
     console.log('выбранные задачи:', this.checkedTasks)
   }
 
