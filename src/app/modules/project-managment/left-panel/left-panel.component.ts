@@ -41,12 +41,6 @@ export class LeftPanelComponent implements OnInit, DoCheck {
       this.checkUrlParams(),
       await this.getHeaderItemsAsync()
     ]).subscribe();
-
-    if (this.selectedProjectId) {
-      console.log('Проект выбран:', this.selectedProjectId);
-    } else {
-      console.log('Проект не выбран');
-    } 
   };
 
   /**
@@ -99,7 +93,7 @@ export class LeftPanelComponent implements OnInit, DoCheck {
           queryParams: {
             projectId
           }
-        })
+        });
         this.onClose();
         break;
 
