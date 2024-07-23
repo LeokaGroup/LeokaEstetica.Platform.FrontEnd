@@ -41,6 +41,12 @@ export class LeftPanelComponent implements OnInit, DoCheck {
       this.checkUrlParams(),
       await this.getHeaderItemsAsync()
     ]).subscribe();
+
+    if (this.selectedProjectId) {
+      console.log('Проект выбран:', this.selectedProjectId);
+    } else {
+      console.log('Проект не выбран');
+    } 
   };
 
   /**
@@ -93,7 +99,7 @@ export class LeftPanelComponent implements OnInit, DoCheck {
           queryParams: {
             projectId
           }
-        });
+        })
         this.onClose();
         break;
 
@@ -126,13 +132,35 @@ export class LeftPanelComponent implements OnInit, DoCheck {
   };
 
   ngDoCheck() {
-   if (this._projectManagmentService.isLeftPanel) {
-     this.isPanelMenu = true;
-   }
-   else {
-     this.isPanelMenu = false;
-   }
+    if (this._projectManagmentService.isLeftPanel) {
+      this.isPanelMenu = true;
+    }
+    else {
+      this.isPanelMenu = false;
+    }
+    
+    // отключаем Спринты, если не выбран проект
+    const disableButtonSprints = this._router.url.indexOf(`projectId=${this.selectedProjectId}`) < 0;
+    this.disableButtonIfNeeded('Sprints', disableButtonSprints);
   };
+
+  /**
+   * Функция отключает кнопку панели, если не выбран проект.
+   */
+  private disableButtonIfNeeded(buttonId: string, disabled: boolean) {
+    const button = this.findButton(buttonId);
+    if (button) {
+      button.disabled = disabled;
+    }
+  }
+
+  /**
+   * Функция ищет необходимый элемент панели.
+   * @returns - искомый элемент панели.
+   */
+  private findButton = (id: string) => {
+    return this.aPanelItems[0].items.find((item: any) => item.id === id);
+  }
 
   public onClose() {
     this._projectManagmentService.isLeftPanel = false;
