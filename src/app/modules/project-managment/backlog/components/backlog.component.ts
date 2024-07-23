@@ -29,7 +29,6 @@ export class BacklogComponent implements OnInit {
   isLoading: boolean = false;
   isActiveMenu: boolean = false;
   checkedTasks: any[] = [];
-  taskCount: string = '';
 
   public async ngOnInit() {
     this._projectManagmentService.isLeftPanel = false;
