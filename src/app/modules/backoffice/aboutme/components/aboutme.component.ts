@@ -309,9 +309,18 @@ export class AboutmeComponent implements OnInit {
     /**
      * Функция блокирует ввод нечисловых значений в input типа number.
      */
-    public blockNotNumber = (e: KeyboardEvent) => {
+    public blockInputNotNumber = (e: KeyboardEvent) => {
       if (['e', 'E', '+', '-'].includes(e.key)) {
         e.preventDefault();
       }
+    };
+
+    /**
+     * Функция фильтрует вставку из буфера обмена нечисловых значений в поле Опыт(стаж).
+     */
+    public filterPastedNotNumberExperience = (e: ClipboardEvent) => {
+      e.preventDefault();
+      const pastedData = e.clipboardData?.getData('text').replace(/[eE+\-]/g, '') as string;
+      this.workExperience = pastedData;
     };
 }
