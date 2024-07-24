@@ -16,10 +16,4 @@ export class CreateOrderCacheInput {
    * Кол-во сотрудников.
    */
   employeesCount: number = 0;
-
-  /**
-   * Признак совершенного действия пользователя.
-   * Если требуются действия от пользователя.
-   */
-  isCompleteUserAction: boolean = false;
 }

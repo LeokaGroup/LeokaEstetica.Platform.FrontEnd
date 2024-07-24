@@ -42,7 +42,7 @@ export class OrderFormSelectSubscriptionPlanComponent implements OnInit {
     ]).subscribe();
   };
 
-  public onRouteNextStep() {
+  public async onRouteNextStepAsync() {
     // TODO: Вернем этот этап, когда внедрим услуги, сервисы в нову юсистему оплат.
     // this._router.navigate(["/order-form/products"], {
     //   queryParams: {
@@ -51,11 +51,13 @@ export class OrderFormSelectSubscriptionPlanComponent implements OnInit {
     //   }
     // });
 
-    this._router.navigate(["/order-form/pay"], {
-      queryParams: {
-        publicId: this.publicId,
-        step: 3
-      }
+    await this.createOrderCacheAsync().then(_ => {
+      this._router.navigate(["/order-form/pay"], {
+        queryParams: {
+          publicId: this.publicId,
+          step: 3
+        }
+      });
     });
   };
 
@@ -69,22 +71,23 @@ export class OrderFormSelectSubscriptionPlanComponent implements OnInit {
   /**
    * Функция создает заказ в кэше.
    */
-  public async onCreateOrderCacheAsync() {
-    if (this.selectedMonth > 0 && this.employeeCount > 0) {
+  private async createOrderCacheAsync() {
+    if (+this.selectedMonth?.key > 0 && this.employeeCount > 0) {
       let createOrderCacheInput = new CreateOrderCacheInput();
       createOrderCacheInput.publicId = this.publicId;
-      createOrderCacheInput.paymentMonth = this.selectedMonth;
+      createOrderCacheInput.paymentMonth = +this.selectedMonth?.key;
       createOrderCacheInput.employeesCount = +this.employeeCount;
-      createOrderCacheInput.isCompleteUserAction = this.isCompleteUserAction;
-      console.log(createOrderCacheInput);
 
-      // (await this._orderService.createOrderCacheAsync(createOrderCacheInput))
-      //   .subscribe(async _ => {
-      //     console.log("Заказ в кэше: ", this.calculatedPrice$.value);
-      //   });
+      (await this._orderService.createOrderCacheAsync(createOrderCacheInput))
+        .subscribe(async _ => {
+          console.log("Заказ в кэше: ", this.calculatedPrice$.value);
+        });
     }
   };
 
+  /**
+   * Функция вычисляет цену заказа и отображает пользователю.
+   */
   public async onCalculatePriceAsync() {
     if (+this.selectedMonth?.key > 0 && this.employeeCount > 0) {
       (await this._orderService.calculateFareRulePriceAsync(this.publicId, +this.selectedMonth.key, this.employeeCount))
