@@ -14,6 +14,7 @@ export class OrderService {
     public orderProducts$ = new BehaviorSubject<any>(null);
     public orderPay$ = new BehaviorSubject<any>(null);
     public freePrice$ = new BehaviorSubject<any>(null);
+    public calculatedPrice$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -31,6 +32,7 @@ export class OrderService {
     };
 
     /**
+     * TODO: Если вернем услуги и сервисы, то эта функция понадобиться. Пока оставим.
      * Функция получает заказ из кэша.
      * @param publicId - Публичный код тарифа.
      * @returns - Данные заказа.
@@ -52,15 +54,17 @@ export class OrderService {
         );
     };
 
-    /**
-     * Функция вычисляет остаток с текущей активной подписки пользователя.
-     * @param publidId - Публичный ключ тарифа.
-     * @param month - Кол-во месяцев подписки.
-     * @returns - Сумма остатка, если она есть.
-    */
-    public async calculateFreePriceAsync(publidId: string, month: number) {
-        return await this.http.get(API_URL.apiUrl + `/commercial/check-free?publicId=${publidId}&month=${month}`).pipe(
-            tap(data => this.freePrice$.next(data))
-        );
-    };
+  /**
+   * Функция вычисляет цену тарифа исходя из параметров.
+   * @param publicId - Публичный ключ тарифа.
+   * @param selectedMonth - Кол-во месяцев подписки.
+   * @param employeeCount - Кол-во сотрудников в организации.
+   * @returns - Данные вычисленной цены тарифа.
+   */
+  public async calculateFareRulePriceAsync(publicId: string, selectedMonth: number, employeeCount: number) {
+    return await this.http.get(API_URL.apiUrl +
+      `/commercial/calculate-price?publicId=${publicId}&selectedMonth=${selectedMonth}&employeeCount=${employeeCount}`).pipe(
+      tap(data => this.calculatedPrice$.next(data))
+    );
+  };
 }

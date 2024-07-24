@@ -29,6 +29,8 @@ import { OrderFormSelectSubscriptionPlanComponent } from './select-subscription-
 import { SliderModule } from 'primeng/slider';
 import { OrderFormProductsComponent } from './products/products.component';
 import { PayComponent } from './pay/pay.component';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @NgModule({
     declarations: [
@@ -62,7 +64,9 @@ import { PayComponent } from './pay/pay.component';
         MegaMenuModule,
         SidebarModule,
         StepsModule,
-        SliderModule
+        SliderModule,
+        InputNumberModule,
+        RadioButtonModule
     ],
 
     exports: [],
