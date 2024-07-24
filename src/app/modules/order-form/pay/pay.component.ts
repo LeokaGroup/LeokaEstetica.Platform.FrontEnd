@@ -17,9 +17,9 @@ export class PayComponent implements OnInit {
     constructor(private readonly _router: Router,
         private readonly _activatedRoute: ActivatedRoute,
         private readonly _orderService: OrderService) {
-    } 
+    }
 
-    public readonly orderPay$ = this._orderService.orderPay$;    
+    public readonly orderPay$ = this._orderService.orderPay$;
 
     publicId: string = "";
 
@@ -32,7 +32,7 @@ export class PayComponent implements OnInit {
     private async checkUrlParams() {
         this._activatedRoute.queryParams
         .subscribe(async params => {
-            this.publicId = params["publicId"];    
+            this.publicId = params["publicId"];
           });
     };
 
@@ -60,7 +60,7 @@ export class PayComponent implements OnInit {
 
             if (this.orderPay$.value.confirmation.confirmationUrl !== ""
                 && this.orderPay$.value.confirmation.confirmationUrl !== null) {
-                window.location.href = this.orderPay$.value.confirmation.confirmationUrl;
+                window.location.href = this.orderPay$.value.confirmation.confirmation_url;
             }
         });
     };
