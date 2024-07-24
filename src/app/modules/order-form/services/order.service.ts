@@ -53,4 +53,18 @@ export class OrderService {
             tap(data => this.orderPay$.next(data))
         );
     };
+
+  /**
+   * Функция вычисляет цену тарифа исходя из параметров.
+   * @param publicId - Публичный ключ тарифа.
+   * @param selectedMonth - Кол-во месяцев подписки.
+   * @param employeeCount - Кол-во сотрудников в организации.
+   * @returns - Данные вычисленной цены тарифа.
+   */
+  public async calculateFareRulePriceAsync(publicId: string, selectedMonth: number, employeeCount: number) {
+    return await this.http.get(API_URL.apiUrl +
+      `/commercial/calculate-price?publicId=${publicId}&selectedMonth=${selectedMonth}&employeeCount=${employeeCount}`).pipe(
+      tap(data => this.calculatedPrice$.next(data))
+    );
+  };
 }

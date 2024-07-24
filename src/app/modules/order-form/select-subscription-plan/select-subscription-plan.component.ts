@@ -27,8 +27,8 @@ export class OrderFormSelectSubscriptionPlanComponent implements OnInit {
   isContinue: boolean = false;
   employeeCount: number = 1;
   aMonthItems: any[] = [
-    {name: '1', key: 'A1'},
-    {name: '3', key: 'M3'},
+    {name: '1', key: '1'},
+    {name: '3', key: '3'},
     {name: '6', key: '6'},
     {name: '12', key: '12'}
   ];
@@ -82,6 +82,16 @@ export class OrderFormSelectSubscriptionPlanComponent implements OnInit {
       //   .subscribe(async _ => {
       //     console.log("Заказ в кэше: ", this.calculatedPrice$.value);
       //   });
+    }
+  };
+
+  public async onCalculatePriceAsync() {
+    if (+this.selectedMonth?.key > 0 && this.employeeCount > 0) {
+      (await this._orderService.calculateFareRulePriceAsync(this.publicId, +this.selectedMonth.key, this.employeeCount))
+        .subscribe(async _ => {
+          console.log("Вычисленная цена: ", this.calculatedPrice$.value);
+          this.isContinue = true;
+        });
     }
   };
 }

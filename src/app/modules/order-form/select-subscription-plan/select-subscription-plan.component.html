@@ -24,7 +24,8 @@
               <p-inputNumber
                 inputId="employeeCount"
                 [(ngModel)]="employeeCount"
-                [min]="1">
+                [min]="1"
+                (onInput)="onCalculatePriceAsync()">
               </p-inputNumber>
             </div>
 
@@ -46,7 +47,8 @@
                       [inputId]="month"
                       name="month"
                       [value]="month"
-                      [(ngModel)]="selectedMonth">
+                      [(ngModel)]="selectedMonth"
+                      (click)="onCalculatePriceAsync()">
                     </p-radioButton>
                   </div>
 
@@ -63,33 +65,10 @@
               <small>Укажите количество месяцев, на которое будет оформлена подписка.</small>
             </div>
           </div>
-          <!--          <div class="mt-1">-->
-<!--            <p>Количество месяцев: {{paymentMonth}}</p>-->
-<!--            <p-slider [(ngModel)]="paymentMonth"-->
-<!--                      [step]="1"-->
-<!--                      [min]="1"-->
-<!--                      [max]="12">-->
-<!--            </p-slider>-->
 
-<!--            <div class="mt-3">-->
-<!--              <button type="button"-->
-<!--                      class="btn btn-primary button-action-pur-short-control"-->
-<!--                      (click)="onChangePaymentMonth()">-->
-<!--                Рассчитать цену-->
-<!--              </button>-->
-<!--            </div>-->
-<!--          </div>-->
-
-<!--          <div class="mt-3">-->
-<!--            <small>Все скидки, пакеты и акции учитываются на этапе услуг и сервисов (если тариф подразумевает это).</small>-->
-<!--          </div>-->
-
-          <div class="mt-3">
+          <div class="mt-3" *ngIf="isContinue">
             <strong>Цена:</strong>
-<!--            <p>{{orderForm.price !== freePrice && freePrice > 0 ? freePrice + ' ₽' : orderForm.price + ' ₽'}}</p>-->
-<!--            <div *ngIf="paymentMonth == 1">-->
-<!--              <small>При оплате на месяц скидка не предоставляется (но учитывается остаток по тарифу).</small>-->
-<!--            </div>-->
+            <div> {{calculatedPrice$.value?.price + ' ₽'}}</div>
           </div>
         </p-panel>
 
