@@ -29,7 +29,7 @@
     "ngx-loading-x": "^1.0.3",
     "ngx-rerender": "^1.1.0",
     "primeicons": "^6.0.1",
-    "primeng": "^17.18.1",
+    "primeng": "^17.18.3",
     "quill": "^2.0.2",
     "rxjs": "~7.8.1",
     "zone.js": "~0.14.7"
