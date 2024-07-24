@@ -157,6 +157,10 @@ export class AppComponent implements OnInit {
         if (params["page"]) {
           this.isVisibleMenu = true;
         }
+
+        if (currentUrl.indexOf("fare-rules") >= 0) {
+          this.isVisibleMenu = false;
+        }
       });
   };
 }

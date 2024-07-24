@@ -39,20 +39,31 @@
           <div *ngIf="attrValue.attributeId == 1
           || attrValue.attributeId == 3
           || attrValue.attributeId == 5
-|| attrValue.attributeId == 6
-|| attrValue.attributeId == 7">
+          || attrValue.attributeId == 6
+          || attrValue.attributeId == 7">
             <div>
               {{attrValue.contentTooltip}}
             </div>
-
-<!--            <div *ngIf="attrValue.ruleId == 4">-->
-<!--              {{attrValue.content ?? 'Бесплатно'}}-->
-<!--            </div>-->
 
             <div>
               {{attrValue.content}}
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="">
+      <div class="control-fare-rule">
+        <button type="submit"
+                class="btn btn-primary button-action-pur-control-fare-rule"
+                (click)="onRouteOrderInfoAsync(fareRule.publicId)"
+                [disabled]="!isAvailableFareRule">
+          Оформить
+        </button>
+
+        <div class="d-flex justify-content-center" *ngIf="!isAvailableFareRule">
+          <small>Для оформления тарифа нужно быть авторизованными.</small>
         </div>
       </div>
     </div>

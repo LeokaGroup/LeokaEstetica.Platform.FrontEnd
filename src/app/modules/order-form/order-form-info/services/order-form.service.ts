@@ -21,7 +21,7 @@ export class OrderFormService {
     * @returns - Информация о тарифе.
     */
     public async getFareRuleInfoAsync(publicId: string) {
-        return await this.http.get(API_URL.apiUrl + `/commercial/fare-rule/order-form/${publicId}/info`).pipe(
+        return await this.http.get(API_URL.apiUrl + `/rules/fare-rule/order-form/${publicId}/info`).pipe(
             tap(data => this.fareRuleInfo$.next(data))
         );
     };

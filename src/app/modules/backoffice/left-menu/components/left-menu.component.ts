@@ -23,8 +23,6 @@ export class LeftMenuComponent implements OnInit {
     public readonly selectMenu$ = this._backOfficeService.selectMenu$;
 
     sysName: string = "";
-    isFindSysName: boolean = false;
-    aProfileMenuLine: any[] = [];
     aViewSysNames: string[] = [
         "ViewWorksheet"
     ];

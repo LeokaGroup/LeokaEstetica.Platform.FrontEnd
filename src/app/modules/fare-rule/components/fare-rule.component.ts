@@ -22,7 +22,10 @@ export class FareRuleComponent implements OnInit {
     responsiveOptions: any;
     numVisible: number = 3;
     numScroll: number = 3;
-    carouselType: "horizontal" | "vertical" = "horizontal";
+
+    // TODO: Выпилим, если будет не нужно.
+    // carouselType: "horizontal" | "vertical" = "horizontal";
+
     isAvailableFareRule: boolean = false;
     aFareRuleAttributeNames: any[] = [];
 
@@ -31,16 +34,17 @@ export class FareRuleComponent implements OnInit {
            await this.getFareRulesAsync()
         ]).subscribe();
 
+        // TODO: Выпилим, если будет не нужно.
         // Планшеты.
         // if (window.matchMedia('screen and (min-width: 600px) and (max-width: 992px)').matches) {
         //     this.numVisible = 1;
         //     this.numScroll = 1;
         //     this.carouselType = "vertical";
         // }
-        //
-        // if (localStorage["t_n"]) {
-        //     this.isAvailableFareRule = true;
-        // }
+
+        if (localStorage["t_n"]) {
+            this.isAvailableFareRule = true;
+        }
     };
 
      /**
