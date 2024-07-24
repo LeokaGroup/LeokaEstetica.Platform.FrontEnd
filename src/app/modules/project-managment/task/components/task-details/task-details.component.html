@@ -150,11 +150,7 @@
                         (onChange)="onChangeAvailableEpicsAsync()"
                         formControlName="epicName">
             </p-dropdown>
-            <button pButton pRipple label="Перейти к эпику"
-                    class="p-button-link"
-                    (click)="onRouteEpic()">
-
-            </button>
+            <p-button label="Перейти к эпику" [text]="true" (click)="onRouteEpic()" [disabled]="!selectedEpic" />
           </div>
         </form>
 
