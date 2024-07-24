@@ -78,7 +78,7 @@
         </div>
       </div>
 
-      <div class="col-lg-4" *ngIf="isCreateTask && !isCreateHistory">
+      <div class="col-lg-4" *ngIf="isCreateTask || isCreateEpic && !isCreateHistory">
         <div class="line-item d-flex">
           <label class="control-label-task-item">Статус:</label>
           <p-dropdown [options]="taskStatuses$.value"
