@@ -11,4 +11,9 @@ export class IncludeTaskEpicInput {
    * Id задач в рамках проекта.
    */
   projectTaskIds: string[] = [];
+
+  /**
+   * Id проекта.
+   */
+  projectId: number = 0;
 }
