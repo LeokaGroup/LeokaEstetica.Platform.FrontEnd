@@ -28,10 +28,10 @@
       <strong>Имеются замечания. Анкета не будет опубликована, пока замечания не будут исправлены и приняты модератором.</strong>
     </div> -->
     <!-- TODO: Добавлено пока не починим функционал замечаний. -->
-    <div *ngIf="isEmptyProfile" class="mb-1">
+    <div *ngIf="isEmptyProfile" class="mb-1 worksheet-panel">
       <div class="mb-1">
         <div>
-          <p-message severity="warning" text="Анкета не будет опубликована в базе резюме, так как не все данные анкеты заполнены."></p-message>
+          <p-messages [(value)]="messages" [closable]="false"/>
         </div>
       </div>
     </div>

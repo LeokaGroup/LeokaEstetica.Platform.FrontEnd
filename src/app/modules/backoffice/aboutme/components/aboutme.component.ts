@@ -48,6 +48,12 @@ export class AboutmeComponent implements OnInit {
     userCode: any;
     currentUrl: any;
     isVisibleNotifyChat: boolean = false;
+    messages: any[] = [
+      {
+        severity: 'warn',
+        summary: 'Анкета не будет опубликована в базе резюме, так как не все данные анкеты заполнены.'
+      }
+    ]
 
   constructor(private readonly _backofficeService: BackOfficeService,
               private readonly _signalrService: SignalrService,
