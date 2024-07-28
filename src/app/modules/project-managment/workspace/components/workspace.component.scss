@@ -15,8 +15,7 @@
   padding: 0 15px;
 }
 
-.workspace-project-name {
-  &:hover {
-    cursor: pointer;
-  }
+.data-line:hover {
+  cursor: pointer;
+  background: #DEEBFF;
 }
