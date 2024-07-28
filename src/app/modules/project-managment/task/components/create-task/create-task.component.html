@@ -88,8 +88,7 @@
                       placeholder="Выберите статус"
                       [emptyMessage]="(taskStatuses$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
                       (onClick)="onGetTaskStatusesAsync()"
-                      optionValue="taskStatusId"
-                      *ngIf="!isCreateHistory">
+                      optionValue="taskStatusId">
           </p-dropdown>
         </div>
       </div>
@@ -103,8 +102,22 @@
                       [showClear]="true"
                       placeholder="Выберите статус"
                       [emptyMessage]="(userStoryStatuses$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
-                      optionValue="statusId"
-                      *ngIf="isCreateHistory">
+                      optionValue="statusId">
+          </p-dropdown>
+        </div>
+      </div>
+
+      <div class="col-lg-4" *ngIf="isCreateEpic">
+        <div class="line-item d-flex">
+          <label class="control-label-task-item">Статус:</label>
+          <p-dropdown [options]="epicStatuses$.value"
+                      [(ngModel)]="selectedStatus"
+                      optionLabel="statusName"
+                      [showClear]="true"
+                      placeholder="Выберите статус"
+                      [emptyMessage]="(epicStatuses$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                      (onClick)="onGetEpicStatusesAsync()"
+                      optionValue="statusId">
           </p-dropdown>
         </div>
       </div>

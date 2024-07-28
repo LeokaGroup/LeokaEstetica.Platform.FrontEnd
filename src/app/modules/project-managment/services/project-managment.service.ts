@@ -35,7 +35,6 @@ import { UpdateFolderPageDescriptionInput } from '../models/input/update-folder-
 import { CreateWikiFolderInput } from '../models/input/create-folder-input';
 import { Router } from '@angular/router';
 import {CreateWikiPageInput} from "../models/input/create-page-input";
-import {TaskDetailTypeEnum} from "../../enums/task-detail-type";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -96,7 +95,8 @@ export class ProjectManagmentService {
     public wikiTreeFolderItems$ = new BehaviorSubject<any>(null);
     public wikiTreeFolderPage$ = new BehaviorSubject<any>(null);
     public removeFolderResponse$ = new BehaviorSubject<any>(null);
-    public projectInvites$ = new BehaviorSubject<any>(null);
+    public projectInvites$ = new BehaviorSubject<any>(null)
+    public epicStatuses$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
 
@@ -267,6 +267,16 @@ export class ProjectManagmentService {
             tap(data => this.taskStatuses$.next(data))
         );
     };
+
+  /**
+   * Функция получает статусы эпиков для выбора.
+   * @returns - Список статусов.
+   */
+  public async getEpicStatusesAsync() {
+    return await this._http.get(this.apiUrl + `/project-management/epic-statuses`).pipe(
+      tap(data => this.epicStatuses$.next(data))
+    );
+  };
 
     /**
     * Функция получает исполнителей или наблюдателей для выбора.

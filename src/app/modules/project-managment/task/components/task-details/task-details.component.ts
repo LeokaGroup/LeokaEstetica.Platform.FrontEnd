@@ -461,7 +461,7 @@ export class TaskDetailsComponent implements OnInit {
         projectTaskTagInput.projectId = Number(this.projectId);
         projectTaskTagInput.projectTaskId = Number(this.projectTaskId);
         projectTaskTagInput.watcherId = this.taskDetails$.value.watcherIds[i];
-        
+
         (await this._projectManagmentService.detachTaskWatcherAsync(projectTaskTagInput))
         .subscribe(async _ => {
             await this.getProjectTaskDetailsAsync();
@@ -885,12 +885,13 @@ export class TaskDetailsComponent implements OnInit {
     let includeTaskEpicInput = new IncludeTaskEpicInput();
     includeTaskEpicInput.epicId = this.projectTaskId;
     includeTaskEpicInput.projectTaskIds = this.aEpicTasks.map(x => x.fullProjectTaskId);
+    includeTaskEpicInput.projectId = +this.projectId;
 
     (await this._projectManagmentService.includeTaskEpicAsync(includeTaskEpicInput))
       .subscribe(_ => {
         console.log("Добавили задачу в эпик: ", this.includeEpic$.value);
 
-        let projectId = this.projectId;
+        let projectId = +this.projectId;
 
         setTimeout(() => {
           this._router.navigate(["/project-management/space"], {

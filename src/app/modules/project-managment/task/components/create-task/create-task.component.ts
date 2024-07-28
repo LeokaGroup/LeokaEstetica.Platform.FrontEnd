@@ -51,6 +51,7 @@ export class CreateTaskComponent implements OnInit {
     public readonly taskTypes$ = this._projectManagmentService.taskTypes$;
     public readonly projectTags$ = this._projectManagmentService.projectTags$;
     public readonly taskStatuses$ = this._projectManagmentService.taskStatuses$;
+    public readonly epicStatuses$ = this._projectManagmentService.epicStatuses$;
     public readonly taskPeople$ = this._projectManagmentService.taskExecutors$;
     public readonly createdTask$ = this._projectManagmentService.createdTask$;
     public readonly userStoryStatuses$ = this._projectManagmentService.userStoryStatuses$;
@@ -144,17 +145,28 @@ export class CreateTaskComponent implements OnInit {
             });
     };
 
-     /**
-    * Функция получает статусы задач для выбора.
-    * Статусы выводятся в рамках шаблона.
-    * @returns - Список статусов.
-    */
-      public async onGetTaskStatusesAsync() {
-        (await this._projectManagmentService.getTaskStatusesAsync(this.projectId))
-            .subscribe(_ => {
-                console.log("Статусы для выбора: ", this.taskStatuses$.value);
-            });
-    };
+  /**
+   * Функция получает статусы задач для выбора.
+   * Статусы выводятся в рамках шаблона.
+   * @returns - Список статусов.
+   */
+  public async onGetTaskStatusesAsync() {
+    (await this._projectManagmentService.getTaskStatusesAsync(this.projectId))
+      .subscribe(_ => {
+        console.log("Статусы задачи для выбора: ", this.taskStatuses$.value);
+      });
+  };
+
+  /**
+   * Функция получает статусы эпиков для выбора.
+   * @returns - Список статусов.
+   */
+  public async onGetEpicStatusesAsync() {
+    (await this._projectManagmentService.getEpicStatusesAsync())
+      .subscribe(_ => {
+        console.log("Статусы эпика для выбора: ", this.epicStatuses$.value);
+      });
+  };
 
       /**
     * Функция получает исполнителей для выбора.
