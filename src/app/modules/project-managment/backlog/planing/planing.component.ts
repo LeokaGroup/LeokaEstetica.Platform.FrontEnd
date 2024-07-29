@@ -39,8 +39,8 @@ export class PlaningSprintComponent implements OnInit {
   sprintDescription: string = "";
   isSprintDates: boolean = false;
   locale: any;
-  dateStart: any = null;
-  dateEnd: any = null;
+  dateStart?: Date;
+  dateEnd?: Date;
   isSprintTasks: boolean = false;
   allFeedSubscription: any;
   selectedTask: any;
