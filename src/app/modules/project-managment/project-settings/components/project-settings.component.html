@@ -140,10 +140,6 @@
                  styleClass="p-datatable-gridlines"
                  responsiveLayout="scroll">
 
-<!--          <ng-template pTemplate="caption">-->
-<!--            <h3>Пользователи</h3>-->
-<!--          </ng-template>-->
-
           <ng-template pTemplate="header">
             <tr>
               <!-- <th></th> -->
@@ -364,7 +360,7 @@
           <div>
             <p-dropdown [options]="availableInviteVacancies"
                         [(ngModel)]="selectedInviteVacancy"
-                        optionLabel="userVacancy.vacancyName"
+                        optionLabel="vacancyName"
                         [disabled]="!selectedInviteVariant
                               || isVacancyInvite"
                         emptyMessage="Нет данных">
