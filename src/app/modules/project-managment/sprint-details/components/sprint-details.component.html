@@ -265,6 +265,7 @@
               <th>Название</th>
               <th>Статус</th>
               <th>Приоритет</th>
+              <th>Исполнитель</th>
             </tr>
           </ng-template>
 
@@ -290,7 +291,13 @@
 
               <td>
                 <div class="smaller-text">
-                  {{sp.priorityName}}
+                  {{sp?.priorityName ?? 'Не предполагается'}}
+                </div>
+              </td>
+
+              <td>
+                <div class="smaller-text">
+                  {{sp.executor?.executorName}}
                 </div>
               </td>
             </tr>
