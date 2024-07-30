@@ -24,10 +24,6 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   public readonly headerItems$ = this._projectManagmentService.headerItems$;
   public readonly searchTasks$ = this._projectManagmentService.searchTasks$;
   public readonly checkAccess$ = this._accessService.checkAccess$;
-
-  /**
-   * для задачи 34460898
-   */
   public readonly selectedWorkSpace$ = this._projectManagmentService.selectedWorkSpace$;
 
 
@@ -118,10 +114,7 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
       });
   };
 
-
-
   /**
-   * для задачи 34460898
    * Функция получает выбранное раб.пространство.
    */
   private async getSelectedWorkSpaceAsync(projectId: number) {
@@ -135,7 +128,6 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   }
 
   /**
-   * для задачи 34460898
    * Функция меняет items для breadcrumb.
    */
   private async updateBreadcrumbLabel(projectName: string) {
