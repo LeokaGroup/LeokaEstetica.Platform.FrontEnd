@@ -24,10 +24,6 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   public readonly headerItems$ = this._projectManagmentService.headerItems$;
   public readonly searchTasks$ = this._projectManagmentService.searchTasks$;
   public readonly checkAccess$ = this._accessService.checkAccess$;
-
-  /**
-   * для задачи 34460898
-   */
   public readonly selectedWorkSpace$ = this._projectManagmentService.selectedWorkSpace$;
 
 
@@ -36,7 +32,7 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   home: string = "project name";
   items: any[] = [
     {
-      label: "Проект не выбран."
+      label: "Проект не выбран"
     }
   ];
 
@@ -65,7 +61,7 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
     ]).subscribe();
   };
 
-  ngDoCheck() {
+  public ngDoCheck() {
     // Если роут не Kanban или Scrum, то дизейблим пункты меню стратегия представления и настройки.
     let projectId = this.projectId;
     const disableButtonSettings = this._router.url.indexOf(`projectId=${projectId}`) < 0;
@@ -107,35 +103,13 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
 
         this.projectId = params["projectId"];
 
-        if (params["projectId"]) {
-          this.projectId = Number(params["projectId"]);
-          await this.getSelectedWorkSpaceAsync(this.projectId);
-        }
-
-        else {
-          this.updateBreadcrumbLabel("Проект не выбран.");
+        if (!this.projectId) {
+          this.updateBreadcrumbLabel("Проект не выбран");
         }
       });
   };
 
-
-
   /**
-   * для задачи 34460898
-   * Функция получает выбранное раб.пространство.
-   */
-  private async getSelectedWorkSpaceAsync(projectId: number) {
-    (await this._projectManagmentService.getSelectedWorkSpaceAsync(projectId))
-      .subscribe(_ => {
-        console.log("Выбранное раб.пространство: ", this._projectManagmentService.selectedWorkSpace$.value);
-        if (this.selectedWorkSpace$.value.projectManagementName) {
-          this.updateBreadcrumbLabel(this.selectedWorkSpace$.value.projectManagementName);
-        }
-      });
-  }
-
-  /**
-   * для задачи 34460898
    * Функция меняет items для breadcrumb.
    */
   private async updateBreadcrumbLabel(projectName: string) {
