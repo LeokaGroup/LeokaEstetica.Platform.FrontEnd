@@ -976,6 +976,16 @@ export class ProjectManagmentService {
   };
 
   /**
+   * для задачи 34460898
+   * Функция получает выбранное раб.пространство.
+   */
+  public async getSelectedWorkSpaceAsync(projectId: number) {
+    return await this._http.get(this.apiUrl + `/project-management/workspaces`).pipe(
+      tap(data => this.selectedWorkSpace$.next((data as any[]).find((project: any) => project.projectId === projectId)))
+    );
+  }
+
+  /**
    * Функция получает список пользователей для настроек.
    */
   public async getSettingUsersAsync(projectId: number) {
