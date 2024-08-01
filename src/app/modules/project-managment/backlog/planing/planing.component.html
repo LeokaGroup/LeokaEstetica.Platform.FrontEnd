@@ -162,11 +162,12 @@
        </div>
 
         <p-table [value]="aAddedTaskSprint"
-                 styleClass="p-datatable-sm"
-                 [tableStyle]="{'min-width': '50rem'}"
-                 [rows]="10"
-                 responsiveLayout="scroll"
-                 [paginator]="aAddedTaskSprint.length > 0">
+                [paginator]="aAddedTaskSprint.length > 0"
+                styleClass="p-datatable-sm"
+                [tableStyle]="{'min-width': '50rem'}"
+                [rows]="10"
+                responsiveLayout="scroll"
+                [totalRecords]="tableTotalRecords">
           <ng-template pTemplate="header">
             <tr>
               <th>Ключ</th>
