@@ -16,8 +16,20 @@
     min-height: 200px;
 }
 
-.control-task-name {
-    min-width: 900px;
+:host ::ng-deep .p-inplace-content {
+  width: 100%;
+
+  @media (min-width: 660px) {
+    .control-task-name {
+        width: 649px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .control-task-name {
+        width: 66.66666667%;
+    }
+  }
 }
 
 ::ng-deep .p-inplace-display {
