@@ -181,7 +181,13 @@ export class PlaningSprintComponent implements OnInit {
   };
 
   public onSelectTask() {
+    let isTaskInSprint = this.aAddedTaskSprint.find(task => this.selectedTask.projectTaskId === task.projectTaskId) ? true : false;
+
+    if (!isTaskInSprint) {
     this.aAddedTaskSprint.push(this.selectedTask);
+    } else {
+      console.log('Задача уже добавлена')
+    }
   };
 
   /**
