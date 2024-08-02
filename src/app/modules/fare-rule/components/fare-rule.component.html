@@ -58,7 +58,8 @@
         <button type="submit"
                 class="btn btn-primary button-action-pur-control-fare-rule"
                 (click)="onRouteOrderInfoAsync(fareRule.publicId)"
-                [disabled]="!isAvailableFareRule">
+                [disabled]="!isAvailableFareRule"
+                *ngIf="!fareRule.isFree">
           Оформить
         </button>
 
