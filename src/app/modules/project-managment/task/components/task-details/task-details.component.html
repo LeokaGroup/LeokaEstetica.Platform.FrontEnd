@@ -811,7 +811,7 @@
              [tableStyle]="{'min-width': '50rem'}"
              [rows]="10"
              responsiveLayout="scroll"
-             [paginator]="taskDetails$.value?.epicTasks.length > 0">
+             [paginator]="taskDetails$.value?.epicTasks?.length > 0">
       <ng-template pTemplate="header">
         <tr>
           <th>Ключ</th>
