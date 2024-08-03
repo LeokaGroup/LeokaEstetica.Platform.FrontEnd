@@ -53,6 +53,7 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   ];
   isVisibleDropDownMenu: boolean = false;
   isVisibleAccessModal = false;
+  isVisibleHeader: boolean = false;
 
   public async ngOnInit() {
     forkJoin([
@@ -75,7 +76,15 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
         && this._router.url == "/project-management/workspaces") {
         x.disabled = true;
       }
-    })
+    });
+
+    // Скрываем хидер УП.
+    this.isVisibleHeader = this._router.url.includes(`project-management`);
+
+    // Удаляем из хлебных крошек выбранного проекта.
+    if (!this.isVisibleHeader) {
+      this.items = [];
+    }
   };
 
   /**
