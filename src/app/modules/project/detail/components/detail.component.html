@@ -17,7 +17,9 @@
     </div>
 
     <div class="worksheet-panel">
-      <p-panel header="Просмотр информации о проекте" [toggleable]="true" [collapsed]="false">
+      <p-panel header="{{!isEditMode ? 'Просмотр информации о проекте' : 'Изменение информации о проекте'}}"
+               [toggleable]="true"
+               [collapsed]="false">
         <div class="d-flex">
           <div class="control-input-text-worksheet">
             <div>
@@ -40,6 +42,7 @@
           <div>
             <strong>Название в управлении проектом</strong>
           </div>
+
           <div *ngIf="isEditMode; else blockTwo">
             <input type="text"
                    class="p-inputtext-sm input-control-worksheet control-project"
@@ -47,7 +50,11 @@
                    pInputText
                    autocomplete="new-password"
                    [(ngModel)]="selectedProject$.value.projectManagementName"
-                   [disabled]="!isEditMode"/>
+                   [disabled]="true"/>
+
+            <div>
+              <small>Задается в модуле управления проектами</small>
+            </div>
           </div>
           <ng-template #blockTwo>{{selectedProject$.value?.projectManagementName == null ? 'Не указано' : selectedProject$.value.projectManagementName}}</ng-template>
         </div>
@@ -61,14 +68,20 @@
                                 <strong>Описание проекта</strong>
                             </div>
                           <div *ngIf="isEditMode; else blockThree">
-                               <p-editor autocomplete="new-password"
-                                    [(ngModel)]="selectedProject$.value.projectDetails"
-                                    [style]="{'height':'320px'}"
-                                    [readonly]="!isEditMode">
-                               </p-editor>
+                            <textarea input-control-worksheet
+                                      rows="5"
+                                      cols="100"
+                                      pInputTextarea
+                                      [autoResize]="true"
+                                      autocomplete="new-password"
+                                      placeholder="Описание проекта"
+                                      [(ngModel)]="selectedProject$.value.projectDetails"
+                                      class="control-textarea"
+                                      [disabled]="!isEditMode">
+                              </textarea>
                           </div>
                           <ng-template #blockThree>
-                            <p class="white-space">{{selectedProject$.value?.projectDetails}}</p>
+                            <p class="white-space">{{selectedProject$.value.projectDetails}}</p>
                           </ng-template>
                         </div>
                     </div>
@@ -105,11 +118,17 @@
                     <strong>Требования</strong>
                   </div>
                   <div *ngIf="isEditMode">
-                    <p-editor autocomplete="new-password"
+                    <textarea input-control-worksheet
+                              rows="5"
+                              cols="100"
+                              pInputTextarea
+                              [autoResize]="true"
+                              autocomplete="new-password"
+                              placeholder="Требования проекта"
                               [(ngModel)]="selectedProject$.value.demands"
-                              [style]="{'height':'320px'}"
-                              [readonly]="!isEditMode">
-                    </p-editor>
+                              class="control-textarea"
+                              [disabled]="!isEditMode">
+                      </textarea>
                   </div>
                   <div *ngIf="!isEditMode">
                     <p class="white-space text-paragraph" [innerHTML]="selectedProject$.value?.demands"></p>
@@ -127,11 +146,17 @@
                 <strong>Условия</strong>
               </div>
               <div *ngIf="isEditMode">
-                <p-editor autocomplete="new-password"
+                <textarea input-control-worksheet
+                          rows="5"
+                          cols="100"
+                          pInputTextarea
+                          [autoResize]="true"
+                          autocomplete="new-password"
+                          placeholder="Условия проекта"
                           [(ngModel)]="selectedProject$.value.conditions"
-                          [style]="{'height':'320px'}"
-                          [readonly]="!isEditMode">
-                </p-editor>
+                          class="control-textarea"
+                          [disabled]="!isEditMode">
+                  </textarea>
               </div>
               <div *ngIf="!isEditMode">
                 <p class="white-space text-paragraph" [innerHTML]="selectedProject$.value?.conditions"></p>
@@ -668,11 +693,17 @@
                               <strong>Описание вакансии</strong>
                           </div>
                           <div>
-                              <p-editor autocomplete="new-password"
-                                        [(ngModel)]="vacancyText"
-                                        [style]="{'height':'320px'}"
-                                        [readonly]="!isEditMode">
-                              </p-editor>
+                            <textarea input-control-worksheet
+                                      rows="5"
+                                      cols="100"
+                                      pInputTextarea
+                                      [autoResize]="true"
+                                      autocomplete="new-password"
+                                      placeholder="Описание вакансии"
+                                      [(ngModel)]="vacancyText"
+                                      class="control-textarea"
+                                      [disabled]="!isEditMode">
+                              </textarea>
                           </div>
                       </div>
                   </div>
