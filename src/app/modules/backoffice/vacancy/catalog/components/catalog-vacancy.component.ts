@@ -46,7 +46,7 @@ export class CatalogVacancyComponent implements OnInit {
         { name: 'Проектная работа', key: 'ProjectWork' },
         { name: 'Частичная занятость', key: 'Partial' }
     ];
-    selectedEmployment: any;
+    selectedEmployment: any[] = [];
     searchText: string = "";
     rowsCount: number = 0;
     page: number = 0;
@@ -90,13 +90,13 @@ export class CatalogVacancyComponent implements OnInit {
         this.selectedSalary = this.aSalaries[0];
     };
     /**
-     * Функция сбрасывает фильтры 
+     * Функция сбрасывает фильтры
      */
     public async onResetFilters() {
         this.selectedSalary = null;
         this.selectedPay = null;
         this.selectedExperience = null;
-        this.selectedEmployment = null;
+        this.selectedEmployment = [];
          // Перезагрузка списка вакансий
         await this.loadCatalogVacanciesAsync();
 
@@ -106,7 +106,7 @@ export class CatalogVacancyComponent implements OnInit {
  * Функция загружает список вакансий для каталога.
  * @returns - Список вакансий.
  */
-   
+
    /**
      * Функция загружает список вакансий для каталога.
      * @returns - Список вакансий.
@@ -154,17 +154,17 @@ export class CatalogVacancyComponent implements OnInit {
      * @returns - Входная модель.
      */
     private createFilterVacancyResult(): FilterVacancyInput {
-        let model = new FilterVacancyInput();
-        model.Salary = this.selectedSalary ? this.selectedSalary.key : "None";
+      let model = new FilterVacancyInput();
+      model.Salary = this.selectedSalary ? this.selectedSalary.key : "None";
 
-            if (this.selectedEmployment != undefined) {
-                model.EmploymentsValues = this.selectedEmployment.map((u: any) => u.key).join(',');
-            }
-            
-            model.Experience = this.selectedExperience ? this.selectedExperience.key : "None";
-            model.Pay = this.selectedPay ? this.selectedPay.key : "None";
+      if (this.selectedEmployment) {
+        model.EmploymentsValues = this.selectedEmployment.map((u: any) => u.key).join(',');
+      }
 
-        return model;
+      model.Experience = this.selectedExperience ? this.selectedExperience.key : "None";
+      model.Pay = this.selectedPay ? this.selectedPay.key : "None";
+
+      return model;
     };
 
     /**
