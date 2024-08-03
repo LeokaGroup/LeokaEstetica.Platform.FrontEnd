@@ -5,7 +5,8 @@
                autoDisplay="false"
                class="second-menu"
                (click)="onSelectMenu($event)"
-               [class.isVisibleMenuHide]="!isVisibleDropDownMenu">
+               [class.isVisibleMenuHide]="!isVisibleDropDownMenu"
+               *ngIf="isVisibleHeader">
       <ng-template pTemplate="start">
 
       </ng-template>
