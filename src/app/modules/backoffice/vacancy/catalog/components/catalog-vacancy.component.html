@@ -8,7 +8,7 @@
     <div class="mb-2 block-search">
       <span class="p-fluid control-search">
         <p-autoComplete [(ngModel)]="searchText"
-                        [suggestions]="catalog$.value.catalogVacancies"
+                        [suggestions]="catalog$.value?.catalogVacancies"
                         [showEmptyMessage]="true"
                         emptyMessage="Результатов не найдено"
                         field="vacancyName"
@@ -17,7 +17,7 @@
                         (onClear)="onLoadCatalogVacanciesAsync()"
                         placeholder="Поиск по вакансиям...">
         </p-autoComplete>
-        <p class="vacancy-count">Найдено вакансий: {{ catalog$.value.total }}</p>
+        <p class="vacancy-count">Найдено вакансий: {{ catalog$.value?.total }}</p>
       </span>
     </div>
 
