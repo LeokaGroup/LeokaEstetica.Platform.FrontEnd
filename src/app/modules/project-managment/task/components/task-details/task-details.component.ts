@@ -730,6 +730,10 @@ export class TaskDetailsComponent implements OnInit {
    * @param comment - Комментарий.
    */
   public async onCreateTaskCommentAsync(comment: string) {
+    if (!comment) {
+      return;
+    }
+
     let taskCommentInput = new TaskCommentInput();
     taskCommentInput.comment = this.comment;
     taskCommentInput.projectId = +this.projectId;
@@ -929,5 +933,10 @@ export class TaskDetailsComponent implements OnInit {
           });
         }, 4000);
       });
+  };
+
+  public onHandleComment(comment: string) {
+    console.log("onHandleComment", comment);
+    this.comment = comment;
   };
 }

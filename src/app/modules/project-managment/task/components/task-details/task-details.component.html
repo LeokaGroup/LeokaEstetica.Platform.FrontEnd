@@ -946,33 +946,22 @@
                              [active]="c.isActiveTaskComment"
                              (onActivate)="c.isActiveTaskComment = !c.isActiveTaskComment">
                     <ng-template pTemplate="display">
-                      <span class="task-name-title" [innerHTML]="c.comment"></span>
+                      <span class="task-name-title">{{c.comment}}</span>
                     </ng-template>
 
                     <ng-template pTemplate="content">
-                      <input type="text" [(ngModel)]="c.comment" value="{{c.comment}}" pInputText class="comment">
+                      <textarea input-control-worksheet
+                                rows="5"
+                                cols="100"
+                                pInputTextarea
+                                [autoResize]="true"
+                                autocomplete="new-password"
+                                placeholder="Текст комментария"
+                                [(ngModel)]="c.comment"
+                                class="control-textarea">
+                        </textarea>
                     </ng-template>
                   </p-inplace>
-
-                  <button pButton
-                          pRipple
-                          icon="pi pi-save"
-                          type="button"
-                          label="Сохранить"
-                          class="p-button-success p-button-text p-button-sm"
-                          *ngIf="c.isActiveTaskComment"
-                          (click)="onUpdateTaskCommentAsync(c.commentId, c.comment)">
-                  </button>
-
-                  <button pButton
-                          pRipple
-                          icon="pi pi-times"
-                          type="button"
-                          label="Отмена"
-                          class="p-button-secondary p-button-text p-button-sm"
-                          *ngIf="c.isActiveTaskComment"
-                          (click)="c.isActiveTaskComment=!c.isActiveTaskComment">
-                  </button>
 
                   <button pButton type="button"
                           icon="pi pi-times"
@@ -983,14 +972,25 @@
                   </button>
                 </div>
 
-                <div class="control-comment mt-1">
-                  <p-button label="Отправить"
-                            icon="pi pi-arrow-up-right"
-                            [hidden]="comment == undefined || comment == '' || comment == null"
-                            (click)="onCreateTaskCommentAsync(comment)"
-                            class="p-button-sm">
-                  </p-button>
-                </div>
+                <button pButton
+                        pRipple
+                        icon="pi pi-save"
+                        type="button"
+                        label="Сохранить"
+                        class="p-button-success p-button-text p-button-sm"
+                        *ngIf="c.isActiveTaskComment"
+                        (click)="onUpdateTaskCommentAsync(c.commentId, c.comment)">
+                </button>
+
+                <button pButton
+                        pRipple
+                        icon="pi pi-times"
+                        type="button"
+                        label="Отмена"
+                        class="p-button-secondary p-button-text p-button-sm"
+                        *ngIf="c.isActiveTaskComment"
+                        (click)="c.isActiveTaskComment=!c.isActiveTaskComment">
+                </button>
               </div>
             </p-panel>
           </div>
@@ -999,14 +999,24 @@
           <div class="mt-3">
             <p-card header="Оставить комментарий" [style]="{width: '100%'}">
               <div>
-                <p-editor [(ngModel)]="comment" [style]="{width: '100%'}"></p-editor>
+                <textarea input-control-worksheet
+                          rows="5"
+                          cols="120"
+                          pInputTextarea
+                          [autoResize]="true"
+                          autocomplete="new-password"
+                          placeholder="Текст комментария"
+                          [(ngModel)]="comment"
+                          class="control-textarea">
+                  </textarea>
               </div>
 
               <div class="control-comment mt-1">
-                <p-button label="Отправить"
-                          icon="pi pi-arrow-up-right"
-                          [hidden]="comment == undefined || comment == '' || comment == null"
-                          (click)="onCreateTaskCommentAsync(comment)">
+                <p-button icon="pi pi-arrow-up-right"
+                          (click)="onCreateTaskCommentAsync(comment)"
+                          label="Отправить"
+                          styleClass="p-button-success p-button-text"
+                          *ngIf="comment">
                 </p-button>
               </div>
             </p-card>
