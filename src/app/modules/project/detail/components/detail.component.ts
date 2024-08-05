@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { DialogMessageInput } from "src/app/modules/messages/chat/models/input/dialog-message-input";
 import { ChatMessagesService } from "src/app/modules/messages/chat/services/chat-messages.service";
-import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { SearchProjectService } from "src/app/modules/search/services/search-project-service";
 import { VacancyInput } from "src/app/modules/backoffice/vacancy/models/input/vacancy-input";
 import { VacancyService } from "src/app/modules/backoffice/vacancy/services/vacancy.service";
@@ -29,10 +28,9 @@ import {AccessService} from "../../../access/access.service";
  * * TODO: Логика чатов дублируется с логикой в диалогах ЛК. Отрефачить и унифицировать в одном месте где-то.
  * Класс деталей проекта (используется для изменения и просмотра проекта).
  */
-export class DetailProjectComponent implements OnInit, OnDestroy {
+export class DetailProjectComponent implements OnInit {
   constructor(private readonly _projectService: ProjectService,
               private readonly _activatedRoute: ActivatedRoute,
-              private readonly _signalrService: SignalrService,
               private readonly _messageService: MessageService,
               private readonly _router: Router,
               private readonly _vacancyService: VacancyService,
@@ -60,7 +58,6 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
     projectName: string = "";
     projectDetails: string = "";
     projectId: number = 0;
-    allFeedSubscription: any;
     isEditMode: boolean = false;
     selectedStage: any;
     selectedProjectVacancy: any;
@@ -134,112 +131,6 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         await this.getProjectTeamAsync(),
         await this.getProjectRemarksAsync()
         ]);
-
-         // Подключаемся.
-         this._signalrService.startConnection().then(async () => {
-            console.log("Подключились");
-
-            this.listenAllHubsNotifications();
-        });
-
-        // Подписываемся на получение всех сообщений.
-        this._signalrService.AllFeedObservable
-        .subscribe((response: any) => {
-            console.log("Подписались на сообщения", response);
-
-            if (!response?.notificationLevel) return;
-
-            // Если пришел тип уведомления, то просто показываем его.
-            if (response.notificationLevel !== undefined) {
-                this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
-            }
-
-
-            else if (response.actionType == "All" && response.dialogs.length > 0) {
-                console.log("Сообщения чата проекта: ", response);
-                this.aDialogs = response.dialogs;
-                this.aMessages = response.dialogs;
-            }
-
-            else if (response.actionType == "Concrete") {
-                console.log("Сообщения диалога: ", response.messages);
-
-                this.aMessages = response.messages;
-                let lastMessage = response.messages[response.messages.length - 1];
-                this.lastMessage = lastMessage;
-
-                // Делаем небольшую задержку, чтобы диалог успел открыться, прежде чем будем скролить к низу.
-                setTimeout(() => {
-                    let block = document.getElementById("#idMessages");
-                    block!.scrollBy({
-                        left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
-                        top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
-                        behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
-                    });
-                }, 1);
-            }
-
-            else if (response.actionType == "Message") {
-                console.log("Сообщения диалога: ", this.aMessages);
-
-                this.message = "";
-                let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
-                let lastMessage = response.messages[response.messages.length - 1];
-                this.lastMessage = lastMessage;
-                this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
-
-                this.aMessages = response.messages;
-
-                this.aMessages.forEach((msg: any) => {
-                    if (msg.userCode !== localStorage["u_c"]) {
-                        msg.isMyMessage = false;
-                    }
-                    else {
-                        msg.isMyMessage = true;
-                    }
-                });
-
-                setTimeout(() => {
-                    let block = document.getElementById("#idMessages");
-                    block!.scrollBy({
-                        left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
-                        top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
-                        behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
-                    });
-                }, 1);
-            }
-        });
-    };
-
-     /**
-     * Функция слушает все хабы.
-     */
-    private listenAllHubsNotifications() {
-        this._signalrService.listenSuccessUpdatedUserVacancyInfo();
-        this._signalrService.listenSuccessAttachProjectVacancyInfo();
-        this._signalrService.listenErrorDublicateAttachProjectVacancyInfo();
-        this._signalrService.listenSuccessProjectResponseInfo();
-        this._signalrService.listenWarningProjectResponseInfo();
-        this._signalrService.listenSuccessDeleteProjectVacancy();
-        this._signalrService.listenErrorDeleteProjectVacancy();
-        this._signalrService.listenWarningProjectInviteTeam();
-        this._signalrService.listenWarningEmptyUserProfile();
-        this._signalrService.listenWarningUserAlreadyProjectInvitedTeam();
-        this._signalrService.listenSuccessUserProjectInvitedTeam();
-        this._signalrService.listenSuccessDeleteProjectTeamMember();
-        this._signalrService.listenSuccessDeleteProject();
-        this._signalrService.listenSuccessAddArchiveProject();
-        this._signalrService.listenErrorAddArchiveProject();
-        this._signalrService.listenWarningAddArchiveProject();
-
-        this._signalrService.getDialogsAsync(this.projectId);
-        this._signalrService.listenGetProjectDialogs();
-
-        this._signalrService.listenGetDialog();
-        this._signalrService.listenSendMessage();
-
-        this._signalrService.listenWarningSearchProjectTeamMember();
-        this._signalrService.listenSuccessCreatedCommentProject();
     };
 
     private checkUrlParams() {
@@ -542,7 +433,8 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         dialogInput.DiscussionTypeId = this.projectId;
         dialogInput.isManualNewDialog = false;
 
-        this._signalrService.getDialogAsync(dialogInput);
+        // TODO: Как будем отправлять сообщения в хаб при новой архитектуре хабов?
+        // this._signalrService.getDialogAsync(dialogInput);
 
         this.dialogId = dialogId;
     };
@@ -561,7 +453,8 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
                 this.dialogId = this.dialog$.value.dialogId;
                 this.userName = this.dialog$.value.fullName;
 
-                this._signalrService.getDialogsAsync(this.projectId);
+                // TODO: Как будем отправлять сообщения в хаб при новой архитектуре хабов?
+                // this._signalrService.getDialogsAsync(this.projectId);
             }
         });
     };
@@ -571,7 +464,8 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         dialogInput.Message = this.message;
         dialogInput.DialogId = this.dialogId;
 
-        this._signalrService.sendMessageAsync(this.message, this.dialogId);
+        // TODO: Как будем отправлять сообщения в хаб при новой архитектуре хабов?
+        // this._signalrService.sendMessageAsync(this.message, this.dialogId);
     };
 
     /**
@@ -790,8 +684,4 @@ export class DetailProjectComponent implements OnInit, OnDestroy {
         this.isActiveRole = false;
       });
   };
-
-    public ngOnDestroy() {
-        this._signalrService.NewAllFeedObservable;
-    };
 }

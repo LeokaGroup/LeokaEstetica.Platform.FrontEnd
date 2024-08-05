@@ -1,7 +1,6 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { API_URL } from "src/app/core/core-urls/api-urls";
-import { CommitConnectionInput } from "../models/input/connection-input";
 import { BehaviorSubject, tap } from 'rxjs';
 
 /**
@@ -9,22 +8,18 @@ import { BehaviorSubject, tap } from 'rxjs';
  */
 @Injectable()
 export class RedisService {
-    public profileSignalrConnection$ = new BehaviorSubject<any>([]);
+    public checkUserCode$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly _http: HttpClient) { }
 
-    /**
-     * Функция записывает ConnectionId в кэш.
-     */
-    public async addConnectionIdCacheAsync(connectionId: string) {
-        let commitConnectionInput = new CommitConnectionInput();
-        commitConnectionInput.ConnectionId = connectionId;
-        
-        let headers = new HttpHeaders().append('Authorization', localStorage["t_n"]);
-
-        return await this._http.post(API_URL.apiUrl + "/notifications/commit-connectionid", commitConnectionInput, { headers }).pipe(
-            tap(data => this.profileSignalrConnection$.next(data)
-            )
-        );
+  /**
+   * Функция проверяет, есть ли в Redis такой код пользователя.
+   * @param userCode - Код пользователя.
+   * @param module - Модуль приложения.
+   */
+  public async checkConnectionIdCacheAsync(userCode: string, module: string) {
+    return await this._http.get(API_URL.apiUrl + `/notifications/check-connectionid?userCode=${userCode}&module=${module}`).pipe(
+      tap(data => this.checkUserCode$.next(data))
+    );
     };
 }

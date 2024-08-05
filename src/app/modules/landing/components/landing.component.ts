@@ -1,7 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
-import { SignalrService } from "../../notifications/signalr/services/signalr.service";
 import { ProjectManagmentService } from "../../project-managment/services/project-managment.service";
 import { LandingService } from "../services/landing.service";
 
@@ -35,8 +33,6 @@ export class LandingComponent implements OnInit {
     carouselType: "horizontal" | "vertical" = "horizontal";
 
     constructor(private readonly _landingService: LandingService,
-        private readonly _signalrService: SignalrService,
-        private readonly _messageService: MessageService,
         private readonly _projectManagmentService: ProjectManagmentService) {
     }
 
@@ -51,20 +47,6 @@ export class LandingComponent implements OnInit {
             await this.getPlatformConditionsAsync()
             // await this.availableProjectManagmentAsync() // TODO: Закоментил пока не починим.
         ]).subscribe();
-
-        // Подключаемся.
-        this._signalrService.startConnection().then(async () => {
-            console.log("Подключились");
-
-            this.listenAllHubsNotifications();
-
-            // Подписываемся на получение всех сообщений.
-            this.allFeedSubscription = this._signalrService.AllFeedObservable
-                .subscribe((response: any) => {
-                    console.log("Подписались на сообщения", response);
-                    this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
-                });
-        });
 
         // Планшеты.
         if (window.matchMedia('screen and (min-width: 600px) and (max-width: 992px)').matches) {
@@ -124,13 +106,6 @@ export class LandingComponent implements OnInit {
         .subscribe(_ => {
             console.log("Список частых вопросов: ", this.knowledgeLanding$.value);
         });
-    };
-
-    /**
-     * Функция слушает все хабы.
-     */
-     private listenAllHubsNotifications() {
-        this._signalrService.listenWarningEmptyUserProfile();
     };
 
     /**

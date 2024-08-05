@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { forkJoin } from "rxjs";
 import { BackOfficeService } from "../../services/backoffice.service";
-import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { ProfileInfoInput } from "../models/input/profile-info-input";
 import { NavigationStart, Router, Event as NavigationEvent, ActivatedRoute } from "@angular/router";
 import { MessageService } from "primeng/api";
@@ -56,7 +55,6 @@ export class AboutmeComponent implements OnInit {
     ]
 
   constructor(private readonly _backofficeService: BackOfficeService,
-              private readonly _signalrService: SignalrService,
               private readonly _activatedRoute: ActivatedRoute,
               private readonly _messageService: MessageService,
               private readonly _router: Router) {
@@ -71,39 +69,7 @@ export class AboutmeComponent implements OnInit {
             await this.getResumeRemarksAsync()
         ]).subscribe();
 
-        // Подключаемся.
-        this._signalrService.startConnection().then(() => {
-            console.log("Подключились");
-
-            this.listenAllHubsNotifications();
-        });
-
-        // Подписываемся на получение всех сообщений.
-        this._signalrService.AllFeedObservable
-        .subscribe((response: any) => {
-            console.log("Подписались на сообщения", response);
-
-            // Если пришел тип уведомления, то просто показываем его.
-            if (response.notificationLevel !== undefined) {
-                this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
-            }
-        });
-
         this.checkUrlParams();
-    };
-
-    /**
-     * Функция слушает все хабы.
-     */
-    private listenAllHubsNotifications() {
-        // Слушаем уведомления о сохранении профиля.
-        this._signalrService.listenSuccessSaveProfileInfo();
-
-        // Слушаем уведомления о навыках пользователя.
-        this._signalrService.listenWarningUserSkillsInfo();
-
-        // Слушаем уведомления о целях пользователя.
-        this._signalrService.listenWarningUserIntentsInfo();
     };
 
   private checkUrlParams() {

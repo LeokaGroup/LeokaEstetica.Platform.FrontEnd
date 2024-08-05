@@ -10,8 +10,6 @@ import { RejectResumeInput } from "../../models/input/reject-resume-input";
 import { CallCenterService } from "../../services/callcenter.service";
 import { Router } from "@angular/router";
 import { CreateProjectRemarksInput, ProjectRemarkInput } from "../../models/input/project-remark-input";
-import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
-import { MessageService } from "primeng/api";
 import { SendProjectRemarkInput } from "../../models/input/send-project-remark-input";
 import { CreateVacancyRemarksInput, VacancyRemarkInput } from "../../models/input/vacancy-remark-input";
 import { SendVacancyRemarkInput } from "../../models/input/send-vacancy-remark-input";
@@ -359,8 +357,6 @@ export class CallCenterComponent implements OnInit {
     constructor(private readonly _headerService: HeaderService,
         private readonly _callCenterService: CallCenterService,
         private readonly _router: Router,
-        private readonly _signalrService: SignalrService,
-        private readonly _messageService: MessageService,
         private readonly _ticketService: TicketService) {
     }
 
@@ -370,35 +366,6 @@ export class CallCenterComponent implements OnInit {
             await this._headerService.refreshTokenAsync(),
             await this.checkModerationUserRoleAsync()            
         ]).subscribe();
-
-        // Подключаемся.
-        this._signalrService.startConnection().then(() => {
-            console.log("Подключились");
-
-            this.listenAllHubsNotifications();
-
-            // Подписываемся на получение всех сообщений.
-            this.allFeedSubscription = this._signalrService.AllFeedObservable
-                .subscribe((response: any) => {
-                    console.log("Подписались на сообщения", response);
-                    this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
-                });
-        });
-    };
-
-    /**
-     * Функция слушает все хабы.
-     */
-     private listenAllHubsNotifications() {        
-        this._signalrService.listenSuccessCreateProjectRemarks();
-        this._signalrService.listenSuccessSendProjectRemarks();
-        this._signalrService.listenWarningSendProjectRemarks();
-        this._signalrService.listenSuccessCreateVacancyRemarks();
-        this._signalrService.listenSuccessSendVacancyRemarks();
-        this._signalrService.listenWarningSendVacancyRemarks();
-        this._signalrService.listenSuccessCreateResumeRemarks();
-        this._signalrService.listenWarningSendResumeRemarks();
-        this._signalrService.listenSuccessSendResumeRemarks();
     };
 
     /**

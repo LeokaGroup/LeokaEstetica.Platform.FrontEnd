@@ -1,8 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {MessageService} from "primeng/api";
 import {forkJoin} from "rxjs";
-import {SignalrService} from "src/app/modules/notifications/signalr/services/signalr.service";
 import {OrderFormService} from "../services/order-form.service";
 
 @Component({
@@ -17,9 +15,7 @@ import {OrderFormService} from "../services/order-form.service";
 export class OrderFormInfoComponent implements OnInit {
   constructor(private readonly _router: Router,
               private readonly _activatedRoute: ActivatedRoute,
-              private readonly _orderFormService: OrderFormService,
-              private readonly _signalrService: SignalrService,
-              private readonly _messageService: MessageService) {
+              private readonly _orderFormService: OrderFormService) {
   }
 
   public readonly fareRuleInfo$ = this._orderFormService.fareRuleInfo$;
@@ -32,31 +28,6 @@ export class OrderFormInfoComponent implements OnInit {
     forkJoin([
       this.checkUrlParams()
     ]).subscribe();
-
-    // Подключаемся.
-    this._signalrService.startConnection().then(async () => {
-      console.log("Подключились");
-
-      this.listenAllHubsNotifications();
-
-      // Подписываемся на получение всех сообщений.
-      this.allFeedSubscription = this._signalrService.AllFeedObservable
-        .subscribe((response: any) => {
-          console.log("Подписались на сообщения", response);
-          this._messageService.add({
-            severity: response.notificationLevel,
-            summary: response.title,
-            detail: response.message
-          });
-        });
-    });
-  };
-
-  /**
-   * Функция слушает все хабы.
-   */
-  private listenAllHubsNotifications() {
-    this._signalrService.listenWarningEmptyUserProfile();
   };
 
   private async checkUrlParams() {

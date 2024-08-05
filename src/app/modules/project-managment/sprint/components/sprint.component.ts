@@ -1,11 +1,8 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { MessageService } from "primeng/api";
-import { Subscription } from "rxjs";
 import {ProjectManagmentService} from "../../services/project-managment.service";
 import { forkJoin } from "rxjs";
 import {SprintInput} from "../models/sprint-input";
-import { ProjectManagementSignalrService } from "src/app/modules/notifications/signalr/services/project-magement-signalr.service";
 import {ManualCompleteSprintInput} from "../models/manual-complete-sprint-input";
 
 @Component({
@@ -17,15 +14,12 @@ import {ManualCompleteSprintInput} from "../models/manual-complete-sprint-input"
 /**
  * Класс компонента спринтов.
  */
-export class SprintComponent implements OnInit, OnDestroy {
+export class SprintComponent implements OnInit {
   constructor( private readonly _router: Router,
-               private readonly _messageService: MessageService,
                private readonly _activatedRoute: ActivatedRoute,
-               private readonly _projectManagmentService: ProjectManagmentService,
-               private readonly _projectManagementSignalrService: ProjectManagementSignalrService) { }
+               private readonly _projectManagmentService: ProjectManagmentService) { }
   public readonly sprints$ = this._projectManagmentService.sprints;
 
-  subscription?: Subscription;
   projectId: number = 0;
   selectedSprint: any;
   projectSprintId: number = 0;
@@ -41,42 +35,10 @@ export class SprintComponent implements OnInit, OnDestroy {
   isNextSprint: boolean = false;
 
   public async ngOnInit() {
-    if (!this._projectManagementSignalrService.isConnected) {
-      // Подключаемся.
-      this._projectManagementSignalrService.startConnection().then(() => {
-        console.log("Подключились");
-
-        this.listenAllHubsNotifications();
-      });
-    }
-
-    // Подписываемся на получение всех сообщений.
-    this.subscription = this._projectManagementSignalrService.AllFeedObservable
-      .subscribe((response: any) => {
-        console.log("Подписались на сообщения", response);
-
-        // Если пришел тип уведомления, то просто показываем его.
-        if (response.notificationLevel !== undefined) {
-          this._messageService.add({
-            severity: response.notificationLevel,
-            summary: response.title,
-            detail: response.message
-          });
-        }
-      });
-
     forkJoin([
       this.checkUrlParams(),
       await this.getProjectSprintsAsync()
     ]).subscribe();
-  };
-
-  /**
-   * Функция слушает все хабы.
-   */
-  private listenAllHubsNotifications() {
-    this._projectManagementSignalrService.listenSuccessStartSprint();
-    this._projectManagementSignalrService.listenWarningStartSprint();
   };
 
   private checkUrlParams() {
@@ -248,8 +210,4 @@ export class SprintComponent implements OnInit, OnDestroy {
   public onSelectPanelMenu() {
     this._projectManagmentService.isLeftPanel = true;
   };
-
-  ngOnDestroy() {
-    this.subscription?.unsubscribe();
-  }
 }

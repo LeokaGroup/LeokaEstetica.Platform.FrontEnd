@@ -1,4 +1,4 @@
-import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { BackOfficeRoutingModule } from './backoffice-routing.module';
@@ -11,7 +11,6 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PickListModule } from 'primeng/picklist';
-import { SignalrService } from '../notifications/signalr/services/signalr.service';
 import { LoadingScriptService } from 'src/app/common/services/loading-scripts.service';
 import { RedisService } from '../redis/services/redis.service';
 import { PanelMenuModule } from 'primeng/panelmenu';
@@ -83,7 +82,6 @@ import { InputNumberModule } from 'primeng/inputnumber';
 
     providers: [
         LoadingScriptService,
-        SignalrService,
         RedisService,
         MessageService,
         RedirectService,

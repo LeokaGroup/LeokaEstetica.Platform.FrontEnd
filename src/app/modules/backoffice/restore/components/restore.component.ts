@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { forkJoin } from "rxjs";
-import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { MessageService } from "primeng/api";
 import { ActivatedRoute, Router } from "@angular/router";
 import { BackOfficeService } from "../../services/backoffice.service";
@@ -20,7 +19,6 @@ export class RestoreComponent implements OnInit {
     public readonly sendedRestoreCode$ = this._backofficeService.sendedRestoreCode$;
     public readonly checkSednedRestoreCode$ = this._backofficeService.checkSednedRestoreCode$;
 
-    allFeedSubscription: any;
     email: string = "";
     isVisibleRestorePassword: boolean = false;
     publicId: string = "";
@@ -31,7 +29,6 @@ export class RestoreComponent implements OnInit {
     confirmCode: string = "";
 
     constructor(private readonly _backofficeService: BackOfficeService,
-        private readonly _signalrService: SignalrService,
         private readonly _messageService: MessageService,
         private readonly _router: Router,
         private readonly _activatedRoute: ActivatedRoute) {
@@ -42,33 +39,6 @@ export class RestoreComponent implements OnInit {
         forkJoin([
           await this.checkUrlParams()
         ]).subscribe();
-
-        // Подключаемся.
-        this._signalrService.startConnection().then(() => {
-            console.log("Подключились");
-
-            this.listenAllHubsNotifications();
-        });
-
-        // Подписываемся на получение всех сообщений.
-        this._signalrService.AllFeedObservable
-            .subscribe((response: any) => {
-                console.log("Подписались на сообщения", response);
-
-                // Если пришел тип уведомления, то просто показываем его.
-                if (response.notificationLevel !== undefined) {
-                    this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
-                }
-            });
-    };
-
-    /**
-     * Функция слушает все хабы.
-     */
-    private listenAllHubsNotifications() {
-      this._signalrService.listenSendNotificationWarningBlockedUserProfile();     
-      this._signalrService.listenSendNotificationSuccessLinkRestoreUserPassword();     
-      this._signalrService.listenSendNotifySuccessRestoreUserPassword();     
     };
 
     /**

@@ -13,7 +13,6 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
 import { HttpClientModule } from '@angular/common/http';
-import { SignalrService } from '../notifications/signalr/services/signalr.service';
 import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -68,8 +67,7 @@ import { ViewTicketComponent } from './components/view/view-ticket.component';
 
     providers: [
         UserService,
-        MessageService,
-        SignalrService
+        MessageService
     ]
 })
 

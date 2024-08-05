@@ -1,4 +1,4 @@
-import {HttpClientModule, HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -49,6 +49,7 @@ import { ButtonModule } from 'primeng/button';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
+import {RedisService} from "./modules/redis/services/redis.service";
 
 @NgModule({
   declarations: [
@@ -116,7 +117,8 @@ import { DialogModule } from 'primeng/dialog';
     OrderFormService,
     OrderService,
     TicketService,
-    ProjectManagmentService
+    ProjectManagmentService,
+    RedisService
   ],
 
   bootstrap: [AppComponent]

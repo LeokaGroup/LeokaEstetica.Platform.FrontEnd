@@ -1,12 +1,11 @@
-import { Component, OnInit, Sanitizer } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../services/project-managment.service";
 import {ProjectUserAvatarFileInput} from "../../task/models/input/project-user-avatar-file-input";
 import {SprintDurationSettingInput} from "../../sprint/models/sprint-duration-setting-input";
 import {SprintMoveNotCompletedTaskSettingInput} from "../../sprint/models/sprint-move-not-completed-task-setting-input";
 import { UpdateRoleInput } from "../../models/input/update-role-input";
-import { ProjectManagementSignalrService } from "src/app/modules/notifications/signalr/services/project-magement-signalr.service";
 import { DomSanitizer } from "@angular/platform-browser";
 import {ProjectService} from "../../../project/services/project.service";
 import {SearchProjectService} from "../../../search/services/search-project-service";
@@ -25,11 +24,8 @@ import {AccessService} from "../../../access/access.service";
  */
 export class ProjectSettingsComponent implements OnInit {
   constructor(private readonly _projectManagmentService: ProjectManagmentService,
-              private readonly _router: Router,
               private readonly _activatedRoute: ActivatedRoute,
               private readonly _domSanitizer: DomSanitizer,
-              private readonly _sanitizer: Sanitizer,
-              private readonly _projectManagementSignalrService: ProjectManagementSignalrService,
               private readonly _projectService: ProjectService,
               private readonly _searchProjectService: SearchProjectService,
               private readonly _messageService: MessageService,
@@ -156,20 +152,6 @@ export class ProjectSettingsComponent implements OnInit {
       this.checkUrlParams(),
       await this.getFileUserAvatarAsync()
     ]).subscribe();
-
-    // Подключаемся.
-    this._projectManagementSignalrService.startConnection().then(() => {
-      console.log("Подключились");
-
-      this.listenAllHubsNotifications();
-    });
-  };
-
-  /**
-   * Функция слушает все хабы.
-   */
-  private listenAllHubsNotifications() {
-    this._projectManagementSignalrService.listenSendNotifySuccessUpdateRoles();
   };
 
   private async checkUrlParams() {
