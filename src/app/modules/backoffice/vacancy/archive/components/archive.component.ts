@@ -29,21 +29,6 @@ export class VacanciesArchiveComponent implements OnInit {
         forkJoin([
            await this.getVacanciesArchiveAsync()
         ]).subscribe();
-
-        // Подключаемся.
-        this._signalrService.startConnection().then(() => {
-            console.log("Подключились");
-            this.listenAllHubsNotifications();
-        });
-    };
-
-    /**
-     * Функция слушает все хабы.
-     */
-    private listenAllHubsNotifications() {
-        this._signalrService.listenSuccessDeleteVacancyArchive();
-        this._signalrService.listenSendNotificationErrorDeleteVacancyArchive();
-        this._signalrService.listenSendNotificationWarningDeleteVacancyArchive();
     };
 
     /**

@@ -1,7 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
-import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { CreateRefundInput } from "../../vacancy/models/input/create-refund-input";
 import { SubscriptionsService } from "../services/subscriptions.service";
 
@@ -15,9 +13,7 @@ import { SubscriptionsService } from "../services/subscriptions.service";
  * Класс компонента подписок пользователя.
  */
 export class SubscriptionsComponent implements OnInit {
-    constructor(private readonly _subscriptionsService: SubscriptionsService,
-        private readonly _signalrService: SignalrService,
-        private readonly _messageService: MessageService) { }
+    constructor(private readonly _subscriptionsService: SubscriptionsService) { }
 
     public readonly subscriptions$ = this._subscriptionsService.subscriptions$;  
     public readonly refund$ = this._subscriptionsService.refund$;  
@@ -35,34 +31,7 @@ export class SubscriptionsComponent implements OnInit {
         forkJoin([
            await this.getSubscriptionsAsync()
         ]).subscribe();
-
-        // Подключаемся.
-        this._signalrService.startConnection().then(() => {
-            console.log("Подключились");
-
-            this.listenAllHubsNotifications();
-        });
-
-        // Подписываемся на получение всех сообщений.
-        this._signalrService.AllFeedObservable
-            .subscribe((response: any) => {
-                console.log("Подписались на сообщения", response);
-
-                // Если пришел тип уведомления, то просто показываем его.
-                if (response.notificationLevel !== undefined) {
-                    this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
-                }
-            });
     };   
-
-    /**
-   * Функция слушает все хабы.
-   */
-  private listenAllHubsNotifications() {
-    this._signalrService.listenErrorCalculateRefund();
-    this._signalrService.listenSuccessSuccessManualRefund();
-    this._signalrService.listenWarningManualRefund();
-  };
 
      /**
      * Функция получает прафила тарифов.

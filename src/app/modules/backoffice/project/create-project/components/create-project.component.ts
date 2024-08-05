@@ -1,6 +1,5 @@
 import {Component, OnInit} from "@angular/core";
 import {forkJoin} from "rxjs";
-import {SignalrService} from "src/app/modules/notifications/signalr/services/signalr.service";
 import {MessageService} from "primeng/api";
 import {BackOfficeService} from "../../../services/backoffice.service";
 import {CreateProjectInput} from "../models/input/create-project-input";
@@ -22,7 +21,6 @@ export class CreateProjectComponent implements OnInit {
   public readonly projectData$ = this._backofficeService.projectData$;
   public readonly projectStages$ = this._projectService.projectStages$;
 
-  allFeedSubscription: any;
   projectName: string = "";
   projectDetails: string = "";
   selectedStage: any;
@@ -31,7 +29,6 @@ export class CreateProjectComponent implements OnInit {
   isCreateProject: boolean = false;
 
   constructor(private readonly _backofficeService: BackOfficeService,
-              private readonly _signalrService: SignalrService,
               private readonly _messageService: MessageService,
               private readonly _router: Router,
               private readonly _projectService: ProjectService,
@@ -43,34 +40,6 @@ export class CreateProjectComponent implements OnInit {
       await this.getProjectsColumnNamesAsync(),
       await this.getProjectStagesAsync()
     ]).subscribe();
-
-    // Подключаемся.
-    this._signalrService.startConnection().then(() => {
-      console.log("Подключились");
-
-      this.listenAllHubsNotifications();
-    });
-
-    // Подписываемся на получение всех сообщений.
-    this._signalrService.AllFeedObservable
-    .subscribe((response: any) => {
-        console.log("Подписались на сообщения", response);
-
-        // Если пришел тип уведомления, то просто показываем его.
-        if (response.notificationLevel !== undefined) {
-            this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
-        }
-    });
-  };
-
-  /**
-   * Функция слушает все хабы.
-   */
-  private listenAllHubsNotifications() {
-    this._signalrService.listenSuccessCreatedUserProjectInfo();
-    this._signalrService.listenWarningDublicateUserProjectInfo();
-    this._signalrService.listenWarningEmptyUserProfile();
-    this._signalrService.listenWarningLimitFareRuleProjects();
   };
 
   /**

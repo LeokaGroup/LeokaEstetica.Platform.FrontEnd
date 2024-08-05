@@ -21,7 +21,6 @@ export class MyProjectsComponent implements OnInit {
     public readonly userProjects$ = this._backofficeService.userProjects$;
   public readonly archivedProject$ = this._backofficeService.archivedProject$;
 
-    allFeedSubscription: any;
     products: any[] = [];
     selectedProjects: any;
     isSelectionPageOnly: boolean = true;
@@ -42,23 +41,6 @@ export class MyProjectsComponent implements OnInit {
            await this.getProjectsColumnNamesAsync(),
            await this.getUserProjectsAsync()
         ]).subscribe();
-
-         // Подключаемся.
-         this._signalrService.startConnection().then(() => {
-            console.log("Подключились");
-
-            this.listenAllHubsNotifications();
-        });
-    };
-
-    /**
-     * Функция слушает все хабы.
-     */
-    private listenAllHubsNotifications() {
-      this._signalrService.listenSuccessDeleteProject();
-      this._signalrService.listenSuccessAddArchiveProject();
-      this._signalrService.listenErrorAddArchiveProject();
-      this._signalrService.listenWarningAddArchiveProject();
     };
 
     /**

@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { forkJoin, Subscription } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
-import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { VacancyService } from "src/app/modules/backoffice/vacancy/services/vacancy.service";
 import { VacancyInput } from "../models/input/vacancy-input";
 
@@ -18,7 +17,6 @@ import { VacancyInput } from "../models/input/vacancy-input";
  */
 export class DetailVacancyComponent implements OnInit, OnDestroy {
     constructor(private readonly _activatedRoute: ActivatedRoute,
-        private readonly _signalrService: SignalrService,
         private readonly _messageService: MessageService,
         private readonly _vacancyService: VacancyService,
         private readonly _router: Router,
@@ -57,40 +55,6 @@ export class DetailVacancyComponent implements OnInit, OnDestroy {
         this.checkUrlParams(),
         await this.getVacancyRemarksAsync()
         ]).subscribe();
-
-      if (!this._signalrService.isConnected) {
-        // Подключаемся.
-        this._signalrService.startConnection().then(() => {
-          console.log("Подключились");
-
-          this.listenAllHubsNotifications();
-        });
-      }
-
-      // Подписываемся на получение всех сообщений.
-      this.subscription = this._signalrService.AllFeedObservable
-        .subscribe((response: any) => {
-          console.log("Подписались на сообщения", response);
-
-          // Если пришел тип уведомления, то просто показываем его.
-          if (response.notificationLevel !== undefined) {
-            this._messageService.add({
-              severity: response.notificationLevel,
-              summary: response.title,
-              detail: response.message
-            });
-          }
-        });
-    };
-
-     /**
-     * Функция слушает все хабы.
-     */
-    private listenAllHubsNotifications() {
-        this._signalrService.listenSuccessCreatedUserVacancyInfo();
-        this._signalrService.listenSuccessAddArchiveVacancy();
-        this._signalrService.listenErrorAddArchiveVacancy();
-        this._signalrService.listenWarningAddArchiveVacancy();
     };
 
     private checkUrlParams() {

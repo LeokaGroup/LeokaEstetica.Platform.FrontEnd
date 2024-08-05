@@ -71,13 +71,6 @@ export class AboutmeComponent implements OnInit {
             await this.getResumeRemarksAsync()
         ]).subscribe();
 
-        // Подключаемся.
-        this._signalrService.startConnection().then(() => {
-            console.log("Подключились");
-
-            this.listenAllHubsNotifications();
-        });
-
         // Подписываемся на получение всех сообщений.
         this._signalrService.AllFeedObservable
         .subscribe((response: any) => {
@@ -90,20 +83,6 @@ export class AboutmeComponent implements OnInit {
         });
 
         this.checkUrlParams();
-    };
-
-    /**
-     * Функция слушает все хабы.
-     */
-    private listenAllHubsNotifications() {
-        // Слушаем уведомления о сохранении профиля.
-        this._signalrService.listenSuccessSaveProfileInfo();
-
-        // Слушаем уведомления о навыках пользователя.
-        this._signalrService.listenWarningUserSkillsInfo();
-
-        // Слушаем уведомления о целях пользователя.
-        this._signalrService.listenWarningUserIntentsInfo();
     };
 
   private checkUrlParams() {

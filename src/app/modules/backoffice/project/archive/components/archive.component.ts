@@ -29,21 +29,6 @@ export class ProjectsArchiveComponent implements OnInit {
         forkJoin([
            await this.getProjectsArchiveAsync()
         ]).subscribe();
-
-        // Подключаемся.
-        this._signalrService.startConnection().then(() => {
-            console.log("Подключились");
-
-            this.listenAllHubsNotifications();
-        });
-    };
-
-    /**
-     * Функция слушает все хабы.
-     */
-    private listenAllHubsNotifications() {
-        this._signalrService.listenSuccessDeleteProjectArchive();
-        this._signalrService.listenSendNotificationWarningDeleteProjectArchive();
     };
 
     /**

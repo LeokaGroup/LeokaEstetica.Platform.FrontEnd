@@ -17,8 +17,6 @@ import {TaskCommentExtendedInput} from "../../models/input/task-comment-extended
 import {IncludeTaskEpicInput} from "../../models/input/include-task-epic-input";
 import {UpdateTaskSprintInput} from "../../models/input/update-task-sprint-input";
 import {SearchAgileObjectTypeEnum} from "../../../../enums/search-agile-object-type-enum";
-import { ProjectManagementSignalrService } from "src/app/modules/notifications/signalr/services/project-magement-signalr.service";
-import { MessageService } from "primeng/api";
 import { TaskDetailTypeEnum } from "src/app/modules/enums/task-detail-type";
 
 @Component({
@@ -33,9 +31,7 @@ import { TaskDetailTypeEnum } from "src/app/modules/enums/task-detail-type";
 export class TaskDetailsComponent implements OnInit {
   constructor(private readonly _projectManagmentService: ProjectManagmentService,
               private readonly _router: Router,
-              private readonly _activatedRoute: ActivatedRoute,
-              private readonly _projectManagementSignalrService: ProjectManagementSignalrService,
-              private readonly _messageService: MessageService) {
+              private readonly _activatedRoute: ActivatedRoute) {
   }
 
     public readonly taskDetails$ = this._projectManagmentService.taskDetails$;
@@ -166,46 +162,16 @@ export class TaskDetailsComponent implements OnInit {
       await this.getTaskCommentsAsync(),
       await this.getAvailableSprintsAsync()
     ]).subscribe();
-
-    // Подключаемся.
-    this._projectManagementSignalrService.startConnection().then(() => {
-      console.log("Подключились");
-
-      this.listenAllHubsNotifications();
-    });
-
-    // Подписываемся на получение всех сообщений.
-    this._projectManagementSignalrService.AllFeedObservable
-      .subscribe((response: any) => {
-        console.log("Подписались на сообщения", response);
-
-        // Если пришел тип уведомления, то просто показываем его.
-        if (response.notificationLevel !== undefined) {
-          this._messageService.add({
-            severity: response.notificationLevel,
-            summary: response.title,
-            detail: response.message
-          });
-        }
-      });
   };
 
-    private async checkUrlParams() {
-        this._activatedRoute.queryParams
-            .subscribe(async params => {
-                console.log("params: ", params);
+  private async checkUrlParams() {
+    this._activatedRoute.queryParams
+      .subscribe(async params => {
+        console.log("params: ", params);
 
-                this.projectId = params["projectId"];
-                this.projectTaskId = params["taskId"];
-            });
-    };
-
-  /**
-   * Функция слушает все хабы.
-   */
-  private listenAllHubsNotifications() {
-    this._projectManagementSignalrService.listenSuccessSuccessIncludeEpicTask();
-    this._projectManagementSignalrService.listenErrorSuccessIncludeEpicTask();
+        this.projectId = params["projectId"];
+        this.projectTaskId = params["taskId"];
+      });
   };
 
     /**

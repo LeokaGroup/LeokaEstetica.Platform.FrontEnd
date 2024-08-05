@@ -43,45 +43,7 @@ export class MyVacancyComponent implements OnInit, OnDestroy {
     forkJoin([
        await this.getUserVacanciesAsync()
     ]).subscribe();
-
-    if (!this._signalrService.isConnected) {
-      // Подключаемся.
-      this._signalrService.startConnection().then(() => {
-        console.log("Подключились");
-
-        this.listenAllHubsNotifications();
-      });
-    }
-
-    // Подписываемся на получение всех сообщений.
-    this.subscription = this._signalrService.AllFeedObservable
-      .subscribe((response: any) => {
-        console.log("Подписались на сообщения", response);
-
-        // Если пришел тип уведомления, то просто показываем его.
-        if (response.notificationLevel !== undefined) {
-          this._messageService.add({
-            severity: response.notificationLevel,
-            summary: response.title,
-            detail: response.message
-          });
-        }
-      });
   };
-
-
-  /**
-   * Функция слушает все хабы.
-   */
-  private listenAllHubsNotifications() {
-    this._signalrService.listenSuccessDeleteVacancy();
-    this._signalrService.listenSendErrorDeleteVacancy();
-    this._signalrService.listenSuccessAddArchiveVacancy();
-    this._signalrService.listenErrorAddArchiveVacancy();
-    this._signalrService.listenWarningAddArchiveVacancy();
-  };
-
-
 
   /**
    Получавем список ваканций.

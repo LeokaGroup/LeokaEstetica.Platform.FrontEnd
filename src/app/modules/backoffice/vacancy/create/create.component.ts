@@ -4,7 +4,6 @@ import { MessageService } from "primeng/api";
 import { Subscription } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { BackOfficeService } from "../../services/backoffice.service";
-import { SignalrService } from "../../../notifications/signalr/services/signalr.service";
 import { CreateProjectVacancyInput } from "../models/input/create-project-vacancy-input";
 import { VacancyInput } from "../models/input/vacancy-input";
 import { VacancyService } from "../services/vacancy.service";
@@ -21,7 +20,6 @@ import { VacancyService } from "../services/vacancy.service";
 export class CreateVacancyComponent implements OnInit, OnDestroy {
     constructor( private readonly _router: Router,
         private readonly _vacancyService: VacancyService,
-        private readonly _signalrService: SignalrService,
         private readonly _messageService: MessageService,
         private readonly _activatedRoute: ActivatedRoute,
         private readonly _backofficeService: BackOfficeService,
@@ -53,43 +51,9 @@ export class CreateVacancyComponent implements OnInit, OnDestroy {
     subscription?: Subscription;
 
     public async ngOnInit() {
-      if (!this._signalrService.isConnected) {
-        // Подключаемся.
-        this._signalrService.startConnection().then(() => {
-          console.log("Подключились");
-
-          this.listenAllHubsNotifications();
-        });
-      }
-
-      // Подписываемся на получение всех сообщений.
-      this.subscription = this._signalrService.AllFeedObservable
-        .subscribe((response: any) => {
-          console.log("Подписались на сообщения", response);
-
-          // Если пришел тип уведомления, то просто показываем его.
-          if (response.notificationLevel !== undefined) {
-            this._messageService.add({
-              severity: response.notificationLevel,
-              summary: response.title,
-              detail: response.message
-            });
-          }
-        });
-
         this.checkUrlParams();
         await this.getUserProjectsAsync();
     };
-
-    /**
-     * Функция слушает все хабы.
-     */
-     private listenAllHubsNotifications() {
-        this._signalrService.listenSuccessCreatedUserVacancyInfo();
-        this._signalrService.listenWarningLimitFareRuleVacancies();
-        this._signalrService.listenErrorCreateVacancy();
-    };
-
 
    /**
      * Функция создает вакансию отдельно либо вакансию проекта и прикрепляет ее спразу к нему.
