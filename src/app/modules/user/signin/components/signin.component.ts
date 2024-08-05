@@ -18,8 +18,8 @@ export class SignInComponent implements OnInit {
     constructor(private readonly _userService: UserService,
         private readonly _router: Router,
         private readonly _messageService: MessageService,
-        private readonly _signalrService: SignalrService) { 
-            
+        private readonly _signalrService: SignalrService) {
+
         }
 
     formSignUp: UntypedFormGroup = new UntypedFormGroup({
@@ -50,7 +50,7 @@ export class SignInComponent implements OnInit {
                     console.log("Подписались на сообщения", response);
                     this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
                 });
-        });       
+        });
     };
 
     /**
@@ -62,10 +62,10 @@ export class SignInComponent implements OnInit {
 
 
      /**
-     * Функция регистрирует пользователя.     
+     * Функция авторизует пользователя.
      * @returns - Данные пользователя.
      */
-      public async onSendFormSignInAsync() {    
+      public async onSendFormSignInAsync() {
         (await this._userService.signInAsync(this.formSignUp.value.email, this.formSignUp.value.password))
         .subscribe((response: any) => {
             console.log("Авторизовались: ", this.userData$.value);
@@ -73,7 +73,7 @@ export class SignInComponent implements OnInit {
                 localStorage["t_n"] = this.userData$.value.token;
                 localStorage["u_c"] = this.userData$.value.userCode;
                 localStorage["u_e"] = this.userData$.value.email;
-                
+
                 this._router.navigate(["/profile/aboutme"], {
                     queryParams: {
                         mode: "view"
@@ -85,7 +85,7 @@ export class SignInComponent implements OnInit {
                 console.log("errors validate", response);
                 response.errors.forEach((item: any) => {
                     this._messageService.add({ severity: item.customState ?? 'error', summary: "Что то не так", detail: item.errorMessage });
-                });                
+                });
             }
         });
     };

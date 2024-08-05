@@ -31,10 +31,10 @@ export class ProjectManagementSignalrService {
             console.log("ConnectionId:", this.hubConnection.connectionId);
 
             if (this._router.url !== "/user/signin") {
-              await (await this._redisService.addConnectionIdCacheAsync(this.hubConnection.connectionId))
-                .subscribe(_ => {
-                  console.log("Записали ConnectionId");
-                });
+              // await (await this._redisService.addConnectionIdCacheAsync(this.hubConnection.connectionId))
+              //   .subscribe(_ => {
+              //     console.log("Записали ConnectionId");
+              //   });
             }
 
             return resolve(true);

@@ -1,14 +1,20 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { NavigationStart, Router, Event as NavigationEvent, ActivatedRoute } from "@angular/router";
 import { NetworkService } from './core/interceptors/network.service';
+import {API_URL} from "./core/core-urls/api-urls";
+import {HttpTransportType, HubConnectionBuilder} from "@microsoft/signalr";
+import {RedisService} from "./modules/redis/services/redis.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   public loading$ = this.networkService.loading$;
+  public readonly checkUserCode$ = this._redisService.checkUserCode$;
+
+
   public isVisibleMenu: boolean = false;
   private _aVisibleProfileMenuRoutes: string[] = [
     "/profile/aboutme?mode=view",
@@ -37,23 +43,66 @@ export class AppComponent implements OnInit {
   currentUrl: string = "";
   isVisibleHeader: boolean = false;
   isVisibleProjectManagementMenu: boolean = false;
+  hubConnection: any;
 
   constructor(public networkService: NetworkService,
-    private readonly _router: Router,
-    private readonly _activatedRoute: ActivatedRoute,
-    private changeDetectorRef: ChangeDetectorRef) { }
+              private readonly _router: Router,
+              private readonly _activatedRoute: ActivatedRoute,
+              private changeDetectorRef: ChangeDetectorRef,
+              private readonly _redisService: RedisService) {
 
-  public ngOnInit() {
+  }
+
+  public async ngOnInit() {
     this.checkCurrentRouteUrl();
     this.isVisibleHeader = true;
   };
 
+  public async ngAfterViewInit() {
+    if (this.currentUrl != "user/signin") {
+      let module;
+
+      if (this.currentUrl.includes("project-management")) {
+        module = "ProjectManagement";
+      }
+
+      else {
+        module = "Main";
+      }
+
+      if (!module || !localStorage["u_c"]) {
+        return;
+      }
+
+      (await this._redisService.checkConnectionIdCacheAsync(localStorage["u_c"], module))
+        .subscribe((response: any) => {
+
+          // В кэше нету, создаем новое подключение пользователя и кладем в кэш.
+          if (localStorage["u_c"] && !response.isCacheExists) {
+            let notifyRoute = module == "Main" ? "notify" : "project-management-notify";
+
+            this.hubConnection = new HubConnectionBuilder()
+              .withUrl(API_URL.apiUrl + `/${notifyRoute}?userCode=${localStorage["u_c"]}&module=${module}`, HttpTransportType.LongPolling)
+              .build();
+
+            if (this.hubConnection.state != "Connected" && this.hubConnection.connectionId == null) {
+              this.hubConnection.start().then(async () => {
+                console.log("Соединение установлено");
+                console.log("ConnectionId:", this.hubConnection.connectionId);
+              })
+                .catch((err: any) => {
+                  console.error(err);
+                });
+            }
+          }
+        });
+    }
+  }
+
   public rerender(): void {
-    console.log("reload");
     this.isVisibleMenu = false;
     this.changeDetectorRef.detectChanges();
     this.isVisibleMenu = true;
-    console.log("isVisibleHeader", this.isVisibleHeader);
 };
 
   /**

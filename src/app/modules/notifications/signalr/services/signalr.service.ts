@@ -15,9 +15,9 @@ export class SignalrService {
 
   public constructor(private readonly _redisService: RedisService,
                      private readonly _router: Router) {
-    this.hubConnection = new HubConnectionBuilder()
-      .withUrl(API_URL.apiUrl + "/notify", HttpTransportType.LongPolling)
-      .build();
+    // this.hubConnection = new HubConnectionBuilder()
+    //   .withUrl(API_URL.apiUrl + "/notify", HttpTransportType.LongPolling)
+    //   .build();
   }
 
   public async startConnection(): Promise<boolean | void> {
@@ -28,13 +28,13 @@ export class SignalrService {
             console.log("Соединение установлено");
             console.log("ConnectionId:", this.hubConnection.connectionId);
 
-            if (this._router.url !== "/user/signin") {
-              await (await this._redisService.addConnectionIdCacheAsync(this.hubConnection.connectionId))
-                .subscribe(_ => {
-                  console.log("Записали ConnectionId");
-                  this.isConnected = true;
-                });
-            }
+            // if (this._router.url !== "/user/signin") {
+            //   await (await this._redisService.addConnectionIdCacheAsync(this.hubConnection.connectionId))
+            //     .subscribe((_: any) => {
+            //       console.log("Записали ConnectionId");
+            //       this.isConnected = true;
+            //     });
+            // }
 
             return resolve(true);
           })

@@ -49,6 +49,7 @@ import { ButtonModule } from 'primeng/button';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
+import {RedisService} from "./modules/redis/services/redis.service";
 
 @NgModule({
   declarations: [
@@ -116,7 +117,8 @@ import { DialogModule } from 'primeng/dialog';
     OrderFormService,
     OrderService,
     TicketService,
-    ProjectManagmentService
+    ProjectManagmentService,
+    RedisService
   ],
 
   bootstrap: [AppComponent]
