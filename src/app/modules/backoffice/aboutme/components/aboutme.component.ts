@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { forkJoin } from "rxjs";
 import { BackOfficeService } from "../../services/backoffice.service";
-import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { ProfileInfoInput } from "../models/input/profile-info-input";
 import { NavigationStart, Router, Event as NavigationEvent, ActivatedRoute } from "@angular/router";
 import { MessageService } from "primeng/api";
@@ -56,7 +55,6 @@ export class AboutmeComponent implements OnInit {
     ]
 
   constructor(private readonly _backofficeService: BackOfficeService,
-              private readonly _signalrService: SignalrService,
               private readonly _activatedRoute: ActivatedRoute,
               private readonly _messageService: MessageService,
               private readonly _router: Router) {
@@ -70,17 +68,6 @@ export class AboutmeComponent implements OnInit {
             await this.getProfileInfoAsync(),
             await this.getResumeRemarksAsync()
         ]).subscribe();
-
-        // Подписываемся на получение всех сообщений.
-        this._signalrService.AllFeedObservable
-        .subscribe((response: any) => {
-            console.log("Подписались на сообщения", response);
-
-            // Если пришел тип уведомления, то просто показываем его.
-            if (response.notificationLevel !== undefined) {
-                this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
-            }
-        });
 
         this.checkUrlParams();
     };

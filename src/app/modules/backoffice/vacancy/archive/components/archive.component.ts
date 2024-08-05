@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { forkJoin } from "rxjs";
-import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { MessageService } from "primeng/api";
 import { BackOfficeService } from "../../../services/backoffice.service";
 
@@ -20,7 +19,6 @@ export class VacanciesArchiveComponent implements OnInit {
     allFeedSubscription: any;
 
     constructor(private readonly _backofficeService: BackOfficeService,
-        private readonly _signalrService: SignalrService,
         private readonly _messageService: MessageService) {
 
     }
@@ -49,12 +47,6 @@ export class VacanciesArchiveComponent implements OnInit {
         (await this._backofficeService.deleteVacancyArchiveAsync(vacancyId))
         .subscribe(async _ => {
             console.log("Удалили вакансию из архива: ", this.deleteVacancyArchive$.value);  
-
-            this._messageService.add({
-                severity: this._signalrService.AllFeedObservable.value.notificationLevel,
-                summary: this._signalrService.AllFeedObservable.value.title,
-                detail: this._signalrService.AllFeedObservable.value.message
-              });
 
             await this.getVacanciesArchiveAsync();
         });

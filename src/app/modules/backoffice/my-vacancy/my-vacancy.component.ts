@@ -1,12 +1,10 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import { forkJoin, Subscription } from "rxjs";
-import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { MessageService } from "primeng/api";
 import { Router } from "@angular/router";
 import { VacancyService } from "../vacancy/services/vacancy.service";
 import { BackOfficeService } from "../services/backoffice.service";
 import { AddVacancyArchiveInput } from "../models/input/vacancy/add-vacancy-archive-input";
-import {take} from "rxjs/operators";
 
 
 @Component({
@@ -32,7 +30,6 @@ export class MyVacancyComponent implements OnInit, OnDestroy {
   subscription?: Subscription;
 
   constructor(
-    private readonly _signalrService: SignalrService,
     private readonly _messageService: MessageService,
     private readonly _router: Router,
     private readonly _backofficeService: BackOfficeService,
@@ -91,12 +88,6 @@ export class MyVacancyComponent implements OnInit, OnDestroy {
         console.log("Удалили вакансию: ", response);
         this.isDeleteVacancy = false;
 
-        this._messageService.add({
-                severity: this._signalrService.AllFeedObservable.value.notificationLevel,
-                summary: this._signalrService.AllFeedObservable.value.title,
-                detail: this._signalrService.AllFeedObservable.value.message
-              });
-
         await this.getUserVacanciesAsync();
       });
   };
@@ -118,12 +109,6 @@ export class MyVacancyComponent implements OnInit, OnDestroy {
     (await this._vacancyService.addArchiveVacancyAsync(vacancyArchiveInput))
       .subscribe(async _ => {
         console.log("Вакансия добавлена в архив", this.archivedVacancy$.value);
-
-        this._messageService.add({
-          severity: this._signalrService.AllFeedObservable.value.notificationLevel,
-          summary: this._signalrService.AllFeedObservable.value.title,
-          detail: this._signalrService.AllFeedObservable.value.message
-        });
 
         await this.getUserVacanciesAsync();
       });

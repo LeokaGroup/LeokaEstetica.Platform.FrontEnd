@@ -52,7 +52,6 @@ import {CalendarModule} from 'primeng/calendar';
 import {TranslateLoader, TranslateModule, TranslateService, TranslateStore } from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { PlaningSprintComponent } from './backlog/planing/planing.component';
-import { ProjectManagementSignalrService } from '../notifications/signalr/services/project-magement-signalr.service';
 import { EpicDetailsComponent } from './task/components/epic/epic-details.component';
 import { SprintComponent } from './sprint/components/sprint.component';
 import {SprintDetailsComponent} from "./sprint-details/components/sprint-details.component";
@@ -146,7 +145,6 @@ import {AccessService} from "../access/access.service";
   providers: [
     UserService,
     MessageService,
-    ProjectManagementSignalrService,
     TranslateService,
     TranslateStore,
     AccessService

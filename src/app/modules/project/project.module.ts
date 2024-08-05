@@ -13,7 +13,6 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
 import { HttpClientModule } from '@angular/common/http';
-import { SignalrService } from '../notifications/signalr/services/signalr.service';
 import { ProjectRoutingModule } from './project-routing.module';
 import { CatalogProjectsComponent } from './catalog/components/catalog.component';
 import { DetailProjectComponent } from './detail/components/detail.component';
@@ -72,8 +71,7 @@ import {InplaceModule} from 'primeng/inplace';
 
     providers: [
         UserService,
-        MessageService,
-        SignalrService
+        MessageService
     ]
 })
 

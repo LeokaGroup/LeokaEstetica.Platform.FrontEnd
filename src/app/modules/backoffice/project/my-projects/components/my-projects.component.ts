@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { forkJoin } from "rxjs";
-import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { MessageService } from "primeng/api";
 import { BackOfficeService } from "../../../services/backoffice.service";
 import { Router } from "@angular/router";
@@ -29,7 +28,6 @@ export class MyProjectsComponent implements OnInit {
     projectName: string = "";
 
     constructor(private readonly _backofficeService: BackOfficeService,
-        private readonly _signalrService: SignalrService,
         private readonly _messageService: MessageService,
         private readonly _router: Router,
         private readonly _projectService: ProjectService) {
@@ -107,12 +105,6 @@ export class MyProjectsComponent implements OnInit {
             console.log("Удалили проект: ", response);
             this.isDeleteProject = false;
 
-            this._messageService.add({
-                severity: this._signalrService.AllFeedObservable.value.notificationLevel,
-                summary: this._signalrService.AllFeedObservable.value.title,
-                detail: this._signalrService.AllFeedObservable.value.message
-              });
-
             await this.getUserProjectsAsync();
         });
     };
@@ -134,12 +126,6 @@ export class MyProjectsComponent implements OnInit {
     (await this._projectService.addArchiveProjectAsync(projectArchiveInput))
       .subscribe(async _ => {
         console.log("Проект добавлен в архив", this.archivedProject$.value);  
-
-        this._messageService.add({
-            severity: this._signalrService.AllFeedObservable.value.notificationLevel,
-            summary: this._signalrService.AllFeedObservable.value.title,
-            detail: this._signalrService.AllFeedObservable.value.message
-        });
 
         await this.getUserProjectsAsync();  
       });

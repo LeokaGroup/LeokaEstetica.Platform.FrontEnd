@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { DialogMessageInput } from "src/app/modules/messages/chat/models/input/dialog-message-input";
 import { ChatMessagesService } from "src/app/modules/messages/chat/services/chat-messages.service";
-import { SignalrService } from "src/app/modules/notifications/signalr/services/signalr.service";
 import { SearchProjectService } from "src/app/modules/search/services/search-project-service";
 import { VacancyInput } from "src/app/modules/backoffice/vacancy/models/input/vacancy-input";
 import { VacancyService } from "src/app/modules/backoffice/vacancy/services/vacancy.service";
@@ -32,7 +31,6 @@ import {AccessService} from "../../../access/access.service";
 export class DetailProjectComponent implements OnInit {
   constructor(private readonly _projectService: ProjectService,
               private readonly _activatedRoute: ActivatedRoute,
-              private readonly _signalrService: SignalrService,
               private readonly _messageService: MessageService,
               private readonly _router: Router,
               private readonly _vacancyService: VacancyService,
@@ -435,7 +433,8 @@ export class DetailProjectComponent implements OnInit {
         dialogInput.DiscussionTypeId = this.projectId;
         dialogInput.isManualNewDialog = false;
 
-        this._signalrService.getDialogAsync(dialogInput);
+        // TODO: Как будем отправлять сообщения в хаб при новой архитектуре хабов?
+        // this._signalrService.getDialogAsync(dialogInput);
 
         this.dialogId = dialogId;
     };
@@ -454,7 +453,8 @@ export class DetailProjectComponent implements OnInit {
                 this.dialogId = this.dialog$.value.dialogId;
                 this.userName = this.dialog$.value.fullName;
 
-                this._signalrService.getDialogsAsync(this.projectId);
+                // TODO: Как будем отправлять сообщения в хаб при новой архитектуре хабов?
+                // this._signalrService.getDialogsAsync(this.projectId);
             }
         });
     };
@@ -464,7 +464,8 @@ export class DetailProjectComponent implements OnInit {
         dialogInput.Message = this.message;
         dialogInput.DialogId = this.dialogId;
 
-        this._signalrService.sendMessageAsync(this.message, this.dialogId);
+        // TODO: Как будем отправлять сообщения в хаб при новой архитектуре хабов?
+        // this._signalrService.sendMessageAsync(this.message, this.dialogId);
     };
 
     /**

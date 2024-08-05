@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { NavigationStart, Router, Event as NavigationEvent, ActivatedRoute } from "@angular/router";
 import { NetworkService } from './core/interceptors/network.service';
 import {API_URL} from "./core/core-urls/api-urls";
@@ -13,7 +13,7 @@ import {MessageService} from "primeng/api";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit {
   public loading$ = this.networkService.loading$;
   public readonly checkUserCode$ = this._redisService.checkUserCode$;
 
@@ -283,72 +283,69 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.checkCurrentRouteUrl();
     this.isVisibleHeader = true;
 
-    // Подписываемся на получение всех сообщений.
-    this.AllFeedObservable
-      .subscribe((response: any) => {
-        console.log("Подписались на сообщения", response);
-        debugger;
-
-        // Если пришел тип уведомления, то просто показываем его.
-        if (response.notificationLevel !== undefined) {
-          this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
-        }
-
-        if (response.actionType == "All") {
-          console.log("Сообщения чата ЛК: ", response);
-          this.aDialogs = response.dialogs;
-          this.aMessages = response.dialogs;
-        }
-
-        else if (response.actionType == "Concrete") {
-          console.log("Сообщения диалога: ", response.messages);
-          this.aMessages = response.messages;
-          let lastMessage = response.messages[response.messages.length - 1];
-          this.lastMessage = lastMessage;
-
-          // Делаем небольшую задержку, чтобы диалог успел открыться, прежде чем будем скролить к низу.
-          setTimeout(() => {
-            let block = document.getElementById("#idMessages");
-            block!.scrollBy({
-              left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
-              top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
-              behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
-            });
-          }, 1);
-        }
-
-        else if (response.actionType == "Message") {
-          console.log("Сообщения диалога: ", this.aMessages);
-          this.message = "";
-          let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
-          let lastMessage = response.messages[response.messages.length - 1];
-          this.lastMessage = lastMessage;
-          this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
-          this.aMessages = response.messages;
-
-          this.aMessages.forEach((msg: any) => {
-            if (msg.userCode !== localStorage["u_c"]) {
-              msg.isMyMessage = false;
-            }
-            else {
-              msg.isMyMessage = true;
-            }
-          });
-
-          setTimeout(() => {
-            let block = document.getElementById("#idMessages");
-            block!.scrollBy({
-              left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
-              top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
-              behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
-            });
-          }, 1);
-        }
-      });
-  };
-
-  public async ngAfterViewInit() {
     if (this.currentUrl != "user/signin") {
+      // Подписываемся на получение всех сообщений.
+      this.AllFeedObservable
+        .subscribe((response: any) => {
+          console.log("Подписались на сообщения", response);
+
+          // Если пришел тип уведомления, то просто показываем его.
+          if (response.notificationLevel !== undefined) {
+            this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
+          }
+
+          if (response.actionType == "All") {
+            console.log("Сообщения чата ЛК: ", response);
+            this.aDialogs = response.dialogs;
+            this.aMessages = response.dialogs;
+          }
+
+          else if (response.actionType == "Concrete") {
+            console.log("Сообщения диалога: ", response.messages);
+            this.aMessages = response.messages;
+            let lastMessage = response.messages[response.messages.length - 1];
+            this.lastMessage = lastMessage;
+
+            // Делаем небольшую задержку, чтобы диалог успел открыться, прежде чем будем скролить к низу.
+            setTimeout(() => {
+              let block = document.getElementById("#idMessages");
+              block!.scrollBy({
+                left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
+                top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
+                behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
+              });
+            }, 1);
+          }
+
+          else if (response.actionType == "Message") {
+            console.log("Сообщения диалога: ", this.aMessages);
+            this.message = "";
+            let dialogIdx = this.aDialogs.findIndex(el => el.dialogId == this.dialogId);
+            let lastMessage = response.messages[response.messages.length - 1];
+            this.lastMessage = lastMessage;
+            this.aDialogs[dialogIdx].lastMessage = this.lastMessage.message;
+            this.aMessages = response.messages;
+
+            this.aMessages.forEach((msg: any) => {
+              if (msg.userCode !== localStorage["u_c"]) {
+                msg.isMyMessage = false;
+              }
+              else {
+                msg.isMyMessage = true;
+              }
+            });
+
+            setTimeout(() => {
+              let block = document.getElementById("#idMessages");
+              block!.scrollBy({
+                left: 0, // На какое количество пикселей прокрутить вправо от текущей позиции.
+                top: block!.scrollHeight, // На какое количество пикселей прокрутить вниз от текущей позиции.
+                behavior: 'auto' // Определяет плавность прокрутки: 'auto' - мгновенно (по умолчанию), 'smooth' - плавно.
+              });
+            }, 1);
+          }
+        });
+
       let module: any;
 
       if (this.currentUrl.includes("project-management")) {
@@ -364,27 +361,25 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
 
       (await this._redisService.checkConnectionIdCacheAsync(localStorage["u_c"], module))
-        .subscribe((response: any) => {
+        .subscribe((_: any) => {
 
           // В кэше нету, создаем новое подключение пользователя и кладем в кэш.
-          if (localStorage["u_c"] && !response.isCacheExists) {
-            let notifyRoute = module == "Main" ? "notify" : "project-management-notify";
+          let notifyRoute = module == "Main" ? "notify" : "project-management-notify";
 
-            this.hubConnection = new HubConnectionBuilder()
-              .withUrl(API_URL.apiUrl + `/${notifyRoute}?userCode=${localStorage["u_c"]}&module=${module}`, HttpTransportType.LongPolling)
-              .build();
+          this.hubConnection = new HubConnectionBuilder()
+            .withUrl(API_URL.apiUrl + `/${notifyRoute}?userCode=${localStorage["u_c"]}&module=${module}`, HttpTransportType.LongPolling)
+            .build();
 
-            this.listenAllHubsNotifications();
+          this.listenAllHubsNotifications();
 
-            if (this.hubConnection.state != "Connected" && this.hubConnection.connectionId == null) {
-              this.hubConnection.start().then(async () => {
-                console.log("Соединение установлено");
-                console.log("ConnectionId:", this.hubConnection.connectionId);
-              })
-                .catch((err: any) => {
-                  console.error(err);
-                });
-            }
+          if (this.hubConnection.state != "Connected" && this.hubConnection.connectionId == null) {
+            this.hubConnection.start().then(async () => {
+              console.log("Соединение установлено");
+              console.log("ConnectionId:", this.hubConnection.connectionId);
+            })
+              .catch((err: any) => {
+                console.error(err);
+              });
           }
         });
     }

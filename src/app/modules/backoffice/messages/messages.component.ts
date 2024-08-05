@@ -1,8 +1,7 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { forkJoin } from "rxjs";
 import { DialogMessageInput } from "../../messages/chat/models/input/dialog-message-input";
 import { ChatMessagesService } from "../../messages/chat/services/chat-messages.service";
-import { SignalrService } from "../../notifications/signalr/services/signalr.service";
 import { DialogInput } from "../../messages/chat/models/input/dialog-input";
 
 @Component({
@@ -15,7 +14,7 @@ import { DialogInput } from "../../messages/chat/models/input/dialog-input";
  * TODO: Логика чатов дублируется с логикой в просмотре проекта. Отрефачить и унифицировать в одном месте где-то.
  * Класс компонента сообщений пользователя в ЛК.
  */
-export class MessagesComponent implements OnInit, OnDestroy {
+export class MessagesComponent implements OnInit {
     public readonly dialog$ = this._messagesService.dialog$;
     public profileMessages$ = this._messagesService.profileMessages$;
     aMessages: any[] = [];
@@ -26,8 +25,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
     projectId: number = 0;
     allFeedSubscription: any;
 
-    constructor(private readonly _messagesService: ChatMessagesService,
-        private readonly _signalrService: SignalrService) {
+    constructor(private readonly _messagesService: ChatMessagesService) {
 
     }
 
@@ -48,7 +46,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
         dialogInput.DiscussionType = "Project";
         dialogInput.DiscussionTypeId = projectId;
 
-        this._signalrService.getDialogAsync(dialogInput);
+        // TODO: Как будем отправлять сообщения в хаб при новой архитектуре хабов?
+        // this._signalrService.getDialogAsync(dialogInput);
 
         this.dialogId = dialogId;
     };
@@ -58,10 +57,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
         dialogInput.Message = this.message;
         dialogInput.DialogId = this.dialogId;       
         
-        this._signalrService.sendMessageAsync(this.message, this.dialogId);
+        // TODO: Как будем отправлять сообщения в хаб при новой архитектуре хабов?
+        // this._signalrService.sendMessageAsync(this.message, this.dialogId);
     };
-
-    public ngOnDestroy() { 
-        this._signalrService.NewAllFeedObservable;
-    }; 
 }
