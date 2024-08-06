@@ -46,7 +46,8 @@ export class AppComponent implements OnInit {
   currentUrl: string = "";
   isVisibleHeader: boolean = false;
   isVisibleProjectManagementMenu: boolean = false;
-  hubConnection: any;
+  hubMainConnection: any;
+  hubProjectManagementConnection: any;
 
   // Для добавления нового метода хаба, достаточно просто добавить в массив название метода на бэке.
   aHubOnMethods: string[] = [
@@ -291,9 +292,17 @@ export class AppComponent implements OnInit {
     return this.$allFeed;
   };
 
-  private listenAllHubsNotifications() {
+  private listenAllHubsMainNotifications() {
     this.aHubOnMethods.forEach((method: any) => {
-      (<HubConnection>this.hubConnection).on(method, (response: any) => {
+      (<HubConnection>this.hubMainConnection).on(method, (response: any) => {
+        this.$allFeed.next(response);
+      });
+    });
+  };
+
+  private listenAllHubsProjectManagementNotifications() {
+    this.aHubOnMethods.forEach((method: any) => {
+      (<HubConnection>this.hubProjectManagementConnection).on(method, (response: any) => {
         this.$allFeed.next(response);
       });
     });
@@ -418,7 +427,7 @@ export class AppComponent implements OnInit {
    * @param projectId - Id проекта.
    */
   public getDialogsAsync(projectId: number | null) {
-    <HubConnection>this.hubConnection.invoke("GetDialogsAsync", localStorage["u_e"], localStorage["t_n"], +projectId!)
+    <HubConnection>this.hubMainConnection.invoke("GetDialogsAsync", localStorage["u_e"], localStorage["t_n"], +projectId!)
       .catch((err: any) => {
         console.error(err);
       });
@@ -429,7 +438,7 @@ export class AppComponent implements OnInit {
    * @param diaalogId - Id диалога.
    */
   public getDialogAsync(dialogInput: DialogInput) {
-    <HubConnection>this.hubConnection.invoke("GetDialogAsync", localStorage["u_e"], localStorage["t_n"], JSON.stringify(dialogInput))
+    <HubConnection>this.hubMainConnection.invoke("GetDialogAsync", localStorage["u_e"], localStorage["t_n"], JSON.stringify(dialogInput))
       .catch((err: any) => {
         console.error(err);
       });
@@ -439,7 +448,7 @@ export class AppComponent implements OnInit {
    * Функция отправляет сообщение.
    */
   public sendMessageAsync(message: string, dialogId: number) {
-    <HubConnection>this.hubConnection.invoke("SendMessageAsync", message, dialogId, localStorage["u_e"], localStorage["t_n"], API_URL.apiUrl)
+    <HubConnection>this.hubMainConnection.invoke("SendMessageAsync", message, dialogId, localStorage["u_e"], localStorage["t_n"], API_URL.apiUrl)
       .catch((err: any) => {
         console.error(err);
       });
@@ -450,7 +459,7 @@ export class AppComponent implements OnInit {
    * @param projectId - Id проекта.
    */
   public getProfileDialogsAsync() {
-    <HubConnection>this.hubConnection.invoke("GetProfileDialogsAsync", localStorage["u_e"], localStorage["t_n"])
+    <HubConnection>this.hubMainConnection.invoke("GetProfileDialogsAsync", localStorage["u_e"], localStorage["t_n"])
       .catch((err: any) => {
         console.error(err);
       });
@@ -539,21 +548,32 @@ export class AppComponent implements OnInit {
 
       (await this._redisService.checkConnectionIdCacheAsync(localStorage["u_c"], module))
         .subscribe((_: any) => {
-
-          // В кэше нету, создаем новое подключение пользователя и кладем в кэш.
-          let notifyType = module == "Main" ? "notify" : "project-management-notify";
-          let notifyRoute = module == "Main" ? API_URL.apiUrl : API_URL.apiUrlProjectManagment;
-
-          this.hubConnection = new HubConnectionBuilder()
-            .withUrl(`${notifyRoute}/${notifyType}?userCode=${localStorage["u_c"]}&module=${module}`, HttpTransportType.LongPolling)
+          this.hubMainConnection = new HubConnectionBuilder()
+            .withUrl(API_URL.apiUrl + `/notify?userCode=${localStorage["u_c"]}&module=Main`, HttpTransportType.LongPolling)
             .build();
 
-          this.listenAllHubsNotifications();
+          this.listenAllHubsMainNotifications();
 
-          if (this.hubConnection.state != "Connected" && this.hubConnection.connectionId == null) {
-            this.hubConnection.start().then(async () => {
-              console.log("Соединение установлено");
-              console.log("ConnectionId:", this.hubConnection.connectionId);
+          if (this.hubMainConnection.state != "Connected" && this.hubMainConnection.connectionId == null) {
+            this.hubMainConnection.start().then(async () => {
+              console.log("Соединение Main установлено");
+              console.log("Main ConnectionId:", this.hubMainConnection.connectionId);
+            })
+              .catch((err: any) => {
+                console.error(err);
+              });
+          }
+
+          this.hubProjectManagementConnection = new HubConnectionBuilder()
+            .withUrl(API_URL.apiUrlProjectManagment + `/project-management-notify?userCode=${localStorage["u_c"]}&module=ProjectManagement`, HttpTransportType.LongPolling)
+            .build();
+
+          this.listenAllHubsProjectManagementNotifications();
+
+          if (this.hubMainConnection.state != "Connected" && this.hubProjectManagementConnection.connectionId == null) {
+            this.hubProjectManagementConnection.start().then(async () => {
+              console.log("Соединение ProjectManagement установлено");
+              console.log("ProjectManagement ConnectionId:", this.hubProjectManagementConnection.connectionId);
             })
               .catch((err: any) => {
                 console.error(err);
