@@ -364,10 +364,11 @@ export class AppComponent implements OnInit {
         .subscribe((_: any) => {
 
           // В кэше нету, создаем новое подключение пользователя и кладем в кэш.
-          let notifyRoute = module == "Main" ? "notify" : "project-management-notify";
+          let notifyType = module == "Main" ? "notify" : "project-management-notify";
+          let notifyRoute = module == "Main" ? API_URL.apiUrl : API_URL.apiUrlProjectManagment;
 
           this.hubConnection = new HubConnectionBuilder()
-            .withUrl(API_URL.apiUrl + `/${notifyRoute}?userCode=${localStorage["u_c"]}&module=${module}`, HttpTransportType.LongPolling)
+            .withUrl(`${notifyRoute}/${notifyType}?userCode=${localStorage["u_c"]}&module=${module}`, HttpTransportType.LongPolling)
             .build();
 
           this.listenAllHubsNotifications();
