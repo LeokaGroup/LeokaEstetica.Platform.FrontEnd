@@ -48,6 +48,7 @@ export class PlaningSprintComponent implements OnInit {
   aPeople: any[] = [];
   selectedWatcher: any;
   aSelectedWachers: Set<any> = new Set<any>();
+  tableTotalRecords: number = 0;
 
   public async ngOnInit() {
     this._projectManagmentService.isLeftPanel = false;
@@ -147,7 +148,14 @@ export class PlaningSprintComponent implements OnInit {
   };
 
   public onSelectTask() {
-    this.aAddedTaskSprint.push(this.selectedTask);
+    let isTaskInSprint = this.aAddedTaskSprint.find(task => this.selectedTask.projectTaskId === task.projectTaskId) ? true : false;
+
+    if (!isTaskInSprint) {
+      this.aAddedTaskSprint.push(this.selectedTask);
+      this.tableTotalRecords = this.aAddedTaskSprint.length;
+    } else {
+      console.log('Задача уже добавлена')
+    }
   };
 
   /**
