@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {AfterContentInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { NavigationStart, Router, Event as NavigationEvent, ActivatedRoute } from "@angular/router";
 import { NetworkService } from './core/interceptors/network.service';
 import {API_URL} from "./core/core-urls/api-urls";
@@ -13,7 +13,7 @@ import {MessageService} from "primeng/api";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterContentInit {
   public loading$ = this.networkService.loading$;
   public readonly checkUserCode$ = this._redisService.checkUserCode$;
 
@@ -283,10 +283,12 @@ export class AppComponent implements OnInit {
   public async ngOnInit() {
     this.checkCurrentRouteUrl();
     this.isVisibleHeader = true;
+  };
 
+  public async ngAfterContentInit() {
     // Настраиваем хабы для работы уведомлений SignalR.
     await this.configureHubsAsync();
-  };
+  }
 
   public get AllFeedObservable() {
     return this.$allFeed;
