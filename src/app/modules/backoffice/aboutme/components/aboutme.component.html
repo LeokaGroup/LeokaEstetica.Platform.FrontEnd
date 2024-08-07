@@ -283,7 +283,8 @@
                         pInputText
                         autocomplete="new-password"
                         min="0"
-                        (keydown)="blockNotNumber($event)"
+                        (keydown)="blockInputNotNumber($event)"
+                        (paste)="filterPastedNotNumberExperience($event)"
                         [(ngModel)]="workExperience"
                         *ngIf="isModeEdit"  />
                 <div *ngIf="isModeView">
