@@ -25,15 +25,15 @@
       <div [ngClass]="{selectedColor: item.isSelectedColor}">
        <div class="project-text-item">
         <div class="d-flex">
-          <div>
+          <div *ngIf="item.payment !== null">
             <p-tag styleClass="mr-2" severity="secondary" value="{{item.payment == '' || item.payment == 'Без оплаты' || item.payment  == '0' ? 'Без оплаты или оплата не указана' : item.payment + ' ₽'}}"></p-tag>
           </div>
 
-          <div class="tag">
+          <div class="tag" *ngIf="item.workExperience !== null">
             <p-tag styleClass="mr-2" severity="info" value="{{item.workExperience}}"></p-tag>
           </div>
 
-          <div class="tag">
+          <div class="tag" *ngIf="item.employment !== null">
             <p-tag styleClass="mr-2" severity="success" value="{{item.employment}}"></p-tag>
           </div>
 
