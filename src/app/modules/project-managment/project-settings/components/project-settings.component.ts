@@ -359,7 +359,7 @@ export class ProjectSettingsComponent implements OnInit {
         // TODO: Не можем отображать уведомления без обновления страницы после роута из проектов пользователя.
         this._messageService.add({ severity: 'success', summary: "Все хорошо", detail: response.successMessage });
       });
-
+    await this.getProjectInvitesAsync();
     this.isProjectInvite = false;
   };
 
