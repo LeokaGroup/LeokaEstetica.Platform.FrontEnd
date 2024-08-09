@@ -34,7 +34,9 @@
                      [(ngModel)]="selectedProject$.value.projectName"
                      [disabled]="!isEditMode"/>
             </div>
-            <ng-template #blockOne>{{selectedProject$.value?.projectName}}</ng-template>
+            <ng-template #blockOne>
+              <p class="white-space text-paragraph">{{selectedProject$.value?.projectName}}</p>
+            </ng-template>
           </div>
         </div>
 
@@ -78,10 +80,10 @@
                                       [(ngModel)]="selectedProject$.value.projectDetails"
                                       class="control-textarea"
                                       [disabled]="!isEditMode">
-                              </textarea>
+                            </textarea>
                           </div>
                           <ng-template #blockThree>
-                            <p class="white-space">{{selectedProject$.value.projectDetails}}</p>
+                            <p class="white-space text-paragraph">{{selectedProject$.value.projectDetails}}</p>
                           </ng-template>
                         </div>
                     </div>
