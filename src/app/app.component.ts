@@ -14,7 +14,7 @@ import {API_URL} from "./core/core-urls/api-urls";
 import {HttpTransportType, HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
 import {RedisService} from "./modules/redis/services/redis.service";
 import {DialogInput} from "./modules/messages/chat/models/input/dialog-input";
-import { BehaviorSubject  } from 'rxjs';
+import { BehaviorSubject, Subscription  } from 'rxjs';
 import {MessageService} from "primeng/api";
 
 @Component({
@@ -281,6 +281,7 @@ export class AppComponent implements OnInit {
   projectId: number = 0;
   isNotifyCompleted: boolean = false;
   currentRoute: string = "";
+  routeSubscription: Subscription = new Subscription();
 
   constructor(private _networkService: NetworkService,
               private readonly _router: Router,
@@ -294,11 +295,17 @@ export class AppComponent implements OnInit {
   public async ngOnInit() {
     this.checkCurrentRouteUrl();
     this.isVisibleHeader = true;
+
+    this.routeSubscription = this._router.events.subscribe(async (event: any) => {
+      if (event instanceof NavigationStart) {
+        // Настраиваем хабы для работы уведомлений SignalR.
+        await this.configureHubsAsync();
+      }
+    });
   };
 
   public async ngAfterViewInit() {
-    // Настраиваем хабы для работы уведомлений SignalR.
-    await this.configureHubsAsync();
+
   };
 
   public get AllFeedObservable() {
@@ -595,5 +602,9 @@ export class AppComponent implements OnInit {
           }
         });
     }
+
+    setTimeout(() => {
+      this.routeSubscription.unsubscribe();
+    }, 1000);
   };
 }
