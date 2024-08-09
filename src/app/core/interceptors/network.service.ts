@@ -5,6 +5,7 @@ import { BehaviorSubject } from "rxjs";
 export class NetworkService {
     private _loading = new BehaviorSubject<boolean>(false);
     public readonly loading$ = this._loading;
+    public isNotifyProcessed: boolean = false;
 
     /**
      * Функция ставит бизи или снимает.

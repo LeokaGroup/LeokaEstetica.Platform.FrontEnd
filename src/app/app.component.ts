@@ -1,11 +1,20 @@
-import {AfterContentInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {NavigationStart, Router, Event as NavigationEvent, ActivatedRoute, Event} from "@angular/router";
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit
+} from '@angular/core';
+import {
+  NavigationStart,
+  Router,
+  Event as NavigationEvent,
+  ActivatedRoute
+} from "@angular/router";
 import { NetworkService } from './core/interceptors/network.service';
 import {API_URL} from "./core/core-urls/api-urls";
 import {HttpTransportType, HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
 import {RedisService} from "./modules/redis/services/redis.service";
 import {DialogInput} from "./modules/messages/chat/models/input/dialog-input";
-import { BehaviorSubject, Subscription  } from 'rxjs';
+import { BehaviorSubject  } from 'rxjs';
 import {MessageService} from "primeng/api";
 
 @Component({
@@ -13,8 +22,8 @@ import {MessageService} from "primeng/api";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, AfterContentInit {
-  public loading$ = this.networkService.loading$;
+export class AppComponent implements OnInit {
+  public loading$ = this._networkService.loading$;
   public readonly checkUserCode$ = this._redisService.checkUserCode$;
 
 
@@ -270,28 +279,16 @@ export class AppComponent implements OnInit, AfterContentInit {
   dialogId: number = 0;
   message: string = "";
   projectId: number = 0;
-  subscription: Subscription = new Subscription();
   isNotifyCompleted: boolean = false;
-  aNotifies: any[] = [];
+  currentRoute: string = "";
 
-
-  constructor(public networkService: NetworkService,
+  constructor(private _networkService: NetworkService,
               private readonly _router: Router,
               private readonly _activatedRoute: ActivatedRoute,
-              private changeDetectorRef: ChangeDetectorRef,
+              private _changeDetectorRef: ChangeDetectorRef,
               private readonly _redisService: RedisService,
-              private readonly _messageService: MessageService) {
-    _router.events.subscribe(async (event: Event) => {
-      if (event instanceof NavigationStart) {
-        this.isNotifyCompleted = false;
-        this.AllFeedObservable.subscribe((x: any) => {
-          return x.next(null);
-        });
-
-        // Настраиваем хабы для работы уведомлений SignalR.
-        await this.configureHubsAsync();
-      }
-    });
+              private readonly _messageService: MessageService,
+              private readonly _route: ActivatedRoute) {
   }
 
   public async ngOnInit() {
@@ -299,9 +296,10 @@ export class AppComponent implements OnInit, AfterContentInit {
     this.isVisibleHeader = true;
   };
 
-  public async ngAfterContentInit() {
-
-  }
+  public async ngAfterViewInit() {
+    // Настраиваем хабы для работы уведомлений SignalR.
+    await this.configureHubsAsync();
+  };
 
   public get AllFeedObservable() {
     return this.$allFeed;
@@ -325,7 +323,7 @@ export class AppComponent implements OnInit, AfterContentInit {
 
   public rerender(): void {
     this.isVisibleMenu = false;
-    this.changeDetectorRef.detectChanges();
+    this._changeDetectorRef.detectChanges();
     this.isVisibleMenu = true;
   };
 
@@ -485,25 +483,16 @@ export class AppComponent implements OnInit, AfterContentInit {
    */
   private async configureHubsAsync() {
     if (this.currentUrl != "user/signin") {
-      let observersCnt: number = 0;
-      this.AllFeedObservable.forEach(_ => observersCnt++);
-      // let idx: number = 0;
-
       // Подписываемся на получение всех сообщений.
       this.AllFeedObservable
         .subscribe((response: any) => {
           console.log("Подписались на сообщения", response);
-          debugger;
-
-          // this.notifies.next(response);
-
-          // debugger;
 
           // Если пришел тип уведомления, то просто показываем его.
-          if (response.notificationLevel !== undefined && !this.isNotifyCompleted) {
+          if (response.notificationLevel !== undefined && !this._networkService.isNotifyProcessed) {
             this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
-            this.isNotifyCompleted = true;
-            this.AllFeedObservable.next(null);
+            this._networkService.isNotifyProcessed = true;
+            this._changeDetectorRef.detectChanges();
           }
 
           if (response.actionType == "All") {
@@ -574,7 +563,7 @@ export class AppComponent implements OnInit, AfterContentInit {
       (await this._redisService.checkConnectionIdCacheAsync(localStorage["u_c"], module))
         .subscribe((_: any) => {
           this.hubMainConnection = new HubConnectionBuilder()
-            .withUrl(API_URL.apiUrl + `/notify?userCode=${localStorage["u_c"]}&module=Main`, HttpTransportType.WebSockets)
+            .withUrl(API_URL.apiUrl + `/notify?userCode=${localStorage["u_c"]}&module=Main`, HttpTransportType.LongPolling)
             .build();
 
           this.listenAllHubsMainNotifications();
@@ -590,7 +579,7 @@ export class AppComponent implements OnInit, AfterContentInit {
           }
 
           this.hubProjectManagementConnection = new HubConnectionBuilder()
-            .withUrl(API_URL.apiUrlProjectManagment + `/project-management-notify?userCode=${localStorage["u_c"]}&module=ProjectManagement`, HttpTransportType.WebSockets)
+            .withUrl(API_URL.apiUrlProjectManagment + `/project-management-notify?userCode=${localStorage["u_c"]}&module=ProjectManagement`, HttpTransportType.LongPolling)
             .build();
 
           this.listenAllHubsProjectManagementNotifications();
@@ -606,12 +595,5 @@ export class AppComponent implements OnInit, AfterContentInit {
           }
         });
     }
-    // this.isNotifyCompleted = false;
   };
-
-  // public ngOnDestroy() {
-  //   debugger;
-  //   this.isNotifyCompleted = false;
-  //   this.subscription?.unsubscribe();
-  // };
 }
