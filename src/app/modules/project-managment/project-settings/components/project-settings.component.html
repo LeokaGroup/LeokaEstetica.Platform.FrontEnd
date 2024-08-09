@@ -262,7 +262,12 @@
     <h3>Приглашения</h3>
     <div class="scrum">
       <div>
-        <p-tabView>
+
+        <div class="forbidden-feature">
+          <h5>У вас нет доступа к данному разделу</h5>
+        </div>
+
+        <p-tabView *ngIf="isInviteRole">
           <p-tabPanel header="Активные">
             <p-table [value]="projectInvites$.value"
                      [(selection)]="selectedInvite"

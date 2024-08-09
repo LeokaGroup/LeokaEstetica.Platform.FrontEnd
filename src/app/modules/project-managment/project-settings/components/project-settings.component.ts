@@ -98,7 +98,6 @@ export class ProjectSettingsComponent implements OnInit {
           this.isShowUserRoles = false;
           this.isShowInvite = false;
 
-          await this.getUserRolesAsync();
           await this.getSettingUsersAsync();
         }
       },
@@ -122,9 +121,6 @@ export class ProjectSettingsComponent implements OnInit {
             this.isShowUsers = false;
             this.isShowUserRoles = false;
             this.isShowInvite = true;
-
-            await this.getProjectInvitesAsync();
-            await this.getAvailableInviteVacanciesAsync();
           }
         }
       ]
@@ -146,10 +142,13 @@ export class ProjectSettingsComponent implements OnInit {
   aProjectInvitesUsers: any[] = [];
   selectedInviteUser: string = "";
   isVisibleAccessModal = false;
+  isInviteRole: boolean = false;
+  featureForbiddenText: string = "";
 
   public async ngOnInit() {
     forkJoin([
       this.checkUrlParams(),
+      await this.getUserRolesAsync(),
       await this.getFileUserAvatarAsync()
     ]).subscribe();
   };
@@ -385,17 +384,32 @@ export class ProjectSettingsComponent implements OnInit {
       });
   };
 
+  /**
+   * Функция получает роли пользователя.
+   */
   private async getUserRolesAsync() {
     (await this._projectManagmentService.getUserRolesAsync())
       .subscribe((response: any) => {
-        console.log("user roles", response);
+        console.log("Роли пользователя", response);
 
-        if (response.find((x: any) => x.roleSysName == "UserExclude") !== undefined) {
-          this.isExistsRoleUserExclude = true;
-        }
-        // if (response.filter((x: any) => x.roleSysName == "UserExclude").length > 0) {
-        //   this.isExistsRoleUserExclude = true;
-        // }
+        this.checkUserRolesAsync(response);
       });
+  };
+
+  /**
+   * Функция првоеряет роли пользователя.
+   * @param userRoles - Роли пользователя.
+   */
+  private async checkUserRolesAsync(userRoles: any[]) {
+    // Проверяем роль на отображение кнопки исключения.
+    this.isExistsRoleUserExclude = userRoles.find((x: any) => x.roleSysName == "UserExclude").isEnabled;
+
+    // Роль на отображение таблицы ролей.
+    if (userRoles.find((x: any) => x.roleSysName == "ProjectInvite").isEnabled) {
+      this.isInviteRole = true;
+
+      await this.getProjectInvitesAsync();
+      await this.getAvailableInviteVacanciesAsync();
+    }
   };
 }
