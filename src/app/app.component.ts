@@ -1,11 +1,11 @@
 import {AfterContentInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import { NavigationStart, Router, Event as NavigationEvent, ActivatedRoute } from "@angular/router";
+import {NavigationStart, Router, Event as NavigationEvent, ActivatedRoute, Event} from "@angular/router";
 import { NetworkService } from './core/interceptors/network.service';
 import {API_URL} from "./core/core-urls/api-urls";
 import {HttpTransportType, HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
 import {RedisService} from "./modules/redis/services/redis.service";
 import {DialogInput} from "./modules/messages/chat/models/input/dialog-input";
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription  } from 'rxjs';
 import {MessageService} from "primeng/api";
 
 @Component({
@@ -262,14 +262,18 @@ export class AppComponent implements OnInit, AfterContentInit {
     "SendNotificationWarningDublicateUserProject"
   ];
 
-  public $allFeed: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public $allFeed = new BehaviorSubject<any>(null);
 
   aMessages: any[] = [];
-    aDialogs: any[] = [];
-    lastMessage: any;
-    dialogId: number = 0;
-    message: string = "";
-    projectId: number = 0;
+  aDialogs: any[] = [];
+  lastMessage: any;
+  dialogId: number = 0;
+  message: string = "";
+  projectId: number = 0;
+  subscription: Subscription = new Subscription();
+  isNotifyCompleted: boolean = false;
+  aNotifies: any[] = [];
+
 
   constructor(public networkService: NetworkService,
               private readonly _router: Router,
@@ -277,7 +281,17 @@ export class AppComponent implements OnInit, AfterContentInit {
               private changeDetectorRef: ChangeDetectorRef,
               private readonly _redisService: RedisService,
               private readonly _messageService: MessageService) {
+    _router.events.subscribe(async (event: Event) => {
+      if (event instanceof NavigationStart) {
+        this.isNotifyCompleted = false;
+        this.AllFeedObservable.subscribe((x: any) => {
+          return x.next(null);
+        });
 
+        // Настраиваем хабы для работы уведомлений SignalR.
+        await this.configureHubsAsync();
+      }
+    });
   }
 
   public async ngOnInit() {
@@ -286,8 +300,7 @@ export class AppComponent implements OnInit, AfterContentInit {
   };
 
   public async ngAfterContentInit() {
-    // Настраиваем хабы для работы уведомлений SignalR.
-    await this.configureHubsAsync();
+
   }
 
   public get AllFeedObservable() {
@@ -314,7 +327,7 @@ export class AppComponent implements OnInit, AfterContentInit {
     this.isVisibleMenu = false;
     this.changeDetectorRef.detectChanges();
     this.isVisibleMenu = true;
-};
+  };
 
   /**
    * Функция проверяет текущий роут.
@@ -362,7 +375,7 @@ export class AppComponent implements OnInit, AfterContentInit {
     }
 
     if (this.projectModeUrls.includes(currentUrl)
-    || this.resumeModeUrls.includes(currentUrl)) {
+      || this.resumeModeUrls.includes(currentUrl)) {
       this.isVisibleMenu = true;
       localStorage["m_t"] = 1;
     }
@@ -472,14 +485,25 @@ export class AppComponent implements OnInit, AfterContentInit {
    */
   private async configureHubsAsync() {
     if (this.currentUrl != "user/signin") {
+      let observersCnt: number = 0;
+      this.AllFeedObservable.forEach(_ => observersCnt++);
+      // let idx: number = 0;
+
       // Подписываемся на получение всех сообщений.
       this.AllFeedObservable
         .subscribe((response: any) => {
           console.log("Подписались на сообщения", response);
+          debugger;
+
+          // this.notifies.next(response);
+
+          // debugger;
 
           // Если пришел тип уведомления, то просто показываем его.
-          if (response.notificationLevel !== undefined) {
+          if (response.notificationLevel !== undefined && !this.isNotifyCompleted) {
             this._messageService.add({ severity: response.notificationLevel, summary: response.title, detail: response.message });
+            this.isNotifyCompleted = true;
+            this.AllFeedObservable.next(null);
           }
 
           if (response.actionType == "All") {
@@ -517,8 +541,7 @@ export class AppComponent implements OnInit, AfterContentInit {
             this.aMessages.forEach((msg: any) => {
               if (msg.userCode !== localStorage["u_c"]) {
                 msg.isMyMessage = false;
-              }
-              else {
+              } else {
                 msg.isMyMessage = true;
               }
             });
@@ -551,7 +574,7 @@ export class AppComponent implements OnInit, AfterContentInit {
       (await this._redisService.checkConnectionIdCacheAsync(localStorage["u_c"], module))
         .subscribe((_: any) => {
           this.hubMainConnection = new HubConnectionBuilder()
-            .withUrl(API_URL.apiUrl + `/notify?userCode=${localStorage["u_c"]}&module=Main`, HttpTransportType.LongPolling)
+            .withUrl(API_URL.apiUrl + `/notify?userCode=${localStorage["u_c"]}&module=Main`, HttpTransportType.WebSockets)
             .build();
 
           this.listenAllHubsMainNotifications();
@@ -567,7 +590,7 @@ export class AppComponent implements OnInit, AfterContentInit {
           }
 
           this.hubProjectManagementConnection = new HubConnectionBuilder()
-            .withUrl(API_URL.apiUrlProjectManagment + `/project-management-notify?userCode=${localStorage["u_c"]}&module=ProjectManagement`, HttpTransportType.LongPolling)
+            .withUrl(API_URL.apiUrlProjectManagment + `/project-management-notify?userCode=${localStorage["u_c"]}&module=ProjectManagement`, HttpTransportType.WebSockets)
             .build();
 
           this.listenAllHubsProjectManagementNotifications();
@@ -583,5 +606,12 @@ export class AppComponent implements OnInit, AfterContentInit {
           }
         });
     }
+    // this.isNotifyCompleted = false;
   };
+
+  // public ngOnDestroy() {
+  //   debugger;
+  //   this.isNotifyCompleted = false;
+  //   this.subscription?.unsubscribe();
+  // };
 }
