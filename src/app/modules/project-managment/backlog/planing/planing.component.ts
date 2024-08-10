@@ -80,11 +80,13 @@ export class PlaningSprintComponent implements OnInit {
 
   public onSelectTaskLink(fullTaskId: string) {
     let projectId = this.selectedProjectId;
+    let companyId: number = this._projectManagmentService.companyId;
 
     this._router.navigate(["/project-management/space/details"], {
       queryParams: {
         projectId,
-        taskId: fullTaskId
+        taskId: fullTaskId,
+        companyId
       }
     });
   };

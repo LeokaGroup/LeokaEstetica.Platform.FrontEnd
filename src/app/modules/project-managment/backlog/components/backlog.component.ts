@@ -130,11 +130,13 @@ export class BacklogComponent implements OnInit {
    */
   public onSelectTask(projectTaskId: string) {
     let projectId = this.selectedProjectId;
+    let companyId: number = this._projectManagmentService.companyId;
 
     this._router.navigate(["/project-management/space/details"], {
       queryParams: {
         projectId,
-        taskId: projectTaskId
+        taskId: projectTaskId,
+        companyId
       }
     });
   };

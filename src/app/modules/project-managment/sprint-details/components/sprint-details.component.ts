@@ -89,13 +89,15 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
      */
     public onSelectTask(projectTaskId: number, taskTypeId: number) {
       let projectId = this.projectId;
+      let companyId: number = this._projectManagmentService.companyId;
 
       localStorage["t_t_i"] = taskTypeId;
 
       this._router.navigate(["/project-management/space/details"], {
           queryParams: {
               projectId,
-              taskId: projectTaskId
+              taskId: projectTaskId,
+              companyId
           }
       });
   };

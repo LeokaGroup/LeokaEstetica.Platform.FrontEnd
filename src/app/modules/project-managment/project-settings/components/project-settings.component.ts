@@ -393,7 +393,6 @@ export class ProjectSettingsComponent implements OnInit {
   };
 
   /**
-   * TODO: Возможно на ините и не нужно грузить роли пользователя, но пока оставили.
    * Функция получает роли пользователя.
    */
   private async getUserRolesAsync() {
@@ -401,8 +400,6 @@ export class ProjectSettingsComponent implements OnInit {
       .subscribe((response: any) => {
         console.log("Роли пользователя", response);
         this.aUserRoles = response;
-
-        this.checkUserRolesAsync();
       });
   };
 
