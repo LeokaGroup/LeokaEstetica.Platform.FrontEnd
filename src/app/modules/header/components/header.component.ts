@@ -124,7 +124,7 @@ export class HeaderComponent implements OnInit {
   // TODO: Дублируется.
   private async getBuildProjectSpaceSettingsAsync(menuItemUrl: any) {
     if (menuItemUrl == "/project-management/workspaces") {
-      (await this._projectManagmentService.getBuildProjectSpaceSettingsAsync(null))
+      (await this._projectManagmentService.getBuildProjectSpaceSettingsAsync(null, null))
         .subscribe(_ => {
           console.log("projectWorkspaceSettings", this.projectWorkspaceSettings$.value);
 

@@ -19,8 +19,8 @@
       <ng-template let-ws pTemplate="list">
         <div class="grid grid-nogutter">
           <div class="col-12 data-line" *ngFor="let w of ws">
-              <h5 class="workspace-project-name py-3 m-0" (click)="onRouteWorkSpaceAsync(w.projectId)">{{w.projectManagementName}}</h5>
-         
+              <h5 class="workspace-project-name py-3 m-0" (click)="onRouteWorkSpaceAsync(w.projectId, w.companyId)">{{w.projectManagementName}}</h5>
+
           </div>
         </div>
       </ng-template>

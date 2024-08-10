@@ -99,6 +99,7 @@ export class ProjectManagmentService {
     public epicStatuses$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
+    public companyId: number = 0;
 
     constructor(private readonly _http: HttpClient,
                 private readonly _router: Router) {
@@ -298,24 +299,26 @@ export class ProjectManagmentService {
         );
     };
 
-     /**
-    * Функция получает сформированную ссылку для перехода к управлению проектом.
-    * Если ее нет, то предлагаем к выбору шаблон, стратегию представления.
-    * @returns - Выходная модель.
-    */
-      public async getBuildProjectSpaceSettingsAsync(projectId: number | null) {
-        if (projectId !== null) {
-          return await this._http.get(this.apiUrl + `/project-management/config/build-project-space?projectId=${projectId}`).pipe(
-            tap(data => this.projectWorkspaceSettings$.next(data))
-          );
-        }
+  /**
+   * Функция получает сформированную ссылку для перехода к управлению проектом.
+   * Если ее нет, то предлагаем к выбору шаблон, стратегию представления.
+   * @param projectId - Id проекта.
+   * @param companyId - Id компании.
+   * @returns - Выходная модель.
+   */
+  public async getBuildProjectSpaceSettingsAsync(projectId: number | null, companyId: number | null) {
+    if (projectId !== null && companyId != null) {
+      return await this._http.get(this.apiUrl + `/project-management/config/build-project-space?projectId=${projectId}&companyId=${companyId}`).pipe(
+        tap(data => this.projectWorkspaceSettings$.next(data))
+      );
+    }
 
-        else {
-          return await this._http.get(this.apiUrl + `/project-management/config/build-project-space`).pipe(
-            tap(data => this.projectWorkspaceSettings$.next(data))
-          );
-        }
-    };
+    else {
+      return await this._http.get(this.apiUrl + `/project-management/config/build-project-space`).pipe(
+        tap(data => this.projectWorkspaceSettings$.next(data))
+      );
+    }
+  };
 
     /**
     * Функция фиксирует выбранные пользователем настройки рабочего пространства проекта.
@@ -976,12 +979,12 @@ export class ProjectManagmentService {
   };
 
   /**
-   * для задачи 34460898
    * Функция получает выбранное раб.пространство.
+   * @paaram projectId - Id проекта.
    */
   public async getSelectedWorkSpaceAsync(projectId: number) {
-    return await this._http.get(this.apiUrl + `/project-management/workspaces`).pipe(
-      tap(data => this.selectedWorkSpace$.next((data as any[]).find((project: any) => project.projectId === projectId)))
+    return await this._http.get(this.apiUrl + `/project-management/workspace?projectId=${projectId}`).pipe(
+      tap(data => this.selectedWorkSpace$.next(data))
     );
   }
 
@@ -996,9 +999,11 @@ export class ProjectManagmentService {
 
   /**
    * Функция получает список ролей пользователя.
+   * @param projectId - Id проекта.
+   * @param companyId - Id компании.
    */
-  public async getUserRolesAsync() {
-    return await this._http.get(this.apiUrl + `/project-management-role/user-roles`).pipe(
+  public async getUserRolesAsync(projectId: number, companyId: number) {
+    return await this._http.get(this.apiUrl + `/project-management-role/user-roles?projectId=${projectId}&companyId=${companyId}`).pipe(
       tap(data => this.userRoles.next(data))
     );
   };
