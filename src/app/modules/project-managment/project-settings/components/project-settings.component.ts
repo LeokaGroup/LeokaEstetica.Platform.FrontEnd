@@ -111,6 +111,7 @@ export class ProjectSettingsComponent implements OnInit {
             this.isShowInvite = false;
 
             await this.getUsersRolesAsync();
+            await this.checkUserRolesAsync("ProjectRole");
           }
         },
         {
@@ -121,6 +122,8 @@ export class ProjectSettingsComponent implements OnInit {
             this.isShowUsers = false;
             this.isShowUserRoles = false;
             this.isShowInvite = true;
+
+            await this.checkUserRolesAsync("ProjectInvite");
           }
         }
       ]
@@ -144,6 +147,8 @@ export class ProjectSettingsComponent implements OnInit {
   isVisibleAccessModal = false;
   isInviteRole: boolean = false;
   featureForbiddenText: string = "";
+  isNotRoles: boolean = false;
+  aUserRoles: any[] = [];
 
   public async ngOnInit() {
     forkJoin([
@@ -385,31 +390,35 @@ export class ProjectSettingsComponent implements OnInit {
   };
 
   /**
+   * TODO: Возможно на ините и не нужно грузить роли пользователя, но пока оставили.
    * Функция получает роли пользователя.
    */
   private async getUserRolesAsync() {
-    (await this._projectManagmentService.getUserRolesAsync())
+    (await this._projectManagmentService.getUserRolesAsync(+this.projectId, +this._projectManagmentService.companyId))
       .subscribe((response: any) => {
         console.log("Роли пользователя", response);
+        this.aUserRoles = response;
 
-        this.checkUserRolesAsync(response);
+        this.checkUserRolesAsync();
       });
   };
 
   /**
-   * Функция првоеряет роли пользователя.
-   * @param userRoles - Роли пользователя.
+   * Функция проверяет роли пользователя.
+   * @param role - Роль для проверки.
    */
-  private async checkUserRolesAsync(userRoles: any[]) {
-    // Проверяем роль на отображение кнопки исключения.
-    this.isExistsRoleUserExclude = userRoles.find((x: any) => x.roleSysName == "UserExclude").isEnabled;
+  private async checkUserRolesAsync(role: string | null = null): Promise<boolean> {
+    if (this.aUserRoles.find((x: any) => x.roleSysName == role).isEnabled) {
+      if (role == "ProjectInvite") {
+        await this.getProjectInvitesAsync();
+        await this.getAvailableInviteVacanciesAsync();
+      }
 
-    // Роль на отображение таблицы ролей.
-    if (userRoles.find((x: any) => x.roleSysName == "ProjectInvite").isEnabled) {
-      this.isInviteRole = true;
-
-      await this.getProjectInvitesAsync();
-      await this.getAvailableInviteVacanciesAsync();
+      this.isNotRoles = false;
+      return this.isNotRoles;
     }
+
+    this.isNotRoles = true;
+    return this.isNotRoles;
   };
 }

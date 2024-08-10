@@ -4,7 +4,6 @@ import { forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
 import {DomSanitizer} from "@angular/platform-browser";
-import {FixationStrategyInput} from "../../../task/models/input/fixation-strategy-input";
 import {ChangeTaskStatusInput} from "../../../task/models/input/change-task-status-input";
 
 @Component({

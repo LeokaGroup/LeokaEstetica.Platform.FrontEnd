@@ -135,7 +135,7 @@
         <p-table [value]="settingUsers.value"
                  [(selection)]="selectedUser"
                  dataKey="userId"
-                 [paginator]="settingUsers.value.length > 0"
+                 [paginator]="settingUsers.value?.length > 0"
                  [rows]="10"
                  styleClass="p-datatable-gridlines"
                  responsiveLayout="scroll">
@@ -172,7 +172,7 @@
           </ng-template>
 
           <ng-template pTemplate="summary">
-            Всего: {{settingUsers.value.length}}
+            Всего: {{settingUsers.value?.length}}
           </ng-template>
 
           <ng-template pTemplate="emptymessage">
@@ -197,7 +197,7 @@
         <p-table [value]="settingUserRoles.value"
                  [(selection)]="selectedUser"
                  dataKey="userId"
-                 [paginator]="settingUserRoles.value.length > 0"
+                 [paginator]="settingUserRoles.value?.length > 0"
                  [rows]="10"
                  styleClass="p-datatable-gridlines"
                  responsiveLayout="scroll">
@@ -240,7 +240,7 @@
           </ng-template>
 
           <ng-template pTemplate="summary">
-            Всего: {{settingUserRoles.value.length}}
+            Всего: {{settingUserRoles.value?.length}}
           </ng-template>
 
           <ng-template pTemplate="emptymessage">
@@ -258,21 +258,16 @@
   </div>
 
   <!-- Приглашения. -->
-  <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowInvite">
+  <div class="block-scrum col-lg-9 mt-3">
     <h3>Приглашения</h3>
     <div class="scrum">
       <div>
-
-        <div class="forbidden-feature">
-          <h5>У вас нет доступа к данному разделу</h5>
-        </div>
-
-        <p-tabView *ngIf="isInviteRole">
+        <p-tabView>
           <p-tabPanel header="Активные">
-            <p-table [value]="projectInvites$.value"
+            <p-table [value]="projectInvites$?.value"
                      [(selection)]="selectedInvite"
                      dataKey="userId"
-                     [paginator]="projectInvites$.value.length > 0"
+                     [paginator]="projectInvites$.value?.length > 0"
                      [rows]="10"
                      styleClass="p-datatable-gridlines"
                      responsiveLayout="scroll">
@@ -313,7 +308,7 @@
               </ng-template>
 
               <ng-template pTemplate="summary">
-                            Всего: {{projectInvites$.value.length}}
+                            Всего: {{projectInvites$.value?.length}}
               </ng-template>
 
               <ng-template pTemplate="emptymessage">
@@ -420,5 +415,18 @@
   <ng-template pTemplate="footer">
     <!--  TODO: Будет еще переход в раздел оплата.  -->
     <p-button label="Понятно" styleClass="p-button-text" (click)="isVisibleAccessModal=!isVisibleAccessModal"></p-button>
+  </ng-template>
+</p-dialog>
+
+<!-- Диалог запрета к разделу, если нет нужных ролей. -->
+<p-dialog header="Нет доступа"
+          [(visible)]="isNotRoles"
+          [breakpoints]="{'960px': '75vw'}"
+          [style]="{width: '50vw'}"
+          [draggable]="false"
+          [resizable]="false">
+  <p>У вас нет доступа к данному разделу. Пожалуйста, обратитесь к своему администратору проекта.</p>
+  <ng-template pTemplate="footer">
+    <p-button (click)="isNotRoles=false" label="Понятно" styleClass="p-button-text"></p-button>
   </ng-template>
 </p-dialog>

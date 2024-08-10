@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../services/project-managment.service";
+
 @Component({
   selector: "",
   templateUrl: "./workspace.component.html",
@@ -43,14 +44,16 @@ export class WorkSpaceComponent implements OnInit {
   /**
    * Функция переходит в раб.пространство проекта из общего пространства.
    * Проверка фиксации настроек проекта уже произведена ранее в компоненте хидера.
+   * @param projectId - Id проекта.
+   * @param companyId - Id компании.
    */
-  public async onRouteWorkSpaceAsync(projectId: number) {
-    await this.getBuildProjectSpaceSettingsAsync(projectId);
+  public async onRouteWorkSpaceAsync(projectId: number, companyId: number) {
+    await this.getBuildProjectSpaceSettingsAsync(projectId, companyId);
   };
 
   // TODO: Дублируется.
-  private async getBuildProjectSpaceSettingsAsync(projectId: number) {
-    (await this._projectManagmentService.getBuildProjectSpaceSettingsAsync(projectId))
+  private async getBuildProjectSpaceSettingsAsync(projectId: number, companyId: number) {
+    (await this._projectManagmentService.getBuildProjectSpaceSettingsAsync(projectId, companyId))
       .subscribe(_ => {
         console.log("projectWorkspaceSettings", this.projectWorkspaceSettings$.value);
 
@@ -63,7 +66,8 @@ export class WorkSpaceComponent implements OnInit {
         else {
           this._router.navigate(["/project-management/start"], {
             queryParams: {
-              projectId
+              projectId,
+              companyId
             }
           });
         }

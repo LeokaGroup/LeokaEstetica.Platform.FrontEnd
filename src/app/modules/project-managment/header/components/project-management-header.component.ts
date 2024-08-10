@@ -130,6 +130,9 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
     (await this._projectManagmentService.getSelectedWorkSpaceAsync(projectId))
       .subscribe(_ => {
         console.log("Выбранное раб.пространство: ", this._projectManagmentService.selectedWorkSpace$.value);
+
+        this._projectManagmentService.companyId = this._projectManagmentService.selectedWorkSpace$.value.companyId;
+
         if (this.selectedWorkSpace$.value.projectManagementName) {
           this.updateBreadcrumbLabel(this.selectedWorkSpace$.value.projectManagementName);
         }
