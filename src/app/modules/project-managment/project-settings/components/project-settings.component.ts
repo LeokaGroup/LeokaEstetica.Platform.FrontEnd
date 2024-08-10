@@ -149,6 +149,7 @@ export class ProjectSettingsComponent implements OnInit {
   featureForbiddenText: string = "";
   isNotRoles: boolean = false;
   aUserRoles: any[] = [];
+  isNotRolesAccessModal: boolean = false;
 
   public async ngOnInit() {
     forkJoin([
@@ -156,6 +157,8 @@ export class ProjectSettingsComponent implements OnInit {
       await this.getUserRolesAsync(),
       await this.getFileUserAvatarAsync()
     ]).subscribe();
+
+    this.isShowProfile = true;
   };
 
   private async checkUrlParams() {
@@ -394,6 +397,7 @@ export class ProjectSettingsComponent implements OnInit {
    * Функция получает роли пользователя.
    */
   private async getUserRolesAsync() {
+    debugger;
     (await this._projectManagmentService.getUserRolesAsync(+this.projectId, +this._projectManagmentService.companyId))
       .subscribe((response: any) => {
         console.log("Роли пользователя", response);
@@ -415,10 +419,12 @@ export class ProjectSettingsComponent implements OnInit {
       }
 
       this.isNotRoles = false;
+      this.isNotRolesAccessModal = false;
       return this.isNotRoles;
     }
 
     this.isNotRoles = true;
+    this.isNotRolesAccessModal = true;
     return this.isNotRoles;
   };
 }
