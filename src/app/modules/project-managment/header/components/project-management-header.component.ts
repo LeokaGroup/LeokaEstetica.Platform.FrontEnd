@@ -287,11 +287,13 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
 
   public onSelectTask(event: any) {
     let projectId = this.projectId;
+    let companyId: number = this._projectManagmentService.companyId;
 
     this._router.navigate(["/project-management/space/details"], {
       queryParams: {
         projectId,
-        taskId: event.projectTaskId
+        taskId: event.projectTaskId,
+        companyId
       }
     });
 

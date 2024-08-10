@@ -187,13 +187,15 @@ export class SpaceComponent implements OnInit {
      */
     public onSelectTask(projectTaskId: string, taskTypeId: number) {
         let projectId = this.selectedProjectId;
+        let companyId: number = this._projectManagmentService.companyId;
 
         localStorage["t_t_i"] = taskTypeId;
 
         this._router.navigate(["/project-management/space/details"], {
             queryParams: {
                 projectId,
-                taskId: projectTaskId
+                taskId: projectTaskId,
+                companyId
             }
         });
     };

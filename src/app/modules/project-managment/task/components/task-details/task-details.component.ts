@@ -95,7 +95,11 @@ export class TaskDetailsComponent implements OnInit {
           label: 'Удалить задачу',
           icon: 'pi pi-times',
           command: async () => {
-            await this.onRemoveProjectTaskAsync();
+            await this.checkUserRolesAsync("ProjectRemoveTask");
+
+            if (!this.isNotRoles) {
+              await this.onRemoveProjectTaskAsync();
+            }
           },
           visible: true
         }],
@@ -147,10 +151,14 @@ export class TaskDetailsComponent implements OnInit {
     aAddedTaskSprint: any[] = [];
     selectedTask: any;
     aEpicTasks: any[] = [];
+    isNotRoles: boolean = false;
+    aUserRoles: any[] = [];
+    isNotRolesAccessModal: boolean = false;
 
   public async ngOnInit() {
     forkJoin([
       this.checkUrlParams(),
+      await this.getUserRolesAsync(),
       await this.getProjectTaskDetailsAsync(),
       await this.getProjectTagsAsync(),
       await this.getTaskLinkDefaultAsync(),
@@ -682,11 +690,13 @@ export class TaskDetailsComponent implements OnInit {
 
     public onSelectTaskLink(fullTaskId: string) {
       let projectId = this.projectId;
+      let companyId: number = this._projectManagmentService.companyId;
 
       this._router.navigate(["/project-management/space/details"], {
         queryParams: {
           projectId,
-          taskId: fullTaskId
+          taskId: fullTaskId,
+          companyId
         }
       });
     };
@@ -904,5 +914,34 @@ export class TaskDetailsComponent implements OnInit {
   public onHandleComment(comment: string) {
     console.log("onHandleComment", comment);
     this.comment = comment;
+  };
+
+  /**
+   * Функция получает роли пользователя.
+   */
+  private async getUserRolesAsync() {
+    (await this._projectManagmentService.getUserRolesAsync(+this.projectId, +this._projectManagmentService.companyId))
+      .subscribe((response: any) => {
+        console.log("Роли пользователя", response);
+        this.aUserRoles = response;
+      });
+  };
+
+  /**
+   * Функция проверяет роли пользователя.
+   * @param role - Роль для проверки.
+   */
+  private async checkUserRolesAsync(role: string | null = null): Promise<boolean> {
+    if (this.aUserRoles.find((x: any) => x.roleSysName == role).isEnabled) {
+      this.isNotRoles = false;
+      this.isNotRolesAccessModal = false;
+
+      return this.isNotRoles;
+    }
+
+    this.isNotRoles = true;
+    this.isNotRolesAccessModal = true;
+
+    return this.isNotRoles;
   };
 }

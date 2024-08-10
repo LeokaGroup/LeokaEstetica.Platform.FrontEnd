@@ -1118,6 +1118,19 @@
         </ng-template>
 </p-dialog>
 
+<!-- Диалог запрета к разделу, если нет нужных ролей. -->
+<p-dialog header="Нет доступа"
+          [(visible)]="isNotRolesAccessModal"
+          [breakpoints]="{'960px': '75vw'}"
+          [style]="{width: '50vw'}"
+          [draggable]="false"
+          [resizable]="false">
+  <p>У вас нет доступа к данной функции. Пожалуйста, обратитесь к своему администратору проекта.</p>
+  <ng-template pTemplate="footer">
+    <p-button (click)="isNotRolesAccessModal=!isNotRolesAccessModal" label="Понятно" styleClass="p-button-text"></p-button>
+  </ng-template>
+</p-dialog>
+
 <left-panel
   (mouseleave)="onClosePanelMenu()"
 ></left-panel>
