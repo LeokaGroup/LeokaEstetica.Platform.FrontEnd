@@ -397,7 +397,6 @@ export class ProjectSettingsComponent implements OnInit {
    * Функция получает роли пользователя.
    */
   private async getUserRolesAsync() {
-    debugger;
     (await this._projectManagmentService.getUserRolesAsync(+this.projectId, +this._projectManagmentService.companyId))
       .subscribe((response: any) => {
         console.log("Роли пользователя", response);
