@@ -989,9 +989,9 @@ export class ProjectManagmentService {
   }
 
   /**
-   * Функция получает список пользователей для настроек.
+   * Функция получает список пользователей, которые состоят в проекте.
    */
-  public async getSettingUsersAsync(projectId: number) {
+  public async getCompanyProjectUsersAsync(projectId: number) {
     return await this._http.get(this.apiUrl + `/project-management-settings/company-project-users?projectId=${projectId}`).pipe(
       tap(data => this.settingUsers.next(data))
     );

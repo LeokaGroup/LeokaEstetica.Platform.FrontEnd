@@ -54,7 +54,6 @@ export class ProjectSettingsComponent implements OnInit {
   isShowInvite: boolean = false;
   selectedInvite: any;
   isProjectInvite: boolean = false;
-  isExistsRoleUserExclude: boolean = false;
 
   items: any[] = [{
     label: 'Общие',
@@ -257,10 +256,10 @@ export class ProjectSettingsComponent implements OnInit {
   };
 
   /**
-   * Функция получает список пользователей для настроек.
+   * Функция получает список пользователей, которые состоят в проекте.
    */
   private async getSettingUsersAsync() {
-    (await this._projectManagmentService.getSettingUsersAsync(+this.projectId))
+    (await this._projectManagmentService.getCompanyProjectUsersAsync(+this.projectId))
       .subscribe(async _ => {
         console.log("Список пользователей: ", this.settingUsers.value);
       });
@@ -384,8 +383,16 @@ export class ProjectSettingsComponent implements OnInit {
   /**
    * Функция отменяет приглашение.
    * @param userId - Id пользователя.
+   * @param isOwner - Признак владельца проекта.
+   * Нужно для лечения побочного эффекта с атрибутом disabled, когда все равно по клику происходило исключение.
    */
-  public async onRemoveUserProjectTeamAsync(userId: number) {
+  public async onRemoveUserProjectTeamAsync(userId: number, isOwner: boolean) {
+    if (isOwner) {
+      this._messageService.add({ severity: "warn", summary: "Внимание", detail: "Нельзя исключить владельца проекта." });
+
+      return;
+    }
+
     (await this._projectManagmentService.removeUserProjectTeamAsync(userId, +this.projectId))
       .subscribe(async (_: any) => {
         await this.getSettingUsersAsync();
