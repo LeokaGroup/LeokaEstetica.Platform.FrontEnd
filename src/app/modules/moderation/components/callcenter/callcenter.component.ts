@@ -89,7 +89,6 @@ export class CallCenterComponent implements OnInit {
         {
             label: 'Проекты',
             items: [
-                [
                     {
                         label: 'Проекты на модерации',
                         items: [{
@@ -106,13 +105,11 @@ export class CallCenterComponent implements OnInit {
                             }
                         }]
                     }
-                ]
             ]
         },
         {
             label: 'Вакансии',
             items: [
-                [
                     {
                         label: 'Вакансии на модерации',
                         items: [{
@@ -130,12 +127,10 @@ export class CallCenterComponent implements OnInit {
                         }]
                     }
                 ]
-            ]
         },
         {
             label: 'Коммерция',
             items: [
-                [
                     {
                         label: 'Платежи',
                         items: [{
@@ -151,12 +146,10 @@ export class CallCenterComponent implements OnInit {
                         }]
                     }
                 ]
-            ]
         },
         {
             label: 'Анкеты',
             items: [
-                [
                     {
                         label: 'Анкеты на модерации',
                         items: [{
@@ -174,12 +167,10 @@ export class CallCenterComponent implements OnInit {
                         }]
                     }
                 ]
-            ]
         },
         {
             label: 'Журнал модерации',
             items: [
-                [
                     {
                         label: 'Замечания проектов',
                         items: [
@@ -284,12 +275,10 @@ export class CallCenterComponent implements OnInit {
                         }]
                     }                    
                 ]
-            ]
         },
         {
             label: 'Тикеты',
             items: [
-                [
                     {
                         label: 'Все тикеты',
                         items: [{
@@ -309,12 +298,10 @@ export class CallCenterComponent implements OnInit {
                         }]
                     }                 
                 ]
-            ]
         },
         {
             label: 'Комментарии',
             items: [
-                [
                     {
                         label: 'Комментарии проектов на модерации',
                         items: [{
@@ -334,7 +321,6 @@ export class CallCenterComponent implements OnInit {
                         }]
                     }                 
                 ]
-            ]
         }
     ];
 
@@ -980,4 +966,3 @@ export class CallCenterComponent implements OnInit {
         });
     };
 }
-
