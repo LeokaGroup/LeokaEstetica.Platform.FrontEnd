@@ -161,10 +161,10 @@
               <td>{{u.role}}</td>
               <td>{{u.lastAutorization}}</td>
               <td>
-                <p-button (click)="onRemoveUserProjectTeamAsync(u.userId)"
+                <p-button (click)="onRemoveUserProjectTeamAsync(u.userId, u.isOwner)"
                           label="Исключить"
                           styleClass="p-button-text p-button-danger"
-                          *ngIf="isExistsRoleUserExclude">
+                          [disabled]="!u.isOwner">
 
                 </p-button>
               </td>
