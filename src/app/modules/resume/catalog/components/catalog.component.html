@@ -1,8 +1,8 @@
 <p-toast></p-toast>
 
 <div class="d-flex justify-content-center">
-  <p-message severity="warning" text="{{availableText}}" *ngIf="!isAvailable">
-  </p-message>
+  <p-messages [(value)]="availableText" *ngIf="!isAvailable" [closable]="false">
+  </p-messages>
 </div>
 
 <div class="d-flex block-profile space-top-80">
