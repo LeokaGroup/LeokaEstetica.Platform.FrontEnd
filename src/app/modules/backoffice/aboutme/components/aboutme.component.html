@@ -137,10 +137,10 @@
 
             <div [ngClass]="{'control-required-field':isModeEdit}"
                   class="control-input-text-worksheet">
-                <input type="text"
+                <p-inputMask
+                        mask="99999999999"
                         class="p-inputtext-sm input-control-worksheet"
                         placeholder="Номер телефона"
-                        pInputText
                         autocomplete="new-password"
                         [(ngModel)]="phoneNumber"
                         *ngIf="isModeEdit" />
