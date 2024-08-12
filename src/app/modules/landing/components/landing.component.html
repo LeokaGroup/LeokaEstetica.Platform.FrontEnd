@@ -246,15 +246,19 @@
     <h3 class="mt-5 mb-5">{{knowledgeLanding$.value?.title}}</h3>
   </div>
 
-  <div class="">
+  <div>
     <p-accordion>
-      <div *ngFor="let item of knowledgeLanding$.value.knowledgeLanding">
-        <p-accordionTab header="{{item.subCategoryThemeTitle}}">
+      @for (item of knowledgeLanding$.value.knowledgeLanding; track item) {
+        <p-accordionTab>
+          <ng-template pTemplate="header">
+            {{ item.subCategoryThemeTitle }}
+          </ng-template>
+          
           <div class="text-content">
-            {{item.subCategoryThemeText}}
+            {{ item.subCategoryThemeText }}
           </div>
         </p-accordionTab>
-      </div>
+      }
     </p-accordion>
   </div>
 </div>
