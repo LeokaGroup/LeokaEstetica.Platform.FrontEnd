@@ -17,7 +17,7 @@
     </div>
 
     <div class="worksheet-panel">
-      <p-panel header="Просмотр информации о вакансии" [toggleable]="true">
+      <p-panel header="{{isEditMode ? 'Изменение информации о вакансии' : 'Просмотр информации о вакансии'}}" [toggleable]="true">
         <div class="d-flex mt-3">
             <div class="control-input-text-worksheet">
               <div class="d-flex">
@@ -99,11 +99,17 @@
                                       <strong>Описание вакансии</strong>
                                   </div>
                                 <div *ngIf="isEditMode; else blockFive">
-                                      <p-editor
-                                      [(ngModel)]="vacancyText"
-                                      [style]="{'height':'320px'}"
-                                      [readonly]="!isEditMode"
-                                      class="control-textarea-big-width"></p-editor>
+                                  <textarea input-control-worksheet
+                                            rows="5"
+                                            cols="100"
+                                            pInputTextarea
+                                            [autoResize]="true"
+                                            autocomplete="new-password"
+                                            placeholder="Описание вакансии"
+                                            [(ngModel)]="vacancyText"
+                                            class="control-textarea"
+                                            [disabled]="!isEditMode">
+                                    </textarea>
                                   </div>
                                 <ng-template #blockFive>
                                   <div>
@@ -125,11 +131,17 @@
                                     <strong>Условия</strong>
                                 </div>
                               <div *ngIf="isEditMode">
-                                    <p-editor
-                                    [(ngModel)]="conditions"
-                                    [style]="{'height':'320px'}"
-                                    [readonly]="!isEditMode"
-                                    class="control-textarea-big-width"></p-editor>
+                                <textarea input-control-worksheet
+                                          rows="5"
+                                          cols="100"
+                                          pInputTextarea
+                                          [autoResize]="true"
+                                          autocomplete="new-password"
+                                          placeholder="Условия"
+                                          [(ngModel)]="conditions"
+                                          class="control-textarea"
+                                          [disabled]="!isEditMode">
+                                    </textarea>
                                 </div>
 
                                 <div *ngIf="!isEditMode">
@@ -150,11 +162,17 @@
                                   <strong>Требования</strong>
                               </div>
                             <div *ngIf="isEditMode">
-                                  <p-editor
-                                  [(ngModel)]="demands"
-                                  [style]="{'height':'320px'}"
-                                  [readonly]="!isEditMode"
-                                  class="control-textarea-big-width"></p-editor>
+                              <textarea input-control-worksheet
+                                        rows="5"
+                                        cols="100"
+                                        pInputTextarea
+                                        [autoResize]="true"
+                                        autocomplete="new-password"
+                                        placeholder="Требования"
+                                        [(ngModel)]="demands"
+                                        class="control-textarea"
+                                        [disabled]="!isEditMode">
+                                    </textarea>
                               </div>
 
                               <div *ngIf="!isEditMode">
