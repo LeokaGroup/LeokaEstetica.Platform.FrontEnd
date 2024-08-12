@@ -277,13 +277,4 @@ export class AboutmeComponent implements OnInit {
                 window.location.href = response.url;
             });
     };
-
-    /**
-     * Функция блокирует ввод нечисловых значений в input типа number.
-     */
-    public blockNotNumber = (e: KeyboardEvent) => {
-      if (['e', 'E', '+', '-'].includes(e.key)) {
-        e.preventDefault();
-      }
-    };
 }
