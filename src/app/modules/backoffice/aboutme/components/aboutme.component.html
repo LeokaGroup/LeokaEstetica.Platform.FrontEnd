@@ -400,14 +400,18 @@
 
       </div>
 
-      <div class="d-flex worksheet-line worksheet-panel mb-3">
-            <div class="control-input-text-worksheet">
-              <button type="button"
-                      class="btn btn-primary button-action-pur-control-worksheet"
-                      (click)="onSaveProfileInfoAsync()">
-                Сохранить
-              </button>
-            </div>
+      @if (isModeEdit) {
+        <div class="d-flex worksheet-line worksheet-panel mb-3">
+          <div class="control-input-text-worksheet">
+            <button 
+              type="button"
+              class="btn btn-primary button-action-pur-control-worksheet"
+              (click)="onSaveProfileInfoAsync()"
+            >
+              Сохранить
+            </button>
+          </div>
         </div>
+      }
   </div>
 </div>
