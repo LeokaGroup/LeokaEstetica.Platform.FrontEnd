@@ -92,7 +92,12 @@
                 <div class="d-flex justify-content-between">
                   <div class="col-lg-2 laconic-text">{{t.taskTypeName}}</div>
                   <div class="col-lg-2">{{t.fullProjectTaskId}}</div>
-                  <div class="col-lg-2 laconic-text">{{t.name}}</div>
+                  <div
+                    class="col-lg-2 laconic-text"
+                    [pTooltip]="t.nameTooltip"
+                    [tooltipDisabled]="!t.nameTooltip || t.nameTooltip === t.name"
+                    tooltipPosition="bottom"
+                  >{{t.name}}</div>
                   <div class="col-lg-2 laconic-text">{{t.priorityName}}</div>
                   <div class="col-lg-2 laconic-text scrum-info-line">
                     <div>
