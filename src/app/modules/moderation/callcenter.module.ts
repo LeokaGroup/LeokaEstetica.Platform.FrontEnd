@@ -18,10 +18,10 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import {TabViewModule} from 'primeng/tabview';
-import { MegaMenuModule } from 'primeng/megamenu';
 import { CallCenterRoutingModule } from './callcenter-routing.module';
 import { CallCenterComponent } from './components/callcenter/callcenter.component';
 import { SidebarModule } from 'primeng/sidebar';
+import { MenubarModule } from 'primeng/menubar';
 
 @NgModule({
     declarations: [
@@ -48,8 +48,8 @@ import { SidebarModule } from 'primeng/sidebar';
         CallCenterRoutingModule,
         TabViewModule,
         ReactiveFormsModule,
-        MegaMenuModule,
-        SidebarModule
+        SidebarModule,
+        MenubarModule
     ],
 
     exports: [],

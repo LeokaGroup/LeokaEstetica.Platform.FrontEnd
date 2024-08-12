@@ -2,7 +2,10 @@
 
 <div class="block-moderation">
   <div>
-    <p-megaMenu [model]="items"></p-megaMenu>
+    <p-menubar
+      [model] = "items"
+      autoDisplay = "false"
+    ></p-menubar>
 
     <!-- Проекты. -->
     <div *ngIf="isProjectsModeration" class="mt-5">
