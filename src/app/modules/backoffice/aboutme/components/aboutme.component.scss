@@ -16,6 +16,15 @@
     justify-content: space-between;
 }
 
+:host ::ng-deep .p-inputnumber {
+    width: 200px;
+}
+
+:host ::ng-deep .p-inputnumber-button {
+    height: 12px;
+}
+
+:host ::ng-deep .p-inputnumber-input,
 .input-control-worksheet {
     width: 200px;
     outline: none;

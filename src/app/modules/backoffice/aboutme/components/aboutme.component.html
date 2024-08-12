@@ -277,15 +277,20 @@
             <!-- TODO: Передавать это поле на бэк, когда там будет оно добавлено. -->
             <div [ngClass]="{'control-required-field':isModeEdit}"
                   class="control-input-text-worksheet">
-                <input type="number"
-                        class="p-inputtext-sm input-control-worksheet"
-                        placeholder="Опыт (стаж)"
-                        pInputText
-                        autocomplete="new-password"
-                        min="0"
-                        (keydown)="blockNotNumber($event)"
-                        [(ngModel)]="workExperience"
-                        *ngIf="isModeEdit"  />
+                <p-inputNumber
+                    *ngIf="isModeEdit"
+                    [(ngModel)]="workExperience"
+                    class="p-inputtext-sm"
+                    placeholder="Опыт (стаж)"
+                    mode="decimal"
+                    [min]="0"
+                    [max]="100"
+                    [minFractionDigits]="0"
+                    [maxFractionDigits]="1"
+                    [useGrouping]="false"
+                    [showButtons]="true"
+                />
+
                 <div *ngIf="isModeView">
                   <label>
                     <strong>Опыт (стаж)</strong>
