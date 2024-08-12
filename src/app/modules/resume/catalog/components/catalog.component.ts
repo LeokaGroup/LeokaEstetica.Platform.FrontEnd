@@ -26,7 +26,12 @@ export class CatalogResumeComponent implements OnInit {
     searchText: string = "";
     page: number = 0;
     rowsCount: number = 0;
-    availableText: string = "Для доступа к базе резюме Вам нужно приобрести один из платных тарифов \"Бизнес\" или \"Профессиональный\".";
+    availableText: any[] = [
+      {
+        severity: "warn" ,
+        summary: "Для доступа к базе резюме Вам нужно приобрести один из платных тарифов \"Стартовый\", \"Основной\" или \"Комплексный\".",
+      }
+    ];
     isAvailable: boolean = false;
 
     public async ngOnInit() {
