@@ -111,6 +111,25 @@
           </div>
         </div>
 
+        @if (isVisibleDeleteButton) {
+          <div class="d-flex mt-3">
+            <div class="control-input-text-worksheet">
+              <div>
+                  <strong>Публичный проект</strong>
+              </div>
+              @if (isEditMode) {
+              <div>
+                <p-inputSwitch 
+                    [(ngModel)]="selectedProject$.value.isPublic">
+                </p-inputSwitch>
+              </div>
+              } @else {
+                {{selectedProject$.value?.isPublic ? 'Включено' : 'Выключено'}}
+              }
+            </div>
+          </div>
+        }
+
         <div class="d-flex mt-3">
           <div class="control-input-text-worksheet">
             <div class="control-input-text-worksheet">
