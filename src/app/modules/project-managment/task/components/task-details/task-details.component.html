@@ -806,12 +806,12 @@
       </div>
     </div>
 
-    <p-table [value]="taskDetails$.value?.epicTasks"
+    <p-table [value]="allEpicTasks"
              styleClass="p-datatable-sm"
              [tableStyle]="{'min-width': '50rem'}"
              [rows]="10"
              responsiveLayout="scroll"
-             [paginator]="taskDetails$.value?.epicTasks?.length > 0">
+             [paginator]="allEpicTasks.length > 0">
       <ng-template pTemplate="header">
         <tr>
           <th>Ключ</th>
