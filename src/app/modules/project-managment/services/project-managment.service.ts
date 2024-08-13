@@ -252,8 +252,8 @@ export class ProjectManagmentService {
     * Функция получает теги проекта для выбора.
     * @returns - Список тегов.
     */
-     public async getProjectTagsAsync() {
-        return await this._http.get(this.apiUrl + "/project-management/project-tags").pipe(
+     public async getProjectTagsAsync(projectId: number) {
+        return await this._http.get(this.apiUrl + `/project-management/project-tags?projectId=${projectId}`).pipe(
             tap(data => this.projectTags$.next(data))
         );
     };

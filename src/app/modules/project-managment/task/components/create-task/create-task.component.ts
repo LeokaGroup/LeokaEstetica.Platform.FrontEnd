@@ -139,7 +139,7 @@ export class CreateTaskComponent implements OnInit {
     * @returns - Список тегов.
     */
        public async onGetProjectTagsAsync() {
-        (await this._projectManagmentService.getProjectTagsAsync())
+        (await this._projectManagmentService.getProjectTagsAsync(this.projectId))
             .subscribe(_ => {
                 console.log("Теги для выбора: ", this.projectTags$.value);
             });
