@@ -778,10 +778,7 @@
           [draggable]="false"
           [resizable]="false">
         <p>Удалить проект {{selectedProject$.value?.projectName}}?</p>
-        <p>При удалении проекта будут удалены привязанные к проекту вакансии,
-          сообщения чата проекта,
-          все участники команды проекта и
-          комментарии к проекту.</p>
+        <p>При удалении проекта будут удалены все связанные с ним данные</p>
         <ng-template pTemplate="footer">
         <p-button (click)="isDeleteProject=false" label="Отменить" styleClass="p-button-text"></p-button>
         <p-button (click)="onDeleteProjectAsync()" label="Удалить" styleClass="p-button-danger p-button-text"></p-button>
