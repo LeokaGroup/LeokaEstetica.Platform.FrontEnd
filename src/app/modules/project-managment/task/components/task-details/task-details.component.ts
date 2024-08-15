@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { forkJoin } from "rxjs";
+import { forkJoin, tap } from "rxjs";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
 import { ChangeTaskDetailsInput } from "../../models/input/change-task-details-input";
 import { ChangeTaskNameInput } from "../../models/input/change-task-name-input";
@@ -150,7 +150,10 @@ export class TaskDetailsComponent implements OnInit {
     isSearchByTaskDescription: boolean = false;
     aAddedTaskSprint: any[] = [];
     selectedTask: any;
-    aEpicTasks: any[] = [];
+    // массив тасок для добавления при сохранении эпика
+    toAddEpicTasks: any[] = [];
+    // массив тасок для отображения
+    allEpicTasks: any[] = [];
     isNotRoles: boolean = false;
     aUserRoles: any[] = [];
     isNotRolesAccessModal: boolean = false;
@@ -188,6 +191,12 @@ export class TaskDetailsComponent implements OnInit {
     */
     private async getProjectTaskDetailsAsync() {
       (await this._projectManagmentService.getTaskDetailsByTaskIdAsync(+this.projectId, this.projectTaskId, TaskDetailTypeEnum[localStorage["t_t_i"]]))
+        .pipe(
+          tap( async (v: any) => {
+            // заполнение массива тасок для эпика
+            if (v.hasOwnProperty('epicTasks')) this.allEpicTasks = [...v.epicTasks];
+          })
+        )
         .subscribe(async _ => {
           console.log("Детали задачи: ", this.taskDetails$.value);
 
@@ -821,12 +830,12 @@ export class TaskDetailsComponent implements OnInit {
     (await this._projectManagmentService.getEpicTasksAsync(this.projectId, +this.projectTaskId))
       .subscribe(async (_: any) => {
         console.log("Задачи эпика: ", this.epicTasks$.value);
-        this.aEpicTasks = this.epicTasks$.value.epicTasks;
+        this.allEpicTasks = this.epicTasks$.value.epicTasks;
       });
   };
 
   /**
-   * Функция удаляет задачу из таблицы на фронте.
+   * Функция удаляет задачу из таблицы ТОЛЬКО на фронте.
    * @param projectTaskId - Id задачи в рамках проекта.
    */
   public onRemoveAddedTask(projectTaskId: number) {
@@ -834,8 +843,8 @@ export class TaskDetailsComponent implements OnInit {
       return;
     }
 
-    let deletedItemIdx = this.aEpicTasks.findIndex(x => x.projectTaskId == projectTaskId);
-    this.aEpicTasks.splice(deletedItemIdx, 1);
+    this.toAddEpicTasks = [...this.toAddEpicTasks.filter(v => v.projectTaskId != projectTaskId)];
+    this.allEpicTasks = [...this.allEpicTasks.filter(v => v.projectTaskId != projectTaskId)];
   };
 
   /**
@@ -855,7 +864,8 @@ export class TaskDetailsComponent implements OnInit {
    * Функция выбирает задачу и добавляет в массив задач эпика для дальнейшего включения этих задач в эпик.
    */
   public onSelectTask() {
-    this.aEpicTasks.push(this.selectedTask);
+    this.allEpicTasks = [...this.allEpicTasks, this.selectedTask];
+    this.toAddEpicTasks = [...this.toAddEpicTasks, this.selectedTask];
   };
 
   /**
@@ -864,7 +874,7 @@ export class TaskDetailsComponent implements OnInit {
   public async onIncludeEpicTaskAsync() {
     let includeTaskEpicInput = new IncludeTaskEpicInput();
     includeTaskEpicInput.epicId = this.projectTaskId;
-    includeTaskEpicInput.projectTaskIds = this.aEpicTasks.map(x => x.fullProjectTaskId);
+    includeTaskEpicInput.projectTaskIds = this.toAddEpicTasks.map(x => x.fullProjectTaskId);
     includeTaskEpicInput.projectId = +this.projectId;
 
     (await this._projectManagmentService.includeTaskEpicAsync(includeTaskEpicInput))
