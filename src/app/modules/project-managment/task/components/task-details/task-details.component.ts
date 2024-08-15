@@ -358,7 +358,7 @@ export class TaskDetailsComponent implements OnInit {
   * @returns - Список тегов.
   */
     private async getProjectTagsAsync() {
-        (await this._projectManagmentService.getProjectTagsAsync())
+        (await this._projectManagmentService.getProjectTagsAsync(this.projectId))
             .subscribe(_ => {
                 console.log("Теги для выбора: ", this.projectTags$.value);
             });
