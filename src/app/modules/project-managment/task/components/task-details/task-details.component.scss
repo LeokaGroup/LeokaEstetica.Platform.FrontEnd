@@ -158,3 +158,8 @@ p-inplace {
   max-width: 100%;
   word-break: break-all;
 }
+
+.search-task-wrapper {
+  position: relative;
+  z-index: 1;
+}

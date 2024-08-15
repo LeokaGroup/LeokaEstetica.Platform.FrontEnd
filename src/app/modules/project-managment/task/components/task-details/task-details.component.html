@@ -755,7 +755,7 @@
   </div>
 
   <div class="mt-3 block-sprint" *ngIf="taskDetails$.value.taskTypeId == 4">
-    <div class="mb-3">
+    <div class="mb-3 search-task-wrapper">
       <p-autoComplete [(ngModel)]="selectedTask"
                       [suggestions]="epicTasks$.value"
                       (completeMethod)="onSearchIncludeEpicTaskAsync($event)"
