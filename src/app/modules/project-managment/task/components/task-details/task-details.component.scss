@@ -43,6 +43,10 @@
   padding: 5px;
 }
 
+:host ::ng-deep .epic-task-search-input .p-autocomplete-input {
+  width: 500px;
+}
+
 .task-actions {
   margin: 0 10px 0 0;
 }
