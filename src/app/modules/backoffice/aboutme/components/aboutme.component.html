@@ -125,7 +125,7 @@
                         autocomplete="new-password"
                         [(ngModel)]="email"
                         *ngIf="isModeEdit" />
-                        <br>
+                        <br *ngIf="isModeEdit">
                 <small *ngIf="!isModeView">При изменении Email, Вам нужно будет авторизоваться повторно.<br> Вы будете перенаправлены автоматически.</small>
                 <div *ngIf="isModeView">
                   <label>
@@ -408,7 +408,7 @@
       @if (isModeEdit) {
         <div class="d-flex worksheet-line worksheet-panel mb-3">
           <div class="control-input-text-worksheet">
-            <button 
+            <button
               type="button"
               class="btn btn-primary button-action-pur-control-worksheet"
               (click)="onSaveProfileInfoAsync()"
