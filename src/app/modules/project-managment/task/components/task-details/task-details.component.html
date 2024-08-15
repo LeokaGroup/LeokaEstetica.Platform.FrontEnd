@@ -139,7 +139,7 @@
         </button>
       </div>
 
-      <div class="col-lg-4 mt-3" *ngIf="taskDetails$.value.taskTypeId == 1 || taskDetails$.value.taskTypeId == 2">
+      <div class="col-lg-4 mt-3" *ngIf="isAgileBlockVisible">
         <strong>Agile</strong>
         <form class="d-flex line" [formGroup]="formEpic">
           <label class="control-label-task-item">Эпик:</label>

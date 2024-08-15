@@ -157,6 +157,7 @@ export class TaskDetailsComponent implements OnInit {
     isNotRoles: boolean = false;
     aUserRoles: any[] = [];
     isNotRolesAccessModal: boolean = false;
+    isAgileBlockVisible: boolean = false;
 
   public async ngOnInit() {
     forkJoin([
@@ -213,6 +214,15 @@ export class TaskDetailsComponent implements OnInit {
                 x.visible = false;
               }
             });
+          }
+
+          // Устанавливаем видимость блока Agile
+          if ([ TaskDetailTypeEnum.Error,
+                TaskDetailTypeEnum.History,
+                TaskDetailTypeEnum.Task 
+              ].includes(this.taskDetails$.value.taskTypeId)) 
+          {
+            this.isAgileBlockVisible = true;
           }
 
           (await this._projectManagmentService.getAvailableEpicsAsync(+this.projectId))
