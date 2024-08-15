@@ -46,23 +46,19 @@
     <div class="worksheet-panel">
       <p-panel header="Контактная информация" [toggleable]="true">
         <div class="block-contact">
-            <div [ngClass]="{'control-input-text-star':isModeEdit, 'control-required-field':isModeEdit}"
-                  class="control-input-text-worksheet" >
-                <input type="text"
-                        class="p-inputtext-sm input-control-worksheet "
-                        placeholder="Фамилия"
-                        pInputText
-                        autocomplete="new-password"
-                        [(ngModel)]="lastName"
-                        *ngIf="isModeEdit" />
-               <div *ngIf="isModeView">
-                 <label>
-                   <strong>Фамилия</strong>
-                 </label>
-               </div>
-               <div>
-                <span *ngIf="isModeView">{{profileInfo$.value.lastName}}</span>
-               </div>
+          <div [ngClass]="{'control-input-text-star':isModeEdit, 'control-required-field':isModeEdit}"
+               class="control-input-text-worksheet" >
+            <label class="d-flex flex-column">
+              <strong>Фамилия</strong>
+              <input type="text"
+                     class="p-inputtext-sm input-control-worksheet "
+                     placeholder="Фамилия"
+                     pInputText
+                     autocomplete="new-password"
+                     [(ngModel)]="lastName"
+                     *ngIf="isModeEdit" />
+              <span *ngIf="isModeView">{{profileInfo$.value.lastName}}</span>
+            </label>
 
                 <!-- <div class="field-checkbox">
                     <p-checkbox [(ngModel)]="isShortFirstName"
@@ -80,145 +76,158 @@
                         <small>Отображать только первую букву фамилии</small>
                     </label>
                 </div> -->
-            </div>
+          </div>
 
-            <div [ngClass]="{'control-input-text-star':isModeEdit, 'control-required-field':isModeEdit}"
-                  class="control-input-text-worksheet">
-                <input type="text"
-                        class="p-inputtext-sm input-control-worksheet"
-                        placeholder="Имя"
-                        pInputText
-                        autocomplete="new-password"
-                        [(ngModel)]="firstName"
-                        *ngIf="isModeEdit" />
-                <div *ngIf="isModeView">
-                  <label>
-                    <strong>Имя</strong>
-                  </label>
-                </div>
-                <span *ngIf="isModeView">{{profileInfo$.value.firstName}}</span>
-            </div>
+          <div [ngClass]="{'control-input-text-star':isModeEdit, 'control-required-field':isModeEdit}"
+               class="control-input-text-worksheet">
+            <label class="d-flex flex-column">
+              <strong>Имя</strong>
+              <input type="text"
+                     class="p-inputtext-sm input-control-worksheet"
+                     placeholder="Имя"
+                     pInputText
+                     autocomplete="new-password"
+                     [(ngModel)]="firstName"
+                     *ngIf="isModeEdit" />
+              <span *ngIf="isModeView">{{profileInfo$.value.firstName}}</span>
+            </label>
+          </div>
 
-            <div class="control-input-text-worksheet ">
-                <input type="text"
-                        class="p-inputtext-sm input-control-worksheet"
-                        placeholder="Отчество"
-                        pInputText
-                        autocomplete="new-password"
-                        [(ngModel)]="patronymic"
-                        *ngIf="isModeEdit" />
-                <div *ngIf="isModeView">
-                  <label>
-                    <strong>Отчество</strong>
-                  </label>
-                </div>
-                <span *ngIf="isModeView">{{profileInfo$.value.patronymic}}</span>
-            </div>
+          <div class="control-input-text-worksheet ">
+            <label class="d-flex flex-column">
+              <strong>Отчество</strong>
+              <input type="text"
+                     class="p-inputtext-sm input-control-worksheet"
+                     placeholder="Отчество"
+                     pInputText
+                     autocomplete="new-password"
+                     [(ngModel)]="patronymic"
+                     *ngIf="isModeEdit" />
+              <span *ngIf="isModeView">{{profileInfo$.value.patronymic}}</span>
+            </label>
+          </div>
         </div>
 
         <div class="d-flex worksheet-line justify-content-between">
-            <div class="control-input-text-worksheet">
-                <input type="text"
-                        class="p-inputtext-sm input-control-worksheet"
-                        placeholder="Email"
-                        pInputText
-                        autocomplete="new-password"
-                        [(ngModel)]="email"
-                        *ngIf="isModeEdit" />
-                        <br>
-                <small *ngIf="!isModeView">При изменении Email, Вам нужно будет авторизоваться повторно.<br> Вы будете перенаправлены автоматически.</small>
-                <div *ngIf="isModeView">
-                  <label>
-                    <strong>Email</strong>
-                  </label>
-                </div>
-                <span *ngIf="isModeView">{{profileInfo$.value.email}}</span>
-            </div>
+          <div class="control-input-text-worksheet">
+            <label class="d-flex flex-column">
+              <strong>Email</strong>
+              <input type="text"
+                     class="p-inputtext-sm input-control-worksheet"
+                     placeholder="Email"
+                     pInputText
+                     autocomplete="new-password"
+                     [(ngModel)]="email"
+                     *ngIf="isModeEdit" />
+              <span *ngIf="isModeView">{{profileInfo$.value.email}}</span>
+              <small *ngIf="!isModeView">При изменении Email, Вам нужно будет авторизоваться повторно. Вы&nbsp;будете перенаправлены автоматически.</small>
+            </label>
+          </div>
 
-            <div [ngClass]="{'control-required-field':isModeEdit}"
-                  class="control-input-text-worksheet">
-                <p-inputMask
-                        mask="99999999999"
-                        class="p-inputtext-sm input-control-worksheet"
-                        placeholder="Номер телефона"
-                        autocomplete="new-password"
-                        [(ngModel)]="phoneNumber"
-                        *ngIf="isModeEdit" />
-                <div *ngIf="isModeView">
-                  <label>
-                    <strong>Номер телефона</strong>
-                  </label>
-                </div>
-                <span *ngIf="isModeView">{{(profileInfo$.value.phoneNumber == null || profileInfo$.value.phoneNumber == '') ? 'Не указан' : profileInfo$.value.phoneNumber}}</span>
-            </div>
+          <div [ngClass]="{'control-required-field':isModeEdit}"
+               class="control-input-text-worksheet">
+            <label class="d-flex flex-column">
+              <strong>Номер телефона</strong>
+              <p-inputMask
+                mask="99999999999"
+                class="p-inputtext-sm input-control-worksheet"
+                placeholder="Номер телефона"
+                autocomplete="new-password"
+                [(ngModel)]="phoneNumber"
+                *ngIf="isModeEdit" />
+              <span *ngIf="isModeView">
+                {{
+                  (profileInfo$.value.phoneNumber == null || profileInfo$.value.phoneNumber == '')
+                  ? 'Не указан'
+                  : profileInfo$.value.phoneNumber
+                }}
+              </span>
+            </label>
+          </div>
         </div>
 
         <div class="d-flex worksheet-line justify-content-between">
-            <div class="control-input-text-worksheet">
-                <input type="text"
-                        class="p-inputtext-sm input-control-worksheet"
-                        placeholder="Telegram"
-                        pInputText
-                        autocomplete="new-password"
-                        [(ngModel)]="telegram"
-                        *ngIf="isModeEdit" />
-                <div *ngIf="isModeView">
-                  <label>
-                    <strong>Telegram</strong>
-                  </label>
-                </div>
-                <span *ngIf="isModeView">{{(profileInfo$.value.telegram == '' || profileInfo$.value.telegram == null) ? 'Не указан' : profileInfo$.value.telegram}}</span>
-            </div>
+          <div class="control-input-text-worksheet">
+            <label class="d-flex flex-column">
+              <strong>Telegram</strong>
+              <input type="text"
+                     class="p-inputtext-sm input-control-worksheet"
+                     placeholder="Telegram"
+                     pInputText
+                     autocomplete="new-password"
+                     [(ngModel)]="telegram"
+                     *ngIf="isModeEdit" />
+              <span *ngIf="isModeView">
+                {{
+                  (profileInfo$.value.telegram == '' || profileInfo$.value.telegram == null)
+                  ? 'Не указан'
+                  : profileInfo$.value.telegram
+                }}
+              </span>
+            </label>
+          </div>
 
-            <div class="control-input-text-worksheet">
-                <input type="text"
-                        class="p-inputtext-sm input-control-worksheet"
-                        placeholder="WhatsApp"
-                        pInputText
-                        autocomplete="new-password"
-                        [(ngModel)]="whatsApp"
-                        *ngIf="isModeEdit" />
-                <div *ngIf="isModeView">
-                  <label>
-                    <strong>WhatsApp</strong>
-                  </label>
-                </div>
-                <span *ngIf="isModeView">{{(profileInfo$.value.whatsApp == '' || profileInfo$.value.whatsApp == null) ? 'Не указан' : profileInfo$.value.whatsApp}}</span>
-            </div>
+          <div class="control-input-text-worksheet">
+            <label class="d-flex flex-column">
+              <strong>WhatsApp</strong>
+              <input type="text"
+                      class="p-inputtext-sm input-control-worksheet"
+                      placeholder="WhatsApp"
+                      pInputText
+                      autocomplete="new-password"
+                      [(ngModel)]="whatsApp"
+                      *ngIf="isModeEdit" />
+              <span *ngIf="isModeView">
+                {{
+                  (profileInfo$.value.whatsApp == '' || profileInfo$.value.whatsApp == null)
+                  ? 'Не указан'
+                  : profileInfo$.value.whatsApp
+                }}
+              </span>
+            </label>
+          </div>
 
-            <div class="control-input-text-worksheet">
-                <input type="text"
-                        class="p-inputtext-sm input-control-worksheet"
-                        placeholder="ВКонтакте"
-                        pInputText
-                        autocomplete="new-password"
-                        [(ngModel)]="vkontakte"
-                        *ngIf="isModeEdit" />
-                <div *ngIf="isModeView">
-                  <label>
-                    <strong>Ссылка ВКонтакте</strong>
-                  </label>
-                </div>
-                <span *ngIf="isModeView">{{(profileInfo$.value.vkontakte == '' || profileInfo$.value.vkontakte == null) ? 'Не указана' : profileInfo$.value.vkontakte}}</span>
-            </div>
+          <div class="control-input-text-worksheet">
+            <label class="d-flex flex-column">
+              <strong>Ссылка ВКонтакте</strong>
+              <input type="text"
+                     class="p-inputtext-sm input-control-worksheet"
+                     placeholder="ВКонтакте"
+                     pInputText
+                     autocomplete="new-password"
+                     [(ngModel)]="vkontakte"
+                     *ngIf="isModeEdit" />
+              <span *ngIf="isModeView">
+                {{
+                  (profileInfo$.value.vkontakte == '' || profileInfo$.value.vkontakte == null)
+                  ? 'Не указана'
+                  : profileInfo$.value.vkontakte
+                }}
+              </span>
+            </label>
+          </div>
         </div>
 
         <div class="d-flex worksheet-line justify-content-between">
-            <div class="control-input-text-worksheet">
-                <input type="text"
-                        class="p-inputtext-sm input-control-worksheet"
-                        placeholder="Другая соц.сеть"
-                        pInputText
-                        autocomplete="new-password"
-                        [(ngModel)]="otherLink"
-                        *ngIf="isModeEdit" />
-                <div *ngIf="isModeView">
-                  <label>
-                    <strong>Другая ссылка</strong>
-                  </label>
-                </div>
-                <span *ngIf="isModeView">{{(profileInfo$.value.otherLink == '' || profileInfo$.value.otherLink == null) ? 'Не указана' : profileInfo$.value.otherLink}}</span>
-            </div>
+          <div class="control-input-text-worksheet">
+            <label class="d-flex flex-column">
+              <strong>Другая ссылка</strong>
+              <input type="text"
+                      class="p-inputtext-sm input-control-worksheet"
+                      placeholder="Другая соц.сеть"
+                      pInputText
+                      autocomplete="new-password"
+                      [(ngModel)]="otherLink"
+                      *ngIf="isModeEdit" />
+              <span *ngIf="isModeView">
+                {{
+                  (profileInfo$.value.otherLink == '' || profileInfo$.value.otherLink == null)
+                  ? 'Не указана'
+                  : profileInfo$.value.otherLink
+                }}
+              </span>
+            </label>
+          </div>
         </div>
 <!--
         <div class="d-flex worksheet-line">
