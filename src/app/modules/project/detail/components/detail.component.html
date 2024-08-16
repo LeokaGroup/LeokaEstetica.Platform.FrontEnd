@@ -857,7 +857,9 @@
                                     [multiple]="false"
                                     (onSelect)="onSelectProjectMember($event)"
                                     placeholder="Введите для поиска пользователя"
-                                    [disabled]="!selectedInviteVariant">
+                                    [disabled]="!selectedInviteVariant"
+                                    [showEmptyMessage]="true"
+                                    emptyMessage="Результатов не найдено">
                     </p-autoComplete>
                   </span>
                 </div>
