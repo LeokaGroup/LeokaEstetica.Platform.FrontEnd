@@ -268,7 +268,10 @@ export class AppComponent implements OnInit {
     "SendNotifySuccessUpdateRoles",
 
     // Уведомление о дубликате проекта.
-    "SendNotificationWarningDublicateUserProject"
+    "SendNotificationWarningDublicateUserProject",
+
+    //Уведомление об успешном создании тега проекта.
+    "SendNotifySuccessCreateProjectTag"
   ];
 
   public $allFeed = new BehaviorSubject<any>(null);
