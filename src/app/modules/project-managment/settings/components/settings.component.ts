@@ -75,7 +75,10 @@ export class SettingsProjectManagmentComponent implements OnInit {
         userTaskTagInput.projectId = this.projectId;
 
         (await this._projectManagmentService.createUserTaskTagAsync(userTaskTagInput))
-            .subscribe(_ => {});
+            .subscribe(_ => {
+              this.tagName = '';
+              this.tagDescription = '';
+            });
     };
 
     /**
