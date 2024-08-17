@@ -82,6 +82,7 @@
 
 :host ::ng-deep .p-inplace-content {
   input {
+    height: 35px;
     width: 100%;
   }
 
@@ -89,7 +90,7 @@
     width: 320px;
   }
 }
-
+  
 :host ::ng-deep .p-inplace span {
   font-size: 14px;
 }
