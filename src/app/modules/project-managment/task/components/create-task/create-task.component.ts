@@ -180,14 +180,24 @@ export class CreateTaskComponent implements OnInit {
             });
     };
 
-    public onSelectTaskTag() {
-        console.log("selectedTag", this.selectedTag);
-
-        let isDublicate = Array.from(this.aSelectedTags).find(x => x.tagId == this.selectedTag.tagId);
-        if (isDublicate == undefined) {
-            this.aSelectedTags.add(this.selectedTag);
-        }
+    /**
+    * Функция добавляет выбранный тэг в список.
+    */
+    onSelectTaskTag() {
+      if (this.selectedTag) this.aSelectedTags.add(this.selectedTag);
     };
+
+    /**
+    * Функция добавляет выбранный тэг в список.
+    * @param tagId - Id удаляемого тэга
+    */
+    onRemoveTag(tagId: number) {
+      this.aSelectedTags.forEach(tag => {
+        if (tag.tagId === tagId) {
+          this.aSelectedTags.delete(tag);
+        }
+      });
+    }
 
     /**
     * Функция получает список исполнителей для выбора для полей "Исполнитель" и "Наблюдатели".
