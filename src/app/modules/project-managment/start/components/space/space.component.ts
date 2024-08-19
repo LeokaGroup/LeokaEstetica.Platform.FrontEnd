@@ -1,6 +1,6 @@
 import {Component, OnInit, Sanitizer} from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { forkJoin } from "rxjs";
+import { firstValueFrom, forkJoin, tap } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
 import {DomSanitizer} from "@angular/platform-browser";
@@ -26,6 +26,7 @@ export class SpaceComponent implements OnInit {
 
     public readonly headerItems$ = this._projectManagmentService.headerItems$;
     public readonly workSpaceConfig$ = this._projectManagmentService.workSpaceConfig$;
+    readonly projectTags$ = this._projectManagmentService.projectTags$;
 
     aHeaderItems: any[] = [];
     aPanelItems: any[] = [];
@@ -33,6 +34,7 @@ export class SpaceComponent implements OnInit {
     selectedStrategy: string = "";
     selectedTemplateId: number = 0;
     aStatuses: any[] = [];
+    tagNames: any[] = [];
     isLow: boolean = false;
     isMedium: boolean = false;
     isHigh: boolean = false;
@@ -72,9 +74,17 @@ export class SpaceComponent implements OnInit {
         forkJoin([
             this.checkUrlParams(),
             await this.getHeaderItemsAsync(),
+            await this.getProjectTagsAsync(),
             await this.getConfigurationWorkSpaceBySelectedTemplateAsync()
         ]).subscribe();
     };
+
+    async getProjectTagsAsync() {
+      firstValueFrom((await this._projectManagmentService.getProjectTagsAsync(this.selectedProjectId))
+        .pipe(
+          tap((v) => this.tagNames = <any[]>v)
+        ));
+    }
 
     /**
   * Функция получает список элементов меню хидера (верхнее меню).
