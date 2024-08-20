@@ -10,6 +10,7 @@ import { FilterProjectInput } from '../detail/models/input/filter-project-input'
 import { InviteProjectTeamMemberInput } from '../detail/models/input/invite-project-team-member-input';
 import { ProjectResponseInput } from '../detail/models/input/project-response-input';
 import { UpdateProjectInput } from '../detail/models/input/update-project-input';
+import {CatalogProjectInput} from "../models/catalog-project-input";
 
 /**
  * Класс сервиса проектов.
@@ -46,8 +47,8 @@ export class ProjectService {
     * Функция получает список проектов каталога.
     * @returns - Список проектов каталога.
     */
-    public async loadCatalogProjectsAsync() {
-        return await this.http.get(API_URL.apiUrl + "/projects/catalog").pipe(
+    public async loadCatalogProjectsAsync(catalogProjectInput: CatalogProjectInput) {
+        return await this.http.post(API_URL.apiUrl + "/projects/catalog", catalogProjectInput).pipe(
             tap(data => this.catalog$.next(data))
         );
     };
@@ -193,16 +194,6 @@ export class ProjectService {
      public async sendInviteProjectTeamAsync(inviteProjectTeamMemberInput: InviteProjectTeamMemberInput) {
         return await this.http.post(API_URL.apiUrl + "/projects/invite-project-team", inviteProjectTeamMemberInput).pipe(
             tap(data => this.invitedProjectTeamMember$.next(data))
-        );
-    };
-
-    /**
-     * Функция фильтрует проекты.
-     * @returns - Список проектов после фильтрации.
-     */
-     public async filterProjectsAsync(filterProjectInput: FilterProjectInput) {
-        return await this.http.get(ProjectApiBuilder.createProjectsFilterApi(filterProjectInput)).pipe(
-            tap(data => this.catalog$.next(data))
         );
     };
 
