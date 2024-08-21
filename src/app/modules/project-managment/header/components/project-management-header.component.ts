@@ -46,14 +46,10 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   searchByDescription: boolean = false;
   aHeaderItems: any[] = [];
   aPanelItems: any[] = [];
-  aDisabledHeaderPanelItems: any[] = [
-    "Create",
-    "Filters",
-    "Export"
-  ];
   isVisibleDropDownMenu: boolean = false;
   isVisibleAccessModal = false;
   isVisibleHeader: boolean = false;
+  isEnabledSearch: boolean = true;
 
   public async ngOnInit() {
     forkJoin([
@@ -63,20 +59,11 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   };
 
   ngDoCheck() {
-    // Если роут не Kanban или Scrum, то дизейблим пункты меню стратегия представления и настройки.
-    let projectId = this.projectId;
-    const disableButtonSettings = this._router.url.indexOf(`projectId=${projectId}`) < 0;
-    const disableButtonStrategy = this._router.url !== `/project-management/space?projectId=${projectId}`;
-
-    this.disableButtonIfNeeded('Strategy', disableButtonStrategy);
-    this.disableButtonIfNeeded('Settings', disableButtonSettings);
-
-    this.aHeaderItems.forEach(x => {
-      if (this.aDisabledHeaderPanelItems.includes((x.id))
-        && this._router.url == "/project-management/workspaces") {
-        x.disabled = true;
-      }
-    });
+    // деактивация меню до входа в проект
+    if (this._router.url === "/project-management/workspaces") {
+      this.aHeaderItems.forEach(x => x.disabled = true);
+      this.isEnabledSearch = false;
+    }
 
     // Скрываем хидер УП.
     this.isVisibleHeader = this._router.url.includes(`project-management`);

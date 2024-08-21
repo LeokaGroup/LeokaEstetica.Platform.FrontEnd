@@ -13,7 +13,12 @@
 
       <ng-template pTemplate="end">
         <!-- Поиск задачи. -->
-        <div class="search" pTooltip="Поиск" tooltipPosition="bottom" (click)="isSearch = true">
+        <div 
+          class="search"
+          pTooltip="Поиск"
+          tooltipPosition="bottom"
+          (click)="isSearch = (true && isEnabledSearch)"
+        >
           <i class="pi pi-search"></i>
         </div>
       </ng-template>
