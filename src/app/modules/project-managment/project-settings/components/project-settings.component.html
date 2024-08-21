@@ -345,6 +345,7 @@
           </div>
           <div>
             <p-dropdown [options]="availableInviteVacancies"
+                        [disabled]="isVacancyInvite"
                         [(ngModel)]="selectedInviteVacancy"
                         optionLabel="vacancyName"
                         emptyMessage="Нет данных">
