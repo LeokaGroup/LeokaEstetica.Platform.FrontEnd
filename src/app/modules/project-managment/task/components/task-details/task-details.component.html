@@ -182,10 +182,7 @@
                         (onChange)="onChangeAvailableSprintsAsync(selectedSprint.sprintId)"
                         formControlName="sprintName">
             </p-dropdown>
-            <button pButton pRipple label="Перейти к спринту"
-                    class="p-button-link">
-
-            </button>
+            <p-button label="Перейти к спринту" [text]="true" (click)="onRouteSprint()" [disabled]="!selectedSprint" />
           </div>
         </form>
       </div>

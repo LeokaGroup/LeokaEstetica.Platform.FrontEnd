@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, NavigationExtras, Router } from "@angular/router";
 import { firstValueFrom, forkJoin, tap } from "rxjs";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
 import { ChangeTaskDetailsInput } from "../../models/input/change-task-details-input";
@@ -827,6 +827,21 @@ export class TaskDetailsComponent implements OnInit {
       queryParams: {
         projectId,
         epicId
+      }
+    });
+  };
+
+  /**
+   * Функция выполняет переход на спринт.
+   */
+  onRouteSprint() {
+    let projectId = this.projectId;
+    let projectSprintId = this.selectedSprint.projectSprintId;
+
+    this._router.navigate(["/project-management/sprints/sprint/details"], {
+      queryParams: {
+        projectId,
+        projectSprintId
       }
     });
   };
