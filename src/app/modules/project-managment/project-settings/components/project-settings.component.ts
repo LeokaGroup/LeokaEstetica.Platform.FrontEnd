@@ -122,6 +122,9 @@ export class ProjectSettingsComponent implements OnInit {
             this.isShowUserRoles = false;
             this.isShowInvite = true;
 
+            await this.getProjectInvitesAsync();
+            this.isProjectInvite = false;
+
             await this.checkUserRolesAsync("ProjectInvite");
           }
         }
