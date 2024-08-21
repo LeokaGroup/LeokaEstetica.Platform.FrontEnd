@@ -193,7 +193,10 @@ export class DetailProjectComponent implements OnInit {
             model.Demands = this.selectedStage.demands;
         }
 
-        (await this._projectService.updateProjectAsync(model))
+        forkJoin([
+            (await this._projectService.updateProjectAsync(model)),
+            (await this._projectService.setVisibleProjectAsync(this.projectId, this.selectedProject$.value.isPublic))
+        ])
         .subscribe(_ => {
             console.log("Обновили проект: ", this.selectedProject$.value);
         });
