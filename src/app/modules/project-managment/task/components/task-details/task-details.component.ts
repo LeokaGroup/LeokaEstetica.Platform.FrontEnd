@@ -348,16 +348,16 @@ export class TaskDetailsComponent implements OnInit {
     /**
      * Функция сохраняет описание задачи.
      */
-     public async onSaveTaskDetailsAsync(taskDetails: string) {
-        this.isActiveTaskDetails = !this.isActiveTaskDetails;
+    public async onSaveTaskDetailsAsync() {
+      this.isActiveTaskDetails = false;
 
-        let modelInput = new ChangeTaskDetailsInput();
-        modelInput.projectId = this.projectId;
-        modelInput.taskId = this.projectTaskId;
-        modelInput.changedTaskDetails = taskDetails;
+      const modelInput: ChangeTaskDetailsInput = {
+        projectId: this.projectId,
+        taskId: this.projectTaskId,
+        changedTaskDetails: this.taskDetails,
+      };
 
-        (await this._projectManagmentService.saveTaskDetailsAsync(modelInput))
-            .subscribe(_ => {});
+      (await this._projectManagmentService.saveTaskDetailsAsync( modelInput )).subscribe();
     };
 
     /**
