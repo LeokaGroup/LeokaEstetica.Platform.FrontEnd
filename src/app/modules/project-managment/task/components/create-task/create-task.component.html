@@ -71,7 +71,7 @@
 
           <div *ngFor="let t of aSelectedTags">
             <div class="tag">
-              <p-chip label="{{t.tagName}}" [removable]="true"></p-chip>
+              <p-chip label="{{t.tagName}}" [removable]="true" (onRemove)="onRemoveTag(t.tagId)"></p-chip>
             </div>
           </div>
           </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, NavigationExtras, Router } from "@angular/router";
-import { forkJoin, tap } from "rxjs";
+import { firstValueFrom, forkJoin, tap } from "rxjs";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
 import { ChangeTaskDetailsInput } from "../../models/input/change-task-details-input";
 import { ChangeTaskNameInput } from "../../models/input/change-task-name-input";
@@ -18,6 +18,7 @@ import {IncludeTaskEpicInput} from "../../models/input/include-task-epic-input";
 import {UpdateTaskSprintInput} from "../../models/input/update-task-sprint-input";
 import {SearchAgileObjectTypeEnum} from "../../../../enums/search-agile-object-type-enum";
 import { TaskDetailTypeEnum } from "src/app/modules/enums/task-detail-type";
+import { MessageService } from "primeng/api";
 
 @Component({
     selector: "",
@@ -31,6 +32,7 @@ import { TaskDetailTypeEnum } from "src/app/modules/enums/task-detail-type";
 export class TaskDetailsComponent implements OnInit {
   constructor(private readonly _projectManagmentService: ProjectManagmentService,
               private readonly _router: Router,
+              private readonly _messageService: MessageService,
               private readonly _activatedRoute: ActivatedRoute) {
   }
 
@@ -55,6 +57,7 @@ export class TaskDetailsComponent implements OnInit {
     public readonly includeEpic$ = this._projectManagmentService.includeEpic$;
     public readonly sprintTask$ = this._projectManagmentService.sprintTask$;
     public readonly epicTasks$ = this._projectManagmentService.epicTasks$;
+    readonly companyId = this._projectManagmentService.companyId;
 
     projectId: any;
     projectTaskId: any;
@@ -159,7 +162,11 @@ export class TaskDetailsComponent implements OnInit {
     isNotRolesAccessModal: boolean = false;
 
   public async ngOnInit() {
-    forkJoin([
+    this.initData();
+  }
+
+  async initData() {
+    firstValueFrom(forkJoin([
       this.checkUrlParams(),
       await this.getUserRolesAsync(),
       await this.getProjectTaskDetailsAsync(),
@@ -172,8 +179,8 @@ export class TaskDetailsComponent implements OnInit {
       await this.getTaskFilesAsync(),
       await this.getTaskCommentsAsync(),
       await this.getAvailableSprintsAsync()
-    ]).subscribe();
-  };
+    ]));
+  }
 
   private async checkUrlParams() {
     this._activatedRoute.queryParams
@@ -341,16 +348,16 @@ export class TaskDetailsComponent implements OnInit {
     /**
      * Функция сохраняет описание задачи.
      */
-     public async onSaveTaskDetailsAsync(taskDetails: string) {
-        this.isActiveTaskDetails = !this.isActiveTaskDetails;
+    public async onSaveTaskDetailsAsync() {
+      this.isActiveTaskDetails = false;
 
-        let modelInput = new ChangeTaskDetailsInput();
-        modelInput.projectId = this.projectId;
-        modelInput.taskId = this.projectTaskId;
-        modelInput.changedTaskDetails = taskDetails;
+      const modelInput: ChangeTaskDetailsInput = {
+        projectId: this.projectId,
+        taskId: this.projectTaskId,
+        changedTaskDetails: this.taskDetails,
+      };
 
-        (await this._projectManagmentService.saveTaskDetailsAsync(modelInput))
-            .subscribe(_ => {});
+      (await this._projectManagmentService.saveTaskDetailsAsync( modelInput )).subscribe();
     };
 
     /**
@@ -697,18 +704,19 @@ export class TaskDetailsComponent implements OnInit {
         });
     };
 
-    public onSelectTaskLink(fullTaskId: string) {
+    /**
+     * Функция выполняет переход на задачу.
+     * @param fullTaskId - Id задачи.
+     */
+    public async onSelectTaskLink(taskId: string) {
       let projectId = this.projectId;
       let companyId: number = this._projectManagmentService.companyId;
 
-      this._router.navigate(["/project-management/space/details"], {
-        queryParams: {
-          projectId,
-          taskId: fullTaskId,
-          companyId
-        }
-      });
-    };
+      await this._router.navigate([], { queryParams: { projectId, taskId, companyId } });
+      localStorage["t_t_i"] = undefined; // taskTypeId;
+      this.initData();
+      window.scrollTo(0, 0);
+    }
 
   /**
    * Функция создает комментарий к задаче.
@@ -881,6 +889,12 @@ export class TaskDetailsComponent implements OnInit {
   public onSelectTask() {
     this.allEpicTasks = [...this.allEpicTasks, this.selectedTask];
     this.toAddEpicTasks = [...this.toAddEpicTasks, this.selectedTask];
+    const { taskTypeName } = this.selectedTask;
+    this._messageService.add({ 
+      severity: 'warn',
+      summary: "Внимание!",
+      detail: `${taskTypeName} успешно добавлена в эпик. Для применения изменений нужно сохранить`,
+    });
   };
 
   /**

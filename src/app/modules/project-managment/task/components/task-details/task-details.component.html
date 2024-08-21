@@ -319,12 +319,12 @@
            <div>
             <button pButton
                     pRipple
-                    icon="pi pi-times"
+                    icon="pi pi-check"
                     type="button"
                     label="Сохранить"
                     class="p-button-success p-button-text p-button-sm"
                     *ngIf="isActiveTaskDetails"
-                    (click)="onSaveTaskDetailsAsync(taskDetails)">
+                    (click)="onSaveTaskDetailsAsync()">
             </button>
 
             <button pButton

@@ -9,6 +9,12 @@
   //overflow-y: scroll;
 }
 
+.tags {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
 .block-task {
   overflow-x: scroll;
 

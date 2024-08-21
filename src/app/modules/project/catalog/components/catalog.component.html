@@ -35,7 +35,7 @@
            {{item.projectName}}
           </h3>
 
-          <div class="project-text project-text-wrap">            
+          <div class="project-text project-text-wrap">
             {{item.projectDetails}}
           </div>
 
@@ -72,7 +72,7 @@
                     [value]="item"
                     [(ngModel)]="selectedDate"
                     [inputId]="item.key"
-                    (onChange)="onFilterProjectsAsync()">
+                    (onChange)="onLoadCatalogProjectsAsync()">
         </p-checkbox>
         <label [for]="item.key">{{item.name}}</label>
       </div>
@@ -91,7 +91,7 @@
                     [(ngModel)]="isAnyVacancies"
                     [binary]="true"
                     [inputId]="item.key"
-                    (onChange)="onFilterProjectsAsync()">
+                    (onChange)="onLoadCatalogProjectsAsync()">
         </p-checkbox>
         <label [for]="item.key">{{item.name}}</label>
       </div>
@@ -109,12 +109,12 @@
                     [value]="item"
                     [(ngModel)]="selectedStage"
                     [inputId]="item.key"
-                    (onChange)="onFilterProjectsAsync()">
+                    (onChange)="onLoadCatalogProjectsAsync()">
         </p-checkbox>
         <label [for]="item.key">{{item.name}}</label>
       </div>
       </div>
     </div>
-    <button class="btn btn-secondary mt-3" (click)="onResetFilters()">Сбросить фильтры</button>
+    <button class="btn btn-secondary mt-3" (click)="onResetFiltersAsync()">Сбросить фильтры</button>
   </div>
 </div>

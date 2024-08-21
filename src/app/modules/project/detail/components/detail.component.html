@@ -111,6 +111,25 @@
           </div>
         </div>
 
+        @if (isVisibleDeleteButton) {
+          <div class="d-flex mt-3">
+            <div class="control-input-text-worksheet">
+              <div>
+                  <strong>Публичный проект</strong>
+              </div>
+              @if (isEditMode) {
+              <div>
+                <p-inputSwitch 
+                    [(ngModel)]="selectedProject$.value.isPublic">
+                </p-inputSwitch>
+              </div>
+              } @else {
+                {{selectedProject$.value?.isPublic ? 'Включено' : 'Выключено'}}
+              }
+            </div>
+          </div>
+        }
+
         <div class="d-flex mt-3">
           <div class="control-input-text-worksheet">
             <div class="control-input-text-worksheet">
@@ -806,21 +825,7 @@
           [draggable]="false"
           [resizable]="false">
           <div class="d-flex justify-content-around">
-            <div>
-              <div *ngFor="let variant of aProjectInviteVarians" class="field-checkbox mb-3 mt-3">
-                <p-radioButton [inputId]="variant.key"
-                                name="variant"
-                                [value]="variant"
-                                [(ngModel)]="selectedInviteVariant">
-
-                </p-radioButton>
-
-                <label [for]="variant.key">{{variant.name}}</label>
-              </div>
-
-
-            </div>
-
+            
             <div>
               <div>
                 <div class="mb-3 mt-3">
@@ -831,8 +836,6 @@
                   <p-dropdown [options]="availableInviteVacancies"
                               [(ngModel)]="selectedInviteVacancy"
                               optionLabel="vacancyName"
-                              [disabled]="!selectedInviteVariant
-                              || isVacancyInvite"
                               emptyMessage="Нет данных">
                   </p-dropdown>
                 </div>
@@ -857,7 +860,6 @@
                                     [multiple]="false"
                                     (onSelect)="onSelectProjectMember($event)"
                                     placeholder="Введите для поиска пользователя"
-                                    [disabled]="!selectedInviteVariant"
                                     [showEmptyMessage]="true"
                                     emptyMessage="Результатов не найдено">
                     </p-autoComplete>

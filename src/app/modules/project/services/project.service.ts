@@ -10,6 +10,7 @@ import { FilterProjectInput } from '../detail/models/input/filter-project-input'
 import { InviteProjectTeamMemberInput } from '../detail/models/input/invite-project-team-member-input';
 import { ProjectResponseInput } from '../detail/models/input/project-response-input';
 import { UpdateProjectInput } from '../detail/models/input/update-project-input';
+import {CatalogProjectInput} from "../models/catalog-project-input";
 
 /**
  * Класс сервиса проектов.
@@ -46,8 +47,8 @@ export class ProjectService {
     * Функция получает список проектов каталога.
     * @returns - Список проектов каталога.
     */
-    public async loadCatalogProjectsAsync() {
-        return await this.http.get(API_URL.apiUrl + "/projects/catalog").pipe(
+    public async loadCatalogProjectsAsync(catalogProjectInput: CatalogProjectInput) {
+        return await this.http.post(API_URL.apiUrl + "/projects/catalog", catalogProjectInput).pipe(
             tap(data => this.catalog$.next(data))
         );
     };
@@ -197,16 +198,6 @@ export class ProjectService {
     };
 
     /**
-     * Функция фильтрует проекты.
-     * @returns - Список проектов после фильтрации.
-     */
-     public async filterProjectsAsync(filterProjectInput: FilterProjectInput) {
-        return await this.http.get(ProjectApiBuilder.createProjectsFilterApi(filterProjectInput)).pipe(
-            tap(data => this.catalog$.next(data))
-        );
-    };
-
-    /**
      * Функция ищет проекты по поисковому запросу.
      * @param searchText - Поисковая строка.
      * @returns - Список проектов после поиска.
@@ -308,6 +299,17 @@ export class ProjectService {
   public async setProjectTeamMemberRoleAsync(userId: number, role: string, projectId: number) {
     return await this.http.patch(API_URL.apiUrl + `/projects/team-member-role?userId=${userId}&role=${role}&projectId=${projectId}`, {}).pipe(
       tap(_ => console.log("Роль успешно назначена"))
+    );
+  };
+
+  /**
+   * Функция задает видимость проекта.
+   * @param projectId - Id проекта.
+   * @param isPublic - видимость.
+   */
+  public async setVisibleProjectAsync(projectId: number, isPublic: boolean) {
+    return await this.http.patch(API_URL.apiUrl + `/projects/visible-project?projectId=${projectId}&isPublic=${isPublic}`, {}).pipe(
+      tap(_ => console.log("Видимость проекта успешно назначена"))
     );
   };
 }

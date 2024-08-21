@@ -93,12 +93,6 @@ export class DetailProjectComponent implements OnInit {
     isVisibleActionAddProjectArchive: boolean = false;
     isVisibleDeleteButton: boolean = false;
     isProjectInvite: boolean = false;
-    aProjectInviteVarians: any[] = [
-        // { name: 'По ссылке', key: 'Link' },
-        { name: 'По почте', key: 'Email' },
-        // { name: 'По номеру телефона', key: 'PhoneNumber' },
-        { name: 'По логину', key: 'Login' }
-    ];
     selectedInviteVariant: any;
     isVacancyInvite: boolean = false;
     availableAttachVacancies: any[] = [];
@@ -199,7 +193,10 @@ export class DetailProjectComponent implements OnInit {
             model.Demands = this.selectedStage.demands;
         }
 
-        (await this._projectService.updateProjectAsync(model))
+        forkJoin([
+            (await this._projectService.updateProjectAsync(model)),
+            (await this._projectService.setVisibleProjectAsync(this.projectId, this.selectedProject$.value.isPublic))
+        ])
         .subscribe(_ => {
             console.log("Обновили проект: ", this.selectedProject$.value);
         });
@@ -541,11 +538,12 @@ export class DetailProjectComponent implements OnInit {
      * Функция отправляет приглашение в команду проекта пользователю.
      */
     public async onSendInviteProjectTeamAsync() {
-        let inviteProjectTeamMemberInput = new InviteProjectTeamMemberInput();
-        inviteProjectTeamMemberInput.ProjectId = this.projectId;
-        inviteProjectTeamMemberInput.InviteText = this.selectedInviteUser;
-        inviteProjectTeamMemberInput.VacancyId = !this.isVacancyInvite ? this.selectedInviteVacancy.vacancyId : null;
-        inviteProjectTeamMemberInput.InviteType = this.selectedInviteVariant.key;
+        const inviteProjectTeamMemberInput: InviteProjectTeamMemberInput = {
+            ProjectId: +this.projectId,
+            InviteText: this.selectedInviteUser,
+            VacancyId: !this.isVacancyInvite ? this.selectedInviteVacancy.vacancyId : null,
+            InviteType: 'Email'
+        };
 
         (await this._projectService.sendInviteProjectTeamAsync(inviteProjectTeamMemberInput))
         .subscribe(async (response: any) => {
