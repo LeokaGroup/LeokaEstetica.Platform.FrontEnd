@@ -18,6 +18,7 @@ import {IncludeTaskEpicInput} from "../../models/input/include-task-epic-input";
 import {UpdateTaskSprintInput} from "../../models/input/update-task-sprint-input";
 import {SearchAgileObjectTypeEnum} from "../../../../enums/search-agile-object-type-enum";
 import { TaskDetailTypeEnum } from "src/app/modules/enums/task-detail-type";
+import { MessageService } from "primeng/api";
 
 @Component({
     selector: "",
@@ -31,6 +32,7 @@ import { TaskDetailTypeEnum } from "src/app/modules/enums/task-detail-type";
 export class TaskDetailsComponent implements OnInit {
   constructor(private readonly _projectManagmentService: ProjectManagmentService,
               private readonly _router: Router,
+              private readonly _messageService: MessageService,
               private readonly _activatedRoute: ActivatedRoute) {
   }
 
@@ -872,6 +874,12 @@ export class TaskDetailsComponent implements OnInit {
   public onSelectTask() {
     this.allEpicTasks = [...this.allEpicTasks, this.selectedTask];
     this.toAddEpicTasks = [...this.toAddEpicTasks, this.selectedTask];
+    const { taskTypeName } = this.selectedTask;
+    this._messageService.add({ 
+      severity: 'warn',
+      summary: "Внимание!",
+      detail: `${taskTypeName} успешно добавлена в эпик. Для применения изменений нужно сохранить`,
+    });
   };
 
   /**
