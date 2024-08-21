@@ -136,6 +136,7 @@ export class LeftPanelComponent implements OnInit, DoCheck {
     // отключаем Спринты, если не выбран проект
     const disableButtonSprints = this._router.url.indexOf(`projectId=${this.selectedProjectId}`) < 0;
     this.disableButtonIfNeeded('Sprints', disableButtonSprints);
+    this.disableButtonIfNeeded('Backlog', disableButtonSprints);
   };
 
   /**
