@@ -172,6 +172,9 @@ export class AboutmeComponent implements OnInit {
                 return;
             }
 
+            // при удачном сохранении убираем первое сообщение о неполной анкете
+            this.messages = [...this.messages.slice(1)];
+
             await this.getSelectedUserSkillsAsync();
             await this.getSelectedUserIntentsAsync();
 
