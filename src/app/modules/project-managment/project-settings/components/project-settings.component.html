@@ -161,12 +161,13 @@
               <td>{{u.role}}</td>
               <td>{{u.lastAutorization}}</td>
               <td>
-                <p-button (click)="onRemoveUserProjectTeamAsync(u.userId, u.isOwner)"
-                          label="Исключить"
-                          styleClass="p-button-text p-button-danger"
-                          [disabled]="!u.isOwner">
-
-                </p-button>
+                <p-button 
+                  *ngIf="this.selectedWorkSpace$.value.isOwner"
+                  (click)="onRemoveUserProjectTeamAsync(u.userId, u.isOwner)"
+                  label="Исключить"
+                  styleClass="p-button-text p-button-danger"
+                  [disabled]="!u.isOwner"
+                ></p-button>
               </td>
             </tr>
           </ng-template>

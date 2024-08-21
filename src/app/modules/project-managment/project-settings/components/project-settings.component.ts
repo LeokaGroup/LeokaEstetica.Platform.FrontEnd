@@ -38,6 +38,7 @@ export class ProjectSettingsComponent implements OnInit {
   public readonly settingUsers = this._projectManagmentService.settingUsers;
   public readonly settingUserRoles = this._projectManagmentService.settingUserRoles;
   public readonly projectInvites$ = this._projectManagmentService.projectInvites$;
+  public readonly selectedWorkSpace$ = this._projectManagmentService.selectedWorkSpace$;
   public readonly availableInviteVacancies$ = this._projectService.availableInviteVacancies$;
   public readonly checkAccess$ = this._accessService.checkAccess$;
 
