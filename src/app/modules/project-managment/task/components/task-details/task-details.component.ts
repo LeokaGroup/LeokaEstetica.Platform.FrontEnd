@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { forkJoin, tap } from "rxjs";
+import { firstValueFrom, forkJoin, tap } from "rxjs";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
 import { ChangeTaskDetailsInput } from "../../models/input/change-task-details-input";
 import { ChangeTaskNameInput } from "../../models/input/change-task-name-input";
@@ -55,6 +55,7 @@ export class TaskDetailsComponent implements OnInit {
     public readonly includeEpic$ = this._projectManagmentService.includeEpic$;
     public readonly sprintTask$ = this._projectManagmentService.sprintTask$;
     public readonly epicTasks$ = this._projectManagmentService.epicTasks$;
+    readonly companyId = this._projectManagmentService.companyId;
 
     projectId: any;
     projectTaskId: any;
@@ -159,7 +160,11 @@ export class TaskDetailsComponent implements OnInit {
     isNotRolesAccessModal: boolean = false;
 
   public async ngOnInit() {
-    forkJoin([
+    this.initData();
+  }
+
+  async initData() {
+    firstValueFrom(forkJoin([
       this.checkUrlParams(),
       await this.getUserRolesAsync(),
       await this.getProjectTaskDetailsAsync(),
@@ -172,8 +177,8 @@ export class TaskDetailsComponent implements OnInit {
       await this.getTaskFilesAsync(),
       await this.getTaskCommentsAsync(),
       await this.getAvailableSprintsAsync()
-    ]).subscribe();
-  };
+    ]));
+  }
 
   private async checkUrlParams() {
     this._activatedRoute.queryParams
@@ -697,18 +702,19 @@ export class TaskDetailsComponent implements OnInit {
         });
     };
 
-    public onSelectTaskLink(fullTaskId: string) {
+    /**
+     * Функция выполняет переход на задачу.
+     * @param fullTaskId - Id задачи.
+     */
+    public async onSelectTaskLink(taskId: string) {
       let projectId = this.projectId;
       let companyId: number = this._projectManagmentService.companyId;
 
-      this._router.navigate(["/project-management/space/details"], {
-        queryParams: {
-          projectId,
-          taskId: fullTaskId,
-          companyId
-        }
-      });
-    };
+      await this._router.navigate([], { queryParams: { projectId, taskId, companyId } });
+      localStorage["t_t_i"] = undefined; // taskTypeId;
+      this.initData();
+      window.scrollTo(0, 0);
+    }
 
   /**
    * Функция создает комментарий к задаче.
