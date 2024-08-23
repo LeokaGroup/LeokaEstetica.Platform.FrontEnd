@@ -1,10 +1,8 @@
 @import "primeicons/primeicons.css";
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css" layer(bootstrap);
 @import "../node_modules/primeng/resources/primeng.min.css";
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-body, body .p-component, body .p-button {
-  font-family: 'Montserrat', sans-serif;
+body {
   overflow-x: hidden;
   margin: 0;
   padding: 0;
