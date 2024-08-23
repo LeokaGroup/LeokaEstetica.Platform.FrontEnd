@@ -1,49 +1,49 @@
-.navbar {
-  margin: 0 auto;
-  padding: 0;
-  height: 100px;
-  background-color: white;
-  max-width: 1170px;
-}
+@use "/src/app/common/styles/control.scss";
 
-.navbar-logo {
-  margin: 0;
-  padding: 0;
-  width: 105px;
-  margin-right: auto;
-}
+ .header {
+   padding: 10px;
+   align-items: center;
+   position: absolute;
+   z-index: 2;
+   top: 0;
+ }
 
-.menu {
-  gap: 50px;
-}
+ .menu-item {
+   padding: 0 10px;
+   position: relative;
+   z-index: 1;
+   cursor: pointer;
+ }
 
-.menu-item {
-  padding: 0;
-  cursor: pointer;
-  font-weight: 400;
-}
+ .navbar-brand {
+   margin-right: 100px;
+ }
 
-.logo-social {
+ .logo {
+  width: 150px;
+ }
+
+ .logo-social {
   width: 30px;
-}
+ }
 
-.invisible {
-  display: none;
+ .block-social {
+  cursor: pointer;
+ }
+
+ .invisible {
+   display: none;
+ }
+ .avatar-client{
+   cursor: grab;
+ }
+
+.navbar-light {
+  background: #FAFAFA;
 }
 
 .user-avatar {
   cursor: pointer;
-  margin-left: auto;
-}
-
-.sign-button {
-  padding: 14px 32px;
-  background-color: transparent;
-  border: 1px solid #1A73E8;
-  border-radius: 8px;
-  color: #1A73E8;
-  font-weight: 500;
-  margin-left: auto;
 }
 
 // Медиа-запросы.
