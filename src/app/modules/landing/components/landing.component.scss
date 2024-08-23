@@ -1,6 +1,11 @@
 @use "/src/app/common/styles/styles.scss";
 
 @font-face {
+  font-family: "Montserrat Regular";
+  src: url("../../../../assets/fonts/Montserrat/static/Montserrat-Regular.ttf");
+}
+
+@font-face {
   font-family: "Montserrat Bold";
   src: url("../../../../assets/fonts/Montserrat/static/Montserrat-Bold.ttf");
 }
@@ -79,6 +84,47 @@
   text-align: center;
   text-transform: uppercase;
   color: #0B0F30;
+}
+
+.community-container {
+  padding: 2.5rem 0;
+}
+
+.community-heading-container {
+  h3 {
+    margin-bottom: 1.5rem;
+    font-size: 24px;
+    font-family: "Montserrat Bold", sans-serif;
+    line-height: 30px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  p {
+    font-size: 18px;
+    line-height: 24px;
+    text-align: center;
+  }
+}
+
+.community-content-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5rem;
+
+  img {
+    width: 510px;
+    height: 290px;
+    margin-left: 5rem;
+  }
+}
+
+.community-block-text {
+  margin-bottom: 1.6rem;
+  padding: 30px;
+  border: 1px solid #D7E5FF;
+  border-radius: 8px;
 }
 
 // Медиа-запросы.
