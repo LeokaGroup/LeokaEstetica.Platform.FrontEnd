@@ -1,5 +1,10 @@
 @use "/src/app/common/styles/styles.scss";
 
+@font-face {
+  font-family: "Montserrat Bold";
+  src: url("../../../../assets/fonts/Montserrat/static/Montserrat-Bold.ttf");
+}
+
 .fon {
   background-color: rgba(23, 52, 57, 0.95);
   //display: inline-block;
@@ -66,7 +71,15 @@
   margin-right: 50px;
 }
 
-
+.about-text {
+  padding-top: 4.5rem;
+  font-family: "Montserrat Bold", sans-serif;
+  font-size: 24px;
+  line-height: 34px;
+  text-align: center;
+  text-transform: uppercase;
+  color: #0B0F30;
+}
 
 // Медиа-запросы.
 @media (max-width: 575px) {}
