@@ -1,20 +1,30 @@
-<nav class="navbar justify-content-center">
-  <a class="navbar-logo" routerLink="">
-    <img src="../../../../assets/images/logo/logo.svg">
-  </a>
-  
-  <div class="d-flex flex-row menu">
-    <div *ngFor="let item of headerData$.value">
-      <div class="menu-item" (click)="onSelectHeaderItem(item)">{{item.menuItemTitle}}</div>
+<nav class="navbar navbar-light justify-content-evenly">
+    <a class="navbar-brand" routerLink="">
+      <img class="logo" src="../../../../assets/images/logo/logo.png">
+    </a>
+    <div class="form-inline">
+      <div class="header-buttons d-flex">
+        <div *ngFor="let item of headerData$.value">
+            <div class="menu-item" (click)="onSelectHeaderItem(item)">{{item.menuItemTitle}}</div>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <button class="sign-button"
+    <div class="form-inline header-buttons d-flex">
+      <div class="d-flex">
+        <div class="menu-item">
+          <button class="btn btn-primary btn-header button-action-auth-control"
           *ngIf="!isHideAuthButtons"
-          (click)="onRouteSignIn()"> 
-            Войти
-  </button>
+          (click)="onRouteSignIn()">Вход</button>
+        </div>
 
+        <div class="menu-item">
+          <button class="btn btn-primary btn-header button-action-auth-control"
+          *ngIf="!isHideAuthButtons"
+          (click)="onRouteSignUp()">Регистрация</button>
+        </div>
+      </div>
+    </div>
 
    <div class="user-avatar" [ngClass]="{invisible: !isHideAuthButtons}">
     <p-avatar label="P"
@@ -23,5 +33,5 @@
     </p-avatar>
 
     <p-menu #menu [popup]="true" [model]="items"></p-menu>
-   </div> 
+   </div>
   </nav>
