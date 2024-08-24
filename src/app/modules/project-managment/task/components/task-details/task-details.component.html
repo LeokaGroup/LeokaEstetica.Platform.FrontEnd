@@ -165,7 +165,7 @@
                         (onChange)="onChangeAvailableEpicsAsync()"
                         formControlName="epicName">
             </p-dropdown>
-            <p-button label="Перейти к эпику" [text]="true" (click)="onRouteEpic()" [disabled]="!selectedEpic" />
+            <p-button label="Перейти к эпику" [text]="true" (click)="onRouteEpic()" *ngIf="selectedEpic" />
           </div>
         </form>
 
@@ -182,7 +182,7 @@
                         (onChange)="onChangeAvailableSprintsAsync(selectedSprint.sprintId)"
                         formControlName="sprintName">
             </p-dropdown>
-            <p-button label="Перейти к спринту" [text]="true" (click)="onRouteSprint()" [disabled]="!selectedSprint" />
+            <p-button label="Перейти к спринту" [text]="true" (click)="onRouteSprint()" *ngIf="selectedSprint" />
           </div>
         </form>
       </div>
