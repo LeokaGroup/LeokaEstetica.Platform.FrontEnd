@@ -1,37 +1,32 @@
-<nav class="navbar navbar-light justify-content-evenly">
-    <a class="navbar-brand" routerLink="">
-      <img class="logo" src="../../../../assets/images/logo/logo.png">
-    </a>
-    <div class="form-inline">
-      <div class="header-buttons d-flex">
-        <div *ngFor="let item of headerData$.value">
-            <div class="menu-item" (click)="onSelectHeaderItem(item)">{{item.menuItemTitle}}</div>
-        </div>
+<nav class="navbar navbar-light justify-content-center">
+  <a class="navbar-brand" routerLink="">
+    <img class="logo" src="../../../../assets/images/logo/logo.svg">
+  </a>
+
+  <div class="form-inline">
+    <div class="header-buttons d-flex menu">
+      <div *ngFor="let item of headerData$.value">
+          <div class="menu-item" (click)="onSelectHeaderItem(item)">{{item.menuItemTitle}}</div>
       </div>
     </div>
+  </div>
 
-    <div class="form-inline header-buttons d-flex">
-      <div class="d-flex">
-        <div class="menu-item">
-          <button class="btn btn-primary btn-header button-action-auth-control"
-          *ngIf="!isHideAuthButtons"
-          (click)="onRouteSignIn()">Вход</button>
-        </div>
-
-        <div class="menu-item">
-          <button class="btn btn-primary btn-header button-action-auth-control"
-          *ngIf="!isHideAuthButtons"
-          (click)="onRouteSignUp()">Регистрация</button>
-        </div>
+  <div class="form-inline header-buttons d-flex sign" *ngIf="!isHideAuthButtons">
+    <div class="d-flex">
+      <div class="menu-item">
+        <button class="btn btn-primary btn-header button-action-auth-control sign-button"
+                (click)="onRouteSignIn()">Войти
+        </button>
       </div>
     </div>
+  </div>
 
-   <div class="user-avatar" [ngClass]="{invisible: !isHideAuthButtons}">
-    <p-avatar label="P"
-              shape="circle"
-              (click)="menu.toggle($event)">
-    </p-avatar>
+ <div class="user-avatar d-flex justify-content-end" [ngClass]="{invisible: !isHideAuthButtons}">
+  <p-avatar label="P"
+            shape="circle"
+            (click)="menu.toggle($event)">
+  </p-avatar>
 
-    <p-menu #menu [popup]="true" [model]="items"></p-menu>
-   </div>
-  </nav>
+  <p-menu #menu [popup]="true" [model]="items"></p-menu>
+ </div>
+</nav>
