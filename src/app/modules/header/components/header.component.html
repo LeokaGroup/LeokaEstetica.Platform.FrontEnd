@@ -21,7 +21,7 @@
     </div>
   </div>
 
- <div class="user-avatar d-flex justify-content-end" [ngClass]="{invisible: !isHideAuthButtons}">
+ <div class="user-avatar d-flex justify-content-end" *ngIf="isHideAuthButtons">
   <p-avatar label="P"
             shape="circle"
             (click)="menu.toggle($event)">
