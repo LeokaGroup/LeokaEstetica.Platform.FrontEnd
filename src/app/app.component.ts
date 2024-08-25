@@ -414,15 +414,14 @@ export class AppComponent implements OnInit {
       this.isVisibleMenu = false;
     }
 
-    if (currentUrl.indexOf("project-management") >= 0) {
-      this.isVisibleProjectManagementMenu = true;
-      this.isVisibleMenu = false;
-    }
-
     if (currentUrl === "/") {
       this.isVisibleProjectManagementMenu = false;
     }
 
+    if (currentUrl.startsWith('/project-management')) {
+      this.isVisibleProjectManagementMenu = true;
+      this.isVisibleMenu = false;
+    } else {
     this._activatedRoute.queryParams
       .subscribe(params => {
         // Для просмотра анкеты другого пользователя.
@@ -443,6 +442,7 @@ export class AppComponent implements OnInit {
           this.isVisibleMenu = false;
         }
       });
+    }
   };
 
   /**
