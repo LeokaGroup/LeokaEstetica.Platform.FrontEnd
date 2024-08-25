@@ -136,15 +136,17 @@ export class SpaceComponent implements OnInit {
 
               this.workSpaceConfig$.value?.projectManagmentTaskStatuses?.forEach((p1: any) => {
                 p1.projectManagmentTasks?.forEach((p2: any) => {
-                  let byteCharacters = atob(p2.executor.avatar.fileContents);
-                  let byteNumbers = new Array(byteCharacters.length);
-                  for (let i = 0; i < byteCharacters.length; i++) {
-                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                  if (p2.executor?.avatar != null) {
+                    let byteCharacters = atob(p2.executor.avatar.fileContents);
+                    let byteNumbers = new Array(byteCharacters.length);
+                    for (let i = 0; i < byteCharacters.length; i++) {
+                      byteNumbers[i] = byteCharacters.charCodeAt(i);
+                    }
+                    let byteArray = new Uint8Array(byteNumbers);
+                    let blob = new Blob([byteArray], {type: "application/octet-stream"});
+                    let href = URL.createObjectURL(blob);
+                    p2.executor.avatar.ava = this._domSanitizer.bypassSecurityTrustUrl(href);
                   }
-                  let byteArray = new Uint8Array(byteNumbers);
-                  let blob = new Blob([byteArray], {type: "application/octet-stream"});
-                  let href = URL.createObjectURL(blob);
-                  p2.executor.avatar.ava = this._domSanitizer.bypassSecurityTrustUrl(href);
                 });
               });
             });
@@ -174,15 +176,20 @@ export class SpaceComponent implements OnInit {
 
         this.workSpaceConfig$.value?.projectManagmentTaskStatuses?.forEach((p1: any) => {
           p1.projectManagmentTasks?.forEach((p2: any) => {
-            let byteCharacters = atob(p2.executor.avatar.fileContents);
-            let byteNumbers = new Array(byteCharacters.length);
-            for (let i = 0; i < byteCharacters.length; i++) {
-              byteNumbers[i] = byteCharacters.charCodeAt(i);
+            if (p2.executor?.avatar != null) {
+              let byteCharacters = atob(p2.executor.avatar.fileContents);
+              let byteNumbers = new Array(byteCharacters.length);
+              for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+              }
+              let byteArray = new Uint8Array(byteNumbers);
+              let blob = new Blob([byteArray], {type: "application/octet-stream"});
+              let href = URL.createObjectURL(blob);
+              if (p2.executor.avatar == null) {
+                debugger;
+              }
+              p2.executor.avatar.ava = this._domSanitizer.bypassSecurityTrustUrl(href);
             }
-            let byteArray = new Uint8Array(byteNumbers);
-            let blob = new Blob([byteArray], {type: "application/octet-stream"});
-            let href = URL.createObjectURL(blob);
-            p2.executor.avatar.ava = this._domSanitizer.bypassSecurityTrustUrl(href);
           });
         });
 
