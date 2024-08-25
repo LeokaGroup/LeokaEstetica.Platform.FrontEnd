@@ -254,8 +254,8 @@ export class TaskDetailsComponent implements OnInit {
                 });
             });
 
-          // Для истории (2) приоритеты не грузим.
-          if (this.taskTypeId != 2) {
+          // Для истории (2) и эпика (4) приоритеты не грузим.
+          if (this.taskTypeId != 2 && this.taskTypeId != 4) {
           // Получаем приоритеты задач для выбора, чтобы подставить ранее сохраненый приоритет.
           (await this._projectManagmentService.getTaskPrioritiesAsync())
             .subscribe(async _ => {
