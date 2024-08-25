@@ -127,6 +127,80 @@
   border-radius: 8px;
 }
 
+.block {
+  margin: 0 auto;
+}
+
+.block-title {
+  margin: 0;
+  text-align: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 24px;
+}
+
+.block-desc {
+  margin: 0 auto;
+  text-align: center;
+  max-width: 950px;
+  font-size: 18px;
+}
+
+// .block-possibilities {
+//   margin: 0 auto;
+// }
+
+// .cards {
+//   margin: 0 auto;
+// }
+
+.card {
+  border: 1px solid #D7E5FF;
+  border-radius: 8px;
+  padding: 40px 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min-content;
+}
+
+.card-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.card-img {
+  width: 300px;
+  height: 240px;
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+
+  img {
+    object-fit: contain;
+  }
+}
+
+.card-desc {
+  text-align: center;
+  height: 80px;
+  margin: 0;
+}
+
+.card-soon {
+  color: white;
+  background-color: #EF9748;
+  border-radius: 35px;
+  width: min-content;
+  padding: 0 5px;
+  font-weight: 700;
+  font-size: 14px;
+  margin: 0;
+}
+
 // Медиа-запросы.
 @media (max-width: 575px) {}
 

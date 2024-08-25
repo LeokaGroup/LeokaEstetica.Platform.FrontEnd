@@ -118,29 +118,41 @@
 </div>
 
 <!-- Преимущества платформы. -->
-<div class="col-lg-12 d-flex justify-content-center mt-5">
-  <h3>{{platformCondituions$.value[0]?.platformConditionTitle}}</h3>
-</div>
+<div class="block block-possibilities">
+  <div class="d-flex mt-5 mb-5 flex-column gap-3 align-item-center">
+    <h3 class="block-title">Возможности для каждого</h3>
+    <p class="block-desc">Создание проекта, поиск вакансий, добавление резюме - все собрано на одной платформе. Каждый найдет интересующую его позицию.</p>
+  </div>
 
-<p-carousel [value]="platformCondituions$.value" [numVisible]="3" [numScroll]="3" [circular]="true"
-  [responsiveOptions]="platformCondituions$.value" [orientation]="carouselType">
-  <ng-template let-item pTemplate="item">
-    <div class="border-1 surface-border border-round m-2 text-center py-5 px-3">
-      <div class="mb-3">
+  <div class="d-flex flex-row gap-3 justify-content-center">
+    <div class="card" >
+      <h4 class="card-title">Для основателей</h4>
+      <div class="card-img">
+        <img src="../../../../assets/images/landing/founder.svg" alt="Основатель"/>
       </div>
-      <div>
-        <div class="offer-tag">
-          <p-divider align="center">
-            <p-tag *ngIf="item.isLater">Скоро</p-tag>
-            <span>&nbsp;</span>
-          </p-divider>
-
-          <span class="d-flex offer-item text-center justify-content-center text-content">{{item.platformConditionSubTitle}}</span>
-        </div>
-      </div>
+      <p class="card-desc">Гибкий инструментарий для создания и управления своими проектами.</p>
     </div>
-  </ng-template>
-</p-carousel>
+
+    <div class="card" >
+      <h4 class="card-title">Для соискателей</h4>
+      <div class="card-img">
+        <img src="../../../../assets/images/landing/candidate.svg" alt="Соискатель"/>
+      </div>
+      <p class="card-desc">Огромный выбор задач и проектов в самых разных областях.</p>
+    </div>
+
+    <div class="card" >
+      <div class="d-flex flex-row align-items-center gap-1">
+        <h4 class="card-title">Для инвесторов</h4>
+        <p class="card-soon">Скоро</p>
+      </div>
+      <div class="card-img">
+        <img src="../../../../assets/images/landing/investor.svg" alt="Инвестор"/>
+      </div>
+      <p class="card-desc">Найдите интересующие вас проекты и поддержите перспективные стартапы.</p>
+    </div>
+  </div>
+</div>
 
 <!-- Тарифы. -->
 <!--<div class="mt-5 mb-5">-->
