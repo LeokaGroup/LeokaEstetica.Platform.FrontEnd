@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { forkJoin } from "rxjs";
+import { catchError, forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../services/project-managment.service";
 import {ProjectUserAvatarFileInput} from "../../task/models/input/project-user-avatar-file-input";
 import {SprintDurationSettingInput} from "../../sprint/models/sprint-duration-setting-input";
@@ -292,6 +292,11 @@ export class ProjectSettingsComponent implements OnInit {
     });
 
     (await this._projectManagmentService.updateRolesAsync(updated))
+      .pipe(
+        catchError(async _ => {
+          console.log("Ошибка при установке ролей пользователей.");
+        })
+      )
       .subscribe(async _ => {
         console.log("спешно обновили роли пользователей.");
         await this.getUsersRolesAsync();
@@ -368,8 +373,8 @@ export class ProjectSettingsComponent implements OnInit {
         // TODO: Костыль для бага ререндера уведомлений.
         // TODO: Не можем отображать уведомления без обновления страницы после роута из проектов пользователя.
         this._messageService.add({ severity: 'success', summary: "Все хорошо", detail: response.successMessage });
+        await this.getProjectInvitesAsync();
       });
-    await this.getProjectInvitesAsync();
     this.isProjectInvite = false;
   };
 

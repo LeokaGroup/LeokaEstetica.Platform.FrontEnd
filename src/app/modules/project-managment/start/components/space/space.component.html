@@ -36,7 +36,7 @@
 
                 <div class="info-line">
                   <div>
-                    <small>{{t.priorityName}}</small>
+                    <small>{{t.priorityName ?? 'Не предполагается'}}</small>
                   </div>
 
                   <div class="info-line-number">
@@ -45,7 +45,7 @@
                     </div>
 
                     <div>
-                      <p-avatar [image]="t.executor.avatar?.ava" styleClass="mr-2" size="normal" shape="circle"></p-avatar>
+                      <p-avatar [image]="t.executor?.avatar?.ava" styleClass="mr-2" size="normal" shape="circle"></p-avatar>
                     </div>
                   </div>
                 </div>
@@ -101,14 +101,14 @@
                     [tooltipDisabled]="!t.nameTooltip || t.nameTooltip === t.name"
                     tooltipPosition="bottom"
                   >{{t.name}}</div>
-                  <div class="col-lg-2 laconic-text">{{t.priorityName}}</div>
+                  <div class="col-lg-2 laconic-text">{{t.priorityName ?? 'Не предполагается'}}</div>
                   <div class="col-lg-2 laconic-text scrum-info-line">
                     <div>
-                      <p-avatar [image]="t.executor.avatar?.ava" size="normal" shape="circle"></p-avatar>
+                      <p-avatar [image]="t.executor?.avatar?.ava" size="normal" shape="circle"></p-avatar>
                     </div>
                     &nbsp;
                     <div>
-                      {{t.executor.executorName}}
+                      {{t.executor?.executorName}}
                     </div>
                   </div>
                   <div class="col-lg-2 laconic-text">{{t.updated}}</div>

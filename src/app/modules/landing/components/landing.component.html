@@ -11,58 +11,52 @@
   </div>
 </div>
 
-<div class="fon">
-  <img src="../../../assets/images/landing/bg-home1-1.jpg">
-</div>
-
 <!-- Фон. -->
-<div class="fon-content col-lg-12 d-flex justify-content-center">
-  <div>
-    <div class="d-flex justify-content-center">
-      <h1 class="fon-title">{{fonData$.value?.title}}</h1>
-    </div>
-
-    <div class="fon-text text-content">
-      {{fonData$.value?.text}}
-    </div>
+<div class="fon-content d-flex flex-row justify-content-center align-items-center mt-lg-5">
+  <div class="fon-text-content d-flex flex-column justify-content-center mr-lg-5 ">
+    <span class="fon-pre-title">место, где</span>
+    <h1 class="fon-title text-uppercase">начинаются стартапы</h1>
+    <p class="lead fon-text mt-lg-2">Создавай и развивай проекты, подбирай команду с нуля и управляй всеми бизнес-процессами своего стартапа в рамках одной платформы</p>
+    <p-button label="Попробовать бесплатно" styleClass="p-button" class="mt-lg-5"></p-button>
   </div>
+  <img src="../../../assets/images/landing/hero-page.svg" alt="hero">
 </div>
 
 <!-- Предложения платформы. -->
 <div class="about-container">
-  <svg 
-    width="16" 
-    height="16" 
+  <svg
+    width="16"
+    height="16"
     xmlns="http://www.w3.org/2000/svg"
     style="position: relative; top: 130px; left: 200px;"
   >
-    <circle 
-      cx="8" 
-      cy="8" 
-      r="8" 
-      fill="#EF9748" 
+    <circle
+      cx="8"
+      cy="8"
+      r="8"
+      fill="#EF9748"
     />
   </svg>
-  <svg 
+  <svg
     version="1.0"
     xmlns="http://www.w3.org/2000/svg"
-    width="130px" 
-    height="70px" 
+    width="130px"
+    height="70px"
     viewBox="0 0 451 203"
     style="position: relative; top: 70px; left: 76.8%;"
   >
-    <g 
+    <g
       transform="translate(0, 203) scale(0.100000, -0.100000)"
-      fill="#1A73E8" 
+      fill="#1A73E8"
       stroke="none"
     >
-      <path 
+      <path
         d="M2642 1029 c-364 -535 -660 -974 -658 -976 4 -4 2488 486 2495 493 2
           2 -32 47 -76 101 -44 54 -301 373 -573 708 -271 336 -500 618 -510 628 -16 17
           -50 -31 -678 -954z m1227 226 c303 -374 551 -682 551 -685 0 -7 -2346 -473
           -2358 -469 -5 2 273 417 617 922 343 504 628 916 632 915 4 -2 255 -309 558 -683z"
       />
-      <path 
+      <path
         d="M497 1170 c-236 -92 -430 -170 -432 -172 -2 -2 163 -218 368 -479
           205 -261 373 -471 374 -465 4 17 143 1252 143 1270 0 9 -6 16 -12 15 -7 0
           -206 -76 -441 -169z"
@@ -70,77 +64,89 @@
     </g>
   </svg>
   <h3 class="about-text">
-    Leoka Estetica — это сервис для управления проектами и<br> 
+    Leoka Estetica — это сервис для управления проектами и<br>
     задачами с бесшовной интеграцией функционала подбора<br>
     команды
   </h3>
-  <svg 
-    version="1.0" 
+  <svg
+    version="1.0"
     xmlns="http://www.w3.org/2000/svg"
-    width="30px" 
-    height="30px" 
+    width="30px"
+    height="30px"
     viewBox="0 0 181 194"
     style="position: relative; left: 75%; bottom: 30px;"
   >
-    <g 
+    <g
       transform="translate(0, 194) scale(0.1, -0.1)"
-      fill="#1A73E8" 
+      fill="#1A73E8"
       stroke="none"
     >
-      <path 
+      <path
         d="M54 1811 c19 -42 194 -445 391 -896 197 -451 363 -833 370 -848 12
           -28 15 -24 468 542 252 314 457 575 457 579 0 5 -46 27 -102 50 -57 22 -443
           178 -860 345 l-756 305 32 -77z"
       />
     </g>
   </svg>
-  <svg 
-    width="100" 
-    height="100" 
+  <svg
+    width="100"
+    height="100"
     xmlns="http://www.w3.org/2000/svg"
     style="position: relative; bottom: 35px; left: 185px;"
   >
-    <circle 
-      cx="20" 
-      cy="20" 
-      r="20" 
-      fill="#EF9748" 
+    <circle
+      cx="20"
+      cy="20"
+      r="20"
+      fill="#EF9748"
     />
-    <circle 
+    <circle
       cx="36"
-      cy="32" 
-      r="16" 
-      fill="transparent" 
-      stroke="#000000" 
-      stroke-width="1" 
+      cy="32"
+      r="16"
+      fill="transparent"
+      stroke="#000000"
+      stroke-width="1"
     />
   </svg>
 </div>
 
 <!-- Преимущества платформы. -->
-<div class="col-lg-12 d-flex justify-content-center mt-5">
-  <h3>{{platformCondituions$.value[0]?.platformConditionTitle}}</h3>
-</div>
+<div class="block block-possibilities">
+  <div class="d-flex mt-5 mb-5 flex-column gap-3 align-item-center">
+    <h3 class="block-title">Возможности для каждого</h3>
+    <p class="block-desc">Создание проекта, поиск вакансий, добавление резюме - все собрано на одной платформе. Каждый найдет интересующую его позицию.</p>
+  </div>
 
-<p-carousel [value]="platformCondituions$.value" [numVisible]="3" [numScroll]="3" [circular]="true"
-  [responsiveOptions]="platformCondituions$.value" [orientation]="carouselType">
-  <ng-template let-item pTemplate="item">
-    <div class="border-1 surface-border border-round m-2 text-center py-5 px-3">
-      <div class="mb-3">
+  <div class="d-flex flex-row gap-3 justify-content-center">
+    <div class="card" >
+      <h4 class="card-title">Для основателей</h4>
+      <div class="card-img">
+        <img src="../../../../assets/images/landing/founder.svg" alt="Основатель"/>
       </div>
-      <div>
-        <div class="offer-tag">
-          <p-divider align="center">
-            <p-tag *ngIf="item.isLater">Скоро</p-tag>
-            <span>&nbsp;</span>
-          </p-divider>
-
-          <span class="d-flex offer-item text-center justify-content-center text-content">{{item.platformConditionSubTitle}}</span>
-        </div>
-      </div>
+      <p class="card-desc">Гибкий инструментарий для создания и управления своими проектами.</p>
     </div>
-  </ng-template>
-</p-carousel>
+
+    <div class="card" >
+      <h4 class="card-title">Для соискателей</h4>
+      <div class="card-img">
+        <img src="../../../../assets/images/landing/candidate.svg" alt="Соискатель"/>
+      </div>
+      <p class="card-desc">Огромный выбор задач и проектов в самых разных областях.</p>
+    </div>
+
+    <div class="card" >
+      <div class="d-flex flex-row align-items-center gap-1">
+        <h4 class="card-title">Для инвесторов</h4>
+        <p class="card-soon">Скоро</p>
+      </div>
+      <div class="card-img">
+        <img src="../../../../assets/images/landing/investor.svg" alt="Инвестор"/>
+      </div>
+      <p class="card-desc">Найдите интересующие вас проекты и поддержите перспективные стартапы.</p>
+    </div>
+  </div>
+</div>
 
 <!-- Тарифы. -->
 <!--<div class="mt-5 mb-5">-->
@@ -316,22 +322,22 @@
   <div class="community-content-container">
 
     <div class="community-blocks-container">
-      <svg 
-        width="29" 
-        height="27" 
-        viewBox="0 0 29 27" 
-        fill="none" 
+      <svg
+        width="29"
+        height="27"
+        viewBox="0 0 29 27"
+        fill="none"
         xmlns="http://www.w3.org/2000/svg"
         style="position: relative; top: 40px; right: 20px;"
       >
-        <path 
-          d="M1 24.3311C5.10586 25.7231 10.1705 26.1154 14.7514 25.2858C20.7014 24.2043 27.433 18.7216 23.5511 
-          12.3067C21.7733 9.30475 17.9212 6.05949 14.0344 8.23722C13.7501 8.35291 13.4551 8.60548 13.297 
-          8.86865C12.9176 9.50026 13.1909 10.2375 13.5908 10.7642C15.4217 13.0818 18.9069 13.2415 21.9716 
-          12.4323C23.4038 12.075 24.8783 11.5282 26.0582 10.5179C27.2698 9.455 28.2183 7.87597 28.1981 
-          6.35962C28.1889 3.99035 26.1051 2.09386 24.3576 1.18737" 
-          stroke="#1A73E8" 
-          stroke-width="1.5" 
+        <path
+          d="M1 24.3311C5.10586 25.7231 10.1705 26.1154 14.7514 25.2858C20.7014 24.2043 27.433 18.7216 23.5511
+          12.3067C21.7733 9.30475 17.9212 6.05949 14.0344 8.23722C13.7501 8.35291 13.4551 8.60548 13.297
+          8.86865C12.9176 9.50026 13.1909 10.2375 13.5908 10.7642C15.4217 13.0818 18.9069 13.2415 21.9716
+          12.4323C23.4038 12.075 24.8783 11.5282 26.0582 10.5179C27.2698 9.455 28.2183 7.87597 28.1981
+          6.35962C28.1889 3.99035 26.1051 2.09386 24.3576 1.18737"
+          stroke="#1A73E8"
+          stroke-width="1.5"
           stroke-miterlimit="10"
         />
       </svg>
@@ -347,16 +353,16 @@
         Делись кейсами, показывай свою<br>
         экспертизу и находи клиентов
       </p>
-      <svg 
-        width="22" 
-        height="15" 
-        viewBox="0 0 22 15" 
-        fill="none" 
+      <svg
+        width="22"
+        height="15"
+        viewBox="0 0 22 15"
+        fill="none"
         xmlns="http://www.w3.org/2000/svg"
         style="position: relative; bottom: 50px; left: 98%;"
       >
-        <path 
-          d="M13.4701 14.3757L21.1314 0.587217L0.905891 1.88672L13.4701 14.3757Z" 
+        <path
+          d="M13.4701 14.3757L21.1314 0.587217L0.905891 1.88672L13.4701 14.3757Z"
           fill="#EF9748"
         />
       </svg>
@@ -379,8 +385,8 @@
               {{ item.subCategoryThemeTitle }}
             </div>
           </ng-template>
-        
-          <div class="faq-answer-container">
+          
+          <div class="text-content">
             {{ item.subCategoryThemeText }}
           </div>
         </p-accordionTab>
