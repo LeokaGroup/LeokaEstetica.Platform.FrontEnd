@@ -2,6 +2,11 @@
 @use "/src/app/common/styles/control.scss";
 @use "/src/app/common/styles/styles.scss";
 
+@font-face {
+  font-family: "Montserrat Regular";
+  src: url("../../../../../../assets/fonts/Montserrat/static/Montserrat-Regular.ttf");
+}
+
 .tag {
     margin-left: 20px;
 }
@@ -40,4 +45,15 @@
     text-align: left;
     white-space: pre-wrap;
     word-wrap: break-word;
+}
+
+.resetFiltersBtn {
+  margin: 4px;
+  font-size: 16px;
+  font-family: "Montserrat Regular";
+  text-decoration: underline;
+  color: #6c757d;
+  background-color: #ffffff;
+  border: none;
+  cursor: pointer;
 }
