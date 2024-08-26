@@ -24,6 +24,7 @@
     height: 12px;
 }
 
+:host ::ng-deep .input-phone .p-inputmask,
 :host ::ng-deep .p-inputnumber-input,
 .input-control-worksheet {
     width: 200px;
@@ -38,6 +39,21 @@
     &:hover {
         border-color: #403866;
     }
+}
+
+.phone-input-container {
+    position: relative;
+}
+
+.phone-start {
+    user-select: none;
+    position: absolute;
+    left: 8px;
+    top: 7px;
+}
+
+:host ::ng-deep .input-phone .p-inputmask {
+    padding-left: 32px;
 }
 
 .worksheet-line {
