@@ -60,6 +60,12 @@
   width: 117px;
   cursor: pointer;
   margin-left: auto;
+  position: relative;
+}
+
+::ng-deep .p-menu {
+  top: 34px;
+  left: -83px;
 }
 
 .sign {
