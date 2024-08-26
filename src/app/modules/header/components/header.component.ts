@@ -86,9 +86,7 @@ export class HeaderComponent implements OnInit {
      * Функция редиректит на форму авторизации.
      */
     public onRouteSignIn() {
-        this._router.navigate(["/user/signin"]).then(() => {
-            this._redirectService.redirect("user/signin");
-        });
+        this._router.navigate(["/user/signin"]);
     };
 
   public async onSelectHeaderItem(e: any) {

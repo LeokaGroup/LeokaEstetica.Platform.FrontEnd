@@ -9,6 +9,7 @@ import { SignInComponent } from './signin/components/signin.component';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
+import { PasswordModule } from 'primeng/password';
 
 @NgModule({
     declarations: [
@@ -23,7 +24,8 @@ import { ButtonModule } from 'primeng/button';
         UserRoutingModule,
         ReactiveFormsModule,
         ToastModule,
-        ButtonModule
+        ButtonModule,
+        PasswordModule
     ],
 
     exports: [],

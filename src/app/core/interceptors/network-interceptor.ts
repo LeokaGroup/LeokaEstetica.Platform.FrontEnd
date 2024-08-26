@@ -33,9 +33,7 @@ export class NetworkInterceptor implements HttpInterceptor {
       catchError((response: HttpErrorResponse) => {
         if (response.status == 403 || response.status == 401) {
           localStorage.clear();
-          this._router.navigate(["/user/signin"]).then(() => {
-            this._redirectService.redirect("user/signin");
-          });
+          this._router.navigate(["/user/signin"]);
         }
 
         return throwError(response.message);

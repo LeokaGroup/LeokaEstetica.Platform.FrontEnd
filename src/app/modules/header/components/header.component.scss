@@ -1,49 +1,85 @@
 @use "/src/app/common/styles/control.scss";
 
- .header {
-   padding: 10px;
-   align-items: center;
-   position: absolute;
-   z-index: 2;
-   top: 0;
- }
+.navbar {
+  max-width: 1170px;
+  margin: 0 auto;
+  height: 100px;
+  justify-content: center;
+  font-weight: 400;
+  font-size: 16px;
+}
 
- .menu-item {
-   padding: 0 10px;
-   position: relative;
-   z-index: 1;
-   cursor: pointer;
- }
+.menu {
+  gap: 50px;
+}
 
- .navbar-brand {
-   margin-right: 100px;
- }
+.header {
+  padding: 10px;
+  align-items: center;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+}
 
- .logo {
-  width: 150px;
- }
-
- .logo-social {
-  width: 30px;
- }
-
- .block-social {
+.menu-item {
+  position: relative;
+  z-index: 1;
   cursor: pointer;
- }
+}
 
- .invisible {
-   display: none;
- }
- .avatar-client{
-   cursor: grab;
- }
+.navbar-brand {
+  width: 117px;
+  margin-right: auto;
+}
+
+.logo {
+  width: 105px;
+}
+
+.logo-social {
+  width: 30px;
+}
+
+.block-social {
+  cursor: pointer;
+}
+
+.invisible {
+  display: none;
+}
+
+.avatar-client{
+  cursor: grab;
+}
 
 .navbar-light {
-  background: #FAFAFA;
+  background: white;
 }
 
 .user-avatar {
+  width: 117px;
   cursor: pointer;
+  margin-left: auto;
+  position: relative;
+}
+
+::ng-deep .p-menu {
+  top: 34px;
+  left: -83px;
+}
+
+.sign {
+  width: 117px;
+  margin-left: auto;
+}
+
+.sign-button {
+  padding: 14px 32px;
+  background-color: transparent;
+  border: 1px solid #1A73E8;
+  border-radius: 8px;
+  color: #1A73E8;
+  font-weight: 500;
 }
 
 // Медиа-запросы.

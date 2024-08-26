@@ -10,36 +10,46 @@
   src: url("../../../../assets/fonts/Montserrat/static/Montserrat-Bold.ttf");
 }
 
-.fon {
-  background-color: rgba(23, 52, 57, 0.95);
-  //display: inline-block;
-  height: 100vh;
-  overflow: hidden;
-  overflow-x: hidden;
-  width: 100%;
-  //margin-top: -5px;
-  //padding-top: -5px;
+.fon-content {
+  color: rgba(11, 15, 48, 1);
+  gap: 88px;
+  padding: 60px 0;
 
-  img {
-    opacity: 0.1;
+  .fon-text-content {
+    max-width: 505px;
+
+    .fon-pre-title {
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 33.6px;
+    }
+
+    .fon-title {
+      font-size: 60px;
+      font-weight: 900;
+      line-height: 73.14px;
+    }
+
+    .fon-text {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 24px;
+    }
   }
 }
 
-.fon-content {
-  position: absolute;
-  z-index: 2;
-  top: 40%;
-  text-align: center;
+::ng-deep .p-button {
+  width: 297px;
+  height: 54px;
+  background-color: rgba(26, 115, 232, 1);
+  border-radius: 8px;
+}
 
-
-  .fon-title {
-    color: #fff;
-  }
-
-  .fon-text {
-    color: rgba(255, 255, 255, 0.65);
-    margin: 0 100px;
-  }
+::ng-deep .p-button-label {
+  font-family: 'Montserrat';
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24.3px;
 }
 
 .platform-offers {
@@ -153,12 +163,85 @@
   cursor: pointer;
 }
 
-.faq-answer-container {
+.text-content {
   font-size: 16px;
   font-family: "Montserrat Regular";
   line-height: 25px;
 }
 
+.block {
+  margin: 0 auto;
+}
+
+.block-title {
+  margin: 0;
+  text-align: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 24px;
+}
+
+.block-desc {
+  margin: 0 auto;
+  text-align: center;
+  max-width: 950px;
+  font-size: 18px;
+}
+
+// .block-possibilities {
+//   margin: 0 auto;
+// }
+
+// .cards {
+//   margin: 0 auto;
+// }
+
+.card {
+  border: 1px solid #D7E5FF;
+  border-radius: 8px;
+  padding: 40px 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min-content;
+}
+
+.card-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.card-img {
+  width: 300px;
+  height: 240px;
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+
+  img {
+    object-fit: contain;
+  }
+}
+
+.card-desc {
+  text-align: center;
+  height: 80px;
+  margin: 0;
+}
+
+.card-soon {
+  color: white;
+  background-color: #EF9748;
+  border-radius: 35px;
+  width: min-content;
+  padding: 0 5px;
+  font-weight: 700;
+  font-size: 14px;
+  margin: 0;
+}
 
 // Медиа-запросы.
 @media (max-width: 575px) {}
@@ -168,7 +251,7 @@
 
 /* md (>=768 и <=991) */
 @media (min-width: 768px) and (max-width: 991px) {
- 
+
 }
 
 /* lg (>=992 и <=1199) */
@@ -176,5 +259,5 @@
 
 /* xl (>=1200) */
 @media (min-width: 1200px) {
- 
+
 }

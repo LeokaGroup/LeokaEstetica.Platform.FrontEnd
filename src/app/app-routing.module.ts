@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ForbiddenComponent } from './modules/forbidden/forbidden.component';
 import {FareRuleComponent} from "./modules/fare-rule/components/fare-rule.component";
+import { authGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -21,17 +22,20 @@ const routes: Routes = [
 
   {
     path: "vacancies",
-    loadChildren: () => import('./modules/backoffice/vacancy/vacancy.module').then(m => m.VacancyModule)
+    loadChildren: () => import('./modules/backoffice/vacancy/vacancy.module').then(m => m.VacancyModule),
+    canActivate: [authGuard]
   },
 
   {
     path: "projects",
-    loadChildren: () => import('./modules/project/project.module').then(m => m.ProjectModule)
+    loadChildren: () => import('./modules/project/project.module').then(m => m.ProjectModule),
+    canActivate: [authGuard]
   },
 
   {
     path: "resumes",
-    loadChildren: () => import('./modules/resume/resume.module').then(m => m.ResumeModule)
+    loadChildren: () => import('./modules/resume/resume.module').then(m => m.ResumeModule),
+    canActivate: [authGuard]
   },
 
   {
@@ -60,7 +64,8 @@ const routes: Routes = [
 
   {
     path: "project-management",
-    loadChildren: () => import('./modules/project-managment/project-managment.module').then(m => m.ProjectManagmentModule)
+    loadChildren: () => import('./modules/project-managment/project-managment.module').then(m => m.ProjectManagmentModule),
+    canActivate: [authGuard]
   },
 
   {

@@ -88,10 +88,7 @@
 
       <form class="d-flex line"
             [formGroup]="formPriorities"
-            *ngIf="taskDetails$.value.taskTypeId == 1
-            || taskDetails$.value.taskTypeId == 2
-            || taskDetails$.value.taskTypeId == 3
-            || taskDetails$.value.taskTypeId == 4">
+            *ngIf="taskDetails$.value.taskTypeId == 1 || taskDetails$.value.taskTypeId == 3">
         <label class="control-label-task-item">Приоритет:</label>
 
         <p-dropdown [options]="priorities$.value"

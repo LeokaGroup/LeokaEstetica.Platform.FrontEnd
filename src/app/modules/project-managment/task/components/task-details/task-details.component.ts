@@ -254,6 +254,8 @@ export class TaskDetailsComponent implements OnInit {
                 });
             });
 
+          // Для истории (2) и эпика (4) приоритеты не грузим.
+          if (this.taskTypeId != 2 && this.taskTypeId != 4) {
           // Получаем приоритеты задач для выбора, чтобы подставить ранее сохраненый приоритет.
           (await this._projectManagmentService.getTaskPrioritiesAsync())
             .subscribe(async _ => {
@@ -262,17 +264,8 @@ export class TaskDetailsComponent implements OnInit {
               // Записываем текущий приоритет задачи в выпадающий список.
               let value = this.priorities$.value.find((st: any) => st.priorityId == this.taskDetails$.value.priorityId);
               this.formPriorities.get("priorityName")?.setValue(value);
-
-              // Получаем приоритеты задач для выбора, чтобы подставить ранее сохраненый приоритет.
-              (await this._projectManagmentService.getTaskPrioritiesAsync())
-                .subscribe(_ => {
-                  console.log("Приоритеты задачи для выбора: ", this.priorities$.value);
-
-                  // Записываем текущий приоритет задачи в выпадающий список.
-                  let value = this.priorities$.value.find((st: any) => st.priorityId == this.taskDetails$.value.priorityId);
-                  this.formPriorities.get("priorityName")?.setValue(value);
-                });
             });
+          }
 
           // Получаем название спринта, в который входит задача.
           // Исключается спринт, в который задача уже добавлена.

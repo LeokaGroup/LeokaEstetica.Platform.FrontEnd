@@ -18,10 +18,12 @@
 
               <div class="mb-3">
                 <label for="exampleInputPassword1">Пароль</label><br>
-                <input type="password"
-                        class="input-control"
-                        autocomplete="new-password"
-                        formControlName="password">
+                <p-password 
+                  formControlName="password"
+                  [toggleMask]="true"
+                  placeholder="Пароль"
+                  [feedback]="false"
+                />
               </div>
 
              <div class="mb-3 form-check">
