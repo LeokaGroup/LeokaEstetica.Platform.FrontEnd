@@ -367,25 +367,25 @@
 </div>
 
 <!-- Частые вопросы. -->
-<div class="mt-5 block-knowledge">
-  <div class="col-lg-12 d-flex justify-content-center">
-    <h3 class="mt-5 mb-5">{{knowledgeLanding$.value?.title}}</h3>
-  </div>
+<div class="faq-container">
+  <h3>{{knowledgeLanding$.value?.title}}</h3>
 
-  <div>
+  <div class="faq-item">
     <p-accordion>
       @for (item of knowledgeLanding$.value.knowledgeLanding; track item) {
         <p-accordionTab>
           <ng-template pTemplate="header">
-            {{ item.subCategoryThemeTitle }}
+            <div class="faq-question-container">
+              {{ item.subCategoryThemeTitle }}
+            </div>
           </ng-template>
-          
-          <div class="text-content">
+        
+          <div class="faq-answer-container">
             {{ item.subCategoryThemeText }}
           </div>
         </p-accordionTab>
       }
-    </p-accordion>
+    </p-accordion>    
   </div>
 </div>
 
