@@ -19,7 +19,7 @@ import { ToastModule } from 'primeng/toast';
 import { TicketComponent } from '../ticket/components/landing/ticket.component';
 import { WisheOfferComponent } from '../ticket/components/wishe-offer/wishe-offer.component';
 import { ButtonModule } from 'primeng/button';
-
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
     declarations: [
@@ -45,7 +45,8 @@ import { ButtonModule } from 'primeng/button';
         DropdownModule,
         InputTextareaModule,
         ToastModule,
-        ButtonModule
+        ButtonModule,
+        TabViewModule
     ],
 
     exports: [],

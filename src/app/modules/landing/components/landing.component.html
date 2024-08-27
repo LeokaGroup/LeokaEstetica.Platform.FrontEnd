@@ -111,15 +111,83 @@
   </svg>
 </div>
 
-<!-- Преимущества платформы. -->
-<div class="block block-possibilities">
-  <div class="d-flex mt-5 mb-5 flex-column gap-3 align-item-center">
+<!-- Возможности платформы. -->
+<div class="block">
+  <div class="d-flex flex-column gap-3 align-item-center">
+    <h3 class="block-title">Создавай, планируй, управляй</h3>
+    <p class="block-desc">Уникальная платформа для бизнеса, где можно находить людей для вашего проекта, ставить задачи, вести документацию и многое другое.</p>
+  </div>
+
+  <div class="possibilities-container">
+    <p-tabView>
+      <p-tabPanel header="Планирование">
+          <div class="possibilities-card">
+              <img class="possibilities-decor" src="../../../../assets/images/landing/possibilities-decor.svg" />
+              <p class="possibilities-desc">Удобные канбан - доски для планирования и&nbsp;отслеживания задач</p>
+              <img class="possibilities-image" src="../../../../assets/images/landing/planning.png" alt="Планирование"/>
+          </div>
+      </p-tabPanel>
+
+      <p-tabPanel header="База резюме">
+        <div class="possibilities-card">
+          <img class="possibilities-decor" src="../../../../assets/images/landing/possibilities-decor.svg" />
+          <p class="possibilities-desc">Удобные канбан - доски для планирования и&nbsp;отслеживания задач</p>
+          <img class="possibilities-image" src="../../../../assets/images/landing/resume-base.png" alt="Планирование"/>
+        </div>
+      </p-tabPanel>
+
+      <p-tabPanel header="Вакансии">
+        <div class="possibilities-card">
+          <img class="possibilities-decor" src="../../../../assets/images/landing/possibilities-decor.svg" />
+          <p class="possibilities-desc">Удобные канбан - доски для планирования и&nbsp;отслеживания задач</p>
+          <img class="possibilities-image" src="../../../../assets/images/landing/vacancies.png" alt="Планирование"/>
+        </div>
+      </p-tabPanel>
+
+      <p-tabPanel header="Проекты">
+        <div class="possibilities-card">
+          <img class="possibilities-decor" src="../../../../assets/images/landing/possibilities-decor.svg" />
+          <p class="possibilities-desc">Удобные канбан - доски для планирования и&nbsp;отслеживания задач</p>
+          <img class="possibilities-image" src="../../../../assets/images/landing/projects.png" alt="Планирование"/>
+        </div>
+      </p-tabPanel>
+
+      <p-tabPanel header="Инвестиции" [disabled]="true" >
+        <ng-template pTemplate="header">
+          <div class="d-flex flex-row gap-2 align-items-center">
+              <span>
+                  Инвестиции
+              </span>
+              <p class="card-soon">Скоро</p>
+          </div>
+        </ng-template>
+        <p></p>
+      </p-tabPanel>
+
+      <p-tabPanel header="ИИ - помощник" [disabled]="true">
+        <ng-template pTemplate="header">
+          <div class="d-flex flex-row gap-2 align-items-center">
+              <span>
+                ИИ - помощник
+              </span>
+              <p class="card-soon">Скоро</p>
+          </div>
+        </ng-template>
+        <p></p>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</div>
+
+<!-- Роли на платформе. -->
+<div class="block block-role-cards">
+  <div class="d-flex flex-column gap-3 align-item-center">
     <h3 class="block-title">Возможности для каждого</h3>
     <p class="block-desc">Создание проекта, поиск вакансий, добавление резюме - все собрано на одной платформе. Каждый найдет интересующую его позицию.</p>
   </div>
 
   <div class="d-flex flex-row gap-3 justify-content-center">
-    <div class="card" >
+    <div class="card-item" >
       <h4 class="card-title">Для основателей</h4>
       <div class="card-img">
         <img src="../../../../assets/images/landing/founder.svg" alt="Основатель"/>
@@ -127,7 +195,7 @@
       <p class="card-desc">Гибкий инструментарий для создания и управления своими проектами.</p>
     </div>
 
-    <div class="card" >
+    <div class="card-item" >
       <h4 class="card-title">Для соискателей</h4>
       <div class="card-img">
         <img src="../../../../assets/images/landing/candidate.svg" alt="Соискатель"/>
@@ -135,7 +203,7 @@
       <p class="card-desc">Огромный выбор задач и проектов в самых разных областях.</p>
     </div>
 
-    <div class="card" >
+    <div class="card-item" >
       <div class="d-flex flex-row align-items-center gap-1">
         <h4 class="card-title">Для инвесторов</h4>
         <p class="card-soon">Скоро</p>
