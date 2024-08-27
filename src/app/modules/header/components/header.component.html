@@ -14,9 +14,15 @@
   <div class="form-inline header-buttons d-flex sign" *ngIf="!isHideAuthButtons">
     <div class="d-flex">
       <div class="menu-item">
-        <button class="btn btn-primary btn-header button-action-auth-control sign-button"
-                (click)="onRouteSignIn()">Войти
-        </button>
+        @if (currentUrl!='/user/signin') {
+          <button class="btn btn-primary btn-header button-action-auth-control sign-button"
+                  (click)="onRouteSignIn()">Войти
+          </button>
+        } @else {
+          <button class="btn btn-primary btn-header button-action-auth-control sign-button"
+                (click)="onRouteSignUp()">Регистрация
+          </button>
+        }
       </div>
     </div>
   </div>

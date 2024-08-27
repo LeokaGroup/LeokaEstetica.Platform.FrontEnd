@@ -1,8 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router, UrlSegment } from "@angular/router";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { HeaderService } from "../services/header.service";
 import {ProjectManagmentService} from "../../project-managment/services/project-managment.service";
+import { filter } from "rxjs";
 
 @Component({
     selector: "header",
@@ -18,6 +19,7 @@ export class HeaderComponent implements OnInit {
     public readonly projectWorkspaceSettings$ = this._projectManagmentService.projectWorkspaceSettings$;
 
     isHideAuthButtons: boolean = false;
+    currentUrl = '';
     items: any[] = [
         {
             label: 'Заказы',
@@ -96,6 +98,12 @@ export class HeaderComponent implements OnInit {
   };
 
     private checkUrlParams() {
+        this._router.events.pipe(
+            filter(event => event instanceof NavigationEnd)
+        ).subscribe(
+            e => this.currentUrl = (e as NavigationEnd).url
+        );
+
         this._activatedRoute.queryParams
         .subscribe(_ => {
             this.rerenderAuthButtons();

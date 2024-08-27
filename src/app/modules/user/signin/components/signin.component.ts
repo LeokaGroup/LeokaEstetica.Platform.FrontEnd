@@ -29,7 +29,9 @@ export class SignInComponent implements OnInit {
         "password": new UntypedFormControl("", [
             Validators.required,
             Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)
-        ])
+        ]),
+
+        "remember": new UntypedFormControl(false)
     });
     allFeedSubscription: any;
 
@@ -65,9 +67,5 @@ export class SignInComponent implements OnInit {
                 });
             }
         });
-    };
-
-    public onRouteRestorePassword() {
-        this._router.navigate(["/profile/restore"]);
     };
 }
