@@ -4,4 +4,5 @@
 export class SignUpInput {
     email: string = "";
     password: string = "";
+    componentRoles: number[] = [];
 }

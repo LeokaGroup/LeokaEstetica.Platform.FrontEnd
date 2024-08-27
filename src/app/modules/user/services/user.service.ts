@@ -9,7 +9,7 @@ import { SignUpInput } from '../signup/models/input/signup-input';
  * Класс сервиса работы с пользователями.
  */
 @Injectable()
-export class UserService {    
+export class UserService {
     constructor(private readonly _http: HttpClient) {
 
     }
@@ -17,6 +17,7 @@ export class UserService {
     public headerData$ = new BehaviorSubject<any>(null);
     public userData$ = new BehaviorSubject<any>(null);
     public confirmAccount$ = new BehaviorSubject<any>(null);
+    public componentRoles$ = new BehaviorSubject<any>(null);
 
     /**
      * Функция регистрирует пользователя.
@@ -24,10 +25,11 @@ export class UserService {
      * @param password - Пароль.
      * @returns - Данные пользователя.
      */
-    public async signUpAsync(email: string, password: string) {
+    public async signUpAsync(email: string, password: string, componentRoles: number[]) {
         let modelInput= new SignUpInput();
         modelInput.email = email;
         modelInput.password = password;
+        modelInput.componentRoles = componentRoles;
 
         return await this._http.post(API_URL.apiUrl + "/user/signup", modelInput).pipe(
             tap(data => this.userData$.next(data)
@@ -53,7 +55,7 @@ export class UserService {
     };
 
     /**
-     * Функция подтверждает аккаунт по коду.   
+     * Функция подтверждает аккаунт по коду.
      * @param confirmEmailCode - Код подтверждения.
      * @returns - Статус подтверждения.
      */
@@ -66,4 +68,15 @@ export class UserService {
             )
         );
     };
+
+  /**
+   * Функция получает компонентные роли для выбора.
+   * @returns - Список компонентных ролей.
+   */
+  public async getComponentRolesAsync() {
+    return await this._http.get(API_URL.apiUrl + "/user/component-roles").pipe(
+      tap(data => this.componentRoles$.next(data)
+      )
+    );
+  };
 }

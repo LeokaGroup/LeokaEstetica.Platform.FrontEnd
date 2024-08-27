@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
     declarations: [
@@ -25,15 +26,15 @@ import { PasswordModule } from 'primeng/password';
         ReactiveFormsModule,
         ToastModule,
         ButtonModule,
-        PasswordModule
+        PasswordModule,
+      CheckboxModule
     ],
 
     exports: [],
 
     providers: [
         UserService,
-        MessageService,
-        Document
+        MessageService
     ]
 })
 
