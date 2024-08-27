@@ -38,18 +38,15 @@
   }
 }
 
-::ng-deep .p-button {
-  width: 297px;
-  height: 54px;
+.try-button {
+  width: 300px;
   background-color: rgba(26, 115, 232, 1);
   border-radius: 8px;
-}
-
-::ng-deep .p-button-label {
-  font-family: 'Montserrat';
   font-size: 18px;
   font-weight: 500;
-  line-height: 24.3px;
+  padding: 15px 32px;
+  border: none;
+  color: white;
 }
 
 .platform-offers {
