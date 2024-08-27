@@ -5,19 +5,19 @@
         <span>Будьте всегда в курсе новостей, событий о развитии продукта вступив в наш уютный Telegram-канал.</span>&nbsp;
       </div>
       <div class="btn-invite-telegram">
-        <p-button label="Присоединиться" styleClass="p-button-link" (click)="onCreateInviteLinkTelegramAsync()"></p-button>
+        <p-button label="Присоединиться" [link]="true" (click)="onCreateInviteLinkTelegramAsync()"></p-button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- Фон. -->
-<div class="fon-content d-flex flex-row justify-content-center align-items-center mt-lg-5">
+<div class="fon-content d-flex flex-row justify-content-center align-items-center">
   <div class="fon-text-content d-flex flex-column justify-content-center mr-lg-5 ">
     <span class="fon-pre-title">место, где</span>
     <h1 class="fon-title text-uppercase">начинаются стартапы</h1>
     <p class="lead fon-text mt-lg-2">Создавай и развивай проекты, подбирай команду с нуля и управляй всеми бизнес-процессами своего стартапа в рамках одной платформы</p>
-    <p-button label="Попробовать бесплатно" styleClass="p-button" class="mt-lg-5"></p-button>
+    <button class="try-button mt-lg-5" >Попробовать бесплатно</button>
   </div>
   <img src="../../../assets/images/landing/hero-page.svg" alt="hero">
 </div>
