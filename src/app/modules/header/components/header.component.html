@@ -22,11 +22,12 @@
   </div>
 
  <div class="user-avatar d-flex justify-content-end" *ngIf="isHideAuthButtons">
-  <p-avatar label="P"
+  <p-avatar #avatar
+            label="P"
             shape="circle"
             (click)="menu.toggle($event)">
   </p-avatar>
 
-  <p-menu #menu [popup]="true" [model]="items"></p-menu>
+  <p-menu #menu [popup]="true" [model]="items" [appendTo]="avatar"></p-menu>
  </div>
 </nav>

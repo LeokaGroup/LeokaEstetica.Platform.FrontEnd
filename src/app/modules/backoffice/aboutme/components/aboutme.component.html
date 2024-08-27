@@ -128,18 +128,21 @@
                class="control-input-text-worksheet">
             <label class="d-flex flex-column">
               <strong>Номер телефона</strong>
-              <p-inputMask
-                mask="99999999999"
-                class="p-inputtext-sm input-control-worksheet"
-                placeholder="Номер телефона"
-                autocomplete="new-password"
-                [(ngModel)]="phoneNumber"
-                *ngIf="isModeEdit" />
+              <div class="phone-input-container" *ngIf="isModeEdit">
+                <p-inputMask
+                  mask="(999) 999-9999"
+                  class="p-inputtext-sm input-control-worksheet input-phone"
+                  placeholder="(999) 999-9999"
+                  autocomplete="new-password"
+                  [(ngModel)]="phoneNumber"
+                />
+                <span class="phone-start">+7</span>
+              </div>
               <span *ngIf="isModeView">
                 {{
                   (profileInfo$.value.phoneNumber == null || profileInfo$.value.phoneNumber == '')
                   ? 'Не указан'
-                  : profileInfo$.value.phoneNumber
+                  : '+7 ' + profileInfo$.value.phoneNumber
                 }}
               </span>
             </label>

@@ -10,36 +10,46 @@
   src: url("../../../../assets/fonts/Montserrat/static/Montserrat-Bold.ttf");
 }
 
-.fon {
-  background-color: rgba(23, 52, 57, 0.95);
-  //display: inline-block;
-  height: 100vh;
-  overflow: hidden;
-  overflow-x: hidden;
-  width: 100%;
-  //margin-top: -5px;
-  //padding-top: -5px;
+.fon-content {
+  color: rgba(11, 15, 48, 1);
+  gap: 88px;
+  padding: 60px 0;
 
-  img {
-    opacity: 0.1;
+  .fon-text-content {
+    max-width: 505px;
+
+    .fon-pre-title {
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 33.6px;
+    }
+
+    .fon-title {
+      font-size: 60px;
+      font-weight: 900;
+      line-height: 73.14px;
+    }
+
+    .fon-text {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 24px;
+    }
   }
 }
 
-.fon-content {
-  position: absolute;
-  z-index: 2;
-  top: 40%;
-  text-align: center;
+::ng-deep .p-button {
+  width: 297px;
+  height: 54px;
+  background-color: rgba(26, 115, 232, 1);
+  border-radius: 8px;
+}
 
-
-  .fon-title {
-    color: #fff;
-  }
-
-  .fon-text {
-    color: rgba(255, 255, 255, 0.65);
-    margin: 0 100px;
-  }
+::ng-deep .p-button-label {
+  font-family: 'Montserrat';
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24.3px;
 }
 
 .platform-offers {
@@ -125,6 +135,38 @@
   padding: 30px;
   border: 1px solid #D7E5FF;
   border-radius: 8px;
+}
+
+.faq-container {
+  margin: 1rem 12%;
+
+  h3 {
+    margin-bottom: 2rem;
+    font-size: 24px;
+    font-family: "Montserrat Bold", sans-serif;
+    line-height: 30px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+}
+
+.faq-item {
+  margin: 0 12%;
+}
+
+.faq-question-container {
+  font-size: 18px;
+  font-family: "Montserrat Regular";
+  font-weight: bold;
+  line-height: 25px;
+  color: #1A73E8;
+  cursor: pointer;
+}
+
+.text-content {
+  font-size: 16px;
+  font-family: "Montserrat Regular";
+  line-height: 25px;
 }
 
 .block {
@@ -286,7 +328,55 @@
   border: 1px solid #D7E5FF;
 }
 
+.about-us-title {
+  font-family: "Montserrat Bold";
+  font-size: 24px;
+  line-height: 30px;
+  text-align: center;
+  text-transform: uppercase;
+  color: #000000;
+}
 
+.about-us-content {
+  position: relative;
+  bottom: 55px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 11%;
+  padding: 0 4.5rem;
+  background-color: #E8F0FE;
+  border-radius: 8px;
+
+  p {
+    margin-top: 4rem;
+    font-family: "Montserrat Regular";
+    font-size: 18px;
+    line-height: 24px;
+    text-align: left;
+    color: #000000;
+  }
+
+  blockquote {
+    margin: 2.4rem 0 4rem 0;
+    font-family: "Montserrat Regular";
+    font-size: 18px;
+    font-style: italic;
+    line-height: 22px;
+    text-align: left;
+    color: #000000;
+
+    span {
+      float: inline-end;
+      font-family: "Montserrat Regular";
+      font-size: 18px;
+      font-style: italic;
+      line-height: 22px;
+      color: #000000;
+    }
+  }
+}
 
 // Медиа-запросы.
 @media (max-width: 575px) {}
@@ -296,7 +386,7 @@
 
 /* md (>=768 и <=991) */
 @media (min-width: 768px) and (max-width: 991px) {
- 
+
 }
 
 /* lg (>=992 и <=1199) */
@@ -304,5 +394,5 @@
 
 /* xl (>=1200) */
 @media (min-width: 1200px) {
- 
+
 }
