@@ -22,9 +22,10 @@ export class SignUpComponent implements OnInit {
 
     formSignUp: UntypedFormGroup = new UntypedFormGroup({
 
-        "name": new UntypedFormControl("", [
-            Validators.required
-        ]),
+            // TODO: заготовка на будущее
+        // "name": new UntypedFormControl("", [
+        //     Validators.required
+        // ]),
 
         "email": new UntypedFormControl("", [
             Validators.required,
@@ -60,9 +61,11 @@ export class SignUpComponent implements OnInit {
     public async onSendFormSignUpAsync() { 
         if (!this.formSignUp.valid) {
             let errors = '';
-            if (this.formSignUp.controls['name']?.errors) {
-                errors = "Не указано имя пользователя. ";
-            }
+            
+            // TODO: заготовка на будущее
+            // if (this.formSignUp.controls['name']?.errors) {
+            //     errors = "Не указано имя пользователя. ";
+            // }
             if (this.formSignUp.controls['email']?.errors) {
                 errors += "Не указан e-mail. ";
             }
