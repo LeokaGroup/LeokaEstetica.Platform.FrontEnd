@@ -36,13 +36,11 @@ export class SignUpComponent implements OnInit {
             Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)
         ]),
 
-<<<<<<< HEAD
-      "componentRoles": new UntypedFormControl("")
-=======
+        "componentRoles": new UntypedFormControl(""),
+
         "agree": new UntypedFormControl(null, [
-            Validators.required
-        ])
->>>>>>> d752bd7 (#37602566 Изменил форму регистрации согласно макету)
+              Validators.required
+          ])
     });
 
     public readonly userData$ = this._userService.userData$;
