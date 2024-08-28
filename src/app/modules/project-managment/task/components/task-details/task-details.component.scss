@@ -163,3 +163,11 @@ p-inplace {
   position: relative;
   z-index: 1;
 }
+
+::ng-deep .p-dropdown {
+  max-width: 745px;
+
+  .p-dropdown-items-wrapper {
+    max-width: 745px;
+  }
+}
