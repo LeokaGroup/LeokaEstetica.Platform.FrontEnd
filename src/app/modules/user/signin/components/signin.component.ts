@@ -31,7 +31,7 @@ export class SignInComponent implements OnInit {
             Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)
         ]),
 
-        "remember": new UntypedFormControl(false)
+        "remember": new UntypedFormControl(0)
     });
     allFeedSubscription: any;
 
