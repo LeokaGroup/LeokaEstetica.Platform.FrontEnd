@@ -1,12 +1,20 @@
 @use "/src/app/common/styles/control.scss";
 
 .navbar {
+  display: grid;
+  grid-template-columns: 117px 1fr 176px;
+  justify-content: space-between;
+  width: 100%;
   max-width: 1170px;
   margin: 0 auto;
   height: 100px;
-  justify-content: center;
   font-weight: 400;
   font-size: 16px;
+}
+
+.navbar-links-wrapper {
+  display: flex;
+  justify-content: center;
 }
 
 .menu {
@@ -68,9 +76,8 @@
   left: -83px;
 }
 
-.sign {
-  width: 117px;
-  margin-left: auto;
+.align-right {
+  justify-content: end;
 }
 
 .sign-button {
