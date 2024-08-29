@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { VacancyRoutingModule } from './vacancy-routing.module';
-import { MessageService } from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { UserService } from '../../user/services/user.service';
 import { CatalogVacancyComponent } from './catalog/components/catalog-vacancy.component';
@@ -29,6 +29,7 @@ import { TableModule } from "primeng/table";
 import { MessagesModule } from 'primeng/messages';
 import { VacanciesArchiveComponent } from './archive/components/archive.component';
 import { MessageModule } from 'primeng/message';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @NgModule({
     declarations: [
@@ -62,14 +63,16 @@ import { MessageModule } from 'primeng/message';
     ListboxModule,
     TableModule,
     MessagesModule,
-    MessageModule
+    MessageModule,
+    ConfirmDialogModule
   ],
 
     exports: [],
 
     providers: [
         UserService,
-        MessageService
+        MessageService,
+        ConfirmationService
     ]
 })
 

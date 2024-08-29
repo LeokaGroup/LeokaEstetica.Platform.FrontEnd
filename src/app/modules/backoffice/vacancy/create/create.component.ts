@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { MessageService } from "primeng/api";
+import {ActivatedRoute, Router} from "@angular/router";
+import {ConfirmationService, MessageService} from "primeng/api";
 import { Subscription } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { BackOfficeService } from "../../services/backoffice.service";
@@ -18,12 +18,14 @@ import { VacancyService } from "../services/vacancy.service";
  * Класс компонента создания вакансии.
  */
 export class CreateVacancyComponent implements OnInit, OnDestroy {
-    constructor( private readonly _router: Router,
-        private readonly _vacancyService: VacancyService,
-        private readonly _messageService: MessageService,
-        private readonly _activatedRoute: ActivatedRoute,
-        private readonly _backofficeService: BackOfficeService,
-        private readonly _redirectService: RedirectService) { }
+  constructor(private readonly _router: Router,
+              private readonly _vacancyService: VacancyService,
+              private readonly _messageService: MessageService,
+              private readonly _activatedRoute: ActivatedRoute,
+              private readonly _backofficeService: BackOfficeService,
+              private readonly _redirectService: RedirectService,
+              private _confirmationService: ConfirmationService) {
+  }
     public readonly vacancy$ = this._vacancyService.vacancy$;
     public readonly userProjects$ = this._backofficeService.userProjects$;
 
@@ -49,6 +51,7 @@ export class CreateVacancyComponent implements OnInit, OnDestroy {
     demands: string = "";
     conditions: string = "";
     subscription?: Subscription;
+    isNeedUserAction: boolean = false;
 
     public async ngOnInit() {
         this.checkUrlParams();
@@ -74,24 +77,52 @@ export class CreateVacancyComponent implements OnInit, OnDestroy {
      * @returns - Данные вакансии.
      */
     private async createVacancyAsync() {
-        let model = this.createVacancyModel();
-        (await this._vacancyService.createVacancyAsync(model))
+      (await this._vacancyService.calculatePricePostVacancyAsync())
         .subscribe((response: any) => {
-            console.log("Новая вакансия: ", this.vacancy$.value);
+          console.log("calculated price: ", response);
 
-            if (response.errors !== null && response.errors.length > 0) {
-                response.errors.forEach((item: any) => {
-                    this._messageService.add({ severity: "error", summary: "Что то не так", detail: item.errorMessage });
-                });
-            }
+          if (response.isNeedUserAction && !this.isNeedUserAction) {
+            this.isNeedUserAction = response.isNeedUserAction;
 
-            else {
-                setTimeout(() => {
-                    this._router.navigate(["/vacancies/my"]).then(() => {
-                        this._redirectService.redirect("vacancies/my");
+            this._confirmationService.confirm({
+              message: `Стоимость публикации вакансии в соответствии с вашим текущим тарифом: ${response.price} ${response.fees.feesMeasure}. </br>
+                        Перейти к оплате?`,
+              header: 'Публикация вакансии',
+              icon: 'pi pi-exclamation-triangle',
+              acceptIcon:"none",
+              rejectIcon:"none",
+              acceptButtonStyleClass:"p-button-text p-button-success",
+              rejectButtonStyleClass:"p-button-text p-button-danger",
+              acceptLabel: "Оплатить и опубликовать",
+              rejectLabel: "Отменить",
+              accept: async () => {
+                let model = this.createVacancyModel();
+                (await this._vacancyService.createVacancyAsync(model))
+                  .subscribe((response: any) => {
+                    console.log("Новая вакансия: ", this.vacancy$.value);
+
+                    if (response.errors !== null && response.errors.length > 0) {
+                      response.errors.forEach((item: any) => {
+                        this._messageService.add({
+                          severity: "error",
+                          summary: "Что то не так. Но не волнуйтесь, мы сохранили вашу вакансию.",
+                          detail: item.errorMessage
+                        });
                       });
-                }, 4000);
-            }
+                    } else {
+                      setTimeout(() => {
+                        this._router.navigate(["/vacancies/my"]).then(() => {
+                          this._redirectService.redirect("vacancies/my");
+                        });
+                      }, 4000);
+                    }
+                  });
+              },
+              reject: () => {
+                this.isNeedUserAction = false;
+              }
+            });
+          }
         });
     };
 
@@ -179,6 +210,43 @@ export class CreateVacancyComponent implements OnInit, OnDestroy {
             console.log("Проекты пользователя:", this.userProjects$.value);
         });
     };
+
+  // confirm1(event: any) {
+  //   this._confirmationService.confirm({
+  //     message: '',
+  //     header: 'Публикация вакансии',
+  //     icon: 'pi pi-exclamation-triangle',
+  //     acceptIcon:"none",
+  //     rejectIcon:"none",
+  //     rejectButtonStyleClass:"p-button-text",
+  //     accept: () => {
+  //
+  //     },
+  //     reject: () => {
+  //
+  //     }
+  //   });
+  // }
+
+  // confirm2(event: Event) {
+  //   this.confirmationService.confirm({
+  //     target: event.target as EventTarget,
+  //     message: 'Do you want to delete this record?',
+  //     header: 'Delete Confirmation',
+  //     icon: 'pi pi-info-circle',
+  //     acceptButtonStyleClass:"p-button-danger p-button-text",
+  //     rejectButtonStyleClass:"p-button-text p-button-text",
+  //     acceptIcon:"none",
+  //     rejectIcon:"none",
+  //
+  //     accept: () => {
+  //       this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
+  //     },
+  //     reject: () => {
+  //       this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+  //     }
+  //   });
+  // }
 
   ngOnDestroy() {
     this.subscription?.unsubscribe();
