@@ -129,9 +129,7 @@ export class TaskDetailsComponent implements OnInit {
     });
 
     formEpic: UntypedFormGroup = new UntypedFormGroup({
-      "epicName": new UntypedFormControl(null, [
-        Validators.required
-      ])
+      "epicName": new UntypedFormControl(null)
     });
 
     get epicName() {
@@ -232,10 +230,11 @@ export class TaskDetailsComponent implements OnInit {
 
           (await this._projectManagmentService.getAvailableEpicsAsync(+this.projectId))
             .subscribe(_ => {
-              console.log("Доступные эпики 1: ", this.availableEpics$.value);
+              console.log("Доступные эпики: ", this.availableEpics$.value);
 
-              this.epicName = this.availableEpics$.value.find((ep: any) => ep.epicId == this.taskDetails$.value.epicId);
-              console.log("this.epicName: ", this.epicName);
+              this.epicName = this.availableEpics$.value.find(
+                (ep: any) => ep.epicId == this.taskDetails$.value.epicId
+              );
             });
 
           let taskType = TaskDetailTypeEnum[localStorage["t_t_i"]];
