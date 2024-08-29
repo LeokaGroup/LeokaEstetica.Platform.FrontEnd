@@ -129,10 +129,18 @@ export class TaskDetailsComponent implements OnInit {
     });
 
     formEpic: UntypedFormGroup = new UntypedFormGroup({
-      "epicName": new UntypedFormControl("", [
+      "epicName": new UntypedFormControl(null, [
         Validators.required
       ])
-  });
+    });
+
+    get epicName() {
+      return this.formEpic.get('epicName')?.value;
+    }
+
+    set epicName(value: any) {
+      this.formEpic.get('epicName')?.setValue(value);
+    }
 
   formSprint: UntypedFormGroup = new UntypedFormGroup({
     "sprintName": new UntypedFormControl("", [
@@ -224,10 +232,10 @@ export class TaskDetailsComponent implements OnInit {
 
           (await this._projectManagmentService.getAvailableEpicsAsync(+this.projectId))
             .subscribe(_ => {
-              console.log("Доступные эпики: ", this.availableEpics$.value);
+              console.log("Доступные эпики 1: ", this.availableEpics$.value);
 
-              let value = this.availableEpics$.value.find((ep: any) => ep.epicId == this.taskDetails$.value.epicId);
-              this.formEpic.get("epicName")?.setValue(value);
+              this.epicName = this.availableEpics$.value.find((ep: any) => ep.epicId == this.taskDetails$.value.epicId);
+              console.log("this.epicName: ", this.epicName);
             });
 
           let taskType = TaskDetailTypeEnum[localStorage["t_t_i"]];
