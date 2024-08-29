@@ -60,6 +60,18 @@ export class AppComponent implements OnInit {
 
   // Для добавления нового метода хаба, достаточно просто добавить в массив название метода на бэке.
   aHubOnMethods: string[] = [
+    // успешное создание задачи.
+    "SendNotifySuccessProjectTask",
+
+    // успешное создание ошибки.
+    "SendNotifyErrorProjectTask",
+
+    // успешное создание истории.
+    "SendNotifySuccessProjectStory",
+
+    // успешное создание эпика.
+    "SendNotifySuccessProjectEpic",
+
     // Уведомления сохранения профиля пользователя.
     "SendNotifySuccessSave",
 
