@@ -211,43 +211,6 @@ export class CreateVacancyComponent implements OnInit, OnDestroy {
         });
     };
 
-  // confirm1(event: any) {
-  //   this._confirmationService.confirm({
-  //     message: '',
-  //     header: 'Публикация вакансии',
-  //     icon: 'pi pi-exclamation-triangle',
-  //     acceptIcon:"none",
-  //     rejectIcon:"none",
-  //     rejectButtonStyleClass:"p-button-text",
-  //     accept: () => {
-  //
-  //     },
-  //     reject: () => {
-  //
-  //     }
-  //   });
-  // }
-
-  // confirm2(event: Event) {
-  //   this.confirmationService.confirm({
-  //     target: event.target as EventTarget,
-  //     message: 'Do you want to delete this record?',
-  //     header: 'Delete Confirmation',
-  //     icon: 'pi pi-info-circle',
-  //     acceptButtonStyleClass:"p-button-danger p-button-text",
-  //     rejectButtonStyleClass:"p-button-text p-button-text",
-  //     acceptIcon:"none",
-  //     rejectIcon:"none",
-  //
-  //     accept: () => {
-  //       this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
-  //     },
-  //     reject: () => {
-  //       this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
-  //     }
-  //   });
-  // }
-
   ngOnDestroy() {
     this.subscription?.unsubscribe();
   }
