@@ -64,6 +64,7 @@ import { TreeModule } from 'primeng/tree';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { MessageService } from 'primeng/api';
 import {AccessService} from "../access/access.service";
+import { StyleClassModule } from 'primeng/styleclass';
 
 @NgModule({
   declarations: [
@@ -137,7 +138,8 @@ import {AccessService} from "../access/access.service";
     InputSwitchModule,
     DataViewModule,
     TreeModule,
-    ContextMenuModule
+    ContextMenuModule,
+    StyleClassModule
   ],
 
   exports: [],

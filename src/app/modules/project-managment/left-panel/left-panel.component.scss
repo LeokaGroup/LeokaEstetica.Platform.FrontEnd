@@ -1,0 +1,42 @@
+::ng-deep {
+    .p-sidebar-left {
+        width: 248px;
+        padding: 4px;
+    }
+}
+
+.item-name {
+    font-size: 16px;
+    font-weight: 400;
+    // width: 168px;
+    margin: 0 4px 0 8px;
+}
+
+.item-link {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    // width: calc(248px-);
+    padding: 8px 0 8px 8px;
+    border-radius: 8px;
+}
+
+.item-link:hover {
+    background-color: #EDF2FD;
+    color: #1363CC;
+}
+
+.icon {
+    width: 20px;
+    aspect-ratio: 1 / 1;
+}
+
+.chevron {
+    width: 24px;
+    aspect-ratio: 1 / 1;
+    margin-left: auto;
+}

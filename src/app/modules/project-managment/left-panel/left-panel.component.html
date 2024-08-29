@@ -1,4 +1,106 @@
 <!-- Выдвижное меню. -->
+<p-sidebar #sidebarRef [(visible)]="isPanelMenu">
+  <ng-template pTemplate="headless">
+    <div class="flex flex-column h-full">
+      <div class="overflow-y-auto">
+        <div class="item-link"></div>
+        <ul class="list-none m-0 p-0">
+          <li>
+            <a
+              pStyleClass="@next"
+              enterFromClass="hidden"
+              enterActiveClass="slidedown"
+              leaveToClass="hidden"
+              leaveActiveClass="slideup"
+              class="item-link"
+            >
+              <img class="icon" src="../../../../assets/images/landing/company-icon.svg">
+              <span class="item-name">Компания 1</span>
+              <img class="chevron" src="../../../../assets/images/landing/chevron-right.svg">
+            </a>
+            <ul class="list-none m-0 p-0 hidden overflow-y-hidden">
+              <li>
+                <a class="item-link">
+                  <span class="item-name">Проект 1</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <a
+              pStyleClass="@next"
+              enterFromClass="hidden"
+              enterActiveClass="slidedown"
+              leaveToClass="hidden"
+              leaveActiveClass="slideup"
+              class="item-link"
+            >
+              <img class="icon" src="../../../../assets/images/landing/company-icon.svg">
+              <span class="item-name">Компания 2</span>
+              <img class="chevron" src="../../../../assets/images/landing/chevron-right.svg">
+            </a>
+            <ul class="list-none m-0 p-0 hidden overflow-y-hidden">
+              <li>
+                <a class="item-link">
+                  <span class="item-name">Проект 1</span>
+                </a>
+              </li>
+              <li>
+                <a class="item-link">
+                  <span class="item-name">Проект 2</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <a
+              pStyleClass="@next"
+              enterFromClass="hidden"
+              enterActiveClass="slidedown"
+              leaveToClass="hidden"
+              leaveActiveClass="slideup"
+              class="item-link"
+            >
+              <img  class="icon" src="../../../../assets/images/landing/resume-icon.svg">
+              <span class="item-name">Резюме</span>
+              <img class="chevron" src="../../../../assets/images/landing/chevron-right.svg">
+            </a>
+            <ul class="list-none m-0 p-0 hidden overflow-y-hidden">
+              <li>
+                <a class="item-link">
+                  <span class="item-name">Мои резюме</span>
+                </a>
+              </li>
+              <li>
+                <a class="item-link">
+                  <span class="item-name">Создать резюме</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a class="item-link">
+              <img class="icon" src="../../../../assets/images/landing/vacancies-icon.svg">
+              <span class="item-name">Вакансии</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Список, приходящий с бэка -->
+        <!-- <div class="left-panel mt-5">
+        <p-menu [model]="aPanelItems[0].items"
+                [style]="{width: '100%', border: 'none'}"
+                (click)="onSelectMenu($event)"></p-menu>
+        </div> -->
+
+      </div>
+    </div>
+  </ng-template>
+</p-sidebar>
+
+<!-- 
 <p-sidebar #sidebarRef (onHide)="onClose()" [(visible)]="isPanelMenu" class="sidebar">
   <ng-template pTemplate="headless">
     <div class="">
@@ -17,4 +119,4 @@
       </div>
     </div>
   </ng-template>
-</p-sidebar>
+</p-sidebar> -->

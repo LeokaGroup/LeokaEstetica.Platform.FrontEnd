@@ -34,7 +34,7 @@ export class LeftPanelComponent implements OnInit, DoCheck {
   isUrgent: boolean = false;
   isBlocker: boolean = false;
   isLoading: boolean = false;
-  isPanelMenu: boolean = false;
+  isPanelMenu: boolean = true;
 
   public async ngOnInit() {
     forkJoin([
@@ -130,7 +130,7 @@ export class LeftPanelComponent implements OnInit, DoCheck {
       this.isPanelMenu = true;
     }
     else {
-      this.isPanelMenu = false;
+      this.isPanelMenu = true;
     }
     
     // отключаем Спринты, если не выбран проект
