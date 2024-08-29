@@ -1,6 +1,42 @@
+@use '/src/app/common/styles/color.scss';
 @use "/src/app/common/styles/control.scss";
 
-.form-signup {
-    padding-top: 100px;
-    width: 300px;
+::ng-deep .form-signup-wrapper {
+    display: grid;
+    width: 416px;
+    height: 482px;
+    border-radius: 12px;
+    padding: 40px 48px;
+    margin: 100px 0 0;
+    // grid-gap: 32px;
+    box-shadow: 0 10px 20px 0 #9699BA33;
+
+    .title-text {
+        color: color.$project-text-black;
+        text-align: left;
+        padding: 0;
+        margin: 0;
+    }
+
+    .form-signup {
+        padding: none;
+
+        .form-signup-extra {
+            display: grid;
+            grid-template-columns: 20px 1fr;
+            grid-gap: 8px;
+            width: 100%;
+            font-size: 12px;
+            line-height: 16px;
+            align-items: start;
+        }
+
+        .form-signup-checkbox-text {
+            max-width: 292px;
+            font-size: 12px;
+            line-height: 16px;
+            color: color.$project-text-bluish-grey;
+            margin-bottom: 0;
+        }
+    }
 }

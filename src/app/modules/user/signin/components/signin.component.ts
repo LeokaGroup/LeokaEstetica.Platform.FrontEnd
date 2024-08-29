@@ -28,8 +28,10 @@ export class SignInComponent implements OnInit {
 
         "password": new UntypedFormControl("", [
             Validators.required,
-            Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)
-        ])
+            // Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)
+        ]),
+
+        "remember": new UntypedFormControl(0)
     });
     allFeedSubscription: any;
 
@@ -43,6 +45,23 @@ export class SignInComponent implements OnInit {
      * @returns - Данные пользователя.
      */
       public async onSendFormSignInAsync() {
+        if (!this.formSignUp.valid) {
+            let errors = '';
+            if (this.formSignUp.controls['email']?.errors) {
+                errors += "Не ввелен логин (e-mail). ";
+            }
+            if (this.formSignUp.controls['password']?.errors) {
+                errors += "Не введен пароль. ";
+            }
+            this._messageService.add({ 
+                severity: 'error',
+                summary: "Ошибка проверки формы",
+                detail: errors
+            });
+            console.log('this.formSignUp: ', this.formSignUp);
+            return;
+        }
+
         (await this._userService.signInAsync(this.formSignUp.value.email, this.formSignUp.value.password))
         .subscribe((response: any) => {
             console.log("Авторизовались: ", this.userData$.value);
@@ -65,9 +84,5 @@ export class SignInComponent implements OnInit {
                 });
             }
         });
-    };
-
-    public onRouteRestorePassword() {
-        this._router.navigate(["/profile/restore"]);
     };
 }

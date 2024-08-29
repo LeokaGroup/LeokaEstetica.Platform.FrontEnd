@@ -1,9 +1,9 @@
-<nav class="navbar navbar-light justify-content-center">
+<nav class="navbar navbar-light justify-content-center navbar-main">
   <a class="navbar-brand" routerLink="">
     <img class="logo" src="../../../../assets/images/logo/logo.svg">
   </a>
 
-  <div class="form-inline">
+  <div class="navbar-links-wrapper">
     <div class="header-buttons d-flex menu">
       <div *ngFor="let item of headerData$.value">
           <div class="menu-item" (click)="onSelectHeaderItem(item)">{{item.menuItemTitle}}</div>
@@ -11,14 +11,18 @@
     </div>
   </div>
 
-  <div class="form-inline header-buttons d-flex sign" *ngIf="!isHideAuthButtons">
-    <div class="d-flex">
+  <div class="header-buttons d-flex align-right" *ngIf="!isHideAuthButtons">
       <div class="menu-item">
-        <button class="btn btn-primary btn-header button-action-auth-control sign-button"
-                (click)="onRouteSignIn()">Войти
-        </button>
+        @if (currentUrl!='/user/signin') {
+          <button class="btn btn-primary btn-header button-action-auth-control sign-button"
+                  (click)="onRouteSignIn()">Войти
+          </button>
+        } @else {
+          <button class="btn btn-primary btn-header button-action-auth-control sign-button"
+                (click)="onRouteSignUp()">Регистрация
+          </button>
+        }
       </div>
-    </div>
   </div>
 
  <div class="user-avatar d-flex justify-content-end" *ngIf="isHideAuthButtons">

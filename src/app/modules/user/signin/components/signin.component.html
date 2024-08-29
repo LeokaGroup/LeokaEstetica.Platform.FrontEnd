@@ -4,51 +4,59 @@
     <div class="container">
       <div class="row">
         <div class="col-10 offset-1 col-lg-8 offset-lg-2 div-wrapper d-flex justify-content-center align-items-center">
-          <div class="div-to-align">
-            <div class="row justify-content-center form-signin">
-              <h3 class="text-center title-text">Вход</h3>
+            <div class="form-signin-wrapper">
+              <h3 class="title-text">Вход</h3>
 
-              <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Email</label>
-                <input type="email"
-                        class="input-control"
-                        aria-describedby="emailHelp"
-                        formControlName="email">
+              <div class="form-signin">
+                <div class="mb-3">
+                  <input type="email"
+                          class="p-control"
+                          aria-describedby="emailHelp"
+                          pInputText 
+                          placeholder="Email"
+                          formControlName="email">
+                </div>
+
+                <div class="mb-3">
+                  <p-password
+                    class="p-password-control"
+                    formControlName="password"
+                    [toggleMask]="true"
+                    placeholder="Пароль"
+                    [feedback]="false"
+                  />
+                </div>
+
+              <div class="mb-3 form-signin-extra">
+                <div class="form-signin-checkbox">
+                  <!-- TODO: доделать запоминание пользователя -->
+                  <!-- <p-checkbox 
+                    formControlName="remember" 
+                    value="1"
+                    inputId="remember"
+                    class="p-checkbox-control"
+                    />
+                  <label class="remember-label" for="remember">Запомнить меня</label> -->
+                </div>
+                <a routerLink="/profile/restore" class="a-link">Забыли пароль?</a>
               </div>
 
-              <div class="mb-3">
-                <label for="exampleInputPassword1">Пароль</label><br>
-                <p-password 
-                  formControlName="password"
-                  [toggleMask]="true"
-                  placeholder="Пароль"
-                  [feedback]="false"
-                />
+                <button type="submit"
+                        class="btn btn-signin"
+                        (click)="onSendFormSignInAsync()">
+                  Войти
+                </button>
               </div>
-
-             <div class="mb-3 form-check">
-               <button type="button" class="btn btn-link" (click)="onRouteRestorePassword()">
-                 Забыли пароль?
-               </button>
-             </div>
-
-              <button type="submit"
-                      class="btn btn-primary button-action-pur-control"
-                      (click)="onSendFormSignInAsync()">
-                Войти
-              </button>
-
               <!-- Отображаем вход через Google. -->
-              <div class="mt-3">
+              <!-- <div class="mt-3">
                 <div id="buttonDiv"></div>
-              </div>
+              </div> -->
 
               <!-- Отображаем вход через VK. -->
-              <div class="mt-3">
+              <!-- <div class="mt-3">
                 <div id="vk_auth"></div>
-              </div>
+              </div> -->
             </div>
-          </div>
         </div>
       </div>
     </div>

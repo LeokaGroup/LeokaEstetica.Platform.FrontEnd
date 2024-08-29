@@ -1,3 +1,5 @@
+@use 'color.scss';
+
 @mixin controlGrayForm {
     color: #403866;
     line-height: 1.2;
@@ -7,6 +9,67 @@
     // background: #FAFAFA;
     height: 62px;
     padding: 0 20px 0 38px;
+    outline: none;
+    border: none;
+}
+
+@mixin controlWhiteForm {
+    width: 320px;
+    height: 56px;
+    padding: 16px 20px;
+    gap: 8px;
+    border-radius: 8px;
+    background-color: white;
+    border: 1px solid color.$project-stroke-nikel;
+    line-height: 24px;
+    color: color.$landing-text-dark-grey;
+    outline: none;
+
+    &::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+        color: color.$project-text-bluish-grey;
+    }
+    &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: color.$project-text-bluish-grey;
+        opacity:  1;
+    }
+    &::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: color.$project-text-bluish-grey;
+        opacity:  1;
+    }
+    &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: color.$project-text-bluish-grey;
+    }
+    &::-ms-input-placeholder { /* Microsoft Edge */
+        color: color.$project-text-bluish-grey;
+    }
+    
+    &::placeholder { /* Most modern browsers support this now. */
+        color: color.$project-text-bluish-grey;
+    }
+}
+
+@mixin autocompleteFix {
+    box-shadow: 0 0 0px 1000px white inset;
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+@mixin systemFont {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.8rem;
+    font-size-adjust: 0.54;
+}
+
+@mixin commonButton($fontsize, $bgcolor) {
+    background-color: $bgcolor;
+    font-size: $fontsize;
+    color: white;
+    line-height: 1.2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px 32px;
+    border-radius: 8px;
+    font-family: 'Montserrat';
     outline: none;
     border: none;
 }
@@ -176,4 +239,68 @@
 ::ng-deep .control-textarea-big-width {
   max-width: 690px;
   word-break: break-all;
+}
+
+:host ::ng-deep input {
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:enabled:focus {
+        @include autocompleteFix();
+    }
+}
+
+:host ::ng-deep .p-multiselect-control .p-multiselect.p-focus {
+    @include autocompleteFix();
+}
+
+:host ::ng-deep .p-control, 
+:host ::ng-deep .p-multiselect-control .p-multiselect,
+:host ::ng-deep .p-password-control .p-inputtext {
+    @include controlWhiteForm();
+    @include systemFont();
+
+    .p-multiselect-label {
+        color: currentColor;
+        padding: 0;
+    }
+}
+
+:host ::ng-deep .p-multiselect-control .p-multiselect {
+    padding-right: 0;
+
+    .p-multiselect-trigger {
+        width: auto;
+    }
+
+    .p-multiselect-item span {
+        padding-top: 2px;
+        @include systemFont();
+    }
+}
+
+:host ::ng-deep .p-multiselect-control .p-checkbox,
+:host ::ng-deep .p-checkbox-control .p-checkbox {
+    .p-checkbox-box {
+        border: 1px solid color.$project-stroke-nikel;
+        border-radius: 4px;
+
+        &.p-highlight {
+            background: color.$project-main-blue-color;
+        }
+    }
+
+    &:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+        box-shadow: none !important;
+    }
+}
+
+.btn-signin {
+    @include commonButton(18px, color.$project-main-blue-color);
+    height: 56px;
+    width: 320px;
+}
+
+.a-link {
+    color: color.$project-icons-grey;
 }

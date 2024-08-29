@@ -1,6 +1,43 @@
+@use '/src/app/common/styles/color.scss';
 @use "/src/app/common/styles/control.scss";
 
-.form-signin {
-    padding-top: 100px;
-    width: 300px;
+::ng-deep .form-signin-wrapper {
+    display: grid;
+    width: 416px;
+    height: 382px;
+    border-radius: 12px;
+    padding: 40px 48px;
+    margin: 120px 0 0;
+    grid-gap: 32px;
+    box-shadow: 0 10px 20px 0 #9699BA33;
+
+    .title-text {
+        color: color.$project-text-black;
+        text-align: left;
+        padding: 0;
+        margin: 0;
+    }
+
+    .form-signin {
+        padding: none;
+
+        .form-signin-extra {
+            width: 100%;
+            font-size: 12px;
+            line-height: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .form-signin-checkbox {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+
+            .remember-label {
+                cursor: pointer;
+            }
+        }
+    }
 }

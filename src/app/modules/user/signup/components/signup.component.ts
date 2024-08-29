@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { UserService } from "../../services/user.service";
+import { tap } from "rxjs";
 
 @Component({
     selector: "signup",
@@ -22,6 +23,11 @@ export class SignUpComponent implements OnInit {
 
     formSignUp: UntypedFormGroup = new UntypedFormGroup({
 
+            // TODO: заготовка на будущее
+        // "name": new UntypedFormControl("", [
+        //     Validators.required
+        // ]),
+
         "email": new UntypedFormControl("", [
             Validators.required,
             Validators.email
@@ -32,7 +38,14 @@ export class SignUpComponent implements OnInit {
             Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)
         ]),
 
-      "componentRoles": new UntypedFormControl("")
+        // "componentRoles": new UntypedFormControl(""),
+        componentRoles: new UntypedFormControl(null, [
+            Validators.required
+        ]),
+
+        "agree": new UntypedFormControl(null, [
+            Validators.required
+        ])
     });
 
     public readonly userData$ = this._userService.userData$;
@@ -49,19 +62,47 @@ export class SignUpComponent implements OnInit {
      * Функция регистрирует пользователя.
      * @returns - Данные пользователя.
      */
-   public async onSendFormSignUpAsync() {
-     (await this._userService.signUpAsync(this.formSignUp.value.email,
-       this.formSignUp.value.password,
-       this.formSignUp.value.componentRoles))
-       .subscribe((response: any) => {
-         console.log("Новый пользователь: ", this.userData$.value);
-         if (response.isSuccess) {
-           this._messageService.add({
-             severity: 'success',
-             summary: "Все хорошо",
-             detail: "Ваша анкета успешно создана и отправлена на модерацию. " +
-               "Заполните свою анкету в вашем профиле, чтобы получить доступ к ключевому функционалу."
-           });
+    public async onSendFormSignUpAsync() { 
+        if (!this.formSignUp.valid) {
+            let errors = '';
+            
+            // TODO: заготовка на будущее
+            // if (this.formSignUp.controls['name']?.errors) {
+            //     errors = "Не указано имя пользователя. ";
+            // }
+            if (this.formSignUp.controls['componentRoles']?.errors) {
+              errors += "Нужно выбрать роль пользователя. ";
+            }
+            if (this.formSignUp.controls['email']?.errors) {
+                errors += "Не указан e-mail. ";
+            }
+            if (this.formSignUp.controls['password']?.errors) {
+                errors += "Пароль не соответствует требованиям. ";
+            }
+            if (this.formSignUp.controls['agree']?.errors) {
+                errors += "Требуется согласие с условиями платформы.";
+            }
+            this._messageService.add({ 
+                severity: 'error',
+                summary: "Ошибка проверки формы",
+                detail: errors
+            });
+            console.log('this.formSignUp: ', this.formSignUp);
+            return;
+        }
+   
+        (await this._userService.signUpAsync(this.formSignUp.value.email,
+          this.formSignUp.value.password,
+          this.formSignUp.value.componentRoles))
+          .subscribe((response: any) => {
+            console.log("Новый пользователь: ", this.userData$.value);
+            if (response.isSuccess) {
+              this._messageService.add({
+                severity: 'success',
+                summary: "Все хорошо",
+                detail: "Ваша анкета успешно создана и отправлена на модерацию. " +
+                  "Заполните свою анкету в вашем профиле, чтобы получить доступ к ключевому функционалу."
+              }); 
 
            setTimeout(() => {
              this._router.navigate(["/user/signin"]).then(() => {
