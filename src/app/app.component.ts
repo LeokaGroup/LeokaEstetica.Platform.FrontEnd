@@ -111,6 +111,9 @@ export class AppComponent implements OnInit {
     // Уведомления предупреждения о блокировке пользователя.
     "SendNotificationWarningBlockedUser",
 
+    // Уведомления при успешном создании анкеты.
+    "SendNotificationSuccessCreateUser",
+
     // Уведомления предупреждения не заполненной анкеты пользователя.
     "SendNotificationWarningEmptyUserProfile",
 
@@ -176,6 +179,9 @@ export class AppComponent implements OnInit {
 
     // Уведомления успешного удаления проекта из архива.
     "SendNotificationSuccessDeleteProjectArchive",
+
+    // Уведомления ошибки удаления проекта из архива.
+    "SendNotificationErrorDeleteProjectArchive",
 
     // Уведомления успешного удаления вакансии из архива.
     "SendNotificationSuccessDeleteVacancyArchive",
