@@ -28,6 +28,7 @@
     "ngx-loading": "^17.0.0",
     "ngx-loading-x": "^1.0.3",
     "ngx-rerender": "^1.1.0",
+    "primeflex": "^3.3.1",
     "primeicons": "^6.0.1",
     "primeng": "^17.18.1",
     "quill": "^2.0.2",
