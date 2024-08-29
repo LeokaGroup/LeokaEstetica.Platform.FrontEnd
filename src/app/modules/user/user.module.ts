@@ -11,6 +11,7 @@ import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
     declarations: [
@@ -27,7 +28,8 @@ import { CheckboxModule } from 'primeng/checkbox';
         ToastModule,
         ButtonModule,
         PasswordModule,
-      CheckboxModule
+        CheckboxModule,
+        MultiSelectModule
     ],
 
     exports: [],

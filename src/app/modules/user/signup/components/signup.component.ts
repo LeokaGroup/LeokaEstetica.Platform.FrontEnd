@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { UserService } from "../../services/user.service";
+import { tap } from "rxjs";
 
 @Component({
     selector: "signup",
@@ -37,11 +38,14 @@ export class SignUpComponent implements OnInit {
             Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*#?&^_-]).{8,}/)
         ]),
 
-        "componentRoles": new UntypedFormControl(""),
+        // "componentRoles": new UntypedFormControl(""),
+        componentRoles: new UntypedFormControl(null, [
+            Validators.required
+        ]),
 
         "agree": new UntypedFormControl(null, [
-              Validators.required
-          ])
+            Validators.required
+        ])
     });
 
     public readonly userData$ = this._userService.userData$;
@@ -66,6 +70,9 @@ export class SignUpComponent implements OnInit {
             // if (this.formSignUp.controls['name']?.errors) {
             //     errors = "Не указано имя пользователя. ";
             // }
+            if (this.formSignUp.controls['componentRoles']?.errors) {
+              errors += "Нужно выбрать роль пользователя. ";
+            }
             if (this.formSignUp.controls['email']?.errors) {
                 errors += "Не указан e-mail. ";
             }

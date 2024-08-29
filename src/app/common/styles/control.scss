@@ -48,6 +48,17 @@
     }
 }
 
+@mixin autocompleteFix {
+    box-shadow: 0 0 0px 1000px white inset;
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+@mixin systemFont {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.8rem;
+    font-size-adjust: 0.54;
+}
+
 @mixin commonButton($fontsize, $bgcolor) {
     background-color: $bgcolor;
     font-size: $fontsize;
@@ -235,19 +246,40 @@
     &:-webkit-autofill:hover,
     &:-webkit-autofill:focus,
     &:enabled:focus {
-        box-shadow: 0 0 0px 1000px white inset;
-        -webkit-box-shadow: 0 0 0px 1000px white inset;
+        @include autocompleteFix();
     }
 }
- 
-:host ::ng-deep .p-control, 
-:host ::ng-deep .p-password-control .p-inputtext {
-    @include controlWhiteForm();
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 0.8rem;
-    font-size-adjust: 0.54;
+
+:host ::ng-deep .p-multiselect-control .p-multiselect.p-focus {
+    @include autocompleteFix();
 }
 
+:host ::ng-deep .p-control, 
+:host ::ng-deep .p-multiselect-control .p-multiselect,
+:host ::ng-deep .p-password-control .p-inputtext {
+    @include controlWhiteForm();
+    @include systemFont();
+
+    .p-multiselect-label {
+        color: currentColor;
+        padding: 0;
+    }
+}
+
+:host ::ng-deep .p-multiselect-control .p-multiselect {
+    padding-right: 0;
+
+    .p-multiselect-trigger {
+        width: auto;
+    }
+
+    .p-multiselect-item span {
+        padding-top: 2px;
+        @include systemFont();
+    }
+}
+
+:host ::ng-deep .p-multiselect-control .p-checkbox,
 :host ::ng-deep .p-checkbox-control .p-checkbox {
     .p-checkbox-box {
         border: 1px solid color.$project-stroke-nikel;

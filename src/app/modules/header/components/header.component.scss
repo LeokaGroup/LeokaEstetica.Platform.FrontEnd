@@ -1,15 +1,18 @@
 @use "/src/app/common/styles/control.scss";
 
 .navbar {
-  display: grid;
-  grid-template-columns: 117px 1fr 176px;
-  justify-content: space-between;
   width: 100%;
   max-width: 1170px;
   margin: 0 auto;
   height: 100px;
   font-weight: 400;
   font-size: 16px;
+}
+
+.navbar-main {
+  display: grid;
+  grid-template-columns: 117px 1fr 176px;
+  justify-content: space-between;
 }
 
 .navbar-links-wrapper {
