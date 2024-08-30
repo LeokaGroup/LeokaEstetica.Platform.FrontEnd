@@ -35,12 +35,32 @@ export class LeftPanelComponent implements OnInit, DoCheck {
   isBlocker: boolean = false;
   isLoading: boolean = false;
   isPanelMenu: boolean = true;
+  companies: any[] = [];
+  selectedCompany: any;
 
   public async ngOnInit() {
     forkJoin([
       this.checkUrlParams(),
       await this.getHeaderItemsAsync()
     ]).subscribe();
+
+    this.companies = [
+      {
+        name: 'Компания 1',
+        projects: [
+          {name: 'К1 Проект 1'},
+          {name: 'К1 Проект 2'}
+        ]
+      },
+      {
+        name: 'Компания 2',
+        projects: [
+          {name: 'К2 Проект 1'},
+          {name: 'К2 Проект 2'},
+          {name: 'К2 Проект 3'}
+        ]
+      }
+    ]
   };
 
   /**
@@ -160,4 +180,9 @@ export class LeftPanelComponent implements OnInit, DoCheck {
   public onClose() {
     this._projectManagmentService.isLeftPanel = false;
   };
+
+  public onSelectCompany() {
+    console.log(this.selectedCompany.projects[0]);
+    console.log(this.aPanelItems[0].items);
+  }
 }

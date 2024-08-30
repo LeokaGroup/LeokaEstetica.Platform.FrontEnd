@@ -2,58 +2,47 @@
 <p-sidebar #sidebarRef [(visible)]="isPanelMenu">
   <ng-template pTemplate="headless">
     <div class="flex flex-column h-full">
-      <div class="overflow-y-auto">
-        <div class="item-link"></div>
+      <div class="overflow-y-hiddden">
+        <p-dropdown *ngIf="companies.length > 1"
+                    [options]="companies" 
+                    [(ngModel)]="selectedCompany" 
+                    optionLabel="name" 
+                    placeholder="Выберите компанию"
+                    (onChange)="onSelectCompany()"
+                    dropdownIcon="none"
+                    
+        />
+        <p *ngIf="companies.length < 2">{{companies[0].name}}</p>
+        <ul class="list-none m-0 p-0" *ngIf="selectedCompany">
+          <li class="second-level-item" *ngFor="let project of selectedCompany.projects">
+            <a class="item-link">
+              <img  class="icon" src="../../../../assets/images/landing/company-icon.svg">
+              <span class="item-name">{{project.name}}</span>
+            </a>
+          </li>
+        </ul>
+
+<!-- элементы меню, приходящие с бэка -->
+<!-- TODO: добавить в элемент меню иконку -->
+
+<!-- TODO: настроить if если есть выпадающий список, добавить стили для <a> и шеврон <img> -->
+
+        <!-- 
+          <ul class="list-none m-0 p-0">
+            <li *ngFor="let item of aPanelItems[0].items">
+
+              <a class="item-link" (click)="onSelectMenu($event)">
+                <img class="icon" src="../../../../assets/images/landing/company-icon.svg">
+                <span class="item-name">{{item.label}}</span>
+                <img class="chevron" src="../../../../assets/images/landing/chevron-right.svg">
+              </a>
+
+            </li>
+          </ul>
+        -->
+
+<!-- Временно захардкоженные элементы -->
         <ul class="list-none m-0 p-0">
-          <li>
-            <a
-              pStyleClass="@next"
-              enterFromClass="hidden"
-              enterActiveClass="slidedown"
-              leaveToClass="hidden"
-              leaveActiveClass="slideup"
-              class="item-link"
-            >
-              <img class="icon" src="../../../../assets/images/landing/company-icon.svg">
-              <span class="item-name">Компания 1</span>
-              <img class="chevron" src="../../../../assets/images/landing/chevron-right.svg">
-            </a>
-            <ul class="list-none m-0 p-0 hidden overflow-y-hidden">
-              <li>
-                <a class="item-link">
-                  <span class="item-name">Проект 1</span>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-          <li>
-            <a
-              pStyleClass="@next"
-              enterFromClass="hidden"
-              enterActiveClass="slidedown"
-              leaveToClass="hidden"
-              leaveActiveClass="slideup"
-              class="item-link"
-            >
-              <img class="icon" src="../../../../assets/images/landing/company-icon.svg">
-              <span class="item-name">Компания 2</span>
-              <img class="chevron" src="../../../../assets/images/landing/chevron-right.svg">
-            </a>
-            <ul class="list-none m-0 p-0 hidden overflow-y-hidden">
-              <li>
-                <a class="item-link">
-                  <span class="item-name">Проект 1</span>
-                </a>
-              </li>
-              <li>
-                <a class="item-link">
-                  <span class="item-name">Проект 2</span>
-                </a>
-              </li>
-            </ul>
-          </li>
-
           <li>
             <a
               pStyleClass="@next"
@@ -68,12 +57,12 @@
               <img class="chevron" src="../../../../assets/images/landing/chevron-right.svg">
             </a>
             <ul class="list-none m-0 p-0 hidden overflow-y-hidden">
-              <li>
+              <li class="second-level-item">
                 <a class="item-link">
                   <span class="item-name">Мои резюме</span>
                 </a>
               </li>
-              <li>
+              <li class="second-level-item">
                 <a class="item-link">
                   <span class="item-name">Создать резюме</span>
                 </a>
@@ -86,15 +75,13 @@
               <span class="item-name">Вакансии</span>
             </a>
           </li>
+          <li>
+            <a class="item-link">
+              <img class="icon" src="../../../../assets/images/landing/bookmark-icon.svg">
+              <span class="item-name">Подписки</span>
+            </a>
+          </li>
         </ul>
-
-        <!-- Список, приходящий с бэка -->
-        <!-- <div class="left-panel mt-5">
-        <p-menu [model]="aPanelItems[0].items"
-                [style]="{width: '100%', border: 'none'}"
-                (click)="onSelectMenu($event)"></p-menu>
-        </div> -->
-
       </div>
     </div>
   </ng-template>

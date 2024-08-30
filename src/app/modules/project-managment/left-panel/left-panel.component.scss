@@ -3,12 +3,45 @@
         width: 248px;
         padding: 4px;
     }
+
+    .p-dropdown-trigger {
+        background-image: url(../../../../assets/images/landing/chevron-selector-vertical.svg);
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 24px;
+        aspect-ratio: 1 / 1;
+        margin-left: auto;
+    }
+
+    .p-dropdown {
+        border: none;
+        box-sizing: none;
+        box-shadow: none;
+        font-weight: 600;
+        font-family: 'Montserrat';
+        width: 100%;
+        flex-direction: row;
+        justify-content: start;
+        padding: 8px;
+    }
+
+    .p-dropdown-label {
+        font-family: 'Montserrat';
+        color: black;
+    }
+
+    .p-inputtext {
+        padding: 0;
+    }
+}
+
+.second-level-item {
+    padding-left: 20px;
 }
 
 .item-name {
     font-size: 16px;
     font-weight: 400;
-    // width: 168px;
     margin: 0 4px 0 8px;
 }
 
@@ -20,7 +53,6 @@
     flex-direction: row;
     align-items: center;
     justify-content: start;
-    // width: calc(248px-);
     padding: 8px 0 8px 8px;
     border-radius: 8px;
 }
