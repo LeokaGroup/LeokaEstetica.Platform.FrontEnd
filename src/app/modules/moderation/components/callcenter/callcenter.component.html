@@ -548,6 +548,7 @@
 
       <div>
         <p-checkbox inputId="remarkProjectName"
+                    [(ngModel)]="RemarkProjectName"
                     [value]="'RemarkProjectName'"
                     (onChange)="onSetProjectRemarks('RemarkProjectName', '', 'Название проекта')">
 
@@ -576,6 +577,7 @@
 
       <div>
         <p-checkbox inputId="remarkProjectDetails"
+                    [(ngModel)]="RemarkProjectDetails"
                     [value]="'RemarkProjectDetails'"
                     (onChange)="onSetProjectRemarks('RemarkProjectDetails', '', 'Описание проекта')">
         </p-checkbox>
