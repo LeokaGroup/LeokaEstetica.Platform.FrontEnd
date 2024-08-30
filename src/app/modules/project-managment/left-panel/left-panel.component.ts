@@ -150,7 +150,7 @@ export class LeftPanelComponent implements OnInit, DoCheck {
       this.isPanelMenu = true;
     }
     else {
-      this.isPanelMenu = true;
+      this.isPanelMenu = false;
     }
     
     // отключаем Спринты, если не выбран проект
@@ -183,6 +183,5 @@ export class LeftPanelComponent implements OnInit, DoCheck {
 
   public onSelectCompany() {
     console.log(this.selectedCompany.projects[0]);
-    console.log(this.aPanelItems[0].items);
   }
 }
