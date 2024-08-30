@@ -1,3 +1,4 @@
+@use "/src/app/common/styles/color.scss";
 @use "/src/app/common/styles/spaces.scss";
 @use "/src/app/common/styles/control.scss";
 @use "/src/app/common/styles/styles.scss";
@@ -39,4 +40,8 @@
     text-align: left;
     white-space: pre-wrap;
     word-wrap: break-word;
+}
+
+.resetFiltersBtn {
+  @include control.linkButton(color.$project-icons-grey);
 }
