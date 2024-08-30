@@ -7,6 +7,7 @@ import { BackOfficeService } from "../../services/backoffice.service";
 import { CreateProjectVacancyInput } from "../models/input/create-project-vacancy-input";
 import { VacancyInput } from "../models/input/vacancy-input";
 import { VacancyService } from "../services/vacancy.service";
+import {OrderService} from "../../../order-form/services/order.service";
 
 @Component({
     selector: "create",
@@ -24,7 +25,8 @@ export class CreateVacancyComponent implements OnInit, OnDestroy {
               private readonly _activatedRoute: ActivatedRoute,
               private readonly _backofficeService: BackOfficeService,
               private readonly _redirectService: RedirectService,
-              private _confirmationService: ConfirmationService) {
+              private _confirmationService: ConfirmationService,
+              private readonly _orderService: OrderService) {
   }
     public readonly vacancy$ = this._vacancyService.vacancy$;
     public readonly userProjects$ = this._backofficeService.userProjects$;
@@ -77,7 +79,7 @@ export class CreateVacancyComponent implements OnInit, OnDestroy {
      * @returns - Данные вакансии.
      */
     private async createVacancyAsync() {
-      (await this._vacancyService.calculatePricePostVacancyAsync())
+      (await this._orderService.calculatePricePostVacancyAsync())
         .subscribe((response: any) => {
           console.log("calculated price: ", response);
 

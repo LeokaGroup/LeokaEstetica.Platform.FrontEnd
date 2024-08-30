@@ -18,7 +18,6 @@ export class VacancyService {
     public listVacancy$ = new BehaviorSubject<any>([]);
     public vacancyRemarks$ = new BehaviorSubject<any>([]);
     public archivedVacancy$ = new BehaviorSubject<any>(null);
-    public calculatedPrice$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -136,15 +135,6 @@ export class VacancyService {
    public async addArchiveVacancyAsync(archiveInput: AddVacancyArchiveInput) {
     return await this.http.post(API_URL.apiUrl + "/vacancies/archive", archiveInput).pipe(
       tap(data => this.archivedVacancy$.next(data))
-    );
-  };
-
-  /**
-   * Функция вычисляет цену за публикацию вакансии в соответствии с тарифом пользователя.
-   */
-  public async calculatePricePostVacancyAsync() {
-    return await this.http.get(API_URL.apiUrl + "/commercial/calculate-price-vacancy").pipe(
-      tap(data => this.calculatedPrice$.next(data))
     );
   };
 }
