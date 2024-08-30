@@ -2,7 +2,7 @@
 
 <div class="task-details mt-3">
     <!-- Название задачи. -->
-    <div class="task-name">
+    <div class="task-name required">
       <p-inplace>
         <ng-template pTemplate="display">
           <span>Введите название</span>
@@ -25,7 +25,7 @@
       <div class="col-lg-4">
         <strong>Детали</strong>
         <div class="d-flex line">
-          <div class="line-item d-flex">
+          <div class="line-item d-flex required">
             <label class="control-label-task-item">Тип:</label>
             <p-dropdown [options]="aTaskTypes"
                         [(ngModel)]="selectedTaskType"
@@ -79,7 +79,7 @@
       </div>
 
       <div class="col-lg-4" *ngIf="isCreateTask && !isCreateHistory">
-        <div class="line-item d-flex">
+        <div class="line-item d-flex required">
           <label class="control-label-task-item">Статус:</label>
           <p-dropdown [options]="taskStatuses$.value"
                       [(ngModel)]="selectedStatus"
@@ -94,7 +94,7 @@
       </div>
 
       <div class="col-lg-4" *ngIf="isCreateHistory">
-        <div class="line-item d-flex">
+        <div class="line-item d-flex required">
           <label class="control-label-task-item">Статус:</label>
           <p-dropdown [options]="userStoryStatuses$.value"
                       [(ngModel)]="selectedHistoryStatus"
@@ -108,7 +108,7 @@
       </div>
 
       <div class="col-lg-4" *ngIf="isCreateEpic">
-        <div class="line-item d-flex">
+        <div class="line-item d-flex required">
           <label class="control-label-task-item">Статус:</label>
           <p-dropdown [options]="epicStatuses$.value"
                       [(ngModel)]="selectedStatus"
