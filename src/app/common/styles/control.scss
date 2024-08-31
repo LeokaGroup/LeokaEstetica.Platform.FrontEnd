@@ -316,3 +316,15 @@
 .a-link {
     color: color.$project-icons-grey;
 }
+
+.required {
+    position: relative;
+
+    &::after{
+        content: '*';
+        color: color.$red;
+        position: absolute;
+        top: -10px;
+        left: -10px;
+    }
+}
