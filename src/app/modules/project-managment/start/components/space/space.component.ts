@@ -5,6 +5,8 @@ import { RedirectService } from "src/app/common/services/redirect.service";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {ChangeTaskStatusInput} from "../../../task/models/input/change-task-status-input";
+import { MenuItem } from "primeng/api";
+import { Menu } from "primeng/menu";
 
 @Component({
     selector: "",
@@ -43,6 +45,8 @@ export class SpaceComponent implements OnInit {
     isLoading: boolean = false;
     isPanelMenu: boolean = false;
     dragged: DraggedTask = null;
+
+    dropdownMenuItems: MenuItem[] | undefined;
 
     items: any[] = [
         {
@@ -260,6 +264,34 @@ export class SpaceComponent implements OnInit {
     this.dragged = null;
   }
 
+    /**
+     * Функция управления показом выпадающего меню в задачах.
+     * @param menu - элемент меню.
+     * @param event - событие.
+     * @param task - задача, для которой показывается меню.
+     */
+    onClickDropdownMenu(menu: Menu, event: MouseEvent, task: any) {
+      event.stopPropagation();
+      this.dropdownMenuItems = [
+        {
+          label: 'Редактировать',
+          command: () => this.onSelectTask(task.projectTaskId, task.taskTypeId)
+        },
+        {
+          label: 'Скрыть из общего доступа',
+          command: () => console.log('onClickDropdownMenu: Скрыть из общего доступа')
+        },
+        {
+          label: 'Архивировать',
+          command: () => console.log('onClickDropdownMenu: Архивировать')
+        },
+        {
+          label: 'Удалить',
+          command: () => console.log('onClickDropdownMenu: Удалить')
+        }
+      ];
+      menu.toggle(event);
+    }
 }
 
 type DraggedTask = {
