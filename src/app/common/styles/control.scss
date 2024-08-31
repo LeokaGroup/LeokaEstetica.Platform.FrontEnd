@@ -1,4 +1,5 @@
 @use 'color.scss';
+@use 'font.scss';
 
 @mixin controlGrayForm {
     color: #403866;
@@ -72,6 +73,17 @@
     font-family: 'Montserrat';
     outline: none;
     border: none;
+}
+
+@mixin linkButton($color) {
+    background-color: transparent;
+    margin: 4px;
+    font-size: 16px;
+    font-family: "Montserrat Regular";
+    text-decoration: underline;
+    color: $color;
+    border: none;
+    cursor: pointer;
 }
 
 @mixin purButton {
