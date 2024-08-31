@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { forkJoin } from "rxjs";
 import { ProjectManagmentService } from "../../project-managment/services/project-managment.service";
 import { LandingService } from "../services/landing.service";
+import { Router } from "@angular/router";
 
 @Component({
     selector: "landing",
@@ -32,8 +33,10 @@ export class LandingComponent implements OnInit {
     aNewUsers: any[] = [];
     carouselType: "horizontal" | "vertical" = "horizontal";
 
-    constructor(private readonly _landingService: LandingService,
-        private readonly _projectManagmentService: ProjectManagmentService) {
+    constructor(
+      private readonly _landingService: LandingService,
+      private readonly _projectManagmentService: ProjectManagmentService,
+      private readonly _router: Router) {
     }
 
     public async ngOnInit() {
@@ -156,5 +159,13 @@ private async availableProjectManagmentAsync() {
 
     public onCreateInviteLinkTelegramAsync() {
         window.location.href = "https://t.me/leoka_estetica";
+    };
+
+    public onTryButton() {
+      this._router.navigate(["/profile/aboutme"], {
+        queryParams: {
+          mode: "view"
+        }
+      });
     };
 }
