@@ -5,13 +5,13 @@
     <div class="task-name">
       <p-inplace>
         <ng-template pTemplate="display">
-          <span>Введите название</span>
+          <h1 class="task-name-title">Введите название</h1>
         </ng-template>
         <ng-template pTemplate="content">
           <input type="text"
                 [(ngModel)]="taskName"
                 pInputText
-                class="p-inputtext-sm input-control-worksheet control-task-name" />
+                class="input-control-worksheet control-task-name" />
         </ng-template>
       </p-inplace>
     </div>
