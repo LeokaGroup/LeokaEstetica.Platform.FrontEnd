@@ -84,6 +84,8 @@ export class CallCenterComponent implements OnInit {
     aAwaitingCorrectionVacanciesRemarks: any[] = [];
     aProjectComments: any[] = [];
     isShowProjectComments: boolean = false;   
+    RemarkProjectDetails = null;
+    RemarkProjectName = null;
 
     items: any[] = [
         {
@@ -406,7 +408,6 @@ export class CallCenterComponent implements OnInit {
                 console.log("Проект для модерации: ", response);
 
                 this.clearRemarksProject();
-
                 this.isShowPreviewModerationProjectModal = true;
                 this.projectName = response.projectName;
                 this.projectDetails = response.projectDetails;        
@@ -658,6 +659,7 @@ export class CallCenterComponent implements OnInit {
     /**
      * Функция отправляет замечания проекта.
      */
+    // !!!
      public async onSendProjectRemarksAsync(projectId: number = 0) {
         let sendProjectRemarkInput = new SendProjectRemarkInput();
 
@@ -804,6 +806,8 @@ export class CallCenterComponent implements OnInit {
     };     
 
     private clearRemarksProject() {
+        this.RemarkProjectDetails = null;
+        this.RemarkProjectName = null;
         this.aRemarksProject = [];
     };
 
