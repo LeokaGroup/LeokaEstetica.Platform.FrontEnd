@@ -36,6 +36,7 @@ import { MessageModule } from 'primeng/message';
 import { MessagesComponent } from './messages/messages.component';
 import { SplitterModule } from 'primeng/splitter';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 
 @NgModule({
@@ -75,7 +76,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
         MessagesModule,
         MessageModule,
         SplitterModule,
-        InputNumberModule
+        InputNumberModule,
+        InputSwitchModule
     ],
 
     exports: [],

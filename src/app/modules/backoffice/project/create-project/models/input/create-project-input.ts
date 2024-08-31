@@ -20,4 +20,7 @@ export class CreateProjectInput {
 
   // Требования
   Demands: string = "";
+
+  // Видимость проекта
+  isPublic: boolean = true;
 }

@@ -24,6 +24,7 @@ export class CreateProjectComponent implements OnInit {
   projectName: string = "";
   projectDetails: string = "";
   selectedStage: any;
+  public = true;
   demands: string = "";
   conditions: string = "";
   isCreateProject: boolean = false;
@@ -59,13 +60,15 @@ export class CreateProjectComponent implements OnInit {
      */
 
   private createProjectModel() {
-    let createProjectInput = new CreateProjectInput();
-    createProjectInput.ProjectName = this.projectName;
-    createProjectInput.ProjectDetails = this.projectDetails;
-    createProjectInput.ProjectStage = this.selectedStage.stageSysName;
-    createProjectInput.Conditions = this.conditions;
-    createProjectInput.Demands = this.demands;
-
+    const createProjectInput: CreateProjectInput = {
+      ProjectName: this.projectName,
+      ProjectDetails: this.projectDetails,
+      ProjectStage: this.selectedStage.stageSysName,
+      Conditions: this.conditions,
+      Demands: this.demands,
+      isPublic: this.public,
+    };
+    
     this.isCreateProject = true;
 
     return createProjectInput;
