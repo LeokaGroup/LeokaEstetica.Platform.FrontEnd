@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MessageService } from "primeng/api";
-import { forkJoin } from "rxjs";
+import { firstValueFrom, forkJoin } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { DialogMessageInput } from "src/app/modules/messages/chat/models/input/dialog-message-input";
 import { ChatMessagesService } from "src/app/modules/messages/chat/services/chat-messages.service";
@@ -180,6 +180,7 @@ export class DetailProjectComponent implements OnInit {
         model.ProjectName = this.selectedProject$.value.projectName;
         model.ProjectDetails = this.selectedProject$.value.projectDetails;
         model.ProjectId = this.projectId;
+        model.isPublic = this.selectedProject$.value.isPublic;
 
         if (!this.selectedStage) {
             model.ProjectStage = this.selectedProject$.value.stageSysName;
@@ -193,11 +194,12 @@ export class DetailProjectComponent implements OnInit {
             model.Demands = this.selectedStage.demands;
         }
 
-        forkJoin([
-            (await this._projectService.updateProjectAsync(model)),
-            (await this._projectService.setVisibleProjectAsync(this.projectId, this.selectedProject$.value.isPublic))
-        ])
-        .subscribe(_ => {
+        (await this._projectService.updateProjectAsync(model))
+        .subscribe(async _ => {
+            // TODO: setVisibleProjectAsync убрать после того как поправят 
+            // на бэке установку isPublic в updateProjectAsync
+            await firstValueFrom(await this._projectService.setVisibleProjectAsync(
+                                 this.projectId, model.isPublic));
             console.log("Обновили проект: ", this.selectedProject$.value);
         });
     };

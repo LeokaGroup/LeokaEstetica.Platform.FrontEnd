@@ -5,4 +5,5 @@ export class UpdateProjectInput {
     ProjectStage: string = "";
     Conditions: string = "";
     Demands: string = "";
+    isPublic:boolean = true;
 }

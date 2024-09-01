@@ -309,7 +309,12 @@ export class ProjectService {
    */
   public async setVisibleProjectAsync(projectId: number, isPublic: boolean) {
     return await this.http.patch(API_URL.apiUrl + `/projects/visible-project?projectId=${projectId}&isPublic=${isPublic}`, {}).pipe(
-      tap(_ => console.log("Видимость проекта успешно назначена"))
+      tap(async (res:any) => {
+            const tempPrj:any = this.selectedProject$.value;
+            this.selectedProject$.next({...tempPrj, isPublic: res?.isPublic});
+            console.log("Видимость проекта успешно назначена");
+         }
+        )
     );
   };
 }
