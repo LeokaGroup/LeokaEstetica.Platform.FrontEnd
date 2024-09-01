@@ -12,3 +12,7 @@
 .block-select-project-name {
   padding: 0 10px;
 }
+
+:host ::ng-deep .info i::before {
+  font-size: 13px;
+}
