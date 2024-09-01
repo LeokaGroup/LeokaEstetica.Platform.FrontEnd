@@ -25,7 +25,17 @@
             >
               <div class="title">
                 {{t.name}}
-                <button class="pi pi-ellipsis-v button-context-menu"></button>
+                <button
+                  [attr.id]="'ddmenu'+t.projectTaskId"
+                  class="pi pi-ellipsis-v button-context-menu"
+                  (click)="onClickDropdownMenu(menu, $event, t)"
+                ></button>
+                <p-menu 
+                  #menu
+                  [popup]="true"
+                  [model]="dropdownMenuItems"
+                  [appendTo]="'ddmenu'+t.projectTaskId"
+                />
                 <div class="tags">
                   @for (id of t.tagIds; track id) {
                     @for (tag of tagNames; track tag.tagId) {
