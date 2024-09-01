@@ -41,7 +41,7 @@
           </div>
         </div>
 
-        <div class="d-flex line" *ngIf="isCreateTask || isCreateEpic">
+        <div class="d-flex line" *ngIf="isCreateTask">
           <label class="control-label-task-item">Приоритет:</label>
           <p-dropdown [options]="priorities$.value"
                       [(ngModel)]="selectedPriority"
