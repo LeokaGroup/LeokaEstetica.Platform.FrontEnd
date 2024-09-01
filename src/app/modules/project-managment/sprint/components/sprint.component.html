@@ -48,63 +48,78 @@
 
 <!--  </div>-->
   <div class="worksheet-panel block-worksheet sprints-table">
-    <p-table [value]="sprints$.value"
-             [(selection)]="selectedSprint"
-             selectionMode="single"
-             [paginator]="sprints$.value?.length > 0"
-             [rows]="10"
-             styleClass="p-datatable-gridlines"
-             responsiveLayout="scroll">
-      <ng-template pTemplate="caption">
-        <h3>Спринты проекта</h3>
-      </ng-template>
+    <h3>Спринты проекта</h3>
+    <p-tabView>
+      <p-tabPanel header="Активные">
+        <p-table [value]="sprints$.value"
+          [(selection)]="selectedSprint"
+          selectionMode="single"
+          [paginator]="sprints$.value?.length > 0"
+          [rows]="10"
+          styleClass="p-datatable-gridlines"
+          responsiveLayout="scroll"
+        >
+        <!-- <ng-template pTemplate="caption">
+        </ng-template> -->
 
-      <ng-template pTemplate="header">
-        <tr>
-          <th></th>
-          <th>ID</th>
-          <th>Название</th>
-          <th>Дата начала</th>
-          <th>Дата окончания</th>
-          <th>Статус</th>
-        </tr>
-      </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th></th>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Дата начала</th>
+            <th>Дата окончания</th>
+            <th>Статус</th>
+          </tr>
+        </ng-template>
 
-      <ng-template pTemplate="body" let-sp>
-        <tr>
-          <td>
-            <p-tableCheckbox [value]="sp" (click)="onSelectRowSprint(sp.projectSprintId)"></p-tableCheckbox>
-          </td>
-          <td class="table-data">
-            <div class="btn btn-link" (click)="onSelectSprint($event, sp.projectSprintId)">
-              {{sp.projectSprintId}}
-            </div>
-          </td>
-          <td class="table-data">
-            <div class="btn btn-link" (click)="onSelectSprint($event, sp.projectSprintId)">
-              {{sp.sprintName}}
-            </div>
-          </td>
-          <td class="">{{sp.dateStart ?? 'Не задана'}}</td>
-          <td class="">{{sp.dateEnd ?? 'Не задана'}}</td>
-          <td class="">{{sp.sprintStatusName}}</td>
-        </tr>
-      </ng-template>
+        <ng-template pTemplate="body" let-sp>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="sp" (click)="onSelectRowSprint(sp.projectSprintId)"></p-tableCheckbox>
+            </td>
+            <td class="table-data">
+              <div class="btn btn-link" (click)="onSelectSprint($event, sp.projectSprintId)">
+                {{sp.projectSprintId}}
+              </div>
+            </td>
+            <td class="table-data">
+              <div class="btn btn-link" (click)="onSelectSprint($event, sp.projectSprintId)">
+                {{sp.sprintName}}
+              </div>
+            </td>
+            <td class="">{{sp.dateStart ?? 'Не задана'}}</td>
+            <td class="">{{sp.dateEnd ?? 'Не задана'}}</td>
+            <td class="">{{sp.sprintStatusName}}</td>
+          </tr>
+        </ng-template>
 
-      <ng-template pTemplate="summary">
-        Всего: {{sprints$.value?.length}}
-      </ng-template>
+        <ng-template pTemplate="summary">
+          Всего: {{sprints$.value?.length}}
+        </ng-template>
 
-      <ng-template pTemplate="emptymessage">
-        <tr>
-          <td colspan="7">
-            <div class="empty-projects">
-              Вы не спланировали еще ни одного спринта.
-            </div>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7">
+              <div class="empty-projects">
+                Вы не спланировали еще ни одного спринта.
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        </p-table>
+      </p-tabPanel>
+      <p-tabPanel header="Новые">
+          <p>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium...
+          </p>
+      </p-tabPanel>
+      <p-tabPanel header="Завершенные">
+          <p>
+              At vero eos et accusamus et iusto odio dignissimos...
+          </p>
+      </p-tabPanel>
+    </p-tabView>
   </div>
 </div>
 
