@@ -60,10 +60,18 @@
             <div>
                 <strong>Публичный проект</strong>
             </div>
-            <div>
+            <div class="d-flex align-items-center gap-2">
               <p-inputSwitch
                   [(ngModel)]="public">
               </p-inputSwitch>
+
+              <small 
+                pTooltip="Включенный режим - публичный проект.
+                  Выключенный режим - приватный проект.
+                  Публичные проекты отображаются в каталоге проектов, приватные нет"
+                >
+                <i class="pi pi-exclamation-circle"></i>
+              </small>
             </div>
           </div>
         </div>
