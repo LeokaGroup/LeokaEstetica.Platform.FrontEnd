@@ -97,6 +97,12 @@ export class ProjectSettingsComponent implements OnInit {
           this.isShowUserRoles = false;
           this.isShowInvite = false;
 
+          // TODO: если будет проверка права на просмотр пользователей, то
+          // подставить название роли и раскомментировать:
+          // await this.checkUserRolesAsync("?");
+          // а следующую строку убрать
+          this.isNotRoles = false;
+
           await this.getSettingUsersAsync();
         }
       },
