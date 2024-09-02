@@ -1,89 +1,85 @@
 <div class="footer">
-    <div class="d-flex align-items-center justify-content-between block-logo">
-      <div>
-        <a class="navbar-brand" routerLink="">
-            <img class="logo" src="../../../../assets/images/logo/logo.png">
-          </a>
+  <div class="footer-wrapper">
+    <div class="footer-top">
+      <div class="footer-logo">
+        <a routerLink="/">
+          <img src="/assets/images/logo/logo.svg" />
+        </a>
       </div>
 
-      <div class="block-social d-flex block-sub-footer">
-        <div class="" (click)="onRouteTelegram()">
-          <img class="logo-social" src="../../../../assets/images/landing/telegram_icon-icons.com_72055.png">
-          &nbsp;
-          <span>Мы в Telegram</span>
+      <div class="footer-menu">
+        <div class="footer-menu-column">
+          <h4 class="footer-menu-section-header">Сервисы</h4>
+          <nav class="footer-nav">
+            <ul class="footer-menu-list">
+              @for (menuItem of menuItems.services; track $index) {
+              <li>
+                <a class="footer-menu-item" [routerLink]="[menuItem.link]">
+                  <span>{{ menuItem.label }}</span>
+                </a>
+              </li>
+              }
+            </ul>
+          </nav>
         </div>
 
-        &nbsp;&nbsp;
-
-        <div class="block-social d-flex block-sub-footer" (click)="onRouteVk()">
-          <img class="logo-social" src="../../../../assets/images/landing/icons8-vk-48.png">
-          &nbsp;
-          <span>Мы в ВК</span>
+        <div class="footer-menu-column">
+          <h4 class="footer-menu-section-header">Информация</h4>
+          <nav class="footer-nav">
+            <ul class="footer-menu-list">
+              @for (menuItem of menuItems.info; track $index) {
+              <li>
+                <a class="footer-menu-item" [routerLink]="[menuItem.link]">
+                  <span>{{ menuItem.label }}</span>
+                </a>
+              </li>
+              }
+            </ul>
+          </nav>
         </div>
+
+        <div class="footer-menu-column">
+          <h4 class="footer-menu-section-header">Поддержка</h4>
+          <nav class="footer-nav">
+            <ul class="footer-menu-list">
+              @for (menuItem of menuItems.support; track $index) {
+              <li>
+                <a class="footer-menu-item" [routerLink]="[menuItem.link]">
+                  <span>{{ menuItem.label }}</span>
+                </a>
+              </li>
+              }
+            </ul>
+          </nav>
+        </div>
+
+        <div class="footer-menu-column">
+          <h4 class="footer-menu-section-header">Мы в социальных сетях</h4>
+          <nav class="footer-nav">
+            <ul class="footer-social-list">
+              @for (menuItem of menuItems.social; track $index) {
+              <li>
+                <a class="footer-menu-item" [href]="[menuItem.link]">
+                  <img [src]="menuItem.imgSrc" [alt]="menuItem.label" class="social-logo" />
+                </a>
+              </li>
+              }
+            </ul>
+          </nav>
+        </div>
+
       </div>
     </div>
 
-    <div class="block-footers">
-      <!-- 1 ряд. -->
-      <div class="block-footer">
-        <div>
-          <div class="footer-item" [routerLink]="['/vacancies']">
-            <p class="text-content">Вакансии</p>
-          </div>
-
-          <div class="footer-item" [routerLink]="['/projects']">
-            <p class="text-content">Проекты</p>
-          </div>
-
-          <div class="footer-item" [routerLink]="['/resumes']">
-            <p class="text-content">База резюме</p>
-          </div>
-        </div>
+    <div class="footer-bottom">
+      <div class="footer-paysys">
+        <img src="/assets/images/logo/visa.png" alt="VISA" class="paysys-logo" />
+        <img src="/assets/images/logo/mastercard.png" alt="Mastercard" class="paysys-logo" />
+        <img src="/assets/images/logo/mir.png" alt="МИР" class="paysys-logo" />
       </div>
-
-      <!-- 2 ряд. -->
-      <div class="block-footer">
-        <div>
-          <div class="footer-item" [routerLink]="['/profile/tickets']">
-            <p class="text-content">Служба поддержки</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3 ряд. -->
-      <div class="block-footer">
-        <div>
-            <div class="footer-item" [routerLink]="['/']">
-                <p class="text-content">Частые вопросы</p>
-              </div>
-
-              <div class="footer-item" [routerLink]="['/press/contacts']">
-                <p class="text-content">Контакты</p>
-              </div>
-
-              <div class="footer-item" [routerLink]="['/press/offer']">
-                <p class="text-content">Публичная оферта</p>
-              </div>
-        </div>
-      </div>
-
-      <!-- 4 ряд. -->
-      <div class="block-footer">
-        <div>
-          <div class="footer-item">
-            &nbsp;
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="d-flex block-sub-footer">
-      <div class="text-date">
-        © {{dateLine}} Leoka Estetica. Сделано с заботой.
-      </div>
-
-      <div class="payment-system-logos">
-        <img class="logo" src="../../../../assets/images/logo/payment_system_logos.png">
+      <div class="footer-copyright">
+        <span>© 2023-{{ currentDate | date: 'yyyy' }} Leoka Estetica. Сделано с заботой.</span>
       </div>
     </div>
   </div>
+</div>
