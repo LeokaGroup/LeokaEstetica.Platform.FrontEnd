@@ -111,12 +111,13 @@ export class CreateVacancyComponent implements OnInit, OnDestroy {
                           detail: item.errorMessage
                         });
                       });
-                    } else {
-                      setTimeout(() => {
-                        this._router.navigate(["/vacancies/my"]).then(() => {
-                          this._redirectService.redirect("vacancies/my");
-                        });
-                      }, 4000);
+                    }
+
+                    else {
+                      if (this.vacancy$.value.confirmation.confirmationUrl !== ""
+                        && this.vacancy$.value.confirmation.confirmationUrl !== null) {
+                        window.location.href = this.vacancy$.value.confirmation.confirmation_url;
+                      }
                     }
                   });
               },
