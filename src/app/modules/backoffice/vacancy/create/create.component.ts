@@ -173,6 +173,7 @@ export class CreateVacancyComponent implements OnInit, OnDestroy {
         model.ProjectId = this.selectedProject.projectId;
         model.Conditions = this.conditions;
         model.Demands = this.demands;
+        model.OrderType = "CreateVacancy";
 
         return model;
     };

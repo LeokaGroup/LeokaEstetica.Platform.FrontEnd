@@ -77,6 +77,7 @@ export class OrderFormSelectSubscriptionPlanComponent implements OnInit {
       createOrderCacheInput.publicId = this.publicId;
       createOrderCacheInput.paymentMonth = +this.selectedMonth?.key;
       createOrderCacheInput.employeesCount = +this.employeeCount;
+      createOrderCacheInput.OrderType = "FareRule";
 
       (await this._orderService.createOrderAsync(createOrderCacheInput))
         .subscribe(async _ => {
