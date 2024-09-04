@@ -51,7 +51,7 @@ export class OrderFormSelectSubscriptionPlanComponent implements OnInit {
     //   }
     // });
 
-    await this.createOrderCacheAsync().then(_ => {
+    await this.createOrderAsync().then(_ => {
       this._router.navigate(["/order-form/pay"], {
         queryParams: {
           publicId: this.publicId,
@@ -69,18 +69,19 @@ export class OrderFormSelectSubscriptionPlanComponent implements OnInit {
   };
 
   /**
-   * Функция создает заказ в кэше.
+   * Функция создает заказ.
    */
-  private async createOrderCacheAsync() {
+  private async createOrderAsync() {
     if (+this.selectedMonth?.key > 0 && this.employeeCount > 0) {
       let createOrderCacheInput = new CreateOrderCacheInput();
       createOrderCacheInput.publicId = this.publicId;
       createOrderCacheInput.paymentMonth = +this.selectedMonth?.key;
       createOrderCacheInput.employeesCount = +this.employeeCount;
+      createOrderCacheInput.OrderType = "FareRule";
 
-      (await this._orderService.createOrderCacheAsync(createOrderCacheInput))
+      (await this._orderService.createOrderAsync(createOrderCacheInput))
         .subscribe(async _ => {
-          console.log("Заказ в кэше: ", this.calculatedPrice$.value);
+          console.log("Заказ: ", this.calculatedPrice$.value);
         });
     }
   };

@@ -21,12 +21,12 @@ export class OrderService {
     }
 
     /**
-     * Функция создает заказ в кэше.
+     * Функция создает заказ.
      * @param createOrderCacheInput - Входная модель.
      * @returns - Данные заказа.
     */
-    public async createOrderCacheAsync(createOrderCacheInput: CreateOrderCacheInput) {
-        return await this.http.post(API_URL.apiUrl + "/commercial/fare-rule/order-form/pre", createOrderCacheInput).pipe(
+    public async createOrderAsync(createOrderCacheInput: CreateOrderCacheInput) {
+        return await this.http.post(API_URL.apiUrl + "/commercial/order/order-form/pre", createOrderCacheInput).pipe(
             tap(data => this.orderForm$.next(data))
         );
     };
@@ -64,6 +64,15 @@ export class OrderService {
   public async calculateFareRulePriceAsync(publicId: string, selectedMonth: number, employeeCount: number) {
     return await this.http.get(API_URL.apiUrl +
       `/commercial/calculate-price?publicId=${publicId}&selectedMonth=${selectedMonth}&employeeCount=${employeeCount}`).pipe(
+      tap(data => this.calculatedPrice$.next(data))
+    );
+  };
+
+  /**
+   * Функция вычисляет цену за публикацию вакансии в соответствии с тарифом пользователя.
+   */
+  public async calculatePricePostVacancyAsync() {
+    return await this.http.get(API_URL.apiUrl + "/commercial/calculate-price-vacancy").pipe(
       tap(data => this.calculatedPrice$.next(data))
     );
   };

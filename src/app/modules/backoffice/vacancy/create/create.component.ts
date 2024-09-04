@@ -1,12 +1,13 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { MessageService } from "primeng/api";
+import {ActivatedRoute, Router} from "@angular/router";
+import {ConfirmationService, MessageService} from "primeng/api";
 import { Subscription } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { BackOfficeService } from "../../services/backoffice.service";
 import { CreateProjectVacancyInput } from "../models/input/create-project-vacancy-input";
 import { VacancyInput } from "../models/input/vacancy-input";
 import { VacancyService } from "../services/vacancy.service";
+import {OrderService} from "../../../order-form/services/order.service";
 
 @Component({
     selector: "create",
@@ -18,12 +19,15 @@ import { VacancyService } from "../services/vacancy.service";
  * Класс компонента создания вакансии.
  */
 export class CreateVacancyComponent implements OnInit, OnDestroy {
-    constructor( private readonly _router: Router,
-        private readonly _vacancyService: VacancyService,
-        private readonly _messageService: MessageService,
-        private readonly _activatedRoute: ActivatedRoute,
-        private readonly _backofficeService: BackOfficeService,
-        private readonly _redirectService: RedirectService) { }
+  constructor(private readonly _router: Router,
+              private readonly _vacancyService: VacancyService,
+              private readonly _messageService: MessageService,
+              private readonly _activatedRoute: ActivatedRoute,
+              private readonly _backofficeService: BackOfficeService,
+              private readonly _redirectService: RedirectService,
+              private _confirmationService: ConfirmationService,
+              private readonly _orderService: OrderService) {
+  }
     public readonly vacancy$ = this._vacancyService.vacancy$;
     public readonly userProjects$ = this._backofficeService.userProjects$;
 
@@ -49,6 +53,7 @@ export class CreateVacancyComponent implements OnInit, OnDestroy {
     demands: string = "";
     conditions: string = "";
     subscription?: Subscription;
+    isNeedUserAction: boolean = false;
 
     public async ngOnInit() {
         this.checkUrlParams();
@@ -74,24 +79,53 @@ export class CreateVacancyComponent implements OnInit, OnDestroy {
      * @returns - Данные вакансии.
      */
     private async createVacancyAsync() {
-        let model = this.createVacancyModel();
-        (await this._vacancyService.createVacancyAsync(model))
+      (await this._orderService.calculatePricePostVacancyAsync())
         .subscribe((response: any) => {
-            console.log("Новая вакансия: ", this.vacancy$.value);
+          console.log("calculated price: ", response);
 
-            if (response.errors !== null && response.errors.length > 0) {
-                response.errors.forEach((item: any) => {
-                    this._messageService.add({ severity: "error", summary: "Что то не так", detail: item.errorMessage });
-                });
-            }
+          if (response.isNeedUserAction && !this.isNeedUserAction) {
+            this.isNeedUserAction = response.isNeedUserAction;
 
-            else {
-                setTimeout(() => {
-                    this._router.navigate(["/vacancies/my"]).then(() => {
-                        this._redirectService.redirect("vacancies/my");
+            this._confirmationService.confirm({
+              message: `Стоимость публикации вакансии в соответствии с вашим текущим тарифом: ${response.price} ${response.fees.feesMeasure}. </br>
+                        Перейти к оплате?`,
+              header: 'Публикация вакансии',
+              icon: 'pi pi-exclamation-triangle',
+              acceptIcon:"none",
+              rejectIcon:"none",
+              acceptButtonStyleClass:"p-button-text p-button-success",
+              rejectButtonStyleClass:"p-button-text p-button-danger",
+              acceptLabel: "Оплатить и опубликовать",
+              rejectLabel: "Отменить",
+              accept: async () => {
+                let model = this.createVacancyModel();
+                (await this._vacancyService.createVacancyAsync(model))
+                  .subscribe((response: any) => {
+                    console.log("Новая вакансия: ", this.vacancy$.value);
+
+                    if (response.errors !== null && response.errors.length > 0) {
+                      response.errors.forEach((item: any) => {
+                        this._messageService.add({
+                          severity: "error",
+                          summary: "Что то не так. Но не волнуйтесь, мы сохранили вашу вакансию.",
+                          detail: item.errorMessage
+                        });
                       });
-                }, 4000);
-            }
+                    }
+
+                    else {
+                      if (this.vacancy$.value.confirmation.confirmationUrl !== ""
+                        && this.vacancy$.value.confirmation.confirmationUrl !== null) {
+                        window.location.href = this.vacancy$.value.confirmation.confirmation_url;
+                      }
+                    }
+                  });
+              },
+              reject: () => {
+                this.isNeedUserAction = false;
+              }
+            });
+          }
         });
     };
 
@@ -139,6 +173,7 @@ export class CreateVacancyComponent implements OnInit, OnDestroy {
         model.ProjectId = this.selectedProject.projectId;
         model.Conditions = this.conditions;
         model.Demands = this.demands;
+        model.OrderType = "CreateVacancy";
 
         return model;
     };

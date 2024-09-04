@@ -46,4 +46,9 @@ export class VacancyInput {
      * Требования.
      */
     Demands: string = "";
+
+  /**
+   * Тип заказа.
+   */
+  OrderType: string = "";
 }

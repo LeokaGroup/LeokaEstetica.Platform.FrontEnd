@@ -133,14 +133,18 @@ export class LeftMenuComponent implements OnInit {
 
                 // Роут на страницу создания проекта.
                 if (this.aCreateProjectsSysName.includes(this.sysName)) {
-                    this._router.navigate(["/profile/projects/create"]).then(() => {
-                        this._redirectService.redirect("profile/projects/create");
-                    });
+                  this._router.navigate(["/profile/projects/create"]);
+                    // this._router.navigate(["/profile/projects/create"]).then(() => {
+                    //     this._redirectService.redirect("profile/projects/create");
+                    // });
                 }
 
                 // Роут на страницу создания вакансии.
                 if (this.aCreateVacanciesSysName.includes(this.sysName)) {
                     this._router.navigate(["/vacancies/create"]);
+                  // this._router.navigate(["/vacancies/create"]).then(() => {
+                  //   this._redirectService.redirect("/vacancies/create");
+                  // });
                 }
 
                 // Роут на страницу списка вакансии.

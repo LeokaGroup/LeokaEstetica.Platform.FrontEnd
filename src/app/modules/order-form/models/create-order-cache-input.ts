@@ -16,4 +16,9 @@ export class CreateOrderCacheInput {
    * Кол-во сотрудников.
    */
   employeesCount: number = 0;
+
+  /**
+   * Тип заказа.
+   */
+  OrderType: string = "";
 }
