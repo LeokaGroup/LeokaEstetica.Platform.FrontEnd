@@ -1,7 +1,7 @@
 <p-toast></p-toast>
 
 <div class="d-flex justify-content-center">
-  <p-messages [(value)]="availableText" *ngIf="!isAvailable" [closable]="false">
+  <p-messages [(value)]="availableText" *ngIf="isAvailable === false" [closable]="false">
   </p-messages>
 </div>
 

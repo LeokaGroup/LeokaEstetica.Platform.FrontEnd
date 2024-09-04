@@ -32,7 +32,7 @@ export class CatalogResumeComponent implements OnInit {
         summary: "Для доступа к базе резюме Вам нужно приобрести один из платных тарифов \"Стартовый\", \"Основной\" или \"Комплексный\".",
       }
     ];
-    isAvailable: boolean = false;
+    isAvailable: boolean | null = null;
 
     public async ngOnInit() {
         forkJoin([
