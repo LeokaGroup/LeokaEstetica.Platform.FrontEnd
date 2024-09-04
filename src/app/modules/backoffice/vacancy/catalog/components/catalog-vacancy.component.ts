@@ -2,6 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { FilterVacancyInput } from "../../models/input/filter-vacancy-input";
 import { VacancyService } from "../../services/vacancy.service";
 import { ActivatedRoute, Router } from "@angular/router";
+import { FormArray, FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { debounceTime } from "rxjs";
+import { vacancyCatalogInput } from "../../models/input/catalog-input";
+
 
 @Component({
     selector: "",
@@ -15,7 +19,10 @@ import { ActivatedRoute, Router } from "@angular/router";
 export class CatalogVacancyComponent implements OnInit {
     constructor(private readonly _router: Router,
         private readonly _vacancyService: VacancyService,
-        private readonly _activatedRoute: ActivatedRoute) { }
+        private readonly _activatedRoute: ActivatedRoute,
+        private fb: FormBuilder) { }
+
+    form!: FormGroup;
 
     public readonly catalog$ = this._vacancyService.catalog$;
     public readonly pagination$ = this._vacancyService.pagination$;
@@ -47,7 +54,6 @@ export class CatalogVacancyComponent implements OnInit {
         { name: 'Частичная занятость', key: 'Partial' }
     ];
     selectedEmployment: any[] = [];
-    searchText: string = "";
     rowsCount: number = 0;
     page: number = 0;
     aCatalogVacancies: any[] = [];
@@ -60,11 +66,59 @@ export class CatalogVacancyComponent implements OnInit {
     // selectedKeyword: any;
 
     public async ngOnInit() {
-        await this.onLoadCatalogVacanciesAsync();
-        await this.initVacanciesPaginationAsync();
-        this.setDefaultFilters();
         this.checkUrlParams();
+        this.initForm();
     };
+
+    /**
+     * Функция получения массива контролов employments формы.
+     */ 
+    get employmentsArray() {
+        return this.form.controls['employments'] as FormArray;
+    }
+
+    /**
+     * Функция инициализирует форму поиска и фильтров.
+     */    
+    initForm() {
+        this.form = this.fb.group({
+            salary: '',
+            pay: '',
+            experience: '',
+            employments: this.fb.array([]),
+            searchText: ''
+        });
+        this.aEmployments.forEach(() => this.employmentsArray.push(new FormControl([])));
+        this.formSubscribe();
+        this.setDefaultFilters();
+    }
+
+    /**
+     * Функция создает подписку на изменение данных формы поиска и фильтров.
+     */
+    formSubscribe() {
+        this.form.valueChanges.pipe(
+            debounceTime(300)
+        ).subscribe(async res => {
+            let employmentsData = res.employments.flat();
+            if (employmentsData.length == 0) employmentsData = [1];
+
+            const req: vacancyCatalogInput = {
+                filters: {
+                    salary: `${res.salary}`,
+                    pay: `${res.pay}`,
+                    experience: `${res.experience}`,
+                    employmentsValues: `${employmentsData.length}`,
+                    employments: employmentsData
+                },
+                lastId: "0", 
+                paginationRows: 20, 
+                searchText: res.searchText,
+            };
+
+            await this.loadCatalogVacanciesAsync(req);
+        });
+    }
 
     private setUrlParams(page: number) {
         this._router.navigate(["/vacancies"], {
@@ -86,33 +140,23 @@ export class CatalogVacancyComponent implements OnInit {
     /**
      * Функция проставляет начальные фильтры.
      */
-    private setDefaultFilters() {
-        this.selectedSalary = this.aSalaries[0];
+    setDefaultFilters() {
+        this.form.patchValue({
+            salary: 'Date',
+            pay: 'UnknownPay',
+            experience: 'UnknownExperience',
+            employments: [[],[],[]],
+        });
     };
-    /**
-     * Функция сбрасывает фильтры
-     */
-    public async onResetFilters() {
-        this.selectedSalary = null;
-        this.selectedPay = null;
-        this.selectedExperience = null;
-        this.selectedEmployment = [];
-         // Перезагрузка списка вакансий
-        await this.loadCatalogVacanciesAsync();
-
-
-    }
-        /**
- * Функция загружает список вакансий для каталога.
- * @returns - Список вакансий.
- */
 
    /**
      * Функция загружает список вакансий для каталога.
      * @returns - Список вакансий.
      */
-    private async loadCatalogVacanciesAsync() {
-        (await this._vacancyService.loadCatalogVacanciesAsync())
+    private async loadCatalogVacanciesAsync(req: vacancyCatalogInput) {
+        console.log('Параметры запроса для поиска по вакансиям: ',req);
+
+        (await this._vacancyService.loadCatalogVacanciesAsync(req))
         .subscribe(_ => {
             console.log("Список вакансий: ", this.catalog$.value);
             this.rowsCount = this.catalog$.value.total;
@@ -165,23 +209,6 @@ export class CatalogVacancyComponent implements OnInit {
       model.Pay = this.selectedPay ? this.selectedPay.key : "None";
 
       return model;
-    };
-
-    /**
-     * Функция ищет вакансии по поисковому запросу.
-     * @param searchText - Поисковая строка.
-     * @returns - Список вакансий после поиска.
-     */
-    public async onSearchVacanciesAsync(event: any) {
-        (await this._vacancyService.searchVacanciesAsync(event.query))
-            .subscribe(_ => {
-                console.log("Результаты поиска: ", this.catalog$.value);
-                this.aCatalogVacancies = this.catalog$.value.catalogVacancies;
-            });
-    };
-
-    public async onLoadCatalogVacanciesAsync() {
-        await this.loadCatalogVacanciesAsync();
     };
 
     /**

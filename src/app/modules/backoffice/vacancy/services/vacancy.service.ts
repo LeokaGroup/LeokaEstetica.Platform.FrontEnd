@@ -7,6 +7,7 @@ import { AddVacancyArchiveInput } from '../../models/input/vacancy/add-vacancy-a
 import { CreateProjectVacancyInput } from '../models/input/create-project-vacancy-input';
 import { FilterVacancyInput } from '../models/input/filter-vacancy-input';
 import { VacancyInput } from '../models/input/vacancy-input';
+import { vacancyCatalogInput } from '../models/input/catalog-input';
 
 @Injectable()
 export class VacancyService {
@@ -54,11 +55,12 @@ export class VacancyService {
     };
 
     /**
-    * Функция создает новую вакансию.
-    * @returns - Данные вакансии.
+    * Функция получает результаты поиска вакансий.
+    * @param payload - фильтры поиска и сортировки.
+    * @returns - Данные вакансий.
     */
-    public async loadCatalogVacanciesAsync() {
-        return await this.http.get(API_URL.apiUrl + "/vacancies/catalog").pipe(
+    public async loadCatalogVacanciesAsync(payload: vacancyCatalogInput) {
+        return await this.http.post(API_URL.apiUrl + "/vacancies/catalog", payload).pipe(
             tap(data => this.catalog$.next(data))
         );
     };

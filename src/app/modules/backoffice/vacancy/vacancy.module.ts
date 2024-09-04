@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { VacancyRoutingModule } from './vacancy-routing.module';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
@@ -62,7 +62,8 @@ import { MessageModule } from 'primeng/message';
     ListboxModule,
     TableModule,
     MessagesModule,
-    MessageModule
+    MessageModule,
+    ReactiveFormsModule
   ],
 
     exports: [],

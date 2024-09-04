@@ -1,22 +1,30 @@
 <p-toast></p-toast>
 
-<div class="d-flex block-profile space-top-80">
+<form [formGroup]="form">
+  <div class="d-flex block-profile space-top-80">
   <div class="col-lg-3">
   </div>
 
   <div class="col-lg-6 block-catalog-vacancies text-content">
-    <div class="mb-2 block-search">
+      <div class="mb-2 block-search">
       <span class="p-fluid control-search">
-        <p-autoComplete [(ngModel)]="searchText"
-                        [suggestions]="catalog$.value?.catalogVacancies"
-                        [showEmptyMessage]="true"
-                        emptyMessage="Результатов не найдено"
-                        field="vacancyName"
-                        [minLength]="1"
-                        (completeMethod)="onSearchVacanciesAsync($event)"
-                        (onClear)="onLoadCatalogVacanciesAsync()"
-                        placeholder="Поиск по вакансиям...">
-        </p-autoComplete>
+        <input 
+          pInputText
+          type="text"
+          formControlName="searchText"
+          placeholder="Поиск по вакансиям..."
+        />
+        <!-- <p-autoComplete 
+          formControlName="searchText"
+          [suggestions]="catalog$.value?.catalogVacancies"
+          [showEmptyMessage]="true"
+          emptyMessage="Результатов не найдено"
+          field="vacancyName"
+          [minLength]="1"
+          (completeMethod)="onSearchVacanciesAsync($event)"
+          (onClear)="onLoadCatalogVacanciesAsync()"
+          placeholder="Поиск по вакансиям...">
+        </p-autoComplete> -->
         <p class="vacancy-count">Найдено вакансий: {{ catalog$.value?.total }}</p>
       </span>
     </div>
@@ -78,12 +86,11 @@
         </div>
         <div>
           <div *ngFor="let item of aSalaries" class="field-checkbox">
-            <p-radioButton [inputId]="item.key"
-                            name="item"
-                            [value]="item"
-                            [(ngModel)]="selectedSalary"
-                            (onClick)="onFilterVacanciesAsync()">
-            </p-radioButton>
+            <p-radioButton 
+              [inputId]="item.key"
+              [value]="item.key"
+              formControlName="salary"
+            />
             <label [for]="item.key">{{item.name}}</label>
         </div>
         </div>
@@ -95,12 +102,11 @@
         </div>
         <div>
           <div *ngFor="let item of aPays" class="field-checkbox">
-            <p-radioButton [inputId]="item.key"
-                            name="item"
-                            [value]="item"
-                            [(ngModel)]="selectedPay"
-                            (onClick)="onFilterVacanciesAsync()">
-            </p-radioButton>
+            <p-radioButton 
+              [inputId]="item.key"
+              [value]="item.key"
+              formControlName="pay"
+            />
             <label [for]="item.key">{{item.name}}</label>
         </div>
         </div>
@@ -112,12 +118,11 @@
         </div>
         <div>
           <div *ngFor="let item of aExperience" class="field-checkbox">
-            <p-radioButton [inputId]="item.key"
-                            name="item"
-                            [value]="item"
-                            [(ngModel)]="selectedExperience"
-                            (onClick)="onFilterVacanciesAsync()">
-            </p-radioButton>
+            <p-radioButton
+              [inputId]="item.key"
+              [value]="item.key"
+              formControlName="experience"
+            />
             <label [for]="item.key">{{item.name}}</label>
         </div>
         </div>
@@ -127,20 +132,20 @@
         <div>
           <strong>Занятость</strong>
         </div>
-        <div>
-        <div *ngFor="let item of aEmployments" class="field-checkbox">
-          <p-checkbox name="item.key"
-                      value="item"
-                      [value]="item"
-                      [(ngModel)]="selectedEmployment"
-                      [inputId]="item.key"
-                      (onChange)="onFilterVacanciesAsync()">
-          </p-checkbox>
-          <label [for]="item.key">{{item.name}}</label>
-      </div>
+        <div formArrayName="employments">
+          <div *ngFor="let item of employmentsArray.controls; let i = index" class="field-checkbox">
+            <label>
+              <p-checkbox 
+                [inputId]="aEmployments[i].key"
+                [value]="aEmployments[i].key"
+                [formControlName]="i"
+              />
+              {{ aEmployments[i].name }}
+            </label>
+          </div>
         </div>
-      </div>
-      <button class="resetFiltersBtn" (click)="onResetFilters()">Сбросить фильтры</button>
+    </div>
+    <button class="resetFiltersBtn" (click)="setDefaultFilters()">Сбросить фильтры</button>
       <!-- TODO: этот тип фильтра будем использовать при поиске. Вне поиска решили не делать. -->
       <!-- <div class="mt-3">
         <div>
@@ -159,5 +164,6 @@
         </div>
       </div> -->
     </div>
-  </div>
 </div>
+</div>
+</form>
