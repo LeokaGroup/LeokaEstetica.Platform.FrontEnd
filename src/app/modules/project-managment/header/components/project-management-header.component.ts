@@ -236,7 +236,8 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
       case "Настройки проекта":
         this._router.navigate(["/project-management/space/project-settings"], {
           queryParams: {
-            projectId
+            projectId,
+            companyId: +this._projectManagmentService.companyId
           }
         });
         break;

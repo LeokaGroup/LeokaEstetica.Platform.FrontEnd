@@ -12,6 +12,7 @@ import {SearchProjectService} from "../../../search/services/search-project-serv
 import {InviteProjectTeamMemberInput} from "../../../project/detail/models/input/invite-project-team-member-input";
 import {MessageService} from "primeng/api";
 import {AccessService} from "../../../access/access.service";
+import { Role } from "../../models/role";
 
 @Component({
   selector: "",
@@ -42,6 +43,7 @@ export class ProjectSettingsComponent implements OnInit {
   public readonly checkAccess$ = this._accessService.checkAccess$;
 
   projectId: number = 0;
+  companyId: number = 0;
   userAvatarLink: any;
   isShowProfile: boolean = false;
   avatarFormData = new FormData();
@@ -173,6 +175,7 @@ export class ProjectSettingsComponent implements OnInit {
     this._activatedRoute.queryParams
       .subscribe(async params => {
         this.projectId = params["projectId"];
+        this.companyId = params['companyId'];
       });
   };
 
@@ -278,24 +281,28 @@ export class ProjectSettingsComponent implements OnInit {
    * Функция получает список ролей пользователей для настроек.
    */
   private async getUsersRolesAsync() {
-    (await this._projectManagmentService.getSettingUsersRolesAsync(+this.projectId))
+    (await this._projectManagmentService.getSettingUsersRolesAsync(+this.projectId, +this.companyId))
       .subscribe(async _ => {
         console.log("Список ролей пользователей: ", this.settingUserRoles.value);
       });
   };
 
-  public async onUpdateRolesAsync(roles: any) {
-    let updated: UpdateRoleInput[] = [];
-    roles.forEach((x: any) => {
-      if (this.aUpdatedRoles.has(x.organizationMemberId)) {
-        let obj = new UpdateRoleInput();
-        obj.userId = x.organizationMemberId;
-        obj.isEnabled = x.isEnabled;
-        obj.roleId = x.roleId;
+    /**
+     * Функция отправляет для сохранения список ролей пользователей.
+     */
+    public async onUpdateRolesAsync(roles: any) {
+    const rolesToSave: Role[] = roles.filter((e:any) => this.aUpdatedRoles.has(e.organizationMemberId))
+                                     .map((e:any) => ({
+                                                        userId: e.organizationMemberId,
+                                                        isEnabled: e.isEnabled,
+                                                        roleId: e.roleId,
+                                                      }));
 
-        updated.push(obj);
-      }
-    });
+    const updated: UpdateRoleInput = {
+      roles: rolesToSave,
+      projectId: this.projectId,
+      companyId: this.companyId,
+    };
 
     (await this._projectManagmentService.updateRolesAsync(updated))
       .pipe(
@@ -304,7 +311,8 @@ export class ProjectSettingsComponent implements OnInit {
         })
       )
       .subscribe(async _ => {
-        console.log("спешно обновили роли пользователей.");
+        console.log("Успешно обновили роли пользователей.");
+        this.aUpdatedRoles = new Set();
         await this.getUsersRolesAsync();
       });
   };
@@ -418,7 +426,7 @@ export class ProjectSettingsComponent implements OnInit {
    * Функция получает роли пользователя.
    */
   private async getUserRolesAsync() {
-    (await this._projectManagmentService.getUserRolesAsync(+this.projectId, +this._projectManagmentService.companyId))
+    (await this._projectManagmentService.getUserRolesAsync(this.projectId, this.companyId))
       .subscribe((response: any) => {
         console.log("Роли пользователя", response);
         this.aUserRoles = response;
