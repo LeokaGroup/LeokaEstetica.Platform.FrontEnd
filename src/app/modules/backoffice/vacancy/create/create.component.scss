@@ -14,3 +14,13 @@
     top: -4px;
     left: -8px;
 }
+
+:host ::ng-deep .control-project-stages .p-dropdown {
+    max-width: 650px;
+    width: 650px;
+
+    .p-dropdown-panel {
+        max-width: 648px;
+        width: 648px;
+    }
+}
