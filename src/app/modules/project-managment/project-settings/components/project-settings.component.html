@@ -164,8 +164,7 @@
                 <p-button (click)="onRemoveUserProjectTeamAsync(u.userId, u.isOwner)"
                           label="Исключить"
                           styleClass="p-button-text p-button-danger"
-                          *ngIf="!u.isOwner">
-
+                          *ngIf="!u.isOwner && currentUserRoles.get('UserExclude')">
                 </p-button>
               </td>
             </tr>

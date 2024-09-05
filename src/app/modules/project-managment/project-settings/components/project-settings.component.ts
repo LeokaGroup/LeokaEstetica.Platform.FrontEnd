@@ -160,6 +160,8 @@ export class ProjectSettingsComponent implements OnInit {
   isNotRoles: boolean = false;
   aUserRoles: any[] = [];
   isNotRolesAccessModal: boolean = false;
+  currentUserRoles = new Map();
+  currentUserId: number = 0;
 
   public async ngOnInit() {
     forkJoin([
@@ -312,6 +314,12 @@ export class ProjectSettingsComponent implements OnInit {
       )
       .subscribe(async _ => {
         console.log("Успешно обновили роли пользователей.");
+
+        // если изменения ролей затрагивают текущего пользователя, то обновляем его роли
+        if (this.aUpdatedRoles.has(this.currentUserId)) {
+          await this.getUserRolesAsync();
+        }
+
         this.aUpdatedRoles = new Set();
         await this.getUsersRolesAsync();
       });
@@ -430,6 +438,10 @@ export class ProjectSettingsComponent implements OnInit {
       .subscribe((response: any) => {
         console.log("Роли пользователя", response);
         this.aUserRoles = response;
+        this.aUserRoles.forEach((e) => this.currentUserRoles.set(e.roleSysName, e.isEnabled));
+
+        // Id пользователя
+        this.currentUserId = response[0]?.organizationMemberId ?? 0;
       });
   };
 
