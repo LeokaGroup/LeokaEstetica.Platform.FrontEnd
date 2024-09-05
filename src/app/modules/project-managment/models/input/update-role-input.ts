@@ -1,19 +1,21 @@
+import { Role } from "../role";
+
 /**
  * Класс входной модели обновления роли.
  */
 export class UpdateRoleInput {
   /**
-   * Id роли.
+   * Массив ролей.
    */
-  roleId: number = 0;
+  roles: Role[] = [];
 
   /**
-   * Признак активной роли у участника проекта компании.
+   * Id компании.
    */
-  isEnabled: boolean = false;
+  projectId: number = 0;
 
   /**
-   * Id пользователя.
+   * Id проекта.
    */
-  userId: number = 0;
+  companyId: number = 0;
 }

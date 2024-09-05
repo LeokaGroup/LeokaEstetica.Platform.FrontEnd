@@ -1010,17 +1010,22 @@ export class ProjectManagmentService {
 
   /**
    * Функция получает список ролей пользователей для настроек.
+   * @param projectId - Id проекта.
+   * @param companyId - Id компании.
    */
-  public async getSettingUsersRolesAsync(projectId: number) {
-    return await this._http.get(this.apiUrl + `/project-management-role/roles?projectId=${projectId}`).pipe(
+  public async getSettingUsersRolesAsync(projectId: number, companyId: number) {
+    return await this._http.get(
+      this.apiUrl + `/project-management-role/roles?projectId=${projectId}&companyId=${companyId}`
+    ).pipe(
       tap(data => this.settingUserRoles.next(data))
     );
   };
 
   /**
    * Функция обновляет роли.
+   * @param updated - Входная модель.
    */
-  public async updateRolesAsync(updated: UpdateRoleInput[]) {
+  public async updateRolesAsync(updated: UpdateRoleInput) {
     return await this._http.put(this.apiUrl + `/project-management-role/roles`, updated).pipe(
       tap(data => this.settingUserRoles.next(data))
     );
