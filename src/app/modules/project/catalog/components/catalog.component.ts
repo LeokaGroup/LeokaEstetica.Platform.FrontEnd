@@ -1,9 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { forkJoin } from "rxjs";
 import { ProjectService } from "../../services/project.service";
 import {CatalogProjectInput} from "../../models/catalog-project-input";
-import {FilterProjectInput} from "../../detail/models/input/filter-project-input";
 
 @Component({
     selector: "",
@@ -50,8 +48,8 @@ export class CatalogProjectsComponent implements OnInit {
 
   public async ngOnInit() {
     this.checkUrlParams();
-    await this.onLoadCatalogProjectsAsync();
-    await this.initVacanciesPaginationAsync();
+    // await this.onLoadCatalogProjectsAsync();
+    // await this.initVacanciesPaginationAsync();
   };
 
     private setUrlParams(page: number) {
@@ -72,8 +70,8 @@ export class CatalogProjectsComponent implements OnInit {
     };
 
      /**
-     * Функция загружает список вакансий для каталога.
-     * @returns - Список вакансий.
+     * Функция загружает список проектов для каталога.
+     * @returns - Список проектов.
      */
      public async onLoadCatalogProjectsAsync() {
        let catalogProjectInput = new CatalogProjectInput();
