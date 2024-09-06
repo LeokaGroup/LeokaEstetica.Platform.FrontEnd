@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ConfirmationService, MessageService} from "primeng/api";
-import { Subscription } from "rxjs";
+import { Subscription, catchError } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { BackOfficeService } from "../../services/backoffice.service";
 import { CreateProjectVacancyInput } from "../models/input/create-project-vacancy-input";
@@ -80,6 +80,11 @@ export class CreateVacancyComponent implements OnInit, OnDestroy {
      */
     private async createVacancyAsync() {
       (await this._orderService.calculatePricePostVacancyAsync())
+        .pipe(
+          catchError(async (e) => {
+            console.log("(calculatePricePostVacancyAsync) Ошибка отправки вакансии: ", e);
+          })
+        )
         .subscribe((response: any) => {
           console.log("calculated price: ", response);
 
@@ -100,6 +105,12 @@ export class CreateVacancyComponent implements OnInit, OnDestroy {
               accept: async () => {
                 let model = this.createVacancyModel();
                 (await this._vacancyService.createVacancyAsync(model))
+                  .pipe(
+                    catchError(async (e) => {
+                      console.log('(createVacancyAsync) Ошибка отправки вакансии:', e);
+                      this.isNeedUserAction = false;
+                    }),
+                  )
                   .subscribe((response: any) => {
                     console.log("Новая вакансия: ", this.vacancy$.value);
 
@@ -136,6 +147,9 @@ export class CreateVacancyComponent implements OnInit, OnDestroy {
      private async createProjectVacancyAsync() {
         let model = this.createProjectVacancyModel();
         (await this._vacancyService.createProjectVacancyAsync(model))
+        .pipe(
+          catchError(async (e) => console.log("(createProjectVacancyAsync) Ошибка отправки вакансии: ", e))
+        )
         .subscribe((response: any) => {
             console.log("Новая вакансия проекта: ", this.vacancy$.value);
 
