@@ -48,7 +48,7 @@ export class CatalogProjectsComponent implements OnInit {
 
   public async ngOnInit() {
     this.checkUrlParams();
-    // await this.onLoadCatalogProjectsAsync();
+    await this.onLoadCatalogProjectsAsync();
     // await this.initVacanciesPaginationAsync();
   };
 
@@ -73,7 +73,7 @@ export class CatalogProjectsComponent implements OnInit {
      * Функция загружает список проектов для каталога.
      * @returns - Список проектов.
      */
-     public async onLoadCatalogProjectsAsync() {
+     public async onLoadCatalogProjectsAsync(event: any) {
        let catalogProjectInput = new CatalogProjectInput();
        catalogProjectInput.date = this.selectedDate ? this.selectedDate[0].key : "None";
 
@@ -84,6 +84,14 @@ export class CatalogProjectsComponent implements OnInit {
        catalogProjectInput.isAnyVacancies = this.isAnyVacancies;
        catalogProjectInput.paginationRows = 20;
        catalogProjectInput.lastId = this.lastId;
+
+       if (this.page == 0) {
+         this.setUrlParams(event.page + 1); // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
+       }
+
+       else {
+         this.page = +this.page + 1;
+       }
 
        (await this._projectService.loadCatalogProjectsAsync(catalogProjectInput))
          .subscribe(_ => {
@@ -104,7 +112,7 @@ export class CatalogProjectsComponent implements OnInit {
       this.isAnyVacancies = false;
       this.selectedStage = null;
 
-      await this.onLoadCatalogProjectsAsync();
+      await this.onLoadCatalogProjectsAsync(null);
     }
 
     /**
@@ -146,20 +154,20 @@ export class CatalogProjectsComponent implements OnInit {
      * @param page - Номер страницы.
      * @returns - Список проектов.
      */
-     public async onGetProjectsPaginationAsync(event: any) {
-      this.setUrlParams(event.page + 1); // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
-      this.page = +this.page + 1;
-      await this.onLoadCatalogProjectsAsync();
-    };
+    //  public async onGetProjectsPaginationAsync(event: any) {
+    //   this.setUrlParams(event.page + 1); // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
+    //   this.page = +this.page + 1;
+    //   await this.onLoadCatalogProjectsAsync();
+    // };
 
     /**
      * Функция инициализации пагинации.
      */
-     private async initVacanciesPaginationAsync() {
-        (await this._projectService.getProjectsPaginationAsync(0))
-            .subscribe(_ => {
-                console.log("Пагинация: ", this.pagination$.value), "page: " + this.page;
-                this.setUrlParams(1);
-            });
-    };
+    //  private async initVacanciesPaginationAsync() {
+    //     (await this._projectService.getProjectsPaginationAsync(0))
+    //         .subscribe(_ => {
+    //             console.log("Пагинация: ", this.pagination$.value), "page: " + this.page;
+    //             this.setUrlParams(1);
+    //         });
+    // };
 }

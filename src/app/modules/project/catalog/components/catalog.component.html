@@ -50,7 +50,7 @@
     <div>
       <p-paginator [rows]="20"
                   [totalRecords]="rowsCount"
-                  (onPageChange)="onGetProjectsPaginationAsync($event)"
+                  (onPageChange)="onLoadCatalogProjectsAsync($event)"
                   *ngIf="rowsCount > 0">
       </p-paginator>
     </div>
