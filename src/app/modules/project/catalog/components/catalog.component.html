@@ -14,8 +14,8 @@
                         emptyMessage="Результатов не найдено"
                         field="projectName"
                         [minLength]="0"
-                        (completeMethod)="onSearchProjectsAsync($event)"
-                        (onClear)="onLoadCatalogProjectsAsync()"
+                        (completeMethod)="onGetCatalogProjectsAsync($event)"
+                        (onClear)="onGetCatalogProjectsAsync(null)"
                         placeholder="Поиск по проектам...">
         </p-autoComplete>
     <p class="project-count">Найдено проектов: {{catalog$.value.total ?? rowsCount}}</p>
@@ -50,7 +50,7 @@
     <div>
       <p-paginator [rows]="20"
                   [totalRecords]="rowsCount"
-                  (onPageChange)="onLoadCatalogProjectsAsync($event)"
+                  (onPageChange)="onGetCatalogProjectsAsync($event)"
                   *ngIf="rowsCount > 0">
       </p-paginator>
     </div>
@@ -72,7 +72,7 @@
                     [value]="item"
                     [(ngModel)]="selectedDate"
                     [inputId]="item.key"
-                    (onChange)="onLoadCatalogProjectsAsync()">
+                    (onChange)="onGetCatalogProjectsAsync(null)">
         </p-checkbox>
         <label [for]="item.key">{{item.name}}</label>
       </div>
@@ -91,7 +91,7 @@
                     [(ngModel)]="isAnyVacancies"
                     [binary]="true"
                     [inputId]="item.key"
-                    (onChange)="onLoadCatalogProjectsAsync()">
+                    (onChange)="onGetCatalogProjectsAsync(null)">
         </p-checkbox>
         <label [for]="item.key">{{item.name}}</label>
       </div>
@@ -109,7 +109,7 @@
                     [value]="item"
                     [(ngModel)]="selectedStage"
                     [inputId]="item.key"
-                    (onChange)="onLoadCatalogProjectsAsync()">
+                    (onChange)="onGetCatalogProjectsAsync(null)">
         </p-checkbox>
         <label [for]="item.key">{{item.name}}</label>
       </div>
