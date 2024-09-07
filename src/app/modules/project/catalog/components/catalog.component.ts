@@ -40,7 +40,6 @@ export class CatalogProjectsComponent implements OnInit {
         { name: 'Поддержка', key: 'Support' }
     ];
     selectedStage: any;
-    searchText: string = "";
     aProjectsCatalog: any[] = [];
     page: number = 0;
     rowsCount: number = 0;
@@ -98,7 +97,7 @@ export class CatalogProjectsComponent implements OnInit {
 
        // Если используем поиск.
        if (event !== null && event.query) {
-         this.searchText = event.query;
+         catalogProjectInput.searchText = event.query;
        }
 
        (await this._projectService.loadCatalogProjectsAsync(catalogProjectInput))
