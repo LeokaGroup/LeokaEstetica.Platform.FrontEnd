@@ -57,8 +57,8 @@ export class VacancyService {
     * Функция создает новую вакансию.
     * @returns - Данные вакансии.
     */
-    public async loadCatalogVacanciesAsync() {
-        return await this.http.get(API_URL.apiUrl + "/vacancies/catalog").pipe(
+    public async loadCatalogVacanciesAsync(model: FilterVacancyInput) {
+        return await this.http.post(API_URL.apiUrl + "/vacancies/catalog", model).pipe(
             tap(data => this.catalog$.next(data))
         );
     };

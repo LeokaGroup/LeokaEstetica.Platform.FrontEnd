@@ -135,10 +135,11 @@ export class CatalogVacancyComponent implements OnInit {
 
     // Если используем поиск.
     if (event !== null && event.query) {
-      model.searchText = event.query;
+      this.searchText = event.query;
+      model.searchText = this.searchText;
     }
 
-    (await this._vacancyService.loadCatalogVacanciesAsync())
+    (await this._vacancyService.loadCatalogVacanciesAsync(model))
       .subscribe(_ => {
         console.log("Список вакансий: ", this.catalog$.value);
 

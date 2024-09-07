@@ -44,11 +44,12 @@ export class CatalogProjectsComponent implements OnInit {
     page: number = 0;
     rowsCount: number = 0;
     lastId?: number | null;
+    searchText: string = "";
 
   public async ngOnInit() {
     this.checkUrlParams();
 
-    await this.onLoadCatalogProjectsAsync(null);
+    await this.onGetCatalogProjectsAsync(null);
   };
 
     private setUrlParams(page: number) {
@@ -97,7 +98,8 @@ export class CatalogProjectsComponent implements OnInit {
 
        // Если используем поиск.
        if (event !== null && event.query) {
-         catalogProjectInput.searchText = event.query;
+         this.searchText = event.query;
+         catalogProjectInput.searchText = this.searchText;
        }
 
        (await this._projectService.loadCatalogProjectsAsync(catalogProjectInput))
@@ -119,7 +121,7 @@ export class CatalogProjectsComponent implements OnInit {
       this.isAnyVacancies = false;
       this.selectedStage = null;
 
-      await this.onLoadCatalogProjectsAsync(null);
+      await this.onGetCatalogProjectsAsync(null);
     }
 
     /**
