@@ -2,3 +2,10 @@
   font-family: "Montserrat Regular";
   src: url('/assets/fonts/Montserrat/static/Montserrat-Regular.ttf');
 }
+
+@mixin Paragraph1 {
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22px;
+}
