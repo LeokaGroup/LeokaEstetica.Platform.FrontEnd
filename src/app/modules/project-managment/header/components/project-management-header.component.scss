@@ -99,3 +99,11 @@ body {
 .isVisibleMenuShow ::ng-deep .p-submenu-list {
   visibility: visible;
 }
+
+::ng-deep .search-field .p-autocomplete {
+  width: 100%;
+
+  .p-autocomplete-input {
+    width: 100%;
+  }
+}
