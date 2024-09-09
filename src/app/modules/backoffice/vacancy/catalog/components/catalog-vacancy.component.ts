@@ -51,6 +51,7 @@ export class CatalogVacancyComponent implements OnInit {
     rowsCount: number = 0;
     page: number = 0;
     aCatalogVacancies: any[] = [];
+    lastId?: number | null;
 
     // TODO: этот тип фильтра будем использовать при поиске. Вне поиска решили не делать.
     // aKeywords: any[] = [
@@ -60,9 +61,7 @@ export class CatalogVacancyComponent implements OnInit {
     // selectedKeyword: any;
 
     public async ngOnInit() {
-        await this.onLoadCatalogVacanciesAsync();
-        await this.initVacanciesPaginationAsync();
-        this.setDefaultFilters();
+        await this.onLoadCatalogVacanciesAsync(null);
         this.checkUrlParams();
     };
 
@@ -84,40 +83,15 @@ export class CatalogVacancyComponent implements OnInit {
     };
 
     /**
-     * Функция проставляет начальные фильтры.
-     */
-    private setDefaultFilters() {
-        this.selectedSalary = this.aSalaries[0];
-    };
-    /**
      * Функция сбрасывает фильтры
      */
     public async onResetFilters() {
-        this.selectedSalary = null;
-        this.selectedPay = null;
-        this.selectedExperience = null;
-        this.selectedEmployment = [];
-         // Перезагрузка списка вакансий
-        await this.loadCatalogVacanciesAsync();
+      this.selectedSalary = null;
+      this.selectedPay = null;
+      this.selectedExperience = null;
+      this.selectedEmployment = [];
 
-
-    }
-        /**
- * Функция загружает список вакансий для каталога.
- * @returns - Список вакансий.
- */
-
-   /**
-     * Функция загружает список вакансий для каталога.
-     * @returns - Список вакансий.
-     */
-    private async loadCatalogVacanciesAsync() {
-        (await this._vacancyService.loadCatalogVacanciesAsync())
-        .subscribe(_ => {
-            console.log("Список вакансий: ", this.catalog$.value);
-            this.rowsCount = this.catalog$.value.total;
-            this.aCatalogVacancies = this.catalog$.value.catalogVacancies;
-        });
+      await this.onLoadCatalogVacanciesAsync(null);
     };
 
     /**
@@ -133,80 +107,48 @@ export class CatalogVacancyComponent implements OnInit {
         });
     };
 
-    /**
-     * Функция фильтрует вакансии по соответствию.
-     * @returns - Список вакансий после фильтрации.
-     */
-    public async onFilterVacanciesAsync() {
-        let filterVacancyInput = this.createFilterVacancyResult();
-        console.log(filterVacancyInput);
+  /**
+   * Функция получает списокк вакансий для каталога.
+   * Применяет пагинацию, фильтры и поиск - если они задействуются.
+   * @returns - Список вакансий.
+   */
+  public async onLoadCatalogVacanciesAsync(event: any) {
+    let model = new FilterVacancyInput();
+    model.Salary = this.selectedSalary ? this.selectedSalary.key : "None";
 
-        (await this._vacancyService.filterVacanciesAsync(filterVacancyInput))
-        .subscribe(_ => {
-            console.log("Список вакансий после фильтрации: ", this.catalog$.value);
-            this.rowsCount = this.catalog$.value.total;
-            this.aCatalogVacancies = this.catalog$.value.catalogVacancies;
-        });
-    };
+    if (this.selectedEmployment) {
+      model.EmploymentsValues = this.selectedEmployment.map((u: any) => u.key).join(',');
+    }
 
-    /**
-     * Функция создает входную модель фильтров вакансий.
-     * @returns - Входная модель.
-     */
-    private createFilterVacancyResult(): FilterVacancyInput {
-      let model = new FilterVacancyInput();
-      model.Salary = this.selectedSalary ? this.selectedSalary.key : "None";
+    model.Experience = this.selectedExperience ? this.selectedExperience.key : "None";
+    model.Pay = this.selectedPay ? this.selectedPay.key : "None";
 
-      if (this.selectedEmployment) {
-        model.EmploymentsValues = this.selectedEmployment.map((u: any) => u.key).join(',');
-      }
+    // Если используем пагинацию на ините.
+    if (this.page == 0 && event !== null) {
+      this.setUrlParams(event.page + 1); // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
+    }
 
-      model.Experience = this.selectedExperience ? this.selectedExperience.key : "None";
-      model.Pay = this.selectedPay ? this.selectedPay.key : "None";
+    // Если используем пагинацию после 1 страницы.
+    else if (event !== null) {
+      this.page = +this.page + 1;
+    }
 
-      return model;
-    };
+    // Если используем поиск.
+    if (event !== null && event.query) {
+      this.searchText = event.query;
+      model.searchText = this.searchText;
+    }
 
-    /**
-     * Функция ищет вакансии по поисковому запросу.
-     * @param searchText - Поисковая строка.
-     * @returns - Список вакансий после поиска.
-     */
-    public async onSearchVacanciesAsync(event: any) {
-        (await this._vacancyService.searchVacanciesAsync(event.query))
-            .subscribe(_ => {
-                console.log("Результаты поиска: ", this.catalog$.value);
-                this.aCatalogVacancies = this.catalog$.value.catalogVacancies;
-            });
-    };
+    (await this._vacancyService.loadCatalogVacanciesAsync(model))
+      .subscribe(_ => {
+        console.log("Список вакансий: ", this.catalog$.value);
 
-    public async onLoadCatalogVacanciesAsync() {
-        await this.loadCatalogVacanciesAsync();
-    };
-
-    /**
-     * Функция пагинации вакансий.
-     * @param page - Номер страницы.
-     * @returns - Список вакансий.
-     */
-     public async onGetVacanciesPaginationAsync(event: any) {
-        console.log(event);
-        (await this._vacancyService.getVacanciesPaginationAsync(event.page))
-            .subscribe(_ => {
-                console.log("Пагинация: ", this.pagination$.value), "page: " ;
-                this.aCatalogVacancies = this.pagination$.value.vacancies;
-                this.setUrlParams(event.page + 1); // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
-            });
-    };
-
-    /**
-     * Функция инициализации пагинации.
-     */
-     private async initVacanciesPaginationAsync() {
-        (await this._vacancyService.getVacanciesPaginationAsync(0))
-            .subscribe(_ => {
-                console.log("Пагинация: ", this.pagination$.value), "page: " + this.page;
-                this.setUrlParams(1);
-            });
-    };
+        this.aCatalogVacancies = [];
+        this.rowsCount = 0;
+        this.lastId = 0;
+        this.aCatalogVacancies = this.catalog$.value.catalogVacancies;
+        this.rowsCount = this.catalog$.value.total;
+        this.lastId = this.catalog$.value.lastId;
+      });
+  };
 }

@@ -13,8 +13,8 @@
                         emptyMessage="Результатов не найдено"
                         field="vacancyName"
                         [minLength]="1"
-                        (completeMethod)="onSearchVacanciesAsync($event)"
-                        (onClear)="onLoadCatalogVacanciesAsync()"
+                        (completeMethod)="onLoadCatalogVacanciesAsync($event)"
+                        (onClear)="onLoadCatalogVacanciesAsync(null)"
                         placeholder="Поиск по вакансиям...">
         </p-autoComplete>
         <p class="vacancy-count">Найдено вакансий: {{ catalog$.value?.total }}</p>
@@ -59,7 +59,7 @@
     <div>
       <p-paginator [rows]="20"
                   [totalRecords]="rowsCount"
-                  (onPageChange)="onGetVacanciesPaginationAsync($event)"
+                  (onPageChange)="onLoadCatalogVacanciesAsync($event)"
                   *ngIf="rowsCount > 0">
       </p-paginator>
     </div>
@@ -82,7 +82,7 @@
                             name="item"
                             [value]="item"
                             [(ngModel)]="selectedSalary"
-                            (onClick)="onFilterVacanciesAsync()">
+                            (onClick)="onLoadCatalogVacanciesAsync(null)">
             </p-radioButton>
             <label [for]="item.key">{{item.name}}</label>
         </div>
@@ -99,7 +99,7 @@
                             name="item"
                             [value]="item"
                             [(ngModel)]="selectedPay"
-                            (onClick)="onFilterVacanciesAsync()">
+                            (onClick)="onLoadCatalogVacanciesAsync(null)">
             </p-radioButton>
             <label [for]="item.key">{{item.name}}</label>
         </div>
@@ -116,7 +116,7 @@
                             name="item"
                             [value]="item"
                             [(ngModel)]="selectedExperience"
-                            (onClick)="onFilterVacanciesAsync()">
+                            (onClick)="onLoadCatalogVacanciesAsync(null)">
             </p-radioButton>
             <label [for]="item.key">{{item.name}}</label>
         </div>
@@ -134,7 +134,7 @@
                       [value]="item"
                       [(ngModel)]="selectedEmployment"
                       [inputId]="item.key"
-                      (onChange)="onFilterVacanciesAsync()">
+                      (onChange)="onLoadCatalogVacanciesAsync(null)">
           </p-checkbox>
           <label [for]="item.key">{{item.name}}</label>
       </div>
