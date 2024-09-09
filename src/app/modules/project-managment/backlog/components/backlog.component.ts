@@ -27,6 +27,7 @@ export class BacklogComponent implements OnInit {
 
   selectedProjectId: number = 0;
   isLoading: boolean = false;
+  checkedTasks: any[] = [];
 
   public async ngOnInit() {
     this._projectManagmentService.isLeftPanel = false;
@@ -153,6 +154,22 @@ export class BacklogComponent implements OnInit {
       }
     });
   };
+
+  /**
+   * Функция проверяет есть ли выбранные задачи и, если да, открывает меню с кнопкой "Добавить в спринт"
+   */
+  public openTaskMenu(event: Event) {
+    event.stopPropagation();
+    console.log('выбранные задачи:', this.checkedTasks)
+  }
+
+   /**
+   * Функция добавляет задачи в спринт.
+   * @param checkedTasks - выбранные через чекбоксы задачи.
+   */
+   public async addTasksToSprint() {
+    // Написать функцию
+   };
 
   public onSelectPanelMenu() {
     this._projectManagmentService.isLeftPanel = true;
