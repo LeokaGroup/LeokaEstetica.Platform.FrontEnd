@@ -7,6 +7,10 @@ body {
   overflow-x: hidden;
 }
 
+::ng-deep .p-menubar {
+  background: none;
+}
+
 ::ng-deep .second-menu .p-component {
     border: none;
   }
