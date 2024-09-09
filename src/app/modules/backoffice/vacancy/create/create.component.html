@@ -12,7 +12,7 @@
         <div class="d-flex">
           <div class="control-input-text-worksheet">
             <div>
-                <label class="vacancy-required-field">Название вакансии</label>
+                <label class="required">Название вакансии</label>
             </div>
             <div>
                 <input type="text" class="p-inputtext-sm input-control-worksheet control-project" placeholder="Название вакансии" pInputText
@@ -24,7 +24,7 @@
         <div class="d-flex">
           <div class="control-input-text-worksheet mt-3">
             <div>
-              <label class="vacancy-required-field">Опыт</label>
+              <label class="required">Опыт</label>
             </div>
 
             <div>
@@ -43,7 +43,7 @@
 
           <div class="control-input-text-worksheet mt-3">
             <div>
-              <label class="vacancy-required-field">Занятость</label>
+              <label class="required">Занятость</label>
             </div>
 
             <div>
@@ -78,7 +78,7 @@
         <div class="d-flex mt-3">
           <div class="control-input-text-worksheet">
             <div>
-                <label class="vacancy-required-field">Ваши проекты</label>
+                <label class="required">Ваши проекты</label>
             </div>
             <div>
               <p-dropdown [options]="userProjects$.value.userProjects.length > 0 ? userProjects$.value.userProjects : [{projectName: 'У вас нет проектов'}]"
@@ -96,7 +96,7 @@
                     <div class="d-flex worksheet-line">
                         <div class="control-input-text-worksheet">
                             <div>
-                                <label class="vacancy-required-field">Описание вакансии</label>
+                                <label class="required">Описание вакансии</label>
                             </div>
                             <div class="control-textarea-big-width">
                                 <p-editor [(ngModel)]="vacancyText" [style]="{'height':'320px'}"></p-editor>

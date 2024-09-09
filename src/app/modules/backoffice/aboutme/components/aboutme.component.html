@@ -46,10 +46,9 @@
     <div class="worksheet-panel">
       <p-panel header="Контактная информация" [toggleable]="true">
         <div class="block-contact">
-          <div [ngClass]="{'control-input-text-star':isModeEdit, 'control-required-field':isModeEdit}"
-               class="control-input-text-worksheet" >
+          <div class="control-input-text-worksheet" >
             <label class="d-flex flex-column">
-              <strong>Фамилия</strong>
+              <strong [ngClass]="{'required':isModeEdit}">Фамилия</strong>
               <input type="text"
                      class="p-inputtext-sm input-control-worksheet "
                      placeholder="Фамилия"
@@ -78,10 +77,9 @@
                 </div> -->
           </div>
 
-          <div [ngClass]="{'control-input-text-star':isModeEdit, 'control-required-field':isModeEdit}"
-               class="control-input-text-worksheet">
+          <div class="control-input-text-worksheet">
             <label class="d-flex flex-column">
-              <strong>Имя</strong>
+              <strong [ngClass]="{'required':isModeEdit}">Имя</strong>
               <input type="text"
                      class="p-inputtext-sm input-control-worksheet"
                      placeholder="Имя"
@@ -124,15 +122,14 @@
             </label>
           </div>
 
-          <div [ngClass]="{'control-required-field':isModeEdit}"
-               class="control-input-text-worksheet">
+          <div class="control-input-text-worksheet">
             <label class="d-flex flex-column">
-              <strong>Номер телефона</strong>
+              <strong [ngClass]="{'required':isModeEdit}">Номер телефона</strong>
               <div class="phone-input-container" *ngIf="isModeEdit">
                 <p-inputMask
-                  mask="(999) 999-9999"
+                  mask="(999) 999-99-99"
                   class="p-inputtext-sm input-control-worksheet input-phone"
-                  placeholder="(999) 999-9999"
+                  placeholder="(999) 999-99-99"
                   autocomplete="new-password"
                   [(ngModel)]="phoneNumber"
                 />
@@ -247,8 +244,10 @@
     <div class="worksheet-panel space-top">
       <p-panel header="О себе" [toggleable]="true">
         <div class="d-flex worksheet-line">
-            <div [ngClass]="{'control-required-field':isModeEdit}"
-                  class="control-input-text-worksheet">
+            <div
+              class="control-input-text-worksheet"
+              [ngClass]="{'required':isModeEdit}"
+            >
                 <textarea input-control-worksheet
                             rows="5"
                             cols="100"
@@ -269,10 +268,10 @@
         </div>
 
         <div class="d-flex worksheet-line">
-            <div [ngClass]="{'control-required-field':isModeEdit}"
+            <div [ngClass]="{'required':isModeEdit}"
                   class="control-input-text-worksheet">
                 <input type="text"
-                        class="p-inputtext-sm input-control-worksheet "
+                        class="p-inputtext-sm input-control-worksheet"
                         placeholder="Должность"
                         pInputText
                         autocomplete="new-password"
@@ -287,7 +286,7 @@
             </div>
 
             <!-- TODO: Передавать это поле на бэк, когда там будет оно добавлено. -->
-            <div [ngClass]="{'control-required-field':isModeEdit}"
+            <div [ngClass]="{'required-number':isModeEdit}"
                   class="control-input-text-worksheet">
                 <p-inputNumber
                     *ngIf="isModeEdit"
@@ -324,7 +323,7 @@
     </div>
 
     <div class="worksheet-panel space-top">
-      <div [ngClass]="{'p-panel-el-after':isModeEdit}"
+      <div [ngClass]="{'required-panel':isModeEdit}"
             class="p-panel-el">
         <p-panel header="Навыки" [toggleable]="true" >
           <div *ngIf="isModeEdit; else elseBlockSkills">
@@ -374,7 +373,7 @@
 
 
     <div class="worksheet-panel space-top">
-      <div [ngClass]="{'p-panel-el-after':isModeEdit}"
+      <div [ngClass]="{'required-panel':isModeEdit}"
             class="p-panel-el">
         <p-panel header="Цели на платформе" [toggleable]="true" >
           <div *ngIf="isModeEdit; else elseBlockIntents">

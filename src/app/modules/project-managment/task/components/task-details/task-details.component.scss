@@ -82,6 +82,8 @@
   padding: 0;
   font-size: 24px;
   line-height: 28px;
+  max-width: 650px;
+  word-wrap: break-word;
 }
 
 :host ::ng-deep .p-inplace-content {

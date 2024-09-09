@@ -141,6 +141,11 @@ export class StartProjectManagmentComponent implements OnInit {
         (await this._projectManagmentService.getProjectManagmentTemplatesAsync())
             .subscribe(_ => {
                 console.log("Шаблоны для выбора: ", this.projectManagmentTemplates$.value);
+                // Установка первого шаблона выбранным по-умолчанию
+                if (this.projectManagmentTemplates$.value.length) {
+                    this.selectedTemplate = this.projectManagmentTemplates$.value[0];
+                    this.onChangeTemplate();
+                }
             });
     };
 

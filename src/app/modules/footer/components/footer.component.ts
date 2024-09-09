@@ -1,5 +1,4 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component } from "@angular/core";
 
 @Component({
     selector: "footer",
@@ -10,34 +9,26 @@ import { Router } from "@angular/router";
 /**
  * Класс компонента футера.
  */
-export class FooterComponent implements OnInit {
-    public dateLine: string = "";
+export class FooterComponent {
+  currentDate = new Date();
 
-    constructor(private readonly _router: Router) {
-    }
-
-    public async ngOnInit() {
-        this.calcDateYear();
-    };
-
-    private calcDateYear() {
-        let startYear = 2023;
-        let now = new Date().getFullYear();
-
-        if (now == startYear) {
-            this.dateLine += startYear;
-        }
-
-        else {
-            this.dateLine += startYear + "-" + now;
-        }
-    };
-
-    public onRouteTelegram() {
-        window.open('https://t.me/leoka_estetica', '_blank');
-    };
-
-    public onRouteVk() {
-        window.open('https://vk.com/leokaestetica', '_blank');
-    };
+  menuItems = {
+    services: [
+      { link: '/vacancies', label: 'Вакансии' },
+      { link: '/resumes', label: 'База резюме' },
+      { link: '/projects', label: 'Проекты' },
+    ],
+    info: [
+      { link: '/', label: 'Частые вопросы' },
+      { link: '/press/contacts', label: 'Контакты' },
+      { link: '/press/offer', label: 'Публичная оферта' },
+    ],
+    support: [
+      { link: '/profile/tickets', label: 'Служба поддержки' },
+    ],
+    social: [
+      { link: 'https://t.me/leoka_estetica', label: 'Telegram', imgSrc: '/assets/images/logo/telegram.png' },
+      { link: 'https://vk.com/leokaestetica', label: 'VK', imgSrc: '/assets/images/logo/vk.png' },
+    ],
+  };
 }

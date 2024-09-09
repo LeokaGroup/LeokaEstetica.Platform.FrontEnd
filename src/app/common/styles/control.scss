@@ -249,7 +249,7 @@
 }
 
 ::ng-deep .control-textarea-big-width {
-  max-width: 690px;
+  max-width: 676px;
   word-break: break-word;
 }
 
@@ -317,14 +317,18 @@
     color: color.$project-icons-grey;
 }
 
+:host ::ng-deep .required-panel .p-panel-title,
+:host ::ng-deep .required-number .p-inputnumber,
 .required {
     position: relative;
+    width: fit-content;
 
     &::after{
-        content: '*';
-        color: color.$red;
+        content: "*";
+        color: red;
         position: absolute;
-        top: -10px;
-        left: -10px;
+        top: 2px;
+        right: -12px;
+        font-weight: 400;
     }
 }

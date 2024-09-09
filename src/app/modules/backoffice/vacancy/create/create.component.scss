@@ -2,19 +2,6 @@
 @use "/src/app/common/styles/control.scss";
 @use "/src/app/common/styles/styles.scss";
 
-
-.vacancy-required-field {
-    position: relative;
-}
-
-.vacancy-required-field::after{
-    content: '*';
-    color: red;
-    position: absolute;
-    top: -4px;
-    left: -8px;
-}
-
 :host ::ng-deep .control-project-stages .p-dropdown {
     max-width: 650px;
     width: 650px;

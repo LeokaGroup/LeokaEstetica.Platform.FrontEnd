@@ -1,9 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { forkJoin } from "rxjs";
 import { ProjectService } from "../../services/project.service";
 import {CatalogProjectInput} from "../../models/catalog-project-input";
-import {FilterProjectInput} from "../../detail/models/input/filter-project-input";
 
 @Component({
     selector: "",
@@ -42,16 +40,16 @@ export class CatalogProjectsComponent implements OnInit {
         { name: 'Поддержка', key: 'Support' }
     ];
     selectedStage: any;
-    searchText: string = "";
     aProjectsCatalog: any[] = [];
     page: number = 0;
     rowsCount: number = 0;
     lastId?: number | null;
+    searchText: string = "";
 
   public async ngOnInit() {
     this.checkUrlParams();
-    await this.onLoadCatalogProjectsAsync();
-    await this.initVacanciesPaginationAsync();
+
+    await this.onGetCatalogProjectsAsync(null);
   };
 
     private setUrlParams(page: number) {
@@ -72,10 +70,11 @@ export class CatalogProjectsComponent implements OnInit {
     };
 
      /**
-     * Функция загружает список вакансий для каталога.
-     * @returns - Список вакансий.
+     * Функция загружает список проектов для каталога.
+      * Также применяет поиск и пагинацию, если они задействуются.
+     * @returns - Список проектов.
      */
-     public async onLoadCatalogProjectsAsync() {
+     public async onGetCatalogProjectsAsync(event: any) {
        let catalogProjectInput = new CatalogProjectInput();
        catalogProjectInput.date = this.selectedDate ? this.selectedDate[0].key : "None";
 
@@ -86,6 +85,22 @@ export class CatalogProjectsComponent implements OnInit {
        catalogProjectInput.isAnyVacancies = this.isAnyVacancies;
        catalogProjectInput.paginationRows = 20;
        catalogProjectInput.lastId = this.lastId;
+
+       // Если используем пагинацию на ините.
+       if (this.page == 0 && event !== null) {
+         this.setUrlParams(event.page + 1); // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
+       }
+
+       // Если используем пагинацию после 1 страницы.
+       else if (event !== null) {
+         this.page = +this.page + 1;
+       }
+
+       // Если используем поиск.
+       if (event !== null && event.query) {
+         this.searchText = event.query;
+         catalogProjectInput.searchText = this.searchText;
+       }
 
        (await this._projectService.loadCatalogProjectsAsync(catalogProjectInput))
          .subscribe(_ => {
@@ -106,7 +121,7 @@ export class CatalogProjectsComponent implements OnInit {
       this.isAnyVacancies = false;
       this.selectedStage = null;
 
-      await this.onLoadCatalogProjectsAsync();
+      await this.onGetCatalogProjectsAsync(null);
     }
 
     /**
@@ -120,48 +135,5 @@ export class CatalogProjectsComponent implements OnInit {
                 mode: "view"
             }
         });
-    };
-
-    /**
-     * Функция ищет проекты по поисковому запросу.
-     * @param searchText - Поисковая строка.
-     * @returns - Список проектов после поиска.
-     */
-    public async onSearchProjectsAsync(event: any) {
-      this.searchText = event.query;
-      (await this._projectService.searchProjectsAsync(event.query))
-        .subscribe(_ => {
-          console.log("Результаты поиска: ", this.catalog$.value);
-
-          this.aProjectsCatalog = [];
-          this.rowsCount = 0;
-          this.lastId = 0;
-          this.catalog$.value.total = null;
-          this.rowsCount = this.catalog$.value.catalogProjects.length;
-          this.lastId = this.catalog$.value.lastId;
-          this.aProjectsCatalog = this.catalog$.value.catalogProjects;
-        });
-    };
-
-    /**
-     * Функция пагинации проектов.
-     * @param page - Номер страницы.
-     * @returns - Список проектов.
-     */
-     public async onGetProjectsPaginationAsync(event: any) {
-      this.setUrlParams(event.page + 1); // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
-      this.page = +this.page + 1;
-      await this.onLoadCatalogProjectsAsync();
-    };
-
-    /**
-     * Функция инициализации пагинации.
-     */
-     private async initVacanciesPaginationAsync() {
-        (await this._projectService.getProjectsPaginationAsync(0))
-            .subscribe(_ => {
-                console.log("Пагинация: ", this.pagination$.value), "page: " + this.page;
-                this.setUrlParams(1);
-            });
     };
 }
