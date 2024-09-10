@@ -6,6 +6,10 @@
     width: 750px;
 }
 
+:host ::ng-deep .control-textarea.p-inputtextarea {
+  width:100%;
+}
+
 ::ng-deep.p-fieldset-toggleable .p-fieldset-legend a {
   text-decoration: none;
 }
@@ -63,6 +67,7 @@
 .control-input-text-worksheet,
 .worksheet-line {
   width: 100%;
+  margin: 0;
 }
 
 ::ng-deep.p-splitter-panel-nested .p-splitter-panel {
