@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, NavigationExtras, Router } from "@angular/router";
-import { firstValueFrom, forkJoin, tap } from "rxjs";
+import { catchError, firstValueFrom, forkJoin, tap } from "rxjs";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
 import { ChangeTaskDetailsInput } from "../../models/input/change-task-details-input";
 import { ChangeTaskNameInput } from "../../models/input/change-task-name-input";
@@ -783,17 +783,25 @@ export class TaskDetailsComponent implements OnInit {
   /**
    * Функция добавляет задачу в эпик и подтягивает эпик, в который включена задача.
    */
-  public async onChangeAvailableEpicsAsync() {
-    let includeTaskEpicInput = new IncludeTaskEpicInput();
-    includeTaskEpicInput.epicId = this.selectedEpic.epicId;
-    includeTaskEpicInput.projectTaskIds = [this.projectTaskId];
+  async onChangeAvailableEpicsAsync() {
+    const data: IncludeTaskEpicInput = {
+      epicId: `${this.epicName.epicId}`,
+      projectTaskIds: [ this.projectTaskId ],
+      projectId: this.projectId,
+    };
 
-    (await this._projectManagmentService.includeTaskEpicAsync(includeTaskEpicInput))
-      .subscribe(_ => {
-        console.log("Добавили задачу в эпик: ", this.includeEpic$.value);
-
-        let value = this.availableEpics$.value.find((ep: any) => ep.epicId == this.selectedEpic.epicId);
-        this.formEpic.get("epicName")?.setValue(value);
+    (await this._projectManagmentService.includeTaskEpicAsync(data))
+      .pipe(
+        catchError(async (e) => {
+          console.log("(onChangeAvailableEpicsAsync) Ошибка добавления в эпик: ", e)
+        })
+      )
+      .subscribe(async (res) => {
+        if (res) {
+          console.log("Добавили задачу в эпик: ", this.includeEpic$.value);
+          // TODO: убрать
+          // this.epicName = this.availableEpics$.value.find((ep: any) => ep.epicId == this.epicName.epicId);
+        }
       });
   };
 
