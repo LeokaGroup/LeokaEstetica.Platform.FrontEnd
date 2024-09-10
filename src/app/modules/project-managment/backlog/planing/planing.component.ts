@@ -257,4 +257,19 @@ export class PlaningSprintComponent implements OnInit {
       }
     }
   };
+
+  setSearchType(id: string) {
+    if (id === 'isSearchByTaskId') {
+      this.isSearchByTaskName = false;
+      this.isSearchByTaskDescription = false;
+    }
+    if (id === 'isSearchByTaskName') {
+      this.isSearchByTaskId = false;
+      this.isSearchByTaskDescription = false;
+    }
+    if (id === 'isSearchByTaskDescription') {
+      this.isSearchByTaskName = false;
+      this.isSearchByTaskId = false;
+    }
+  }
 }
