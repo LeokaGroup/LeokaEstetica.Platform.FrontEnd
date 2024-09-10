@@ -128,7 +128,8 @@
           <div>
             <p-checkbox inputId="searchByTaskId"
                         [value]="isSearchByTaskId"
-                        (onChange)="isSearchByTaskId = !isSearchByTaskId"
+                        [(ngModel)]="isSearchByTaskId"
+                        (onChange)="setSearchType('isSearchByTaskId')"
                         [binary]="true">
 
             </p-checkbox>
@@ -140,7 +141,8 @@
            <div>
              <p-checkbox inputId="searchByTaskName"
                          [value]="isSearchByTaskName"
-                         (onChange)="isSearchByTaskName = !isSearchByTaskName"
+                         [(ngModel)]="isSearchByTaskName"
+                         (onChange)="setSearchType('isSearchByTaskName')"
                          [binary]="true">
 
              </p-checkbox>
@@ -152,7 +154,8 @@
            <div>
              <p-checkbox inputId="sprintTasksDescription"
                          [value]="isSearchByTaskDescription"
-                         (onChange)="isSearchByTaskDescription = !isSearchByTaskDescription"
+                         [(ngModel)]="isSearchByTaskDescription"
+                         (onChange)="setSearchType('isSearchByTaskDescription')"
                          [binary]="true">
 
              </p-checkbox>
