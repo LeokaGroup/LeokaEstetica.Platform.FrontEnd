@@ -2,46 +2,219 @@
 @use "/src/app/common/styles/spaces.scss";
 @use "/src/app/common/styles/control.scss";
 @use "/src/app/common/styles/styles.scss";
-
-.project-text-block {
-  padding: 10px 0;
-}
-
-.catalog-vacancies-item {
-  margin: 10px 0;
-}
-
-.block-catalog-filters {
-  margin: 0 0 10px 10px;
-}
-
-.block-profile {
-  overflow-x: hidden;
-}
-
-.project-count {
-  margin-top: 0.5rem;
-  font-weight: 600;
-  font-size: 1rem;
-  text-align: center;
-  margin-bottom: 0.5rem;
-}
+@use "/src/app/common/styles/font.scss";
 
 .tag {
   margin-left: 20px;
 }
-.project-text-wrap{
-  line-height: 1.42;
-    height: 100%;
-    outline: none;
-    overflow-y: auto;
-    tab-size: 4;
-    -moz-tab-size: 4;
-    text-align: left;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+
+.filtres-wrapper {
+  display: flex;
+  gap: 16px;
 }
 
-.resetFiltersBtn {
-  @include control.linkButton(color.$project-icons-grey);
+.projects-count {
+  @include font.Regular_16_140();
+  margin-right: 32px;
 }
+
+::ng-deep .p-dropdown {
+  display: flex;
+  align-items: center;
+  width: 256px;
+  height: 54px;
+  border-radius: 8px;
+  border: 1px solid color.$project-stroke-nikel;
+  box-shadow: none;
+}
+
+::ng-deep .p-inputwrapper-focus {
+  border: 1px solid color.$project-primary-blue-color;
+}
+
+::ng-deep .p-dropdown-label {
+  padding: 15px 20px;
+  color: color.$project-text-black;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22.4px;
+}
+
+::ng-deep .p-dropdown-label::before {
+  content: '\00a0 \00a0 \00a0 \00a0 \00a0 \00a0 \00a0 \00a0';
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+}
+
+::ng-deep .vacancy-filter .p-dropdown-label::before {
+  background-image: url('../../../../../assets/images/project/file-search-02.svg');
+}
+
+::ng-deep .date-filter .p-dropdown-label::before {
+  background-image: url('../../../../../assets/images/project/calendar-minus-01.svg');
+}
+
+::ng-deep .stage-filter .p-dropdown-label::before {
+  background-image: url('../../../../../assets/images/project/bar-line-chart.svg');
+}
+
+::ng-deep .p-dropdown-item {
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 400;
+  background-color: transparent;
+}
+
+::ng-deep .p-dropdown-item:hover {
+  color: color.$project-primary-blue-color;
+  background-color: transparent;
+}
+::ng-deep .p-dropdown-item .p-focus{
+  color: color.$project-primary-blue-color;
+}
+
+::ng-deep .p-dropdown-panel {
+  border: 1px solid color.$project-stroke-nikel;
+  border-radius: 8px;
+  box-shadow: none;
+  margin-top: 4px
+}
+
+::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+  color: color.$project-primary-blue-color;
+}
+
+.dropdown-radio {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 1px solid color.$project-stroke-nikel;
+  border-radius: 50%;
+}
+
+.dropdown-radio:checked {
+  color: color.$project-primary-blue-color;
+  background-color: white;
+  border: 6px solid color.$project-primary-blue-color;
+}
+
+.projects-list {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(300px, 1fr));
+  grid-gap: 8px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.project-card {
+  border: 1px solid color.$project-stroke-nikel;
+  border-radius: 20px;
+  padding: 16px;
+
+  .project-text-block {
+
+    .project-title {
+      margin: 0;
+      @include font.Regular_20_120();
+      font-weight: 500;
+      color: color.$project-primary-blue-color;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .project-date {
+      font-family: Montserrat;
+      font-size: 14px;
+      line-height: 20px;
+      color: color.$project-text-bluish-grey
+    }
+
+    .project-description {
+      margin: 0;
+      font-family: Montserrat;
+      font-size: 14px;
+      line-height: 20px;
+      color: color.$landing-text-dark-grey
+    }
+  }
+
+  .btn {
+    width: 178px;
+    height: 44px;
+    @include font.Regular_16_140();
+    font-weight: 500;
+    border-radius: 8px;
+  }
+
+  .question-btn {
+    border: 1px solid color.$project-primary-blue-color;
+    background-color: white;
+    color: color.$project-primary-blue-color;
+
+  }
+
+  .respond-btn {
+    border: 1px solid color.$project-primary-blue-color;
+    background-color: color.$project-primary-blue-color;
+    color: white;
+  }
+
+  .like-btn {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    margin-left: auto;
+    cursor: pointer;
+    background-image: url(../../../../../assets/images/project/heart-rounded.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: transparent;
+  }
+}
+
+
+
+
+
+.question-btn {
+  width: 178px;
+  height: 44px;
+  border: 1px solid color.$project-primary-blue-color;
+  border-radius: 8px;
+  background-color: white;
+  color: color.$project-primary-blue-color;
+  @include font.Regular_16_140();
+  font-weight: 500;
+}
+
+.respond-btn {
+  width: 178px;
+  height: 44px;
+  border: 1px solid color.$project-primary-blue-color;
+  border-radius: 8px;
+  background-color: color.$project-primary-blue-color;
+  color: white;
+  @include font.Regular_16_140();
+  font-weight: 500;
+}
+
+.like-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  margin-left: auto;
+  cursor: pointer;
+  background-image: url(../../../../../assets/images/project/heart-rounded.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: transparent;
+}
+
+
+
