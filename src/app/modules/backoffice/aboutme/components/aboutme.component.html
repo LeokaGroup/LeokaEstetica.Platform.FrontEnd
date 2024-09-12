@@ -259,7 +259,7 @@
                 <strong>О себе</strong>
               </label>
             </div>
-            <p *ngIf="isModeView" class="white-space">{{profileInfo$.value.aboutme}}</p>
+            <span *ngIf="isModeView" class="white-space" [innerHtml]="profileInfo$.value.aboutme"></span>
           </div>
         </div>
 
