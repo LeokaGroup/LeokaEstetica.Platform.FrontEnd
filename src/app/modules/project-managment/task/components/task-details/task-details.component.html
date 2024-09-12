@@ -296,22 +296,14 @@
           <span class="empty-task-details" *ngIf="taskDetails == null || taskDetails == ''">
             Добавьте описание задачи, чтобы исполнителю было понятно, что нужно сделать в рамках задачи
           </span>
-          <span class="task-name-title">{{taskDetails}}</span>
+          <span class="task-name-title" [innerHtml]="taskDetails"></span>
         </ng-template>
         <ng-template pTemplate="content">
-            <textarea input-control-worksheet
-                      rows="5"
-                      cols="100"
-                      pInputTextarea
-                      [autoResize]="true"
-                      autocomplete="new-password"
-                      placeholder="Описание задачи"
-                      [(ngModel)]="taskDetails"
-                      class="input-about-me"
-                      value="{{taskDetails}}">
-            </textarea>
-
-           <div>
+          <p-editor
+            placeholder="Описание задачи"
+            [(ngModel)]="taskDetails"
+          />
+          <div>
             <button pButton
                     pRipple
                     icon="pi pi-check"
@@ -321,7 +313,6 @@
                     *ngIf="isActiveTaskDetails"
                     (click)="onSaveTaskDetailsAsync()">
             </button>
-
             <button pButton
                     pRipple
                     icon="pi pi-times"
@@ -331,7 +322,7 @@
                     *ngIf="isActiveTaskDetails"
                     (click)="isActiveTaskDetails=!isActiveTaskDetails">
             </button>
-           </div>
+          </div>
         </ng-template>
     </p-inplace>
     </div>
@@ -949,20 +940,14 @@
                              [active]="c.isActiveTaskComment"
                              (onActivate)="c.isActiveTaskComment = !c.isActiveTaskComment">
                     <ng-template pTemplate="display">
-                      <span class="task-name-title">{{c.comment}}</span>
+                      <span class="task-name-title" [innerHtml]="c.comment"></span>
                     </ng-template>
 
                     <ng-template pTemplate="content">
-                      <textarea input-control-worksheet
-                                rows="5"
-                                cols="100"
-                                pInputTextarea
-                                [autoResize]="true"
-                                autocomplete="new-password"
-                                placeholder="Текст комментария"
-                                [(ngModel)]="c.comment"
-                                class="control-textarea">
-                        </textarea>
+                      <p-editor
+                        placeholder="Текст комментария"
+                        [(ngModel)]="c.comment"
+                      />
                     </ng-template>
                   </p-inplace>
 
@@ -1002,25 +987,18 @@
           <div class="mt-3">
             <p-card header="Оставить комментарий" [style]="{width: '100%'}">
               <div>
-                <textarea input-control-worksheet
-                          rows="5"
-                          cols="120"
-                          pInputTextarea
-                          [autoResize]="true"
-                          autocomplete="new-password"
-                          placeholder="Текст комментария"
-                          [(ngModel)]="comment"
-                          class="control-textarea">
-                  </textarea>
+                <p-editor
+                  placeholder="Текст комментария"
+                  [(ngModel)]="comment"
+                />
               </div>
 
               <div class="control-comment mt-1">
                 <p-button icon="pi pi-arrow-up-right"
-                          (click)="onCreateTaskCommentAsync(comment)"
+                          (click)="onCreateTaskCommentAsync()"
                           label="Отправить"
                           styleClass="p-button-success p-button-text"
-                          *ngIf="comment">
-                </p-button>
+                />
               </div>
             </p-card>
           </div>

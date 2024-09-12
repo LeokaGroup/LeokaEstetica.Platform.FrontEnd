@@ -722,8 +722,8 @@ export class TaskDetailsComponent implements OnInit {
    * Функция создает комментарий к задаче.
    * @param comment - Комментарий.
    */
-  public async onCreateTaskCommentAsync(comment: string) {
-    if (!comment) {
+  public async onCreateTaskCommentAsync() {
+    if (!this.comment) {
       return;
     }
 
@@ -958,10 +958,11 @@ export class TaskDetailsComponent implements OnInit {
       });
   };
 
-  public onHandleComment(comment: string) {
-    console.log("onHandleComment", comment);
-    this.comment = comment;
-  };
+  // TODO: dead code - remove?
+  // public onHandleComment(comment: string) {
+  //   console.log("onHandleComment", comment);
+  //   this.comment = comment;
+  // };
 
   /**
    * Функция получает роли пользователя.
