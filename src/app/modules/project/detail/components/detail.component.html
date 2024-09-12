@@ -67,19 +67,10 @@
               <strong>Описание проекта</strong>
             </div>
             <div *ngIf="isEditMode; else blockThree">
-              <textarea 
-                input-control-worksheet
-                rows="5"
-                cols="100"
-                pInputTextarea
-                [autoResize]="true"
-                autocomplete="new-password"
+              <p-editor
                 placeholder="Описание проекта"
                 [(ngModel)]="selectedProject$.value.projectDetails"
-                [disabled]="!isEditMode"
-                class="control-textarea"
-              >
-              </textarea>
+              />
             </div>
             <ng-template #blockThree>
               <p class="white-space text-paragraph">{{selectedProject$.value.projectDetails}}</p>
@@ -146,19 +137,10 @@
               <strong>Требования</strong>
             </div>
             <div *ngIf="isEditMode">
-              <textarea
-                input-control-worksheet
-                rows="5"
-                cols="100"
-                pInputTextarea
-                [autoResize]="true"
-                autocomplete="new-password"
+              <p-editor
                 placeholder="Требования проекта"
                 [(ngModel)]="selectedProject$.value.demands"
-                [disabled]="!isEditMode"
-                class="control-textarea"
-              >
-              </textarea>
+              />
             </div>
             <div *ngIf="!isEditMode">
               <p class="white-space text-paragraph" [innerHTML]="selectedProject$.value?.demands"></p>
@@ -166,24 +148,17 @@
           </div>
         </div>
 
-        <div class="d-flex">
+        <div class="d-flex mt-3">
           <div class="d-flex worksheet-line">
             <div class="control-input-text-worksheet">
               <div>
                 <strong>Условия</strong>
               </div>
               <div *ngIf="isEditMode">
-                <textarea input-control-worksheet
-                          rows="5"
-                          cols="100"
-                          pInputTextarea
-                          [autoResize]="true"
-                          autocomplete="new-password"
-                          placeholder="Условия проекта"
-                          [(ngModel)]="selectedProject$.value.conditions"
-                          class="control-textarea"
-                          [disabled]="!isEditMode">
-                  </textarea>
+                <p-editor
+                  placeholder="Условия проекта"
+                  [(ngModel)]="selectedProject$.value.conditions"
+                />
               </div>
               <div *ngIf="!isEditMode">
                 <p class="white-space text-paragraph" [innerHTML]="selectedProject$.value?.conditions"></p>
@@ -720,17 +695,11 @@
                               <strong>Описание вакансии</strong>
                           </div>
                           <div>
-                            <textarea input-control-worksheet
-                                      rows="5"
-                                      cols="100"
-                                      pInputTextarea
-                                      [autoResize]="true"
-                                      autocomplete="new-password"
-                                      placeholder="Описание вакансии"
-                                      [(ngModel)]="vacancyText"
-                                      class="control-textarea"
-                                      [disabled]="!isEditMode">
-                              </textarea>
+                            <p-editor
+                              placeholder="Описание вакансии"
+                              [(ngModel)]="vacancyText"
+                              [readonly]="!isEditMode"
+                            />
                           </div>
                       </div>
                   </div>

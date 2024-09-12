@@ -332,3 +332,8 @@
         font-weight: 400;
     }
 }
+
+// p-editor height = toolbar(вариативно) + .ql-container
+:host ::ng-deep .ql-container {
+    height: 200px;
+}
