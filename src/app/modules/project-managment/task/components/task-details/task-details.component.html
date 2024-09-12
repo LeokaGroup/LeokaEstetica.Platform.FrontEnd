@@ -296,7 +296,7 @@
           <span class="empty-task-details" *ngIf="taskDetails == null || taskDetails == ''">
             Добавьте описание задачи, чтобы исполнителю было понятно, что нужно сделать в рамках задачи
           </span>
-          <span class="task-name-title" [innerHtml]="taskDetails"></span>
+          <span class="task-name-title" [innerHTML]="taskDetails"></span>
         </ng-template>
         <ng-template pTemplate="content">
           <p-editor
@@ -940,7 +940,7 @@
                              [active]="c.isActiveTaskComment"
                              (onActivate)="c.isActiveTaskComment = !c.isActiveTaskComment">
                     <ng-template pTemplate="display">
-                      <span class="task-name-title" [innerHtml]="c.comment"></span>
+                      <span class="task-name-title" [innerHTML]="c.comment"></span>
                     </ng-template>
 
                     <ng-template pTemplate="content">

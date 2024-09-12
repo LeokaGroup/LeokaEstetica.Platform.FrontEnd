@@ -194,7 +194,7 @@
           <span class="empty-task-details" *ngIf="sprintDetails == null || sprintDetails == ''">
             Добавьте описание спринта, чтобы другим было понятно, что включает в себя данный спринт.
           </span>
-          <span class="task-name-title" [innerHtml]="sprintDetails"></span>
+          <span class="task-name-title" [innerHTML]="sprintDetails"></span>
         </ng-template>
         <ng-template pTemplate="content">
           <p-editor
