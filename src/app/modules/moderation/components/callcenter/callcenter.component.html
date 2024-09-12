@@ -562,17 +562,12 @@
          <div>
             <label>Описание проекта</label>
         </div>
-        <textarea input-control-worksheet
-                  rows="5"
-                  cols="100"
-                  pInputTextarea
-                  [autoResize]="true"
-                  autocomplete="new-password"
-                  placeholder="Детали проекта"
-                  [(ngModel)]="projectDetails"
-                  class="control-textarea"
-                  [disabled]="true">
-        </textarea>
+        <p-editor
+          placeholder="Детали проекта"
+          [(ngModel)]="projectDetails"
+          [readonly]="true"
+          class="headless-editor p-disabled"
+        />
       </div>
 
       <div>
@@ -775,18 +770,12 @@
          <div>
             <label>Описание вакансии</label>
         </div>
-        <textarea input-control-worksheet
-                  rows="5"
-                  cols="100"
-                  pInputTextarea
-                  [autoResize]="true"
-                  autocomplete="new-password"
-                  placeholder="Детали вакансии"
-                  [(ngModel)]="vacancyText"
-                  class="control-textarea"
-                  [disabled]="true">
-        </textarea>
-
+        <p-editor
+          placeholder="Детали вакансии"
+          [(ngModel)]="vacancyText"
+          [readonly]="true"
+          class="headless-editor p-disabled"
+        />
         <div>
           <p-checkbox inputId="remarkVacancyText"
                       [value]="'RemarkVacancyText'"
@@ -997,26 +986,19 @@
           <div>
             <label>Описание aнкеты</label>
           </div>
-          <textarea input-control-worksheet
-                    rows="5"
-                    cols="100"
-                    pInputTextarea
-                    [autoResize]="true"
-                    autocomplete="new-password"
-                    placeholder="Описание aнкеты"
-                    [(ngModel)]="aProfile.aboutme"
-                    class="control-textarea"
-                    [disabled]="true">
-        </textarea>
-
-        <div>
-          <p-checkbox inputId="remarkResumeDetails"
-                      [value]="'RemarkResumeDetails'"
-                      (onChange)="onSetResumeRemarks('RemarkResumeDetails', '', 'Описание анкеты', profileInfoId)">
-  
-          </p-checkbox>
-          <label for="remarkResumeDetails">&nbsp;Есть замечание</label>
-        </div>
+          <p-editor
+            placeholder="Описание aнкеты"
+            [(ngModel)]="aProfile.aboutme"
+            [readonly]="true"
+            class="headless-editor p-disabled"
+          />
+          <div>
+            <p-checkbox inputId="remarkResumeDetails"
+                        [value]="'RemarkResumeDetails'"
+                        (onChange)="onSetResumeRemarks('RemarkResumeDetails', '', 'Описание анкеты', profileInfoId)">
+            </p-checkbox>
+            <label for="remarkResumeDetails">&nbsp;Есть замечание</label>
+          </div>
         </div>
 
         <div class="control-input-text-worksheet mt-3">

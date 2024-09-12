@@ -337,3 +337,20 @@
 :host ::ng-deep .ql-container {
     height: 200px;
 }
+
+:host ::ng-deep .headless-editor {
+    .ql-toolbar {
+        height: 1px;
+        padding:0;
+        border: none;
+    }
+    .ql-formats {
+        display: none;
+    }
+    .p-editor-toolbar.ql-snow {
+        border-top: 1px solid #dee2e6;
+    }
+    .ql-container {
+        height: unset;
+    }
+}
