@@ -248,18 +248,13 @@
             class="control-input-text-worksheet"
             [ngClass]="{'required':isModeEdit}"
           >
-            <p-editor
-              *ngIf="isModeEdit"
-              [(ngModel)]="aboutme"
-              placeholder="Напишите о себе"
-              class="input-about-me"
-            />
-            <div *ngIf="isModeView">
-              <label>
-                <strong>О себе</strong>
-              </label>
-            </div>
-            <span *ngIf="isModeView" class="white-space" [innerHTML]="profileInfo$.value.aboutme"></span>
+          <p-editor
+            [(ngModel)]="isModeEdit ? aboutme : profileInfo$.value.aboutme"
+            placeholder="Напишите о себе"
+            [readonly]="isModeView"
+            class="input-about-me"
+            [ngClass]="{'headless-editor frameless' : isModeView}"
+          />
           </div>
         </div>
 

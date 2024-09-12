@@ -98,17 +98,12 @@
                                 <div>
                                   <strong>Описание вакансии</strong>
                                 </div>
-                                <div *ngIf="isEditMode; else blockFive">
-                                  <p-editor
-                                    placeholder="Описание вакансии"
-                                    [(ngModel)]="vacancyText"
-                                  />
-                                </div>
-                                <ng-template #blockFive>
-                                  <div>
-                                    <span class="white-space control-textarea-big-width" [innerHTML]="vacancyText"></span>
-                                  </div>
-                                </ng-template>
+                                <p-editor
+                                  placeholder="Описание вакансии"
+                                  [(ngModel)]="vacancyText"
+                                  [readonly]="!isEditMode"
+                                  [ngClass]="{'headless-editor frameless' : !isEditMode}"
+                                />
                               </div>
                           </div>
                         </div>
@@ -123,15 +118,12 @@
                               <div>
                                 <strong>Условия</strong>
                               </div>
-                              <div *ngIf="isEditMode">
-                                <p-editor
-                                  placeholder="Условия"
-                                  [(ngModel)]="conditions"
-                                />
-                              </div>
-                              <div *ngIf="!isEditMode">
-                                <span class="white-space control-textarea-big-width" [innerHTML]="conditions"></span>
-                              </div>
+                              <p-editor
+                                placeholder="Условия"
+                                [(ngModel)]="conditions"
+                                [readonly]="!isEditMode"
+                                [ngClass]="{'headless-editor frameless' : !isEditMode}"
+                              />
                             </div>
                         </div>
                       </div>
@@ -146,15 +138,12 @@
                               <div>
                                 <strong>Требования</strong>
                               </div>
-                              <div *ngIf="isEditMode">
-                                <p-editor
-                                  placeholder="Требования"
-                                  [(ngModel)]="demands"
-                                />
-                              </div>
-                              <div *ngIf="!isEditMode">
-                                <span class="white-space control-textarea-big-width" [innerHTML]="demands"></span>
-                              </div>
+                              <p-editor
+                                placeholder="Требования"
+                                [(ngModel)]="demands"
+                                [readonly]="!isEditMode"
+                                [ngClass]="{'headless-editor frameless' : !isEditMode}"
+                              />
                           </div>
                       </div>
                     </div>

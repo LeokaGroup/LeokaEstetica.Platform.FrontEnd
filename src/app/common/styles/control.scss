@@ -354,3 +354,14 @@
         height: unset;
     }
 }
+
+:host ::ng-deep .frameless {
+    .p-editor-toolbar.ql-snow,
+    .ql-snow {
+        border: none;
+    }
+    .ql-editor {
+        padding: 0;
+        font-size: 1rem;
+    }
+}

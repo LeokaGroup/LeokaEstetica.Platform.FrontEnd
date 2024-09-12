@@ -66,15 +66,12 @@
             <div>
               <strong>Описание проекта</strong>
             </div>
-            <div *ngIf="isEditMode; else blockThree">
-              <p-editor
-                placeholder="Описание проекта"
-                [(ngModel)]="selectedProject$.value.projectDetails"
-              />
-            </div>
-            <ng-template #blockThree>
-              <span class="white-space text-paragraph" [innerHTML]="selectedProject$.value.projectDetails"></span>
-            </ng-template>
+            <p-editor
+              placeholder="Описание проекта"
+              [(ngModel)]="selectedProject$.value.projectDetails"
+              [readonly]="!isEditMode"
+              [ngClass]="{'headless-editor frameless' : !isEditMode}"
+            />
           </div>
         </div>
 
@@ -136,15 +133,12 @@
             <div>
               <strong>Требования</strong>
             </div>
-            <div *ngIf="isEditMode">
-              <p-editor
-                placeholder="Требования проекта"
-                [(ngModel)]="selectedProject$.value.demands"
-              />
-            </div>
-            <div *ngIf="!isEditMode">
-              <span class="white-space text-paragraph" [innerHTML]="selectedProject$.value?.demands"></span>
-            </div>
+            <p-editor
+              placeholder="Требования проекта"
+              [(ngModel)]="selectedProject$.value.demands"
+              [readonly]="!isEditMode"
+              [ngClass]="{'headless-editor frameless' : !isEditMode}"
+            />
           </div>
         </div>
 
@@ -154,15 +148,12 @@
               <div>
                 <strong>Условия</strong>
               </div>
-              <div *ngIf="isEditMode">
-                <p-editor
-                  placeholder="Условия проекта"
-                  [(ngModel)]="selectedProject$.value.conditions"
-                />
-              </div>
-              <div *ngIf="!isEditMode">
-                <span class="white-space text-paragraph" [innerHTML]="selectedProject$.value?.conditions"></span>
-              </div>
+              <p-editor
+                placeholder="Условия проекта"
+                [(ngModel)]="selectedProject$.value.conditions"
+                [readonly]="!isEditMode"
+                [ngClass]="{'headless-editor frameless' : !isEditMode}"
+              />
             </div>
           </div>
         </div>

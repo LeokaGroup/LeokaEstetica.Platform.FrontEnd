@@ -293,10 +293,12 @@
 
       <p-inplace [style]="{'min-height':'30px'}" [active]="isActiveTaskDetails" (onActivate)="onActivateTaskDetails()">
         <ng-template pTemplate="display">
-          <span class="empty-task-details" *ngIf="taskDetails == null || taskDetails == ''">
-            Добавьте описание задачи, чтобы исполнителю было понятно, что нужно сделать в рамках задачи
-          </span>
-          <span class="task-name-title" [innerHTML]="taskDetails"></span>
+          <p-editor
+            placeholder="Добавьте описание задачи, чтобы исполнителю было понятно, что нужно сделать в рамках задачи"
+            [(ngModel)]="taskDetails"
+            [readonly]="true"
+            class="headless-editor frameless"
+          />
         </ng-template>
         <ng-template pTemplate="content">
           <p-editor
@@ -940,7 +942,11 @@
                              [active]="c.isActiveTaskComment"
                              (onActivate)="c.isActiveTaskComment = !c.isActiveTaskComment">
                     <ng-template pTemplate="display">
-                      <span class="task-name-title" [innerHTML]="c.comment"></span>
+                      <p-editor
+                        [(ngModel)]="c.comment"
+                        [readonly]="true"
+                        class="headless-editor frameless"
+                      />
                     </ng-template>
 
                     <ng-template pTemplate="content">
