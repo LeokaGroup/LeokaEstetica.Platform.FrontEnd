@@ -106,7 +106,7 @@
                                 </div>
                                 <ng-template #blockFive>
                                   <div>
-                                    <p class="white-space control-textarea-big-width">{{vacancyText}}</p>
+                                    <span class="white-space control-textarea-big-width" [innerHTML]="vacancyText"></span>
                                   </div>
                                 </ng-template>
                               </div>
@@ -130,7 +130,7 @@
                                 />
                               </div>
                               <div *ngIf="!isEditMode">
-                                <p class="white-space control-textarea-big-width">{{conditions}}</p>
+                                <span class="white-space control-textarea-big-width" [innerHTML]="conditions"></span>
                               </div>
                             </div>
                         </div>
@@ -153,7 +153,7 @@
                                 />
                               </div>
                               <div *ngIf="!isEditMode">
-                                <p class="white-space control-textarea-big-width">{{demands}}</p>
+                                <span class="white-space control-textarea-big-width" [innerHTML]="demands"></span>
                               </div>
                           </div>
                       </div>
