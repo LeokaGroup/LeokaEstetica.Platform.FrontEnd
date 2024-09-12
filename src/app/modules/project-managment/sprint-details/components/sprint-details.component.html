@@ -194,25 +194,17 @@
           <span class="empty-task-details" *ngIf="sprintDetails == null || sprintDetails == ''">
             Добавьте описание спринта, чтобы другим было понятно, что включает в себя данный спринт.
           </span>
-          <span class="task-name-title">{{sprintDetails}}</span>
+          <span class="task-name-title" [innerHtml]="sprintDetails"></span>
         </ng-template>
         <ng-template pTemplate="content">
-            <textarea input-control-worksheet
-                      rows="5"
-                      cols="100"
-                      pInputTextarea
-                      [autoResize]="true"
-                      autocomplete="new-password"
-                      placeholder="Описание спринта"
-                      [(ngModel)]="sprintDetails"
-                      class="input-about-me"
-                      value="{{sprintDetails}}">
-            </textarea>
-
+          <p-editor
+            placeholder="Описание спринта"
+            [(ngModel)]="sprintDetails"
+          />
           <div>
             <button pButton
                     pRipple
-                    icon="pi pi-times"
+                    icon="pi pi-check"
                     type="button"
                     label="Сохранить"
                     class="p-button-success p-button-text p-button-sm"
