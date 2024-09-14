@@ -332,3 +332,40 @@
         font-weight: 400;
     }
 }
+
+// p-editor height = toolbar(вариативно) + .ql-container
+:host ::ng-deep .ql-container {
+    height: 200px;
+}
+
+:host ::ng-deep .headless-editor {
+    .ql-toolbar {
+        height: 1px;
+        padding:0;
+        border: none;
+    }
+    .ql-formats {
+        display: none;
+    }
+    .p-editor-toolbar.ql-snow {
+        border-top: 1px solid #dee2e6;
+    }
+    .ql-container {
+        height: unset;
+    }
+}
+
+:host ::ng-deep .frameless {
+    .p-editor-toolbar.ql-snow,
+    .ql-snow {
+        border: none;
+    }
+    .ql-editor {
+        padding: 0;
+        font-size: 1rem;
+    }
+}
+
+:host ::ng-deep .p-inplace .p-inplace-display {
+    width: 100%;
+}

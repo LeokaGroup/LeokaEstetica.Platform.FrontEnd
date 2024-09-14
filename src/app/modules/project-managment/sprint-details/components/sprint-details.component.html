@@ -191,28 +191,22 @@
 
       <p-inplace [style]="{'min-height':'30px'}" [active]="isActiveSprintDetails" (onActivate)="onActivateSprintDetails()">
         <ng-template pTemplate="display">
-          <span class="empty-task-details" *ngIf="sprintDetails == null || sprintDetails == ''">
-            Добавьте описание спринта, чтобы другим было понятно, что включает в себя данный спринт.
-          </span>
-          <span class="task-name-title">{{sprintDetails}}</span>
+          <p-editor
+            placeholder="Добавьте описание спринта, чтобы другим было понятно, что включает в себя данный спринт."
+            [(ngModel)]="sprintDetails"
+            [readonly]="true"
+            class="headless-editor frameless"
+          />
         </ng-template>
         <ng-template pTemplate="content">
-            <textarea input-control-worksheet
-                      rows="5"
-                      cols="100"
-                      pInputTextarea
-                      [autoResize]="true"
-                      autocomplete="new-password"
-                      placeholder="Описание спринта"
-                      [(ngModel)]="sprintDetails"
-                      class="input-about-me"
-                      value="{{sprintDetails}}">
-            </textarea>
-
+          <p-editor
+            placeholder="Описание спринта"
+            [(ngModel)]="sprintDetails"
+          />
           <div>
             <button pButton
                     pRipple
-                    icon="pi pi-times"
+                    icon="pi pi-check"
                     type="button"
                     label="Сохранить"
                     class="p-button-success p-button-text p-button-sm"

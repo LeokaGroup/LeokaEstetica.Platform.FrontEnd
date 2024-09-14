@@ -244,27 +244,18 @@
     <div class="worksheet-panel space-top">
       <p-panel header="О себе" [toggleable]="true">
         <div class="d-flex worksheet-line">
-            <div
-              class="control-input-text-worksheet"
-              [ngClass]="{'required':isModeEdit}"
-            >
-                <textarea input-control-worksheet
-                            rows="5"
-                            cols="100"
-                            pInputTextarea
-                            [autoResize]="true"
-                            autocomplete="new-password"
-                            placeholder="Напишите о себе"
-                            [(ngModel)]="aboutme"
-                            *ngIf="isModeEdit"
-                            class="input-about-me control-textarea-big-width"></textarea>
-                <div *ngIf="isModeView">
-                  <label>
-                    <strong>О себе</strong>
-                  </label>
-                </div>
-                <p *ngIf="isModeView" class="white-space">{{profileInfo$.value.aboutme}}</p>
-            </div>
+          <div
+            class="control-input-text-worksheet"
+            [ngClass]="{'required':isModeEdit}"
+          >
+          <p-editor
+            [(ngModel)]="isModeEdit ? aboutme : profileInfo$.value.aboutme"
+            placeholder="Напишите о себе"
+            [readonly]="isModeView"
+            class="input-about-me"
+            [ngClass]="{'headless-editor frameless' : isModeView}"
+          />
+          </div>
         </div>
 
         <div class="d-flex worksheet-line">
