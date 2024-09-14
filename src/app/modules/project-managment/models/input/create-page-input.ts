@@ -15,5 +15,10 @@ export class CreateWikiPageInput {
   /**
    * Id дерева.
    */
-  wikiTreeId: number = 0;
+  wikiTreeId?: number | null;
+
+  /**
+   * Id проекта.
+   */
+  projectId: number = 0;
 }

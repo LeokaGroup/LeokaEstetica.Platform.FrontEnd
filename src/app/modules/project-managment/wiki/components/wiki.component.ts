@@ -244,7 +244,7 @@ export class WikiComponent implements OnInit {
 
     let createWikiFolderInput = new CreateWikiFolderInput();
 
-    // Если не идет создание папки или страницы вне дерева.
+    // Если не идет создание папки вне дерева.
     if (this.selectedTreeItem) {
       createWikiFolderInput.wikiTreeId = this.isParentFolder && !this.isWithoutParentFolder ? this.selectedTreeItem.wikiTreeId : this.aTreeItems[0].wikiTreeId;
       createWikiFolderInput.parentId = this.isParentFolder && !this.isWithoutParentFolder ? this.selectedTreeItem.folderId : null;
@@ -322,9 +322,15 @@ export class WikiComponent implements OnInit {
     console.log("selectedTreeItem",this.selectedTreeItem);
 
     let createWikiPageInput = new CreateWikiPageInput();
-    createWikiPageInput.wikiTreeId = this.isParentFolder && !this.isWithoutParentFolder ? this.selectedTreeItem.wikiTreeId : this.aTreeItems[0].wikiTreeId;
-    createWikiPageInput.parentId = this.selectedTreeItem.folderId;
+
+    // Если не идет создание страницы вне дерева.
+    if (this.selectedTreeItem) {
+      createWikiPageInput.wikiTreeId = this.isParentFolder && !this.isWithoutParentFolder ? this.selectedTreeItem.wikiTreeId : this.aTreeItems[0].wikiTreeId;
+      createWikiPageInput.parentId = this.selectedTreeItem.folderId;
+    }
+
     createWikiPageInput.pageName = this.selectedFolderPageName;
+    createWikiPageInput.projectId = +this.projectId;
 
     (await this._projectManagmentService.createPageAsync(createWikiPageInput))
       .subscribe(async _ => {
