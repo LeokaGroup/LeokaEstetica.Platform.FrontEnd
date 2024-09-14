@@ -369,3 +369,10 @@
 :host ::ng-deep .p-inplace .p-inplace-display {
     width: 100%;
 }
+
+:host ::ng-deep .p-editor-toolbar {
+    .ql-clean,
+    .ql-image {
+        display: none;
+    }
+}
