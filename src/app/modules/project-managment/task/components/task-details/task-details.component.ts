@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, NavigationExtras, Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { catchError, firstValueFrom, forkJoin, tap } from "rxjs";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
 import { ChangeTaskDetailsInput } from "../../models/input/change-task-details-input";
@@ -57,7 +57,6 @@ export class TaskDetailsComponent implements OnInit {
     public readonly includeEpic$ = this._projectManagmentService.includeEpic$;
     public readonly sprintTask$ = this._projectManagmentService.sprintTask$;
     public readonly epicTasks$ = this._projectManagmentService.epicTasks$;
-    readonly companyId = this._projectManagmentService.companyId;
 
     projectId: any;
     projectTaskId: any;
@@ -75,6 +74,7 @@ export class TaskDetailsComponent implements OnInit {
     isVisibleCreateTaskLink: boolean = false;
     selectedLinkType: any;
     selectedTaskLink: any;
+    companyId: number = 0;
 
   // TODO: Перенести все это на бэк.
     aAvailableActions: any[] = [
@@ -195,6 +195,7 @@ export class TaskDetailsComponent implements OnInit {
 
         this.projectId = params["projectId"];
         this.projectTaskId = params["taskId"];
+        this.companyId = params["companyId"];
       });
   };
 
@@ -898,7 +899,7 @@ export class TaskDetailsComponent implements OnInit {
     this.allEpicTasks = [...this.allEpicTasks, this.selectedTask];
     this.toAddEpicTasks = [...this.toAddEpicTasks, this.selectedTask];
     const { taskTypeName } = this.selectedTask;
-    this._messageService.add({ 
+    this._messageService.add({
       severity: 'warn',
       summary: "Внимание!",
       detail: `${taskTypeName} успешно добавлена в эпик. Для применения изменений нужно сохранить`,
@@ -967,7 +968,7 @@ export class TaskDetailsComponent implements OnInit {
    * Функция получает роли пользователя.
    */
   private async getUserRolesAsync() {
-    (await this._projectManagmentService.getUserRolesAsync(+this.projectId, +this._projectManagmentService.companyId))
+    (await this._projectManagmentService.getUserRolesAsync(+this.projectId, +this.companyId))
       .subscribe((response: any) => {
         console.log("Роли пользователя", response);
         this.aUserRoles = response;
