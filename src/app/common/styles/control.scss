@@ -365,3 +365,7 @@
         font-size: 1rem;
     }
 }
+
+:host ::ng-deep .p-inplace .p-inplace-display {
+    width: 100%;
+}
