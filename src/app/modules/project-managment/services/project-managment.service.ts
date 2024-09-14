@@ -1119,7 +1119,7 @@ export class ProjectManagmentService {
    * @param createWikiFolderInput - Входная модель.
    */
   public async createFolderAsync(createWikiFolderInput: CreateWikiFolderInput) {
-    return await this._http.post(this.apiUrl + `/project-management-wiki/tree-item-folder-page`, createWikiFolderInput).pipe(
+    return await this._http.post(this.apiUrl + `/project-management-wiki/tree-item-folder`, createWikiFolderInput).pipe(
       tap(_ => console.log("Папка успешно создана."))
     );
   };
