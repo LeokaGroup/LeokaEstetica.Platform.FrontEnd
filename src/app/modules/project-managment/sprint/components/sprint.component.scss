@@ -175,3 +175,8 @@ tr > td.table-data {
 .sprints-table {
   padding: 1rem;
 }
+
+// fix tabview border
+::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  margin: 0 0 -1px 0;
+}
