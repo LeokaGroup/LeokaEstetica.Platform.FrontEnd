@@ -4,7 +4,8 @@
 @use "/src/app/common/styles/styles.scss";
 
 .profile-left-menu {
-    width: 240px;
+  width: 240px;
+  border: 1px solid lightgray;
 }
 
 :host ::ng-deep .profile-left-menu .p-panelmenu {
@@ -47,7 +48,7 @@
       padding-top: 12px;
       padding-bottom: 9px;
       position: relative;
-  
+
       .p-icon-wrapper {
         position: absolute;
         right: 1px;
@@ -66,14 +67,14 @@
   }
 }
 
-.block-profile {    
+.block-profile {
     position: absolute;
 }
 
 // Медиа-запросы.
 /* xs (<=543px) */
 @media (max-width: 575px) {
-  
+
 }
 
 /* sm (>=576 и <=767) */
