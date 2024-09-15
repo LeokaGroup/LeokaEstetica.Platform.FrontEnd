@@ -31,6 +31,8 @@ export class WikiComponent implements OnInit {
   public readonly wikiContextMenu$ = this._projectManagmentService.wikiContextMenu$;
   public readonly removeFolderResponse$ = this._projectManagmentService.removeFolderResponse$;
 
+  folderState = new Map();
+  folderIdCreated:number = 0;
   projectId: number = 0;
   aTreeItems: any[] = [];
   isSelectedFolder: boolean = false;
@@ -69,13 +71,59 @@ export class WikiComponent implements OnInit {
   };
 
   /**
+   * Функция сохранения/установки состояния открытости папок.
+   * @param node узел дерева
+   * @param mode режим save - сохранение, restore - установка
+   */
+  private treeFolderState(node: any, mode: 'save'|'restore') {
+    if (!node.isPage) {
+      if (mode === 'save') {
+        this.folderState.set(node.folderId, node.expanded)
+      } else {
+        node.expanded = this.folderState.has(node.folderId) ? this.folderState.get(node.folderId)
+                                                            : false;
+      }
+    }
+      
+    if (node.children) {
+      node.children.forEach((childNode:any) => {
+        this.treeFolderState(childNode, mode);
+      });
+    }
+  }
+
+  /**
    * Функция получает дерево.
    */
   private async getTreeAsync() {
     (await this._projectManagmentService.getWikiTreeItemsAsync(this.projectId))
       .subscribe(_ => {
+        // сохранение текущего состояния папок
+        this.folderState = new Map();
+        this.aTreeItems.forEach((e:any) => {
+          this.treeFolderState(e, 'save');
+        });
+        // установка состояния папки в откртое для родителя только что созданной папки/страницы
+        if (this.folderIdCreated) {
+          this.folderState.set(this.folderIdCreated, true);
+        }
+
         console.log("Дерево: ", this.wikiTreeItems$.value);
-        this.aTreeItems = this.wikiTreeItems$.value;
+        let tempTree = this.wikiTreeItems$.value;
+        tempTree = tempTree.map((e:any) => {
+          if (!e.isPage) {
+            if (this.folderState.size) {
+              // установка сохраненного состояния папки для полученной с бэка
+              this.treeFolderState(e, 'restore');
+            } else {
+              // установка первичного открытого состояния папок верхнего уровня 
+              e.expanded = true;
+            }
+          }
+          return e;
+        });
+        this.aTreeItems = tempTree;
+        this.folderIdCreated = 0;
       });
   };
 
@@ -263,7 +311,7 @@ export class WikiComponent implements OnInit {
               this.isVisibleContextMenuAction = false;
               this.isActiveFolderPageName = false;
               this.isCreateFolder = false;
-
+              this.folderIdCreated = createWikiFolderInput.parentId ?? 0;
               await this.getTreeAsync();
             });
         }
@@ -338,6 +386,7 @@ export class WikiComponent implements OnInit {
         this.isVisibleContextMenuAction = false;
         this.isActiveFolderPageName = false;
         this.isCreateFolderPage = false;
+        this.folderIdCreated = createWikiPageInput.parentId ?? 0;
 
         await this.getTreeAsync();
       });
