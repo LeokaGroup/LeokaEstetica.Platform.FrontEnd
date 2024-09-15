@@ -3,6 +3,14 @@
   src: url('/assets/fonts/Montserrat/static/Montserrat-Regular.ttf');
 }
 
+// Same as Regular_16_140, need to rename in component first
+@mixin Paragraph1 {
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22px;
+}
+
 @mixin Regular_16_140 {
   font-family: Montserrat;
   font-size: 16px;
