@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, ElementRef, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ProjectManagmentService} from "../../services/project-managment.service";
 import {UpdateFolderNameInput} from "../../models/input/update-folder-name-input";
@@ -22,7 +22,9 @@ export class WikiComponent implements OnInit {
   constructor(private readonly _router: Router,
               private readonly _activatedRoute: ActivatedRoute,
               private readonly _projectManagmentService: ProjectManagmentService,
-              private readonly _messageService: MessageService) {
+              private readonly _messageService: MessageService,
+              private elementRef: ElementRef,
+            ) {
   }
 
   public readonly wikiTreeItems$ = this._projectManagmentService.wikiTreeItems$;
@@ -69,6 +71,12 @@ export class WikiComponent implements OnInit {
         }
       });
   };
+
+  ngAfterViewInit() {
+    // Патч сообщения о пустом дереве - primeng не поддерживает теги в сообщении
+    const element = (<HTMLElement>this.elementRef.nativeElement).querySelector('.p-tree-empty-message');
+    if (element) element.innerHTML = 'Нет папок или страниц.<br />Добавьте первую папку или страницу.';
+  }
 
   /**
    * Функция сохранения/установки состояния открытости папок.
