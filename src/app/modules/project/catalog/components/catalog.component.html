@@ -10,50 +10,41 @@
       <span class="projects-count">Все проекты ({{rowsCount}})</span>
       <div class="filtres-wrapper">
         <div>
-          <p-dropdown [options]="vacancyOptions"
+          <p-multiSelect [options]="vacancyOptions"
                       [(ngModel)]="isAnyVacancies"
                       placeholder="Вакансии"
+                      [showHeader]="false"
                       styleClass="vacancy-filter"
-                      (onChange)="onLoadCatalogProjectsAsync()">
-            <ng-template let-vacancy pTemplate="item">
-              <div class="d-flex align-items-center gap-2 cursor-pointer">
-                <input class="dropdown-radio cursor-pointer" type="radio" [checked]="isAnyVacancies === vacancy.value">
-                <label class="cursor-pointer">{{ vacancy.label }}</label>
-              </div>
-            </ng-template>
-          </p-dropdown>
+                      (onChange)="onGetCatalogProjectsAsync($event)"
+                      selectedItemsLabel="Всего выбрано: {0}"
+                      [maxSelectedLabels]="1">
+            </p-multiSelect>
         </div>
         <div>
-          <p-dropdown
+          <p-multiSelect
             [options]="dateOptions"
             [(ngModel)]="selectedDate"
-            placeholder="Дата"
+            placeholder="Сортировка"
+            [showHeader]="false"
             styleClass="date-filter"
-            (onChange)="onLoadCatalogProjectsAsync()"
+            (onChange)="onGetCatalogProjectsAsync($event)"
+            selectedItemsLabel="Всего выбрано: {0}"
+            [maxSelectedLabels]="1"
           >
-            <ng-template let-date pTemplate="item">
-              <div class="d-flex align-items-center gap-2">
-                <input class="dropdown-radio cursor-pointer" type="radio" [checked]="selectedDate === date.value">
-                <label class="cursor-pointer">{{ date.label }}</label>
-              </div>
-            </ng-template>
-          </p-dropdown>
+          </p-multiSelect>
         </div>
         <div>
-          <p-dropdown
+          <p-multiSelect
             [options]="stageOptions"
             [(ngModel)]="selectedStage"
+            [showHeader]="false"
             placeholder="Стадия"
             styleClass="stage-filter"
-            (onChange)="onLoadCatalogProjectsAsync()"
+            (onChange)="onGetCatalogProjectsAsync($event)"
+            selectedItemsLabel="Всего выбрано: {0}"
+            [maxSelectedLabels]="1"
           >
-            <ng-template let-stage pTemplate="item">
-              <div class="d-flex align-items-center gap-2">
-                <input class="dropdown-radio cursor-pointer" type="radio" [checked]="selectedStage === stage.value">
-                <label class="cursor-pointer">{{ stage.label }}</label>
-              </div>
-            </ng-template>
-          </p-dropdown>
+          </p-multiSelect>
         </div>
       </div>
     </div>
@@ -85,7 +76,7 @@
     <div>
       <p-paginator [rows]="20"
                   [totalRecords]="rowsCount"
-                  (onPageChange)="onGetProjectsPaginationAsync($event)"
+                  (onPageChange)="onGetCatalogProjectsAsync($event)"
                   *ngIf="rowsCount > 0">
       </p-paginator>
     </div>

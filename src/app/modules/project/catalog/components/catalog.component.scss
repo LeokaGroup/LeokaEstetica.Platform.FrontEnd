@@ -18,7 +18,7 @@
   margin-right: 32px;
 }
 
-::ng-deep .p-dropdown {
+::ng-deep .p-multiselect {
   display: flex;
   align-items: center;
   width: 256px;
@@ -32,7 +32,7 @@
   border: 1px solid color.$project-primary-blue-color;
 }
 
-::ng-deep .p-dropdown-label {
+::ng-deep .p-multiselect-label {
   padding: 15px 20px;
   color: color.$project-text-black;
   font-family: Montserrat;
@@ -41,62 +41,45 @@
   line-height: 22.4px;
 }
 
-::ng-deep .p-dropdown-label::before {
+::ng-deep .p-multiselect-label::before {
   content: '\00a0 \00a0 \00a0 \00a0 \00a0 \00a0 \00a0 \00a0';
   background-size: 20px 20px;
   background-repeat: no-repeat;
 }
 
-::ng-deep .vacancy-filter .p-dropdown-label::before {
+::ng-deep .vacancy-filter .p-multiselect-label::before {
   background-image: url('../../../../../assets/images/project/file-search-02.svg');
 }
 
-::ng-deep .date-filter .p-dropdown-label::before {
+::ng-deep .date-filter .p-multiselect-label::before {
   background-image: url('../../../../../assets/images/project/calendar-minus-01.svg');
 }
 
-::ng-deep .stage-filter .p-dropdown-label::before {
+::ng-deep .stage-filter .p-multiselect-label::before {
   background-image: url('../../../../../assets/images/project/bar-line-chart.svg');
 }
 
-::ng-deep .p-dropdown-item {
+::ng-deep .p-multiselect-item {
   font-family: Montserrat;
   font-size: 16px;
   font-weight: 400;
   background-color: transparent;
 }
 
-::ng-deep .p-dropdown-item:hover {
+::ng-deep .p-multiselect-item:hover {
   color: color.$project-primary-blue-color;
   background-color: transparent;
 }
-::ng-deep .p-dropdown-item .p-focus{
+
+::ng-deep .p-multiselect-item .p-focus{
   color: color.$project-primary-blue-color;
 }
 
-::ng-deep .p-dropdown-panel {
+::ng-deep .p-multiselect-panel {
   border: 1px solid color.$project-stroke-nikel;
   border-radius: 8px;
   box-shadow: none;
   margin-top: 4px
-}
-
-::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
-  color: color.$project-primary-blue-color;
-}
-
-.dropdown-radio {
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  border: 1px solid color.$project-stroke-nikel;
-  border-radius: 50%;
-}
-
-.dropdown-radio:checked {
-  color: color.$project-primary-blue-color;
-  background-color: white;
-  border: 6px solid color.$project-primary-blue-color;
 }
 
 .projects-list {
@@ -176,11 +159,6 @@
     background-color: transparent;
   }
 }
-
-
-
-
-
 .question-btn {
   width: 178px;
   height: 44px;
