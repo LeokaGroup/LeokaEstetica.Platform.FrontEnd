@@ -136,8 +136,8 @@
         </button>
       </div>
 
-      <div 
-        class="col-lg-4 mt-3" 
+      <div
+        class="col-lg-4 mt-3"
         *ngIf="taskDetails$.value.taskTypeId == 1
             || taskDetails$.value.taskTypeId == 2
             || taskDetails$.value.taskTypeId == 3
@@ -851,7 +851,7 @@
                       class="p-button-danger p-button-sm p-button-text"
                       pTooltip="Исключить задачу из эпика"
                       tooltipPosition="bottom"
-                      (click)="onRemoveAddedTask(t.projectTaskId)">
+                      (click)="onRemoveEpicTaskAsync(t)">
               </button>
             </div>
           </td>

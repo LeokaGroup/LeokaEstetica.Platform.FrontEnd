@@ -1,4 +1,4 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, tap} from 'rxjs';
 import {API_URL} from 'src/app/core/core-urls/api-urls';
@@ -35,6 +35,7 @@ import { UpdateFolderPageDescriptionInput } from '../models/input/update-folder-
 import { CreateWikiFolderInput } from '../models/input/create-folder-input';
 import { Router } from '@angular/router';
 import {CreateWikiPageInput} from "../models/input/create-page-input";
+import {ExcludeTaskInput} from "../models/input/exclude-task-input";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -1194,6 +1195,16 @@ export class ProjectManagmentService {
   public async removeProjectTaskAsync(projectId: number, projectTaskId: string, taskType: string) {
     return await this._http.delete(this.apiUrl + `/project-management/task?projectId=${projectId}&projectTaskId=${projectTaskId}&taskType=${taskType}`).pipe(
       tap(_ => console.log("Задача успешно удалена."))
+    );
+  };
+
+  /**
+   * Функция удаляет задачу.
+   * @param excludeTaskInput - Входная модель.
+   */
+  public async removeEpicTasksAsync(excludeTaskInput: ExcludeTaskInput) {
+    return await this._http.patch(this.apiUrl + `/project-management/epics/epic-task`, excludeTaskInput).pipe(
+      tap(_ => console.log("Задачи успешно удалены из эпика."))
     );
   };
 }
