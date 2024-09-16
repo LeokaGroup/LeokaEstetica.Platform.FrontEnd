@@ -35,10 +35,7 @@
 ::ng-deep .p-multiselect-label {
   padding: 15px 20px;
   color: color.$project-text-black;
-  font-family: Montserrat;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 22.4px;
+  @include font.Regular_16_140();
 }
 
 ::ng-deep .p-multiselect-label::before {
@@ -48,21 +45,20 @@
 }
 
 ::ng-deep .vacancy-filter .p-multiselect-label::before {
-  background-image: url('../../../../../assets/images/project/file-search-02.svg');
+  background-image: url('/assets/images/project/file-search-02.svg');
 }
 
 ::ng-deep .date-filter .p-multiselect-label::before {
-  background-image: url('../../../../../assets/images/project/calendar-minus-01.svg');
+  background-image: url('/assets/images/project/calendar-minus-01.svg');
 }
 
 ::ng-deep .stage-filter .p-multiselect-label::before {
-  background-image: url('../../../../../assets/images/project/bar-line-chart.svg');
+  background-image: url('/assets/images/project/bar-line-chart.svg');
 }
 
 ::ng-deep .p-multiselect-item {
   font-family: Montserrat;
-  font-size: 16px;
-  font-weight: 400;
+  @include font.Regular_16_140();
   background-color: transparent;
 }
 
