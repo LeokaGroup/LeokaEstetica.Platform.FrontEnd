@@ -542,7 +542,7 @@
   <h3>{{knowledgeLanding$.value?.title}}</h3>
 
   <div class="faq-item">
-    <p-accordion>
+    <p-accordion expandIcon=" " collapseIcon="pi pi-times">
       @for (item of knowledgeLanding$.value.knowledgeLanding; track item) {
         <p-accordionTab>
           <ng-template pTemplate="header">
