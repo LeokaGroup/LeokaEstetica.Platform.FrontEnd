@@ -57,7 +57,6 @@
 }
 
 ::ng-deep .p-multiselect-item {
-  font-family: Montserrat;
   @include font.Regular_16_140();
   background-color: transparent;
 }
@@ -98,25 +97,20 @@
 
     .project-title {
       margin: 0;
-      @include font.Regular_20_120();
-      font-weight: 500;
+      @include font.Medium_20_120();
       color: color.$project-primary-blue-color;
       user-select: none;
       cursor: pointer;
     }
 
     .project-date {
-      font-family: Montserrat;
-      font-size: 14px;
-      line-height: 20px;
+      @include font.Paragraph_2();
       color: color.$project-text-bluish-grey
     }
 
     .project-description {
       margin: 0;
-      font-family: Montserrat;
-      font-size: 14px;
-      line-height: 20px;
+      @include font.Paragraph_2();
       color: color.$landing-text-dark-grey
     }
   }
@@ -124,8 +118,7 @@
   .btn {
     width: 178px;
     height: 44px;
-    @include font.Regular_16_140();
-    font-weight: 500;
+    @include font.Medium_16_140();
     border-radius: 8px;
   }
 
@@ -149,46 +142,9 @@
     border: none;
     margin-left: auto;
     cursor: pointer;
-    background-image: url(../../../../../assets/images/project/heart-rounded.svg);
+    background-image: url(/assets/images/project/heart-rounded.svg);
     background-size: contain;
     background-repeat: no-repeat;
     background-color: transparent;
   }
 }
-.question-btn {
-  width: 178px;
-  height: 44px;
-  border: 1px solid color.$project-primary-blue-color;
-  border-radius: 8px;
-  background-color: white;
-  color: color.$project-primary-blue-color;
-  @include font.Regular_16_140();
-  font-weight: 500;
-}
-
-.respond-btn {
-  width: 178px;
-  height: 44px;
-  border: 1px solid color.$project-primary-blue-color;
-  border-radius: 8px;
-  background-color: color.$project-primary-blue-color;
-  color: white;
-  @include font.Regular_16_140();
-  font-weight: 500;
-}
-
-.like-btn {
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  border: none;
-  margin-left: auto;
-  cursor: pointer;
-  background-image: url(../../../../../assets/images/project/heart-rounded.svg);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-color: transparent;
-}
-
-
-
