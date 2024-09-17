@@ -19,6 +19,7 @@ import {UpdateTaskSprintInput} from "../../models/input/update-task-sprint-input
 import {SearchAgileObjectTypeEnum} from "../../../../enums/search-agile-object-type-enum";
 import { TaskDetailTypeEnum } from "src/app/modules/enums/task-detail-type";
 import { MessageService } from "primeng/api";
+import {ExcludeTaskInput} from "../../../models/input/exclude-task-input";
 
 @Component({
     selector: "",
@@ -166,6 +167,7 @@ export class TaskDetailsComponent implements OnInit {
     isNotRoles: boolean = false;
     aUserRoles: any[] = [];
     isNotRolesAccessModal: boolean = false;
+    aRemovedTasks: any[] = [];
 
   public async ngOnInit() {
     this.initData();
@@ -867,16 +869,37 @@ export class TaskDetailsComponent implements OnInit {
   };
 
   /**
-   * Функция удаляет задачу из таблицы ТОЛЬКО на фронте.
+   * Функция исключает задачу из эпика.
    * @param projectTaskId - Id задачи в рамках проекта.
    */
-  public onRemoveAddedTask(projectTaskId: number) {
+  public async onRemoveEpicTaskAsync(event: any) {
+    let projectTaskId = event.projectTaskId;
+
+    // Не дергаем бэк лишний раз, если не добавляли задачи для удаления.
     if (projectTaskId == 0) {
       return;
     }
 
     this.toAddEpicTasks = [...this.toAddEpicTasks.filter(v => v.projectTaskId != projectTaskId)];
+    this.aRemovedTasks.push(this.allEpicTasks.filter(v => v.projectTaskId == projectTaskId));
     this.allEpicTasks = [...this.allEpicTasks.filter(v => v.projectTaskId != projectTaskId)];
+
+    if (this.aRemovedTasks.length == 0) {
+      return;
+    }
+
+    let excludeTaskInput = new ExcludeTaskInput();
+    excludeTaskInput.epicSprintId = this.taskDetails$.value.projectTaskId;
+
+    this.aRemovedTasks.forEach((x: any) => {
+      excludeTaskInput.projectTaskIds.push(x[0].projectTaskId);
+    });
+
+    (await this._projectManagmentService.removeEpicTasksAsync(excludeTaskInput))
+      .subscribe(_ => {
+        // После удаления задач очищаем этот список.
+        this.aRemovedTasks = [];
+      });
   };
 
   /**
@@ -910,6 +933,10 @@ export class TaskDetailsComponent implements OnInit {
    * Функция добавляет задачи в эпик.
    */
   public async onIncludeEpicTaskAsync() {
+    // Не дергаем бэк лишний раз, если не добавляли задачи для включения их в эпик.
+    if (this.toAddEpicTasks.length == 0) {
+      return;
+    }
     let includeTaskEpicInput = new IncludeTaskEpicInput();
     includeTaskEpicInput.epicId = this.projectTaskId;
     includeTaskEpicInput.projectTaskIds = this.toAddEpicTasks.map(x => x.fullProjectTaskId);
