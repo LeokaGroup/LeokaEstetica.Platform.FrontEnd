@@ -1199,12 +1199,22 @@ export class ProjectManagmentService {
   };
 
   /**
-   * Функция удаляет задачу.
+   * Функция удаляет задачу и зэпика.
    * @param excludeTaskInput - Входная модель.
    */
   public async removeEpicTasksAsync(excludeTaskInput: ExcludeTaskInput) {
     return await this._http.patch(this.apiUrl + `/project-management/epics/epic-task`, excludeTaskInput).pipe(
       tap(_ => console.log("Задачи успешно удалены из эпика."))
+    );
+  };
+
+  /**
+   * Функция удаляет задачу из спринта.
+   * @param excludeTaskInput - Входная модель.
+   */
+  public async removeSprintTasksAsync(excludeTaskInput: ExcludeTaskInput) {
+    return await this._http.patch(this.apiUrl + `/project-management/sprints/sprint-task`, excludeTaskInput).pipe(
+      tap(_ => console.log("Задачи успешно удалены из спринта."))
     );
   };
 }

@@ -260,6 +260,7 @@
               <th>Статус</th>
               <th>Приоритет</th>
               <th>Исполнитель</th>
+              <th>Исключение из спринта</th>
             </tr>
           </ng-template>
 
@@ -294,6 +295,19 @@
                   {{sp.executor?.executorName}}
                 </div>
               </td>
+
+
+              <td>
+                <div class="cancel">
+                  <button pButton type="button"
+                          icon="pi pi-times"
+                          class="p-button-danger p-button-sm p-button-text"
+                          pTooltip="Исключить задачу из эпика"
+                          tooltipPosition="bottom"
+                          (click)="onRemoveSprintTaskAsync(sp)">
+                  </button>
+                </div>
+              </td>
             </tr>
           </ng-template>
 
@@ -301,7 +315,7 @@
             <tr>
               <td colspan="7">
                 <div>
-                  Нет данных
+                  Нет данных.
                 </div>
               </td>
             </tr>
