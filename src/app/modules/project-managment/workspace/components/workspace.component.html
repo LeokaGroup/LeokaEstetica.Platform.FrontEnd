@@ -13,21 +13,11 @@
   <div class="d-flex">
     <div class="col-lg-6 mt-3">
       <div>
-        <h3>Ваши компании</h3>
+        <h3>Ваши пространства</h3>
       </div>
 
       <div class="card">
-
-      </div>
-    </div>
-
-    <div class="col-lg-6 mt-3">
-      <div>
-        <h3>Вы состоите</h3>
-      </div>
-
-      <div class="card">
-        <p-dataView #dv [value]="workspaces$.value"
+        <p-dataView #dv [value]="workspaces$.value.userCompanyWorkSpaces"
                     [paginator]="isPaginator"
                     [rows]="10"
                     layout="list"
@@ -35,7 +25,46 @@
           <ng-template let-ws pTemplate="list">
             <div class="grid grid-nogutter">
               <div class="col-12 data-line" *ngFor="let w of ws">
-                <h5 class="workspace-project-name py-3 m-0" (click)="onRouteWorkSpaceAsync(w.projectId, w.companyId)">{{w.projectManagementName}}</h5>
+               <div>
+                 <div>
+                   <strong>Компания:</strong> {{w.companyName ?? 'Не задана'}}
+                 </div>
+
+                 <h5 class="workspace-project-name py-3 m-0" (click)="onRouteWorkSpaceAsync(w.projectId, w.companyId)">
+                    <strong>Проект:</strong> {{w.projectManagementName}}
+                 </h5>
+               </div>
+
+              </div>
+            </div>
+          </ng-template>
+        </p-dataView>
+      </div>
+    </div>
+
+    <div class="col-lg-6 mt-3">
+      <div>
+        <h3>Вы состоите в пространствах</h3>
+      </div>
+
+      <div class="card">
+        <p-dataView #dv [value]="workspaces$.value.otherCompanyWorkSpaces"
+                    [paginator]="isPaginator"
+                    [rows]="10"
+                    layout="list"
+                    emptyMessage="Проектов еще не создано...">
+          <ng-template let-ws pTemplate="list">
+            <div class="grid grid-nogutter">
+              <div class="col-12 data-line" *ngFor="let w of ws">
+                <div>
+                  <div>
+                    <strong>Компания:</strong> {{w.companyName ?? 'Не задана'}}
+                  </div>
+
+                  <h5 class="workspace-project-name py-3 m-0" (click)="onRouteWorkSpaceAsync(w.projectId, w.companyId)">
+                    <strong>Проект:</strong> {{w.projectManagementName}}
+                  </h5>
+                </div>
 
               </div>
             </div>
