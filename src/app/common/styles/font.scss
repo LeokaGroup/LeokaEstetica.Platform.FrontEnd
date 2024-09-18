@@ -31,3 +31,18 @@
   font-weight: 400;
   line-height: 16px;
 }
+
+@mixin Sub_title {
+  font-family: Montserrat;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+@mixin Main {
+  font-family: Montserrat;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 24px;
+}
+

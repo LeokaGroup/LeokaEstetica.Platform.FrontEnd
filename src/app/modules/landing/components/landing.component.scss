@@ -1,4 +1,6 @@
 @use "/src/app/common/styles/styles.scss";
+@use "/src/app/common/styles/color.scss";
+@use "/src/app/common/styles/font.scss";
 
 @font-face {
   font-family: "Montserrat Regular";
@@ -147,23 +149,50 @@
   }
 }
 
-.faq-item {
+::ng-deep .faq-item {
   margin: 0 12%;
+
+  .p-accordion-header-link {
+    align-items: start;
+    justify-content: space-between;
+  }
+  .p-accordion-toggle-icon {
+    color: color.$project-primary-blue-color;
+    margin-right: 0;
+    order: 2;
+  }
+  .p-accordion-header-text {
+    order: 1;
+  }
+  .faq-question-container {
+    order: 0;
+  }
+  .p-accordion-tab-active {
+    background-color: color.$color-blue-light-200;
+    border-radius: 8px;
+  }
+  .p-accordion .p-accordion-content,
+  .p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link,
+  .p-accordion .p-accordion-header .p-accordion-header-link {
+    border: none;
+    background: none;
+  }
+  .p-accordion-header-link {
+    padding: 20px;
+  }
+  .p-accordion-content {
+    padding: 0 20px 20px;
+  }
 }
 
 .faq-question-container {
-  font-size: 18px;
-  font-family: "Montserrat Regular";
-  font-weight: bold;
-  line-height: 25px;
-  color: #1A73E8;
+  @include font.Sub_title();
+  color: color.$project-primary-blue-color;
   cursor: pointer;
 }
 
 .text-content {
-  font-size: 16px;
-  font-family: "Montserrat Regular";
-  line-height: 25px;
+  @include font.Main();
 }
 
 .block {
