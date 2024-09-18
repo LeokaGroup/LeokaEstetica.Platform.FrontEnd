@@ -10,21 +10,39 @@
     <small>Пространство проекта создается автоматически. Для создания нового пространства проекта, Вам нужно создать проект</small>
   </div>
 
-  <div class="card">
-    <p-dataView #dv [value]="workspaces$.value"
-                [paginator]="isPaginator"
-                [rows]="10"
-                layout="list"
-                emptyMessage="Проектов еще не создано...">
-      <ng-template let-ws pTemplate="list">
-        <div class="grid grid-nogutter">
-          <div class="col-12 data-line" *ngFor="let w of ws">
-              <h5 class="workspace-project-name py-3 m-0" (click)="onRouteWorkSpaceAsync(w.projectId, w.companyId)">{{w.projectManagementName}}</h5>
+  <div class="d-flex">
+    <div class="col-lg-6 mt-3">
+      <div>
+        <h3>Ваши компании</h3>
+      </div>
 
-          </div>
-        </div>
-      </ng-template>
-    </p-dataView>
+      <div class="card">
+
+      </div>
+    </div>
+
+    <div class="col-lg-6 mt-3">
+      <div>
+        <h3>Вы состоите</h3>
+      </div>
+
+      <div class="card">
+        <p-dataView #dv [value]="workspaces$.value"
+                    [paginator]="isPaginator"
+                    [rows]="10"
+                    layout="list"
+                    emptyMessage="Проектов еще не создано...">
+          <ng-template let-ws pTemplate="list">
+            <div class="grid grid-nogutter">
+              <div class="col-12 data-line" *ngFor="let w of ws">
+                <h5 class="workspace-project-name py-3 m-0" (click)="onRouteWorkSpaceAsync(w.projectId, w.companyId)">{{w.projectManagementName}}</h5>
+
+              </div>
+            </div>
+          </ng-template>
+        </p-dataView>
+      </div>
+    </div>
   </div>
 </div>
 

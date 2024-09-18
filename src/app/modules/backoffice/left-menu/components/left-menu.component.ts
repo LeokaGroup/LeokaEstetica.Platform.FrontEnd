@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import {ActivatedRoute, Event as NavigationEvent, NavigationStart, Router} from "@angular/router";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { BackOfficeService } from "../../services/backoffice.service";
 
@@ -54,13 +54,16 @@ export class LeftMenuComponent implements OnInit {
     archivedProjectsSysNames: string = "ArchiveProjects";
     archivedVacanciesSysNames: string = "ArchiveVacancies";
     profileMessages: string = "Messages"
+    isShowLeftMenuConditional: boolean = true;
 
-    constructor(private readonly _backOfficeService: BackOfficeService,
-        private readonly _router: Router,
-        private readonly _redirectService: RedirectService) {
-    }
+  constructor(private readonly _backOfficeService: BackOfficeService,
+              private readonly _router: Router,
+              private readonly _redirectService: RedirectService,
+              private readonly _activatedRoute: ActivatedRoute) {
+  }
 
     public async ngOnInit() {
+      this.checkUrlParams();
         if (localStorage["m_t"] == "1") {
             await this.getProfileInfoAsync();
         }
@@ -69,6 +72,21 @@ export class LeftMenuComponent implements OnInit {
             await this.getVacancyInfoAsync();
         }
     };
+
+  private checkUrlParams() {
+    this._router.events
+      .subscribe(
+        (event: any) => {
+          if (event.url.includes("/user/signin") || event.url.includes("/user/signup")) {
+            debugger;
+            this.isShowLeftMenuConditional = false;
+          }
+
+          else {
+            this.isShowLeftMenuConditional = true;
+          }
+        });
+  };
 
     /**
      * Функция получает пункты меню профиля пользователя.

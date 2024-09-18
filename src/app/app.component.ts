@@ -26,7 +26,6 @@ export class AppComponent implements OnInit {
   public loading$ = this._networkService.loading$;
   public readonly checkUserCode$ = this._redisService.checkUserCode$;
 
-
   public isVisibleMenu: boolean = false;
   private _aVisibleProfileMenuRoutes: string[] = [
     "/profile/aboutme?mode=view",
