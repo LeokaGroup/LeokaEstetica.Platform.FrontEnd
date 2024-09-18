@@ -78,7 +78,6 @@ export class LeftMenuComponent implements OnInit {
       .subscribe(
         (event: any) => {
           if (event.url.includes("/user/signin") || event.url.includes("/user/signup")) {
-            debugger;
             this.isShowLeftMenuConditional = false;
           }
 
