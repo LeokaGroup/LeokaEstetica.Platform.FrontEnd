@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import {ActivatedRoute, Event as NavigationEvent, NavigationStart, Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { BackOfficeService } from "../../services/backoffice.service";
+import {ProjectManagmentService} from "../../../project-managment/services/project-managment.service";
 
 interface ProfileItem {
     url: string;
@@ -59,7 +60,8 @@ export class LeftMenuComponent implements OnInit {
   constructor(private readonly _backOfficeService: BackOfficeService,
               private readonly _router: Router,
               private readonly _redirectService: RedirectService,
-              private readonly _activatedRoute: ActivatedRoute) {
+              private readonly _activatedRoute: ActivatedRoute,
+              private readonly _projectManagmentService: ProjectManagmentService) {
   }
 
     public async ngOnInit() {
@@ -150,25 +152,39 @@ export class LeftMenuComponent implements OnInit {
 
                 // Роут на страницу создания проекта.
                 if (this.aCreateProjectsSysName.includes(this.sysName)) {
-                  this._router.navigate(["/profile/projects/create"]);
-                    // this._router.navigate(["/profile/projects/create"]).then(() => {
-                    //     this._redirectService.redirect("profile/projects/create");
-                    // });
+                  // Сначала вычисляем кол-во компаний пользователя.
+                  (await this._projectManagmentService.calculateUserCompanyAsync())
+                    // Если требуется действие от пользователя.
+                    .subscribe((response: any) => {
+                      if (response.isNeedUserAction) {
+                        // Если компаний 0 - то требуем создать сначала компанию.
+                        // Показываем соответствующую модалку.
+                        if (response.ifExistsAnyCompanies) {
+
+                        }
+
+                        // Если более 1, то требуем выбрать, к какой компании отнести проект.
+                        // Показываем соответствующую модалку.
+                        else if (response.ifExistsMultiCompanies) {
+
+                        }
+                      }
+
+                      else {
+                        this._router.navigate(["/profile/projects/create"]);
+                      }
+                    });
                 }
 
                 // Роут на страницу создания вакансии.
                 if (this.aCreateVacanciesSysName.includes(this.sysName)) {
                     this._router.navigate(["/vacancies/create"]);
-                  // this._router.navigate(["/vacancies/create"]).then(() => {
-                  //   this._redirectService.redirect("/vacancies/create");
-                  // });
                 }
 
                 // Роут на страницу списка вакансии.
                 if (this.aVacanciesSysName.includes(this.sysName)) {
                     this._router.navigate(["/vacancies/my"]);
                 }
-
 
                 // Роут на страницу создания вакансии.подписок
                 if (this.aSubscriptionsSysNames.includes(this.sysName)) {

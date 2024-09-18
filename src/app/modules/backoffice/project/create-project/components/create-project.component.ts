@@ -6,6 +6,7 @@ import {CreateProjectInput} from "../models/input/create-project-input";
 import {Router} from "@angular/router";
 import {ProjectService} from "src/app/modules/project/services/project.service";
 import {RedirectService} from "src/app/common/services/redirect.service";
+import {ProjectManagmentService} from "../../../../project-managment/services/project-managment.service";
 
 @Component({
   selector: "create-project",
@@ -28,12 +29,14 @@ export class CreateProjectComponent implements OnInit {
   demands: string = "";
   conditions: string = "";
   isCreateProject: boolean = false;
+  isNeedUserAction: boolean = false;
 
   constructor(private readonly _backofficeService: BackOfficeService,
               private readonly _messageService: MessageService,
               private readonly _router: Router,
               private readonly _projectService: ProjectService,
-              private readonly _redirectService: RedirectService) {
+              private readonly _redirectService: RedirectService,
+              private readonly _projectManagmentService: ProjectManagmentService) {
   }
 
   public async ngOnInit() {
@@ -68,7 +71,7 @@ export class CreateProjectComponent implements OnInit {
       Demands: this.demands,
       isPublic: this.public,
     };
-    
+
     this.isCreateProject = true;
 
     return createProjectInput;
@@ -79,32 +82,26 @@ export class CreateProjectComponent implements OnInit {
    * @returns Данные проекта.
    */
 
-  public async onCreateProjectAsync() {
-    let createProjectInput = this.createProjectModel();
+    public async onCreateProjectAsync() {
+      let createProjectInput = this.createProjectModel();
 
-    (await this._backofficeService.createProjectAsync(createProjectInput))
-      .subscribe((response: any) => {
+      (await this._backofficeService.createProjectAsync(createProjectInput))
+        .subscribe((response: any) => {
 
-        // this._messageService.add({
-        //   severity: this._signalrService.AllFeedObservable.value.notificationLevel,
-        //   summary: this._signalrService.AllFeedObservable.value.title,
-        //   detail: this._signalrService.AllFeedObservable.value.message
-        // });
-
-        if (this.projectData$.value.errors !== null && this.projectData$.value.errors.length > 0) {
-          response.errors.forEach((item: any) => {
-            this._messageService.add({severity: 'error', summary: "Что то не так", detail: item.errorMessage});
-          });
-        } else {
-          setTimeout(() => {
-            this._router.navigate(["/projects/my"])
-              .then(() => {
-                this._redirectService.redirect("projects/my");
-              });
-          }, 4000);
-        }
-      });
-  };
+          if (this.projectData$.value.errors !== null && this.projectData$.value.errors.length > 0) {
+            response.errors.forEach((item: any) => {
+              this._messageService.add({severity: 'error', summary: "Что то не так", detail: item.errorMessage});
+            });
+          } else {
+            setTimeout(() => {
+              this._router.navigate(["/projects/my"])
+                .then(() => {
+                  this._redirectService.redirect("projects/my");
+                });
+            }, 4000);
+          }
+        });
+    };
 
   /**
    * Функция получает список стадий проекта.

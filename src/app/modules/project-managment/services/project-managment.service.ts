@@ -1,4 +1,4 @@
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, tap} from 'rxjs';
 import {API_URL} from 'src/app/core/core-urls/api-urls';
@@ -98,6 +98,7 @@ export class ProjectManagmentService {
     public removeFolderResponse$ = new BehaviorSubject<any>(null);
     public projectInvites$ = new BehaviorSubject<any>(null)
     public epicStatuses$ = new BehaviorSubject<any>(null);
+    public calculateUserCompanies = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
     public companyId: number = 0;
@@ -1215,6 +1216,15 @@ export class ProjectManagmentService {
   public async removeSprintTasksAsync(excludeTaskInput: ExcludeTaskInput) {
     return await this._http.patch(this.apiUrl + `/project-management/sprints/sprint-task`, excludeTaskInput).pipe(
       tap(_ => console.log("Задачи успешно удалены из спринта."))
+    );
+  };
+
+  /**
+   * Функция вычисляет кол-во компаний пользователя.
+   */
+  public async calculateUserCompanyAsync() {
+    return await this._http.get(this.apiUrl + `/project-management/companies/calculate-user-company`).pipe(
+      tap(data => this.calculateUserCompanies.next(data))
     );
   };
 }
