@@ -189,9 +189,6 @@ export class SpaceComponent implements OnInit {
               let byteArray = new Uint8Array(byteNumbers);
               let blob = new Blob([byteArray], {type: "application/octet-stream"});
               let href = URL.createObjectURL(blob);
-              if (p2.executor.avatar == null) {
-                debugger;
-              }
               p2.executor.avatar.ava = this._domSanitizer.bypassSecurityTrustUrl(href);
             }
           });
