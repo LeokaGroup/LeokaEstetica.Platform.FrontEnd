@@ -94,10 +94,7 @@ export class CreateProjectComponent implements OnInit {
             });
           } else {
             setTimeout(() => {
-              this._router.navigate(["/projects/my"])
-                .then(() => {
-                  this._redirectService.redirect("projects/my");
-                });
+              this._router.navigate(["/projects/my"]);
             }, 4000);
           }
         });

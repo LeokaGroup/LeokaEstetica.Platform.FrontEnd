@@ -65,9 +65,7 @@ export class SpaceComponent implements OnInit {
             label: 'Выйти',
             command: () => {
                 localStorage.clear();
-                this._router.navigate(["/user/signin"]).then(() => {
-                    this._redirectService.redirect("user/signin");
-                });
+                this._router.navigate(["/user/signin"]);
             }
         }
     ];
