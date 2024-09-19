@@ -56,6 +56,8 @@ export class LeftMenuComponent implements OnInit {
     archivedVacanciesSysNames: string = "ArchiveVacancies";
     profileMessages: string = "Messages"
     isShowLeftMenuConditional: boolean = true;
+    isCreateCompany: boolean = false;
+    isSelectCompany: boolean = false;
 
   constructor(private readonly _backOfficeService: BackOfficeService,
               private readonly _router: Router,
@@ -123,7 +125,7 @@ export class LeftMenuComponent implements OnInit {
         event.preventDefault();
 
         (await this._backOfficeService.selectProfileMenuAsync(text))
-            .subscribe(_ => {
+            .subscribe(async (_: any) => {
                 console.log("Выбрали меню: ", this.selectMenu$.value.sysName);
                 this.sysName = this.selectMenu$.value.sysName;
 
@@ -159,14 +161,14 @@ export class LeftMenuComponent implements OnInit {
                       if (response.isNeedUserAction) {
                         // Если компаний 0 - то требуем создать сначала компанию.
                         // Показываем соответствующую модалку.
-                        if (response.ifExistsAnyCompanies) {
-
+                        if (!response.ifExistsAnyCompanies && response.ifExistsAnyCompanies) {
+                          this.isCreateCompany = true;
                         }
 
                         // Если более 1, то требуем выбрать, к какой компании отнести проект.
                         // Показываем соответствующую модалку.
-                        else if (response.ifExistsMultiCompanies) {
-
+                        else if (response.ifExistsMultiCompanies && !response.ifExistsAnyCompanies) {
+                          this.isSelectCompany = true;
                         }
                       }
 

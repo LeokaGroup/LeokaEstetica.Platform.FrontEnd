@@ -7,4 +7,46 @@
   <div class="">
 
   </div>
+
+  <!-- Диалог необходимости создания компании. -->
+  <p-dialog header="Создайте вашу компанию"
+            [(visible)]="isCreateCompany"
+            [breakpoints]="{'960px': '75vw'}"
+            [style]="{width: '50vw'}"
+            [draggable]="false"
+            [resizable]="false">
+    <p>У вас не создано ни одной компании. Для создания проекта, сначала нужно создать компанию.</p>
+    <ng-template pTemplate="footer">
+      <p-button (click)="isCreateCompany=false"
+                label="Отменить"
+                styleClass="p-button-text p-button-danger">
+
+      </p-button>
+
+      <p-button label="К созданию компании"
+                styleClass="p-button-text p-button-success">
+      </p-button>
+    </ng-template>
+  </p-dialog>
+
+  <!-- Диалог необходимости выбора компании. -->
+  <p-dialog header="Выберите компанию"
+            [(visible)]="isSelectCompany"
+            [breakpoints]="{'960px': '75vw'}"
+            [style]="{width: '50vw'}"
+            [draggable]="false"
+            [resizable]="false">
+    <p>У вас создано более одной компании. Для создания проекта, пожалуйста, выберите к какой компании будет относиться новый проект.</p>
+    <ng-template pTemplate="footer">
+      <p-button (click)="isSelectCompany=false"
+                label="Отменить"
+                styleClass="p-button-text p-button-danger">
+
+      </p-button>
+
+      <p-button label="К созданию проекта"
+                styleClass="p-button-text p-button-success">
+      </p-button>
+    </ng-template>
+  </p-dialog>
 </div>
