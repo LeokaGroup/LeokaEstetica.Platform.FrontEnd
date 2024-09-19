@@ -249,7 +249,7 @@ export class WikiComponent implements OnInit {
     let _this = this; // Важно для сохранения контекста, внутри command он теряется.
 
     (await _this._projectManagmentService.getContextMenuAsync(e.projectId > 0 ? e.projectId : _this.projectId , e.pageId > 0 ? e.pageId : null))
-      .subscribe(_ => {
+      .subscribe(async _ => {
         _this.wikiContextMenu$.value.forEach((x: any) => {
           x.command = async function (e: any) {
             console.log(e);
