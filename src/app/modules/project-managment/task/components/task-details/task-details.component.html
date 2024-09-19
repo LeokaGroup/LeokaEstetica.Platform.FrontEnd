@@ -933,7 +933,8 @@
     <div class="col-lg-8">
       <p-tabView>
         <p-tabPanel header="Комментарии">
-          <div *ngFor="let c of taskComments$.value">
+          @for (c of taskComments$.value; track c.commentId) {
+          <div>
             <div>&nbsp;</div>
 
             <p-panel header="Добавлено: {{c.userName}}">
@@ -944,6 +945,7 @@
                              (onActivate)="c.isActiveTaskComment = !c.isActiveTaskComment">
                     <ng-template pTemplate="display">
                       <p-editor
+                        name="c.commentId"
                         [(ngModel)]="c.comment"
                         [readonly]="true"
                         class="headless-editor frameless"
@@ -952,6 +954,7 @@
 
                     <ng-template pTemplate="content">
                       <p-editor
+                        name="e{c.commentId}"
                         placeholder="Текст комментария"
                         [(ngModel)]="c.comment"
                       />
@@ -989,24 +992,28 @@
               </div>
             </p-panel>
           </div>
-
+          }
           <!-- Оставить комментарий. -->
           <div class="mt-3">
             <p-card header="Оставить комментарий" [style]="{width: '100%'}">
               <div>
                 <p-editor
+                  name="comment"
+                  (onInit)="onCommentInit($event)"
                   placeholder="Текст комментария"
                   [(ngModel)]="comment"
+                  (onTextChange)="onCommentChange($event)"
                 />
               </div>
 
               <div class="control-comment mt-1">
-                <p-button icon="pi pi-arrow-up-right"
+                <p-button *ngIf="isCommentExist"
+                          icon="pi pi-arrow-up-right"
                           (click)="onCreateTaskCommentAsync()"
                           label="Отправить"
                           styleClass="p-button-success p-button-text"
                 />
-              </div>
+              </div>            
             </p-card>
           </div>
         </p-tabPanel>
