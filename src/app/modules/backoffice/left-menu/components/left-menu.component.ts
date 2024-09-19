@@ -22,6 +22,7 @@ export class LeftMenuComponent implements OnInit {
     public readonly profileItems$ = this._backOfficeService.profileItems$;
     public readonly vacancyItems$ = this._backOfficeService.vacancyItems$;
     public readonly selectMenu$ = this._backOfficeService.selectMenu$;
+    public readonly userCompanies$ = this._projectManagmentService.userCompanies$;
 
     sysName: string = "";
     aViewSysNames: string[] = [
@@ -58,6 +59,8 @@ export class LeftMenuComponent implements OnInit {
     isShowLeftMenuConditional: boolean = true;
     isCreateCompany: boolean = false;
     isSelectCompany: boolean = false;
+    aUserCompanies: any[] = [];
+    selectedCompany: any;
 
   constructor(private readonly _backOfficeService: BackOfficeService,
               private readonly _router: Router,
@@ -157,7 +160,7 @@ export class LeftMenuComponent implements OnInit {
                   // Сначала вычисляем кол-во компаний пользователя.
                   (await this._projectManagmentService.calculateUserCompanyAsync())
                     // Если требуется действие от пользователя.
-                    .subscribe((response: any) => {
+                    .subscribe(async (response: any) => {
                       if (response.isNeedUserAction) {
                         // Если компаний 0 - то требуем создать сначала компанию.
                         // Показываем соответствующую модалку.
@@ -169,6 +172,10 @@ export class LeftMenuComponent implements OnInit {
                         // Показываем соответствующую модалку.
                         else if (response.ifExistsMultiCompanies && !response.ifExistsAnyCompanies) {
                           this.isSelectCompany = true;
+                          (await this._projectManagmentService.getUserCompaniesAsync())
+                            .subscribe((_: any) => {
+                              this.aUserCompanies = this.userCompanies$.value;
+                            });
                         }
                       }
 
@@ -213,5 +220,15 @@ export class LeftMenuComponent implements OnInit {
                     this._router.navigate(["/profile/messages"]);
                 }
             });
+    };
+
+    public onRouteCreateProject() {
+      let companyId = this.selectedCompany.companyId;
+
+      this._router.navigate(["/profile/projects/create"], {
+        queryParams: {
+          companyId
+        }
+      });
     };
 }

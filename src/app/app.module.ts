@@ -50,6 +50,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import {RedisService} from "./modules/redis/services/redis.service";
+import {DropdownModule} from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
@@ -91,7 +92,8 @@ import {RedisService} from "./modules/redis/services/redis.service";
     ButtonModule,
     AutoCompleteModule,
     CheckboxModule,
-    DialogModule
+    DialogModule,
+    DropdownModule
   ],
 
   providers: [

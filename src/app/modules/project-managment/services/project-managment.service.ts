@@ -99,6 +99,7 @@ export class ProjectManagmentService {
     public projectInvites$ = new BehaviorSubject<any>(null)
     public epicStatuses$ = new BehaviorSubject<any>(null);
     public calculateUserCompanies = new BehaviorSubject<any>(null);
+    public userCompanies$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
     public companyId: number = 0;
@@ -1225,6 +1226,15 @@ export class ProjectManagmentService {
   public async calculateUserCompanyAsync() {
     return await this._http.get(this.apiUrl + `/project-management/companies/calculate-user-company`).pipe(
       tap(data => this.calculateUserCompanies.next(data))
+    );
+  };
+
+  /**
+   * Функция получает список компаний пользователя.
+   */
+  public async getUserCompaniesAsync() {
+    return await this._http.get(this.apiUrl + `/project-management/companies/user-companies`).pipe(
+      tap(data => this.userCompanies$.next(data))
     );
   };
 }
