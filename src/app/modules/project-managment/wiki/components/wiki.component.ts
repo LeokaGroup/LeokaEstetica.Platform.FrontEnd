@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, ElementRef, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ProjectManagmentService} from "../../services/project-managment.service";
 import {UpdateFolderNameInput} from "../../models/input/update-folder-name-input";
@@ -22,7 +22,9 @@ export class WikiComponent implements OnInit {
   constructor(private readonly _router: Router,
               private readonly _activatedRoute: ActivatedRoute,
               private readonly _projectManagmentService: ProjectManagmentService,
-              private readonly _messageService: MessageService) {
+              private readonly _messageService: MessageService,
+              private elementRef: ElementRef,
+            ) {
   }
 
   public readonly wikiTreeItems$ = this._projectManagmentService.wikiTreeItems$;
@@ -31,6 +33,8 @@ export class WikiComponent implements OnInit {
   public readonly wikiContextMenu$ = this._projectManagmentService.wikiContextMenu$;
   public readonly removeFolderResponse$ = this._projectManagmentService.removeFolderResponse$;
 
+  folderState = new Map();
+  folderIdCreated:number = 0;
   projectId: number = 0;
   aTreeItems: any[] = [];
   isSelectedFolder: boolean = false;
@@ -68,14 +72,66 @@ export class WikiComponent implements OnInit {
       });
   };
 
+  ngAfterViewInit() {
+    // Патч сообщения о пустом дереве - primeng не поддерживает теги в сообщении
+    const element = (<HTMLElement>this.elementRef.nativeElement).querySelector('.p-tree-empty-message');
+    if (element) element.innerHTML = 'Нет папок или страниц.<br />Добавьте первую папку или страницу.';
+  }
+
+  /**
+   * Функция сохранения/установки состояния открытости папок.
+   * @param node узел дерева
+   * @param mode режим save - сохранение, restore - установка
+   */
+  private treeFolderState(node: any, mode: 'save'|'restore') {
+    if (!node.isPage) {
+      if (mode === 'save') {
+        this.folderState.set(node.folderId, node.expanded)
+      } else {
+        node.expanded = this.folderState.has(node.folderId) ? this.folderState.get(node.folderId)
+                                                            : false;
+      }
+    }
+      
+    if (node.children) {
+      node.children.forEach((childNode:any) => {
+        this.treeFolderState(childNode, mode);
+      });
+    }
+  }
+
   /**
    * Функция получает дерево.
    */
   private async getTreeAsync() {
     (await this._projectManagmentService.getWikiTreeItemsAsync(this.projectId))
       .subscribe(_ => {
+        // сохранение текущего состояния папок
+        this.folderState = new Map();
+        this.aTreeItems.forEach((e:any) => {
+          this.treeFolderState(e, 'save');
+        });
+        // установка состояния папки в откртое для родителя только что созданной папки/страницы
+        if (this.folderIdCreated) {
+          this.folderState.set(this.folderIdCreated, true);
+        }
+
         console.log("Дерево: ", this.wikiTreeItems$.value);
-        this.aTreeItems = this.wikiTreeItems$.value;
+        let tempTree = this.wikiTreeItems$.value;
+        tempTree = tempTree.map((e:any) => {
+          if (!e.isPage) {
+            if (this.folderState.size) {
+              // установка сохраненного состояния папки для полученной с бэка
+              this.treeFolderState(e, 'restore');
+            } else {
+              // установка первичного открытого состояния папок верхнего уровня 
+              e.expanded = true;
+            }
+          }
+          return e;
+        });
+        this.aTreeItems = tempTree;
+        this.folderIdCreated = 0;
       });
   };
 
@@ -193,7 +249,7 @@ export class WikiComponent implements OnInit {
     let _this = this; // Важно для сохранения контекста, внутри command он теряется.
 
     (await _this._projectManagmentService.getContextMenuAsync(e.projectId > 0 ? e.projectId : _this.projectId , e.pageId > 0 ? e.pageId : null))
-      .subscribe(_ => {
+      .subscribe(async _ => {
         _this.wikiContextMenu$.value.forEach((x: any) => {
           x.command = async function (e: any) {
             console.log(e);
@@ -243,9 +299,15 @@ export class WikiComponent implements OnInit {
     this.isParentFolder = true;
 
     let createWikiFolderInput = new CreateWikiFolderInput();
-    createWikiFolderInput.wikiTreeId = this.isParentFolder && !this.isWithoutParentFolder ? this.selectedTreeItem.wikiTreeId : this.aTreeItems[0].wikiTreeId;
-    createWikiFolderInput.parentId = this.isParentFolder && !this.isWithoutParentFolder ? this.selectedTreeItem.folderId : null;
+
+    // Если не идет создание папки вне дерева.
+    if (this.selectedTreeItem) {
+      createWikiFolderInput.wikiTreeId = this.isParentFolder && !this.isWithoutParentFolder ? this.selectedTreeItem.wikiTreeId : this.aTreeItems[0].wikiTreeId;
+      createWikiFolderInput.parentId = this.isParentFolder && !this.isWithoutParentFolder ? this.selectedTreeItem.folderId : null;
+    }
+
     createWikiFolderInput.folderName = this.selectedFolderName;
+    createWikiFolderInput.projectId = +this.projectId;
 
     (await this._projectManagmentService.createFolderAsync(createWikiFolderInput))
       .subscribe(async _ => {
@@ -257,7 +319,7 @@ export class WikiComponent implements OnInit {
               this.isVisibleContextMenuAction = false;
               this.isActiveFolderPageName = false;
               this.isCreateFolder = false;
-
+              this.folderIdCreated = createWikiFolderInput.parentId ?? 0;
               await this.getTreeAsync();
             });
         }
@@ -316,9 +378,15 @@ export class WikiComponent implements OnInit {
     console.log("selectedTreeItem",this.selectedTreeItem);
 
     let createWikiPageInput = new CreateWikiPageInput();
-    createWikiPageInput.wikiTreeId = this.isParentFolder && !this.isWithoutParentFolder ? this.selectedTreeItem.wikiTreeId : this.aTreeItems[0].wikiTreeId;
-    createWikiPageInput.parentId = this.selectedTreeItem.folderId;
+
+    // Если не идет создание страницы вне дерева.
+    if (this.selectedTreeItem) {
+      createWikiPageInput.wikiTreeId = this.isParentFolder && !this.isWithoutParentFolder ? this.selectedTreeItem.wikiTreeId : this.aTreeItems[0].wikiTreeId;
+      createWikiPageInput.parentId = this.selectedTreeItem.folderId;
+    }
+
     createWikiPageInput.pageName = this.selectedFolderPageName;
+    createWikiPageInput.projectId = +this.projectId;
 
     (await this._projectManagmentService.createPageAsync(createWikiPageInput))
       .subscribe(async _ => {
@@ -326,6 +394,7 @@ export class WikiComponent implements OnInit {
         this.isVisibleContextMenuAction = false;
         this.isActiveFolderPageName = false;
         this.isCreateFolderPage = false;
+        this.folderIdCreated = createWikiPageInput.parentId ?? 0;
 
         await this.getTreeAsync();
       });

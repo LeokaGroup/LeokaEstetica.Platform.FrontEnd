@@ -1,6 +1,54 @@
 <p-toast></p-toast>
 
 <div class="task-details mt-3">
+  <!-- Блок с кнопками действий. -->
+  <div class="mt-3 mb-3 d-flex block-task-actions">
+    <!-- <div class="block-buttons-task-actions">
+      <button pButton type="button"
+            icon="pi pi-pencil"
+            label="Редактировать"
+            class="p-button-text p-button-secondary task-actions">
+    </button>
+    </div>    -->
+
+    <div>
+      <button pButton type="button"
+              icon="pi pi-save"
+              label="Сохранить"
+              class="p-button-text p-button-success task-actions"
+              (click)="onCreateProjectTaskAsync()">
+      </button>
+    </div>
+
+    <div>
+      <button pButton type="button"
+              icon="pi pi-file-import"
+              label="Прикрепить файлы"
+              class="p-button-text p-button-secondary task-actions">
+      </button>
+    </div>
+
+    <!-- <div>
+      <button pButton type="button"
+            icon="pi pi-save"
+            label="Добавить связь"
+            class="p-button-text p-button-success task-actions">
+    </button>
+    </div> -->
+
+    <!-- <div>
+      <button pButton type="button"
+            label="Возможные действия"
+            class="p-button-text p-button-secondary task-actions">
+    </button>
+    </div> -->
+  </div>
+
+  <div>
+    <hr>
+  </div>
+  <!-- Конец блока с кнопками действий -->
+
     <!-- Название задачи. -->
     <div class="task-name required">
       <p-inplace>
@@ -222,53 +270,6 @@
   <div>
     <hr>
   </div>
-
-  <!-- Блок с кнопками действий. -->
-  <div class="mt-3 mb-3 d-flex block-task-actions">
-    <!-- <div class="block-buttons-task-actions">
-      <button pButton type="button"
-            icon="pi pi-pencil"
-            label="Редактировать"
-            class="p-button-text p-button-secondary task-actions">
-    </button>
-    </div>    -->
-
-    <div>
-      <button pButton type="button"
-              icon="pi pi-save"
-              label="Сохранить"
-              class="p-button-text p-button-success task-actions"
-              (click)="onCreateProjectTaskAsync()">
-      </button>
-    </div>
-
-    <div>
-      <button pButton type="button"
-              icon="pi pi-file-import"
-              label="Прикрепить файлы"
-              class="p-button-text p-button-secondary task-actions">
-      </button>
-    </div>
-
-    <!-- <div>
-      <button pButton type="button"
-            icon="pi pi-save"
-            label="Добавить связь"
-            class="p-button-text p-button-success task-actions">
-    </button>
-    </div> -->
-
-    <!-- <div>
-      <button pButton type="button"
-            label="Возможные действия"
-            class="p-button-text p-button-secondary task-actions">
-    </button>
-    </div> -->
-  </div>
-
-    <div>
-      <hr>
-    </div>
 
     <!-- Описание задачи. -->
     <div class="block-task-lines col-lg-12 d-flex">

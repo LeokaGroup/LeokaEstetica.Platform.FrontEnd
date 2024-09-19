@@ -10,6 +10,7 @@ import {UpdateSprintNameInput} from "../../sprint/models/update-sprint-name-inpu
 import {UpdateSprintDetailsInput} from "../../sprint/models/update-sprint-details-input";
 import {UpdateSprintExecutorInput} from "../../sprint/models/update-sprint-executor-input";
 import {UpdateSprintWatchersInput} from "../../sprint/models/update-sprint-watchers-input";
+import {ExcludeTaskInput} from "../../models/input/exclude-task-input";
 
 @Component({
   selector: "sprint-details",
@@ -40,6 +41,7 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
   selectedExecutor: any;
   selectedWatcher: any;
   sprintTasks: any[] = [];
+  aRemovedTasks: any[] = [];
 
   formExecutors: UntypedFormGroup = new UntypedFormGroup({
     "executorName": new UntypedFormControl("", [
@@ -75,9 +77,6 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
 
         this.sprintName = this.sprintDetails$.value.sprintName;
         this.sprintDetails = this.sprintDetails$.value.sprintGoal;
-        // this.sprintTasks = this.sprintDetails$.value.sprintTasks;
-        
-        // console.log("Задачи спринта:", this.sprintTasks);
 
         await this.onGetSelectTaskPeopleAsync(true);
       });
@@ -253,7 +252,7 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
       });
   };
 
-  
+
 
   public onSelectPanelMenu() {
     this._projectManagmentService.isLeftPanel = true;
@@ -261,6 +260,41 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
 
   public onClosePanelMenu() {
     this._projectManagmentService.isLeftPanel = false;
+  };
+
+  /**
+   * Функция исключает задачу из спринта.
+   * @param projectTaskId - Id задачи в рамках проекта.
+   */
+  public async onRemoveSprintTaskAsync(event: any) {
+    let projectTaskId = event.projectTaskId;
+
+    // Не дергаем бэк лишний раз, если не добавляли задачи для удаления.
+    if (projectTaskId == 0) {
+      return;
+    }
+
+    // this.toAddEpicTasks = [...this.toAddEpicTasks.filter(v => v.projectTaskId != projectTaskId)];
+    this.aRemovedTasks.push(this.sprintDetails$.value.sprintTasks.filter((v: any) => v.projectTaskId == projectTaskId));
+    // this.allEpicTasks = [...this.allEpicTasks.filter(v => v.projectTaskId != projectTaskId)];
+
+    if (this.aRemovedTasks.length == 0) {
+      return;
+    }
+
+    let excludeTaskInput = new ExcludeTaskInput();
+    excludeTaskInput.epicSprintId = this.sprintDetails$.value.projectSprintId;
+
+    this.aRemovedTasks.forEach((x: any) => {
+      excludeTaskInput.projectTaskIds.push(x[0].fullProjectTaskId);
+    });
+
+    (await this._projectManagmentService.removeSprintTasksAsync(excludeTaskInput))
+      .subscribe(async (_: any) => {
+        // После удаления задач очищаем этот список.
+        this.aRemovedTasks = [];
+        await this.getSprintDetailsAsync();
+      });
   };
 
   ngOnDestroy() {

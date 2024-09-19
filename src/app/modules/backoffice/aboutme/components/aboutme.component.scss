@@ -2,6 +2,10 @@
 @use "/src/app/common/styles/control.scss";
 @use "/src/app/common/styles/styles.scss";
 
+::ng-deep .input-about-me .p-editor-container {
+    width: 676px;
+}
+
 .block-worksheet {
     margin-right: 50px;
     margin-left: 50px;

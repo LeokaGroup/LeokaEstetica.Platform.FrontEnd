@@ -64,16 +64,10 @@
           </div>
 
           <div>
-             <textarea input-control-worksheet
-                       rows="5"
-                       cols="100"
-                       pInputTextarea
-                       [autoResize]="true"
-                       autocomplete="new-password"
-                       placeholder="Описание спринта"
-                       [(ngModel)]="sprintDescription"
-                       class="input-about-me">
-            </textarea>
+            <p-editor
+              placeholder="Описание спринта"
+              [(ngModel)]="sprintDescription"
+            />
           </div>
         </div>
         <div class="task-ver-line">

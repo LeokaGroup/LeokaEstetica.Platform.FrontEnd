@@ -1,33 +1,83 @@
+@use "/src/app/common/styles/font.scss";
+@use "/src/app/common/styles/color.scss";
 @use "/src/app/common/styles/spaces.scss";
 @use "/src/app/common/styles/styles.scss";
 
 .profile-left-menu {
-    margin-left: 50px;    
-    width: 300px;
+  width: 240px;
 }
 
-::ng-deep .profile-left-menu .p-panelmenu .p-panelmenu-header-link:focus {
-  box-shadow: none;
+.profileLeftMenuConditional {
+  border: 1px solid lightgray;
 }
 
-::ng-deep .profile-left-menu .p-panelmenu-panel:nth-child(4) .p-panelmenu-header-link .p-panelmenu-icon,
-::ng-deep .profile-left-menu .p-panelmenu-panel:nth-child(5) .p-panelmenu-header-link .p-panelmenu-icon {
-  display: none;
+:host ::ng-deep .profile-left-menu .p-panelmenu {
+  @include font.Paragraph1();
+  display: grid;
+  grid-gap: 4px;
+
+  .p-panelmenu-header-action:hover,
+  .p-menuitem-content:hover {
+    background: color.$menu-hover-grey;
+    border-radius: 8px;
+  }
+
+  .p-menuitem-text {
+    color: color.$landing-text-dark-grey;
+  }
+
+  .p-highlight .p-menuitem-text {
+    color: color.$blue-color-primary-blue-300;
+  }
+
+  .p-panelmenu-content {
+    border: none;
+    padding: 4px 0 0;
+  }
+
+  .p-submenu-list {
+    display: grid;
+    grid-gap: 4px;
+  }
+
+  .p-panelmenu-header .p-panelmenu-header-content {
+    @include font.Paragraph1();
+    height: 40px;
+    background: white;
+    border: none;
+
+    .p-panelmenu-header-action {
+      font-weight: normal;
+      padding-top: 12px;
+      padding-bottom: 9px;
+      position: relative;
+
+      .p-icon-wrapper {
+        position: absolute;
+        right: 1px;
+        color: color.$color-icon;
+
+        .p-submenu-icon {
+          width: 12px;
+          height: 12px;
+        }
+      }
+    }
+  }
+
+  .p-panelmenu-header-link:focus {
+    box-shadow: none;
+  }
 }
 
-::ng-deep .profile-left-menu .p-panelmenu-panel:nth-child(4) .p-panelmenu-header-link,
-::ng-deep .profile-left-menu .p-panelmenu-panel:nth-child(5) .p-panelmenu-header-link {
-  padding-left: 40px;
-}
-
-.block-profile {    
+.block-profile {
     position: absolute;
 }
 
 // Медиа-запросы.
 /* xs (<=543px) */
 @media (max-width: 575px) {
-  
+
 }
 
 /* sm (>=576 и <=767) */
