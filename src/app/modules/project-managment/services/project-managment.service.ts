@@ -36,6 +36,7 @@ import { CreateWikiFolderInput } from '../models/input/create-folder-input';
 import { Router } from '@angular/router';
 import {CreateWikiPageInput} from "../models/input/create-page-input";
 import {ExcludeTaskInput} from "../models/input/exclude-task-input";
+import {CompanyInput} from "../models/input/company-input";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -1235,6 +1236,16 @@ export class ProjectManagmentService {
   public async getUserCompaniesAsync() {
     return await this._http.get(this.apiUrl + `/project-management/companies/user-companies`).pipe(
       tap(data => this.userCompanies$.next(data))
+    );
+  };
+
+  /**
+   * Функция добавляет компанию в кэш.
+   * @param companyInput - Входная модель.
+   */
+  public async createCompanyCacheAsync(companyInput: CompanyInput) {
+    return await this._http.post(this.apiUrl + `/project-management/companies/company-cache`, companyInput).pipe(
+      tap(_ => console.log("Компания успешно добавлена в кэш."))
     );
   };
 }

@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { BackOfficeService } from "../../services/backoffice.service";
 import {ProjectManagmentService} from "../../../project-managment/services/project-managment.service";
+import {CompanyInput} from "../../../project-managment/models/input/company-input";
 
 interface ProfileItem {
     url: string;
@@ -61,6 +62,7 @@ export class LeftMenuComponent implements OnInit {
     isSelectCompany: boolean = false;
     aUserCompanies: any[] = [];
     selectedCompany: any;
+    companyName: string = "";
 
   constructor(private readonly _backOfficeService: BackOfficeService,
               private readonly _router: Router,
@@ -172,6 +174,7 @@ export class LeftMenuComponent implements OnInit {
                         // Показываем соответствующую модалку.
                         else if (response.ifExistsMultiCompanies && !response.ifExistsAnyCompanies) {
                           this.isSelectCompany = true;
+
                           (await this._projectManagmentService.getUserCompaniesAsync())
                             .subscribe((_: any) => {
                               this.aUserCompanies = this.userCompanies$.value;
@@ -230,5 +233,18 @@ export class LeftMenuComponent implements OnInit {
           companyId
         }
       });
+    };
+
+  /**
+   * Функция создает компанию в кэше.
+   */
+  public async onCreateCompanyAsync() {
+      let companyInput = new CompanyInput();
+      companyInput.companyName = this.companyName;
+
+      (await this._projectManagmentService.createCompanyCacheAsync(companyInput))
+        .subscribe((_: any) => {
+          this._router.navigate(["/profile/projects/create"]);
+        });
     };
 }
