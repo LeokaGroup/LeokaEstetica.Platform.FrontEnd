@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { catchError, firstValueFrom, forkJoin, tap } from "rxjs";
@@ -20,6 +20,7 @@ import {SearchAgileObjectTypeEnum} from "../../../../enums/search-agile-object-t
 import { TaskDetailTypeEnum } from "src/app/modules/enums/task-detail-type";
 import { MessageService } from "primeng/api";
 import {ExcludeTaskInput} from "../../../models/input/exclude-task-input";
+import { EditorInitEvent, EditorTextChangeEvent } from "primeng/editor";
 
 @Component({
     selector: "",
@@ -34,6 +35,7 @@ export class TaskDetailsComponent implements OnInit {
   constructor(private readonly _projectManagmentService: ProjectManagmentService,
               private readonly _router: Router,
               private readonly _messageService: MessageService,
+              private ref: ChangeDetectorRef,
               private readonly _activatedRoute: ActivatedRoute) {
   }
 
@@ -76,6 +78,8 @@ export class TaskDetailsComponent implements OnInit {
     selectedLinkType: any;
     selectedTaskLink: any;
     companyId: number = 0;
+    isCommentExist = false;
+    commentEditor: any;
 
   // TODO: Перенести все это на бэк.
     aAvailableActions: any[] = [
@@ -737,8 +741,8 @@ export class TaskDetailsComponent implements OnInit {
 
     (await this._projectManagmentService.createTaskCommentAsync(taskCommentInput))
       .subscribe(async (_: any) => {
-        this.comment = "";
         await this.getTaskCommentsAsync();
+        this.resetComment();
       });
   };
 
@@ -749,6 +753,7 @@ export class TaskDetailsComponent implements OnInit {
     (await this._projectManagmentService.getTaskCommentsAsync(this.projectTaskId, +this.projectId))
       .subscribe(async (_: any) => {
         console.log("Комментарии задачи: ", this.taskComments$.value);
+        this.ref.detectChanges();
       });
   };
 
@@ -1020,4 +1025,35 @@ export class TaskDetailsComponent implements OnInit {
 
     return this.isNotRoles;
   };
+
+  /**
+   * Функция для вызова detectChanges при начале редактирования комментария.
+   * @param $event - эвент редактора.
+   */
+  onCommentChange($event: EditorTextChangeEvent) {
+    const hasText = $event.textValue != '';
+    if (this.isCommentExist != hasText) {
+      this.isCommentExist = hasText;
+      this.ref.detectChanges();
+    }
+  }
+
+  /**
+   * Функция получения ссылки на root элемент редактора комментария.
+   * @param $event - эвент редактора.
+   */
+  onCommentInit($event: EditorInitEvent){
+    this.commentEditor = $event.editor.root;
+  }
+
+  /**
+   * Функция очистки текста комментария.
+   */
+  resetComment() {
+    this.comment = '';
+    if (this.commentEditor) {
+      this.isCommentExist = false;
+      this.commentEditor.innerHTML = '<p></p>';
+    }
+  }
 }
