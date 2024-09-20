@@ -439,6 +439,7 @@ export class AppComponent implements OnInit {
       this.isVisibleProjectManagementMenu = true;
       this.isVisibleMenu = false;
     } else {
+    this.isVisibleProjectManagementMenu = false;
     this._activatedRoute.queryParams
       .subscribe(params => {
         // Для просмотра анкеты другого пользователя.
