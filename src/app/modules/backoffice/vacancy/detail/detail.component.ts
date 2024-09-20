@@ -121,10 +121,7 @@ export class DetailVacancyComponent implements OnInit, OnDestroy {
                 this.isDeleteVacancy = false;
 
                 setTimeout(() => {
-                    this._router.navigate(["/vacancies"])
-                    .then(() => {
-                        this._redirectService.redirect("/vacancies/my");
-                    });
+                    this._router.navigate(["/vacancies"]);
                 }, 4000);
             });
     };
@@ -156,9 +153,7 @@ export class DetailVacancyComponent implements OnInit, OnDestroy {
                 });
             } else {
               setTimeout(() => {
-                  this._router.navigate(["/vacancies/my"]).then(() => {
-                      this._redirectService.redirect("vacancies/my");
-                    });
+                  this._router.navigate(["/vacancies/my"]);
               }, 4000);
           }
         });

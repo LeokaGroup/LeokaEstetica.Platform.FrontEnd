@@ -23,4 +23,9 @@ export class CreateProjectInput {
 
   // Видимость проекта
   isPublic: boolean = true;
+
+  /**
+   * Id компании.
+   */
+  companyId?: number;
 }

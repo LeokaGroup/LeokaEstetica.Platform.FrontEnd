@@ -105,9 +105,7 @@ export class SignUpComponent implements OnInit {
               }); 
 
            setTimeout(() => {
-             this._router.navigate(["/user/signin"]).then(() => {
-               this._redirectService.redirect("user/signin");
-             });
+             this._router.navigate(["/user/signin"]);
            }, 4000);
          } else {
            response.errors.forEach((item: any) => {
