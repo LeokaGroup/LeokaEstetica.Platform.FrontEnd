@@ -16,14 +16,23 @@
             [draggable]="false"
             [resizable]="false">
     <p>У вас не создано ни одной компании. Для создания проекта, сначала нужно создать компанию.</p>
+
     <div class="mt-3">
-      <input type="text"
-             class="p-inputtext-sm input-control-worksheet "
-             placeholder="Введите название компании"
-             pInputText
-             autocomplete="new-password"
-             [(ngModel)]="companyName" />
+      <div>
+        <strong>Введите название компании</strong>
+      </div>
+
+      <div>
+        <input type="text"
+               class="p-input-text-sm input-control-worksheet"
+               placeholder="Введите название компании"
+               pInputText
+               autocomplete="new-password"
+               [(ngModel)]="companyName"
+               [style]="{width: '300px'}"/>
+      </div>
     </div>
+
     <ng-template pTemplate="footer">
       <p-button (click)="isCreateCompany=false"
                 label="Отменить"
@@ -33,7 +42,8 @@
 
       <p-button label="Создать компанию и перейти к созданию проекта"
                 styleClass="p-button-text p-button-success"
-                (click)="onCreateCompanyAsync()">
+                (click)="onCreateCompanyAsync()"
+                [disabled]="!companyName">
       </p-button>
     </ng-template>
   </p-dialog>
