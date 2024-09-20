@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { BackOfficeService } from "../../services/backoffice.service";
 import {ProjectManagmentService} from "../../../project-managment/services/project-managment.service";
@@ -67,7 +67,6 @@ export class LeftMenuComponent implements OnInit {
   constructor(private readonly _backOfficeService: BackOfficeService,
               private readonly _router: Router,
               private readonly _redirectService: RedirectService,
-              private readonly _activatedRoute: ActivatedRoute,
               private readonly _projectManagmentService: ProjectManagmentService) {
   }
 

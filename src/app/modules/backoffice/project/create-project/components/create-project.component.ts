@@ -1,9 +1,8 @@
 import {Component, OnInit} from "@angular/core";
-import {forkJoin} from "rxjs";
 import {MessageService} from "primeng/api";
 import {BackOfficeService} from "../../../services/backoffice.service";
 import {CreateProjectInput} from "../models/input/create-project-input";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ProjectService} from "src/app/modules/project/services/project.service";
 import {RedirectService} from "src/app/common/services/redirect.service";
 import {ProjectManagmentService} from "../../../../project-managment/services/project-managment.service";
@@ -30,20 +29,30 @@ export class CreateProjectComponent implements OnInit {
   conditions: string = "";
   isCreateProject: boolean = false;
   isNeedUserAction: boolean = false;
+  companyId?: number;
 
   constructor(private readonly _backofficeService: BackOfficeService,
               private readonly _messageService: MessageService,
               private readonly _router: Router,
               private readonly _projectService: ProjectService,
               private readonly _redirectService: RedirectService,
-              private readonly _projectManagmentService: ProjectManagmentService) {
+              private readonly _projectManagmentService: ProjectManagmentService,
+              private readonly _activatedRoute: ActivatedRoute) {
   }
 
   public async ngOnInit() {
-    forkJoin([
-      await this.getProjectsColumnNamesAsync(),
-      await this.getProjectStagesAsync()
-    ]).subscribe();
+    this.checkUrlParams();
+    await this.getProjectsColumnNamesAsync();
+    await this.getProjectStagesAsync();
+  };
+
+  private checkUrlParams() {
+    this._activatedRoute.queryParams
+      .subscribe(async params => {
+        this.companyId = +params['companyId'];
+
+        await this.createCompanyCacheAsync();
+      });
   };
 
   /**
@@ -58,10 +67,9 @@ export class CreateProjectComponent implements OnInit {
   };
 
   /**
-     * Функция создает модель для сохранения проекта.
-     * @returns - Входная модель проекта.
-     */
-
+   * Функция создает модель для сохранения проекта.
+   * @returns - Входная модель проекта.
+   */
   private createProjectModel() {
     const createProjectInput: CreateProjectInput = {
       ProjectName: this.projectName,
@@ -70,12 +78,13 @@ export class CreateProjectComponent implements OnInit {
       Conditions: this.conditions,
       Demands: this.demands,
       isPublic: this.public,
+      companyId: this.companyId
     };
 
     this.isCreateProject = true;
 
     return createProjectInput;
-  }
+  };
 
     /**
    * Функция создает новый проект пользователя.
@@ -113,5 +122,9 @@ export class CreateProjectComponent implements OnInit {
 
   public onSelectProjectStage() {
     console.log(this.selectedStage);
+  };
+
+  private async createCompanyCacheAsync() {
+
   };
 }
