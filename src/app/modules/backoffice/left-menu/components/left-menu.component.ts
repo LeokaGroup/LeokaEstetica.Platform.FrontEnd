@@ -165,7 +165,7 @@ export class LeftMenuComponent implements OnInit {
                       if (response.isNeedUserAction) {
                         // Если компаний 0 - то требуем создать сначала компанию.
                         // Показываем соответствующую модалку.
-                        if (!response.ifExistsAnyCompanies && response.ifExistsAnyCompanies) {
+                        if (!response.ifExistsAnyCompanies && !response.ifExistsMultiCompanies) {
                           this.isCreateCompany = true;
                         }
 
@@ -238,12 +238,15 @@ export class LeftMenuComponent implements OnInit {
    * Функция создает компанию в кэше.
    */
   public async onCreateCompanyAsync() {
-      let companyInput = new CompanyInput();
-      companyInput.companyName = this.companyName;
+    if (!this.companyName) {
+      return;
+    }
+    let companyInput = new CompanyInput();
+    companyInput.companyName = this.companyName;
 
-      (await this._projectManagmentService.createCompanyCacheAsync(companyInput))
-        .subscribe((_: any) => {
-          this._router.navigate(["/profile/projects/create"]);
-        });
-    };
+    (await this._projectManagmentService.createCompanyCacheAsync(companyInput))
+      .subscribe((_: any) => {
+        this._router.navigate(["/profile/projects/create"]);
+      });
+  };
 }
