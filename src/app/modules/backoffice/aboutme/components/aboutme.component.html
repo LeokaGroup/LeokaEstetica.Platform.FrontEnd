@@ -243,20 +243,20 @@
 
     <div class="worksheet-panel space-top">
       <p-panel header="О себе" [toggleable]="true">
-        <div class="d-flex worksheet-line">
+        <form class="d-flex worksheet-line" [formGroup]="formAboutme">
           <div
             class="control-input-text-worksheet"
             [ngClass]="{'required':isModeEdit}"
           >
           <p-editor
-            [(ngModel)]="isModeEdit ? aboutme : profileInfo$.value.aboutme"
+            formControlName="aboutme"
             placeholder="Напишите о себе"
             [readonly]="isModeView"
             class="input-about-me"
             [ngClass]="{'headless-editor frameless' : isModeView}"
           />
           </div>
-        </div>
+        </form>
 
         <div class="d-flex worksheet-line">
             <div [ngClass]="{'required':isModeEdit}"
@@ -410,7 +410,7 @@
       @if (isModeEdit) {
         <div class="d-flex worksheet-line worksheet-panel mb-3">
           <div class="control-input-text-worksheet">
-            <button 
+            <button
               type="button"
               class="btn btn-primary button-action-pur-control-worksheet"
               (click)="onSaveProfileInfoAsync()"

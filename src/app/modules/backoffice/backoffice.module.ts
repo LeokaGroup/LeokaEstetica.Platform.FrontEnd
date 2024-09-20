@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { BackOfficeRoutingModule } from './backoffice-routing.module';
 import { AboutmeComponent } from './aboutme/components/aboutme.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PanelModule } from 'primeng/panel';
 import { MenuModule } from 'primeng/menu';
 import { InputTextModule } from 'primeng/inputtext';
@@ -38,7 +38,6 @@ import { SplitterModule } from 'primeng/splitter';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
 
-
 @NgModule({
     declarations: [
         AboutmeComponent,
@@ -56,6 +55,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     imports: [
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         BackOfficeRoutingModule,
         HttpClientModule,
         PanelModule,
