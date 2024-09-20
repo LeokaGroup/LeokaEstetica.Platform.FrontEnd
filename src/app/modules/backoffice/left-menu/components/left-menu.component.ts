@@ -221,6 +221,11 @@ export class LeftMenuComponent implements OnInit {
                 if (this.profileMessages == this.sysName) {
                     this._router.navigate(["/profile/messages"]);
                 }
+
+              // Переход на страницу календаря.
+              if (this.sysName == "Calendar") {
+                this._router.navigate(["/calendar/employee"]);
+              }
             });
     };
 
