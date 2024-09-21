@@ -72,6 +72,12 @@ const routes: Routes = [
   {
     path: 'fare-rules', component: FareRuleComponent
   },
+
+  {
+    path: "calendar",
+    loadChildren: () => import('./modules/calendar/calendar.module').then(m => m.CalendarEmployeeModule),
+    canActivate: [authGuard]
+  }
 ];
 
 @NgModule({

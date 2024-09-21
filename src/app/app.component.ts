@@ -435,6 +435,10 @@ export class AppComponent implements OnInit {
       this.isVisibleProjectManagementMenu = false;
     }
 
+    // if (currentUrl.indexOf("calendar") > 0) {
+    //   this.isVisibleMenu = false;
+    // }
+
     if (currentUrl.startsWith('/project-management')) {
       this.isVisibleProjectManagementMenu = true;
       this.isVisibleMenu = false;
