@@ -576,10 +576,7 @@ export class DetailProjectComponent implements OnInit {
             this.isDeleteProject = false;
 
             setTimeout(() => {
-                this._router.navigate(["/projects"])
-                .then(() => {
-                    this._redirectService.redirect("profile/projects/my");
-                });
+                this._router.navigate(["/projects"]);
             }, 4000);
         });
     };

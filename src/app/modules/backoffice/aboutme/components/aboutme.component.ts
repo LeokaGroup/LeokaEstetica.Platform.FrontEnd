@@ -2,8 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { forkJoin } from "rxjs";
 import { BackOfficeService } from "../../services/backoffice.service";
 import { ProfileInfoInput } from "../models/input/profile-info-input";
-import { NavigationStart, Router, Event as NavigationEvent, ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { MessageService } from "primeng/api";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 
 @Component({
     selector: "aboutme",
@@ -52,7 +53,13 @@ export class AboutmeComponent implements OnInit {
         severity: 'warn',
         summary: 'Анкета не будет опубликована в базе резюме, так как не все данные анкеты заполнены.'
       }
-    ]
+    ];
+
+  formAboutme : UntypedFormGroup = new UntypedFormGroup({
+    "aboutme": new UntypedFormControl("", [
+      Validators.required
+    ])
+  });
 
   constructor(private readonly _backofficeService: BackOfficeService,
               private readonly _activatedRoute: ActivatedRoute,
@@ -111,23 +118,27 @@ export class AboutmeComponent implements OnInit {
       });
   };
 
+  public onChangeAboutMeInfo() {
+    console.log(this.aboutme);
+  };
+
     /**
      * Функция подтягивает данные в поля анкеты в режиме изменения.
      */
     private setEditFields() {
-        this.firstName = this.profileInfo$.value.firstName;
-        this.lastName = this.profileInfo$.value.lastName;
-        this.patronymic = this.profileInfo$.value.patronymic;
-        this.aboutme = this.profileInfo$.value.aboutme;
-        this.email = this.profileInfo$.value.email;
-        this.isShortFirstName = this.profileInfo$.value.isShortFirstName;
-        this.job = this.profileInfo$.value.job;
-        this.phoneNumber = this.profileInfo$.value.phoneNumber;
-        this.telegram = this.profileInfo$.value.telegram;
-        this.whatsApp = this.profileInfo$.value.whatsApp;
-        this.vkontakte = this.profileInfo$.value.vkontakte;
-        this.otherLink = this.profileInfo$.value.otherLink;
-        this.workExperience = this.profileInfo$.value.workExperience;
+      this.firstName = this.profileInfo$.value.firstName;
+      this.lastName = this.profileInfo$.value.lastName;
+      this.patronymic = this.profileInfo$.value.patronymic;
+      this.formAboutme.get("aboutme")?.setValue(this.profileInfo$.value.aboutme);
+      this.email = this.profileInfo$.value.email;
+      this.isShortFirstName = this.profileInfo$.value.isShortFirstName;
+      this.job = this.profileInfo$.value.job;
+      this.phoneNumber = this.profileInfo$.value.phoneNumber;
+      this.telegram = this.profileInfo$.value.telegram;
+      this.whatsApp = this.profileInfo$.value.whatsApp;
+      this.vkontakte = this.profileInfo$.value.vkontakte;
+      this.otherLink = this.profileInfo$.value.otherLink;
+      this.workExperience = this.profileInfo$.value.workExperience;
     };
 
     /**
@@ -196,7 +207,7 @@ export class AboutmeComponent implements OnInit {
         profileInfoInput.FirstName = this.firstName;
         profileInfoInput.LastName = this.lastName;
         profileInfoInput.Patronymic = this.patronymic;
-        profileInfoInput.Aboutme = this.aboutme;
+        profileInfoInput.Aboutme = this.formAboutme.value.aboutme;
         profileInfoInput.Email = this.email;
         profileInfoInput.IsShortFirstName = this.isShortFirstName;
         profileInfoInput.Job = this.job;

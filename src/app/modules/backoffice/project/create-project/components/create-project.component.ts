@@ -1,11 +1,11 @@
 import {Component, OnInit} from "@angular/core";
-import {forkJoin} from "rxjs";
 import {MessageService} from "primeng/api";
 import {BackOfficeService} from "../../../services/backoffice.service";
 import {CreateProjectInput} from "../models/input/create-project-input";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ProjectService} from "src/app/modules/project/services/project.service";
 import {RedirectService} from "src/app/common/services/redirect.service";
+import {ProjectManagmentService} from "../../../../project-managment/services/project-managment.service";
 
 @Component({
   selector: "create-project",
@@ -28,19 +28,31 @@ export class CreateProjectComponent implements OnInit {
   demands: string = "";
   conditions: string = "";
   isCreateProject: boolean = false;
+  isNeedUserAction: boolean = false;
+  companyId?: number;
 
   constructor(private readonly _backofficeService: BackOfficeService,
               private readonly _messageService: MessageService,
               private readonly _router: Router,
               private readonly _projectService: ProjectService,
-              private readonly _redirectService: RedirectService) {
+              private readonly _redirectService: RedirectService,
+              private readonly _projectManagmentService: ProjectManagmentService,
+              private readonly _activatedRoute: ActivatedRoute) {
   }
 
   public async ngOnInit() {
-    forkJoin([
-      await this.getProjectsColumnNamesAsync(),
-      await this.getProjectStagesAsync()
-    ]).subscribe();
+    this.checkUrlParams();
+    await this.getProjectsColumnNamesAsync();
+    await this.getProjectStagesAsync();
+  };
+
+  private checkUrlParams() {
+    this._activatedRoute.queryParams
+      .subscribe(async params => {
+        this.companyId = +params['companyId'];
+
+        await this.createCompanyCacheAsync();
+      });
   };
 
   /**
@@ -55,10 +67,9 @@ export class CreateProjectComponent implements OnInit {
   };
 
   /**
-     * Функция создает модель для сохранения проекта.
-     * @returns - Входная модель проекта.
-     */
-
+   * Функция создает модель для сохранения проекта.
+   * @returns - Входная модель проекта.
+   */
   private createProjectModel() {
     const createProjectInput: CreateProjectInput = {
       ProjectName: this.projectName,
@@ -67,44 +78,36 @@ export class CreateProjectComponent implements OnInit {
       Conditions: this.conditions,
       Demands: this.demands,
       isPublic: this.public,
+      companyId: this.companyId
     };
-    
+
     this.isCreateProject = true;
 
     return createProjectInput;
-  }
+  };
 
     /**
    * Функция создает новый проект пользователя.
    * @returns Данные проекта.
    */
 
-  public async onCreateProjectAsync() {
-    let createProjectInput = this.createProjectModel();
+    public async onCreateProjectAsync() {
+      let createProjectInput = this.createProjectModel();
 
-    (await this._backofficeService.createProjectAsync(createProjectInput))
-      .subscribe((response: any) => {
+      (await this._backofficeService.createProjectAsync(createProjectInput))
+        .subscribe((response: any) => {
 
-        // this._messageService.add({
-        //   severity: this._signalrService.AllFeedObservable.value.notificationLevel,
-        //   summary: this._signalrService.AllFeedObservable.value.title,
-        //   detail: this._signalrService.AllFeedObservable.value.message
-        // });
-
-        if (this.projectData$.value.errors !== null && this.projectData$.value.errors.length > 0) {
-          response.errors.forEach((item: any) => {
-            this._messageService.add({severity: 'error', summary: "Что то не так", detail: item.errorMessage});
-          });
-        } else {
-          setTimeout(() => {
-            this._router.navigate(["/projects/my"])
-              .then(() => {
-                this._redirectService.redirect("projects/my");
-              });
-          }, 4000);
-        }
-      });
-  };
+          if (this.projectData$.value.errors !== null && this.projectData$.value.errors.length > 0) {
+            response.errors.forEach((item: any) => {
+              this._messageService.add({severity: 'error', summary: "Что то не так", detail: item.errorMessage});
+            });
+          } else {
+            setTimeout(() => {
+              this._router.navigate(["/projects/my"]);
+            }, 4000);
+          }
+        });
+    };
 
   /**
    * Функция получает список стадий проекта.
@@ -119,5 +122,9 @@ export class CreateProjectComponent implements OnInit {
 
   public onSelectProjectStage() {
     console.log(this.selectedStage);
+  };
+
+  private async createCompanyCacheAsync() {
+
   };
 }

@@ -1,4 +1,4 @@
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, tap} from 'rxjs';
 import {API_URL} from 'src/app/core/core-urls/api-urls';
@@ -36,6 +36,7 @@ import { CreateWikiFolderInput } from '../models/input/create-folder-input';
 import { Router } from '@angular/router';
 import {CreateWikiPageInput} from "../models/input/create-page-input";
 import {ExcludeTaskInput} from "../models/input/exclude-task-input";
+import {CompanyInput} from "../models/input/company-input";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -98,6 +99,8 @@ export class ProjectManagmentService {
     public removeFolderResponse$ = new BehaviorSubject<any>(null);
     public projectInvites$ = new BehaviorSubject<any>(null)
     public epicStatuses$ = new BehaviorSubject<any>(null);
+    public calculateUserCompanies = new BehaviorSubject<any>(null);
+    public userCompanies$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
     public companyId: number = 0;
@@ -1215,6 +1218,34 @@ export class ProjectManagmentService {
   public async removeSprintTasksAsync(excludeTaskInput: ExcludeTaskInput) {
     return await this._http.patch(this.apiUrl + `/project-management/sprints/sprint-task`, excludeTaskInput).pipe(
       tap(_ => console.log("Задачи успешно удалены из спринта."))
+    );
+  };
+
+  /**
+   * Функция вычисляет кол-во компаний пользователя.
+   */
+  public async calculateUserCompanyAsync() {
+    return await this._http.get(this.apiUrl + `/project-management/companies/calculate-user-company`).pipe(
+      tap(data => this.calculateUserCompanies.next(data))
+    );
+  };
+
+  /**
+   * Функция получает список компаний пользователя.
+   */
+  public async getUserCompaniesAsync() {
+    return await this._http.get(this.apiUrl + `/project-management/companies/user-companies`).pipe(
+      tap(data => this.userCompanies$.next(data))
+    );
+  };
+
+  /**
+   * Функция добавляет компанию в кэш.
+   * @param companyInput - Входная модель.
+   */
+  public async createCompanyCacheAsync(companyInput: CompanyInput) {
+    return await this._http.post(this.apiUrl + `/project-management/companies/company-cache`, companyInput).pipe(
+      tap(_ => console.log("Компания успешно добавлена в кэш."))
     );
   };
 }

@@ -43,7 +43,7 @@
     &::-ms-input-placeholder { /* Microsoft Edge */
         color: color.$project-text-bluish-grey;
     }
-    
+
     &::placeholder { /* Most modern browsers support this now. */
         color: color.$project-text-bluish-grey;
     }
@@ -266,7 +266,7 @@
     @include autocompleteFix();
 }
 
-:host ::ng-deep .p-control, 
+:host ::ng-deep .p-control,
 :host ::ng-deep .p-multiselect-control .p-multiselect,
 :host ::ng-deep .p-password-control .p-inputtext {
     @include controlWhiteForm();
@@ -400,4 +400,19 @@
     .p-tooltip-arrow {
         transform: scale(200%);
     }
+}
+
+.input-control-worksheet {
+  width: 200px;
+  outline: none;
+
+  &:focus {
+    outline: none;
+    border: 1px solid #403866;
+    box-shadow: none;
+  }
+
+  &:hover {
+    border-color: #403866;
+  }
 }

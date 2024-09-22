@@ -435,10 +435,15 @@ export class AppComponent implements OnInit {
       this.isVisibleProjectManagementMenu = false;
     }
 
+    // if (currentUrl.indexOf("calendar") > 0) {
+    //   this.isVisibleMenu = false;
+    // }
+
     if (currentUrl.startsWith('/project-management')) {
       this.isVisibleProjectManagementMenu = true;
       this.isVisibleMenu = false;
     } else {
+    this.isVisibleProjectManagementMenu = false;
     this._activatedRoute.queryParams
       .subscribe(params => {
         // Для просмотра анкеты другого пользователя.

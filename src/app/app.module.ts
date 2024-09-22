@@ -1,5 +1,5 @@
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxLoadingModule } from 'ngx-loading';
@@ -50,6 +50,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import {RedisService} from "./modules/redis/services/redis.service";
+import {DropdownModule} from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,8 @@ import {RedisService} from "./modules/redis/services/redis.service";
     ForbiddenComponent,
     ProjectManagementHeaderComponent
   ],
+
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 
   imports: [
     BrowserModule,
@@ -91,7 +94,8 @@ import {RedisService} from "./modules/redis/services/redis.service";
     ButtonModule,
     AutoCompleteModule,
     CheckboxModule,
-    DialogModule
+    DialogModule,
+    DropdownModule
   ],
 
   providers: [

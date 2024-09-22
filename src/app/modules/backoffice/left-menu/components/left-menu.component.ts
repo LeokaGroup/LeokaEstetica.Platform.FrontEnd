@@ -1,7 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import {ActivatedRoute, Event as NavigationEvent, NavigationStart, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { BackOfficeService } from "../../services/backoffice.service";
+import {ProjectManagmentService} from "../../../project-managment/services/project-managment.service";
+import {CompanyInput} from "../../../project-managment/models/input/company-input";
 
 interface ProfileItem {
     url: string;
@@ -21,6 +23,7 @@ export class LeftMenuComponent implements OnInit {
     public readonly profileItems$ = this._backOfficeService.profileItems$;
     public readonly vacancyItems$ = this._backOfficeService.vacancyItems$;
     public readonly selectMenu$ = this._backOfficeService.selectMenu$;
+    public readonly userCompanies$ = this._projectManagmentService.userCompanies$;
 
     sysName: string = "";
     aViewSysNames: string[] = [
@@ -55,11 +58,16 @@ export class LeftMenuComponent implements OnInit {
     archivedVacanciesSysNames: string = "ArchiveVacancies";
     profileMessages: string = "Messages"
     isShowLeftMenuConditional: boolean = true;
+    isCreateCompany: boolean = false;
+    isSelectCompany: boolean = false;
+    aUserCompanies: any[] = [];
+    selectedCompany: any;
+    companyName: string = "";
 
   constructor(private readonly _backOfficeService: BackOfficeService,
               private readonly _router: Router,
               private readonly _redirectService: RedirectService,
-              private readonly _activatedRoute: ActivatedRoute) {
+              private readonly _projectManagmentService: ProjectManagmentService) {
   }
 
     public async ngOnInit() {
@@ -121,7 +129,7 @@ export class LeftMenuComponent implements OnInit {
         event.preventDefault();
 
         (await this._backOfficeService.selectProfileMenuAsync(text))
-            .subscribe(_ => {
+            .subscribe(async (_: any) => {
                 console.log("Выбрали меню: ", this.selectMenu$.value.sysName);
                 this.sysName = this.selectMenu$.value.sysName;
 
@@ -150,25 +158,44 @@ export class LeftMenuComponent implements OnInit {
 
                 // Роут на страницу создания проекта.
                 if (this.aCreateProjectsSysName.includes(this.sysName)) {
-                  this._router.navigate(["/profile/projects/create"]);
-                    // this._router.navigate(["/profile/projects/create"]).then(() => {
-                    //     this._redirectService.redirect("profile/projects/create");
-                    // });
+                  // Сначала вычисляем кол-во компаний пользователя.
+                  (await this._projectManagmentService.calculateUserCompanyAsync())
+                    // Если требуется действие от пользователя.
+                    .subscribe(async (response: any) => {
+                      if (response.isNeedUserAction) {
+                        // Если компаний 0 - то требуем создать сначала компанию.
+                        // Показываем соответствующую модалку.
+                        if (!response.ifExistsAnyCompanies && !response.ifExistsMultiCompanies) {
+                          this.isCreateCompany = true;
+                        }
+
+                        // Если более 1, то требуем выбрать, к какой компании отнести проект.
+                        // Показываем соответствующую модалку.
+                        else if (response.ifExistsMultiCompanies && !response.ifExistsAnyCompanies) {
+                          this.isSelectCompany = true;
+
+                          (await this._projectManagmentService.getUserCompaniesAsync())
+                            .subscribe((_: any) => {
+                              this.aUserCompanies = this.userCompanies$.value;
+                            });
+                        }
+                      }
+
+                      else {
+                        this._router.navigate(["/profile/projects/create"]);
+                      }
+                    });
                 }
 
                 // Роут на страницу создания вакансии.
                 if (this.aCreateVacanciesSysName.includes(this.sysName)) {
                     this._router.navigate(["/vacancies/create"]);
-                  // this._router.navigate(["/vacancies/create"]).then(() => {
-                  //   this._redirectService.redirect("/vacancies/create");
-                  // });
                 }
 
                 // Роут на страницу списка вакансии.
                 if (this.aVacanciesSysName.includes(this.sysName)) {
                     this._router.navigate(["/vacancies/my"]);
                 }
-
 
                 // Роут на страницу создания вакансии.подписок
                 if (this.aSubscriptionsSysNames.includes(this.sysName)) {
@@ -194,6 +221,37 @@ export class LeftMenuComponent implements OnInit {
                 if (this.profileMessages == this.sysName) {
                     this._router.navigate(["/profile/messages"]);
                 }
+
+              // Переход на страницу календаря.
+              if (this.sysName == "Calendar") {
+                this._router.navigate(["/calendar/employee"]);
+              }
             });
     };
+
+    public onRouteCreateProject() {
+      let companyId = this.selectedCompany.companyId;
+
+      this._router.navigate(["/profile/projects/create"], {
+        queryParams: {
+          companyId
+        }
+      });
+    };
+
+  /**
+   * Функция создает компанию в кэше.
+   */
+  public async onCreateCompanyAsync() {
+    if (!this.companyName) {
+      return;
+    }
+    let companyInput = new CompanyInput();
+    companyInput.companyName = this.companyName;
+
+    (await this._projectManagmentService.createCompanyCacheAsync(companyInput))
+      .subscribe((_: any) => {
+        this._router.navigate(["/profile/projects/create"]);
+      });
+  };
 }
