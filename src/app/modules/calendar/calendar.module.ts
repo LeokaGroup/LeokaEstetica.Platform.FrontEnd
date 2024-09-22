@@ -22,6 +22,7 @@ import {CalendarRoutingModule} from "./calendar-routing.module";
 import {CalendarEmployeeComponent} from "./calendar-employee/components/calendar-employee.component";
 import {TabViewModule} from 'primeng/tabview';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import {ProjectManagementHumanResourcesService} from "./services/project-management-human-resources.service";
 
 @NgModule({
   declarations: [
@@ -49,7 +50,6 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     DialogModule,
     MessagesModule,
     MessageModule,
-    // NzCalendarModule,
     CalendarRoutingModule,
     TabViewModule,
     FullCalendarModule
@@ -58,7 +58,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
   exports: [],
 
   providers: [
-
+    ProjectManagementHumanResourcesService
   ]
 })
 
