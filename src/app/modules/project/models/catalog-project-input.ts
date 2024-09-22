@@ -1,13 +1,13 @@
+import { CatalogFilter } from "./catalog-project-filters";
+
 export class CatalogProjectInput {
-  lastId?: number | null;
+  lastId: number = 0;
 
-  paginationRows?: number | null;
+  paginationRows: number = 20;
 
-  date: string = "";
-
-  isAnyVacancies: boolean = false;
-
-  stageValues?: string | null;
+  filters: CatalogFilter = {};
 
   searchText: string = "";
+
+  isPagination: boolean = true;
 }

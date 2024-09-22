@@ -1,51 +1,15 @@
 <p-toast></p-toast>
 
-<div class="d-flex">
+<div class="d-flex projects">
   <div class="col-lg-3">
 
   </div>
 
   <div class="col-lg-8">
     <div class="d-flex align-items-center mt-3">
-      <span class="projects-count">Все проекты ({{rowsCount}})</span>
+      <span class="projects-count">Все проекты <span class="p-semibold">({{rowsCount}})</span></span>
       <div class="filtres-wrapper">
-        <div>
-          <p-multiSelect [options]="vacancyOptions"
-                      [(ngModel)]="isAnyVacancies"
-                      placeholder="Вакансии"
-                      [showHeader]="false"
-                      styleClass="vacancy-filter"
-                      (onChange)="onGetCatalogProjectsAsync($event)"
-                      selectedItemsLabel="Всего выбрано: {0}"
-                      [maxSelectedLabels]="1">
-            </p-multiSelect>
-        </div>
-        <div>
-          <p-multiSelect
-            [options]="dateOptions"
-            [(ngModel)]="selectedDate"
-            placeholder="Сортировка"
-            [showHeader]="false"
-            styleClass="date-filter"
-            (onChange)="onGetCatalogProjectsAsync($event)"
-            selectedItemsLabel="Всего выбрано: {0}"
-            [maxSelectedLabels]="1"
-          >
-          </p-multiSelect>
-        </div>
-        <div>
-          <p-multiSelect
-            [options]="stageOptions"
-            [(ngModel)]="selectedStage"
-            [showHeader]="false"
-            placeholder="Стадия"
-            styleClass="stage-filter"
-            (onChange)="onGetCatalogProjectsAsync($event)"
-            selectedItemsLabel="Всего выбрано: {0}"
-            [maxSelectedLabels]="1"
-          >
-          </p-multiSelect>
-        </div>
+        <button class="btn-link" (click)="showFilterDialog()">Фильтры</button>
       </div>
     </div>
     <div class="row">
@@ -59,7 +23,14 @@
                 <p-tag [severity]="project.tagColor" value="{{project.tagValue}}"></p-tag>
               </div>
             </div>
-            <p class="project-description">{{ project.projectDetails }}</p>
+            <div class="project-description">
+              <p-editor
+                placeholder="Описание aнкеты"
+                [(ngModel)]="project.projectDetails"
+                [readonly]="true"
+                class="headless-editor frameless"
+              />
+            </div>
           </div>
           <div class="mt-3 d-flex justify-content-between align-items-center">
             <div class="control-btns d-flex gap-2">
@@ -70,6 +41,9 @@
           </div>
         </div>
       </div>
+      <div *ngIf="aProjectsCatalog.length == 0" class="project-notfound">
+        Ничего не найдено
+      </div>
     </div>
 
     <!-- Пагинация. -->
@@ -77,8 +51,79 @@
       <p-paginator [rows]="20"
                   [totalRecords]="rowsCount"
                   (onPageChange)="onGetCatalogProjectsAsync($event)"
-                  *ngIf="rowsCount > 0">
+                  *ngIf="rowsCount > 20">
       </p-paginator>
     </div>
   </div>
 </div>
+
+<!-- Диалог фильтров -->
+<p-dialog header="Фильтры"
+          [modal]="true"
+          class="filter-modal"
+          [(visible)]="isShowFilter">
+  <div class="filter-input-wrapper">
+    <label for="searchText">Поиск в проекте</label>
+    <input 
+        pInputText 
+        id="searchText" 
+        placeholder="Введите текст для поиска"
+        [(ngModel)]="searchText" />
+  </div>
+  <div class="filter-two-column">
+    <!-- 1st column -->
+    <div>
+      <div>
+        <strong>По дате</strong>
+      </div>
+      <div>
+        <div *ngFor="let item of aDates" class="field-checkbox">
+          <p-checkbox name="item.key"
+                      [value]="item"
+                      [(ngModel)]="selectedDate"
+                      [inputId]="item.key">
+          </p-checkbox>
+          <label [for]="item.key">{{item.name}}</label>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <strong>С наличием вакансий</strong>
+      </div>
+      <div>
+        <div *ngFor="let item of anyVacancies" class="field-checkbox">
+          <p-checkbox name="item.key"
+                      [value]="item"
+                      [(ngModel)]="isAnyVacancies"
+                      [binary]="true"
+                      [inputId]="item.key">
+          </p-checkbox>
+          <label [for]="item.key">{{item.name}}</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2nd column -->
+    <div>
+      <div>
+        <strong>По стадии проекта</strong>
+      </div>
+      <div>
+        <div *ngFor="let item of aStages" class="field-checkbox">
+          <p-checkbox name="item.key"
+                      [value]="item"
+                      [(ngModel)]="selectedStage"
+                      [inputId]="item.key">
+          </p-checkbox>
+          <label [for]="item.key">{{item.name}}</label>
+        </div>
+      </div>  
+    </div>
+  </div>
+  
+  <div class="filter-buttons">
+      <p-button label="Сбросить" class="button button-white" (onClick)="onResetFilters()" />
+      <p-button label="Искать" class="button" (onClick)="onApplyFilters()" />
+  </div>
+</p-dialog>
+<!-- Конец диалога фильтров -->
