@@ -33,7 +33,6 @@ import { UpdateFolderNameInput } from '../models/input/update-folder-name-input'
 import { UpdateFolderPageNameInput } from '../models/input/update-folder-page-name-input';
 import { UpdateFolderPageDescriptionInput } from '../models/input/update-folder-page-description-input';
 import { CreateWikiFolderInput } from '../models/input/create-folder-input';
-import { Router } from '@angular/router';
 import {CreateWikiPageInput} from "../models/input/create-page-input";
 import {ExcludeTaskInput} from "../models/input/exclude-task-input";
 import {CompanyInput} from "../models/input/company-input";
@@ -105,8 +104,7 @@ export class ProjectManagmentService {
     public isLeftPanel = false;
     public companyId: number = 0;
 
-    constructor(private readonly _http: HttpClient,
-                private readonly _router: Router) {
+    constructor(private readonly _http: HttpClient) {
 
         // Если используем ендпоинты модуля УП.
         if (API_URL.apiUrlProjectManagment !== null && API_URL.apiUrlProjectManagment !== undefined) {
