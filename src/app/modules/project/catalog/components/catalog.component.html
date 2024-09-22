@@ -41,7 +41,7 @@
           </div>
         </div>
       </div>
-      <div *ngIf="aProjectsCatalog.length == 0" class="project-notfound">
+      <div *ngIf="aProjectsCatalog.length == 0 && !loadingState" class="project-notfound">
         Ничего не найдено
       </div>
     </div>
