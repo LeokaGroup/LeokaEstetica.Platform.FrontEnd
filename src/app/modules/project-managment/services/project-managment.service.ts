@@ -36,6 +36,7 @@ import { CreateWikiFolderInput } from '../models/input/create-folder-input';
 import {CreateWikiPageInput} from "../models/input/create-page-input";
 import {ExcludeTaskInput} from "../models/input/exclude-task-input";
 import {CompanyInput} from "../models/input/company-input";
+import {IncludeTaskSprintInput} from "../sprint-details/models/input/include-sprint-task-input";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -749,6 +750,16 @@ export class ProjectManagmentService {
   };
 
   /**
+   * Функция добавляет задачу в спринт.
+   * @param includeTaskSprintInput - Входная модель.
+   */
+  public async includeTaskSprintAsync(includeTaskSprintInput: IncludeTaskSprintInput) {
+    return await this._http.post(this.apiUrl + `/project-management/sprints/sprint-task`, includeTaskSprintInput).pipe(
+      tap(data => this.includeEpic$.next(data))
+    );
+  };
+
+  /**
    * Функция планирует спринт.
    * Добавляет задачи в спринт, если их указали при планировании спринта.
    * @param planingSprintInput - Входная модель.
@@ -785,7 +796,7 @@ export class ProjectManagmentService {
       &isSearchByTaskDescription=${isSearchByTaskDescription}
       &projectId=${projectId}
       &searchAgileObjectType=${searchAgileObjectType}`).pipe(
-        tap(data => this.searchSprintTasks$.next(data))
+        tap(data => this.sprintTasks$.next(data))
       );
     }
 
