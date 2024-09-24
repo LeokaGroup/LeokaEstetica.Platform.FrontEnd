@@ -324,8 +324,9 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
     includeTaskSprintInput.projectId = +this.projectId;
 
     (await this._projectManagmentService.includeTaskSprintAsync(includeTaskSprintInput))
-      .subscribe(_ => {
+      .subscribe(async (_: any) => {
         console.log("Включили задачу в спринт");
+        await this.getSprintDetailsAsync();
       });
   };
 
