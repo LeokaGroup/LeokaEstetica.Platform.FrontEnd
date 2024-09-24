@@ -1,28 +1,28 @@
+import { CatalogFilter } from "./catalog-filter";
+
 export class FilterVacancyInput {
   /**
-   * Тип фильтра по соответствиям.
+   * lastId предыдущего запроса.
    */
-  Salary: string = "";
+  lastId: number = 0;
 
   /**
-   * Фильтр оплаты.
+   * Кол-во записаей на страницу.
    */
-  Pay: string = "";
+  paginationRows: number = 20;
 
   /**
-   * Фильтр опыта работы.
+   * Фильтры.
    */
-  Experience: string = "";
+  filters: CatalogFilter = {};
 
   /**
-   * Фильтр занятости (список значений).
+   * Строка для текстовго поиска.
    */
-  EmploymentsValues: string = "";
-
-  /**
-   * Фильтр ключевых слов.
-   */
-  Keywords: string = "";
-
   searchText: string = "";
+
+  /**
+   * Флаг включения пагинации.
+   */
+  isPagination: boolean = true;
 }
