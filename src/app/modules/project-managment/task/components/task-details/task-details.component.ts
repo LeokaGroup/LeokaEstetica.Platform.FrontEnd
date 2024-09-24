@@ -921,27 +921,17 @@ export class TaskDetailsComponent implements OnInit {
   };
 
   /**
-   * Функция выбирает задачу и добавляет в массив задач эпика для дальнейшего включения этих задач в эпик.
-   */
-  public onSelectTask() {
-    this.allEpicTasks = [...this.allEpicTasks, this.selectedTask];
-    this.toAddEpicTasks = [...this.toAddEpicTasks, this.selectedTask];
-    const { taskTypeName } = this.selectedTask;
-    this._messageService.add({
-      severity: 'warn',
-      summary: "Внимание!",
-      detail: `${taskTypeName} успешно добавлена в эпик. Для применения изменений нужно сохранить`,
-    });
-  };
-
-  /**
-   * Функция добавляет задачи в эпик.
+   * Функция включает задачу в эпик.
    */
   public async onIncludeEpicTaskAsync() {
+    this.allEpicTasks = [...this.allEpicTasks, this.selectedTask];
+    this.toAddEpicTasks = [...this.toAddEpicTasks, this.selectedTask];
+
     // Не дергаем бэк лишний раз, если не добавляли задачи для включения их в эпик.
     if (this.toAddEpicTasks.length == 0) {
       return;
     }
+
     let includeTaskEpicInput = new IncludeTaskEpicInput();
     includeTaskEpicInput.epicId = this.projectTaskId;
     includeTaskEpicInput.projectTaskIds = this.toAddEpicTasks.map(x => x.fullProjectTaskId);
@@ -949,17 +939,7 @@ export class TaskDetailsComponent implements OnInit {
 
     (await this._projectManagmentService.includeTaskEpicAsync(includeTaskEpicInput))
       .subscribe(_ => {
-        console.log("Добавили задачу в эпик: ", this.includeEpic$.value);
-
-        let projectId = +this.projectId;
-
-        setTimeout(() => {
-          this._router.navigate(["/project-management/space"], {
-            queryParams: {
-              projectId
-            }
-          });
-        }, 4000);
+        console.log("Включили задачу в эпик: ", this.includeEpic$.value);
       });
   };
 
