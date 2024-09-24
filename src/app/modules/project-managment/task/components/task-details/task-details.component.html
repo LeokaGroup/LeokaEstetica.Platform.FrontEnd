@@ -10,15 +10,15 @@
   <!-- Блок с кнопками действий. -->
   <div class="mt-3 mb-3 d-flex block-task-actions">
     <div *ngIf="taskDetails$.value.taskTypeId == 4">
-      <button type="button"
-              pButton
-              icon="pi pi-save"
-              label="Сохранить"
-              class="p-button-text p-button-success p-button-sm control-sprint-strong"
-              pTooltip="Сохранить изменения эпика"
-              tooltipPosition="bottom"
-              (click)="onIncludeEpicTaskAsync()">
-      </button>
+<!--      <button type="button"-->
+<!--              pButton-->
+<!--              icon="pi pi-save"-->
+<!--              label="Сохранить"-->
+<!--              class="p-button-text p-button-success p-button-sm control-sprint-strong"-->
+<!--              pTooltip="Сохранить изменения эпика"-->
+<!--              tooltipPosition="bottom"-->
+<!--              (click)="onIncludeEpicTaskAsync()">-->
+<!--      </button>-->
     </div>
 
     <div>
@@ -760,8 +760,8 @@
                       emptyMessage="Результатов не найдено"
                       field="findText"
                       [minLength]="0"
-                      placeholder="Добавить задачу в эпик"
-                      (onSelect)="onSelectTask()"
+                      placeholder="Включить задачу в эпик"
+                      (onSelect)="onIncludeEpicTaskAsync()"
                       class="epic-task-search-input">
 
       </p-autoComplete>
@@ -1013,7 +1013,7 @@
                           label="Отправить"
                           styleClass="p-button-success p-button-text"
                 />
-              </div>            
+              </div>
             </p-card>
           </div>
         </p-tabPanel>
