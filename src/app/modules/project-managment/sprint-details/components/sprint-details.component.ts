@@ -1,8 +1,7 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Subscription } from "rxjs";
+import { Subscription, forkJoin } from "rxjs";
 import {ProjectManagmentService} from "../../services/project-managment.service";
-import { forkJoin } from "rxjs";
 import {ProjectTaskExecutorInput} from "../../task/models/input/project-task-executor-input";
 import {ProjectTaskWatcherInput} from "../../task/models/input/project-task-watcher-input";
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
@@ -11,6 +10,8 @@ import {UpdateSprintDetailsInput} from "../../sprint/models/update-sprint-detail
 import {UpdateSprintExecutorInput} from "../../sprint/models/update-sprint-executor-input";
 import {UpdateSprintWatchersInput} from "../../sprint/models/update-sprint-watchers-input";
 import {ExcludeTaskInput} from "../../models/input/exclude-task-input";
+import {SearchAgileObjectTypeEnum} from "../../../enums/search-agile-object-type-enum";
+import {IncludeTaskSprintInput} from "../models/input/include-sprint-task-input";
 
 @Component({
   selector: "sprint-details",
@@ -27,11 +28,12 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
                private readonly _projectManagmentService: ProjectManagmentService) { }
   public readonly sprintDetails$ = this._projectManagmentService.sprintDetails$;
   public readonly taskPeople$ = this._projectManagmentService.taskExecutors$;
+  public readonly sprintTasks$ = this._projectManagmentService.sprintTasks$;
 
   subscription?: Subscription;
   projectId: number = 0;
   selectedSprint: any;
-  projectSprintId: number = 0;
+  projectSprintId: any
   comment: string = "";
   sprintName: string = "";
   isActiveSprintName: boolean = false;
@@ -48,6 +50,12 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
 
     ])
   });
+  toAddSprintTasks: any[] = [];
+  isSearchByTaskId: boolean = false;
+  isSearchByTaskName: boolean = false;
+  isSearchByTaskDescription: boolean = false;
+  selectedTask: any;
+  allSprintTasks: any[] = [];
 
   public async ngOnInit() {
     forkJoin([
@@ -77,6 +85,7 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
 
         this.sprintName = this.sprintDetails$.value.sprintName;
         this.sprintDetails = this.sprintDetails$.value.sprintGoal;
+        this.allSprintTasks = this.sprintDetails$.value.sprintTasks;
 
         await this.onGetSelectTaskPeopleAsync(true);
       });
@@ -274,7 +283,7 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // this.toAddEpicTasks = [...this.toAddEpicTasks.filter(v => v.projectTaskId != projectTaskId)];
+    this.toAddSprintTasks = [...this.toAddSprintTasks.filter(v => v.projectTaskId != projectTaskId)];
     this.aRemovedTasks.push(this.sprintDetails$.value.sprintTasks.filter((v: any) => v.projectTaskId == projectTaskId));
     // this.allEpicTasks = [...this.allEpicTasks.filter(v => v.projectTaskId != projectTaskId)];
 
@@ -297,7 +306,44 @@ export class SprintDetailsComponent implements OnInit, OnDestroy {
       });
   };
 
-  ngOnDestroy() {
+  /**
+   * Функция добавляет задачи в спринт.
+   */
+  public async onIncludeSprintTaskAsync() {
+    this.allSprintTasks = [...this.allSprintTasks, this.selectedTask];
+    this.toAddSprintTasks = [...this.toAddSprintTasks, this.selectedTask];
+
+    // Не дергаем бэк лишний раз, если не добавляли задачи для включения их в спринт.
+    if (this.toAddSprintTasks.length == 0) {
+      return;
+    }
+
+    let includeTaskSprintInput = new IncludeTaskSprintInput();
+    includeTaskSprintInput.epicSprintId = this.projectSprintId;
+    includeTaskSprintInput.projectTaskIds = this.toAddSprintTasks.map(x => x.fullProjectTaskId);
+    includeTaskSprintInput.projectId = +this.projectId;
+
+    (await this._projectManagmentService.includeTaskSprintAsync(includeTaskSprintInput))
+      .subscribe(async (_: any) => {
+        console.log("Включили задачу в спринт");
+        await this.getSprintDetailsAsync();
+      });
+  };
+
+  /**
+   * Функция находит задачи, истории ,эпики, ошибки для добавления их в спринт.
+   * @param event - Ивент события.
+   */
+  public async onSearchIncludeSprintTaskAsync(event: any) {
+    (await this._projectManagmentService.searchAgileObjectAsync(
+      event.query, this.isSearchByTaskId, this.isSearchByTaskName, this.isSearchByTaskDescription,
+      this.projectId, SearchAgileObjectTypeEnum.Sprint))
+      .subscribe(_ => {
+        console.log("Задачи для добавления в спринт", this.sprintTasks$.value);
+      });
+  };
+
+  public ngOnDestroy() {
     this.subscription?.unsubscribe();
   }
 }

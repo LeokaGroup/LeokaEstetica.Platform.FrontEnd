@@ -162,7 +162,6 @@ export class TaskDetailsComponent implements OnInit {
     isSearchByTaskId: boolean = false;
     isSearchByTaskName: boolean = false;
     isSearchByTaskDescription: boolean = false;
-    aAddedTaskSprint: any[] = [];
     selectedTask: any;
     // массив тасок для добавления при сохранении эпика
     toAddEpicTasks: any[] = [];
