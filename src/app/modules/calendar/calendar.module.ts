@@ -23,6 +23,9 @@ import {CalendarEmployeeComponent} from "./calendar-employee/components/calendar
 import {TabViewModule} from 'primeng/tabview';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import {ProjectManagementHumanResourcesService} from "./services/project-management-human-resources.service";
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ListboxModule } from 'primeng/listbox';
 
 @NgModule({
   declarations: [
@@ -52,7 +55,10 @@ import {ProjectManagementHumanResourcesService} from "./services/project-managem
     MessageModule,
     CalendarRoutingModule,
     TabViewModule,
-    FullCalendarModule
+    FullCalendarModule,
+    CalendarModule,
+    AutoCompleteModule,
+    ListboxModule
   ],
 
   exports: [],

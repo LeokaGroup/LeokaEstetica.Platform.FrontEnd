@@ -23,27 +23,55 @@ export class CalendarEmployeeComponent implements OnInit {
 
   eventsPromise?: Promise<EventInput[]>;
   public readonly calendarEvents$ = this._projectManagementHumanResourcesService.calendarEvents$;
+  public readonly eventUsers$ = this._projectManagementHumanResourcesService.eventUsers$;
+  public readonly busyVariants$ = this._projectManagementHumanResourcesService.busyVariants$;
 
   // Настройки календаря.
   calendarOptions: any = {
     initialView: 'dayGridMonth',
     plugins: [dayGridPlugin, interactionPlugin],
-    dateClick: (arg: any) => this.onDateClick(arg),
-    eventClick: (arg: any) => this.onEventClick(arg),
-    locale: ruLocale
+    dateClick: (event: any) => this.onSelectDate(event),
+    eventClick: (event: any) => this.onSelectEvent(event),
+    locale: ruLocale,
+    customButtons: {
+      createEventCustomButton: {
+        text: 'Создать событие',
+        click: async () => {
+          this.isCreateEvent = true;
+          await this.getBusyVariantsAsync();
+        }
+      }
+    },
+    headerToolbar: {
+      left: 'title',
+      center: '',
+      right: 'createEventCustomButton,prev,next'
+    }
   };
+  isCreateEvent: boolean = false;
+  eventName?: string;
+  eventDescription?: string;
+  eventRageDates: any;
+  hourFormat: number = 24;
+  isShowTime: boolean = true;
+  time: Date[] | undefined;
+  searchEventMember: any;
+  aEventMembers: any[] = [];
+  selectedEventMember: any;
+  eventLocation?: string;
+  selectedBusy: any;
 
   public async ngOnInit() {
     this.checkUrlParams();
     await this.getCalendarEventsAsync();
   };
 
-  private onDateClick(arg: any) {
-    console.log("handleDateClick", arg);
+  private onSelectDate(event: any) {
+    console.log("handleDateClick", event);
   };
 
-  private onEventClick(arg: any) {
-    console.log("handleEventClick", arg);
+  private onSelectEvent(event: any) {
+    console.log("handleEventClick", event);
   };
 
   private async checkUrlParams() {
@@ -61,6 +89,37 @@ export class CalendarEmployeeComponent implements OnInit {
       .subscribe(_ => {
         console.log("События календаря:", this.calendarEvents$.value);
         this.calendarOptions.events = this.calendarEvents$.value;
+      });
+  };
+
+  /**
+   * Функция поиска пользователя.
+   * @param event - Ивент.
+   */
+  public async onSearchEventMemberAsync(event: any) {
+    (await this._projectManagementHumanResourcesService.searchEventMemberAsync(event.query))
+      .subscribe(_ => {
+        console.log("Поиск: ", this.eventUsers$.value);
+      });
+  };
+
+  /**
+   * Функция выбирает участников события и пишет в массив.
+   * @param event - Ивент.
+   */
+  public onSelectEventMember(event: any) {
+    if (this.aEventMembers.indexOf((x: any) => x.userId !== event.value.userId) == -1) {
+      this.aEventMembers.push(event.value);
+    }
+  };
+
+  /**
+   * Функция получает типы занятости.
+   */
+  private async getBusyVariantsAsync() {
+    (await this._projectManagementHumanResourcesService.getBusyVariantsAsync())
+      .subscribe(_ => {
+        console.log("Типы занятости: ", this.busyVariants$.value);
       });
   };
 }
