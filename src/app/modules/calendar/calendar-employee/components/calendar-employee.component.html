@@ -118,7 +118,7 @@
       <div>
         <p-dropdown [options]="this.busyVariants$.value"
                     [(ngModel)]="selectedBusy"
-                    optionLabel="item2"
+                    optionLabel="description"
                     appendTo="body"
                     class="control-project-stages">
         </p-dropdown>
@@ -134,7 +134,8 @@
     </p-button>
 
     <p-button label="Создать событие"
-              styleClass="p-button-text p-button-success">
+              styleClass="p-button-text p-button-success"
+              (click)="onCreateCalendarEventAsync()">
     </p-button>
   </ng-template>
 </p-dialog>

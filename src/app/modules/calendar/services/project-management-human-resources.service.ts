@@ -2,6 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, tap} from 'rxjs';
 import {API_URL} from 'src/app/core/core-urls/api-urls';
+import {CalendarInput} from "../models/input/calendar-input";
 
 /**
  * Класс сервиса модуля HR.
@@ -45,6 +46,16 @@ export class ProjectManagementHumanResourcesService {
   public async getBusyVariantsAsync() {
     return await this._http.get(API_URL.apiUrlProjectManagementHumanResources + `/project-management-human-resources/calendar/busy-variants`).pipe(
       tap(data => this.busyVariants$.next(data))
+    );
+  };
+
+  /**
+   * Функция создает событие календаря.
+   * @param eventInput - Входная модель.
+   */
+  public async createEventAsync(calendarInput: CalendarInput) {
+    return await this._http.post(API_URL.apiUrlProjectManagementHumanResources + `/project-management-human-resources/calendar/event`, calendarInput).pipe(
+      tap(_ => console.log("Событие успешно создано"))
     );
   };
 }

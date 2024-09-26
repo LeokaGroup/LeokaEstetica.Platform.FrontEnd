@@ -5,6 +5,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import ruLocale from '@fullcalendar/core/locales/ru';
 import {EventInput} from "@fullcalendar/core";
 import {ProjectManagementHumanResourcesService} from "../../services/project-management-human-resources.service";
+import {CalendarInput} from "../../models/input/calendar-input";
 
 @Component({
   selector: "calendar-employee",
@@ -49,7 +50,7 @@ export class CalendarEmployeeComponent implements OnInit {
     }
   };
   isCreateEvent: boolean = false;
-  eventName?: string;
+  eventName: string = "";
   eventDescription?: string;
   eventRageDates: any;
   hourFormat: number = 24;
@@ -120,6 +121,35 @@ export class CalendarEmployeeComponent implements OnInit {
     (await this._projectManagementHumanResourcesService.getBusyVariantsAsync())
       .subscribe(_ => {
         console.log("Типы занятости: ", this.busyVariants$.value);
+      });
+  };
+
+  public async onCreateCalendarEventAsync() {
+    let calendarInput = new CalendarInput();
+    calendarInput.eventName = this.eventName;
+
+    if (this.eventDescription != null
+      && this.eventDescription != ""
+      && this.eventDescription != undefined) {
+      calendarInput.eventDescription = this.eventDescription;
+    }
+
+    calendarInput.eventMembers = this.aEventMembers;
+
+    if (this.eventLocation != null
+      && this.eventLocation != ""
+      && this.eventLocation != undefined) {
+      calendarInput.eventLocation = this.eventLocation;
+    }
+
+    calendarInput.eventStartDate =this.eventRageDates[0];
+    calendarInput.eventEndDate =this.eventRageDates[1];
+    calendarInput.calendarEventMemberStatus = this.selectedBusy.sysName;
+
+    (await this._projectManagementHumanResourcesService.createEventAsync(calendarInput))
+      .subscribe(async(_: any) => {
+        this.isCreateEvent = false;
+        await this.getCalendarEventsAsync();
       });
   };
 }
