@@ -51,8 +51,9 @@ export class HeaderComponent implements OnInit {
   constructor(private readonly _headerService: HeaderService,
               private readonly _router: Router,
               private readonly _activatedRoute: ActivatedRoute,
-              private readonly _redirectService: RedirectService,
-              private changeDetectorRef: ChangeDetectorRef,
+              // TODO: remove - ?
+              // private readonly _redirectService: RedirectService,
+              // private changeDetectorRef: ChangeDetectorRef,
               private readonly _projectManagmentService: ProjectManagmentService) {
   }
 
@@ -119,11 +120,14 @@ export class HeaderComponent implements OnInit {
         });
     };
 
-    private rerenderAuthButtons() {
-        this.isHideAuthButtons = false;
-        this.changeDetectorRef.detectChanges();
-        this.isHideAuthButtons = true;
-    };
+  /**
+   * Функция меняет флаг показа: кнопки регистрации || аватар-меню.
+   */
+  private rerenderAuthButtons() {
+    this.isHideAuthButtons = localStorage["t_n"] ? true : false;
+    // TODO: remove - ?
+    // this.changeDetectorRef.markForCheck();
+  };
 
   // TODO: Дублируется.
   private async getBuildProjectSpaceSettingsAsync(menuItemUrl: any) {
