@@ -6,6 +6,7 @@ import ruLocale from '@fullcalendar/core/locales/ru';
 import {EventInput} from "@fullcalendar/core";
 import {ProjectManagementHumanResourcesService} from "../../services/project-management-human-resources.service";
 import {CalendarInput} from "../../models/input/calendar-input";
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: "calendar-employee",
@@ -19,7 +20,8 @@ import {CalendarInput} from "../../models/input/calendar-input";
 export class CalendarEmployeeComponent implements OnInit {
   constructor(private readonly _projectManagementHumanResourcesService: ProjectManagementHumanResourcesService,
               private readonly _router: Router,
-              private readonly _activatedRoute: ActivatedRoute) {
+              private readonly _activatedRoute: ActivatedRoute,
+              private _confirmationService: ConfirmationService) {
   }
 
   eventsPromise?: Promise<EventInput[]>;
@@ -61,6 +63,8 @@ export class CalendarEmployeeComponent implements OnInit {
   selectedEventMember: any;
   eventLocation?: string;
   selectedBusy: any;
+  isEditEvent: boolean = false;
+  isNeedUserActionEvent: boolean = false;
 
   public async ngOnInit() {
     this.checkUrlParams();
@@ -69,10 +73,12 @@ export class CalendarEmployeeComponent implements OnInit {
 
   private onSelectDate(event: any) {
     console.log("handleDateClick", event);
+    this.isNeedUserActionEvent = true;
   };
 
   private onSelectEvent(event: any) {
     console.log("handleEventClick", event);
+    this.isNeedUserActionEvent = true;
   };
 
   private async checkUrlParams() {
@@ -124,6 +130,9 @@ export class CalendarEmployeeComponent implements OnInit {
       });
   };
 
+  /**
+   * Функция создает событие в календаре.
+   */
   public async onCreateCalendarEventAsync() {
     let calendarInput = new CalendarInput();
     calendarInput.eventName = this.eventName;
