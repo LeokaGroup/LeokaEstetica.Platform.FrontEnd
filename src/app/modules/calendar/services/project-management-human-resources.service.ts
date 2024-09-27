@@ -14,6 +14,7 @@ export class ProjectManagementHumanResourcesService {
   public calendarEvents$ = new BehaviorSubject<any>(null);
   public eventUsers$ = new BehaviorSubject<any>(null);
   public busyVariants$ = new BehaviorSubject<any>(null);
+  public eventDetails$ = new BehaviorSubject<any>(null);
 
   constructor(private readonly _http: HttpClient) {
 
@@ -56,6 +57,16 @@ export class ProjectManagementHumanResourcesService {
   public async createEventAsync(calendarInput: CalendarInput) {
     return await this._http.post(API_URL.apiUrlProjectManagementHumanResources + `/project-management-human-resources/calendar/event`, calendarInput).pipe(
       tap(_ => console.log("Событие успешно создано"))
+    );
+  };
+
+  /**
+   * Функция получает детали события календаря.
+   * @param eventId - Id события.
+   */
+  public async getEventDetailsAsync(eventId: number) {
+    return await this._http.get(API_URL.apiUrlProjectManagementHumanResources + `/project-management-human-resources/calendar/event?eventId=${eventId}`).pipe(
+      tap(data => this.eventDetails$.next(data))
     );
   };
 }

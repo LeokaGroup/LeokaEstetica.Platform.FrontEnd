@@ -28,6 +28,7 @@ export class CalendarEmployeeComponent implements OnInit {
   public readonly calendarEvents$ = this._projectManagementHumanResourcesService.calendarEvents$;
   public readonly eventUsers$ = this._projectManagementHumanResourcesService.eventUsers$;
   public readonly busyVariants$ = this._projectManagementHumanResourcesService.busyVariants$;
+  public readonly eventDetails$ = this._projectManagementHumanResourcesService.eventDetails$;
 
   // Настройки календаря.
   calendarOptions: any = {
@@ -65,20 +66,40 @@ export class CalendarEmployeeComponent implements OnInit {
   selectedBusy: any;
   isEditEvent: boolean = false;
   isNeedUserActionEvent: boolean = false;
+  selectedEventId: number = 0;
+  oEvent: any;
+  isDetailsEvent: boolean = false;
+  detailEventName: string = "";
+  detailEventDescription: string = "";
+  detailDatesRange: any;
+  aDetailsEventMembers: any[] = [];
+  detailSelectedEventMember: any;
+  detailEventLocation: string = "";
+  detailMemberStatus: string = "";
 
   public async ngOnInit() {
     this.checkUrlParams();
     await this.getCalendarEventsAsync();
   };
 
+  /**
+   * Функция выбора даты календаря.
+   * @param event - Ивент.
+   */
   private onSelectDate(event: any) {
     console.log("handleDateClick", event);
     this.isNeedUserActionEvent = true;
+    this.selectedEventId = event.event._def.extendedProps.eventId;
   };
 
+  /**
+   * Функция выбора события календаря.
+   * @param event - Ивент.
+   */
   private onSelectEvent(event: any) {
     console.log("handleEventClick", event);
     this.isNeedUserActionEvent = true;
+    this.selectedEventId = event.event._def.extendedProps.eventId;
   };
 
   private async checkUrlParams() {
@@ -159,6 +180,24 @@ export class CalendarEmployeeComponent implements OnInit {
       .subscribe(async(_: any) => {
         this.isCreateEvent = false;
         await this.getCalendarEventsAsync();
+      });
+  };
+
+  /**
+   * Функция открывает модалку просмотра/изменения события календаря.
+   */
+  public async onGetEventDetailsAsync() {
+    (await this._projectManagementHumanResourcesService.getEventDetailsAsync(this.selectedEventId))
+      .subscribe(_ => {
+        console.log("Детали события календаря: ", this.eventDetails$.value);
+
+        this.isNeedUserActionEvent = false;
+        this.isDetailsEvent = true;
+        this.detailEventName = this.eventDetails$.value.title;
+        this.detailEventDescription = this.eventDetails$.value.eventDescription;
+        this.detailDatesRange = [new Date(this.eventDetails$.value.start), new Date(this.eventDetails$.value.end)];
+        this.aDetailsEventMembers = this.eventDetails$.value.eventMembers;
+        this.detailEventLocation = this.eventDetails$.value.eventLocation;
       });
   };
 }
