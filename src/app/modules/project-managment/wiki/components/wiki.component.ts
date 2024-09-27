@@ -427,4 +427,20 @@ export class WikiComponent implements OnInit {
       .subscribe(async (_: any) => {
       });
   };
+
+  /**
+   * Функция отмены диалога создания страницы.
+   */
+  onCancelCreatePageDialog() {
+    this.isCreateFolderPage = false;
+    this.selectedFolderPageName = '';
+  }
+
+  /**
+   * Функция отмены диалога создания папки.
+   */
+  onCancelCreateFolderDialog() {
+    this.isCreateFolder = false;
+    this.selectedFolderName = '';
+  }
 }

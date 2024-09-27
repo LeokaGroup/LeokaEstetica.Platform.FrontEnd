@@ -171,6 +171,8 @@
 <!-- Диалог выбора действия создать папку. -->
 <p-dialog header="Создание новой папки"
           [modal]="true"
+          [closable]="false"
+          [closeOnEscape]="false"
           [(visible)]="isCreateFolder"
           [style]="{ width: '500px' }"
           [draggable]="false" >
@@ -206,7 +208,7 @@
             type="button"
             label="Отмена"
             class="p-button-secondary p-button-text p-button-sm"
-            (click)="isVisibleContextMenuAction = !isVisibleContextMenuAction">
+            (click)="onCancelCreateFolderDialog()">
     </button>
   </div>
 </p-dialog>
@@ -214,6 +216,8 @@
 <!-- Диалог выбора действия создать страницу. -->
 <p-dialog header="Создание новой страницы"
           [modal]="true"
+          [closable]="false"
+          [closeOnEscape]="false"
           [(visible)]="isCreateFolderPage"
           [style]="{ width: '500px' }"
           [draggable]="false" >
@@ -248,7 +252,7 @@
             type="button"
             label="Отмена"
             class="p-button-secondary p-button-text p-button-sm"
-            (click)="isVisibleContextMenuAction = !isVisibleContextMenuAction">
+            (click)="onCancelCreatePageDialog()">
     </button>
   </div>
 </p-dialog>
