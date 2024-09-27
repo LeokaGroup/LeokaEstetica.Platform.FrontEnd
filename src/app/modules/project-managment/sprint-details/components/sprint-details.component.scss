@@ -48,10 +48,14 @@
   margin: 0 10px 0 0;
 }
 
-.task-name {
+::ng-deep .task-name {
   font-size: 24px;
   font-weight: 400;
   max-width: 50%;
+
+  .p-inplace .p-inplace-content {
+    width: 100%;
+  }
 }
 
 .empty-task-details {
