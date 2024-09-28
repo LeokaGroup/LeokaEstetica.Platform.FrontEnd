@@ -36,4 +36,9 @@ export class CalendarInput {
    * Статус.
    */
   calendarEventMemberStatus: string = "";
+
+  /**
+   * Id события.
+   */
+  eventId?: number;
 }

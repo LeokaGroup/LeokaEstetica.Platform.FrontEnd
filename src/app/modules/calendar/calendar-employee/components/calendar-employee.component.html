@@ -302,7 +302,7 @@
 </p-dialog>
 
 <!-- Диалог просмотра/изменения события. -->
-<p-dialog header="Создание события"
+<p-dialog header="Просмотр события"
           [(visible)]="isDetailsEvent"
           [breakpoints]="{'960px': '75vw'}"
           [style]="{width: '100vh', height: '100vh'}"
@@ -402,20 +402,20 @@
       </div>
     </div>
 
-<!--    <div class="control-input-text-worksheet mt-3">-->
-<!--      <div>-->
-<!--        <strong>Статус</strong>-->
-<!--      </div>-->
+    <div class="control-input-text-worksheet mt-3">
+      <div>
+        <strong>Статус</strong>
+      </div>
 
-<!--      <div>-->
-<!--        <p-dropdown [options]="this.busyVariants$.value"-->
-<!--                    [(ngModel)]="selectedBusy"-->
-<!--                    optionLabel="description"-->
-<!--                    appendTo="body"-->
-<!--                    class="control-project-stages">-->
-<!--        </p-dropdown>-->
-<!--      </div>-->
-<!--    </div>-->
+      <div>
+        <p-dropdown [options]="this.busyVariants$.value"
+                    optionLabel="description"
+                    appendTo="body"
+                    class="control-project-stages"
+                    formControlName="selectedBusyVariant">
+        </p-dropdown>
+      </div>
+    </div>
   </div>
 
   <ng-template pTemplate="footer">
@@ -427,7 +427,7 @@
 
     <p-button label="Сохранить"
               styleClass="p-button-text p-button-success"
-              (click)="onCreateCalendarEventAsync()">
+              (click)="onUpdateEventAsync()">
     </p-button>
   </ng-template>
 </p-dialog>

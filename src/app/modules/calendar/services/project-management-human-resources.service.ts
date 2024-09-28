@@ -69,4 +69,14 @@ export class ProjectManagementHumanResourcesService {
       tap(data => this.eventDetails$.next(data))
     );
   };
+
+  /**
+   * Функция обновляет событие календаря.
+   * @param eventInput - Входная модель.
+   */
+  public async updateEventAsync(calendarInput: CalendarInput) {
+    return await this._http.put(API_URL.apiUrlProjectManagementHumanResources + `/project-management-human-resources/calendar/event`, calendarInput).pipe(
+      tap(_ => console.log("Событие успешно обновлено"))
+    );
+  };
 }
