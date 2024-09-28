@@ -248,4 +248,15 @@ export class CalendarEmployeeComponent implements OnInit {
         await this.getCalendarEventsAsync();
       });
   };
+
+  /**
+   * Функция удаляет событие.
+   */
+  public async onDeleteEventAsync() {
+    (await this._projectManagementHumanResourcesService.removeEventAsync(this.selectedEventId))
+      .subscribe(async(_: any) => {
+        this.isNeedUserActionEvent = false;
+        await this.getCalendarEventsAsync();
+      });
+  };
 }
