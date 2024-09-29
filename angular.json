@@ -29,10 +29,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.png",
-              "src/assets"
-            ],
+            "assets": ["src/favicon.png", "src/assets"],
             "styles": [
               "src/styles.scss",
               "node_modules/primeng/resources/themes/saga-blue/theme.css",
@@ -94,13 +91,8 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/favicon.png",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "assets": ["src/favicon.png", "src/assets"],
+            "styles": ["src/styles.scss"],
             "scripts": []
           }
         }
