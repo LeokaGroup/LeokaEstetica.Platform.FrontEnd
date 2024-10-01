@@ -79,4 +79,14 @@ export class ProjectManagementHumanResourcesService {
       tap(_ => console.log("Событие успешно обновлено"))
     );
   };
+
+  /**
+   * Функция удаляет событие календаря.
+   * @param eventId - Id события.
+   */
+  public async removeEventAsync(eventId: number) {
+    return await this._http.delete(API_URL.apiUrlProjectManagementHumanResources + `/project-management-human-resources/calendar/event?eventId=${eventId}`).pipe(
+      tap(_ => console.log("Событие успешно удалено"))
+    );
+  };
 }
