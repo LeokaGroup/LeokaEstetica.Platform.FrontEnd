@@ -1,6 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
-import { ActivatedRoute, NavigationEnd, Router, UrlSegment } from "@angular/router";
-import { RedirectService } from "src/app/common/services/redirect.service";
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { HeaderService } from "../services/header.service";
 import {ProjectManagmentService} from "../../project-managment/services/project-managment.service";
 import { filter } from "rxjs";
@@ -72,6 +71,7 @@ export class HeaderComponent implements OnInit {
     private async getHeaderItemsAsync() {
         (await this._headerService.getHeaderItemsAsync())
         .subscribe(_ => {
+          debugger;
             console.log("Данные хидера: ", this.headerData$.value);
         });
     };
