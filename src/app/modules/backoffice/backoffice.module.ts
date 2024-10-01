@@ -37,6 +37,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { SplitterModule } from 'primeng/splitter';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { PhoneFormatPipe } from './aboutme/pipes/phone-format.pipe';
 
 @NgModule({
     declarations: [
@@ -49,7 +50,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
         OrderDetailsComponent,
         ProjectsArchiveComponent,
         RestoreComponent,
-        MessagesComponent
+        MessagesComponent,
+        PhoneFormatPipe
     ],
 
     imports: [
