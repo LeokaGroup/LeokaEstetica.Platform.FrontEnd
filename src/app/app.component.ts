@@ -289,7 +289,7 @@ export class AppComponent implements OnInit {
 
     //Уведомление об успешном создании тега проекта.
     "SendNotifySuccessCreateProjectTag",
-    
+
     "SendNotifySuccessProjectTaskIncludeSprint",
     "SendNotifySuccessExcludeEpicTask",
     "SendNotifyErrorExcludeEpicTask",
@@ -414,7 +414,8 @@ export class AppComponent implements OnInit {
     this.rerender();
 
     if (currentUrl == "forbidden") {
-      this.isVisibleMenu = false;
+      this.isVisibleHeader = true;
+      this.isVisibleMenu = true;
     }
 
     // Отображение левого меню профиля пользователя.
@@ -430,17 +431,19 @@ export class AppComponent implements OnInit {
 
     if (this.projectModeUrls.includes(currentUrl)
       || this.resumeModeUrls.includes(currentUrl)) {
-      this.isVisibleMenu = true;
+      // this.isVisibleMenu = true;
       localStorage["m_t"] = 1;
     }
 
     if (currentUrl.indexOf("projectId") > 0) {
       this.rerender();
+      this.isVisibleHeader = true;
       this.isVisibleMenu = true;
     }
 
-    if (currentUrl.indexOf("user/signin") >= 0) {
+    if (currentUrl.indexOf("user/signin") >= 0 || currentUrl.indexOf("user/signup") >= 0) {
       this.rerender();
+      this.isVisibleHeader = false;
       this.isVisibleMenu = false;
     }
 
@@ -452,9 +455,9 @@ export class AppComponent implements OnInit {
       this.rerender();
     }
 
-    if (currentUrl.indexOf("callcenter") >= 0) {
-      this.isVisibleMenu = false;
-    }
+    // if (currentUrl.indexOf("callcenter") >= 0) {
+    //   this.isVisibleMenu = false;
+    // }
 
     if (currentUrl.indexOf("press/offer") >= 0) {
       this.isVisibleMenu = false;
@@ -468,36 +471,36 @@ export class AppComponent implements OnInit {
     //   this.isVisibleMenu = false;
     // }
 
-    if (currentUrl.startsWith('/project-management')) {
-      this.isVisibleProjectManagementMenu = true;
-      this.isVisibleMenu = false;
-    } else {
-    this.isVisibleProjectManagementMenu = false;
-    this._activatedRoute.queryParams
-      .subscribe(params => {
-        // Для просмотра анкеты другого пользователя.
-        if (params["uc"] !== null && params["uc"] !== undefined) {
-          this.isVisibleMenu = true;
-        }
-
-        // Для просмотра проекта.
-        if (params["projectId"] > 0 && params["mode"] == "view") {
-          this.isVisibleMenu = true;
-        }
-
-        if (params["page"]) {
-          this.isVisibleMenu = true;
-        }
-
-        if (currentUrl.indexOf("fare-rules") >= 0) {
-          this.isVisibleMenu = false;
-        }
-
-        if (params["publicId"] !== null && params["step"] > 0) {
-          this.isVisibleMenu = true;
-        }
-      });
-    }
+    // if (currentUrl.startsWith('/project-management')) {
+    //   this.isVisibleProjectManagementMenu = true;
+    //   this.isVisibleMenu = false;
+    // } else {
+    // this.isVisibleProjectManagementMenu = false;
+    // this._activatedRoute.queryParams
+    //   .subscribe(params => {
+    //     // Для просмотра анкеты другого пользователя.
+    //     if (params["uc"] !== null && params["uc"] !== undefined) {
+    //       this.isVisibleMenu = true;
+    //     }
+    //
+    //     // Для просмотра проекта.
+    //     if (params["projectId"] > 0 && params["mode"] == "view") {
+    //       this.isVisibleMenu = true;
+    //     }
+    //
+    //     if (params["page"]) {
+    //       this.isVisibleMenu = true;
+    //     }
+    //
+    //     if (currentUrl.indexOf("fare-rules") >= 0) {
+    //       this.isVisibleMenu = false;
+    //     }
+    //
+    //     if (params["publicId"] !== null && params["step"] > 0) {
+    //       this.isVisibleMenu = true;
+    //     }
+    //   });
+    // }
   };
 
   /**
