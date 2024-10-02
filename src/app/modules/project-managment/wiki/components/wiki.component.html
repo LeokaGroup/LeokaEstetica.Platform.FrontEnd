@@ -1,52 +1,211 @@
-<div class="d-flex block-profile space-top-80">
-  <div class="profile-left-menu col-lg-3 d-flex">
-    <p-tree
-      emptyMessage=" "
-      [value]="aTreeItems"
-      [style]="{'min-width': '300px'}"
-      selectionMode="single"
-      (onNodeSelect)="onSelectTreeItemAsync($event)"
-      [contextMenu]="cm"
-      [(selection)]="selectedTreeItem"
-      (selectionChange)="onSelectContextTreeItem($event)">
+<div class="d-flex">
+  <div class="col-lg-2">
 
-    </p-tree>
-    <p-contextMenu #cm [model]="aContextMenuActions"></p-contextMenu>
-
-    &nbsp;
-
-    <p-button icon="pi pi-plus"
-              [rounded]="true"
-              [text]="true"
-              [severity]="'secondary'"
-              (click)="onCreateWithoutParentAsync(cm, $event)">
-
-    </p-button>
   </div>
 
-  <!-- Контент папки. -->
-  <div class="col-lg-9 block-wiki-content" *ngIf="isSelectedFolder">
-    <div>
-      <div class="folder-name-container">
-        <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveFolderName" (onActivate)="onActivateFolderName()">
-          <ng-template pTemplate="display">
-            <div class="d-flex align-items-center">
-              <h1>{{folderName}}</h1>
-            </div>
-          </ng-template>
-          <ng-template pTemplate="content">
-            <input class="input-folder-name" type="text" [(ngModel)]="folderName" value="{{folderName}}" pInputText >
-          </ng-template>
-        </p-inplace>
+  <div class="col-lg-10">
+    <div class="d-flex block-profile">
+      <div class="profile-left-menu">
+        <p-tree
+          emptyMessage=" "
+          [value]="aTreeItems"
+          [style]="{'min-width': '300px'}"
+          selectionMode="single"
+          (onNodeSelect)="onSelectTreeItemAsync($event)"
+          [contextMenu]="cm"
+          [(selection)]="selectedTreeItem"
+          (selectionChange)="onSelectContextTreeItem($event)">
 
+        </p-tree>
+        <p-contextMenu #cm [model]="aContextMenuActions"></p-contextMenu>
+
+        &nbsp;
+
+        <p-button icon="pi pi-plus"
+                  [rounded]="true"
+                  [text]="true"
+                  [severity]="'secondary'"
+                  (click)="onCreateWithoutParentAsync(cm, $event)">
+
+        </p-button>
+      </div>
+
+      <!-- Контент папки. -->
+      <div class="col-lg-9 block-wiki-content" *ngIf="isSelectedFolder">
+        <div>
+          <div class="folder-name-container">
+            <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveFolderName" (onActivate)="onActivateFolderName()">
+              <ng-template pTemplate="display">
+                <div class="d-flex align-items-center">
+                  <h1>{{folderName}}</h1>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="content">
+                <input class="input-folder-name" type="text" [(ngModel)]="folderName" value="{{folderName}}" pInputText >
+              </ng-template>
+            </p-inplace>
+
+            <button pButton
+                    pRipple
+                    icon="pi pi-save"
+                    type="button"
+                    label="Сохранить"
+                    class="p-button-success p-button-text p-button-sm"
+                    *ngIf="isActiveFolderName"
+                    (click)="onSaveFolderNameAsync()">
+            </button>
+
+            <button pButton
+                    pRipple
+                    icon="pi pi-times"
+                    type="button"
+                    label="Отмена"
+                    class="p-button-secondary p-button-text p-button-sm"
+                    *ngIf="isActiveFolderName"
+                    (click)="isActiveFolderName=!isActiveFolderName">
+            </button>
+          </div>
+        </div>
+
+        <div *ngFor="let f of wikiTreeFolderItems$.value">
+          <div>
+            <div class="page">
+              <div class="tree-item-line" *ngIf="f?.children == null">
+                <i [ngClass]="f.icon" style="font-size: 1rem"></i>
+                &nbsp;
+                {{f.label}}
+              </div>
+
+              <div class="tree-item-line" *ngIf="f?.children != null">
+                <div *ngFor="let item of f.children">
+                  <div>
+                    <i [ngClass]="item.icon" style="font-size: 1rem"></i>
+                    &nbsp;
+                    {{item.label}}
+                  </div>
+                  <br>
+                </div>
+              </div>
+            </div>
+            <br>
+          </div>
+        </div>
+      </div>
+
+      <!-- Контент страницы. -->
+      <div class="col-lg-9 block-wiki-content" *ngIf="isSelectedFolderPage">
+        <div>
+          <div>
+            <!-- TODO: Как отработает, если будут вложенные папки? Надо проверить будет. -->
+            <div class="page">
+              <div class="tree-item-line">
+                <i [ngClass]="wikiTreeFolderPage$.value.icon" style="font-size: 1rem"></i>
+                &nbsp;
+                <div>
+                  <div class="page-name-container">
+                    <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveFolderPageName" (onActivate)="onActivateFolderPageName()">
+                      <ng-template pTemplate="display">
+                        <h1>{{wikiTreeFolderPage$.value.label}}</h1>
+                      </ng-template>
+                      <ng-template pTemplate="content">
+                        <input class="input-page-name" type="text" [(ngModel)]="pageName" value="{{pageName}}" pInputText>
+                      </ng-template>
+                    </p-inplace>
+
+                    <button pButton
+                            pRipple
+                            icon="pi pi-save"
+                            type="button"
+                            label="Сохранить"
+                            class="p-button-success p-button-text p-button-sm"
+                            *ngIf="isActiveFolderPageName"
+                            (click)="onSaveFolderPageNameAsync()">
+                    </button>
+
+                    <button pButton
+                            pRipple
+                            icon="pi pi-times"
+                            type="button"
+                            label="Отмена"
+                            class="p-button-secondary p-button-text p-button-sm"
+                            *ngIf="isActiveFolderPageName"
+                            (click)="isActiveFolderPageName=!isActiveFolderPageName">
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="">
+                  <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveFolderPageDescription" (onActivate)="onActivateFolderPageDescription()">
+                    <ng-template pTemplate="display">
+                      {{wikiTreeFolderPage$.value.pageDescription}}
+                    </ng-template>
+                    <ng-template pTemplate="content">
+                      <input type="text" [(ngModel)]="pageDescription" value="{{pageDescription}}" pInputText>
+                    </ng-template>
+                  </p-inplace>
+
+                  <button pButton
+                          pRipple
+                          icon="pi pi-save"
+                          type="button"
+                          label="Сохранить"
+                          class="p-button-success p-button-text p-button-sm"
+                          *ngIf="isActiveFolderPageDescription"
+                          (click)="onSaveFolderPageDescriptionAsync()">
+                  </button>
+
+                  <button pButton
+                          pRipple
+                          icon="pi pi-times"
+                          type="button"
+                          label="Отмена"
+                          class="p-button-secondary p-button-text p-button-sm"
+                          *ngIf="isActiveFolderPageDescription"
+                          (click)="isActiveFolderPageDescription=!isActiveFolderPageDescription">
+                  </button>
+                </div>
+              </div>
+            </div>
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Диалог выбора действия создать папку. -->
+    <p-dialog header="Создание новой папки"
+              [modal]="true"
+              [closable]="false"
+              [closeOnEscape]="false"
+              [(visible)]="isCreateFolder"
+              [style]="{ width: '500px' }"
+              [draggable]="false" >
+
+      <div class="flex align-items-center gap-3 mb-3">
+        <div>
+          <label class="font-semibold w-6rem">Название папки</label>
+        </div>
+
+        <div *ngIf="isCreateFolder">
+          <input pInputText
+                 class="flex-auto"
+                 autocomplete="off"
+                 [(ngModel)]="selectedFolderName"
+                 [style]="{ width: '350px' }">
+        </div>
+      </div>
+
+      <div class="flex justify-content-end gap-2">
         <button pButton
                 pRipple
                 icon="pi pi-save"
                 type="button"
                 label="Сохранить"
                 class="p-button-success p-button-text p-button-sm"
-                *ngIf="isActiveFolderName"
-                (click)="onSaveFolderNameAsync()">
+                (click)="onCreateFolderAsync()"
+                *ngIf="isCreateFolder">
         </button>
 
         <button pButton
@@ -55,238 +214,87 @@
                 type="button"
                 label="Отмена"
                 class="p-button-secondary p-button-text p-button-sm"
-                *ngIf="isActiveFolderName"
-                (click)="isActiveFolderName=!isActiveFolderName">
+                (click)="onCancelCreateFolderDialog()">
         </button>
       </div>
-    </div>
+    </p-dialog>
 
-    <div *ngFor="let f of wikiTreeFolderItems$.value">
-      <div>
-        <div class="page">
-          <div class="tree-item-line" *ngIf="f?.children == null">
-            <i [ngClass]="f.icon" style="font-size: 1rem"></i>
-            &nbsp;
-            {{f.label}}
-          </div>
+    <!-- Диалог выбора действия создать страницу. -->
+    <p-dialog header="Создание новой страницы"
+              [modal]="true"
+              [closable]="false"
+              [closeOnEscape]="false"
+              [(visible)]="isCreateFolderPage"
+              [style]="{ width: '500px' }"
+              [draggable]="false" >
 
-          <div class="tree-item-line" *ngIf="f?.children != null">
-            <div *ngFor="let item of f.children">
-             <div>
-               <i [ngClass]="item.icon" style="font-size: 1rem"></i>
-               &nbsp;
-               {{item.label}}
-             </div>
-              <br>
-            </div>
-          </div>
+      <div class="flex align-items-center gap-3 mb-3">
+        <div>
+          <label class="font-semibold w-6rem">Название страницы</label>
         </div>
-        <br>
-      </div>
-    </div>
-  </div>
 
-  <!-- Контент страницы. -->
-  <div class="col-lg-9 block-wiki-content" *ngIf="isSelectedFolderPage">
-    <div>
-      <div>
-        <!-- TODO: Как отработает, если будут вложенные папки? Надо проверить будет. -->
-        <div class="page">
-          <div class="tree-item-line">
-            <i [ngClass]="wikiTreeFolderPage$.value.icon" style="font-size: 1rem"></i>
-            &nbsp;
-            <div>
-              <div class="page-name-container">
-                <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveFolderPageName" (onActivate)="onActivateFolderPageName()">
-                  <ng-template pTemplate="display">
-                    <h1>{{wikiTreeFolderPage$.value.label}}</h1>
-                  </ng-template>
-                  <ng-template pTemplate="content">
-                    <input class="input-page-name" type="text" [(ngModel)]="pageName" value="{{pageName}}" pInputText>
-                  </ng-template>
-                </p-inplace>
-
-                <button pButton
-                        pRipple
-                        icon="pi pi-save"
-                        type="button"
-                        label="Сохранить"
-                        class="p-button-success p-button-text p-button-sm"
-                        *ngIf="isActiveFolderPageName"
-                        (click)="onSaveFolderPageNameAsync()">
-                </button>
-
-                <button pButton
-                        pRipple
-                        icon="pi pi-times"
-                        type="button"
-                        label="Отмена"
-                        class="p-button-secondary p-button-text p-button-sm"
-                        *ngIf="isActiveFolderPageName"
-                        (click)="isActiveFolderPageName=!isActiveFolderPageName">
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div class="">
-              <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveFolderPageDescription" (onActivate)="onActivateFolderPageDescription()">
-                <ng-template pTemplate="display">
-                  {{wikiTreeFolderPage$.value.pageDescription}}
-                </ng-template>
-                <ng-template pTemplate="content">
-                  <input type="text" [(ngModel)]="pageDescription" value="{{pageDescription}}" pInputText>
-                </ng-template>
-              </p-inplace>
-
-              <button pButton
-                      pRipple
-                      icon="pi pi-save"
-                      type="button"
-                      label="Сохранить"
-                      class="p-button-success p-button-text p-button-sm"
-                      *ngIf="isActiveFolderPageDescription"
-                      (click)="onSaveFolderPageDescriptionAsync()">
-              </button>
-
-              <button pButton
-                      pRipple
-                      icon="pi pi-times"
-                      type="button"
-                      label="Отмена"
-                      class="p-button-secondary p-button-text p-button-sm"
-                      *ngIf="isActiveFolderPageDescription"
-                      (click)="isActiveFolderPageDescription=!isActiveFolderPageDescription">
-              </button>
-            </div>
-          </div>
+        <div>
+          <input pInputText
+                 class="flex-auto"
+                 autocomplete="off"
+                 [(ngModel)]="selectedFolderPageName"
+                 [style]="{ width: '350px' }">
         </div>
-        <br>
       </div>
-    </div>
+
+      <div class="flex justify-content-end gap-2">
+        <button pButton
+                pRipple
+                icon="pi pi-save"
+                type="button"
+                label="Сохранить"
+                class="p-button-success p-button-text p-button-sm"
+                (click)="onCreatePageAsync()">
+        </button>
+
+        <button pButton
+                pRipple
+                icon="pi pi-times"
+                type="button"
+                label="Отмена"
+                class="p-button-secondary p-button-text p-button-sm"
+                (click)="onCancelCreatePageDialog()">
+        </button>
+      </div>
+    </p-dialog>
+
+    <!-- Диалог подтверждения удаления папки. -->
+    <p-dialog header="{{'Удаление папки'}}"
+              [modal]="true"
+              [(visible)]="isNeedUserAction"
+              [style]="{ width: '500px' }"
+              [draggable]="false" >
+
+      <div class="flex align-items-center gap-3 mb-3">
+        <div>
+          <p>{{removeFolderResponse$.value?.responseText}}</p>
+        </div>
+      </div>
+
+      <div class="flex justify-content-end gap-2">
+        <button pButton
+                pRipple
+                icon="pi pi-times"
+                type="button"
+                label="Удалить"
+                class="p-button-danger p-button-text p-button-text p-button-sm"
+                (click)="onRemoveFolderAsync()">
+        </button>
+
+        <button pButton
+                pRipple
+                icon="pi pi-times"
+                type="button"
+                label="Отмена"
+                class="p-button-secondary p-button-text p-button-sm"
+                (click)="isNeedUserAction = !isNeedUserAction">
+        </button>
+      </div>
+    </p-dialog>
   </div>
 </div>
-
-<!-- Диалог выбора действия создать папку. -->
-<p-dialog header="Создание новой папки"
-          [modal]="true"
-          [closable]="false"
-          [closeOnEscape]="false"
-          [(visible)]="isCreateFolder"
-          [style]="{ width: '500px' }"
-          [draggable]="false" >
-
-  <div class="flex align-items-center gap-3 mb-3">
-    <div>
-      <label class="font-semibold w-6rem">Название папки</label>
-    </div>
-
-    <div *ngIf="isCreateFolder">
-      <input pInputText
-             class="flex-auto"
-             autocomplete="off"
-             [(ngModel)]="selectedFolderName"
-             [style]="{ width: '350px' }">
-    </div>
-  </div>
-
-  <div class="flex justify-content-end gap-2">
-    <button pButton
-            pRipple
-            icon="pi pi-save"
-            type="button"
-            label="Сохранить"
-            class="p-button-success p-button-text p-button-sm"
-            (click)="onCreateFolderAsync()"
-            *ngIf="isCreateFolder">
-    </button>
-
-    <button pButton
-            pRipple
-            icon="pi pi-times"
-            type="button"
-            label="Отмена"
-            class="p-button-secondary p-button-text p-button-sm"
-            (click)="onCancelCreateFolderDialog()">
-    </button>
-  </div>
-</p-dialog>
-
-<!-- Диалог выбора действия создать страницу. -->
-<p-dialog header="Создание новой страницы"
-          [modal]="true"
-          [closable]="false"
-          [closeOnEscape]="false"
-          [(visible)]="isCreateFolderPage"
-          [style]="{ width: '500px' }"
-          [draggable]="false" >
-
-  <div class="flex align-items-center gap-3 mb-3">
-    <div>
-      <label class="font-semibold w-6rem">Название страницы</label>
-    </div>
-
-    <div>
-      <input pInputText
-             class="flex-auto"
-             autocomplete="off"
-             [(ngModel)]="selectedFolderPageName"
-             [style]="{ width: '350px' }">
-    </div>
-  </div>
-
-  <div class="flex justify-content-end gap-2">
-    <button pButton
-            pRipple
-            icon="pi pi-save"
-            type="button"
-            label="Сохранить"
-            class="p-button-success p-button-text p-button-sm"
-            (click)="onCreatePageAsync()">
-    </button>
-
-    <button pButton
-            pRipple
-            icon="pi pi-times"
-            type="button"
-            label="Отмена"
-            class="p-button-secondary p-button-text p-button-sm"
-            (click)="onCancelCreatePageDialog()">
-    </button>
-  </div>
-</p-dialog>
-
-<!-- Диалог подтверждения удаления папки. -->
-<p-dialog header="{{'Удаление папки'}}"
-          [modal]="true"
-          [(visible)]="isNeedUserAction"
-          [style]="{ width: '500px' }"
-          [draggable]="false" >
-
-  <div class="flex align-items-center gap-3 mb-3">
-    <div>
-      <p>{{removeFolderResponse$.value?.responseText}}</p>
-    </div>
-  </div>
-
-  <div class="flex justify-content-end gap-2">
-    <button pButton
-            pRipple
-            icon="pi pi-times"
-            type="button"
-            label="Удалить"
-            class="p-button-danger p-button-text p-button-text p-button-sm"
-            (click)="onRemoveFolderAsync()">
-    </button>
-
-    <button pButton
-            pRipple
-            icon="pi pi-times"
-            type="button"
-            label="Отмена"
-            class="p-button-secondary p-button-text p-button-sm"
-            (click)="isNeedUserAction = !isNeedUserAction">
-    </button>
-  </div>
-</p-dialog>
