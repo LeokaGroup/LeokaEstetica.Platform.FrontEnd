@@ -1,386 +1,392 @@
 <p-toast></p-toast>
 
-<div class="left-panel" (mouseover)="onSelectPanelMenu()">
-  <div style="border-left:1px solid #C0C6CF;height:1500px;width: 50px;position: absolute;"></div>
-</div>
+<!--<div class="left-panel" (mouseover)="onSelectPanelMenu()">-->
+<!--  <div style="border-left:1px solid #C0C6CF;height:1500px;width: 50px;position: absolute;"></div>-->
+<!--</div>-->
 
-<left-panel></left-panel>
-
-<div class="task-details mt-3">
-  <!-- Название спринта. -->
-  <div class="task-name">
-    <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveSprintName" (onActivate)="onActivateSprintName()">
-      <ng-template pTemplate="display">
-        <h1 class="task-name-title">{{sprintName}}</h1>
-      </ng-template>
-      <ng-template pTemplate="content">
-        <input type="text" [(ngModel)]="sprintName" value="{{sprintName}}" pInputText>
-      </ng-template>
-    </p-inplace>
-
-    <button pButton
-            pRipple
-            icon="pi pi-save"
-            type="button"
-            label="Сохранить"
-            class="p-button-success p-button-text p-button-sm"
-            *ngIf="isActiveSprintName"
-            (click)="onSaveSprintNameAsync(sprintName)">
-    </button>
-
-    <button pButton
-            pRipple
-            icon="pi pi-times"
-            type="button"
-            label="Отмена"
-            class="p-button-secondary p-button-text p-button-sm"
-            *ngIf="isActiveSprintName"
-            (click)="isActiveSprintName=!isActiveSprintName">
-    </button>
+<div class="d-flex">
+  <div class="col-lg-2">
+    <left-panel></left-panel>
   </div>
 
-<!--  <div>-->
-<!--    <hr>-->
-<!--  </div>-->
+  <div class="col-lg-10">
+    <div class="task-details mt-3">
+      <!-- Название спринта. -->
+      <div class="task-name">
+        <p-inplace [style]="{'min-height':'33px'}" [active]="isActiveSprintName" (onActivate)="onActivateSprintName()">
+          <ng-template pTemplate="display">
+            <h1 class="task-name-title">{{sprintName}}</h1>
+          </ng-template>
+          <ng-template pTemplate="content">
+            <input type="text" [(ngModel)]="sprintName" value="{{sprintName}}" pInputText>
+          </ng-template>
+        </p-inplace>
 
-  <!-- Блок с кнопками действий. -->
-<!--  <div class="mt-3 mb-3 d-flex block-task-actions">-->
-<!--    <div>-->
-<!--      <button type="button"-->
-<!--              pButton-->
-<!--              icon="pi pi-save"-->
-<!--              label="Спланировать эпик"-->
-<!--              class="p-button-text p-button-success p-button-sm control-sprint-strong"-->
-<!--              pTooltip="Планирование эпика"-->
-<!--              tooltipPosition="bottom"-->
-<!--              (click)="onIncludeEpicTaskAsync()">-->
-<!--      </button>-->
-<!--    </div>-->
+        <button pButton
+                pRipple
+                icon="pi pi-save"
+                type="button"
+                label="Сохранить"
+                class="p-button-success p-button-text p-button-sm"
+                *ngIf="isActiveSprintName"
+                (click)="onSaveSprintNameAsync(sprintName)">
+        </button>
 
-<!--    <div>-->
-<!--      <button type="button"-->
-<!--              pButton-->
-<!--              icon="pi pi-arrow-down"-->
-<!--              label="Возможные действия"-->
-<!--              class="p-button-text p-button-primary p-button-sm task-actions"-->
-<!--              (click)="menu.toggle($event)">-->
-<!--      </button>-->
-<!--      <p-menu #menu [popup]="true" [model]="aAvailableActions"></p-menu>-->
-<!--    </div>-->
-<!--  </div>-->
+        <button pButton
+                pRipple
+                icon="pi pi-times"
+                type="button"
+                label="Отмена"
+                class="p-button-secondary p-button-text p-button-sm"
+                *ngIf="isActiveSprintName"
+                (click)="isActiveSprintName=!isActiveSprintName">
+        </button>
+      </div>
 
-  <div>
-    <hr>
-  </div>
+      <!--  <div>-->
+      <!--    <hr>-->
+      <!--  </div>-->
 
-  <!-- Детали спринта. -->
-  <div class="block-task-lines col-lg-12 d-flex">
-    <div class="col-lg-4">
-      <strong>Детали спринта</strong>
-    </div>
+      <!-- Блок с кнопками действий. -->
+      <!--  <div class="mt-3 mb-3 d-flex block-task-actions">-->
+      <!--    <div>-->
+      <!--      <button type="button"-->
+      <!--              pButton-->
+      <!--              icon="pi pi-save"-->
+      <!--              label="Спланировать эпик"-->
+      <!--              class="p-button-text p-button-success p-button-sm control-sprint-strong"-->
+      <!--              pTooltip="Планирование эпика"-->
+      <!--              tooltipPosition="bottom"-->
+      <!--              (click)="onIncludeEpicTaskAsync()">-->
+      <!--      </button>-->
+      <!--    </div>-->
 
-<!--    <form class="col-lg-4" [formGroup]="formStatuses">-->
-<!--      <div class="line-item d-flex">-->
-<!--        <label class="control-label-task-item">Статус:</label>-->
-<!--        <p-dropdown [options]="availableTransitions$.value"-->
-<!--                    [(ngModel)]="selectedStatus"-->
-<!--                    optionLabel="statusName"-->
-<!--                    [showClear]="true"-->
-<!--                    placeholder="Выберите статус"-->
-<!--                    [emptyMessage]="(availableTransitions$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"-->
-<!--                    formControlName="statusName"-->
-<!--                    (onChange)="onChangeStatusAsync()">-->
-<!--        </p-dropdown>-->
-<!--      </div>-->
-<!--    </form>-->
+      <!--    <div>-->
+      <!--      <button type="button"-->
+      <!--              pButton-->
+      <!--              icon="pi pi-arrow-down"-->
+      <!--              label="Возможные действия"-->
+      <!--              class="p-button-text p-button-primary p-button-sm task-actions"-->
+      <!--              (click)="menu.toggle($event)">-->
+      <!--      </button>-->
+      <!--      <p-menu #menu [popup]="true" [model]="aAvailableActions"></p-menu>-->
+      <!--    </div>-->
+      <!--  </div>-->
 
-    <div class="col-lg-4">
-      <strong>Люди</strong>
       <div>
-        <div class="line-item d-flex">
-          <label class="control-label-task-item">Автор:</label>
-          <p class="line-item-value">{{sprintDetails$.value?.authorName}}</p>
+        <hr>
+      </div>
+
+      <!-- Детали спринта. -->
+      <div class="block-task-lines col-lg-12 d-flex">
+        <div class="col-lg-4">
+          <strong>Детали спринта</strong>
         </div>
 
-        <form class="line-item d-flex" [formGroup]="formExecutors">
-          <label class="control-label-task-item">Исполнитель:</label>
-          <div>
-            <p-dropdown [options]="taskPeople$.value"
-                        [(ngModel)]="selectedExecutor"
-                        optionLabel="fullName"
-                        [showClear]="true"
-                        placeholder="Выберите исполнителя"
-                        [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
-                        formControlName="executorName"
-                        (onClick)="onGetSelectTaskPeopleAsync()"
-                        (onChange)="onSaveSprintExecutorAsync(selectedExecutor.userId)">
-            </p-dropdown>
-            <!--            <button pButton pRipple label="Назначить меня" class="p-button-link control-button-executor-me"></button>-->
-          </div>
-        </form>
+        <!--    <form class="col-lg-4" [formGroup]="formStatuses">-->
+        <!--      <div class="line-item d-flex">-->
+        <!--        <label class="control-label-task-item">Статус:</label>-->
+        <!--        <p-dropdown [options]="availableTransitions$.value"-->
+        <!--                    [(ngModel)]="selectedStatus"-->
+        <!--                    optionLabel="statusName"-->
+        <!--                    [showClear]="true"-->
+        <!--                    placeholder="Выберите статус"-->
+        <!--                    [emptyMessage]="(availableTransitions$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"-->
+        <!--                    formControlName="statusName"-->
+        <!--                    (onChange)="onChangeStatusAsync()">-->
+        <!--        </p-dropdown>-->
+        <!--      </div>-->
+        <!--    </form>-->
 
-        <div class="line-item d-flex">
+        <div class="col-lg-4">
+          <strong>Люди</strong>
           <div>
-            <label class="control-label-task-item">Наблюдатели:</label>
-          </div>
-
-          <div>
-            <div class="chip-block">
-              <div *ngFor="let lbl of sprintDetails$.value?.watcherNames; index as i">
-                <div class="chip-item">
-                  <p-chip label="{{lbl ?? 'Нет'}}" [removable]="true" (onRemove)="onDetachSprintWatcherAsync(lbl, i)"></p-chip>
-                </div>
-              </div>
+            <div class="line-item d-flex">
+              <label class="control-label-task-item">Автор:</label>
+              <p class="line-item-value">{{sprintDetails$.value?.authorName}}</p>
             </div>
 
-            <p-overlayPanel #wa [style]="{'min-width': '300px'}">
-              <ng-template pTemplate>
-                <div>
-                  <p-dropdown [options]="taskPeople$.value"
-                              [(ngModel)]="selectedWatcher"
-                              optionLabel="fullName"
-                              class="control-project-stages"
-                              placeholder="Выберите наблюдателя"
-                              [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
-                              (onClick)="onGetSelectTaskPeopleAsync()"
-                              (onChange)="onSaveSprintWatchersAsync(selectedWatcher)">
-                  </p-dropdown>
+            <form class="line-item d-flex" [formGroup]="formExecutors">
+              <label class="control-label-task-item">Исполнитель:</label>
+              <div>
+                <p-dropdown [options]="taskPeople$.value"
+                            [(ngModel)]="selectedExecutor"
+                            optionLabel="fullName"
+                            [showClear]="true"
+                            placeholder="Выберите исполнителя"
+                            [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                            formControlName="executorName"
+                            (onClick)="onGetSelectTaskPeopleAsync()"
+                            (onChange)="onSaveSprintExecutorAsync(selectedExecutor.userId)">
+                </p-dropdown>
+                <!--            <button pButton pRipple label="Назначить меня" class="p-button-link control-button-executor-me"></button>-->
+              </div>
+            </form>
+
+            <div class="line-item d-flex">
+              <div>
+                <label class="control-label-task-item">Наблюдатели:</label>
+              </div>
+
+              <div>
+                <div class="chip-block">
+                  <div *ngFor="let lbl of sprintDetails$.value?.watcherNames; index as i">
+                    <div class="chip-item">
+                      <p-chip label="{{lbl ?? 'Нет'}}" [removable]="true" (onRemove)="onDetachSprintWatcherAsync(lbl, i)"></p-chip>
+                    </div>
+                  </div>
                 </div>
-              </ng-template>
-            </p-overlayPanel>
 
-            <button pButton
-                    pRipple
-                    icon="pi pi-plus"
-                    type="button"
-                    class="p-button-secondary p-button-text p-button-sm"
-                    (click)="wa.toggle($event)">
-            </button>
-            <!-- <button pButton pRipple label="Добавить меня" class="p-button-link control-button-executor-me"></button> -->
+                <p-overlayPanel #wa [style]="{'min-width': '300px'}">
+                  <ng-template pTemplate>
+                    <div>
+                      <p-dropdown [options]="taskPeople$.value"
+                                  [(ngModel)]="selectedWatcher"
+                                  optionLabel="fullName"
+                                  class="control-project-stages"
+                                  placeholder="Выберите наблюдателя"
+                                  [emptyMessage]="(taskPeople$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                                  (onClick)="onGetSelectTaskPeopleAsync()"
+                                  (onChange)="onSaveSprintWatchersAsync(selectedWatcher)">
+                      </p-dropdown>
+                    </div>
+                  </ng-template>
+                </p-overlayPanel>
+
+                <button pButton
+                        pRipple
+                        icon="pi pi-plus"
+                        type="button"
+                        class="p-button-secondary p-button-text p-button-sm"
+                        (click)="wa.toggle($event)">
+                </button>
+                <!-- <button pButton pRipple label="Добавить меня" class="p-button-link control-button-executor-me"></button> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <strong>Даты</strong>
+            <div>
+              <div class="line-item d-flex">
+                <label class="control-label-task-item">Создано:</label>
+                <p class="line-item-value">{{sprintDetails$.value?.createdAt}}</p>
+              </div>
+
+              <div class="line-item d-flex">
+                <label class="control-label-task-item">Обновлено:</label>
+                <p class="line-item-value">{{sprintDetails$.value?.updatedAt}}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="mt-3">
-        <strong>Даты</strong>
-        <div>
-          <div class="line-item d-flex">
-            <label class="control-label-task-item">Создано:</label>
-            <p class="line-item-value">{{sprintDetails$.value?.createdAt}}</p>
-          </div>
-
-          <div class="line-item d-flex">
-            <label class="control-label-task-item">Обновлено:</label>
-            <p class="line-item-value">{{sprintDetails$.value?.updatedAt}}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div>
-    <hr>
-  </div>
-
-  <!-- Описание задачи. -->
-  <div class="block-task-lines col-lg-12 d-flex">
-    <div class="col-lg-8">
       <div>
-        <strong>Описание</strong>
+        <hr>
       </div>
 
-      <p-inplace [style]="{'min-height':'30px'}" [active]="isActiveSprintDetails" (onActivate)="onActivateSprintDetails()">
-        <ng-template pTemplate="display">
-          <p-editor
-            placeholder="Добавьте описание спринта, чтобы другим было понятно, что включает в себя данный спринт."
-            [(ngModel)]="sprintDetails"
-            [readonly]="true"
-            class="headless-editor frameless"
-          />
-        </ng-template>
-        <ng-template pTemplate="content">
-          <p-editor
-            placeholder="Описание спринта"
-            [(ngModel)]="sprintDetails"
-          />
+      <!-- Описание задачи. -->
+      <div class="block-task-lines col-lg-12 d-flex">
+        <div class="col-lg-8">
           <div>
-            <button pButton
-                    pRipple
-                    icon="pi pi-check"
-                    type="button"
-                    label="Сохранить"
-                    class="p-button-success p-button-text p-button-sm"
-                    *ngIf="isActiveSprintDetails"
-                    (click)="onSaveSprintDetailsAsync(sprintDetails)">
-            </button>
-
-            <button pButton
-                    pRipple
-                    icon="pi pi-times"
-                    type="button"
-                    label="Отмена"
-                    class="p-button-secondary p-button-text p-button-sm"
-                    *ngIf="isActiveSprintDetails"
-                    (click)="isActiveSprintDetails=!isActiveSprintDetails">
-            </button>
+            <strong>Описание</strong>
           </div>
-        </ng-template>
-      </p-inplace>
-    </div>
 
-    <div class="col-lg-4">
+          <p-inplace [style]="{'min-height':'30px'}" [active]="isActiveSprintDetails" (onActivate)="onActivateSprintDetails()">
+            <ng-template pTemplate="display">
+              <p-editor
+                placeholder="Добавьте описание спринта, чтобы другим было понятно, что включает в себя данный спринт."
+                [(ngModel)]="sprintDetails"
+                [readonly]="true"
+                class="headless-editor frameless"
+              />
+            </ng-template>
+            <ng-template pTemplate="content">
+              <p-editor
+                placeholder="Описание спринта"
+                [(ngModel)]="sprintDetails"
+              />
+              <div>
+                <button pButton
+                        pRipple
+                        icon="pi pi-check"
+                        type="button"
+                        label="Сохранить"
+                        class="p-button-success p-button-text p-button-sm"
+                        *ngIf="isActiveSprintDetails"
+                        (click)="onSaveSprintDetailsAsync(sprintDetails)">
+                </button>
 
-    </div>
-  </div>
-
-  <div>
-    <hr>
-  </div>
-
-  <div class="mt-3 block-sprint">
-    <div class="mb-3">
-      <p-autoComplete [(ngModel)]="selectedTask"
-                      [suggestions]="sprintTasks$.value"
-                      (completeMethod)="onSearchIncludeSprintTaskAsync($event)"
-                      [showEmptyMessage]="true"
-                      emptyMessage="Результатов не найдено"
-                      field="findText"
-                      [minLength]="0"
-                      placeholder="Включить задачу в спринт"
-                      (onSelect)="onIncludeSprintTaskAsync()"
-                      [disabled]="!isSearchByTaskId && !isSearchByTaskName && !isSearchByTaskDescription">
-
-      </p-autoComplete>
-
-      <div class="d-flex mt-1">
-        <div>
-          <p-checkbox inputId="searchByTaskId"
-                      [value]="isSearchByTaskId"
-                      (onChange)="isSearchByTaskId = !isSearchByTaskId"
-                      [binary]="true">
-
-          </p-checkbox>
-          <label for="searchByTaskId">&nbsp;&nbsp;Искать по ID задачи</label>
+                <button pButton
+                        pRipple
+                        icon="pi pi-times"
+                        type="button"
+                        label="Отмена"
+                        class="p-button-secondary p-button-text p-button-sm"
+                        *ngIf="isActiveSprintDetails"
+                        (click)="isActiveSprintDetails=!isActiveSprintDetails">
+                </button>
+              </div>
+            </ng-template>
+          </p-inplace>
         </div>
 
-        &nbsp;
+        <div class="col-lg-4">
 
-        <div>
-          <p-checkbox inputId="searchByTaskName"
-                      [value]="isSearchByTaskName"
-                      (onChange)="isSearchByTaskName = !isSearchByTaskName"
-                      [binary]="true">
-
-          </p-checkbox>
-          <label for="searchByTaskName">&nbsp;&nbsp;Искать в названии задачи</label>
-        </div>
-
-        &nbsp;
-
-        <div>
-          <p-checkbox inputId="sprintTasksDescription"
-                      [value]="isSearchByTaskDescription"
-                      (onChange)="isSearchByTaskDescription = !isSearchByTaskDescription"
-                      [binary]="true">
-
-          </p-checkbox>
-          <label for="sprintTasksDescription">&nbsp;&nbsp;Искать в описании задачи</label>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Что включает в себя спринт. -->
-  <div class="block-task-lines d-flex">
-    <div class="">
-      <div class="d-flex justify-content-between">
-        <div class="space-bottom-10">
-          <strong>Спринт включает в себя</strong>
-        </div>
-
+      <div>
+        <hr>
       </div>
 
-      <div class="">
-        <p-table [value]="allSprintTasks"
-                 styleClass="p-datatable-sm"
-                 [tableStyle]="{'min-width': '50rem'}"
-                 [rows]="10"
-                 responsiveLayout="scroll"
-                 [paginator]="allSprintTasks.length > 0">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Ключ</th>
-              <th>Тип</th>
-              <th>Название</th>
-              <th>Статус</th>
-              <th>Приоритет</th>
-              <th>Исполнитель</th>
-              <th>Исключение из спринта</th>
-            </tr>
-          </ng-template>
+      <div class="mt-3 block-sprint">
+        <div class="mb-3">
+          <p-autoComplete [(ngModel)]="selectedTask"
+                          [suggestions]="sprintTasks$.value"
+                          (completeMethod)="onSearchIncludeSprintTaskAsync($event)"
+                          [showEmptyMessage]="true"
+                          emptyMessage="Результатов не найдено"
+                          field="findText"
+                          [minLength]="0"
+                          placeholder="Включить задачу в спринт"
+                          (onSelect)="onIncludeSprintTaskAsync()"
+                          [disabled]="!isSearchByTaskId && !isSearchByTaskName && !isSearchByTaskDescription">
 
-          <ng-template pTemplate="body" let-sp>
-            <tr>
-              <td class="link">
-                <div (click)="onSelectTask(sp.projectTaskId, sp.taskTypeId)">{{sp.fullProjectTaskId ?? 'Не указан'}}</div>
-              </td>
+          </p-autoComplete>
 
-              <td>
-                <div>{{sp.taskTypeName}}</div>
-              </td>
+          <div class="d-flex mt-1">
+            <div>
+              <p-checkbox inputId="searchByTaskId"
+                          [value]="isSearchByTaskId"
+                          (onChange)="isSearchByTaskId = !isSearchByTaskId"
+                          [binary]="true">
 
-              <td>
-                <div>{{sp.name}}</div>
-              </td>
+              </p-checkbox>
+              <label for="searchByTaskId">&nbsp;&nbsp;Искать по ID задачи</label>
+            </div>
 
-              <td>
-                <div class="smaller-text">
-                  {{sp.taskStatusName}}
-                </div>
-              </td>
+            &nbsp;
 
-              <td>
-                <div class="smaller-text">
-                  {{sp?.priorityName ?? 'Не предполагается'}}
-                </div>
-              </td>
+            <div>
+              <p-checkbox inputId="searchByTaskName"
+                          [value]="isSearchByTaskName"
+                          (onChange)="isSearchByTaskName = !isSearchByTaskName"
+                          [binary]="true">
 
-              <td>
-                <div class="smaller-text">
-                  {{sp.executor?.executorName}}
-                </div>
-              </td>
+              </p-checkbox>
+              <label for="searchByTaskName">&nbsp;&nbsp;Искать в названии задачи</label>
+            </div>
+
+            &nbsp;
+
+            <div>
+              <p-checkbox inputId="sprintTasksDescription"
+                          [value]="isSearchByTaskDescription"
+                          (onChange)="isSearchByTaskDescription = !isSearchByTaskDescription"
+                          [binary]="true">
+
+              </p-checkbox>
+              <label for="sprintTasksDescription">&nbsp;&nbsp;Искать в описании задачи</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Что включает в себя спринт. -->
+      <div class="block-task-lines d-flex">
+        <div class="">
+          <div class="d-flex justify-content-between">
+            <div class="space-bottom-10">
+              <strong>Спринт включает в себя</strong>
+            </div>
+
+          </div>
+
+          <div class="">
+            <p-table [value]="allSprintTasks"
+                     styleClass="p-datatable-sm"
+                     [tableStyle]="{'min-width': '50rem'}"
+                     [rows]="10"
+                     responsiveLayout="scroll"
+                     [paginator]="allSprintTasks.length > 0">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Ключ</th>
+                  <th>Тип</th>
+                  <th>Название</th>
+                  <th>Статус</th>
+                  <th>Приоритет</th>
+                  <th>Исполнитель</th>
+                  <th>Исключение из спринта</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-sp>
+                <tr>
+                  <td class="link">
+                    <div (click)="onSelectTask(sp.projectTaskId, sp.taskTypeId)">{{sp.fullProjectTaskId ?? 'Не указан'}}</div>
+                  </td>
+
+                  <td>
+                    <div>{{sp.taskTypeName}}</div>
+                  </td>
+
+                  <td>
+                    <div>{{sp.name}}</div>
+                  </td>
+
+                  <td>
+                    <div class="smaller-text">
+                      {{sp.taskStatusName}}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="smaller-text">
+                      {{sp?.priorityName ?? 'Не предполагается'}}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="smaller-text">
+                      {{sp.executor?.executorName}}
+                    </div>
+                  </td>
 
 
-              <td>
-                <div class="cancel">
-                  <button pButton type="button"
-                          icon="pi pi-times"
-                          class="p-button-danger p-button-sm p-button-text"
-                          pTooltip="Исключить задачу из спринта"
-                          tooltipPosition="bottom"
-                          (click)="onRemoveSprintTaskAsync(sp)">
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </ng-template>
+                  <td>
+                    <div class="cancel">
+                      <button pButton type="button"
+                              icon="pi pi-times"
+                              class="p-button-danger p-button-sm p-button-text"
+                              pTooltip="Исключить задачу из спринта"
+                              tooltipPosition="bottom"
+                              (click)="onRemoveSprintTaskAsync(sp)">
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
 
-          <ng-template pTemplate="emptymessage">
-            <tr>
-              <td colspan="7">
-                <div>
-                  Нет данных.
-                </div>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="7">
+                    <div>
+                      Нет данных.
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<left-panel
-  (mouseleave)="onClosePanelMenu()"
-></left-panel>
+<!--<left-panel-->
+<!--  (mouseleave)="onClosePanelMenu()"-->
+<!--&gt;</left-panel>-->
