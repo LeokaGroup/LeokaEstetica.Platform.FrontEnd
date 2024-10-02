@@ -38,21 +38,6 @@ import { SplitterModule } from 'primeng/splitter';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { PhoneFormatPipe } from './aboutme/pipes/phone-format.pipe';
-import {SubscriptionsComponent} from './subscriptions/components/subscriptions.component';
-import {CardModule} from 'primeng/card';
-import {DialogModule} from 'primeng/dialog';
-import {MyVacancyComponent} from "./my-vacancy/my-vacancy.component";
-import {RedirectService} from 'src/app/common/services/redirect.service';
-import {MessagesModule} from 'primeng/messages';
-import {OrdersComponent} from './orders/orders-list/components/orders.component';
-import {OrderDetailsComponent} from './orders/order-details/components/order-details.component';
-import {ProjectsArchiveComponent} from './project/archive/components/archive.component';
-import {RestoreComponent} from './restore/components/restore.component';
-import {MessageModule} from 'primeng/message';
-import {MessagesComponent} from './messages/messages.component';
-import {SplitterModule} from 'primeng/splitter';
-import {InputNumberModule} from 'primeng/inputnumber';
-import {InputSwitchModule} from 'primeng/inputswitch';
 import {TieredMenuModule} from 'primeng/tieredmenu';
 
 @NgModule({
@@ -69,18 +54,6 @@ import {TieredMenuModule} from 'primeng/tieredmenu';
         MessagesComponent,
         PhoneFormatPipe
     ],
-  declarations: [
-    AboutmeComponent,
-    MyProjectsComponent,
-    CreateProjectComponent,
-    SubscriptionsComponent,
-    MyVacancyComponent,
-    OrdersComponent,
-    OrderDetailsComponent,
-    ProjectsArchiveComponent,
-    RestoreComponent,
-    MessagesComponent
-  ],
 
   imports: [
     CommonModule,
