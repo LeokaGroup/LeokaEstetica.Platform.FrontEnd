@@ -9,7 +9,7 @@
 <!--          <div class="menu-item" (click)="onSelectHeaderItem(item)">{{item.icon}}</div>-->
 <!--      </div>-->
 <!--    </div>-->
-    <p-menubar [model]="headerData$.value.items" />
+    <p-menubar [model]="headerData$.value?.items" />
   </div>
 
   <div class="header-buttons d-flex align-right" *ngIf="!isHideAuthButtons">

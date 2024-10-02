@@ -71,8 +71,31 @@ export class HeaderComponent implements OnInit {
     private async getHeaderItemsAsync() {
         (await this._headerService.getHeaderItemsAsync())
         .subscribe(_ => {
-          debugger;
             console.log("Данные хидера: ", this.headerData$.value);
+
+            // Навешиваем команды для каждого пункта меню.
+            this.headerData$.value.items.forEach((item: any) => {
+              item.command = (event: any) => {
+                switch (event.item.id) {
+                  case "Calendar":
+                    this._router.navigate(["/calendar/employee"]);
+                    break;
+
+                  case "Orders":
+                    this._router.navigate(["/profile/orders"]);
+                    break;
+
+                  case "Tickets":
+                    this._router.navigate(["/profile/tickets"]);
+                    break;
+
+                  case "Exit":
+                    localStorage.clear();
+                    this._router.navigate(["/user/signin"]);
+                    break;
+                }
+              }
+            });
         });
     };
 

@@ -48,8 +48,6 @@ export class LeftMenuComponent implements OnInit {
         "Subscriptions"
     ];
 
-    menuItems: any[] = [];
-
     aNotificationsSysNames: string[] = [
         "Notifications"
     ];
@@ -72,13 +70,7 @@ export class LeftMenuComponent implements OnInit {
 
     public async ngOnInit() {
       this.checkUrlParams();
-        if (localStorage["m_t"] == "1") {
-            await this.getProfileInfoAsync();
-        }
-
-        if (localStorage["m_t"] == "2") {
-            await this.getVacancyInfoAsync();
-        }
+      await this.getLeftMenuItemsAsync();
     };
 
   private checkUrlParams() {
@@ -95,29 +87,111 @@ export class LeftMenuComponent implements OnInit {
         });
   };
 
-    /**
-     * Функция получает пункты меню профиля пользователя.
-     * @returns Список меню.
-     */
-    private async getProfileInfoAsync() {
-        (await this._backOfficeService.getProfileItemsAsync())
-            .subscribe(_ => {
-                console.log("Меню профиля: ", this.profileItems$.value);
-                this.menuItems = this.profileItems$.value.profileMenuItems.map(({url, ...rest}: ProfileItem) => rest );
-            });
-    };
+  /**
+   * Функция получает элементы левого меню.
+   * @returns Список элементов меню.
+   */
+  private async getLeftMenuItemsAsync() {
+    (await this._backOfficeService.getLeftMenuItemsAsync())
+      .subscribe(_ => {
+        console.log("Левое меню: ", this.profileItems$.value);
 
-    /**
-     * Функция получает пункты меню вакансий.
-     * @returns Список меню.
-     */
-    private async getVacancyInfoAsync() {
-        (await this._backOfficeService.getVacancyItemsAsync())
-            .subscribe(_ => {
-                console.log("Меню вакансий: ", this.vacancyItems$.value);
-                this.menuItems = this.vacancyItems$.value.vacancyMenuItems.map(({url, ...rest}: ProfileItem) => rest );
-            });
-    };
+        // Навешиваем команды для каждого пункта меню.
+        this.profileItems$.value.items.forEach((item: any) => {
+          item.command = (event: any) => {
+            switch (event.item.id) {
+              case "ViewProfile":
+                this._router.navigate(["/profile/aboutme"], {
+                  queryParams: {
+                    mode: "view"
+                  }
+                });
+                break;
+
+              case "EditProfile":
+                this._router.navigate(["/profile/aboutme"], {
+                  queryParams: {
+                    mode: "edit"
+                  }
+                });
+                break;
+
+              case "WorkSpaces":
+                this._router.navigate(["/project-management/workspaces"]);
+                break;
+
+              // TODO: Добавить параметр projectId.
+              case "Wiki":
+                this._router.navigate(["/project-management/wiki"], {
+                  queryParams: {
+                    projectId: 0
+                  }
+                });
+                break;
+
+              // TODO: Добавить параметр projectId.
+              case "Tasks":
+                this._router.navigate(["/project-management/space"], {
+                  queryParams: {
+                    projectId: 0
+                  }
+                });
+                break;
+
+              // TODO: Добавить параметр projectId.
+              case "Backlog":
+                this._router.navigate(["/project-management/space/backlog"], {
+                  queryParams: {
+                    projectId: 0
+                  }
+                });
+                break;
+
+              // TODO: Добавить параметр projectId.
+              case "Sprints":
+                this._router.navigate(["/project-management/sprints"], {
+                  queryParams: {
+                    projectId: 0
+                  }
+                });
+                break;
+
+              // TODO: Пока не реализовано.
+              case "Roadmaps":
+                break;
+
+              // TODO: Пока не реализовано.
+              case "Reports":
+                break;
+
+              // TODO: Пока не реализовано.
+              case "Dashboards":
+                break;
+
+              // TODO: Пока не реализовано.
+              case "Timesheets":
+                break;
+
+              // TODO: Пока не реализовано.
+              case "Releases":
+                break;
+
+              case "CreateVacancy":
+                this._router.navigate(["/vacancies/create"]);
+                break;
+
+              case "UserVacancies":
+                this._router.navigate(["/vacancies/my"]);
+                break;
+
+              case "ArchivedVacancies":
+                this._router.navigate(["/vacancies/archive"]);
+                break;
+            }
+          }
+        });
+      });
+  };
 
     /**
     * Функция распределяет по роутам.
