@@ -1,282 +1,222 @@
 <p-toast></p-toast>
 
 <div class="d-flex">
-  <div class="d-flex mt-3 col-lg-3">
-    <div class="block-worksheet col-lg-12">
-      <div class="d-flex block-task">
-        <div class="task-ver-line">
-          <p-menu [model]="items"></p-menu>
+  <div class="col-lg-2">
+
+  </div>
+
+  <div class="col-lg-2">
+    <div class="d-flex mt-3 col-lg-3">
+      <div class="block-worksheet col-lg-12">
+        <div class="d-flex block-task">
+          <div class="task-ver-line">
+            <p-menu [model]="items"></p-menu>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="block-create-tag col-lg-9 mt-3" *ngIf="isShowProfile">
-    <h3>Загрузка изображения профиля</h3>
-    <div class="status">
-      <div class="tag">
-        <div>
-          <p-image [src]="userAvatarLink" alt="Аватар" width="50"></p-image>
-        </div>
+  <div class="col-lg-8">
+    <div class="d-flex">
 
-        <div class="mt-1">
-          <p-fileUpload mode="basic"
-                        accept="image/*"
-                        (onSelect)="onSelectUserAvatarFileAsync($event)"
-                        [auto]="true"
-                        chooseLabel="Загрузить изображение"
-                        class="p-button-sm">
 
-          </p-fileUpload>
-          <small>Новое изображение заменит текущее.</small>
+      <div class="block-create-tag col-lg-9 mt-3" *ngIf="isShowProfile">
+        <h3>Загрузка изображения профиля</h3>
+        <div class="status">
+          <div class="tag">
+            <div>
+              <p-image [src]="userAvatarLink" alt="Аватар" width="50"></p-image>
+            </div>
+
+            <div class="mt-1">
+              <p-fileUpload mode="basic"
+                            accept="image/*"
+                            (onSelect)="onSelectUserAvatarFileAsync($event)"
+                            [auto]="true"
+                            chooseLabel="Загрузить изображение"
+                            class="p-button-sm">
+
+              </p-fileUpload>
+              <small>Новое изображение заменит текущее.</small>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Настройки Scrum -->
-  <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowScrumSettings">
-    <h3>Настройки Scrum в проекте</h3>
-    <div class="scrum">
-      <div>
-        <div class="flex flex-column gap-3">
-          <!-- Настройки длительности спринтов -->
+      <!-- Настройки Scrum -->
+      <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowScrumSettings">
+        <h3>Настройки Scrum в проекте</h3>
+        <div class="scrum">
           <div>
-            <strong>Настройки длительности спринтов</strong>
-            <div *ngFor="let s of aScrumDurationSettings; index as i" class="field-checkbox">
-              <div class="d-flex mt-3">
-                <div>
-                  <div>
-                    {{s.name}} {{s.label}}
+            <div class="flex flex-column gap-3">
+              <!-- Настройки длительности спринтов -->
+              <div>
+                <strong>Настройки длительности спринтов</strong>
+                <div *ngFor="let s of aScrumDurationSettings; index as i" class="field-checkbox">
+                  <div class="d-flex mt-3">
+                    <div>
+                      <div>
+                        {{s.name}} {{s.label}}
+                      </div>
+                      <div>
+                        <p-inputSwitch [(ngModel)]="s.checked"
+                                       [disabled]="s.disabled"
+                                       (onChange)="onUpdateScrumDurationSettingsAsync(s.checked, s.key, i)">
+                        </p-inputSwitch>
+                        <!--                    <p-checkbox-->
+                        <!--                      [(ngModel)]="s.checked"-->
+                        <!--                      [binary]="true"-->
+                        <!--                      (checked)="s.checked"-->
+                        <!--                      (onChange)="onUpdateScrumDurationSettingsAsync(s.checked, i)"-->
+                        <!--                      [inputId]="s.key">-->
+                        <!--                    </p-checkbox>-->
+                      </div>
+                      <!--                  <p-radioButton-->
+                      <!--                    [inputId]="s.key"-->
+                      <!--                    [name]="s.name"-->
+                      <!--                    [value]="s"-->
+                      <!--                    [(ngModel)]="selectedDurationSetting"-->
+                      <!--                    [checked]="s.checked">-->
+                      <!--                  </p-radioButton>-->
+                      <!--                  <input-->
+                      <!--                    class="form-check-input"-->
+                      <!--                    type="radio"-->
+                      <!--                    [name]="s"-->
+                      <!--                    value="s"-->
+                      <!--                    [checked]="s.checked"-->
+                      <!--                    ()-->
+                      <!--                  />-->
+                      <!--                  &nbsp;-->
+                      <!--                  <label [for]="s.key" class="ml-2">-->
+                      <!--                    {{ s.name }}-->
+                      <!--                  </label>-->
+                    </div>
                   </div>
-                  <div>
-                    <p-inputSwitch [(ngModel)]="s.checked"
-                                   [disabled]="s.disabled"
-                                   (onChange)="onUpdateScrumDurationSettingsAsync(s.checked, s.key, i)">
-                    </p-inputSwitch>
-<!--                    <p-checkbox-->
-<!--                      [(ngModel)]="s.checked"-->
-<!--                      [binary]="true"-->
-<!--                      (checked)="s.checked"-->
-<!--                      (onChange)="onUpdateScrumDurationSettingsAsync(s.checked, i)"-->
-<!--                      [inputId]="s.key">-->
-<!--                    </p-checkbox>-->
-                  </div>
-<!--                  <p-radioButton-->
-<!--                    [inputId]="s.key"-->
-<!--                    [name]="s.name"-->
-<!--                    [value]="s"-->
-<!--                    [(ngModel)]="selectedDurationSetting"-->
-<!--                    [checked]="s.checked">-->
-<!--                  </p-radioButton>-->
-<!--                  <input-->
-<!--                    class="form-check-input"-->
-<!--                    type="radio"-->
-<!--                    [name]="s"-->
-<!--                    value="s"-->
-<!--                    [checked]="s.checked"-->
-<!--                    ()-->
-<!--                  />-->
-<!--                  &nbsp;-->
-<!--                  <label [for]="s.key" class="ml-2">-->
-<!--                    {{ s.name }}-->
-<!--                  </label>-->
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div class="mt-3">
-            <strong>Автоматически перемещать незавершенные задачи спринта в:</strong>
-            <div *ngFor="let s of aMoveNotCompletedTasksSettings; index as i" class="field-checkbox">
-              <div class="d-flex mt-3">
-                <div>
-                  <div>
-                    {{s.name}} {{s.label}}
+              <div class="mt-3">
+                <strong>Автоматически перемещать незавершенные задачи спринта в:</strong>
+                <div *ngFor="let s of aMoveNotCompletedTasksSettings; index as i" class="field-checkbox">
+                  <div class="d-flex mt-3">
+                    <div>
+                      <div>
+                        {{s.name}} {{s.label}}
+                      </div>
+                      <div>
+                        <p-inputSwitch [(ngModel)]="s.checked"
+                                       [disabled]="s.disabled"
+                                       (onChange)="onUpdateProjectSprintsMoveNotCompletedTasksSettingsAsync(s.checked, s.key, i)">
+                        </p-inputSwitch>
+                      </div>
+                      <!--                  <p-radioButton-->
+                      <!--                    [inputId]="s.key"-->
+                      <!--                    [name]="s.name"-->
+                      <!--                    [value]="s"-->
+                      <!--                    [(ngModel)]="selectedMoveSetting"-->
+                      <!--                    [checked]="s.checked">-->
+                      <!--                  </p-radioButton>-->
+                      <!--                  <input-->
+                      <!--                    class="form-check-input"-->
+                      <!--                    type="radio"-->
+                      <!--                    [name]="s"-->
+                      <!--                    value="s"-->
+                      <!--                    [checked]="s.checked"-->
+                      <!--                  />-->
+                      <!--                  &nbsp;-->
+                      <!--                  <label [for]="s.key" class="ml-2">-->
+                      <!--                    {{ s.name }}-->
+                      <!--                  </label>-->
+                    </div>
                   </div>
-                  <div>
-                    <p-inputSwitch [(ngModel)]="s.checked"
-                                   [disabled]="s.disabled"
-                                   (onChange)="onUpdateProjectSprintsMoveNotCompletedTasksSettingsAsync(s.checked, s.key, i)">
-                    </p-inputSwitch>
-                  </div>
-<!--                  <p-radioButton-->
-<!--                    [inputId]="s.key"-->
-<!--                    [name]="s.name"-->
-<!--                    [value]="s"-->
-<!--                    [(ngModel)]="selectedMoveSetting"-->
-<!--                    [checked]="s.checked">-->
-<!--                  </p-radioButton>-->
-<!--                  <input-->
-<!--                    class="form-check-input"-->
-<!--                    type="radio"-->
-<!--                    [name]="s"-->
-<!--                    value="s"-->
-<!--                    [checked]="s.checked"-->
-<!--                  />-->
-<!--                  &nbsp;-->
-<!--                  <label [for]="s.key" class="ml-2">-->
-<!--                    {{ s.name }}-->
-<!--                  </label>-->
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Настройки списка пользователей проекта компании. -->
-  <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowUsers && !isNotRoles">
-    <h3>Пользователи проекта компании</h3>
-    <div class="scrum">
-      <div>
-        <p-table [value]="settingUsers.value"
-                 [(selection)]="selectedUser"
-                 dataKey="userId"
-                 [paginator]="settingUsers.value?.length > 0"
-                 [rows]="10"
-                 styleClass="p-datatable-gridlines"
-                 responsiveLayout="scroll">
-
-          <ng-template pTemplate="header">
-            <tr>
-              <!-- <th></th> -->
-              <th>Полное имя</th>
-              <th>Эл. почта</th>
-              <th>Роль</th>
-              <th>Последняя активность</th>
-              <th>Исключение</th>
-            </tr>
-          </ng-template>
-
-          <ng-template pTemplate="body" let-u>
-            <tr>
-              <!-- <td>
-                <p-tableCheckbox [value]="order"></p-tableCheckbox>
-              </td> -->
-              <td>{{u.fullName}}</td>
-              <td>{{u.email}}</td>
-              <td>{{u.role}}</td>
-              <td>{{u.lastAutorization}}</td>
-              <td>
-                <p-button (click)="onRemoveUserProjectTeamAsync(u.userId, u.isOwner)"
-                          label="Исключить"
-                          styleClass="p-button-text p-button-danger"
-                          *ngIf="!u.isOwner && currentUserRoles.get('UserExclude')">
-                </p-button>
-              </td>
-            </tr>
-          </ng-template>
-
-          <ng-template pTemplate="summary">
-            Всего: {{settingUsers.value?.length}}
-          </ng-template>
-
-          <ng-template pTemplate="emptymessage">
-            <tr>
-              <td colspan="7">
-                <div class="empty-orders">
-                  Пользователей нет.
-                </div>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </div>
-    </div>
-  </div>
-
-  <!-- Роли пользователей проекта. -->
-  <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowUserRoles && !isNotRoles">
-    <h3>Настройки ролевой модели пользователей проекта</h3>
-    <div class="scrum">
-      <div>
-        <p-table [value]="settingUserRoles.value"
-                 [(selection)]="selectedUser"
-                 dataKey="userId"
-                 [paginator]="settingUserRoles.value?.length > 0"
-                 [rows]="10"
-                 styleClass="p-datatable-gridlines"
-                 responsiveLayout="scroll">
-
-          <ng-template pTemplate="caption">
-            <button pButton type="button"
-                    label="Сохранить"
-                    class="p-button-outlined p-button-success"
-                    size="small"
-                    (click)="onUpdateRolesAsync(settingUserRoles.value)">
-            </button>
-          </ng-template>
-
-          <ng-template pTemplate="header">
-            <tr>
-              <!-- <th></th> -->
-              <th>Пользователь</th>
-              <th>Название роли</th>
-              <th>Наличие роли</th>
-            </tr>
-          </ng-template>
-
-          <ng-template pTemplate="body" let-u>
-            <tr>
-              <!-- <td>
-                <p-tableCheckbox [value]="order"></p-tableCheckbox>
-              </td> -->
-              <td>{{u.email}} </td>
-              <td>{{u.roleName}}</td>
-              <td>
-                <p-checkbox
-                  [(ngModel)]="u.isEnabled"
-                  [binary]="true"
-                  inputId="binary"
-                  (onChange)="onSelectRole(u.organizationMemberId)">
-
-                </p-checkbox>
-              </td>
-            </tr>
-          </ng-template>
-
-          <ng-template pTemplate="summary">
-            Всего: {{settingUserRoles.value?.length}}
-          </ng-template>
-
-          <ng-template pTemplate="emptymessage">
-            <tr>
-              <td colspan="7">
-                <div class="empty-orders">
-                  Ролей нет.
-                </div>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </div>
-    </div>
-  </div>
-
-  <!-- Приглашения. -->
-  <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowInvite && !isNotRoles">
-    <h3>Приглашения</h3>
-    <div class="scrum">
-      <div>
-        <p-tabView>
-          <p-tabPanel header="Активные">
-            <p-table [value]="projectInvites$?.value"
-                     [(selection)]="selectedInvite"
+      <!-- Настройки списка пользователей проекта компании. -->
+      <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowUsers && !isNotRoles">
+        <h3>Пользователи проекта компании</h3>
+        <div class="scrum">
+          <div>
+            <p-table [value]="settingUsers.value"
+                     [(selection)]="selectedUser"
                      dataKey="userId"
-                     [paginator]="projectInvites$.value?.length > 0"
+                     [paginator]="settingUsers.value?.length > 0"
+                     [rows]="10"
+                     styleClass="p-datatable-gridlines"
+                     responsiveLayout="scroll">
+
+              <ng-template pTemplate="header">
+                <tr>
+                  <!-- <th></th> -->
+                  <th>Полное имя</th>
+                  <th>Эл. почта</th>
+                  <th>Роль</th>
+                  <th>Последняя активность</th>
+                  <th>Исключение</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-u>
+                <tr>
+                  <!-- <td>
+                    <p-tableCheckbox [value]="order"></p-tableCheckbox>
+                  </td> -->
+                  <td>{{u.fullName}}</td>
+                  <td>{{u.email}}</td>
+                  <td>{{u.role}}</td>
+                  <td>{{u.lastAutorization}}</td>
+                  <td>
+                    <p-button (click)="onRemoveUserProjectTeamAsync(u.userId, u.isOwner)"
+                              label="Исключить"
+                              styleClass="p-button-text p-button-danger"
+                              *ngIf="!u.isOwner && currentUserRoles.get('UserExclude')">
+                    </p-button>
+                  </td>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="summary">
+                Всего: {{settingUsers.value?.length}}
+              </ng-template>
+
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="7">
+                    <div class="empty-orders">
+                      Пользователей нет.
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Роли пользователей проекта. -->
+      <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowUserRoles && !isNotRoles">
+        <h3>Настройки ролевой модели пользователей проекта</h3>
+        <div class="scrum">
+          <div>
+            <p-table [value]="settingUserRoles.value"
+                     [(selection)]="selectedUser"
+                     dataKey="userId"
+                     [paginator]="settingUserRoles.value?.length > 0"
                      [rows]="10"
                      styleClass="p-datatable-gridlines"
                      responsiveLayout="scroll">
 
               <ng-template pTemplate="caption">
                 <button pButton type="button"
-                        label="Пригласить"
+                        label="Сохранить"
                         class="p-button-outlined p-button-success"
                         size="small"
-                        (click)="isProjectInvite=true">
+                        (click)="onUpdateRolesAsync(settingUserRoles.value)">
                 </button>
               </ng-template>
 
@@ -284,8 +224,8 @@
                 <tr>
                   <!-- <th></th> -->
                   <th>Пользователь</th>
-                  <th>Дата приглашения</th>
-                  <th>Отменить</th>
+                  <th>Название роли</th>
+                  <th>Наличие роли</th>
                 </tr>
               </ng-template>
 
@@ -295,33 +235,105 @@
                     <p-tableCheckbox [value]="order"></p-tableCheckbox>
                   </td> -->
                   <td>{{u.email}} </td>
-                  <td>{{u.createdAt}}</td>
+                  <td>{{u.roleName}}</td>
                   <td>
-                    <p-button (click)="onCancelProjectInviteAsync(u.notificationId)"
-                              label="Отменить"
-                              styleClass="p-button-text p-button-danger">
+                    <p-checkbox
+                      [(ngModel)]="u.isEnabled"
+                      [binary]="true"
+                      inputId="binary"
+                      (onChange)="onSelectRole(u.organizationMemberId)">
 
-                    </p-button>
+                    </p-checkbox>
                   </td>
                 </tr>
               </ng-template>
 
               <ng-template pTemplate="summary">
-                            Всего: {{projectInvites$.value?.length}}
+                Всего: {{settingUserRoles.value?.length}}
               </ng-template>
 
               <ng-template pTemplate="emptymessage">
                 <tr>
                   <td colspan="7">
                     <div class="empty-orders">
-                      Приглашений нет.
+                      Ролей нет.
                     </div>
                   </td>
                 </tr>
               </ng-template>
             </p-table>
-          </p-tabPanel>
-        </p-tabView>
+          </div>
+        </div>
+      </div>
+
+      <!-- Приглашения. -->
+      <div class="block-scrum col-lg-9 mt-3" *ngIf="isShowInvite && !isNotRoles">
+        <h3>Приглашения</h3>
+        <div class="scrum">
+          <div>
+            <p-tabView>
+              <p-tabPanel header="Активные">
+                <p-table [value]="projectInvites$?.value"
+                         [(selection)]="selectedInvite"
+                         dataKey="userId"
+                         [paginator]="projectInvites$.value?.length > 0"
+                         [rows]="10"
+                         styleClass="p-datatable-gridlines"
+                         responsiveLayout="scroll">
+
+                  <ng-template pTemplate="caption">
+                    <button pButton type="button"
+                            label="Пригласить"
+                            class="p-button-outlined p-button-success"
+                            size="small"
+                            (click)="isProjectInvite=true">
+                    </button>
+                  </ng-template>
+
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <!-- <th></th> -->
+                      <th>Пользователь</th>
+                      <th>Дата приглашения</th>
+                      <th>Отменить</th>
+                    </tr>
+                  </ng-template>
+
+                  <ng-template pTemplate="body" let-u>
+                    <tr>
+                      <!-- <td>
+                        <p-tableCheckbox [value]="order"></p-tableCheckbox>
+                      </td> -->
+                      <td>{{u.email}} </td>
+                      <td>{{u.createdAt}}</td>
+                      <td>
+                        <p-button (click)="onCancelProjectInviteAsync(u.notificationId)"
+                                  label="Отменить"
+                                  styleClass="p-button-text p-button-danger">
+
+                        </p-button>
+                      </td>
+                    </tr>
+                  </ng-template>
+
+                  <ng-template pTemplate="summary">
+                    Всего: {{projectInvites$.value?.length}}
+                  </ng-template>
+
+                  <ng-template pTemplate="emptymessage">
+                    <tr>
+                      <td colspan="7">
+                        <div class="empty-orders">
+                          Приглашений нет.
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </p-tabPanel>
+            </p-tabView>
+          </div>
+        </div>
       </div>
     </div>
   </div>
