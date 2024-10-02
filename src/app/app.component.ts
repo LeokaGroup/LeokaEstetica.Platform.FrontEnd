@@ -288,7 +288,17 @@ export class AppComponent implements OnInit {
     "SendNotificationWarningDublicateUserProject",
 
     //Уведомление об успешном создании тега проекта.
-    "SendNotifySuccessCreateProjectTag"
+    "SendNotifySuccessCreateProjectTag",
+    
+    "SendNotifySuccessProjectTaskIncludeSprint",
+    "SendNotifySuccessExcludeEpicTask",
+    "SendNotifyErrorExcludeEpicTask",
+    "SendNotifySuccessExcludeSprintTask",
+    "SendNotifyErrorExcludeSprintTask",
+    "SendNotifySuccessCreateFolder",
+    "SendNotifySuccessCreatePage",
+    "SendNotifyErrorCreateFolder",
+    "SendNotifyErrorCreatePage",
   ];
 
   public $allFeed = new BehaviorSubject<any>(null);

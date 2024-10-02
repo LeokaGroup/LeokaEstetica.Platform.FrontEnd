@@ -26,6 +26,9 @@ import {ProjectManagementHumanResourcesService} from "./services/project-managem
 import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ListboxModule } from 'primeng/listbox';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import {ConfirmationService} from "primeng/api";
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [
@@ -58,13 +61,16 @@ import { ListboxModule } from 'primeng/listbox';
     FullCalendarModule,
     CalendarModule,
     AutoCompleteModule,
-    ListboxModule
+    ListboxModule,
+    ConfirmPopupModule,
+    ConfirmDialogModule
   ],
 
   exports: [],
 
   providers: [
-    ProjectManagementHumanResourcesService
+    ProjectManagementHumanResourcesService,
+    ConfirmationService
   ]
 })
 

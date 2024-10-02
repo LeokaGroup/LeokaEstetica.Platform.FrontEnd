@@ -139,7 +139,7 @@
                 {{
                   (profileInfo$.value.phoneNumber == null || profileInfo$.value.phoneNumber == '')
                   ? 'Не указан'
-                  : '+7 ' + profileInfo$.value.phoneNumber
+                  : '+7 ' + (profileInfo$.value.phoneNumber | phoneFormat )
                 }}
               </span>
             </label>
