@@ -1,14 +1,15 @@
-<nav class="navbar navbar-light justify-content-center navbar-main">
+<nav class="navbar navbar-light navbar-main">
   <a class="navbar-brand" routerLink="">
     <img class="logo" src="../../../../assets/images/logo/logo.svg">
   </a>
 
   <div class="navbar-links-wrapper">
-    <div class="header-buttons d-flex menu">
-      <div *ngFor="let item of headerData$.value">
-          <div class="menu-item" (click)="onSelectHeaderItem(item)">{{item.menuItemTitle}}</div>
-      </div>
-    </div>
+<!--    <div class="header-buttons d-flex menu">-->
+<!--      <div *ngFor="let item of headerData$.value">-->
+<!--          <div class="menu-item" (click)="onSelectHeaderItem(item)">{{item.icon}}</div>-->
+<!--      </div>-->
+<!--    </div>-->
+    <p-menubar [model]="headerData$.value?.items" />
   </div>
 
   <div class="header-buttons d-flex align-right" *ngIf="!isHideAuthButtons">
@@ -25,12 +26,12 @@
       </div>
   </div>
 
- <div class="user-avatar d-flex justify-content-end" *ngIf="isHideAuthButtons">
-  <p-avatar label="P"
-            shape="circle"
-            (click)="menu.toggle($event)">
-  </p-avatar>
+<!-- <div class="user-avatar d-flex justify-content-end" *ngIf="isHideAuthButtons">-->
+<!--  <p-avatar label="P"-->
+<!--            shape="circle"-->
+<!--            (click)="menu.toggle($event)">-->
+<!--  </p-avatar>-->
 
-  <p-menu #menu [popup]="true" [model]="items" appendTo="body"></p-menu>
- </div>
+<!--  <p-menu #menu [popup]="true" [model]="items" appendTo="body"></p-menu>-->
+<!-- </div>-->
 </nav>

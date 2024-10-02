@@ -1,14 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { BackOfficeService } from "../../services/backoffice.service";
 import {ProjectManagmentService} from "../../../project-managment/services/project-managment.service";
 import {CompanyInput} from "../../../project-managment/models/input/company-input";
-
-interface ProfileItem {
-    url: string;
-    [key: string]: any;
-  }
 
 @Component({
     selector: "left-menu",
@@ -48,8 +43,6 @@ export class LeftMenuComponent implements OnInit {
         "Subscriptions"
     ];
 
-    menuItems: any[] = [];
-
     aNotificationsSysNames: string[] = [
         "Notifications"
     ];
@@ -63,22 +56,18 @@ export class LeftMenuComponent implements OnInit {
     aUserCompanies: any[] = [];
     selectedCompany: any;
     companyName: string = "";
+    isExistsProjectId: boolean = false;
 
   constructor(private readonly _backOfficeService: BackOfficeService,
               private readonly _router: Router,
               private readonly _redirectService: RedirectService,
-              private readonly _projectManagmentService: ProjectManagmentService) {
+              private readonly _projectManagmentService: ProjectManagmentService,
+              private readonly _activatedRoute: ActivatedRoute) {
   }
 
     public async ngOnInit() {
       this.checkUrlParams();
-        if (localStorage["m_t"] == "1") {
-            await this.getProfileInfoAsync();
-        }
-
-        if (localStorage["m_t"] == "2") {
-            await this.getVacancyInfoAsync();
-        }
+      await this.getLeftMenuItemsAsync();
     };
 
   private checkUrlParams() {
@@ -95,140 +84,179 @@ export class LeftMenuComponent implements OnInit {
         });
   };
 
-    /**
-     * Функция получает пункты меню профиля пользователя.
-     * @returns Список меню.
-     */
-    private async getProfileInfoAsync() {
-        (await this._backOfficeService.getProfileItemsAsync())
-            .subscribe(_ => {
-                console.log("Меню профиля: ", this.profileItems$.value);
-                this.menuItems = this.profileItems$.value.profileMenuItems.map(({url, ...rest}: ProfileItem) => rest );
-            });
-    };
+  /**
+   * Функция получает элементы левого меню.
+   * @returns Список элементов меню.
+   */
+  private async getLeftMenuItemsAsync() {
+    (await this._backOfficeService.getLeftMenuItemsAsync())
+      .subscribe(_ => {
+        console.log("Левое меню: ", this.profileItems$.value);
 
-    /**
-     * Функция получает пункты меню вакансий.
-     * @returns Список меню.
-     */
-    private async getVacancyInfoAsync() {
-        (await this._backOfficeService.getVacancyItemsAsync())
-            .subscribe(_ => {
-                console.log("Меню вакансий: ", this.vacancyItems$.value);
-                this.menuItems = this.vacancyItems$.value.vacancyMenuItems.map(({url, ...rest}: ProfileItem) => rest );
-            });
-    };
+        // Навешиваем команды для каждого пункта меню.
+        this.profileItems$.value.items.forEach((item: any) => {
+          // Команды первого уровня.
+          item.command = (event: any) => {
+            switch (event.item.id) {
+              case "ViewProfile":
+                this._router.navigate(["/profile/aboutme"], {
+                  queryParams: {
+                    mode: "view"
+                  }
+                });
+                break;
 
-    /**
-    * Функция распределяет по роутам.
-    * @param event - Событие.
-    */
-    public async onSelectMenu(event: any) {
-        console.log("event", event);
-        let text = event.target.textContent;
-        event.preventDefault();
+              case "EditProfile":
+                this._router.navigate(["/profile/aboutme"], {
+                  queryParams: {
+                    mode: "edit"
+                  }
+                });
+                break;
 
-        (await this._backOfficeService.selectProfileMenuAsync(text))
-            .subscribe(async (_: any) => {
-                console.log("Выбрали меню: ", this.selectMenu$.value.sysName);
-                this.sysName = this.selectMenu$.value.sysName;
+              case "CreateVacancy":
+                this._router.navigate(["/vacancies/create"]);
+                break;
 
-                // Роут на просмотр анкеты.
-                if (this.aViewSysNames.includes(this.sysName)) {
-                    this._router.navigate(["/profile/aboutme"], {
-                        queryParams: {
-                            mode: "view"
-                        }
-                    });
-                }
+              case "UserVacancies":
+                this._router.navigate(["/vacancies/my"]);
+                break;
 
-                // Роут на изменение анкеты.
-                if (this.aEditSysNames.includes(this.sysName)) {
-                    this._router.navigate(["/profile/aboutme"], {
-                        queryParams: {
-                            mode: "edit"
-                        }
-                    });
-                }
+              case "ArchivedVacancies":
+                this._router.navigate(["/vacancies/archive"]);
+                break;
+            }
+          }
 
-                // Роут на страницу мои проекты.
-                if (this.aProjectsSysName.includes(this.sysName)) {
-                    this._router.navigate(["/profile/projects/my"]);
-                }
+          // Смотрим уровень модулей.
+          if (item.id == "Modules") {
+            // Смотрим каждый модуль.
+            item.items.forEach((item2: any) => {
+              // Смотрим модуль УП.
+              if (item2.id == "ProjectManagement") {
+                // Смотрим элементы уровня модуля УП.
+                item2.items.forEach((item3: any) => {
+                  let projectId: number;
 
-                // Роут на страницу создания проекта.
-                if (this.aCreateProjectsSysName.includes(this.sysName)) {
-                  // Сначала вычисляем кол-во компаний пользователя.
-                  (await this._projectManagmentService.calculateUserCompanyAsync())
-                    // Если требуется действие от пользователя.
-                    .subscribe(async (response: any) => {
-                      if (response.isNeedUserAction) {
-                        // Если компаний 0 - то требуем создать сначала компанию.
-                        // Показываем соответствующую модалку.
-                        if (!response.ifExistsAnyCompanies && !response.ifExistsMultiCompanies) {
-                          this.isCreateCompany = true;
-                        }
+                  // Действия, которые зависят от параметров в url.
+                  this._activatedRoute.queryParams.subscribe(params => {
+                    if (!params['projectId']) {
+                      // Дизейблим пункт меню, т.к. проект не выбран.
+                      item3.disabled = ["Wiki", "Tasks", "Backlog", "Sprints"].includes(item3.id);
+                    }
 
-                        // Если более 1, то требуем выбрать, к какой компании отнести проект.
-                        // Показываем соответствующую модалку.
-                        else if (response.ifExistsMultiCompanies && !response.ifExistsAnyCompanies) {
-                          this.isSelectCompany = true;
+                    projectId = params['projectId'];
+                  });
 
-                          (await this._projectManagmentService.getUserCompaniesAsync())
-                            .subscribe((_: any) => {
-                              this.aUserCompanies = this.userCompanies$.value;
-                            });
-                        }
-                      }
+                  // Команды уровня элементов модуля УП.
+                  item3.command = async (event: any) => {
+                    switch (event.item.id) {
+                      case "WorkSpaces":
+                        this._router.navigate(["/project-management/workspaces"]);
+                        break;
 
-                      else {
-                        this._router.navigate(["/profile/projects/create"]);
-                      }
-                    });
-                }
+                      case "Wiki":
+                        this._router.navigate(["/project-management/wiki"], {
+                          queryParams: {
+                            projectId
+                          }
+                        });
+                        break;
 
-                // Роут на страницу создания вакансии.
-                if (this.aCreateVacanciesSysName.includes(this.sysName)) {
-                    this._router.navigate(["/vacancies/create"]);
-                }
+                      case "Tasks":
+                        this._router.navigate(["/project-management/space"], {
+                          queryParams: {
+                            projectId
+                          }
+                        });
+                        break;
 
-                // Роут на страницу списка вакансии.
-                if (this.aVacanciesSysName.includes(this.sysName)) {
-                    this._router.navigate(["/vacancies/my"]);
-                }
+                      case "Backlog":
+                        this._router.navigate(["/project-management/space/backlog"], {
+                          queryParams: {
+                            projectId
+                          }
+                        });
+                        break;
 
-                // Роут на страницу создания вакансии.подписок
-                if (this.aSubscriptionsSysNames.includes(this.sysName)) {
-                    this._router.navigate(["/subscriptions"]);
-                }
+                      case "Sprints":
+                        this._router.navigate(["/project-management/sprints"], {
+                          queryParams: {
+                            projectId
+                          }
+                        });
+                        break;
 
-                // Роут на страницу уведомлений пользователя.
-                if (this.aNotificationsSysNames.includes(this.sysName)) {
-                    this._router.navigate(["/notifications"]);
-                }
+                      // TODO: Пока не реализовано.
+                      case "Roadmaps":
+                        break;
 
-                // Роут на страницу архива проектов пользователя.
-                if (this.archivedProjectsSysNames == this.sysName) {
-                    this._router.navigate(["/projects/archive"]);
-                }
+                      // TODO: Пока не реализовано.
+                      case "Reports":
+                        break;
 
-                // Роут на страницу архива вакансий пользователя.
-                if (this.archivedVacanciesSysNames == this.sysName) {
-                    this._router.navigate(["/vacancies/archive"]);
-                }
+                      // TODO: Пока не реализовано.
+                      case "Dashboards":
+                        break;
 
-                // Роут на страницу сообщений ЛК пользователя.
-                if (this.profileMessages == this.sysName) {
-                    this._router.navigate(["/profile/messages"]);
-                }
+                      // TODO: Пока не реализовано.
+                      case "Timesheets":
+                        break;
 
-              // Переход на страницу календаря.
-              if (this.sysName == "Calendar") {
-                this._router.navigate(["/calendar/employee"]);
+                      // TODO: Пока не реализовано.
+                      case "Releases":
+                        break;
+
+                      case "CreateProject":
+                        // Сначала вычисляем кол-во компаний пользователя.
+                        (await this._projectManagmentService.calculateUserCompanyAsync())
+                          // Если требуется действие от пользователя.
+                          .subscribe(async (response: any) => {
+                            if (response.isNeedUserAction) {
+                              // Если компаний 0 - то требуем создать сначала компанию.
+                              // Показываем соответствующую модалку.
+                              if (!response.ifExistsAnyCompanies && !response.ifExistsMultiCompanies) {
+                                this.isCreateCompany = true;
+                              }
+
+                                // Если более 1, то требуем выбрать, к какой компании отнести проект.
+                              // Показываем соответствующую модалку.
+                              else if (response.ifExistsMultiCompanies && !response.ifExistsAnyCompanies) {
+                                this.isSelectCompany = true;
+
+                                (await this._projectManagmentService.getUserCompaniesAsync())
+                                  .subscribe((_: any) => {
+                                    this.aUserCompanies = this.userCompanies$.value;
+                                  });
+                              }
+                            }
+
+                            else {
+                              this._router.navigate(["/profile/projects/create"]);
+                            }
+                          });
+                        break;
+
+                      case "UserProjects":
+                        this._router.navigate(["/profile/projects/my"]);
+                        break;
+
+                      case "ArchivedProjects":
+                        this._router.navigate(["/projects/archive"]);
+                        break;
+                    }
+                  }
+                });
               }
             });
-    };
+          }
+        });
+      });
+  };
 
+  /**
+   * ФФункция переходит к созданию проекта и подставляет параметры, если они нужны.
+   */
     public onRouteCreateProject() {
       let companyId = this.selectedCompany.companyId;
 

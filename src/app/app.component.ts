@@ -323,6 +323,7 @@ export class AppComponent implements OnInit {
   }
 
   public async ngOnInit() {
+    this.checkUrlParams();
     this.checkCurrentRouteUrl();
     this.isVisibleHeader = true;
 
@@ -382,6 +383,24 @@ export class AppComponent implements OnInit {
             if (this.currentUrl == "/forbidden") {
               this.isVisibleMenu = false;
             }
+          }
+        });
+  };
+
+  private checkUrlParams() {
+    this._router.events
+      .subscribe(
+        (event: any) => {
+          // Отображение левого меню профиля пользователя.
+          if (this._aVisibleProfileMenuRoutes.includes(event.url)) {
+            this.isVisibleMenu = true;
+            localStorage["m_t"] = 1;
+          }
+
+          if (event.url.includes("/user/signin")
+            || event.url.includes("/user/signup")
+            || event.url == "/") {
+            this.isVisibleMenu = false;
           }
         });
   };

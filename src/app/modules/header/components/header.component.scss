@@ -10,14 +10,14 @@
 }
 
 .navbar-main {
-  display: grid;
-  grid-template-columns: 117px 1fr 176px;
-  justify-content: space-between;
+  //display: grid;
+  //grid-template-columns: 117px 1fr 176px;
+  //justify-content: space-between;
 }
 
 .navbar-links-wrapper {
-  display: flex;
-  justify-content: center;
+  //display: flex;
+  //justify-content: center;
 }
 
 .menu {
@@ -40,7 +40,7 @@
 
 .navbar-brand {
   width: 117px;
-  margin-right: auto;
+  //margin-right: auto;
 }
 
 .logo {
@@ -106,4 +106,12 @@
 /* xl (>=1200) */
 @media (min-width: 1200px) {
 
+}
+
+::ng-deep .p-menubar {
+  padding: 0.5rem;
+  background: none;
+  color: #495057;
+  border: none;
+  border-radius: 0;
 }

@@ -1,6 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
-import { ActivatedRoute, NavigationEnd, Router, UrlSegment } from "@angular/router";
-import { RedirectService } from "src/app/common/services/redirect.service";
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { HeaderService } from "../services/header.service";
 import {ProjectManagmentService} from "../../project-managment/services/project-managment.service";
 import { filter } from "rxjs";
@@ -73,6 +72,30 @@ export class HeaderComponent implements OnInit {
         (await this._headerService.getHeaderItemsAsync())
         .subscribe(_ => {
             console.log("Данные хидера: ", this.headerData$.value);
+
+            // Навешиваем команды для каждого пункта меню.
+            this.headerData$.value.items.forEach((item: any) => {
+              item.command = (event: any) => {
+                switch (event.item.id) {
+                  case "Calendar":
+                    this._router.navigate(["/calendar/employee"]);
+                    break;
+
+                  case "Orders":
+                    this._router.navigate(["/profile/orders"]);
+                    break;
+
+                  case "Tickets":
+                    this._router.navigate(["/profile/tickets"]);
+                    break;
+
+                  case "Exit":
+                    localStorage.clear();
+                    this._router.navigate(["/user/signin"]);
+                    break;
+                }
+              }
+            });
         });
     };
 
