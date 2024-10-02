@@ -75,25 +75,36 @@ export class HeaderComponent implements OnInit {
 
             // Навешиваем команды для каждого пункта меню.
             this.headerData$.value.items.forEach((item: any) => {
+              // Навешиваем команды 1 уровню.
               item.command = (event: any) => {
                 switch (event.item.id) {
                   case "Calendar":
                     this._router.navigate(["/calendar/employee"]);
                     break;
-
-                  case "Orders":
-                    this._router.navigate(["/profile/orders"]);
-                    break;
-
-                  case "Tickets":
-                    this._router.navigate(["/profile/tickets"]);
-                    break;
-
-                  case "Exit":
-                    localStorage.clear();
-                    this._router.navigate(["/user/signin"]);
-                    break;
                 }
+              }
+
+              // Навешиваем команды уровню профиля.
+              if (item.id == "Profile") {
+                // Смотрим вложенность профиля.
+                item.items.forEach((p: any) => {
+                  p.command = (event: any) => {
+                    switch (event.item.id) {
+                      case "Orders":
+                        this._router.navigate(["/profile/orders"]);
+                        break;
+
+                      case "Tickets":
+                        this._router.navigate(["/profile/tickets"]);
+                        break;
+
+                      case "Exit":
+                        localStorage.clear();
+                        this._router.navigate(["/user/signin"]);
+                        break;
+                    }
+                  };
+                });
               }
             });
         });

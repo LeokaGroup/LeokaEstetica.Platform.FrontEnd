@@ -152,11 +152,11 @@ export class LeftMenuComponent implements OnInit {
                   item3.command = async (event: any) => {
                     switch (event.item.id) {
                       case "WorkSpaces":
-                        this._router.navigate(["/project-management/workspaces"]);
+                        await this._router.navigate(["/project-management/workspaces"]);
                         break;
 
                       case "Wiki":
-                        this._router.navigate(["/project-management/wiki"], {
+                        await this._router.navigate(["/project-management/wiki"], {
                           queryParams: {
                             projectId
                           }
@@ -164,7 +164,7 @@ export class LeftMenuComponent implements OnInit {
                         break;
 
                       case "Tasks":
-                        this._router.navigate(["/project-management/space"], {
+                        await this._router.navigate(["/project-management/space"], {
                           queryParams: {
                             projectId
                           }
@@ -172,7 +172,7 @@ export class LeftMenuComponent implements OnInit {
                         break;
 
                       case "Backlog":
-                        this._router.navigate(["/project-management/space/backlog"], {
+                        await this._router.navigate(["/project-management/space/backlog"], {
                           queryParams: {
                             projectId
                           }
@@ -180,7 +180,7 @@ export class LeftMenuComponent implements OnInit {
                         break;
 
                       case "Sprints":
-                        this._router.navigate(["/project-management/sprints"], {
+                        await this._router.navigate(["/project-management/sprints"], {
                           queryParams: {
                             projectId
                           }
@@ -232,17 +232,17 @@ export class LeftMenuComponent implements OnInit {
                             }
 
                             else {
-                              this._router.navigate(["/profile/projects/create"]);
+                              await this._router.navigate(["/profile/projects/create"]);
                             }
                           });
                         break;
 
                       case "UserProjects":
-                        this._router.navigate(["/profile/projects/my"]);
+                        await this._router.navigate(["/profile/projects/my"]);
                         break;
 
                       case "ArchivedProjects":
-                        this._router.navigate(["/projects/archive"]);
+                        await  this._router.navigate(["/projects/archive"]);
                         break;
                     }
                   }
@@ -259,15 +259,15 @@ export class LeftMenuComponent implements OnInit {
               item2.command = async (event: any) => {
                 switch (event.item.id) {
                   case "CatalogProjects":
-                    this._router.navigate(["/projects"]);
+                    await this._router.navigate(["/projects"]);
                     break;
 
                   case "CatalogVacancies":
-                    this._router.navigate(["/vacancies"]);
+                    await this._router.navigate(["/vacancies"]);
                     break;
 
                   case "CatalogVacancies":
-                    this._router.navigate(["/resumes"]);
+                    await this._router.navigate(["/resumes"]);
                     break;
                 }
               }
