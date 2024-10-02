@@ -250,6 +250,29 @@ export class LeftMenuComponent implements OnInit {
               }
             });
           }
+
+          // Смотрим уровень каталогов.
+          if (item.id == "Catalogs") {
+            // Смотрим каждый каталог.
+            item.items.forEach((item2: any) => {
+              // Команды уровня элементов каталогов.
+              item2.command = async (event: any) => {
+                switch (event.item.id) {
+                  case "CatalogProjects":
+                    this._router.navigate(["/projects"]);
+                    break;
+
+                  case "CatalogVacancies":
+                    this._router.navigate(["/vacancies"]);
+                    break;
+
+                  case "CatalogVacancies":
+                    this._router.navigate(["/resumes"]);
+                    break;
+                }
+              }
+            });
+          }
         });
       });
   };
