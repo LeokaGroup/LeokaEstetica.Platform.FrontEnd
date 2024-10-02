@@ -1,14 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { BackOfficeService } from "../../services/backoffice.service";
 import {ProjectManagmentService} from "../../../project-managment/services/project-managment.service";
 import {CompanyInput} from "../../../project-managment/models/input/company-input";
-
-interface ProfileItem {
-    url: string;
-    [key: string]: any;
-  }
 
 @Component({
     selector: "left-menu",
@@ -61,11 +56,13 @@ export class LeftMenuComponent implements OnInit {
     aUserCompanies: any[] = [];
     selectedCompany: any;
     companyName: string = "";
+    isExistsProjectId: boolean = false;
 
   constructor(private readonly _backOfficeService: BackOfficeService,
               private readonly _router: Router,
               private readonly _redirectService: RedirectService,
-              private readonly _projectManagmentService: ProjectManagmentService) {
+              private readonly _projectManagmentService: ProjectManagmentService,
+              private readonly _activatedRoute: ActivatedRoute) {
   }
 
     public async ngOnInit() {
@@ -98,6 +95,7 @@ export class LeftMenuComponent implements OnInit {
 
         // Навешиваем команды для каждого пункта меню.
         this.profileItems$.value.items.forEach((item: any) => {
+          // Команды первого уровня.
           item.command = (event: any) => {
             switch (event.item.id) {
               case "ViewProfile":
@@ -116,66 +114,6 @@ export class LeftMenuComponent implements OnInit {
                 });
                 break;
 
-              case "WorkSpaces":
-                this._router.navigate(["/project-management/workspaces"]);
-                break;
-
-              // TODO: Добавить параметр projectId.
-              case "Wiki":
-                this._router.navigate(["/project-management/wiki"], {
-                  queryParams: {
-                    projectId: 0
-                  }
-                });
-                break;
-
-              // TODO: Добавить параметр projectId.
-              case "Tasks":
-                this._router.navigate(["/project-management/space"], {
-                  queryParams: {
-                    projectId: 0
-                  }
-                });
-                break;
-
-              // TODO: Добавить параметр projectId.
-              case "Backlog":
-                this._router.navigate(["/project-management/space/backlog"], {
-                  queryParams: {
-                    projectId: 0
-                  }
-                });
-                break;
-
-              // TODO: Добавить параметр projectId.
-              case "Sprints":
-                this._router.navigate(["/project-management/sprints"], {
-                  queryParams: {
-                    projectId: 0
-                  }
-                });
-                break;
-
-              // TODO: Пока не реализовано.
-              case "Roadmaps":
-                break;
-
-              // TODO: Пока не реализовано.
-              case "Reports":
-                break;
-
-              // TODO: Пока не реализовано.
-              case "Dashboards":
-                break;
-
-              // TODO: Пока не реализовано.
-              case "Timesheets":
-                break;
-
-              // TODO: Пока не реализовано.
-              case "Releases":
-                break;
-
               case "CreateVacancy":
                 this._router.navigate(["/vacancies/create"]);
                 break;
@@ -188,6 +126,91 @@ export class LeftMenuComponent implements OnInit {
                 this._router.navigate(["/vacancies/archive"]);
                 break;
             }
+          }
+
+          // Смотрим уровень модулей.
+          if (item.id == "Modules") {
+            // Смотрим каждый модуль.
+            item.items.forEach((item2: any) => {
+              // Смотрим модуль УП.
+              if (item2.id == "ProjectManagement") {
+                // Смотрим элементы уровня модуля УП.
+                item2.items.forEach((item3: any) => {
+                  let projectId: number;
+
+                  // Действия, которые зависят от параметров в url.
+                  this._activatedRoute.queryParams.subscribe(params => {
+                    if (!params['projectId']) {
+                      // Дизейблим пункт меню, т.к. проект не выбран.
+                      item3.disabled = ["Wiki", "Tasks", "Backlog", "Sprints"].includes(item3.id);
+                    }
+
+                    projectId = params['projectId'];
+                  });
+
+                  // Команды уровня элементов модуля УП.
+                  item3.command = (event: any) => {
+                    switch (event.item.id) {
+                      case "WorkSpaces":
+                        this._router.navigate(["/project-management/workspaces"]);
+                        break;
+
+                      case "Wiki":
+                        this._router.navigate(["/project-management/wiki"], {
+                          queryParams: {
+                            projectId
+                          }
+                        });
+                        break;
+
+                      case "Tasks":
+                        this._router.navigate(["/project-management/space"], {
+                          queryParams: {
+                            projectId
+                          }
+                        });
+                        break;
+
+                      case "Backlog":
+                        this._router.navigate(["/project-management/space/backlog"], {
+                          queryParams: {
+                            projectId
+                          }
+                        });
+                        break;
+
+                      case "Sprints":
+                        this._router.navigate(["/project-management/sprints"], {
+                          queryParams: {
+                            projectId
+                          }
+                        });
+                        break;
+
+                      // TODO: Пока не реализовано.
+                      case "Roadmaps":
+                        break;
+
+                      // TODO: Пока не реализовано.
+                      case "Reports":
+                        break;
+
+                      // TODO: Пока не реализовано.
+                      case "Dashboards":
+                        break;
+
+                      // TODO: Пока не реализовано.
+                      case "Timesheets":
+                        break;
+
+                      // TODO: Пока не реализовано.
+                      case "Releases":
+                        break;
+                    }
+                  }
+                });
+              }
+            });
           }
         });
       });

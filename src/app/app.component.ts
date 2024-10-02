@@ -386,6 +386,12 @@ export class AppComponent implements OnInit {
             this.isVisibleMenu = true;
             localStorage["m_t"] = 1;
           }
+
+          if (event.url.includes("/user/signin")
+            || event.url.includes("/user/signup")
+            || event.url == "/") {
+            this.isVisibleMenu = false;
+          }
         });
   };
 
