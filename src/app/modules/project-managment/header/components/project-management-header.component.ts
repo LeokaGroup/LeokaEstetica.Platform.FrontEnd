@@ -24,18 +24,10 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   public readonly headerItems$ = this._projectManagmentService.headerItems$;
   public readonly searchTasks$ = this._projectManagmentService.searchTasks$;
   public readonly checkAccess$ = this._accessService.checkAccess$;
-  public readonly selectedWorkSpace$ = this._projectManagmentService.selectedWorkSpace$;
 
 
   projectId: number = 0;
   projectTaskId: number = 0;
-  home: string = "project name";
-  items: any[] = [
-    {
-      label: "Проект не выбран."
-    }
-  ];
-
   isDisableViewStrategy: boolean = false;
   searchText: string = "";
   isSearch: boolean = false;
@@ -67,30 +59,7 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
 
     // Скрываем хидер УП.
     this.isVisibleHeader = this._router.url.includes(`project-management`);
-
-    // Удаляем из хлебных крошек выбранного проекта.
-    if (!this.isVisibleHeader) {
-      this.items = [];
-    }
   };
-
-  /**
-   * Функция отключает кнопку хидера, если не выбран проект.
-   */
-  private disableButtonIfNeeded(buttonId: string, disabled: boolean) {
-    const button = this.findButton(buttonId);
-    if (button) {
-      button.disabled = disabled;
-    }
-  }
-
-  /**
-   * Функция ищет необходимый элемент Хидера.
-   * @returns - искомый элемент хидера.
-   */
-  private findButton = (id: string) => {
-    return this.aHeaderItems.find(headerItem => headerItem.id === id);
-  }
 
   private async checkUrlParams() {
     this._activatedRoute.queryParams
@@ -101,41 +70,9 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
 
         if (params["projectId"]) {
           this.projectId = Number(params["projectId"]);
-          await this.getSelectedWorkSpaceAsync(this.projectId);
-        }
-
-        else {
-          this.updateBreadcrumbLabel("Проект не выбран.");
         }
       });
   };
-
-  /**
-   * Функция получает выбранное раб.пространство.
-   */
-  private async getSelectedWorkSpaceAsync(projectId: number) {
-    (await this._projectManagmentService.getSelectedWorkSpaceAsync(projectId))
-      .subscribe(_ => {
-        console.log("Выбранное раб.пространство: ", this._projectManagmentService.selectedWorkSpace$.value);
-
-        this._projectManagmentService.companyId = this._projectManagmentService.selectedWorkSpace$.value.companyId;
-
-        if (this.selectedWorkSpace$.value.projectManagementName) {
-          this.updateBreadcrumbLabel(this.selectedWorkSpace$.value.projectManagementName);
-        }
-      });
-  }
-
-  /**
-   * Функция меняет items для breadcrumb.
-   */
-  private async updateBreadcrumbLabel(projectName: string) {
-    this.items = [
-      {
-        label: projectName
-      }
-    ];
-  }
 
   /**
    * Функция получает список элементов меню хидера (верхнее меню).

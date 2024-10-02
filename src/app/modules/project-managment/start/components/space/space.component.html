@@ -8,6 +8,10 @@
   </div>
 
   <div class="col-lg-10">
+    <div class="d-flex">
+      <h5><strong>Проект: </strong> {{selectedWorkSpace$.value?.projectManagementName ?? 'Не выбран'}}</h5>
+    </div>
+
     <!-- Блок с задачами Kanban. -->
     <div class="d-flex" *ngIf="mode == 'kn'">
       <div class="block-worksheet col-lg-12">
