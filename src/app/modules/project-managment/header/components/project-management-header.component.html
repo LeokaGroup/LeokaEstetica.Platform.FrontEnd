@@ -1,35 +1,35 @@
 <!-- Меню хидера (меню УП). -->
-<nav class="navbar navbar-light justify-content-evenly">
+<nav class="">
   <div class="form-inline">
-    <p-menubar [model]="aHeaderItems"
-               autoDisplay="false"
-               class="second-menu"
-               (click)="onSelectMenu($event)"
-               [class.isVisibleMenuHide]="!isVisibleDropDownMenu"
-               *ngIf="isVisibleHeader">
-      <ng-template pTemplate="start">
+<!--    <p-menubar [model]="aHeaderItems"-->
+<!--               autoDisplay="false"-->
+<!--               class="second-menu"-->
+<!--               (click)="onSelectMenu($event)"-->
+<!--               [class.isVisibleMenuHide]="!isVisibleDropDownMenu"-->
+<!--               *ngIf="isVisibleHeader">-->
+<!--      <ng-template pTemplate="start">-->
 
-      </ng-template>
+<!--      </ng-template>-->
 
-      <ng-template pTemplate="end">
-        <!-- Поиск задачи. -->
-        <div 
-          class="search"
-          pTooltip="Поиск"
-          tooltipPosition="bottom"
-          (click)="isSearch = (true && isEnabledSearch)"
-        >
-          <i class="pi pi-search"></i>
-        </div>
-      </ng-template>
-    </p-menubar>
+<!--      <ng-template pTemplate="end">-->
+<!--        &lt;!&ndash; Поиск задачи. &ndash;&gt;-->
+<!--        <div -->
+<!--          class="search"-->
+<!--          pTooltip="Поиск"-->
+<!--          tooltipPosition="bottom"-->
+<!--          (click)="isSearch = (true && isEnabledSearch)"-->
+<!--        >-->
+<!--          <i class="pi pi-search"></i>-->
+<!--        </div>-->
+<!--      </ng-template>-->
+<!--    </p-menubar>-->
   </div>
 </nav>
 
 <!-- Хлебные крошки. -->
-<div class="block-task">
-  <p-breadcrumb class="max-w-full breadcrumb-heading-font" [model]="items"></p-breadcrumb>
-</div>
+<!--<div class="block-task">-->
+<!--  <p-breadcrumb class="max-w-full breadcrumb-heading-font" [model]="items"></p-breadcrumb>-->
+<!--</div>-->
 
 <p-sidebar [(visible)]="isSearch" [fullScreen]="true">
   <h5 class="search-text">Найти</h5>

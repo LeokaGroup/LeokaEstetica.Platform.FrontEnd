@@ -1,6 +1,6 @@
 import {Component, OnInit, Sanitizer} from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { firstValueFrom, forkJoin, tap } from "rxjs";
+import { firstValueFrom, tap } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
 import {DomSanitizer} from "@angular/platform-browser";
@@ -29,6 +29,7 @@ export class SpaceComponent implements OnInit {
     public readonly headerItems$ = this._projectManagmentService.headerItems$;
     public readonly workSpaceConfig$ = this._projectManagmentService.workSpaceConfig$;
     readonly projectTags$ = this._projectManagmentService.projectTags$;
+    public readonly selectedWorkSpace$ = this._projectManagmentService.selectedWorkSpace$;
 
     aHeaderItems: any[] = [];
     aPanelItems: any[] = [];
@@ -45,41 +46,16 @@ export class SpaceComponent implements OnInit {
     isLoading: boolean = false;
     isPanelMenu: boolean = false;
     dragged: DraggedTask = null;
-
     dropdownMenuItems: MenuItem[] | undefined;
+    mode: string = "";
 
-    items: any[] = [
-        {
-            label: 'Заказы',
-            command: () => {
-                this._router.navigate(["/profile/orders"]);
-            }
-        },
-        {
-            label: 'Заявки в поддержку',
-            command: () => {
-                this._router.navigate(["/profile/tickets"])
-            }
-        },
-        {
-            label: 'Выйти',
-            command: () => {
-                localStorage.clear();
-                this._router.navigate(["/user/signin"]);
-            }
-        }
-    ];
-
-  mode: string = "";
-
-    public async ngOnInit() {
-        forkJoin([
-            this.checkUrlParams(),
-            await this.getHeaderItemsAsync(),
-            await this.getProjectTagsAsync(),
-            await this.getConfigurationWorkSpaceBySelectedTemplateAsync()
-        ]).subscribe();
-    };
+  public async ngOnInit() {
+    this.checkUrlParams();
+    await this.getHeaderItemsAsync();
+    await this.getProjectTagsAsync();
+    await this.getConfigurationWorkSpaceBySelectedTemplateAsync();
+    await this.getSelectedWorkSpaceAsync();
+  };
 
     async getProjectTagsAsync() {
       firstValueFrom((await this._projectManagmentService.getProjectTagsAsync(this.selectedProjectId))
@@ -287,6 +263,18 @@ export class SpaceComponent implements OnInit {
       ];
       menu.toggle(event);
     }
+
+  /**
+   * Функция получает выбранное раб.пространство.
+   */
+  private async getSelectedWorkSpaceAsync() {
+    (await this._projectManagmentService.getSelectedWorkSpaceAsync(this.selectedProjectId))
+      .subscribe(_ => {
+        console.log("Выбранное раб.пространство: ", this.selectedWorkSpace$.value);
+
+        this._projectManagmentService.companyId = this.selectedWorkSpace$.value.companyId;
+      });
+  }
 }
 
 type DraggedTask = {
