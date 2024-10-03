@@ -7,6 +7,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {ChangeTaskStatusInput} from "../../../task/models/input/change-task-status-input";
 import { MenuItem } from "primeng/api";
 import { Menu } from "primeng/menu";
+import {FixationStrategyInput} from "../../../task/models/input/fixation-strategy-input";
 
 @Component({
     selector: "",
@@ -30,6 +31,7 @@ export class SpaceComponent implements OnInit {
     public readonly workSpaceConfig$ = this._projectManagmentService.workSpaceConfig$;
     readonly projectTags$ = this._projectManagmentService.projectTags$;
     public readonly selectedWorkSpace$ = this._projectManagmentService.selectedWorkSpace$;
+    public readonly quickActions$ = this._projectManagmentService.quickActions$;
 
     aHeaderItems: any[] = [];
     aPanelItems: any[] = [];
@@ -55,6 +57,7 @@ export class SpaceComponent implements OnInit {
     await this.getProjectTagsAsync();
     await this.getConfigurationWorkSpaceBySelectedTemplateAsync();
     await this.getSelectedWorkSpaceAsync();
+    await this.getProjectManagementLineMenuAsync();
   };
 
     async getProjectTagsAsync() {
@@ -273,6 +276,89 @@ export class SpaceComponent implements OnInit {
         console.log("Выбранное раб.пространство: ", this.selectedWorkSpace$.value);
 
         this._projectManagmentService.companyId = this.selectedWorkSpace$.value.companyId;
+      });
+  }
+
+  /**
+   * Функция получает элементы меню для блока быстрых действий в раб.пространстве проекта.
+   */
+  private async getProjectManagementLineMenuAsync() {
+    (await this._projectManagmentService.getProjectManagementLineMenuAsync())
+      .subscribe(_ => {
+        console.log("Меню быстрых действий: ", this.quickActions$.value);
+
+        let projectId = this.selectedProjectId;
+
+        this.quickActions$.value.items.forEach((item: any) => {
+          switch (item.id) {
+            case "ScrumView":
+              item.command = async (event: any) => {
+                let fixationScrumInput: FixationStrategyInput = new FixationStrategyInput();
+                fixationScrumInput.projectId = projectId;
+                fixationScrumInput.strategySysName = "Scrum";
+
+                (await this._projectManagmentService.fixationSelectedViewStrategyAsync(fixationScrumInput))
+                  .subscribe(_ => {
+                    window.location.reload();
+                  });
+              };
+              break;
+
+            case "KanbanView":
+              item.command = async (event: any) => {
+                let fixationKanbanInput: FixationStrategyInput = new FixationStrategyInput();
+                fixationKanbanInput.projectId = projectId;
+                fixationKanbanInput.strategySysName = "Kanban";
+
+                (await this._projectManagmentService.fixationSelectedViewStrategyAsync(fixationKanbanInput))
+                  .subscribe(_ => {
+                    window.location.reload();
+                  });
+              };
+              break;
+
+            case "CreateAction":
+              item.items.forEach((item1: any) => {
+                item1.command = async (event: any) => {
+                  switch (event.item.id) {
+                    case "CreateTask":
+                      await this._router.navigate(["/project-management/space/create"], {
+                        queryParams: {
+                          projectId
+                        }
+                      });
+                      break;
+                  }
+                };
+              });
+              break;
+
+            case "Settings":
+              item.items.forEach((item1: any) => {
+                item1.command = async (event: any) => {
+                  switch (event.item.id) {
+                    case "ProjectSettings":
+                      await this._router.navigate(["/project-management/space/project-settings"], {
+                        queryParams: {
+                          projectId,
+                          companyId: +this._projectManagmentService.companyId
+                        }
+                      });
+                      break;
+
+                    case "ViewSettings":
+                      await this._router.navigate(["/project-management/space/view-settings"], {
+                        queryParams: {
+                          projectId
+                        }
+                      });
+                      break;
+                  }
+                };
+              });
+              break;
+          }
+        });
       });
   }
 }
