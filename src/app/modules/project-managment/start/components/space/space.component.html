@@ -9,7 +9,11 @@
 
   <div class="col-lg-10">
     <div class="d-flex project-management-line">
-      <h5><strong>{{selectedWorkSpace$.value?.projectManagementName ?? 'Не выбран'}}</strong></h5>
+      <h5><strong>Проект {{selectedWorkSpace$.value?.projectManagementName ?? 'Не выбран'}}</strong></h5>
+    </div>
+
+    <div class="d-flex project-management-line">
+      <p-menubar [model]="quickActions$.value?.items" />
     </div>
 
     <!-- Блок с задачами Kanban. -->
