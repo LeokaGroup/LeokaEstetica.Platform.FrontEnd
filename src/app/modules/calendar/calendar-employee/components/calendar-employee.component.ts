@@ -144,9 +144,8 @@ export class CalendarEmployeeComponent implements OnInit {
    * @param event - Ивент.
    */
   public onSelectEventMember(event: any) {
-    const index = this.aEventMembers.findIndex((x: any) => x.userId === event.value.userId);
-    if (index === -1) {
-      this.aEventMembers = [...this.aEventMembers, event.value];
+    if (this.aEventMembers.indexOf((x: any) => x.userId !== event.value.userId) == -1) {
+      this.aEventMembers.push(event.value);
     }
   };
 
