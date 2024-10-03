@@ -19,40 +19,10 @@ export class HeaderComponent implements OnInit {
 
     isHideAuthButtons: boolean = false;
     currentUrl = '';
-    items: any[] = [
-        {
-            label: 'Заказы',
-            command: () => {
-                this._router.navigate(["/profile/orders"]);
-            }
-        },
-        // {
-        //     label: 'Настройки',
-        //     command: () => {
-
-        //     }
-        // },
-        {
-            label: 'Заявки в поддержку',
-            command: () => {
-                this._router.navigate(["/profile/tickets"])
-            }
-        },
-        {
-            label: 'Выйти',
-            command: () => {
-                localStorage.clear();
-                this._router.navigate(["/user/signin"]);
-            }
-        }
-    ];
 
   constructor(private readonly _headerService: HeaderService,
               private readonly _router: Router,
               private readonly _activatedRoute: ActivatedRoute,
-              // TODO: remove - ?
-              // private readonly _redirectService: RedirectService,
-              // private changeDetectorRef: ChangeDetectorRef,
               private readonly _projectManagmentService: ProjectManagmentService) {
   }
 
@@ -100,7 +70,10 @@ export class HeaderComponent implements OnInit {
 
                       case "Exit":
                         localStorage.clear();
-                        this._router.navigate(["/user/signin"]);
+
+                        // TODO: В идеале отрефачить без этого.
+                        // Нужно, чтобы избежать бага с рендером хидера (оставался верхний хидер при логауте).
+                        window.location.href = window.location.href + "/user/signin";
                         break;
                     }
                   };
@@ -126,7 +99,6 @@ export class HeaderComponent implements OnInit {
 
   public async onSelectHeaderItem(e: any) {
     console.log(e.menuItemUrl);
-    // this._router.navigate([e.menuItemUrl]);
     await this.getBuildProjectSpaceSettingsAsync(e.menuItemUrl);
   };
 
@@ -159,8 +131,6 @@ export class HeaderComponent implements OnInit {
    */
   private rerenderAuthButtons() {
     this.isHideAuthButtons = localStorage["t_n"] ? true : false;
-    // TODO: remove - ?
-    // this.changeDetectorRef.markForCheck();
   };
 
   // TODO: Дублируется.
