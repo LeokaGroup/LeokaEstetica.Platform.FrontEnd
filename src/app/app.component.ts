@@ -442,13 +442,18 @@ export class AppComponent implements OnInit {
     }
 
     if (currentUrl.indexOf("user/signin") >= 0 || currentUrl.indexOf("user/signup") >= 0) {
+      // this.isVisibleMenu = false;
       this.rerender();
-      this.isVisibleHeader = false;
+      this.isVisibleHeader = true;
       this.isVisibleMenu = false;
     }
 
     if (currentUrl.indexOf("profile/aboutme?mode=view") >= 0) {
+      this.isVisibleHeader = false;
+      this.isVisibleMenu = false;
       this.rerender();
+      this.isVisibleHeader = true;
+      this.isVisibleMenu = true;
     }
 
     if (currentUrl.indexOf("/") >= 0) {
