@@ -1,158 +1,166 @@
-<!-- Ввод названия проекта. -->
-<div class="d-flex block-profile" *ngIf="!projectWorkspaceSettings$.value?.isCommitProjectSettings">
-  <div class="mt-3 block-project-managment d-flex col-lg-12">
-    <div class="col-lg-12">
-      <div class="block-select-project-name">
-        <div class="">
-          <div>
-            <label for="idProjectManagementProjectName">Название проекта</label>
-          </div>
+<div class="d-flex">
+  <div class="col-lg-2">
 
-          <div>
-            <input pInputText id="idProjectManagementProjectName"
-                   aria-describedby="idProjectManagementProjectName-help"
-                   [(ngModel)]="projectManagementProjectName"
-                   [style]="{width: '700px'}"
-                   (change)="onUpdateProjectManagementProjectName()"/>
-          </div>
-          <div>
-            <small id="idProjectManagementProjectName-help">Название проекта в модуле управления проектами.</small>
-            <small id="idProjectManagementProjectName-description">Обычно проект называют на англ.языке, например, «My Project</small>
-          </div>
-        </div>
+  </div>
 
-        <div class="mt-3">
-          <div>
-            <label for="idProjectManagementProjectNamePrefix">Префикс проекта</label>
-          </div>
+  <div class="col-lg-10">
+    <!-- Ввод названия проекта. -->
+    <div class="d-flex block-profile" *ngIf="!projectWorkspaceSettings$.value?.isCommitProjectSettings">
+      <div class="mt-3 block-project-managment d-flex col-lg-12">
+        <div class="col-lg-12">
+          <div class="block-select-project-name">
+            <div class="">
+              <div>
+                <label for="idProjectManagementProjectName">Название проекта</label>
+              </div>
 
-          <div>
-            <input pInputText id="idProjectManagementProjectNamePrefix"
-                   aria-describedby="idProjectManagementProjectNamePrefix-help"
-                   [(ngModel)]="projectManagementProjectNamePrefix"
-                   maxlength="9"/>
-          </div>
+              <div>
+                <input pInputText id="idProjectManagementProjectName"
+                       aria-describedby="idProjectManagementProjectName-help"
+                       [(ngModel)]="projectManagementProjectName"
+                       [style]="{width: '700px'}"
+                       (change)="onUpdateProjectManagementProjectName()"/>
+              </div>
+              <div>
+                <small id="idProjectManagementProjectName-help">Название проекта в модуле управления проектами.</small>
+                <small id="idProjectManagementProjectName-description">Обычно проект называют на англ.языке, например, «My Project</small>
+              </div>
+            </div>
 
-          <div>
-            <small id="idProjectManagementProjectNamePrefix-help">Номера задач будут начинаться с данного префикса.</small>
+            <div class="mt-3">
+              <div>
+                <label for="idProjectManagementProjectNamePrefix">Префикс проекта</label>
+              </div>
+
+              <div>
+                <input pInputText id="idProjectManagementProjectNamePrefix"
+                       aria-describedby="idProjectManagementProjectNamePrefix-help"
+                       [(ngModel)]="projectManagementProjectNamePrefix"
+                       maxlength="9"/>
+              </div>
+
+              <div>
+                <small id="idProjectManagementProjectNamePrefix-help">Номера задач будут начинаться с данного префикса.</small>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- TODO: Проект для управления приходит в url. Удалим лишний код, если не будет использоваться в будущем. -->
-<!--<div class="d-flex block-profile space-top-80" *ngIf="!projectWorkspaceSettings$.value?.isCommitProjectSettings">-->
-<!--  &lt;!&ndash; Выбор проекта. &ndash;&gt;-->
-<!--  <div class="block-project-managment d-flex col-lg-12">-->
-<!--    <div class="col-lg-12">-->
-<!--      <div class="block-user-projects">-->
-<!--        <p-table [value]="userProjects$.value?.userProjects" [(selection)]="selectedProject" dataKey="projectId"-->
-<!--          [paginator]="userProjects$.value?.total > 0" [rows]="10" styleClass="p-datatable-gridlines"-->
-<!--          responsiveLayout="scroll"-->
-<!--          selectionMode="single"-->
-<!--          (onRowSelect)="onSelectProject()">-->
+    <!-- TODO: Проект для управления приходит в url. Удалим лишний код, если не будет использоваться в будущем. -->
+    <!--<div class="d-flex block-profile space-top-80" *ngIf="!projectWorkspaceSettings$.value?.isCommitProjectSettings">-->
+    <!--  &lt;!&ndash; Выбор проекта. &ndash;&gt;-->
+    <!--  <div class="block-project-managment d-flex col-lg-12">-->
+    <!--    <div class="col-lg-12">-->
+    <!--      <div class="block-user-projects">-->
+    <!--        <p-table [value]="userProjects$.value?.userProjects" [(selection)]="selectedProject" dataKey="projectId"-->
+    <!--          [paginator]="userProjects$.value?.total > 0" [rows]="10" styleClass="p-datatable-gridlines"-->
+    <!--          responsiveLayout="scroll"-->
+    <!--          selectionMode="single"-->
+    <!--          (onRowSelect)="onSelectProject()">-->
 
-<!--          <ng-template pTemplate="caption">-->
-<!--            <h3>Выбор проекта для управления</h3>-->
-<!--            <small pTooltip="Для перехода в рабочее пространство, Вы должны выбрать свой проект, которым хотите управлять. У каждого проекта свое рабочее пространство.">Что это?</small>-->
-<!--          </ng-template>-->
+    <!--          <ng-template pTemplate="caption">-->
+    <!--            <h3>Выбор проекта для управления</h3>-->
+    <!--            <small pTooltip="Для перехода в рабочее пространство, Вы должны выбрать свой проект, которым хотите управлять. У каждого проекта свое рабочее пространство.">Что это?</small>-->
+    <!--          </ng-template>-->
 
-<!--          <ng-template pTemplate="header">-->
-<!--            <tr>-->
-<!--              <th>ID проекта</th>-->
-<!--              <th>Название проекта</th>-->
-<!--              <th>Статус проекта</th>-->
-<!--            </tr>-->
-<!--          </ng-template>-->
+    <!--          <ng-template pTemplate="header">-->
+    <!--            <tr>-->
+    <!--              <th>ID проекта</th>-->
+    <!--              <th>Название проекта</th>-->
+    <!--              <th>Статус проекта</th>-->
+    <!--            </tr>-->
+    <!--          </ng-template>-->
 
-<!--          <ng-template pTemplate="body" let-prj>-->
-<!--            <tr [pSelectableRow]="prj">-->
-<!--              <td>{{prj.projectId}}</td>-->
-<!--              <td>{{prj.projectName}}</td>-->
-<!--              <td>{{prj.projectStatusName}}</td>-->
-<!--            </tr>-->
-<!--          </ng-template>-->
+    <!--          <ng-template pTemplate="body" let-prj>-->
+    <!--            <tr [pSelectableRow]="prj">-->
+    <!--              <td>{{prj.projectId}}</td>-->
+    <!--              <td>{{prj.projectName}}</td>-->
+    <!--              <td>{{prj.projectStatusName}}</td>-->
+    <!--            </tr>-->
+    <!--          </ng-template>-->
 
-<!--          <ng-template pTemplate="summary">-->
-<!--            Всего: {{userProjects$.value?.total}}-->
-<!--          </ng-template>-->
+    <!--          <ng-template pTemplate="summary">-->
+    <!--            Всего: {{userProjects$.value?.total}}-->
+    <!--          </ng-template>-->
 
-<!--          <ng-template pTemplate="emptymessage">-->
-<!--            <tr>-->
-<!--              <td colspan="7">-->
-<!--                <div class="empty-orders">-->
-<!--                  У вас пока нет проектов.-->
-<!--                </div>-->
-<!--              </td>-->
-<!--            </tr>-->
-<!--          </ng-template>-->
-<!--        </p-table>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
+    <!--          <ng-template pTemplate="emptymessage">-->
+    <!--            <tr>-->
+    <!--              <td colspan="7">-->
+    <!--                <div class="empty-orders">-->
+    <!--                  У вас пока нет проектов.-->
+    <!--                </div>-->
+    <!--              </td>-->
+    <!--            </tr>-->
+    <!--          </ng-template>-->
+    <!--        </p-table>-->
+    <!--      </div>-->
+    <!--    </div>-->
+    <!--  </div>-->
+    <!--</div>-->
 
-<!-- Выбор стратегии представления. -->
-<div class="d-flex block-profile space-top-80" *ngIf="!projectWorkspaceSettings$.value?.isCommitProjectSettings">
-  <div class="mt-3 block-project-managment d-flex col-lg-12">
-    <div class="col-lg-12">
-      <div class="block-view-strategy">
-        <p-table [value]="viewStrategies$.value" [(selection)]="selectedStrategy" dataKey="strategyId"
-         [rows]="10" styleClass="p-datatable-gridlines"
-          responsiveLayout="scroll"
-          selectionMode="single"
-          (onRowSelect)="onSelectStrategy()">
+    <!-- Выбор стратегии представления. -->
+    <div class="d-flex block-profile space-top-80" *ngIf="!projectWorkspaceSettings$.value?.isCommitProjectSettings">
+      <div class="mt-3 block-project-managment d-flex col-lg-12">
+        <div class="col-lg-12">
+          <div class="block-view-strategy">
+            <p-table [value]="viewStrategies$.value" [(selection)]="selectedStrategy" dataKey="strategyId"
+                     [rows]="10" styleClass="p-datatable-gridlines"
+                     responsiveLayout="scroll"
+                     selectionMode="single"
+                     (onRowSelect)="onSelectStrategy()">
 
-          <ng-template pTemplate="caption">
-            <h3>Выбор стратегии представления</h3>
-            <small pTooltip="Стратегия представления - это то, в каком виде Вы хотите видеть свое рабочее 
-            пространство. Мы запомним Ваш выбор и сохраним его в Ваших настройках. Вы сможете изменить 
-            стратегию представления в настройках (чтобы мы запомнили Ваш выбор) или в рабочем пространстве 
+              <ng-template pTemplate="caption">
+                <h3>Выбор стратегии представления</h3>
+                <small pTooltip="Стратегия представления - это то, в каком виде Вы хотите видеть свое рабочее
+            пространство. Мы запомним Ваш выбор и сохраним его в Ваших настройках. Вы сможете изменить
+            стратегию представления в настройках (чтобы мы запомнили Ваш выбор) или в рабочем пространстве
             (мы не запоминаем этот выбор).">Что это? <i class="pi pi-exclamation-circle info"></i></small>
-          </ng-template>
+              </ng-template>
 
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Название стратегии</th>
-              <th>Описание стратегии (что это такое)</th>
-              <th>Подробнее о стратегии</th>
-            </tr>
-          </ng-template>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Название стратегии</th>
+                  <th>Описание стратегии (что это такое)</th>
+                  <th>Подробнее о стратегии</th>
+                </tr>
+              </ng-template>
 
-          <ng-template pTemplate="body" let-st>
-            <tr [pSelectableRow]="st">
-              <td>{{st.viewStrategyName}}</td>
-              <td>На бэке пока не сделана логика</td>
-              <td><button pButton type="button" label="Подробнее" class="p-button-outlined">
-              </button>
-            </td>
-            </tr>
-          </ng-template>
+              <ng-template pTemplate="body" let-st>
+                <tr [pSelectableRow]="st">
+                  <td>{{st.viewStrategyName}}</td>
+                  <td>На бэке пока не сделана логика</td>
+                  <td><button pButton type="button" label="Подробнее" class="p-button-outlined">
+                  </button>
+                  </td>
+                </tr>
+              </ng-template>
 
-          <ng-template pTemplate="emptymessage">
-            <tr>
-              <td colspan="7">
-                <div class="empty-orders">
-                  Нет стратегий для отображения.
-                </div>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="7">
+                    <div class="empty-orders">
+                      Нет стратегий для отображения.
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-<div *ngIf="!projectWorkspaceSettings$.value?.isCommitProjectSettings">
-  <button type="submit"
-          class="mt-5 btn btn-primary button-action-pur-control"
-          (click)="onRouteWorkSpace()"
-          [disabled]="!isSelectedTemplate || !projectManagementProjectName || !projectManagementProjectNamePrefix">
-    Перейти в рабочее пространство
-  </button>
+    <div *ngIf="!projectWorkspaceSettings$.value?.isCommitProjectSettings">
+      <button type="submit"
+              class="mt-5 btn btn-primary button-action-pur-control"
+              (click)="onRouteWorkSpace()"
+              [disabled]="!isSelectedTemplate || !projectManagementProjectName || !projectManagementProjectNamePrefix">
+        Перейти в рабочее пространство
+      </button>
+    </div>
+  </div>
 </div>
 
 <!-- Диалог выбора шаблона. -->
