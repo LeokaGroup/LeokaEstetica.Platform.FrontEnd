@@ -54,6 +54,8 @@ export class AboutmeComponent implements OnInit {
         summary: 'Анкета не будет опубликована в базе резюме, так как не все данные анкеты заполнены.'
       }
     ];
+    availableSkills: any[] = [];
+    availableIntents: any[] = [];
 
   formAboutme : UntypedFormGroup = new UntypedFormGroup({
     "aboutme": new UntypedFormControl("", [
@@ -148,6 +150,7 @@ export class AboutmeComponent implements OnInit {
     private async getProfileSkillsAsync() {
         (await this._backofficeService.getProfileSkillsAsync())
             .subscribe(_ => {
+                this.availableSkills = this.profileSkillsItems$.value;
                 console.log("Список навыков для выбора: ", this.profileSkillsItems$.value);
             });
     };
@@ -159,6 +162,7 @@ export class AboutmeComponent implements OnInit {
     private async getProfileIntentsAsync() {
         (await this._backofficeService.getProfileIntentsAsync())
             .subscribe(_ => {
+                this.availableIntents = this.profileIntentsItems$.value;
                 console.log("Список целей для выбора: ", this.profileIntentsItems$.value);
             });
     };
