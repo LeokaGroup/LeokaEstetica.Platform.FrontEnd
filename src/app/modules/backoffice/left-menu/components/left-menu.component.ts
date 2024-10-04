@@ -57,6 +57,7 @@ export class LeftMenuComponent implements OnInit {
     selectedCompany: any;
     companyName: string = "";
     isExistsProjectId: boolean = false;
+    projectId?: number;
 
   constructor(private readonly _backOfficeService: BackOfficeService,
               private readonly _router: Router,
@@ -64,6 +65,8 @@ export class LeftMenuComponent implements OnInit {
               private readonly _projectManagmentService: ProjectManagmentService,
               private readonly _activatedRoute: ActivatedRoute) {
   }
+
+  public readonly projectWorkspaceSettings$ = this._projectManagmentService.projectWorkspaceSettings$;
 
     public async ngOnInit() {
       this.checkUrlParams();
@@ -90,8 +93,25 @@ export class LeftMenuComponent implements OnInit {
    */
   private async getLeftMenuItemsAsync() {
     (await this._backOfficeService.getLeftMenuItemsAsync())
-      .subscribe(_ => {
+      .subscribe(async _ => {
         console.log("Левое меню: ", this.profileItems$.value);
+
+        let isDisableProjectManagementModule: boolean = false;
+
+        // Действия, которые зависят от параметров в url.
+        this._activatedRoute.queryParams.subscribe(async params => {
+          this.projectId = params['projectId'];
+
+          // Дизейблим пункты модуля УП, если не были зафиксированы настройки проекта.
+          if (this._router.url.includes("/project-management/start") && Number(this.projectId) > 0) {
+            (await this._projectManagmentService.getBuildProjectSpaceSettingsAsync(Number(this.projectId), null))
+              .subscribe(_ => {
+                console.log("projectWorkspaceSettings", this.projectWorkspaceSettings$.value);
+
+                isDisableProjectManagementModule = !this.projectWorkspaceSettings$.value.isCommitProjectSettings;
+              });
+          }
+        });
 
         // Навешиваем команды для каждого пункта меню.
         this.profileItems$.value.items.forEach((item: any) => {
@@ -139,14 +159,9 @@ export class LeftMenuComponent implements OnInit {
                   let projectId: number;
 
                   // Действия, которые зависят от параметров в url.
-                  this._activatedRoute.queryParams.subscribe(params => {
-                    if (!params['projectId']) {
-                      // Дизейблим пункт меню, т.к. проект не выбран.
-                      item3.disabled = ["Wiki", "Tasks", "Backlog", "Sprints"].includes(item3.id);
-                    }
-
-                    projectId = params['projectId'];
-                  });
+                  if (!this.projectId || !isDisableProjectManagementModule) {
+                    item3.disabled = ["Wiki", "Tasks", "Backlog", "Sprints"].includes(item3.id);
+                  }
 
                   // Команды уровня элементов модуля УП.
                   item3.command = async (event: any) => {
