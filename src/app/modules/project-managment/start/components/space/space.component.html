@@ -13,7 +13,11 @@
     </div>
 
     <div class="d-flex project-management-line">
-      <p-menubar [model]="quickActions$.value?.items" />
+      <p-menubar [model]="quickActions$.value?.items"
+                 [autoDisplay]="false"
+                 [class.isVisibleMenuHide]="!isVisibleDropDownMenu">
+
+      </p-menubar>
     </div>
 
     <!-- Блок с задачами Kanban. -->
@@ -166,6 +170,21 @@
     <scrum-master-ai-assist></scrum-master-ai-assist>
   </div>
 </div>
+
+<!-- Диалог запрета к функционалу. -->
+<p-dialog header="{{checkAccess$.value?.forbiddenTitle}}"
+          [(visible)]="isVisibleAccessModal"
+          [breakpoints]="{'960px': '75vw'}"
+          [style]="{width: '50vw'}"
+          [draggable]="false"
+          [resizable]="false">
+  <p>{{checkAccess$.value?.forbiddenText}}</p>
+  <strong>{{checkAccess$.value?.fareRuleText}}</strong>
+  <ng-template pTemplate="footer">
+    <!--  TODO: Будет еще переход в раздел оплата.  -->
+    <p-button label="Понятно" styleClass="p-button-text" (click)="isVisibleAccessModal=!isVisibleAccessModal"></p-button>
+  </ng-template>
+</p-dialog>
 
 <!--<left-panel-->
 <!--  (mouseleave)="onClosePanelMenu()"-->
