@@ -1,0 +1,51 @@
+@if (gotData) {
+<div class="chip-block">
+  @for (item of selectedItems(); track $index) {
+  <div>
+    <div class="chip-item">
+      <p-chip
+        [label]="getLabel(item) ?? 'Нет'"
+        [removable]="true"
+        (onRemove)="onRemove(item)">
+      </p-chip>
+    </div>
+  </div>
+  }
+  <p-overlayPanel
+    #op
+    (onShow)="clear()"
+    [style]="{'border-radius': '8px', 'min-width': '318px'}">
+      <div>
+        <p-autoComplete
+          #autocomplete
+          class="autocomplete"
+          [(ngModel)]="selected"
+          [suggestions]="filtered"
+          (onSelect)="op.toggle($event); onAdd($event)"
+          [dropdown]="true"
+          emptyMessage="Результатов не найдено"
+          optionLabel="{{fieldName()}}"
+          [minLength]="2"
+          (completeMethod)="filter($event)"
+          placeholder="{{placeholder()}}" />
+        
+        <button pButton
+          pRipple
+          icon="pi pi-times"
+          type="button"
+          class="p-button-secondary p-button-text p-button-sm btn-plus"
+          (click)="op.toggle($event)">
+        </button>
+      </div>
+  </p-overlayPanel>
+  @if (availbleItems.length > 0) {
+  <button pButton
+          pRipple
+          icon="pi pi-plus"
+          type="button"
+          class="p-button-secondary p-button-text p-button-sm"
+          (click)="op.toggle($event)">
+  </button>
+  }
+</div>
+}

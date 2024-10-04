@@ -1,0 +1,24 @@
+@use "/src/app/common/styles/color.scss";
+
+::ng-deep .autocomplete .p-autocomplete-input {
+    border: 1px solid color.$project-stroke-nikel;
+    padding: 0 15px;
+    height: 42px;
+    width: 200px;
+}
+
+::ng-deep adiv[role="dialog"] {
+    --overlayArrowLeft: 100px !important;
+    transform: translateX(-100px) !important;
+}
+
+::ng-deep .btn-plus {
+    margin-left: 10px;
+    margin-bottom: 2px;
+}
+
+.chip-block {
+    display: flex;
+    flex-wrap: wrap;
+    gap:5px;
+}

@@ -37,6 +37,10 @@ import { MessagesComponent } from './messages/messages.component';
 import { SplitterModule } from 'primeng/splitter';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { ChipModule } from 'primeng/chip';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ChipsComponent } from './aboutme/components/chips/chips.component';
 import { PhoneFormatPipe } from './aboutme/pipes/phone-format.pipe';
 import {TieredMenuModule} from 'primeng/tieredmenu';
 
@@ -52,38 +56,42 @@ import {TieredMenuModule} from 'primeng/tieredmenu';
         ProjectsArchiveComponent,
         RestoreComponent,
         MessagesComponent,
+        ChipsComponent,
+        MessagesComponent,
         PhoneFormatPipe
     ],
 
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    BackOfficeRoutingModule,
-    HttpClientModule,
-    PanelModule,
-    MenuModule,
-    InputTextModule,
-    CheckboxModule,
-    InputMaskModule,
-    InputTextareaModule,
-    PickListModule,
-    PanelMenuModule,
-    ToastModule,
-    TableModule,
-    EditorModule,
-    ButtonModule,
-    DropdownModule,
-    CardModule,
-    DialogModule,
-    MessagesModule,
-    MessageModule,
-    SplitterModule,
-    InputNumberModule,
-    InputSwitchModule,
-    TieredMenuModule
-  ],
-
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        BackOfficeRoutingModule,
+        HttpClientModule,
+        PanelModule,
+        MenuModule,
+        InputTextModule,
+        CheckboxModule,
+        InputMaskModule,
+        InputTextareaModule,
+        PickListModule,
+        PanelMenuModule,
+        ToastModule,
+        TableModule,
+        EditorModule,
+        ButtonModule,
+        DropdownModule,
+        CardModule,
+        DialogModule,
+        MessagesModule,
+        MessageModule,
+        SplitterModule,
+        InputNumberModule,
+        InputSwitchModule,
+        ChipModule,
+        OverlayPanelModule,
+        AutoCompleteModule,
+        TieredMenuModule
+    ],
   exports: [],
 
   providers: [
