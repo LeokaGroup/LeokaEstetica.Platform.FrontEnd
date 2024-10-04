@@ -107,7 +107,6 @@ export class CreateVacancyComponent implements OnInit, OnDestroy {
                 (await this._vacancyService.createVacancyAsync(model))
                   .pipe(
                     catchError(async (e) => {
-                      console.log('(createVacancyAsync) Ошибка отправки вакансии:', e);
                       this.isNeedUserAction = false;
                     }),
                   )
