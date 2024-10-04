@@ -69,19 +69,21 @@ export class LeftMenuComponent implements OnInit {
   public readonly projectWorkspaceSettings$ = this._projectManagmentService.projectWorkspaceSettings$;
 
     public async ngOnInit() {
-      this.checkUrlParams();
-      await this.getLeftMenuItemsAsync();
+      await this.checkUrlParams();
     };
 
-  private checkUrlParams() {
+  private async checkUrlParams() {
     this._router.events
-      .subscribe(
-        (event: any) => {
+      .subscribe(async (event: any) => {
           if (event.url.includes("/user/signin") || event.url.includes("/user/signup")) {
             this.isShowLeftMenuConditional = false;
           }
 
           else {
+            if (event.url !== "/") {
+              await this.getLeftMenuItemsAsync();
+            }
+
             this.isShowLeftMenuConditional = true;
           }
         });

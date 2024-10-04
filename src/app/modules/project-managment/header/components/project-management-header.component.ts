@@ -44,10 +44,7 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   isEnabledSearch: boolean = true;
 
   public async ngOnInit() {
-    forkJoin([
-      this.checkUrlParams(),
-      await this.getHeaderItemsAsync()
-    ]).subscribe();
+    await this.checkUrlParams();
   };
 
   ngDoCheck() {
@@ -62,6 +59,15 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
   };
 
   private async checkUrlParams() {
+    this._router.events
+      .subscribe(async (event: any) => {
+        if (event.url !== "/"
+          && !event.url.includes("/user/signin")
+          && !event.url.includes("/user/signup")) {
+          await this.getHeaderItemsAsync();
+        }
+      });
+
     this._activatedRoute.queryParams
       .subscribe(async params => {
         console.log("params: ", params);

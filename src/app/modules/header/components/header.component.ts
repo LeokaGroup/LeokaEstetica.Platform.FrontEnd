@@ -27,9 +27,8 @@ export class HeaderComponent implements OnInit {
   }
 
   public async ngOnInit() {
-    await this.getHeaderItemsAsync();
+    await this.checkUrlParams();
     await this._headerService.refreshTokenAsync();
-    this.checkUrlParams();
 
     this.isHideAuthButtons = localStorage["t_n"] ? true : false;
   };
@@ -102,18 +101,24 @@ export class HeaderComponent implements OnInit {
     await this.getBuildProjectSpaceSettingsAsync(e.menuItemUrl);
   };
 
-    private checkUrlParams() {
-        this._router.events.pipe(
-            filter(event => event instanceof NavigationEnd)
-        ).subscribe(
-            e => this.currentUrl = (e as NavigationEnd).url
-        );
+  private checkUrlParams() {
+    this._router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(async e => {
+      this.currentUrl = (e as NavigationEnd).url;
 
-        this._activatedRoute.queryParams
-        .subscribe(_ => {
-            this.rerenderAuthButtons();
-          });
-    };
+      if (this.currentUrl !== "/"
+        && !this.currentUrl.includes("/user/signin")
+        && !this.currentUrl.includes("/user/signup")) {
+        await this.getHeaderItemsAsync();
+      }
+    });
+
+    this._activatedRoute.queryParams
+      .subscribe(_ => {
+        this.rerenderAuthButtons();
+      });
+  };
 
     /**
      * Функция переходит в профиль пользователя.
