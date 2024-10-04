@@ -319,11 +319,20 @@ export class DetailProjectComponent implements OnInit {
     });
   }
 
+  //   Сделал проверку является availableInviteVacancies массив
   public onSelectVacancy() {
-    console.log(this.selectedVacancy);
+    if (
+      Array.isArray(this.availableInviteVacancies) &&
+      this.availableInviteVacancies.length > 0
+    ) {
+      console.log(this.selectedVacancy);
+    } else {
+      console.warn('No vacancies available');
+    }
+    // console.log(this.selectedVacancy);
   }
 
-  /**
+  /**a
    * Функция прикрепляет вакансию к проекту.
    */
   public async onSaveProjectVacancyAsync() {
