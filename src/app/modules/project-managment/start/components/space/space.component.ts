@@ -8,6 +8,7 @@ import {ChangeTaskStatusInput} from "../../../task/models/input/change-task-stat
 import { MenuItem } from "primeng/api";
 import { Menu } from "primeng/menu";
 import {FixationStrategyInput} from "../../../task/models/input/fixation-strategy-input";
+import {AccessService} from "../../../../access/access.service";
 
 @Component({
     selector: "",
@@ -24,7 +25,8 @@ export class SpaceComponent implements OnInit {
               private readonly _redirectService: RedirectService,
               private readonly _activatedRoute: ActivatedRoute,
               private readonly _domSanitizer: DomSanitizer,
-              private readonly _sanitizer: Sanitizer) {
+              private readonly _sanitizer: Sanitizer,
+              private readonly _accessService: AccessService) {
   }
 
     public readonly headerItems$ = this._projectManagmentService.headerItems$;
@@ -32,6 +34,7 @@ export class SpaceComponent implements OnInit {
     readonly projectTags$ = this._projectManagmentService.projectTags$;
     public readonly selectedWorkSpace$ = this._projectManagmentService.selectedWorkSpace$;
     public readonly quickActions$ = this._projectManagmentService.quickActions$;
+    public readonly checkAccess$ = this._accessService.checkAccess$;
 
     aHeaderItems: any[] = [];
     aPanelItems: any[] = [];
@@ -50,9 +53,11 @@ export class SpaceComponent implements OnInit {
     dragged: DraggedTask = null;
     dropdownMenuItems: MenuItem[] | undefined;
     mode: string = "";
+    isVisibleDropDownMenu: boolean = false;
+    isVisibleAccessModal: boolean = false;
 
   public async ngOnInit() {
-    this.checkUrlParams();
+    await this.checkUrlParams();
     await this.getHeaderItemsAsync();
     await this.getProjectTagsAsync();
     await this.getConfigurationWorkSpaceBySelectedTemplateAsync();
@@ -60,24 +65,25 @@ export class SpaceComponent implements OnInit {
     await this.getProjectManagementLineMenuAsync();
   };
 
-    async getProjectTagsAsync() {
-      firstValueFrom((await this._projectManagmentService.getProjectTagsAsync(this.selectedProjectId))
-        .pipe(
-          tap((v) => this.tagNames = <any[]>v)
-        ));
-    }
+  private async getProjectTagsAsync() {
+    firstValueFrom((await this._projectManagmentService.getProjectTagsAsync(this.selectedProjectId))
+      .pipe(
+        tap((v) => this.tagNames = <any[]>v)
+      ));
+  };
 
     /**
   * Функция получает список элементов меню хидера (верхнее меню).
   * @returns - Список элементов.
   */
     private async getHeaderItemsAsync() {
-        (await this._projectManagmentService.getHeaderItemsAsync())
-            .subscribe(_ => {
-                console.log("Хидер УП: ", this.headerItems$.value);
-                this.aHeaderItems = this.headerItems$.value;
-                this.aPanelItems = this.headerItems$.value.panelItems;
-            });
+      (await this._projectManagmentService.getHeaderItemsAsync())
+        .subscribe(_ => {
+          console.log("Хидер УП: ", this.headerItems$.value);
+
+          this.aHeaderItems = this.headerItems$.value.headerItems;
+          this.aPanelItems = this.headerItems$.value.panelItems;
+        });
     };
 
     private async checkUrlParams() {
@@ -98,7 +104,7 @@ export class SpaceComponent implements OnInit {
     private async getConfigurationWorkSpaceBySelectedTemplateAsync() {
         // Если нет проекта, то редиректим в общее пространство.
         if (!this.selectedProjectId) {
-          this._router.navigate(["/project-management/workspaces"]);
+          await this._router.navigate(["/project-management/workspaces"]);
 
           return;
         }
@@ -289,7 +295,7 @@ export class SpaceComponent implements OnInit {
 
         let projectId = this.selectedProjectId;
 
-        this.quickActions$.value.items.forEach((item: any) => {
+        this.quickActions$.value.items.forEach(async (item: any) => {
           switch (item.id) {
             case "ScrumView":
               item.command = async (event: any) => {
@@ -301,6 +307,8 @@ export class SpaceComponent implements OnInit {
                   .subscribe(_ => {
                     window.location.reload();
                   });
+
+                this.isVisibleDropDownMenu = true;
               };
               break;
 
@@ -314,10 +322,16 @@ export class SpaceComponent implements OnInit {
                   .subscribe(_ => {
                     window.location.reload();
                   });
+
+                this.isVisibleDropDownMenu = true;
               };
               break;
 
             case "CreateAction":
+              item.command = async (event: any) => {
+                this.isVisibleDropDownMenu = true;
+              };
+
               item.items.forEach((item1: any) => {
                 item1.command = async (event: any) => {
                   switch (event.item.id) {
@@ -334,6 +348,10 @@ export class SpaceComponent implements OnInit {
               break;
 
             case "Settings":
+              item.command = async (event: any) => {
+                this.isVisibleDropDownMenu = true;
+              };
+
               item.items.forEach((item1: any) => {
                 item1.command = async (event: any) => {
                   switch (event.item.id) {
@@ -347,6 +365,9 @@ export class SpaceComponent implements OnInit {
                       break;
 
                     case "ViewSettings":
+                      this.isVisibleDropDownMenu = true;
+                      this.isVisibleAccessModal = false;
+
                       await this._router.navigate(["/project-management/space/view-settings"], {
                         queryParams: {
                           projectId
@@ -356,6 +377,29 @@ export class SpaceComponent implements OnInit {
                   }
                 };
               });
+              break;
+
+            case "Filters":
+              item.command = async (event: any) => {
+                (await this._accessService.checkAccessProjectManagementModuleOrComponentAsync(
+                  this.selectedProjectId, "ProjectManagement", "ProjectTaskFilter"))
+                  .subscribe(_ => {
+                    console.log("Проверка доступа: ", this.checkAccess$.value);
+
+                    if (this.checkAccess$.value.isAccess) {
+                      // Отображаем выпадающее меню фильтров.
+                      this.isVisibleDropDownMenu = true;
+                      this.isVisibleAccessModal = false;
+                    }
+
+                    // Отображаем модалку запрета (тариф владельца проекта не прошел проверку).
+                    else {
+                      this.isVisibleDropDownMenu = false;
+                      this.isVisibleAccessModal = true;
+                    }
+                  });
+              }
+
               break;
           }
         });

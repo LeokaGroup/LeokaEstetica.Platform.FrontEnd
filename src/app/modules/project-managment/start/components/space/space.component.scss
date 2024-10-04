@@ -195,6 +195,7 @@
   margin: 0 10px;
 }
 
-//::ng-deep .p-menuitem-link {
-//  padding-left: 0;
-//}
+// Для видимости в быстрых действиях элемента фильтров (чтобы не выпадал expand раньше времени).
+.isVisibleMenuHide ::ng-deep .p-submenu-list {
+  visibility: hidden;
+}

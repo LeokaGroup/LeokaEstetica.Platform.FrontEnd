@@ -101,22 +101,22 @@ export class ProjectManagementHeaderComponent implements OnInit, DoCheck {
     // Проверяем доступ к компонентам.
     switch (selectedValue) {
       case "Фильтры":
-        (await this._accessService.checkAccessProjectManagementModuleOrComponentAsync(this.projectId, "ProjectManagement", "ProjectTaskFilter"))
-          .subscribe(_ => {
-            console.log("Проверка доступа: ", this.checkAccess$.value);
-
-            if (this.checkAccess$.value.isAccess) {
-              // Отображаем выпадающее меню фильтров.
-              this.isVisibleDropDownMenu = true;
-              this.isVisibleAccessModal = false;
-            }
-
-            // Отображаем модалку запрета (тариф владельца проекта не прошел проверку).
-            else {
-              this.isVisibleDropDownMenu = false;
-              this.isVisibleAccessModal = true;
-            }
-          });
+        // (await this._accessService.checkAccessProjectManagementModuleOrComponentAsync(this.projectId, "ProjectManagement", "ProjectTaskFilter"))
+        //   .subscribe(_ => {
+        //     console.log("Проверка доступа: ", this.checkAccess$.value);
+        //
+        //     if (this.checkAccess$.value.isAccess) {
+        //       // Отображаем выпадающее меню фильтров.
+        //       this.isVisibleDropDownMenu = true;
+        //       this.isVisibleAccessModal = false;
+        //     }
+        //
+        //     // Отображаем модалку запрета (тариф владельца проекта не прошел проверку).
+        //     else {
+        //       this.isVisibleDropDownMenu = false;
+        //       this.isVisibleAccessModal = true;
+        //     }
+        //   });
         break;
 
       default:
