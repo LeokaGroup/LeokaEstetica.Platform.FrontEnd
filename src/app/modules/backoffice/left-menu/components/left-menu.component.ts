@@ -118,22 +118,6 @@ export class LeftMenuComponent implements OnInit {
           // Команды первого уровня.
           item.command = (event: any) => {
             switch (event.item.id) {
-              case "ViewProfile":
-                this._router.navigate(["/profile/aboutme"], {
-                  queryParams: {
-                    mode: "view"
-                  }
-                });
-                break;
-
-              case "EditProfile":
-                this._router.navigate(["/profile/aboutme"], {
-                  queryParams: {
-                    mode: "edit"
-                  }
-                });
-                break;
-
               case "CreateVacancy":
                 this._router.navigate(["/vacancies/create"]);
                 break;
@@ -146,6 +130,31 @@ export class LeftMenuComponent implements OnInit {
                 this._router.navigate(["/vacancies/archive"]);
                 break;
             }
+          }
+
+          // Смотрим уровень профиля.
+          if (item.id == "Profile") {
+            item.items.forEach((item1: any) => {
+              item1.command = (event: any) => {
+                switch (event.item.id) {
+                  case "ViewProfile":
+                    this._router.navigate(["/profile/aboutme"], {
+                      queryParams: {
+                        mode: "view"
+                      }
+                    });
+                    break;
+
+                  case "EditProfile":
+                    this._router.navigate(["/profile/aboutme"], {
+                      queryParams: {
+                        mode: "edit"
+                      }
+                    });
+                    break;
+                }
+              };
+            });
           }
 
           // Смотрим уровень модулей.
@@ -258,6 +267,48 @@ export class LeftMenuComponent implements OnInit {
 
                       case "ArchivedProjects":
                         await  this._router.navigate(["/projects/archive"]);
+                        break;
+                    }
+                  }
+                });
+              }
+
+              // Смотрим модуль HR.
+              if (item2.id == "HR") {
+                // Смотрим элементы уровня модуля УП.
+                item2.items.forEach((item3: any) => {
+                  let projectId: number;
+
+                  // Действия, которые зависят от параметров в url.
+                  if (!this.projectId || !isDisableProjectManagementModule) {
+                    item3.disabled = ["Wiki", "Tasks", "Backlog", "Sprints"].includes(item3.id);
+                  }
+
+                  // Команды уровня элементов модуля УП.
+                  item3.command = async (event: any) => {
+                    switch (event.item.id) {
+                      case "WorkSpaces":
+                        await this._router.navigate(["/project-management/workspaces"]);
+                        break;
+
+                      case "Wiki":
+                        await this._router.navigate(["/project-management/wiki"], {
+                          queryParams: {
+                            projectId
+                          }
+                        });
+                        break;
+
+                      case "CreateVacancy":
+                        await this._router.navigate(["/vacancies/create"]);
+                        break;
+
+                      case "UserVacancies":
+                        await  this._router.navigate(["/vacancies/my"]);
+                        break;
+
+                      case "ArchivedVacancies":
+                        await  this._router.navigate(["/vacancies/archive"]);
                         break;
                     }
                   }
