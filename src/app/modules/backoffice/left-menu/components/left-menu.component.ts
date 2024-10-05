@@ -115,6 +115,8 @@ export class LeftMenuComponent implements OnInit {
           }
         });
 
+        let projectId: number = Number(this.projectId);
+
         // Навешиваем команды для каждого пункта меню.
         this.profileItems$.value.items.forEach((item: any) => {
           // Команды первого уровня.
@@ -167,10 +169,8 @@ export class LeftMenuComponent implements OnInit {
               if (item2.id == "ProjectManagement") {
                 // Смотрим элементы уровня модуля УП.
                 item2.items.forEach((item3: any) => {
-                  let projectId: number;
-
                   // Действия, которые зависят от параметров в url.
-                  if (!this.projectId || !isDisableProjectManagementModule) {
+                  if (!projectId || isDisableProjectManagementModule) {
                     item3.disabled = ["Wiki", "Tasks", "Backlog", "Sprints"].includes(item3.id);
                   }
 
@@ -279,10 +279,8 @@ export class LeftMenuComponent implements OnInit {
               if (item2.id == "HR") {
                 // Смотрим элементы уровня модуля УП.
                 item2.items.forEach((item3: any) => {
-                  let projectId: number;
-
                   // Действия, которые зависят от параметров в url.
-                  if (!this.projectId || !isDisableProjectManagementModule) {
+                  if (!projectId || isDisableProjectManagementModule) {
                     item3.disabled = ["Wiki", "Tasks", "Backlog", "Sprints"].includes(item3.id);
                   }
 
