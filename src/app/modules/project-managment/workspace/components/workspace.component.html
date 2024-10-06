@@ -1,88 +1,88 @@
-<p-toast></p-toast>
+<!--<p-toast></p-toast>-->
 
-<!--<div class="left-panel" (mouseover)="onSelectPanelMenu()">-->
-<!--  <div style="border-left:1px solid #C0C6CF;height:1500px;width: 50px;position: absolute;"></div>-->
+<!--&lt;!&ndash;<div class="left-panel" (mouseover)="onSelectPanelMenu()">&ndash;&gt;-->
+<!--&lt;!&ndash;  <div style="border-left:1px solid #C0C6CF;height:1500px;width: 50px;position: absolute;"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--<div class="d-flex">-->
+<!--  <div class="profile-left-menu col-lg-3">-->
+
+<!--  </div>-->
+
+<!--  <div class="col-lg-7">-->
+<!--    <div class="task-details mt-3">-->
+<!--      <div class="workspaces-header mt-3">-->
+<!--        <h4>Пространства проектов</h4>-->
+<!--        <small>Пространство проекта создается автоматически. Для создания нового пространства проекта, Вам нужно создать проект</small>-->
+<!--      </div>-->
+
+<!--      <div class="d-flex">-->
+<!--        <div class="col-lg-6 mt-3">-->
+<!--          <div>-->
+<!--            <h4>Ваши пространства</h4>-->
+<!--          </div>-->
+
+<!--          <div class="card">-->
+<!--            <p-dataView #dv [value]="workspaces$.value.userCompanyWorkSpaces"-->
+<!--                        [paginator]="isPaginator"-->
+<!--                        [rows]="10"-->
+<!--                        layout="list"-->
+<!--                        emptyMessage="Проектов еще не создано...">-->
+<!--              <ng-template let-ws pTemplate="list">-->
+<!--                <div class="grid grid-nogutter">-->
+<!--                  <div class="col-12 data-line" *ngFor="let w of ws">-->
+<!--                    <div>-->
+<!--                      <div>-->
+<!--                        <strong>Компания:</strong> {{w.companyName ?? 'Не задана'}}-->
+<!--                      </div>-->
+
+<!--                      <h5 class="workspace-project-name py-3 m-0" (click)="onRouteWorkSpaceAsync(w.projectId, w.companyId)">-->
+<!--                        <strong>Проект:</strong> {{w.projectManagementName}}-->
+<!--                      </h5>-->
+<!--                    </div>-->
+
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </ng-template>-->
+<!--            </p-dataView>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        <div class="col-lg-6 mt-3">-->
+<!--          <div>-->
+<!--            <h4>Вы состоите в пространствах</h4>-->
+<!--          </div>-->
+
+<!--          <div class="card">-->
+<!--            <p-dataView #dv [value]="workspaces$.value.otherCompanyWorkSpaces"-->
+<!--                        [paginator]="isPaginator"-->
+<!--                        [rows]="10"-->
+<!--                        layout="list"-->
+<!--                        emptyMessage="Проектов еще не создано...">-->
+<!--              <ng-template let-ws pTemplate="list">-->
+<!--                <div class="grid grid-nogutter">-->
+<!--                  <div class="col-12 data-line" *ngFor="let w of ws">-->
+<!--                    <div>-->
+<!--                      <div>-->
+<!--                        <strong>Компания:</strong> {{w.companyName ?? 'Не задана'}}-->
+<!--                      </div>-->
+
+<!--                      <h5 class="workspace-project-name py-3 m-0" (click)="onRouteWorkSpaceAsync(w.projectId, w.companyId)">-->
+<!--                        <strong>Проект:</strong> {{w.projectManagementName}}-->
+<!--                      </h5>-->
+<!--                    </div>-->
+
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </ng-template>-->
+<!--            </p-dataView>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
 <!--</div>-->
 
-<div class="d-flex">
-  <div class="profile-left-menu col-lg-3">
-
-  </div>
-
-  <div class="col-lg-7">
-    <div class="task-details mt-3">
-      <div class="workspaces-header mt-3">
-        <h4>Пространства проектов</h4>
-        <small>Пространство проекта создается автоматически. Для создания нового пространства проекта, Вам нужно создать проект</small>
-      </div>
-
-      <div class="d-flex">
-        <div class="col-lg-6 mt-3">
-          <div>
-            <h4>Ваши пространства</h4>
-          </div>
-
-          <div class="card">
-            <p-dataView #dv [value]="workspaces$.value.userCompanyWorkSpaces"
-                        [paginator]="isPaginator"
-                        [rows]="10"
-                        layout="list"
-                        emptyMessage="Проектов еще не создано...">
-              <ng-template let-ws pTemplate="list">
-                <div class="grid grid-nogutter">
-                  <div class="col-12 data-line" *ngFor="let w of ws">
-                    <div>
-                      <div>
-                        <strong>Компания:</strong> {{w.companyName ?? 'Не задана'}}
-                      </div>
-
-                      <h5 class="workspace-project-name py-3 m-0" (click)="onRouteWorkSpaceAsync(w.projectId, w.companyId)">
-                        <strong>Проект:</strong> {{w.projectManagementName}}
-                      </h5>
-                    </div>
-
-                  </div>
-                </div>
-              </ng-template>
-            </p-dataView>
-          </div>
-        </div>
-
-        <div class="col-lg-6 mt-3">
-          <div>
-            <h4>Вы состоите в пространствах</h4>
-          </div>
-
-          <div class="card">
-            <p-dataView #dv [value]="workspaces$.value.otherCompanyWorkSpaces"
-                        [paginator]="isPaginator"
-                        [rows]="10"
-                        layout="list"
-                        emptyMessage="Проектов еще не создано...">
-              <ng-template let-ws pTemplate="list">
-                <div class="grid grid-nogutter">
-                  <div class="col-12 data-line" *ngFor="let w of ws">
-                    <div>
-                      <div>
-                        <strong>Компания:</strong> {{w.companyName ?? 'Не задана'}}
-                      </div>
-
-                      <h5 class="workspace-project-name py-3 m-0" (click)="onRouteWorkSpaceAsync(w.projectId, w.companyId)">
-                        <strong>Проект:</strong> {{w.projectManagementName}}
-                      </h5>
-                    </div>
-
-                  </div>
-                </div>
-              </ng-template>
-            </p-dataView>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!--<left-panel-->
-<!--  (mouseleave)="onClosePanelMenu()"-->
-<!--&gt;</left-panel>-->
+<!--&lt;!&ndash;<left-panel&ndash;&gt;-->
+<!--&lt;!&ndash;  (mouseleave)="onClosePanelMenu()"&ndash;&gt;-->
+<!--&lt;!&ndash;&gt;</left-panel>&ndash;&gt;-->

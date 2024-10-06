@@ -27,14 +27,15 @@ export class AppComponent implements OnInit {
   public readonly checkUserCode$ = this._redisService.checkUserCode$;
 
   public isVisibleMenu: boolean = false;
-  private _aVisibleProfileMenuRoutes: string[] = [
+  private _aVisibleMenuRoutes: string[] = [
     "/profile/aboutme?mode=view",
     "/profile/aboutme?mode=edit",
     "/profile/projects/my",
     "/profile/projects/create",
     "/vacancies",
     "/projects/project?projectId",
-    "/subscriptions"
+    "/subscriptions",
+    "/space/my"
   ];
 
   private _aVisibleVacancyMenuRoutes: string[] = [
@@ -392,7 +393,7 @@ export class AppComponent implements OnInit {
       .subscribe(
         (event: any) => {
           // Отображение левого меню профиля пользователя.
-          if (this._aVisibleProfileMenuRoutes.includes(event.url)) {
+          if (this._aVisibleMenuRoutes.includes(event.url)) {
             this.isVisibleMenu = true;
             localStorage["m_t"] = 1;
           }
@@ -419,7 +420,7 @@ export class AppComponent implements OnInit {
     }
 
     // Отображение левого меню профиля пользователя.
-    if (this._aVisibleProfileMenuRoutes.includes(currentUrl)) {
+    if (this._aVisibleMenuRoutes.includes(currentUrl)) {
       this.isVisibleMenu = true;
       localStorage["m_t"] = 1;
     }
@@ -431,7 +432,6 @@ export class AppComponent implements OnInit {
 
     if (this.projectModeUrls.includes(currentUrl)
       || this.resumeModeUrls.includes(currentUrl)) {
-      // this.isVisibleMenu = true;
       localStorage["m_t"] = 1;
     }
 
@@ -442,7 +442,6 @@ export class AppComponent implements OnInit {
     }
 
     if (currentUrl.indexOf("user/signin") >= 0 || currentUrl.indexOf("user/signup") >= 0) {
-      // this.isVisibleMenu = false;
       this.rerender();
       this.isVisibleHeader = true;
       this.isVisibleMenu = false;
@@ -460,10 +459,6 @@ export class AppComponent implements OnInit {
       this.rerender();
     }
 
-    // if (currentUrl.indexOf("callcenter") >= 0) {
-    //   this.isVisibleMenu = false;
-    // }
-
     if (currentUrl.indexOf("press/offer") >= 0) {
       this.isVisibleMenu = false;
     }
@@ -471,41 +466,6 @@ export class AppComponent implements OnInit {
     if (currentUrl === "/") {
       this.isVisibleProjectManagementMenu = false;
     }
-
-    // if (currentUrl.indexOf("calendar") > 0) {
-    //   this.isVisibleMenu = false;
-    // }
-
-    // if (currentUrl.startsWith('/project-management')) {
-    //   this.isVisibleProjectManagementMenu = true;
-    //   this.isVisibleMenu = false;
-    // } else {
-    // this.isVisibleProjectManagementMenu = false;
-    // this._activatedRoute.queryParams
-    //   .subscribe(params => {
-    //     // Для просмотра анкеты другого пользователя.
-    //     if (params["uc"] !== null && params["uc"] !== undefined) {
-    //       this.isVisibleMenu = true;
-    //     }
-    //
-    //     // Для просмотра проекта.
-    //     if (params["projectId"] > 0 && params["mode"] == "view") {
-    //       this.isVisibleMenu = true;
-    //     }
-    //
-    //     if (params["page"]) {
-    //       this.isVisibleMenu = true;
-    //     }
-    //
-    //     if (currentUrl.indexOf("fare-rules") >= 0) {
-    //       this.isVisibleMenu = false;
-    //     }
-    //
-    //     if (params["publicId"] !== null && params["step"] > 0) {
-    //       this.isVisibleMenu = true;
-    //     }
-    //   });
-    // }
   };
 
   /**

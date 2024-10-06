@@ -1,1 +1,125 @@
-my workspace
+<div class="d-flex">
+  <div class="col-lg-2">
+
+  </div>
+
+  <div class="col-lg-10">
+    <h3>Ваше пространство</h3>
+
+    <div class="d-flex">
+      <h5 class="mt-3 workspaces">
+        Пространства проектов
+        <small>
+          <i class="pi pi-exclamation-circle info" pTooltip="Пространство проекта создается автоматически.
+      Для создания нового пространства проекта, вам нужно создать проект."></i>
+        </small>
+      </h5>
+    </div>
+
+    <!--  Панель пространств проектов.  -->
+    <div class="d-flex block-workspaces">
+      <div class="col-lg-6 my-project-woksspaces">
+        <p-panel [toggleable]="true">
+          <ng-template pTemplate="header">
+            <div class="flex align-items-center gap-2">
+          <span class="font-bold">
+                Пространства ваших проектов
+            </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="footer">
+            <div class="flex flex-wrap align-items-center justify-content-between gap-3">
+              <div class="flex align-items-center gap-2">
+                <p-button icon="pi pi-user" rounded="true" text="true"/>
+                <p-button icon="pi pi-bookmark" severity="secondary" rounded="true" text="true"/>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="icons">
+<!-- TODO: Если нужны будут настройки, то раскомментить. -->
+<!--            <button class="p-panel-header-icon p-link mr-2" (click)="menu.toggle($event)">-->
+<!--              <span class="pi pi-cog"></span>-->
+<!--            </button>-->
+<!--            <p-menu #menu id="config_menu" [model]="items" [popup]="true"/>-->
+          </ng-template>
+          <p class="m-0">
+          <div class="">
+            <p-dataView #dv [value]="workspaces$.value.userCompanyWorkSpaces"
+                        [paginator]="isPaginator"
+                        [rows]="10"
+                        layout="list"
+                        emptyMessage="Проектов еще не создано...">
+              <ng-template let-ws pTemplate="list">
+                <div class="grid grid-nogutter">
+                  <div class="col-12 data-line" *ngFor="let w of ws">
+                    <div>
+                      <div>
+                        <strong>Компания:</strong> {{w.companyName ?? 'Не задана'}}
+                      </div>
+
+                      <h5 class="workspace-project-name py-3 m-0" (click)="onRouteWorkSpaceAsync(w.projectId, w.companyId)">
+                        <strong>Проект:</strong> {{w.projectManagementName}}
+                      </h5>
+                    </div>
+
+                  </div>
+                </div>
+              </ng-template>
+            </p-dataView>
+          </div>
+        </p-panel>
+      </div>
+
+      <div class="col-lg-6">
+        <p-panel [toggleable]="true">
+          <ng-template pTemplate="header">
+            <div class="flex align-items-center gap-2">
+          <span class="font-bold">
+                Вы состоите в пространствах
+            </span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="footer">
+            <div class="flex flex-wrap align-items-center justify-content-between gap-3">
+              <div class="flex align-items-center gap-2">
+                <p-button icon="pi pi-user" rounded="true" text="true"/>
+                <p-button icon="pi pi-bookmark" severity="secondary" rounded="true" text="true"/>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="icons">
+            <!-- TODO: Если нужны будут настройки, то раскомментить. -->
+<!--            <button class="p-panel-header-icon p-link mr-2" (click)="menu.toggle($event)">-->
+<!--              <span class="pi pi-cog"></span>-->
+<!--            </button>-->
+<!--            <p-menu #menu id="config_menu" [model]="items" [popup]="true"/>-->
+          </ng-template>
+          <div class="">
+            <p-dataView #dv [value]="workspaces$.value.otherCompanyWorkSpaces"
+                        [paginator]="isPaginator"
+                        [rows]="10"
+                        layout="list"
+                        emptyMessage="Проектов еще не создано...">
+              <ng-template let-ws pTemplate="list">
+                <div class="grid grid-nogutter">
+                  <div class="col-12 data-line" *ngFor="let w of ws">
+                    <div>
+                      <div>
+                        <strong>Компания:</strong> {{w.companyName ?? 'Не задана'}}
+                      </div>
+
+                      <h5 class="workspace-project-name py-3 m-0" (click)="onRouteWorkSpaceAsync(w.projectId, w.companyId)">
+                        <strong>Проект:</strong> {{w.projectManagementName}}
+                      </h5>
+                    </div>
+
+                  </div>
+                </div>
+              </ng-template>
+            </p-dataView>
+          </div>
+        </p-panel>
+      </div>
+    </div>
+  </div>
+</div>
