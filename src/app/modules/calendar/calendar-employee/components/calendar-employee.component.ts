@@ -136,18 +136,12 @@ export class CalendarEmployeeComponent implements OnInit {
     (await this._projectManagementHumanResourcesService.searchEventMemberAsync(event.query))
       .subscribe(_ => {
         console.log("Поиск: ", this.eventUsers$.value);
-      });
-  };
 
-  /**
-   * Функция выбирает участников события и пишет в массив.
-   * @param event - Ивент.
-   */
-  public onSelectEventMember(event: any) {
-    const index = this.aEventMembers.findIndex((x: any) => x.userId === event.value.userId);
-    if (index === -1) {
-      this.aEventMembers = [...this.aEventMembers, event.value];
-    }
+        const index = this.aEventMembers.findIndex((x: any) => x.userId === event.value.userId);
+        if (index === -1) {
+          this.aEventMembers = [...this.aEventMembers, event.value];
+        }
+      });
   };
 
   /**

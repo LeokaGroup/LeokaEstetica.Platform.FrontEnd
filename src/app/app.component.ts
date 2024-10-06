@@ -300,6 +300,7 @@ export class AppComponent implements OnInit {
     "SendNotifySuccessCreatePage",
     "SendNotifyErrorCreateFolder",
     "SendNotifyErrorCreatePage",
+    "SendNotificationWarningNotFoundUserByEmail"
   ];
 
   public $allFeed = new BehaviorSubject<any>(null);
