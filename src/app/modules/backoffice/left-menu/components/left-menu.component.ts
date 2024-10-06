@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import { RedirectService } from "src/app/common/services/redirect.service";
 import { BackOfficeService } from "../../services/backoffice.service";
 import {ProjectManagmentService} from "../../../project-managment/services/project-managment.service";
 import {CompanyInput} from "../../../project-managment/models/input/company-input";
@@ -61,7 +60,6 @@ export class LeftMenuComponent implements OnInit {
 
   constructor(private readonly _backOfficeService: BackOfficeService,
               private readonly _router: Router,
-              private readonly _redirectService: RedirectService,
               private readonly _projectManagmentService: ProjectManagmentService,
               private readonly _activatedRoute: ActivatedRoute) {
   }
@@ -134,6 +132,13 @@ export class LeftMenuComponent implements OnInit {
                 this._router.navigate(["/vacancies/archive"]);
                 break;
             }
+          }
+
+          // Мое пространство.
+          if (item.id == "MySpace") {
+            item.command = (event: any) => {
+              this._router.navigate(["/space/my"]);
+            };
           }
 
           // Смотрим уровень профиля.
