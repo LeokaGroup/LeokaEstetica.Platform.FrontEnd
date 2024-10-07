@@ -68,17 +68,12 @@ export class LeftMenuComponent implements OnInit {
 
     public async ngOnInit() {
       await this.checkUrlParams();
+      await this.getLeftMenuItemsAsync();
     };
 
   private async checkUrlParams() {
     this._router.events
       .subscribe(async (event: any) => {
-        if (event.url !== "/"
-          && !event.url.includes("/user/signin")
-          && !event.url.includes("/user/signup")
-          || !event.url) {
-          await this.getLeftMenuItemsAsync();
-        }
       });
   };
 
