@@ -377,10 +377,6 @@ export class AppComponent implements OnInit {
             console.log(event.url);
             this.checkRoutes(event.url);
 
-            if (this.currentUrl == "/") {
-              this.isVisibleMenu = false;
-            }
-
             if (this.currentUrl == "/forbidden") {
               this.isVisibleMenu = false;
             }
@@ -441,7 +437,13 @@ export class AppComponent implements OnInit {
       this.isVisibleMenu = true;
     }
 
-    if (currentUrl.indexOf("user/signin") >= 0 || currentUrl.indexOf("user/signup") >= 0) {
+    if (currentUrl.indexOf("user/signin") >= 0
+      || currentUrl.indexOf("user/signup") >= 0
+      || currentUrl === "/") {
+      if (currentUrl === "/") {
+        this.isVisibleProjectManagementMenu = false;
+      }
+
       this.rerender();
       this.isVisibleHeader = true;
       this.isVisibleMenu = false;
@@ -455,16 +457,8 @@ export class AppComponent implements OnInit {
       this.isVisibleMenu = true;
     }
 
-    if (currentUrl.indexOf("/") >= 0) {
-      this.rerender();
-    }
-
     if (currentUrl.indexOf("press/offer") >= 0) {
       this.isVisibleMenu = false;
-    }
-
-    if (currentUrl === "/") {
-      this.isVisibleProjectManagementMenu = false;
     }
   };
 

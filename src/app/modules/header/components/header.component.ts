@@ -107,9 +107,9 @@ export class HeaderComponent implements OnInit {
     ).subscribe(async e => {
       this.currentUrl = (e as NavigationEnd).url;
 
-      if (this.currentUrl !== "/"
-        && !this.currentUrl.includes("/user/signin")
-        && !this.currentUrl.includes("/user/signup")) {
+      if (!this.currentUrl.includes("/user/signin")
+        && !this.currentUrl.includes("/user/signup")
+        && !!localStorage["t_n"]) {
         await this.getHeaderItemsAsync();
       }
     });
