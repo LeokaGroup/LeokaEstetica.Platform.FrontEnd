@@ -132,14 +132,14 @@ export class CalendarEmployeeComponent implements OnInit {
    * Функция поиска пользователя.
    * @param event - Ивент.
    */
-  public async onSearchEventMemberAsync(event: any) {
-    (await this._projectManagementHumanResourcesService.searchEventMemberAsync(event.query))
+  public async onSearchEventMemberAsync() {
+    (await this._projectManagementHumanResourcesService.searchEventMemberAsync(this.searchEventMember))
       .subscribe(_ => {
         console.log("Поиск: ", this.eventUsers$.value);
 
-        const index = this.aEventMembers.findIndex((x: any) => x.userId === event.value.userId);
+        const index = this.aEventMembers.findIndex((x: any) => x.displayName === this.searchEventMember);
         if (index === -1) {
-          this.aEventMembers = [...this.aEventMembers, event.value];
+          this.aEventMembers = [...this.aEventMembers, this.eventUsers$.value];
         }
       });
   };
