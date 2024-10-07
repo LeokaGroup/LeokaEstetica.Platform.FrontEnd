@@ -1,9 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { BackOfficeService } from "../../services/backoffice.service";
 import {ProjectManagmentService} from "../../../project-managment/services/project-managment.service";
 import {CompanyInput} from "../../../project-managment/models/input/company-input";
-import {filter} from 'rxjs/operators';
 
 @Component({
     selector: "left-menu",
@@ -74,7 +73,6 @@ export class LeftMenuComponent implements OnInit {
   private async checkUrlParams() {
     this._router.events
       .subscribe(async (event: any) => {
-        console.log("event", event.url);
         if (event.url !== "/"
           && !event.url.includes("/user/signin")
           && !event.url.includes("/user/signup")

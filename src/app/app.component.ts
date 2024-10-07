@@ -400,6 +400,10 @@ export class AppComponent implements OnInit {
             || event.url == "/") {
             this.isVisibleMenu = false;
           }
+
+          if (event.url == "/fare-rules") {
+            this.isVisibleMenu = false;
+          }
         });
   };
 
@@ -448,14 +452,6 @@ export class AppComponent implements OnInit {
       this.rerender();
       this.isVisibleHeader = true;
       this.isVisibleMenu = false;
-    }
-
-    if (currentUrl.indexOf("profile/aboutme?mode=view") >= 0) {
-      this.isVisibleHeader = false;
-      this.isVisibleMenu = false;
-      this.rerender();
-      this.isVisibleHeader = true;
-      this.isVisibleMenu = true;
     }
 
     if (currentUrl.indexOf("press/offer") >= 0) {
