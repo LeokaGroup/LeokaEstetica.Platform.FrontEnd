@@ -1,30 +1,23 @@
-<nav class="navbar navbar-light navbar-main">
+<nav class="navbar navbar-light header-line">
   <a class="navbar-brand" routerLink="">
     <img class="logo" src="../../../../assets/images/logo/logo.svg">
   </a>
 
-  <div class="navbar-links-wrapper">
-<!-- TODO: Если не будет нужно, то выпилим. -->
-<!--    <div class="header-buttons d-flex menu">-->
-<!--      <div *ngFor="let item of headerData$.value">-->
-<!--          <div class="menu-item" (click)="onSelectHeaderItem(item)">{{item.icon}}</div>-->
-<!--      </div>-->
-<!--    </div>-->
-    <p-menubar [model]="headerData$.value?.items" />
-  </div>
+  <p-menubar *ngIf="isShowLandingMenu" [model]="headerLandingData$.value?.items" />
+  <p-menubar *ngIf="isHideAuthButtons" [model]="headerData$.value?.items" />
 
   <div class="header-buttons d-flex align-right" *ngIf="!isHideAuthButtons">
-      <div class="menu-item">
-        @if (currentUrl!='/user/signin') {
-          <button class="btn btn-primary btn-header button-action-auth-control sign-button"
-                  (click)="onRouteSignIn()">Войти
-          </button>
-        } @else {
-          <button class="btn btn-primary btn-header button-action-auth-control sign-button"
-                (click)="onRouteSignUp()">Регистрация
-          </button>
-        }
-      </div>
+    <div class="menu-item">
+      @if (currentUrl!='/user/signin') {
+      <button class="btn btn-primary btn-header button-action-auth-control sign-button"
+              (click)="onRouteSignIn()">Войти
+      </button>
+      } @else {
+      <button class="btn btn-primary btn-header button-action-auth-control sign-button"
+            (click)="onRouteSignUp()">Регистрация
+      </button>
+      }
+    </div>
   </div>
 
 <!-- <div class="user-avatar d-flex justify-content-end" *ngIf="isHideAuthButtons">-->

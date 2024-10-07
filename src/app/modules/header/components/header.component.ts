@@ -16,9 +16,11 @@ import { filter } from "rxjs";
 export class HeaderComponent implements OnInit {
     public readonly headerData$ = this._headerService.headerData$;
     public readonly projectWorkspaceSettings$ = this._projectManagmentService.projectWorkspaceSettings$;
+    public readonly headerLandingData$ = this._headerService.headerLandingData$;
 
     isHideAuthButtons: boolean = false;
     currentUrl = '';
+    isShowLandingMenu: boolean = false;
 
   constructor(private readonly _headerService: HeaderService,
               private readonly _router: Router,
@@ -101,7 +103,7 @@ export class HeaderComponent implements OnInit {
     await this.getBuildProjectSpaceSettingsAsync(e.menuItemUrl);
   };
 
-  private checkUrlParams() {
+  private async checkUrlParams() {
     this._router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(async e => {
@@ -112,12 +114,16 @@ export class HeaderComponent implements OnInit {
         && !!localStorage["t_n"]) {
         await this.getHeaderItemsAsync();
       }
+
+      this.isShowLandingMenu = this.currentUrl == "/";
     });
 
     this._activatedRoute.queryParams
       .subscribe(_ => {
         this.rerenderAuthButtons();
       });
+
+    await this.getLandingMenuItemsAsync();
   };
 
     /**
@@ -159,5 +165,57 @@ export class HeaderComponent implements OnInit {
     else {
       this._router.navigate([menuItemUrl]);
     }
+  };
+
+  /**
+   * Функция получает элементы меню для всех Landing страниц.
+   * В будущем можно унифицировать этот эндпоинт будет под разные меню разных Landing страниц.
+   * @returns - Элементы Landing меню.
+   */
+  private async getLandingMenuItemsAsync() {
+    (await this._headerService.getLandingMenuItemsAsync())
+      .subscribe(_ => {
+        console.log("Данные хидера лендоса: ", this.headerLandingData$);
+
+        // Навешиваем команды для каждого пункта меню.
+        this.headerLandingData$.value.items.forEach((item: any) => {
+          // Навешиваем команды 1 уровню тарифов.
+          if (item.id == "FareRules") {
+            item.command = (event: any) => {
+              switch (event.item.id) {
+                case "FareRules":
+                  this._router.navigate(["/fare-rules"]);
+                  break;
+              }
+            }
+          }
+
+          // Навешиваем команды уровню решений.
+          if (item.id == "Solutions") {
+            // Смотрим вложенность профиля.
+            // item.items.forEach((p: any) => {
+            //   p.command = (event: any) => {
+            //     switch (event.item.id) {
+            //       case "Orders":
+            //         this._router.navigate(["/profile/orders"]);
+            //         break;
+            //
+            //       case "Tickets":
+            //         this._router.navigate(["/profile/tickets"]);
+            //         break;
+            //
+            //       case "Exit":
+            //         localStorage.clear();
+            //
+            //         // TODO: В идеале отрефачить без этого.
+            //         // Нужно, чтобы избежать бага с рендером хидера (оставался верхний хидер при логауте).
+            //         window.location.href = window.location.href + "/user/signin";
+            //         break;
+            //     }
+            //   };
+            // });
+          }
+        });
+      });
   };
 }
