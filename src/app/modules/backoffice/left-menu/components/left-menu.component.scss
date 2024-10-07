@@ -8,10 +8,6 @@
   width: 240px;
 }
 
-.profileLeftMenuConditional {
-  //border: 1px solid lightgray;
-}
-
 :host ::ng-deep .profile-left-menu .p-panelmenu {
   @include font.Paragraph1();
   display: grid;

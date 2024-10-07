@@ -72,14 +72,15 @@ export class LeftMenuComponent implements OnInit {
     };
 
   private async checkUrlParams() {
-    this._router.events.pipe(
-      filter(event => event instanceof NavigationEnd))
+    this._router.events
       .subscribe(async (event: any) => {
-        if (event.url !== "/") {
+        console.log("event", event.url);
+        if (event.url !== "/"
+          && !event.url.includes("/user/signin")
+          && !event.url.includes("/user/signup")
+          || !event.url) {
           await this.getLeftMenuItemsAsync();
         }
-
-        this.isShowLeftMenuConditional = event.url.includes("/user/signin") || event.url.includes("/user/signup");
       });
   };
 
