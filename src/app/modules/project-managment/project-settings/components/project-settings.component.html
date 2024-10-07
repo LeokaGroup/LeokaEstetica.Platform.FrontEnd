@@ -376,16 +376,12 @@
 
         <div class="d-flex">
                   <span class="p-fluid">
-                    <p-autoComplete [(ngModel)]="searchText"
-                                    [suggestions]="aProjectInvitesUsers"
-                                    (completeMethod)="onSearchInviteProjectMembersAsync($event)"
-                                    field="displayName"
-                                    [multiple]="false"
-                                    (onSelect)="onSelectProjectMember($event)"
-                                    placeholder="Введите для поиска пользователя"
-                                    [showEmptyMessage]="true"
-                                    emptyMessage="Результатов не найдено">
-                    </p-autoComplete>
+                    <input type="text"
+                           class="p-inputtext-sm input-control-worksheet"
+                           placeholder="Введите для поиска пользователя"
+                           pInputText
+                           autocomplete="new-password"
+                           [(ngModel)]="searchText"/>
                   </span>
         </div>
       </div>
@@ -393,7 +389,11 @@
   </div>
   <ng-template pTemplate="footer">
     <p-button (click)="isProjectInvite=false" label="Отменить" styleClass="p-button-text p-button-danger"></p-button>
-    <p-button (click)="onSendInviteProjectTeamAsync()" label="Отправить приглашение" styleClass="p-button-text p-button-text">
+
+    <p-button (click)="onSendInviteProjectTeamAsync(searchText)"
+              label="Отправить приглашение"
+              styleClass="p-button-text p-button-text"
+              [disabled]="!searchText">
     </p-button>
   </ng-template>
 </p-dialog>

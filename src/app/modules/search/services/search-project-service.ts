@@ -8,7 +8,7 @@ import { API_URL } from 'src/app/core/core-urls/api-urls';
  */
 @Injectable()
 export class SearchProjectService {
-    public searchInviteMembers$ = new BehaviorSubject<any>(null); 
+    public searchInviteMembers$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -20,7 +20,7 @@ export class SearchProjectService {
     * @returns - Список пользователей, которых можно пригласить в команду проекта.
     */
     public async searchInviteProjectMembersAsync(searchText: string) {
-        return await this.http.get(API_URL.apiUrl + `/search/project-members/${searchText}`).pipe(
+        return await this.http.get(API_URL.apiUrl + `/search/project-members?searchText=${searchText}`).pipe(
             tap(data => this.searchInviteMembers$.next(data))
         );
     };
