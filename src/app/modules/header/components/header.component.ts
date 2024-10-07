@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit {
 
     isHideAuthButtons: boolean = false;
     currentUrl = '';
+    isShowLandingMenu: boolean = false;
 
   constructor(private readonly _headerService: HeaderService,
               private readonly _router: Router,
@@ -113,6 +114,8 @@ export class HeaderComponent implements OnInit {
         && !!localStorage["t_n"]) {
         await this.getHeaderItemsAsync();
       }
+
+      this.isShowLandingMenu = this.currentUrl == "/";
     });
 
     this._activatedRoute.queryParams
