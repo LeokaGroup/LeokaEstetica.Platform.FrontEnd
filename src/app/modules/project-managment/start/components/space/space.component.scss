@@ -190,3 +190,12 @@
   padding: 0;
   color: #878787;
 }
+
+.project-management-line {
+  margin: 0 10px;
+}
+
+// Для видимости в быстрых действиях элемента фильтров (чтобы не выпадал expand раньше времени).
+.isVisibleMenuHide ::ng-deep .p-submenu-list {
+  visibility: hidden;
+}

@@ -51,6 +51,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import {RedisService} from "./modules/redis/services/redis.service";
 import {DropdownModule} from 'primeng/dropdown';
+import { TieredMenuModule } from 'primeng/tieredmenu';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,8 @@ import {DropdownModule} from 'primeng/dropdown';
     AutoCompleteModule,
     CheckboxModule,
     DialogModule,
-    DropdownModule
+    DropdownModule,
+    TieredMenuModule
   ],
 
   providers: [

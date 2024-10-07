@@ -1,6 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
-import { ActivatedRoute, NavigationEnd, Router, UrlSegment } from "@angular/router";
-import { RedirectService } from "src/app/common/services/redirect.service";
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { HeaderService } from "../services/header.service";
 import {ProjectManagmentService} from "../../project-managment/services/project-managment.service";
 import { filter } from "rxjs";
@@ -17,50 +16,21 @@ import { filter } from "rxjs";
 export class HeaderComponent implements OnInit {
     public readonly headerData$ = this._headerService.headerData$;
     public readonly projectWorkspaceSettings$ = this._projectManagmentService.projectWorkspaceSettings$;
+    public readonly headerLandingData$ = this._headerService.headerLandingData$;
 
     isHideAuthButtons: boolean = false;
     currentUrl = '';
-    items: any[] = [
-        {
-            label: 'Заказы',
-            command: () => {
-                this._router.navigate(["/profile/orders"]);
-            }
-        },
-        // {
-        //     label: 'Настройки',
-        //     command: () => {
-
-        //     }
-        // },
-        {
-            label: 'Заявки в поддержку',
-            command: () => {
-                this._router.navigate(["/profile/tickets"])
-            }
-        },
-        {
-            label: 'Выйти',
-            command: () => {
-                localStorage.clear();
-                this._router.navigate(["/user/signin"]);
-            }
-        }
-    ];
+    isShowLandingMenu: boolean = false;
 
   constructor(private readonly _headerService: HeaderService,
               private readonly _router: Router,
               private readonly _activatedRoute: ActivatedRoute,
-              // TODO: remove - ?
-              // private readonly _redirectService: RedirectService,
-              // private changeDetectorRef: ChangeDetectorRef,
               private readonly _projectManagmentService: ProjectManagmentService) {
   }
 
   public async ngOnInit() {
-    await this.getHeaderItemsAsync();
+    await this.checkUrlParams();
     await this._headerService.refreshTokenAsync();
-    this.checkUrlParams();
 
     this.isHideAuthButtons = localStorage["t_n"] ? true : false;
   };
@@ -73,6 +43,44 @@ export class HeaderComponent implements OnInit {
         (await this._headerService.getHeaderItemsAsync())
         .subscribe(_ => {
             console.log("Данные хидера: ", this.headerData$.value);
+
+            // Навешиваем команды для каждого пункта меню.
+            this.headerData$.value.items.forEach((item: any) => {
+              // Навешиваем команды 1 уровню.
+              item.command = (event: any) => {
+                switch (event.item.id) {
+                  case "Calendar":
+                    this._router.navigate(["/calendar/employee"]);
+                    break;
+                }
+              }
+
+              // Навешиваем команды уровню профиля.
+              if (item.id == "Profile") {
+                // Смотрим вложенность профиля.
+                item.items.forEach((p: any) => {
+                  p.command = (event: any) => {
+                    switch (event.item.id) {
+                      case "Orders":
+                        this._router.navigate(["/profile/orders"]);
+                        break;
+
+                      case "Tickets":
+                        this._router.navigate(["/profile/tickets"]);
+                        break;
+
+                      case "Exit":
+                        localStorage.clear();
+
+                        // TODO: В идеале отрефачить без этого.
+                        // Нужно, чтобы избежать бага с рендером хидера (оставался верхний хидер при логауте).
+                        window.location.href = window.location.href + "/user/signin";
+                        break;
+                    }
+                  };
+                });
+              }
+            });
         });
     };
 
@@ -92,22 +100,31 @@ export class HeaderComponent implements OnInit {
 
   public async onSelectHeaderItem(e: any) {
     console.log(e.menuItemUrl);
-    // this._router.navigate([e.menuItemUrl]);
     await this.getBuildProjectSpaceSettingsAsync(e.menuItemUrl);
   };
 
-    private checkUrlParams() {
-        this._router.events.pipe(
-            filter(event => event instanceof NavigationEnd)
-        ).subscribe(
-            e => this.currentUrl = (e as NavigationEnd).url
-        );
+  private async checkUrlParams() {
+    this._router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(async e => {
+      this.currentUrl = (e as NavigationEnd).url;
 
-        this._activatedRoute.queryParams
-        .subscribe(_ => {
-            this.rerenderAuthButtons();
-          });
-    };
+      if (!this.currentUrl.includes("/user/signin")
+        && !this.currentUrl.includes("/user/signup")
+        && !!localStorage["t_n"]) {
+        await this.getHeaderItemsAsync();
+      }
+
+      this.isShowLandingMenu = this.currentUrl == "/";
+    });
+
+    this._activatedRoute.queryParams
+      .subscribe(_ => {
+        this.rerenderAuthButtons();
+      });
+
+    await this.getLandingMenuItemsAsync();
+  };
 
     /**
      * Функция переходит в профиль пользователя.
@@ -125,8 +142,6 @@ export class HeaderComponent implements OnInit {
    */
   private rerenderAuthButtons() {
     this.isHideAuthButtons = localStorage["t_n"] ? true : false;
-    // TODO: remove - ?
-    // this.changeDetectorRef.markForCheck();
   };
 
   // TODO: Дублируется.
@@ -150,5 +165,57 @@ export class HeaderComponent implements OnInit {
     else {
       this._router.navigate([menuItemUrl]);
     }
+  };
+
+  /**
+   * Функция получает элементы меню для всех Landing страниц.
+   * В будущем можно унифицировать этот эндпоинт будет под разные меню разных Landing страниц.
+   * @returns - Элементы Landing меню.
+   */
+  private async getLandingMenuItemsAsync() {
+    (await this._headerService.getLandingMenuItemsAsync())
+      .subscribe(_ => {
+        console.log("Данные хидера лендоса: ", this.headerLandingData$);
+
+        // Навешиваем команды для каждого пункта меню.
+        this.headerLandingData$.value.items.forEach((item: any) => {
+          // Навешиваем команды 1 уровню тарифов.
+          if (item.id == "FareRules") {
+            item.command = (event: any) => {
+              switch (event.item.id) {
+                case "FareRules":
+                  this._router.navigate(["/fare-rules"]);
+                  break;
+              }
+            }
+          }
+
+          // Навешиваем команды уровню решений.
+          if (item.id == "Solutions") {
+            // Смотрим вложенность профиля.
+            // item.items.forEach((p: any) => {
+            //   p.command = (event: any) => {
+            //     switch (event.item.id) {
+            //       case "Orders":
+            //         this._router.navigate(["/profile/orders"]);
+            //         break;
+            //
+            //       case "Tickets":
+            //         this._router.navigate(["/profile/tickets"]);
+            //         break;
+            //
+            //       case "Exit":
+            //         localStorage.clear();
+            //
+            //         // TODO: В идеале отрефачить без этого.
+            //         // Нужно, чтобы избежать бага с рендером хидера (оставался верхний хидер при логауте).
+            //         window.location.href = window.location.href + "/user/signin";
+            //         break;
+            //     }
+            //   };
+            // });
+          }
+        });
+      });
   };
 }

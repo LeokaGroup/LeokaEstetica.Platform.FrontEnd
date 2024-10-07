@@ -152,7 +152,6 @@ export class ProjectSettingsComponent implements OnInit {
   selectedInviteVacancy: any;
   isVacancyInvite: boolean = false;
   searchText: string = "";
-  aProjectInvitesUsers: any[] = [];
   selectedInviteUser: string = "";
   isVisibleAccessModal = false;
   isInviteRole: boolean = false;
@@ -354,50 +353,39 @@ export class ProjectSettingsComponent implements OnInit {
   };
 
   /**
-   * Функция получает данные для таблицы команда проекта.
-   * @param event - Событие. Чтобы достать текст, надо вызвать event.query.
-   * @returns - Данные для таблицы команда проекта.
-   */
-  public async onSearchInviteProjectMembersAsync(event: any) {
-    (await this._searchProjectService.searchInviteProjectMembersAsync(event.query))
-      .subscribe(async (response: any) => {
-        console.log("Пользователи для добавления в команду проекта: ", response);
-        this.aProjectInvitesUsers = response;
-      });
-  };
-
-  public onSelectProjectMember(event: any) {
-    console.log(event);
-    this.selectedInviteUser = event.value.displayName;
-  };
-
-  /**
    * Функция отправляет приглашение в команду проекта пользователю.
+   * @param searchText - Поисковый текст.
    */
-  public async onSendInviteProjectTeamAsync() {
-    const inviteProjectTeamMemberInput: InviteProjectTeamMemberInput = {
-      ProjectId: +this.projectId,
-      InviteText: this.selectedInviteUser,
-      VacancyId: !this.isVacancyInvite ? this.selectedInviteVacancy.vacancyId : null,
-      InviteType: 'Email'
-    };
-
-    (await this._projectService.sendInviteProjectTeamAsync(inviteProjectTeamMemberInput))
+  public async onSendInviteProjectTeamAsync(searchText: string) {
+    (await this._searchProjectService.searchInviteProjectMembersAsync(searchText))
       .subscribe(async (response: any) => {
-        console.log("Добавленный в команду пользователь: ", response);
+        this.selectedInviteUser = response.displayName;
 
-        if (!response.isAccess) {
-          this.isVisibleAccessModal = true;
+        const inviteProjectTeamMemberInput: InviteProjectTeamMemberInput = {
+          ProjectId: +this.projectId,
+          InviteText: this.selectedInviteUser,
+          VacancyId: !this.isVacancyInvite ? this.selectedInviteVacancy.vacancyId : null,
+          InviteType: 'Email'
+        };
 
-          return ;
-        }
+        (await this._projectService.sendInviteProjectTeamAsync(inviteProjectTeamMemberInput))
+          .subscribe(async (response: any) => {
+            console.log("Добавленный в команду пользователь: ", response);
 
-        // TODO: Костыль для бага ререндера уведомлений.
-        // TODO: Не можем отображать уведомления без обновления страницы после роута из проектов пользователя.
-        this._messageService.add({ severity: 'success', summary: "Все хорошо", detail: response.successMessage });
-        await this.getProjectInvitesAsync();
+            if (!response.isAccess) {
+              this.isVisibleAccessModal = true;
+
+              return;
+            }
+
+            // TODO: Костыль для бага ререндера уведомлений.
+            // TODO: Не можем отображать уведомления без обновления страницы после роута из проектов пользователя.
+            this._messageService.add({ severity: 'success', summary: "Все хорошо", detail: response.successMessage });
+            await this.getProjectInvitesAsync();
+          });
+
+        this.isProjectInvite = false;
       });
-    this.isProjectInvite = false;
   };
 
   /**

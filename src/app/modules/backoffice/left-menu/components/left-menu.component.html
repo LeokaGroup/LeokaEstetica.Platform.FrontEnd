@@ -1,7 +1,9 @@
-<div class="d-flex block-profile space-top-80">
-  <div class="profile-left-menu" [ngClass]="{ profileLeftMenuConditional: isShowLeftMenuConditional }">
-    <p-panelMenu [model]="menuItems" (click)="onSelectMenu($event)">
-    </p-panelMenu>
+<div class="d-flex block-profile mt-5">
+  <div class="profile-left-menu">
+<!--    <p-panelMenu [model]="menuItems" (click)="onSelectMenu($event)">-->
+<!--    </p-panelMenu>-->
+
+    <p-tieredMenu [model]="profileItems$.value.items" />
   </div>
 
   <div class="">

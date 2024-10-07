@@ -66,22 +66,12 @@ export class BackOfficeService {
   };
 
   /**
-   * Функция получает пункты меню профиля пользователя.
-   * @returns Список меню.
+   * Функция получает элементы левого меню.
+   * @returns Список элементов меню.
    */
-  public async getProfileItemsAsync() {
-    return await this.http.get(API_URL.apiUrl + "/profile/menu").pipe(
+  public async getLeftMenuItemsAsync() {
+    return await this.http.get(API_URL.apiUrl + "/menu/left-menu").pipe(
       tap(data => this.profileItems$.next(data))
-    );
-  };
-
-  /**
-   * Функция получает пункты меню вакансий.
-   * @returns Список меню.
-   */
-  public async getVacancyItemsAsync() {
-    return await this.http.get(API_URL.apiUrl + "/vacancies/menu").pipe(
-      tap(data => this.vacancyItems$.next(data))
     );
   };
 

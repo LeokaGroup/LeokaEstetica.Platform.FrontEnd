@@ -64,6 +64,8 @@ import { TreeModule } from 'primeng/tree';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { MessageService } from 'primeng/api';
 import {AccessService} from "../access/access.service";
+import { FocusTrapModule } from 'primeng/focustrap';
+
 @NgModule({
   declarations: [
     StartProjectManagmentComponent,
@@ -136,7 +138,8 @@ import {AccessService} from "../access/access.service";
     InputSwitchModule,
     DataViewModule,
     TreeModule,
-    ContextMenuModule
+    ContextMenuModule,
+    FocusTrapModule
   ],
 
   exports: [],

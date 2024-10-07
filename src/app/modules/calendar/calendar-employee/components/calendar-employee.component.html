@@ -1,9 +1,14 @@
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
 <div class="d-flex">
   <div class="col-lg-3"></div>
 
   <div class="col-lg-8 block-calendar">
     <full-calendar [options]="calendarOptions"
-                   [events]="calendarEvents$.value"></full-calendar>
+                   [events]="calendarEvents$.value">
+
+    </full-calendar>
   </div>
 
   <div class="col-lg-1"></div>
@@ -68,16 +73,154 @@
     </div>
 
     <div>
-      <p-autoComplete [(ngModel)]="searchEventMember"
-                      [suggestions]="eventUsers$.value"
-                      [showEmptyMessage]="true"
-                      emptyMessage="Результатов не найдено"
-                      field="displayName"
-                      (completeMethod)="onSearchEventMemberAsync($event)"
-                      placeholder="Поиск..."
-                      (onSelect)="onSelectEventMember($event)"
-                      class="search-field">
-      </p-autoComplete>
+      <input type="text"
+             class="p-inputtext-sm input-control-worksheet "
+             placeholder="Добавьте участника"
+             pInputText
+             autocomplete="new-password"
+             [(ngModel)]="searchEventMember"/>
+      <div>
+        <p-button label="Добавить участника"
+                  [text]="true"
+                  severity="secondary"
+                  [disabled]="!searchEventMember"
+                  (click)="onSearchEventMemberAsync()"/>
+      </div>
+    </div>
+
+    <div class="mt-3">
+      <div>
+        <strong>Добавленные участники события</strong>
+      </div>
+
+      <div>
+        <p-listbox [options]="aEventMembers"
+                   [(ngModel)]="selectedEventMember"
+                   optionLabel="displayName">
+
+        </p-listbox>
+      </div>
+    </div>
+
+    <div class="control-input-text-worksheet mt-3">
+      <div>
+        <strong>Место события</strong>
+      </div>
+
+      <div>
+        <input type="text"
+               class="p-input-text-sm input-control-worksheet"
+               placeholder="Введите место события"
+               pInputText
+               autocomplete="new-password"
+               [(ngModel)]="eventLocation"
+               [style]="{width: '300px'}"/>
+      </div>
+    </div>
+
+    <div class="control-input-text-worksheet mt-3">
+      <div>
+        <strong>Статус</strong>
+      </div>
+
+      <div>
+        <p-dropdown [options]="this.busyVariants$.value"
+                    [(ngModel)]="selectedBusy"
+                    optionLabel="description"
+                    appendTo="body"
+                    class="control-project-stages">
+        </p-dropdown>
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button label="Отменить"
+              styleClass="p-button-text p-button-danger"
+              (click)="isCreateEvent = !isCreateEvent">
+
+    </p-button>
+
+    <p-button label="Создать событие"
+              styleClass="p-button-text p-button-success"
+              (click)="onCreateCalendarEventAsync()"
+              [disabled]="!aEventMembers.length">
+    </p-button>
+  </ng-template>
+</p-dialog>
+
+<!-- Диалог просмотра и изменения события. -->
+<p-dialog header="Создание события"
+          [(visible)]="isEditEvent"
+          [breakpoints]="{'960px': '75vw'}"
+          [style]="{width: '100vh', height: '100vh'}"
+          [draggable]="false"
+          [resizable]="false">
+
+  <div class="control-input-text-worksheet">
+    <div>
+      <strong [ngClass]="{'required':true}">Название события</strong>
+    </div>
+
+    <div>
+      <input type="text"
+             class="p-input-text-sm input-control-worksheet"
+             placeholder="Введите название события"
+             pInputText
+             autocomplete="new-password"
+             [(ngModel)]="eventName"
+             [style]="{width: '300px'}"/>
+    </div>
+  </div>
+
+  <div class="control-input-text-worksheet mt-3">
+    <div>
+      <strong>Описание события</strong>
+    </div>
+
+    <div>
+      <p-editor
+        placeholder="Описание события"
+        [(ngModel)]="eventDescription"/>
+    </div>
+  </div>
+
+  <div class="control-input-text-worksheet mt-3">
+    <div>
+      <strong [ngClass]="{'required':true}">Время и дата события</strong>
+    </div>
+
+    <div>
+      <p-calendar
+        inputId="calendar-24h"
+        [(ngModel)]="eventRageDates"
+        [showTime]="true"
+        [hourFormat]="'24'"
+        dateFormat="dd.mm.yy"
+        selectionMode="range"
+        [style]="{width: '300px'}"/>
+    </div>
+  </div>
+
+  <div class="control-input-text-worksheet mt-3">
+    <div>
+      <strong [ngClass]="{'required':true}">Участники события</strong>
+    </div>
+
+    <div>
+      <input type="text"
+             class="p-inputtext-sm input-control-worksheet "
+             placeholder="Добавьте участника"
+             pInputText
+             autocomplete="new-password"
+             [(ngModel)]="searchEventMember"/>
+      <div>
+        <p-button label="Добавить участника"
+                  [text]="true"
+                  severity="secondary"
+                  [disabled]="!searchEventMember"
+                  (click)="onSearchEventMemberAsync()"/>
+      </div>
     </div>
 
     <div class="mt-3">
@@ -136,6 +279,167 @@
     <p-button label="Создать событие"
               styleClass="p-button-text p-button-success"
               (click)="onCreateCalendarEventAsync()">
+    </p-button>
+  </ng-template>
+</p-dialog>
+
+<!-- Диалог выбора действия события. -->
+<p-dialog header="Выбор действия"
+          [(visible)]="isNeedUserActionEvent"
+          [breakpoints]="{'960px': '75vw'}"
+          [draggable]="false"
+          [resizable]="false">
+
+  <div class="control-input-text-worksheet">
+    <div>
+      <p>Выберите действие с событием. <br>Изменение деталей события возможно при его просмотре.</p>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button label="Удалить событие"
+              styleClass="p-button-text p-button-danger"
+              (click)="onDeleteEventAsync()">
+
+    </p-button>
+
+    <p-button label="Просмотр деталей события"
+              styleClass="p-button-text p-button-success"
+              (click)="onGetEventDetailsAsync()">
+    </p-button>
+  </ng-template>
+</p-dialog>
+
+<!-- Диалог просмотра/изменения события. -->
+<p-dialog header="Просмотр события"
+          [(visible)]="isDetailsEvent"
+          [breakpoints]="{'960px': '75vw'}"
+          [style]="{width: '100vh', height: '100vh'}"
+          [draggable]="false"
+          [resizable]="false">
+
+  <div class="control-input-text-worksheet">
+    <div>
+      <strong [ngClass]="{'required':true}">Название события</strong>
+    </div>
+
+    <div>
+      <input type="text"
+             class="p-input-text-sm input-control-worksheet"
+             placeholder="Введите название события"
+             pInputText
+             autocomplete="new-password"
+             [(ngModel)]="detailEventName"
+             [style]="{width: '300px'}"/>
+    </div>
+  </div>
+
+  <div class="control-input-text-worksheet mt-3">
+    <div>
+      <strong>Описание события</strong>
+    </div>
+
+    <div>
+      <p-editor
+        placeholder="Описание события"
+        [(ngModel)]="detailEventDescription"/>
+    </div>
+  </div>
+
+  <div class="control-input-text-worksheet mt-3">
+    <div>
+      <strong [ngClass]="{'required':true}">Время и дата события</strong>
+    </div>
+
+    <div>
+      <p-calendar
+        inputId="calendar-24h"
+        [(ngModel)]="detailDatesRange"
+        [showTime]="true"
+        [hourFormat]="'24'"
+        dateFormat="dd.mm.yy"
+        selectionMode="range"
+        [style]="{width: '300px'}"/>
+    </div>
+  </div>
+
+  <div class="control-input-text-worksheet mt-3">
+    <div>
+      <strong [ngClass]="{'required':true}">Участники события</strong>
+    </div>
+
+    <div>
+      <input type="text"
+             class="p-inputtext-sm input-control-worksheet "
+             placeholder="Добавьте участника"
+             pInputText
+             autocomplete="new-password"
+             [(ngModel)]="searchEventMember"/>
+      <div>
+        <p-button label="Добавить участника"
+                  [text]="true"
+                  severity="secondary"
+                  [disabled]="!searchEventMember"
+                  (click)="onSearchEventMemberAsync()"/>
+      </div>
+    </div>
+
+    <div class="mt-3">
+      <div>
+        <strong>Добавленные участники события</strong>
+      </div>
+
+      <div>
+        <p-listbox [options]="aDetailsEventMembers"
+                   [(ngModel)]="detailSelectedEventMember"
+                   optionLabel="email">
+
+        </p-listbox>
+      </div>
+    </div>
+
+    <div class="control-input-text-worksheet mt-3">
+      <div>
+        <strong>Место события</strong>
+      </div>
+
+      <div>
+        <input type="text"
+               class="p-input-text-sm input-control-worksheet"
+               placeholder="Введите место события"
+               pInputText
+               autocomplete="new-password"
+               [(ngModel)]="detailEventLocation"
+               [style]="{width: '300px'}"/>
+      </div>
+    </div>
+
+    <div class="control-input-text-worksheet mt-3">
+      <div>
+        <strong>Статус</strong>
+      </div>
+
+      <div>
+        <p-dropdown [options]="this.busyVariants$.value"
+                    optionLabel="description"
+                    appendTo="body"
+                    class="control-project-stages"
+                    formControlName="selectedBusyVariant">
+        </p-dropdown>
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button label="Отменить"
+              styleClass="p-button-text p-button-danger"
+              (click)="isDetailsEvent = !isDetailsEvent">
+
+    </p-button>
+
+    <p-button label="Сохранить"
+              styleClass="p-button-text p-button-success"
+              (click)="onUpdateEventAsync()">
     </p-button>
   </ng-template>
 </p-dialog>

@@ -1,61 +1,81 @@
-<div class="left-panel" (mouseover)="onSelectPanelMenu()">
-  <div style="border-left:1px solid #C0C6CF;height:1500px;width: 50px;position: absolute;"></div>
-</div>
+<!--<div class="left-panel" (mouseover)="onSelectPanelMenu()">-->
+<!--  <div style="border-left:1px solid #C0C6CF;height:1500px;width: 50px;position: absolute;"></div>-->
+<!--</div>-->
 
-<!-- Блок с задачами Kanban. -->
-<div class="d-flex" *ngIf="mode == 'kn'">
-  <div class="block-worksheet col-lg-12">
-    <div class="d-flex block-task">
-      <div class="task-ver-line" *ngFor="let st of workSpaceConfig$.value?.projectManagmentTaskStatuses" pDroppable="kanban-tasks" (onDrop)="onDropAsync(st)" dropEffect="move">
-        <div class="status-name">
-          {{st.statusName.toUpperCase()}}
-          {{st.total}}
-        </div>
+<div class="d-flex">
+  <div class="col-lg-2">
 
-        <!-- Блок с задачами Kanban. -->
-        <div class="block-tasks" *ngFor="let t of st.projectManagmentTasks">
-          <!-- Блок с каждой задачей Kanban. -->
-          <div class="task scrum-row">
-            <div class="card card-task"
-                 (click)="onSelectTask(t.projectTaskId, t.taskTypeId)"
-                 pDraggable="kanban-tasks"
-                 (onDragStart)="dragStart(t, st)"
-                 (onDragEnd)="dragEnd()"
-                 dragEffect="move"
-            >
-              <div class="title">
-                {{t.name}}
-                <button
-                  [attr.id]="'ddmenu'+t.projectTaskId"
-                  class="pi pi-ellipsis-v button-context-menu"
-                  (click)="onClickDropdownMenu(menu, $event, t)"
-                ></button>
-                <p-menu 
-                  #menu
-                  [popup]="true"
-                  [model]="dropdownMenuItems"
-                  [appendTo]="'ddmenu'+t.projectTaskId"
-                />
-                <div class="tags">
-                  @for (id of t.tagIds; track id) {
-                    @for (tag of tagNames; track tag.tagId) {
+  </div>
+
+  <div class="col-lg-10">
+    <div class="d-flex project-management-line">
+      <h5><strong>Проект {{selectedWorkSpace$.value?.projectManagementName ?? 'Не выбран'}}</strong></h5>
+    </div>
+
+    <div class="d-flex project-management-line">
+      <p-menubar [model]="quickActions$.value?.items"
+                 [autoDisplay]="false"
+                 [class.isVisibleMenuHide]="!isVisibleDropDownMenu">
+
+      </p-menubar>
+    </div>
+
+    <!-- Блок с задачами Kanban. -->
+    <div class="d-flex" *ngIf="mode == 'kn'">
+      <div class="block-worksheet col-lg-12">
+        <div class="d-flex block-task">
+          <div class="task-ver-line" *ngFor="let st of workSpaceConfig$.value?.projectManagmentTaskStatuses" pDroppable="kanban-tasks" (onDrop)="onDropAsync(st)" dropEffect="move">
+            <div class="status-name">
+              {{st.statusName.toUpperCase()}}
+              {{st.total}}
+            </div>
+
+            <!-- Блок с задачами Kanban. -->
+            <div class="block-tasks" *ngFor="let t of st.projectManagmentTasks">
+              <!-- Блок с каждой задачей Kanban. -->
+              <div class="task scrum-row">
+                <div class="card card-task"
+                     (click)="onSelectTask(t.projectTaskId, t.taskTypeId)"
+                     pDraggable="kanban-tasks"
+                     (onDragStart)="dragStart(t, st)"
+                     (onDragEnd)="dragEnd()"
+                     dragEffect="move"
+                >
+                  <div class="title">
+                    {{t.name}}
+                    <button
+                      [attr.id]="'ddmenu'+t.projectTaskId"
+                      class="pi pi-ellipsis-v button-context-menu"
+                      (click)="onClickDropdownMenu(menu, $event, t)"
+                    ></button>
+                    <p-menu
+                      #menu
+                      [popup]="true"
+                      [model]="dropdownMenuItems"
+                      [appendTo]="'ddmenu'+t.projectTaskId"
+                    />
+                    <div class="tags">
+                      @for (id of t.tagIds; track id) {
+                      @for (tag of tagNames; track tag.tagId) {
                       <p-chip *ngIf="tag.tagId == id">{{tag.tagName}}</p-chip>
-                    }
-                  }
-                </div>
-
-                <div class="info-line">
-                  <div>
-                    <small>{{t.priorityName ?? 'Не предполагается'}}</small>
-                  </div>
-
-                  <div class="info-line-number">
-                    <div class="space-line-number">
-                      <small>{{t.fullProjectTaskId}}</small>
+                      }
+                      }
                     </div>
 
-                    <div>
-                      <p-avatar [image]="t.executor?.avatar?.ava" styleClass="mr-2" size="normal" shape="circle"></p-avatar>
+                    <div class="info-line">
+                      <div>
+                        <small>{{t.priorityName ?? 'Не предполагается'}}</small>
+                      </div>
+
+                      <div class="info-line-number">
+                        <div class="space-line-number">
+                          <small>{{t.fullProjectTaskId}}</small>
+                        </div>
+
+                        <div>
+                          <p-avatar [image]="t.executor?.avatar?.ava" styleClass="mr-2" size="normal" shape="circle"></p-avatar>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -65,92 +85,107 @@
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- Блок с задачами Scrum. -->
-<div class="" *ngIf="mode == 'sm'">
-  <div class="block-worksheet block-scrum-task-list col-lg-12">
-    <div class="block-task">
-      <hr>
-      <div class="d-flex justify-content-between">
-        <div class="col-lg-2">&nbsp;</div>
-        <strong class="col-lg-2">Ключ</strong>
-        <strong class="col-lg-2">Задача</strong>
-        <strong class="col-lg-2">Приоритет</strong>
-        <strong class="col-lg-2">Исполнитель</strong>
-        <strong class="col-lg-2">Обновлено</strong>
-      </div>
-      <hr>
-      <div class="task-ver-line" *ngFor="let st of workSpaceConfig$.value?.projectManagmentTaskStatuses">
-        <div class="d-flex justify-content-between status-name pt-3">
-          {{st.statusName.toUpperCase()}}
-          {{st.total}}
-        </div>
+    <!-- Блок с задачами Scrum. -->
+    <div class="" *ngIf="mode == 'sm'">
+      <div class="block-worksheet block-scrum-task-list col-lg-12">
+        <div class="block-task">
+          <hr>
+          <div class="d-flex justify-content-between">
+            <div class="col-lg-2">&nbsp;</div>
+            <strong class="col-lg-2">Ключ</strong>
+            <strong class="col-lg-2">Задача</strong>
+            <strong class="col-lg-2">Приоритет</strong>
+            <strong class="col-lg-2">Исполнитель</strong>
+            <strong class="col-lg-2">Обновлено</strong>
+          </div>
+          <hr>
+          <div class="task-ver-line" *ngFor="let st of workSpaceConfig$.value?.projectManagmentTaskStatuses">
+            <div class="d-flex justify-content-between status-name pt-3">
+              {{st.statusName.toUpperCase()}}
+              {{st.total}}
+            </div>
 
-        <!-- TODO: Этот ngClass на режим представления возможно надо будет убрать или доработать гибче, если надо будет скролить Scrum список. -->
-        <!-- Блок с задачами Scrum. -->
-        <div [ngClass]="{'block-tasks': mode !== 'sm'}" *ngFor="let t of st.projectManagmentTasks">
-          <!-- Блок с каждой задачей Scrum. -->
-          <div class="task">
-            <div [ngClass]="{
+            <!-- TODO: Этот ngClass на режим представления возможно надо будет убрать или доработать гибче, если надо будет скролить Scrum список. -->
+            <!-- Блок с задачами Scrum. -->
+            <div [ngClass]="{'block-tasks': mode !== 'sm'}" *ngFor="let t of st.projectManagmentTasks">
+              <!-- Блок с каждой задачей Scrum. -->
+              <div class="task">
+                <div [ngClass]="{
             low:t.priorityId == 1,
             medium:t.priorityId == 2,
             high:t.priorityId == 3,
             urgent:t.priorityId == 4,
             blocker:t.priorityId == 5}"
-                 class="selected-task-row"
-                 (click)="onSelectTask(t.projectTaskId, t.taskTypeId)">
-              <div class="scrum-task-line">
-                <div class="d-flex justify-content-between">
-                  <div class="col-lg-2 laconic-text">{{t.taskTypeName}}</div>
-                  <div class="col-lg-2">{{t.fullProjectTaskId}}</div>
-                  <div
-                    class="col-lg-2 laconic-text"
-                    [pTooltip]="t.nameTooltip"
-                    [tooltipDisabled]="!t.nameTooltip || t.nameTooltip === t.name"
-                    tooltipPosition="bottom"
-                  >{{t.name}}</div>
-                  <div class="col-lg-2 laconic-text">{{t.priorityName ?? 'Не предполагается'}}</div>
-                  <div class="col-lg-2 laconic-text scrum-info-line">
-                    <div>
-                      <p-avatar [image]="t.executor?.avatar?.ava" size="normal" shape="circle"></p-avatar>
-                    </div>
-                    &nbsp;
-                    <div>
-                      {{t.executor?.executorName}}
+                     class="selected-task-row"
+                     (click)="onSelectTask(t.projectTaskId, t.taskTypeId)">
+                  <div class="scrum-task-line">
+                    <div class="d-flex justify-content-between">
+                      <div class="col-lg-2 laconic-text">{{t.taskTypeName}}</div>
+                      <div class="col-lg-2">{{t.fullProjectTaskId}}</div>
+                      <div
+                        class="col-lg-2 laconic-text"
+                        [pTooltip]="t.nameTooltip"
+                        [tooltipDisabled]="!t.nameTooltip || t.nameTooltip === t.name"
+                        tooltipPosition="bottom"
+                      >{{t.name}}</div>
+                      <div class="col-lg-2 laconic-text">{{t.priorityName ?? 'Не предполагается'}}</div>
+                      <div class="col-lg-2 laconic-text scrum-info-line">
+                        <div>
+                          <p-avatar [image]="t.executor?.avatar?.ava" size="normal" shape="circle"></p-avatar>
+                        </div>
+                        &nbsp;
+                        <div>
+                          {{t.executor?.executorName}}
+                        </div>
+                      </div>
+                      <div class="col-lg-2 laconic-text">{{t.updated}}</div>
                     </div>
                   </div>
-                  <div class="col-lg-2 laconic-text">{{t.updated}}</div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="line-see-more" *ngIf="st.projectManagmentTasks == null">
+                <div>Нет данных.</div>
+              </div>
+
+              <div *ngIf="st.projectManagmentTasks !== null && st.total > 10 && st.paginator.hasNextPage">
+                <div class="mt-2">
+                  <button pButton type="button"
+                          label="Показать больше"
+                          class="p-button-outlined p-button-secondary p-button-sm line-see-more control-see-more"
+                          [loading]="isLoading"
+                          (click)="onGetConfigurationWorkSpaceBySelectedTemplateAsync(st.paginator.pageNumber, st.taskStatusId)">
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        <div>
-          <div class="line-see-more" *ngIf="st.projectManagmentTasks == null">
-            <div>Нет данных.</div>
-          </div>
-
-          <div *ngIf="st.projectManagmentTasks !== null && st.total > 10 && st.paginator.hasNextPage">
-            <div class="mt-2">
-              <button pButton type="button"
-                      label="Показать больше"
-                      class="p-button-outlined p-button-secondary p-button-sm line-see-more control-see-more"
-                      [loading]="isLoading"
-                      (click)="onGetConfigurationWorkSpaceBySelectedTemplateAsync(st.paginator.pageNumber, st.taskStatusId)">
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
+
+    <scrum-master-ai-assist></scrum-master-ai-assist>
   </div>
 </div>
 
-<scrum-master-ai-assist></scrum-master-ai-assist>
+<!-- Диалог запрета к функционалу. -->
+<p-dialog header="{{checkAccess$.value?.forbiddenTitle}}"
+          [(visible)]="isVisibleAccessModal"
+          [breakpoints]="{'960px': '75vw'}"
+          [style]="{width: '50vw'}"
+          [draggable]="false"
+          [resizable]="false">
+  <p>{{checkAccess$.value?.forbiddenText}}</p>
+  <strong>{{checkAccess$.value?.fareRuleText}}</strong>
+  <ng-template pTemplate="footer">
+    <!--  TODO: Будет еще переход в раздел оплата.  -->
+    <p-button label="Понятно" styleClass="p-button-text" (click)="isVisibleAccessModal=!isVisibleAccessModal"></p-button>
+  </ng-template>
+</p-dialog>
 
-<left-panel
-  (mouseleave)="onClosePanelMenu()"
-></left-panel>
+<!--<left-panel-->
+<!--  (mouseleave)="onClosePanelMenu()"-->
+<!--&gt;</left-panel>-->

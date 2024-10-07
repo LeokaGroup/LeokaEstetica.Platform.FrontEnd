@@ -1,12 +1,14 @@
 import {Component, OnInit, Sanitizer} from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { firstValueFrom, forkJoin, tap } from "rxjs";
+import { firstValueFrom, tap } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {ChangeTaskStatusInput} from "../../../task/models/input/change-task-status-input";
 import { MenuItem } from "primeng/api";
 import { Menu } from "primeng/menu";
+import {FixationStrategyInput} from "../../../task/models/input/fixation-strategy-input";
+import {AccessService} from "../../../../access/access.service";
 
 @Component({
     selector: "",
@@ -23,12 +25,16 @@ export class SpaceComponent implements OnInit {
               private readonly _redirectService: RedirectService,
               private readonly _activatedRoute: ActivatedRoute,
               private readonly _domSanitizer: DomSanitizer,
-              private readonly _sanitizer: Sanitizer) {
+              private readonly _sanitizer: Sanitizer,
+              private readonly _accessService: AccessService) {
   }
 
     public readonly headerItems$ = this._projectManagmentService.headerItems$;
     public readonly workSpaceConfig$ = this._projectManagmentService.workSpaceConfig$;
     readonly projectTags$ = this._projectManagmentService.projectTags$;
+    public readonly selectedWorkSpace$ = this._projectManagmentService.selectedWorkSpace$;
+    public readonly quickActions$ = this._projectManagmentService.quickActions$;
+    public readonly checkAccess$ = this._accessService.checkAccess$;
 
     aHeaderItems: any[] = [];
     aPanelItems: any[] = [];
@@ -45,60 +51,39 @@ export class SpaceComponent implements OnInit {
     isLoading: boolean = false;
     isPanelMenu: boolean = false;
     dragged: DraggedTask = null;
-
     dropdownMenuItems: MenuItem[] | undefined;
+    mode: string = "";
+    isVisibleDropDownMenu: boolean = false;
+    isVisibleAccessModal: boolean = false;
 
-    items: any[] = [
-        {
-            label: 'Заказы',
-            command: () => {
-                this._router.navigate(["/profile/orders"]);
-            }
-        },
-        {
-            label: 'Заявки в поддержку',
-            command: () => {
-                this._router.navigate(["/profile/tickets"])
-            }
-        },
-        {
-            label: 'Выйти',
-            command: () => {
-                localStorage.clear();
-                this._router.navigate(["/user/signin"]);
-            }
-        }
-    ];
+  public async ngOnInit() {
+    await this.checkUrlParams();
+    await this.getHeaderItemsAsync();
+    await this.getProjectTagsAsync();
+    await this.getConfigurationWorkSpaceBySelectedTemplateAsync();
+    await this.getSelectedWorkSpaceAsync();
+    await this.getProjectManagementLineMenuAsync();
+  };
 
-  mode: string = "";
-
-    public async ngOnInit() {
-        forkJoin([
-            this.checkUrlParams(),
-            await this.getHeaderItemsAsync(),
-            await this.getProjectTagsAsync(),
-            await this.getConfigurationWorkSpaceBySelectedTemplateAsync()
-        ]).subscribe();
-    };
-
-    async getProjectTagsAsync() {
-      firstValueFrom((await this._projectManagmentService.getProjectTagsAsync(this.selectedProjectId))
-        .pipe(
-          tap((v) => this.tagNames = <any[]>v)
-        ));
-    }
+  private async getProjectTagsAsync() {
+    firstValueFrom((await this._projectManagmentService.getProjectTagsAsync(this.selectedProjectId))
+      .pipe(
+        tap((v) => this.tagNames = <any[]>v)
+      ));
+  };
 
     /**
   * Функция получает список элементов меню хидера (верхнее меню).
   * @returns - Список элементов.
   */
     private async getHeaderItemsAsync() {
-        (await this._projectManagmentService.getHeaderItemsAsync())
-            .subscribe(_ => {
-                console.log("Хидер УП: ", this.headerItems$.value);
-                this.aHeaderItems = this.headerItems$.value;
-                this.aPanelItems = this.headerItems$.value.panelItems;
-            });
+      (await this._projectManagmentService.getHeaderItemsAsync())
+        .subscribe(_ => {
+          console.log("Хидер УП: ", this.headerItems$.value);
+
+          this.aHeaderItems = this.headerItems$.value.headerItems;
+          this.aPanelItems = this.headerItems$.value.panelItems;
+        });
     };
 
     private async checkUrlParams() {
@@ -119,7 +104,7 @@ export class SpaceComponent implements OnInit {
     private async getConfigurationWorkSpaceBySelectedTemplateAsync() {
         // Если нет проекта, то редиректим в общее пространство.
         if (!this.selectedProjectId) {
-          this._router.navigate(["/project-management/workspaces"]);
+          await this._router.navigate(["/project-management/workspaces"]);
 
           return;
         }
@@ -287,6 +272,139 @@ export class SpaceComponent implements OnInit {
       ];
       menu.toggle(event);
     }
+
+  /**
+   * Функция получает выбранное раб.пространство.
+   */
+  private async getSelectedWorkSpaceAsync() {
+    (await this._projectManagmentService.getSelectedWorkSpaceAsync(this.selectedProjectId))
+      .subscribe(_ => {
+        console.log("Выбранное раб.пространство: ", this.selectedWorkSpace$.value);
+
+        this._projectManagmentService.companyId = this.selectedWorkSpace$.value.companyId;
+      });
+  }
+
+  /**
+   * Функция получает элементы меню для блока быстрых действий в раб.пространстве проекта.
+   */
+  private async getProjectManagementLineMenuAsync() {
+    (await this._projectManagmentService.getProjectManagementLineMenuAsync())
+      .subscribe(_ => {
+        console.log("Меню быстрых действий: ", this.quickActions$.value);
+
+        let projectId = this.selectedProjectId;
+
+        this.quickActions$.value.items.forEach(async (item: any) => {
+          switch (item.id) {
+            case "ScrumView":
+              item.command = async (event: any) => {
+                let fixationScrumInput: FixationStrategyInput = new FixationStrategyInput();
+                fixationScrumInput.projectId = projectId;
+                fixationScrumInput.strategySysName = "Scrum";
+
+                (await this._projectManagmentService.fixationSelectedViewStrategyAsync(fixationScrumInput))
+                  .subscribe(_ => {
+                    window.location.reload();
+                  });
+
+                this.isVisibleDropDownMenu = true;
+              };
+              break;
+
+            case "KanbanView":
+              item.command = async (event: any) => {
+                let fixationKanbanInput: FixationStrategyInput = new FixationStrategyInput();
+                fixationKanbanInput.projectId = projectId;
+                fixationKanbanInput.strategySysName = "Kanban";
+
+                (await this._projectManagmentService.fixationSelectedViewStrategyAsync(fixationKanbanInput))
+                  .subscribe(_ => {
+                    window.location.reload();
+                  });
+
+                this.isVisibleDropDownMenu = true;
+              };
+              break;
+
+            case "CreateAction":
+              item.command = async (event: any) => {
+                this.isVisibleDropDownMenu = true;
+              };
+
+              item.items.forEach((item1: any) => {
+                item1.command = async (event: any) => {
+                  switch (event.item.id) {
+                    case "CreateTask":
+                      await this._router.navigate(["/project-management/space/create"], {
+                        queryParams: {
+                          projectId
+                        }
+                      });
+                      break;
+                  }
+                };
+              });
+              break;
+
+            case "Settings":
+              item.command = async (event: any) => {
+                this.isVisibleDropDownMenu = true;
+              };
+
+              item.items.forEach((item1: any) => {
+                item1.command = async (event: any) => {
+                  switch (event.item.id) {
+                    case "ProjectSettings":
+                      await this._router.navigate(["/project-management/space/project-settings"], {
+                        queryParams: {
+                          projectId,
+                          companyId: +this._projectManagmentService.companyId
+                        }
+                      });
+                      break;
+
+                    case "ViewSettings":
+                      this.isVisibleDropDownMenu = true;
+                      this.isVisibleAccessModal = false;
+
+                      await this._router.navigate(["/project-management/space/view-settings"], {
+                        queryParams: {
+                          projectId
+                        }
+                      });
+                      break;
+                  }
+                };
+              });
+              break;
+
+            case "Filters":
+              item.command = async (event: any) => {
+                (await this._accessService.checkAccessProjectManagementModuleOrComponentAsync(
+                  this.selectedProjectId, "ProjectManagement", "ProjectTaskFilter"))
+                  .subscribe(_ => {
+                    console.log("Проверка доступа: ", this.checkAccess$.value);
+
+                    if (this.checkAccess$.value.isAccess) {
+                      // Отображаем выпадающее меню фильтров.
+                      this.isVisibleDropDownMenu = true;
+                      this.isVisibleAccessModal = false;
+                    }
+
+                    // Отображаем модалку запрета (тариф владельца проекта не прошел проверку).
+                    else {
+                      this.isVisibleDropDownMenu = false;
+                      this.isVisibleAccessModal = true;
+                    }
+                  });
+              }
+
+              break;
+          }
+        });
+      });
+  }
 }
 
 type DraggedTask = {

@@ -6,6 +6,7 @@ import { API_URL } from 'src/app/core/core-urls/api-urls';
 @Injectable()
 export class HeaderService {
     public headerData$ = new BehaviorSubject<any>(null);
+    public headerLandingData$ = new BehaviorSubject<any>(null);
 
     constructor(private readonly http: HttpClient) {
 
@@ -16,7 +17,7 @@ export class HeaderService {
      * @returns - Список элементов хидера.
      */
     public async getHeaderItemsAsync() {
-        return await this.http.get(API_URL.apiUrl + "/header/items").pipe(
+        return await this.http.get(API_URL.apiUrl + "/menu/top-menu").pipe(
             tap(data => this.headerData$.next(data)
             )
         );
@@ -49,4 +50,15 @@ export class HeaderService {
             }
         }, 3600000); // Каждые 60 мин.
     };
+
+  /**
+   * Функция получит список элементов хидера.
+   * @returns - Список элементов хидера.
+   */
+  public async getLandingMenuItemsAsync() {
+    return await this.http.get(API_URL.apiUrl + "/menu/landing-menu").pipe(
+      tap(data => this.headerLandingData$.next(data)
+      )
+    );
+  };
 }

@@ -101,6 +101,7 @@ export class ProjectManagmentService {
     public epicStatuses$ = new BehaviorSubject<any>(null);
     public calculateUserCompanies = new BehaviorSubject<any>(null);
     public userCompanies$ = new BehaviorSubject<any>(null);
+    public quickActions$ = new BehaviorSubject<any>(null);
 
     public isLeftPanel = false;
     public companyId: number = 0;
@@ -1255,6 +1256,15 @@ export class ProjectManagmentService {
   public async createCompanyCacheAsync(companyInput: CompanyInput) {
     return await this._http.post(this.apiUrl + `/project-management/companies/company-cache`, companyInput).pipe(
       tap(_ => console.log("Компания успешно добавлена в кэш."))
+    );
+  };
+
+  /**
+   * Функция получает элементы меню для блока быстрых действий в раб.пространстве проекта.
+   */
+  public async getProjectManagementLineMenuAsync() {
+    return await this._http.get(this.apiUrl + `/project-management/menu/project-management-line-menu`).pipe(
+      tap(data => this.quickActions$.next(data))
     );
   };
 }

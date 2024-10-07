@@ -1,10 +1,10 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
-if (window.location.href.includes("https://leoka-estetica.ru") && window) {
+// На проде отрубаем консоль логи!!!
+if (window.location.href.includes("https://leoka-estetica.ru")) {
   window.console.log = function () { };
 }
 

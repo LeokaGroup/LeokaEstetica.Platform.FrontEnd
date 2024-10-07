@@ -1,35 +1,35 @@
 <!-- Меню хидера (меню УП). -->
-<nav class="navbar navbar-light justify-content-evenly">
+<nav class="">
   <div class="form-inline">
-    <p-menubar [model]="aHeaderItems"
-               autoDisplay="false"
-               class="second-menu"
-               (click)="onSelectMenu($event)"
-               [class.isVisibleMenuHide]="!isVisibleDropDownMenu"
-               *ngIf="isVisibleHeader">
-      <ng-template pTemplate="start">
+<!--    <p-menubar [model]="aHeaderItems"-->
+<!--               autoDisplay="false"-->
+<!--               class="second-menu"-->
+<!--               (click)="onSelectMenu($event)"-->
+<!--               [class.isVisibleMenuHide]="!isVisibleDropDownMenu"-->
+<!--               *ngIf="isVisibleHeader">-->
+<!--      <ng-template pTemplate="start">-->
 
-      </ng-template>
+<!--      </ng-template>-->
 
-      <ng-template pTemplate="end">
-        <!-- Поиск задачи. -->
-        <div 
-          class="search"
-          pTooltip="Поиск"
-          tooltipPosition="bottom"
-          (click)="isSearch = (true && isEnabledSearch)"
-        >
-          <i class="pi pi-search"></i>
-        </div>
-      </ng-template>
-    </p-menubar>
+<!--      <ng-template pTemplate="end">-->
+<!--        &lt;!&ndash; Поиск задачи. &ndash;&gt;-->
+<!--        <div -->
+<!--          class="search"-->
+<!--          pTooltip="Поиск"-->
+<!--          tooltipPosition="bottom"-->
+<!--          (click)="isSearch = (true && isEnabledSearch)"-->
+<!--        >-->
+<!--          <i class="pi pi-search"></i>-->
+<!--        </div>-->
+<!--      </ng-template>-->
+<!--    </p-menubar>-->
   </div>
 </nav>
 
 <!-- Хлебные крошки. -->
-<div class="block-task">
-  <p-breadcrumb class="max-w-full breadcrumb-heading-font" [model]="items"></p-breadcrumb>
-</div>
+<!--<div class="block-task">-->
+<!--  <p-breadcrumb class="max-w-full breadcrumb-heading-font" [model]="items"></p-breadcrumb>-->
+<!--</div>-->
 
 <p-sidebar [(visible)]="isSearch" [fullScreen]="true">
   <h5 class="search-text">Найти</h5>
@@ -68,18 +68,3 @@
  </div>
   <!--  <p class="">Найдено задач: {{catalog$.value.total ?? rowsCount}}</p>-->
 </p-sidebar>
-
-<!-- Диалог запрета к функционалу. -->
-<p-dialog header="{{checkAccess$.value?.forbiddenTitle}}"
-          [(visible)]="isVisibleAccessModal"
-          [breakpoints]="{'960px': '75vw'}"
-          [style]="{width: '50vw'}"
-          [draggable]="false"
-          [resizable]="false">
-  <p>{{checkAccess$.value?.forbiddenText}}</p>
-  <strong>{{checkAccess$.value?.fareRuleText}}</strong>
-  <ng-template pTemplate="footer">
-    <!--  TODO: Будет еще переход в раздел оплата.  -->
-    <p-button label="Понятно" styleClass="p-button-text" (click)="isVisibleAccessModal=!isVisibleAccessModal"></p-button>
-  </ng-template>
-</p-dialog>

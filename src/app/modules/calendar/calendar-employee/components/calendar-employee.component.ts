@@ -6,6 +6,8 @@ import ruLocale from '@fullcalendar/core/locales/ru';
 import {EventInput} from "@fullcalendar/core";
 import {ProjectManagementHumanResourcesService} from "../../services/project-management-human-resources.service";
 import {CalendarInput} from "../../models/input/calendar-input";
+import {ConfirmationService} from "primeng/api";
+import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: "calendar-employee",
@@ -19,13 +21,15 @@ import {CalendarInput} from "../../models/input/calendar-input";
 export class CalendarEmployeeComponent implements OnInit {
   constructor(private readonly _projectManagementHumanResourcesService: ProjectManagementHumanResourcesService,
               private readonly _router: Router,
-              private readonly _activatedRoute: ActivatedRoute) {
+              private readonly _activatedRoute: ActivatedRoute,
+              private _confirmationService: ConfirmationService) {
   }
 
   eventsPromise?: Promise<EventInput[]>;
   public readonly calendarEvents$ = this._projectManagementHumanResourcesService.calendarEvents$;
   public readonly eventUsers$ = this._projectManagementHumanResourcesService.eventUsers$;
   public readonly busyVariants$ = this._projectManagementHumanResourcesService.busyVariants$;
+  public readonly eventDetails$ = this._projectManagementHumanResourcesService.eventDetails$;
 
   // Настройки календаря.
   calendarOptions: any = {
@@ -61,18 +65,49 @@ export class CalendarEmployeeComponent implements OnInit {
   selectedEventMember: any;
   eventLocation?: string;
   selectedBusy: any;
+  isEditEvent: boolean = false;
+  isNeedUserActionEvent: boolean = false;
+  selectedEventId: number = 0;
+  oEvent: any;
+  isDetailsEvent: boolean = false;
+  detailEventName: string = "";
+  detailEventDescription: string = "";
+  detailDatesRange: any;
+  aDetailsEventMembers: any[] = [];
+  detailSelectedEventMember: any;
+  detailEventLocation: string = "";
+  detailMemberStatus: string = "";
+  detailsBusy: string = "";
+
+  formBusy: UntypedFormGroup = new UntypedFormGroup({
+    "selectedBusyVariant": new UntypedFormControl("", [
+      Validators.required
+    ])
+  });
 
   public async ngOnInit() {
     this.checkUrlParams();
     await this.getCalendarEventsAsync();
   };
 
+  /**
+   * Функция выбора даты календаря.
+   * @param event - Ивент.
+   */
   private onSelectDate(event: any) {
     console.log("handleDateClick", event);
+    this.isNeedUserActionEvent = true;
+    this.selectedEventId = event.event._def.extendedProps.eventId;
   };
 
+  /**
+   * Функция выбора события календаря.
+   * @param event - Ивент.
+   */
   private onSelectEvent(event: any) {
     console.log("handleEventClick", event);
+    this.isNeedUserActionEvent = true;
+    this.selectedEventId = event.event._def.extendedProps.eventId;
   };
 
   private async checkUrlParams() {
@@ -97,21 +132,16 @@ export class CalendarEmployeeComponent implements OnInit {
    * Функция поиска пользователя.
    * @param event - Ивент.
    */
-  public async onSearchEventMemberAsync(event: any) {
-    (await this._projectManagementHumanResourcesService.searchEventMemberAsync(event.query))
+  public async onSearchEventMemberAsync() {
+    (await this._projectManagementHumanResourcesService.searchEventMemberAsync(this.searchEventMember))
       .subscribe(_ => {
         console.log("Поиск: ", this.eventUsers$.value);
-      });
-  };
 
-  /**
-   * Функция выбирает участников события и пишет в массив.
-   * @param event - Ивент.
-   */
-  public onSelectEventMember(event: any) {
-    if (this.aEventMembers.indexOf((x: any) => x.userId !== event.value.userId) == -1) {
-      this.aEventMembers.push(event.value);
-    }
+        const index = this.aEventMembers.findIndex((x: any) => x.displayName === this.searchEventMember);
+        if (index === -1) {
+          this.aEventMembers = [...this.aEventMembers, this.eventUsers$.value];
+        }
+      });
   };
 
   /**
@@ -124,6 +154,9 @@ export class CalendarEmployeeComponent implements OnInit {
       });
   };
 
+  /**
+   * Функция создает событие в календаре.
+   */
   public async onCreateCalendarEventAsync() {
     let calendarInput = new CalendarInput();
     calendarInput.eventName = this.eventName;
@@ -149,6 +182,75 @@ export class CalendarEmployeeComponent implements OnInit {
     (await this._projectManagementHumanResourcesService.createEventAsync(calendarInput))
       .subscribe(async(_: any) => {
         this.isCreateEvent = false;
+        await this.getCalendarEventsAsync();
+      });
+  };
+
+  /**
+   * Функция открывает модалку просмотра/изменения события календаря.
+   */
+  public async onGetEventDetailsAsync() {
+    await this.getBusyVariantsAsync();
+
+    (await this._projectManagementHumanResourcesService.getEventDetailsAsync(this.selectedEventId))
+      .subscribe(_ => {
+        console.log("Детали события календаря: ", this.eventDetails$.value);
+
+        this.isNeedUserActionEvent = false;
+        this.isDetailsEvent = true;
+        this.detailEventName = this.eventDetails$.value.title;
+        this.detailEventDescription = this.eventDetails$.value.eventDescription;
+        this.detailDatesRange = [new Date(this.eventDetails$.value.start), new Date(this.eventDetails$.value.end)];
+        this.aDetailsEventMembers = this.eventDetails$.value.eventMembers;
+        this.detailEventLocation = this.eventDetails$.value.eventLocation;
+        this.detailsBusy = this.eventDetails$.value.displayEventMemberStatus;
+
+        let value = this.busyVariants$.value.find((ed: any) => ed.description == this.detailsBusy);
+        this.formBusy.get("selectedBusyVariant")?.setValue(value);
+      });
+  };
+
+  /**
+   * Функция обновляет данные события.
+   */
+  public async onUpdateEventAsync() {
+    let calendarInput = new CalendarInput();
+    calendarInput.eventName = this.detailEventName;
+
+    if (this.detailEventDescription != null
+      && this.detailEventDescription != ""
+      && this.detailEventDescription != undefined) {
+      calendarInput.eventDescription = this.detailEventDescription;
+    }
+
+    calendarInput.eventMembers = this.aEventMembers;
+
+    if (this.eventLocation != null
+      && this.eventLocation != ""
+      && this.eventLocation != undefined) {
+      calendarInput.eventLocation = this.eventLocation;
+    }
+
+    calendarInput.eventStartDate = this.detailDatesRange[0];
+    calendarInput.eventEndDate = this.detailDatesRange[1];
+    calendarInput.eventId = this.selectedEventId;
+    calendarInput.eventMembers = this.aDetailsEventMembers;
+    calendarInput.calendarEventMemberStatus = this.formBusy.get("selectedBusyVariant")?.value.sysName;
+
+    (await this._projectManagementHumanResourcesService.updateEventAsync(calendarInput))
+      .subscribe(async(_: any) => {
+        this.isDetailsEvent = false;
+        await this.getCalendarEventsAsync();
+      });
+  };
+
+  /**
+   * Функция удаляет событие.
+   */
+  public async onDeleteEventAsync() {
+    (await this._projectManagementHumanResourcesService.removeEventAsync(this.selectedEventId))
+      .subscribe(async(_: any) => {
+        this.isNeedUserActionEvent = false;
         await this.getCalendarEventsAsync();
       });
   };
