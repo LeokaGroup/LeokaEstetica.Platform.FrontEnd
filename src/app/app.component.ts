@@ -72,8 +72,8 @@ export class AppComponent implements OnInit {
     // успешное создание эпика.
     "SendNotifySuccessProjectEpic",
 
-    // Уведомления сохранения профиля пользователя.
-    "SendNotifySuccessSave",
+    "SendNotifySuccessSaveProfileInfo",
+    "SendNotifyErrorSaveProfileInfo",
 
     // Уведомления предупреждения о навыках.
     "SendNotificationWarningSaveUserSkills",
