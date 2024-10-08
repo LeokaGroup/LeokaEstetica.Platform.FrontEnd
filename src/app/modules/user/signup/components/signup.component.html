@@ -56,7 +56,20 @@
                   [toggleMask]="true"
                   placeholder="Пароль"
                   [feedback]="false"
+                  [pTooltip]="passwordRules"
                 />
+                <ng-template #passwordRules>
+                  <div class="password-rules">
+                      <h6>В пароле обязательно должны быть:</h6>
+                      <ul>
+                        <li>цифра</li>
+                        <li>строчная буква</li>
+                        <li>заглавная буква</li>
+                        <li>знак {{"@"}}$!%*#?&^_-</li>
+                        <li>длина не менее 8 символов</li>
+                      </ul>
+                  </div>
+                </ng-template>
               </div>
 
               <div class="mb-3 form-signup-extra">
