@@ -401,6 +401,10 @@ export class AppComponent implements OnInit {
             this.isVisibleMenu = false;
           }
 
+          if (event.url == "/profile/restore") {
+            this.isVisibleMenu = false;
+          }
+
           if (event.url == "/fare-rules") {
             this.isVisibleMenu = false;
           }
