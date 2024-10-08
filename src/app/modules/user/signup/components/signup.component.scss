@@ -40,3 +40,13 @@
         }
     }
 }
+
+.password-rules {
+    &>h6 {
+        padding-left: 8px;
+    }
+    &>ul {
+        padding-left: 22px;
+        margin-bottom: 0px;
+    }
+}

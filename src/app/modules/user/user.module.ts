@@ -12,6 +12,7 @@ import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
     declarations: [
@@ -29,7 +30,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
         ButtonModule,
         PasswordModule,
         CheckboxModule,
-        MultiSelectModule
+        MultiSelectModule,
+        TooltipModule
     ],
 
     exports: [],
