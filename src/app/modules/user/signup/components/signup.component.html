@@ -8,20 +8,12 @@
             <h3 class="title-text">Регистрация</h3>
 
             <div class="form-signup">
-              <!-- TODO: заготовка на будущее -->
-              <!-- <div class="mb-3">
-                <input type="text"
-                        class="p-control"
-                        pInputText 
-                        placeholder="Имя"
-                        formControlName="name">
-              </div> -->
               <div class="mb-3">
-                <p-multiSelect 
+                <p-multiSelect
                   class="p-multiselect-control"
-                  [options]="aComponentRoles" 
-                  formControlName="componentRoles" 
-                  optionLabel="componentRoleName" 
+                  [options]="aComponentRoles"
+                  formControlName="componentRoles"
+                  optionLabel="componentRoleName"
                   optionValue="componentRoleId"
                   placeholder="Ваша роль на платформе"
                   autocomplete="off"
@@ -44,7 +36,7 @@
                 <input type="email"
                         class="p-control"
                         aria-describedby="emailHelp"
-                        pInputText 
+                        pInputText
                         placeholder="Email"
                         formControlName="email">
               </div>
@@ -60,21 +52,21 @@
                 />
                 <ng-template #passwordRules>
                   <div class="password-rules">
-                      <h6>В пароле обязательно должны быть:</h6>
+                      <h6>Пароль должен иметь:</h6>
                       <ul>
-                        <li>цифра</li>
-                        <li>строчная буква</li>
-                        <li>заглавная буква</li>
-                        <li>знак {{"@"}}$!%*#?&^_-</li>
-                        <li>длина не менее 8 символов</li>
+                        <li>Цифру.</li>
+                        <li>Строчную букву.</li>
+                        <li>Заглавную букву.</li>
+                        <li>Один или несколько символов {{"@"}}$!%*#?&^_-</li>
+                        <li>Длину не менее 8 символов.</li>
                       </ul>
                   </div>
                 </ng-template>
               </div>
 
               <div class="mb-3 form-signup-extra">
-                  <p-checkbox 
-                    formControlName="agree" 
+                  <p-checkbox
+                    formControlName="agree"
                     value="1"
                     inputId="agree"
                     class="p-checkbox-control"
