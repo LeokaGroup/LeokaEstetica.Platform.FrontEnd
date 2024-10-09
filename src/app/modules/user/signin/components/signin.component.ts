@@ -48,7 +48,7 @@ export class SignInComponent implements OnInit {
         if (!this.formSignUp.valid) {
             let errors = '';
             if (this.formSignUp.controls['email']?.errors) {
-                errors += "Не ввелен логин (e-mail). ";
+                errors += "Не введен логин (e-mail). ";
             }
             if (this.formSignUp.controls['password']?.errors) {
                 errors += "Не введен пароль. ";
