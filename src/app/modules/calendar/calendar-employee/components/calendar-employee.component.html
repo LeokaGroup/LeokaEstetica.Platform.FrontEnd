@@ -317,7 +317,6 @@
           [style]="{width: '100vh', height: '100vh'}"
           [draggable]="false"
           [resizable]="false">
-
   <div class="control-input-text-worksheet">
     <div>
       <strong>Название события</strong>
@@ -420,12 +419,14 @@
       </div>
 
       <div>
-        <p-dropdown [options]="this.busyVariants$.value"
+        <form [formGroup]="formBusy">
+          <p-dropdown [options]="this.busyVariants$.value"
                     optionLabel="description"
                     appendTo="body"
                     class="control-project-stages"
                     formControlName="selectedBusyVariant">
-        </p-dropdown>
+          </p-dropdown>
+        </form>
       </div>
     </div>
   </div>
