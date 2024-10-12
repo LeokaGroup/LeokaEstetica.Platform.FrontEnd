@@ -13,7 +13,6 @@ import { NetworkService } from './core/interceptors/network.service';
 import {API_URL} from "./core/core-urls/api-urls";
 import {HttpTransportType, HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
 import {RedisService} from "./modules/redis/services/redis.service";
-import {DialogInput} from "./modules/messages/chat/models/input/dialog-input";
 import { BehaviorSubject, Subscription  } from 'rxjs';
 import {MessageService} from "primeng/api";
 
@@ -57,6 +56,7 @@ export class AppComponent implements OnInit {
   isVisibleProjectManagementMenu: boolean = false;
   hubMainConnection: any;
   hubProjectManagementConnection: any;
+  hubCommunicationsConnection: any;
 
   // Для добавления нового метода хаба, достаточно просто добавить в массив название метода на бэке.
   aHubOnMethods: string[] = [
@@ -303,6 +303,8 @@ export class AppComponent implements OnInit {
     "SendNotificationWarningNotFoundUserByEmail"
   ];
 
+  aHubCommunicationsOnMethods: [];
+
   public $allFeed = new BehaviorSubject<any>(null);
 
   aMessages: any[] = [];
@@ -322,6 +324,7 @@ export class AppComponent implements OnInit {
               private readonly _redisService: RedisService,
               private readonly _messageService: MessageService,
               private readonly _route: ActivatedRoute) {
+    this.aHubCommunicationsOnMethods = [];
   }
 
   public async ngOnInit() {
@@ -335,10 +338,6 @@ export class AppComponent implements OnInit {
         await this.configureHubsAsync();
       }
     });
-  };
-
-  public async ngAfterViewInit() {
-
   };
 
   public get AllFeedObservable() {
@@ -356,6 +355,14 @@ export class AppComponent implements OnInit {
   private listenAllHubsProjectManagementNotifications() {
     this.aHubOnMethods.forEach((method: any) => {
       (<HubConnection>this.hubProjectManagementConnection).on(method, (response: any) => {
+        this.$allFeed.next(response);
+      });
+    });
+  };
+
+  private listenHubCommunications() {
+    this.aHubCommunicationsOnMethods.forEach((method: any) => {
+      (<HubConnection>this.hubCommunicationsConnection).on(method, (response: any) => {
         this.$allFeed.next(response);
       });
     });
@@ -469,49 +476,6 @@ export class AppComponent implements OnInit {
   };
 
   /**
-   * Функция получает диалоги проекта.
-   * @param projectId - Id проекта.
-   */
-  public getDialogsAsync(projectId: number | null) {
-    <HubConnection>this.hubMainConnection.invoke("GetDialogsAsync", localStorage["u_e"], localStorage["t_n"], +projectId!)
-      .catch((err: any) => {
-        console.error(err);
-      });
-  };
-
-  /**
-   * Функция получает диалог проекта.
-   * @param diaalogId - Id диалога.
-   */
-  public getDialogAsync(dialogInput: DialogInput) {
-    <HubConnection>this.hubMainConnection.invoke("GetDialogAsync", localStorage["u_e"], localStorage["t_n"], JSON.stringify(dialogInput))
-      .catch((err: any) => {
-        console.error(err);
-      });
-  };
-
-  /**
-   * Функция отправляет сообщение.
-   */
-  public sendMessageAsync(message: string, dialogId: number) {
-    <HubConnection>this.hubMainConnection.invoke("SendMessageAsync", message, dialogId, localStorage["u_e"], localStorage["t_n"], API_URL.apiUrl)
-      .catch((err: any) => {
-        console.error(err);
-      });
-  };
-
-  /**
-   * Функция получает диалоги ЛК.
-   * @param projectId - Id проекта.
-   */
-  public getProfileDialogsAsync() {
-    <HubConnection>this.hubMainConnection.invoke("GetProfileDialogsAsync", localStorage["u_e"], localStorage["t_n"])
-      .catch((err: any) => {
-        console.error(err);
-      });
-  };
-
-  /**
    * Функция настраивает хабы для работы уведомлений SignalR.
    */
   private async configureHubsAsync() {
@@ -621,6 +585,18 @@ export class AppComponent implements OnInit {
             this.hubProjectManagementConnection.start().then(async () => {
               console.log("Соединение ProjectManagement установлено");
               console.log("ProjectManagement ConnectionId:", this.hubProjectManagementConnection.connectionId);
+            })
+              .catch((err: any) => {
+                console.error(err);
+              });
+          }
+
+          this.listenHubCommunications();
+
+          if (this.hubCommunicationsConnection.state != "Connected" && this.hubCommunicationsConnection.connectionId == null) {
+            this.hubCommunicationsConnection.start().then(async () => {
+              console.log("Соединение Communications установлено");
+              console.log("Communications ConnectionId:", this.hubCommunicationsConnection.connectionId);
             })
               .catch((err: any) => {
                 console.error(err);
