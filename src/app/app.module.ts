@@ -126,6 +126,9 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
     ProjectManagmentService,
     RedisService
   ],
+  exports: [
+    LeftMenuComponent
+  ],
 
   bootstrap: [AppComponent]
 })

@@ -461,6 +461,11 @@ export class AppComponent implements OnInit {
     if (currentUrl.indexOf("press/offer") >= 0) {
       this.isVisibleMenu = false;
     }
+
+    if (currentUrl.indexOf("chat") >= 0) {
+      this.isVisibleHeader = true;
+      this.isVisibleMenu = true;
+    }
   };
 
   /**

@@ -57,6 +57,7 @@ export class LeftMenuComponent implements OnInit {
     companyName: string = "";
     isExistsProjectId: boolean = false;
     projectId?: number;
+  isShowInviteBlock: boolean = true;
 
   constructor(private readonly _backOfficeService: BackOfficeService,
               private readonly _router: Router,
@@ -74,6 +75,13 @@ export class LeftMenuComponent implements OnInit {
   private async checkUrlParams() {
     this._router.events
       .subscribe(async (event: any) => {
+        if (!event.url.includes("/aboutme")) {
+          this.isShowInviteBlock = false;
+        }
+
+        else {
+          this.isShowInviteBlock = true;
+        }
       });
   };
 
