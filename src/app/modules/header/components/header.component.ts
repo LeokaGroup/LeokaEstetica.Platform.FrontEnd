@@ -52,6 +52,10 @@ export class HeaderComponent implements OnInit {
                   case "Calendar":
                     this._router.navigate(["/calendar/employee"]);
                     break;
+
+                  case "Chat":
+                    this._router.navigate(["/chat"]);
+                    break;
                 }
               }
 
