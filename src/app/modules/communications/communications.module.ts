@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import {ChatCommunicationsComponent} from "./chat-communications/chat-communications.component";
 import {CommunicationsRoutingModule} from "./communications-routing.module";
+import { SplitterModule } from 'primeng/splitter';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {CommunicationsRoutingModule} from "./communications-routing.module";
     MenuModule,
     BreadcrumbModule,
     FormsModule,
-    ButtonModule
+    ButtonModule,
+    SplitterModule
   ],
 
   providers: [
