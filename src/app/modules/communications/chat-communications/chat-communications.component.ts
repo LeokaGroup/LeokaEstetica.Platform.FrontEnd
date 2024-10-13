@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import {Router} from "@angular/router";
 import {CommunicationsServiceService} from "../services/communications.service";
+import {MenuItem} from "primeng/api";
 
 @Component({
   selector: "chat-communications",
@@ -56,8 +57,8 @@ export class ChatCommunicationsComponent implements OnInit {
    * Функция выбирает абстрактную группу чата и получает ее объекты.
    * @param ac - Выбранная абстрактная область чата.
    */
-  public onSelectAbstractScopeAndGetScopeGroupObjects(ac: any) {
-    this._communicationsServiceService.sendAbstractScopeGroupObjects(ac.abstractScopeId, ac.abstractScopeType);
+  public onSelectAbstractScopeAndGetScopeGroupObjects(selectedItem: MenuItem) {
+    this._communicationsServiceService.sendAbstractScopeGroupObjects(selectedItem['abstractScopeId'], selectedItem['abstractScopeType']);
   };
 
   public onSelectGroupObject(go: any) {

@@ -28,7 +28,7 @@ export class CommunicationsServiceService {
    * @param abstractScopeId - Id выбранной абстрактной области.
    * @param abstractScopeType - Тип выбранной абстрактной области.
    */
-  public sendAbstractScopeGroupObjects(abstractScopeId: number, abstractScopeType: string) {
+  public sendAbstractScopeGroupObjects(abstractScopeId: number, abstractScopeType: number) {
     this.communicationsAbstractGroups$.next({abstractScopeId, abstractScopeType, account: localStorage["u_e"]});
   }
 
