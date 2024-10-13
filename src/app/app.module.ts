@@ -52,6 +52,7 @@ import { DialogModule } from 'primeng/dialog';
 import {RedisService} from "./modules/redis/services/redis.service";
 import {DropdownModule} from 'primeng/dropdown';
 import { TieredMenuModule } from 'primeng/tieredmenu';
+import {CommunicationsServiceService} from "./modules/communications/services/communications.service";
 
 @NgModule({
   declarations: [
@@ -124,7 +125,8 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
     OrderService,
     TicketService,
     ProjectManagmentService,
-    RedisService
+    RedisService,
+    CommunicationsServiceService
   ],
   exports: [
     LeftMenuComponent

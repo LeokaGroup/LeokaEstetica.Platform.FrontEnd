@@ -3,3 +3,12 @@
 @use "/src/app/common/styles/spaces.scss";
 @use "/src/app/common/styles/styles.scss";
 @use "/src/app/common/styles/control.scss";
+
+.abstract-scopes {
+  display: flex;
+  align-items: center;
+
+  .abstract-scope {
+    margin: 0 10px;
+  }
+}

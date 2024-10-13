@@ -4,7 +4,7 @@ import {CalendarEmployeeComponent} from "./calendar-employee/components/calendar
 
 const routes: Routes = [
   {
-    path: 'employee', component: CalendarEmployeeComponent
+    path: '', component: CalendarEmployeeComponent
   }
 ];
 

@@ -50,7 +50,7 @@ export class HeaderComponent implements OnInit {
               item.command = (event: any) => {
                 switch (event.item.id) {
                   case "Calendar":
-                    this._router.navigate(["/calendar/employee"]);
+                    this._router.navigate(["/calendar"]);
                     break;
 
                   case "Chat":

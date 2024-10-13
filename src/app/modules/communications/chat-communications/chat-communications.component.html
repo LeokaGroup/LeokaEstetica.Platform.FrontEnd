@@ -12,8 +12,12 @@
       <ng-template pTemplate>
         <p-splitter layout="vertical" [panelSizes]="[15, 85]">
           <ng-template pTemplate>
-            <div style="flex-grow: 1;" class="flex align-items-center justify-content-center">
-              Panel 2
+            <div class="abstract-scopes">
+              <div *ngFor="let ac of aAbstractScopes">
+                <div class="abstract-scope">
+                  {{ac.scopeName}}
+                </div>
+              </div>
             </div>
           </ng-template>
 

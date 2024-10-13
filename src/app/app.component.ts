@@ -15,6 +15,7 @@ import {HttpTransportType, HubConnection, HubConnectionBuilder} from "@microsoft
 import {RedisService} from "./modules/redis/services/redis.service";
 import { BehaviorSubject, Subscription  } from 'rxjs';
 import {MessageService} from "primeng/api";
+import {CommunicationsServiceService} from "./modules/communications/services/communications.service";
 
 @Component({
   selector: 'app-root',
@@ -307,6 +308,15 @@ export class AppComponent implements OnInit {
 
   public $allFeed = new BehaviorSubject<any>(null);
 
+  // Абстрактные области чата.
+  public communicationsAbstractScopes$ = new BehaviorSubject<any>(null);
+
+  // Группы абстрактной области чата.
+  public communicationsAbstractGroups$ = new BehaviorSubject<any>(null);
+
+  // Сообщения диалога группы абстрактной области чата.
+  public communicationsAbstractGroupMessages$ = new BehaviorSubject<any>(null);
+
   aMessages: any[] = [];
   aDialogs: any[] = [];
   lastMessage: any;
@@ -319,11 +329,11 @@ export class AppComponent implements OnInit {
 
   constructor(private _networkService: NetworkService,
               private readonly _router: Router,
-              private readonly _activatedRoute: ActivatedRoute,
               private _changeDetectorRef: ChangeDetectorRef,
               private readonly _redisService: RedisService,
               private readonly _messageService: MessageService,
-              private readonly _route: ActivatedRoute) {
+              private readonly _route: ActivatedRoute,
+              private _communicationsServiceService: CommunicationsServiceService) {
     this.aHubCommunicationsOnMethods = [];
   }
 
@@ -479,10 +489,10 @@ export class AppComponent implements OnInit {
    * Функция настраивает хабы для работы уведомлений SignalR.
    */
   private async configureHubsAsync() {
-    if (this.currentUrl != "user/signin") {
+    if (this.currentUrl !== "user/signin") {
       // Подписываемся на получение всех сообщений.
       this.AllFeedObservable
-        .subscribe((response: any) => {
+        .subscribe(async (response: any) => {
           console.log("Подписались на сообщения", response);
 
           // Если пришел тип уведомления, то просто показываем его.
@@ -558,14 +568,14 @@ export class AppComponent implements OnInit {
       }
 
       (await this._redisService.checkConnectionIdCacheAsync(localStorage["u_c"], module))
-        .subscribe((_: any) => {
+        .subscribe(async (_: any) => {
           this.hubMainConnection = new HubConnectionBuilder()
             .withUrl(API_URL.apiUrl + `/notify?userCode=${localStorage["u_c"]}&module=Main`, HttpTransportType.LongPolling)
             .build();
 
           this.listenAllHubsMainNotifications();
 
-          if (this.hubMainConnection.state != "Connected" && this.hubMainConnection.connectionId == null) {
+          if (this.hubMainConnection.state !== "Connected" && this.hubMainConnection.connectionId == null) {
             this.hubMainConnection.start().then(async () => {
               console.log("Соединение Main установлено");
               console.log("Main ConnectionId:", this.hubMainConnection.connectionId);
@@ -581,7 +591,7 @@ export class AppComponent implements OnInit {
 
           this.listenAllHubsProjectManagementNotifications();
 
-          if (this.hubMainConnection.state != "Connected" && this.hubProjectManagementConnection.connectionId == null) {
+          if (this.hubMainConnection.state !== "Connected" && this.hubProjectManagementConnection.connectionId == null) {
             this.hubProjectManagementConnection.start().then(async () => {
               console.log("Соединение ProjectManagement установлено");
               console.log("ProjectManagement ConnectionId:", this.hubProjectManagementConnection.connectionId);
@@ -591,12 +601,18 @@ export class AppComponent implements OnInit {
               });
           }
 
+          this.hubCommunicationsConnection = new HubConnectionBuilder()
+            .withUrl(API_URL.apiUrlCommunications + `/communications?userCode=${localStorage["u_c"]}&module=Communications`, HttpTransportType.LongPolling)
+            .build();
+
           this.listenHubCommunications();
 
-          if (this.hubCommunicationsConnection.state != "Connected" && this.hubCommunicationsConnection.connectionId == null) {
+          if (this.hubCommunicationsConnection.state !== "Connected" && this.hubCommunicationsConnection.connectionId == null) {
             this.hubCommunicationsConnection.start().then(async () => {
               console.log("Соединение Communications установлено");
               console.log("Communications ConnectionId:", this.hubCommunicationsConnection.connectionId);
+
+              await this.executeCommunicationsHubActions();
             })
               .catch((err: any) => {
                 console.error(err);
@@ -608,5 +624,34 @@ export class AppComponent implements OnInit {
     setTimeout(() => {
       this.routeSubscription.unsubscribe();
     }, 1000);
+  };
+
+  /**
+   * Функция выполняет действия с модулем коммуникаций.
+   */
+  private async executeCommunicationsHubActions() {
+    if (this.currentUrl.includes("/chat")) {
+      // Если успешно подключились, то выполняем действия.
+      if (this.hubCommunicationsConnection.state == "Connected") {
+        // Вызываем хаб бэка.
+        <HubConnection>this.hubCommunicationsConnection.invoke("GetScopesAsync", localStorage["u_e"])
+          .catch((err: any) => {
+            console.error(err);
+          });
+
+        // Получаем ответ из хаба бэка.
+        this.hubCommunicationsConnection.on("getAbstractScopes", (response: any) => {
+          console.log("Список абстрактных областей чата: ", response);
+
+          // Используем прокси-сервис для передачи данных.
+          this._communicationsServiceService.sendAbstractScopes(response);
+        });
+      }
+
+      else {
+        throw new Error("Хаб коммуникаций не был подключен. Действия с ним не будут выполнены. " +
+          `HubCommunicationsConnectionState: ${this.hubCommunicationsConnection.state}.`);
+      }
+    }
   };
 }
