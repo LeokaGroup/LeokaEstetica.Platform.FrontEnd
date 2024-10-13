@@ -1,14 +1,19 @@
 @use '/src/app/common/styles/color.scss';
 @use "/src/app/common/styles/control.scss";
 
+.section-container {
+    height: calc(100dvh - 100px);
+    display: flex;
+    align-items: center;
+}
+
 ::ng-deep .form-signup-wrapper {
     display: grid;
     width: 416px;
     height: 482px;
     border-radius: 12px;
     padding: 40px 48px;
-    margin: 100px 0 0;
-    // grid-gap: 32px;
+    margin: 0 0 100px 0;
     box-shadow: 0 10px 20px 0 #9699BA33;
 
     .title-text {
