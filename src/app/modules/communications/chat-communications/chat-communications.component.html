@@ -14,7 +14,7 @@
           <ng-template pTemplate>
             <div class="abstract-scopes">
               <div *ngFor="let ac of aAbstractScopes">
-                <div class="abstract-scope">
+                <div class="abstract-scope" (click)="onSelectAbstractScopeAndGetScopeGroupObjects(ac)">
                   {{ac.scopeName}}
                 </div>
               </div>
@@ -24,8 +24,12 @@
           <ng-template pTemplate>
             <p-splitter>
               <ng-template pTemplate>
-                <div class="col flex align-items-center justify-content-center">
-                  Panel 3
+                <div class="group-objects">
+                  <div *ngFor="let go of aGroupObjects">
+                    <div class="object-group" (click)="onSelectGroupObject(go)">
+                      {{go.abstractGroupName}}
+                    </div>
+                  </div>
                 </div>
               </ng-template>
 

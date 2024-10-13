@@ -9,6 +9,8 @@ import {BehaviorSubject} from 'rxjs';
 @Injectable()
 export class CommunicationsServiceService {
   public abstractScopes$ = new BehaviorSubject<any>(null);
+  public communicationsAbstractGroups$ = new BehaviorSubject<any>(null);
+  public groupObjects$ = new BehaviorSubject<any>(null);
 
   constructor(private readonly _http: HttpClient) {
   }
@@ -20,4 +22,21 @@ export class CommunicationsServiceService {
   public sendAbstractScopes(abstractScopes: any[]) {
     this.abstractScopes$.next(abstractScopes);
   };
+
+  /**
+   * Функция отправляет в прокси-сервис выбранную абстрактную область чата.
+   * @param abstractScopeId - Id выбранной абстрактной области.
+   * @param abstractScopeType - Тип выбранной абстрактной области.
+   */
+  public sendAbstractScopeGroupObjects(abstractScopeId: number, abstractScopeType: string) {
+    this.communicationsAbstractGroups$.next({abstractScopeId, abstractScopeType, account: localStorage["u_e"]});
+  }
+
+  /**
+   * Функция отправляет группы объектов выбранной абстрактной области чата.
+   * @param groupsObjects - Список групп объектов.
+   */
+  public sendGroupObjects(groupsObjects: any) {
+    this.groupObjects$.next(groupsObjects);
+  }
 }
