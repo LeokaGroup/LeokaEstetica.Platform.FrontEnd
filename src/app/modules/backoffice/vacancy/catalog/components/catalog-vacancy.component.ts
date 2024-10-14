@@ -52,6 +52,9 @@ export class CatalogVacancyComponent implements OnInit {
     page: number = 0;
     aCatalogVacancies: any[] = [];
     lastId?: number | null;
+    isShowFilter: boolean = false;
+    isFiltered: boolean = false;
+    loadingState = false;
 
     // TODO: этот тип фильтра будем использовать при поиске. Вне поиска решили не делать.
     // aKeywords: any[] = [
@@ -90,9 +93,29 @@ export class CatalogVacancyComponent implements OnInit {
       this.selectedPay = null;
       this.selectedExperience = null;
       this.selectedEmployment = [];
+      this.searchText = '';
+      this.isShowFilter = false;
+      this.isFiltered = false;
 
       await this.onLoadCatalogVacanciesAsync(null);
     };
+
+    /**
+     * Функция поиска. 
+     */
+    async onApplyFilters() {
+      if (this.selectedSalary ||
+          this.selectedPay ||
+          this.selectedExperience ||
+          this.selectedEmployment ||
+          this.searchText)
+      {
+        this.isFiltered = true;
+      }
+
+      this.isShowFilter = false;
+      await this.onLoadCatalogVacanciesAsync(null);
+    }
 
     /**
      * Функция переход к просмотру вакансии вне проекта.
@@ -113,32 +136,35 @@ export class CatalogVacancyComponent implements OnInit {
    * @returns - Список вакансий.
    */
   public async onLoadCatalogVacanciesAsync(event: any) {
-    let model = new FilterVacancyInput();
-    model.Salary = this.selectedSalary ? this.selectedSalary.key : "None";
-
-    if (this.selectedEmployment) {
-      model.EmploymentsValues = this.selectedEmployment.map((u: any) => u.key).join(',');
-    }
-
-    model.Experience = this.selectedExperience ? this.selectedExperience.key : "None";
-    model.Pay = this.selectedPay ? this.selectedPay.key : "None";
+    this.loadingState = true;
+    const Salary = this.selectedSalary ? this.selectedSalary.key : "None";
+    const Pay = this.selectedPay ? this.selectedPay.key : "None";
+    const Experience = this.selectedExperience ? this.selectedExperience.key : "None";
+    const EmploymentsValues = this.selectedEmployment?.map((u: any) => u.key).join(',');
+    const model: FilterVacancyInput = {
+      lastId: 0,
+      paginationRows: 20,
+      filters: { 
+        Salary: Salary ?? "None",
+        Pay: Pay ?? "None",
+        Experience: Experience ?? "None",
+        EmploymentsValues: EmploymentsValues ?? "",
+      },
+      searchText: this.searchText,
+      isPagination: true,
+    };
 
     // Если используем пагинацию на ините.
-    if (this.page == 0 && event !== null) {
-      this.setUrlParams(event.page + 1); // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
-    }
+    // if (this.page == 0 && event !== null) {
+    //   this.setUrlParams(event.page + 1); // Надо инкрементить, так как event.page по дефолту имеет 0 для 1 элемента.
+    // }
 
     // Если используем пагинацию после 1 страницы.
-    else if (event !== null) {
+    if (event !== null) {
       this.page = +this.page + 1;
     }
 
-    // Если используем поиск.
-    if (event !== null && event.query) {
-      this.searchText = event.query;
-      model.searchText = this.searchText;
-    }
-
+    console.log("onLoadCatalogVacanciesAsync::model:", model);
     (await this._vacancyService.loadCatalogVacanciesAsync(model))
       .subscribe(_ => {
         console.log("Список вакансий: ", this.catalog$.value);
@@ -149,6 +175,7 @@ export class CatalogVacancyComponent implements OnInit {
         this.aCatalogVacancies = this.catalog$.value.catalogVacancies;
         this.rowsCount = this.catalog$.value.total;
         this.lastId = this.catalog$.value.lastId;
+        this.loadingState = false;
       });
   };
 }

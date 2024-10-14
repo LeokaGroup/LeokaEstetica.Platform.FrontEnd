@@ -1,59 +1,234 @@
 @use "/src/app/common/styles/spaces.scss";
 @use "/src/app/common/styles/control.scss";
 @use "/src/app/common/styles/styles.scss";
-
-@font-face {
-  font-family: "Montserrat Regular";
-  src: url("../../../../../../assets/fonts/Montserrat/static/Montserrat-Regular.ttf");
-}
+@use "/src/app/common/styles/font.scss";
+@use "/src/app/common/styles/color.scss";
 
 .tag {
     margin-left: 20px;
 }
 
-.vacancy-count {
-  margin-top: 0.5rem;
-  font-weight: 600;
-  font-size: 1rem;
-  text-align: center;
-  margin-bottom: 0.5rem;
+// .vacancy-count {
+//   margin-top: 0.5rem;
+//   font-weight: 600;
+//   font-size: 1rem;
+//   text-align: center;
+//   margin-bottom: 0.5rem;
+// }
+
+// .vacancy-text-block {
+//   padding: 0;
+//   width: 100%;
+// }
+
+// .catalog-vacancies-item {
+//   margin: 0;
+// }
+
+// .block-catalog-filters {
+//   margin: 0px 0px 10px 10px;
+// }
+
+// .block-profile {
+//   overflow-x: hidden;
+// }
+
+// .vacancy-text-wrap{
+//   line-height: 1.42;
+//     height: 100%;
+//     outline: none;
+//     overflow-y: auto;
+//     tab-size: 4;
+//     -moz-tab-size: 4;
+//     text-align: left;
+//     white-space: pre-wrap;
+//     word-wrap: break-word;
+// }
+
+// .resetFiltersBtn {
+//   margin: 4px;
+//   font-size: 16px;
+//   font-family: "Montserrat Regular";
+//   text-decoration: underline;
+//   color: #6c757d;
+//   background-color: #ffffff;
+//   border: none;
+//   cursor: pointer;
+// }
+
+// ------------------------
+.vacancies-catalog {
+  margin-bottom: 50px;
+  min-height: 50vh;
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
 }
 
-.vacancy-text-block {
-  padding: 10px 0;
+.vacancies-item {
+  border: 1px solid color.$project-stroke-nikel;
+  border-radius: 8px;
+  padding: 26px 26px 26px 70px;
 }
 
-.catalog-vacancies-item {
-  margin: 10px 0;
-}
-
-.block-catalog-filters {
-  margin: 0px 0px 10px 10px;
-}
-
-.block-profile {
-  overflow-x: hidden;
-}
-
-.vacancy-text-wrap{
-  line-height: 1.42;
-    height: 100%;
-    outline: none;
-    overflow-y: auto;
-    tab-size: 4;
-    -moz-tab-size: 4;
-    text-align: left;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-}
-
-.resetFiltersBtn {
-  margin: 4px;
-  font-size: 16px;
-  font-family: "Montserrat Regular";
-  text-decoration: underline;
-  color: #6c757d;
-  background-color: #ffffff;
-  border: none;
+.vacancies-title {
+  @include font.Headline_2();
   cursor: pointer;
+  color: color.$landing-text-dark-grey;
 }
+
+.vacancies-notfound{
+  @include font.Sub_title();
+  display: flex;
+  height: 44vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.vacancy-title {
+  @include font.Headline_3();
+  cursor: pointer;
+  color: color.$project-primary-blue-color;
+}
+
+::ng-deep .vacancy-description .ql-editor,
+.vacancy-description {
+  height: 64px;
+  max-width: 740px;
+}
+
+.vacancy-description {
+  margin-bottom: 24px;
+}
+
+.vacancy-date {
+  display: flex;
+  @include font.Regular_12_135();
+  font-size: 14px;
+}
+
+.control-btns {
+  .btn {
+    width: 178px;
+    height: 44px;
+    @include font.button-link();
+    text-align: center;
+    border-radius: 8px;
+  }
+
+  .btn-white {
+    border: 1px solid color.$project-primary-blue-color;
+    background-color: white;
+    color: color.$project-primary-blue-color;
+  }
+
+  .btn-blue {
+    border: 1px solid color.$project-primary-blue-color;
+    background-color: color.$project-primary-blue-color;
+    color: white;
+  }
+}
+
+.btn-icon {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  margin-left: auto;
+  cursor: pointer;
+  background-color: transparent;
+
+  i {
+    font-size: 20px;
+    color: color.$color-icon;
+  }
+}
+
+.vacancies-buttons {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.btn-filter {
+  width: 50px;
+  height: 50px;
+  background: color.$color-primary-blue-50;
+  border: 1px solid color.$project-stroke-nikel;
+  border-radius: 8px;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+
+  i {
+    font-size: 20px;
+    color: color.$color-icon;
+  }
+}
+
+// filter-modal
+::ng-deep .filter-modal .p-dialog {
+  background: white;
+  border-radius: 8px;
+  padding: 38px;
+  display:grid;
+  grid-gap: 24px;
+  width: 600px;
+
+  .p-dialog-content,
+  .p-dialog-header {
+    padding: 0;
+  }
+
+  .p-dialog-title {
+    @include font.Headline_3();
+  }
+
+  .p-dialog-header-close-icon {
+    color: color.$color-icon;
+  }
+
+  .p-dialog-content {
+    display:grid;
+    grid-gap: 24px;
+  }
+
+  .field-checkbox {
+    display: flex;
+    gap: 8px;
+  }
+}
+
+.filter-two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+}
+
+::ng-deep .filter-input-wrapper {
+  display:grid;
+  grid-gap: 2px;
+
+  .p-inputtext {
+    @include control.controlWhiteForm();
+    width: 100%;
+  }
+}
+
+::ng-deep .filter-buttons {
+  display:flex;
+  justify-content: flex-end;
+  gap: 54px;
+
+  .button .p-button {
+    background: color.$project-primary-blue-color;
+    border-radius: 8px;
+    border: 1px solid color.$project-primary-blue-color;
+  }
+
+  .button-white .p-button {
+    background: white;
+    color: color.$project-primary-blue-color;
+  }
+}
+
+
