@@ -2,46 +2,240 @@
 @use "/src/app/common/styles/spaces.scss";
 @use "/src/app/common/styles/control.scss";
 @use "/src/app/common/styles/styles.scss";
+@use "/src/app/common/styles/font.scss";
 
-.project-text-block {
-  padding: 10px 0;
+.projects {
+  min-height: 50vh;
+  margin-bottom: 50px;
 }
 
-.catalog-vacancies-item {
-  margin: 10px 0;
-}
-
-.block-catalog-filters {
-  margin: 0 0 10px 10px;
-}
-
-.block-profile {
-  overflow-x: hidden;
-}
-
-.project-count {
-  margin-top: 0.5rem;
-  font-weight: 600;
-  font-size: 1rem;
-  text-align: center;
-  margin-bottom: 0.5rem;
+.project-notfound {
+  @include font.Medium_20_120();
+  display: flex;
+  height: 44vh;
+  justify-content: center;
+  align-items: center;
 }
 
 .tag {
   margin-left: 20px;
 }
-.project-text-wrap{
-  line-height: 1.42;
-    height: 100%;
-    outline: none;
-    overflow-y: auto;
-    tab-size: 4;
-    -moz-tab-size: 4;
-    text-align: left;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+
+.filtres-wrapper {
+  display: flex;
+  gap: 16px;
 }
 
-.resetFiltersBtn {
-  @include control.linkButton(color.$project-icons-grey);
+.projects-count {
+  @include font.Regular_16_140();
+  margin-right: 32px;
+}
+
+::ng-deep .p-multiselect {
+  display: flex;
+  align-items: center;
+  width: 256px;
+  height: 54px;
+  border-radius: 8px;
+  border: 1px solid color.$project-stroke-nikel;
+  box-shadow: none;
+}
+
+::ng-deep .p-inputwrapper-focus {
+  border: 1px solid color.$project-primary-blue-color;
+}
+
+::ng-deep .p-multiselect-label {
+  padding: 15px 20px;
+  color: color.$project-text-black;
+  @include font.Regular_16_140();
+}
+
+::ng-deep .p-multiselect-label::before {
+  content: '\00a0 \00a0 \00a0 \00a0 \00a0 \00a0 \00a0 \00a0';
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+}
+
+::ng-deep .vacancy-filter .p-multiselect-label::before {
+  background-image: url('/assets/images/project/file-search-02.svg');
+}
+
+::ng-deep .date-filter .p-multiselect-label::before {
+  background-image: url('/assets/images/project/calendar-minus-01.svg');
+}
+
+::ng-deep .stage-filter .p-multiselect-label::before {
+  background-image: url('/assets/images/project/bar-line-chart.svg');
+}
+
+::ng-deep .p-multiselect-item {
+  @include font.Regular_16_140();
+  background-color: transparent;
+}
+
+::ng-deep .p-multiselect-item:hover {
+  color: color.$project-primary-blue-color;
+  background-color: transparent;
+}
+
+::ng-deep .p-multiselect-item .p-focus{
+  color: color.$project-primary-blue-color;
+}
+
+::ng-deep .p-multiselect-panel {
+  border: 1px solid color.$project-stroke-nikel;
+  border-radius: 8px;
+  box-shadow: none;
+  margin-top: 4px
+}
+
+.projects-list {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(300px, 1fr));
+  grid-gap: 8px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.project-card {
+  border: 1px solid color.$project-stroke-nikel;
+  border-radius: 20px;
+  padding: 16px;
+
+  .project-text-block {
+
+    .project-title {
+      margin: 0;
+      @include font.Medium_20_120();
+      color: color.$project-primary-blue-color;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .project-date {
+      @include font.Paragraph_2();
+      color: color.$project-text-bluish-grey
+    }
+
+    .project-description {
+      height: 100px;
+      margin: 0;
+      @include font.Paragraph_2();
+      color: color.$landing-text-dark-grey
+    }
+  }
+
+  .btn {
+    width: 178px;
+    height: 44px;
+    @include font.Medium_16_140();
+    border-radius: 8px;
+  }
+
+  .question-btn {
+    border: 1px solid color.$project-primary-blue-color;
+    background-color: white;
+    color: color.$project-primary-blue-color;
+  }
+
+  .respond-btn {
+    border: 1px solid color.$project-primary-blue-color;
+    background-color: color.$project-primary-blue-color;
+    color: white;
+  }
+
+  .like-btn {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    margin-left: auto;
+    cursor: pointer;
+    background-image: url(/assets/images/project/heart-rounded.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: transparent;
+  }
+}
+
+.p-semibold {
+  @include font.Paragraph_1_SemiBold();
+}
+
+.btn-link {
+  @include control.linkButton(color.$project-primary-blue-color);
+}
+
+::ng-deep .project-description .ql-editor {
+  color: color.$landing-text-dark-grey;
+  height: 100px;
+}
+
+::ng-deep .filter-modal .p-dialog {
+  background: white;
+  border-radius: 8px;
+  padding: 38px;
+  display:grid;
+  grid-gap: 24px;
+  width: 600px;
+
+  .p-dialog-content,
+  .p-dialog-header {
+    padding: 0;
+  }
+
+  .p-dialog-title {
+    @include font.Headline_1();
+  }
+
+  .p-dialog-header-close-icon {
+    color: color.$color-icon;
+  }
+
+  .p-dialog-content {
+    display:grid;
+    grid-gap: 24px;
+  }
+
+  .field-checkbox {
+    display: flex;
+    gap: 8px;
+  }
+}
+
+.filter-two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+}
+
+::ng-deep .filter-input-wrapper {
+  display:grid;
+  grid-gap: 2px;
+
+  .p-inputtext {
+    @include control.controlWhiteForm();
+    width: 100%;
+  }
+}
+
+::ng-deep .filter-buttons {
+  display:flex;
+  justify-content: flex-end;
+  gap: 54px;
+
+  .button .p-button {
+    background: color.$project-primary-blue-color;
+    border-radius: 8px;
+    border: 1px solid color.$project-primary-blue-color;
+  }
+
+  .button-white .p-button {
+    background: white;
+    color: color.$project-primary-blue-color;
+  }
 }

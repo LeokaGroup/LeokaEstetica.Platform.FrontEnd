@@ -46,3 +46,44 @@
   line-height: 24px;
 }
 
+@mixin Paragraph_2 {
+  font-family: Montserrat;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+@mixin Medium_16_140 {
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+}
+
+@mixin Medium_20_120 {
+  font-family: Montserrat;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+@mixin Paragraph_1_SemiBold {
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+@mixin Links {
+  font-family: Montserrat;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+@mixin Headline_1 {
+  font-family: Montserrat;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 48px;
+}

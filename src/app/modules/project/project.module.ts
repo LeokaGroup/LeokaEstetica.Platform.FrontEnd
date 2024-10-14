@@ -31,6 +31,7 @@ import { MessageModule } from 'primeng/message';
 import { CardModule } from 'primeng/card';
 import {InplaceModule} from 'primeng/inplace';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
     declarations: [
@@ -66,7 +67,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
         MessageModule,
         CardModule,
         InplaceModule,
-        InputSwitchModule
+        InputSwitchModule,
+        MultiSelectModule
     ],
 
     exports: [],

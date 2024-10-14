@@ -1,48 +1,48 @@
 <p-toast></p-toast>
 
-<div class="d-flex block-profile space-top-80">
+<div class="d-flex projects">
   <div class="col-lg-3">
 
   </div>
 
-  <div class="col-lg-6 block-catalog-vacancies text-content">
-    <div class="mb-2 block-search">
-      <span class="p-fluid control-search">
-        <p-autoComplete [(ngModel)]="searchText"
-                        [suggestions]="aProjectsCatalog"
-                        [showEmptyMessage]="true"
-                        emptyMessage="Результатов не найдено"
-                        field="projectName"
-                        [minLength]="0"
-                        (completeMethod)="onGetCatalogProjectsAsync($event)"
-                        (onClear)="onGetCatalogProjectsAsync(null)"
-                        placeholder="Поиск по проектам...">
-        </p-autoComplete>
-    <p class="project-count">Найдено проектов: {{catalog$.value.total ?? rowsCount}}</p>
-      </span>
+  <div class="col-lg-8">
+    <div class="d-flex align-items-center mt-3">
+      <span class="projects-count">Все проекты <span class="p-semibold">({{rowsCount}})</span></span>
+      <div class="filtres-wrapper">
+        <button class="btn-link" (click)="showFilterDialog()">Фильтры</button>
+      </div>
     </div>
-
-    <div class="catalog-vacancies-item" *ngFor="let item of aProjectsCatalog">
-      <div class="project-text-block" [ngClass]="{selectedColor: item.isSelectedColor}">
-        <div class="d-flex">
-          <div class="tag" *ngIf="item.tagColor !== null && item.tagValue !== null">
-            <p-tag [severity]="item.tagColor" value="{{item.tagValue}}"></p-tag>
+    <div class="row">
+      <div class="col-md-6 mt-3" *ngFor="let project of aProjectsCatalog">
+        <div class="project-card">
+          <div class="project-text-block d-flex flex-column justify-content-between gap-2">
+            <h3 class="project-title" (click)="onRouteSelectedProject(project.projectId)">{{ project.projectName }}</h3>
+            <div class="d-flex align-items-center gap-2">
+              <small class="project-date">Создан {{ project.displayDateCreated }}</small>
+              <div class="tag" *ngIf="project.tagColor !== null && project.tagValue !== null">
+                <p-tag [severity]="project.tagColor" value="{{project.tagValue}}"></p-tag>
+              </div>
+            </div>
+            <div class="project-description">
+              <p-editor
+                placeholder="Описание aнкеты"
+                [(ngModel)]="project.projectDetails"
+                [readonly]="true"
+                class="headless-editor frameless"
+              />
+            </div>
+          </div>
+          <div class="mt-3 d-flex justify-content-between align-items-center">
+            <div class="control-btns d-flex gap-2">
+              <button class="btn question-btn">Задать вопрос</button>
+              <button class="btn respond-btn">Откликнуться</button>
+            </div>
+            <button class="like-btn"></button>
           </div>
         </div>
-
-        <div class="project-text-item">
-          <h3 class="project-title" (click)="onRouteSelectedProject(item.projectId)">
-           {{item.projectName}}
-          </h3>
-
-          <div class="project-text project-text-wrap">
-            {{item.projectDetails}}
-          </div>
-
-          <div>
-            <i class="pi pi-clock">&nbsp;{{item.displayDateCreated}}</i>
-          </div>
-        </div>
+      </div>
+      <div *ngIf="aProjectsCatalog.length == 0 && !loadingState" class="project-notfound">
+        Ничего не найдено
       </div>
     </div>
 
@@ -51,70 +51,79 @@
       <p-paginator [rows]="20"
                   [totalRecords]="rowsCount"
                   (onPageChange)="onGetCatalogProjectsAsync($event)"
-                  *ngIf="rowsCount > 0">
+                  *ngIf="rowsCount > 20">
       </p-paginator>
     </div>
   </div>
+</div>
 
-  <!-- <div class="col-lg-2"></div> -->
-
-  <div class="col-lg-3 block-catalog-filters">
-    <h5>Фильтры</h5>
-
-    <div class="mt-3">
+<!-- Диалог фильтров -->
+<p-dialog header="Фильтры"
+          [modal]="true"
+          class="filter-modal"
+          [(visible)]="isShowFilter">
+  <div class="filter-input-wrapper">
+    <label for="searchText">Поиск в проекте</label>
+    <input 
+        pInputText 
+        id="searchText" 
+        placeholder="Введите текст для поиска"
+        [(ngModel)]="searchText" />
+  </div>
+  <div class="filter-two-column">
+    <!-- 1st column -->
+    <div>
       <div>
         <strong>По дате</strong>
       </div>
       <div>
-      <div *ngFor="let item of aDates" class="field-checkbox">
-        <p-checkbox name="item.key"
-                    value="item"
-                    [value]="item"
-                    [(ngModel)]="selectedDate"
-                    [inputId]="item.key"
-                    (onChange)="onGetCatalogProjectsAsync(null)">
-        </p-checkbox>
-        <label [for]="item.key">{{item.name}}</label>
+        <div *ngFor="let item of aDates" class="field-checkbox">
+          <p-checkbox name="item.key"
+                      [value]="item"
+                      [(ngModel)]="selectedDate"
+                      [inputId]="item.key">
+          </p-checkbox>
+          <label [for]="item.key">{{item.name}}</label>
+        </div>
       </div>
-      </div>
-    </div>
 
-    <div class="mt-3">
-      <div>
+      <div class="mt-3">
         <strong>С наличием вакансий</strong>
       </div>
       <div>
-      <div *ngFor="let item of anyVacancies" class="field-checkbox">
-        <p-checkbox name="item.key"
-                    value="item"
-                    [value]="item"
-                    [(ngModel)]="isAnyVacancies"
-                    [binary]="true"
-                    [inputId]="item.key"
-                    (onChange)="onGetCatalogProjectsAsync(null)">
-        </p-checkbox>
-        <label [for]="item.key">{{item.name}}</label>
-      </div>
+        <div *ngFor="let item of anyVacancies" class="field-checkbox">
+          <p-checkbox name="item.key"
+                      [value]="item"
+                      [(ngModel)]="isAnyVacancies"
+                      [binary]="true"
+                      [inputId]="item.key">
+          </p-checkbox>
+          <label [for]="item.key">{{item.name}}</label>
+        </div>
       </div>
     </div>
 
-    <div class="mt-3">
+    <!-- 2nd column -->
+    <div>
       <div>
         <strong>По стадии проекта</strong>
       </div>
       <div>
-      <div *ngFor="let item of aStages" class="field-checkbox">
-        <p-checkbox name="item.key"
-                    value="item"
-                    [value]="item"
-                    [(ngModel)]="selectedStage"
-                    [inputId]="item.key"
-                    (onChange)="onGetCatalogProjectsAsync(null)">
-        </p-checkbox>
-        <label [for]="item.key">{{item.name}}</label>
-      </div>
-      </div>
+        <div *ngFor="let item of aStages" class="field-checkbox">
+          <p-checkbox name="item.key"
+                      [value]="item"
+                      [(ngModel)]="selectedStage"
+                      [inputId]="item.key">
+          </p-checkbox>
+          <label [for]="item.key">{{item.name}}</label>
+        </div>
+      </div>  
     </div>
-    <button class="resetFiltersBtn" (click)="onResetFiltersAsync()">Сбросить фильтры</button>
   </div>
-</div>
+  
+  <div class="filter-buttons">
+      <p-button label="Сбросить" class="button button-white" (onClick)="onResetFilters()" />
+      <p-button label="Искать" class="button" (onClick)="onApplyFilters()" />
+  </div>
+</p-dialog>
+<!-- Конец диалога фильтров -->
