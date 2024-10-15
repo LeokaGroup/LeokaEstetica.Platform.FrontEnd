@@ -6,7 +6,7 @@ import {ProjectUserAvatarFileInput} from "../../task/models/input/project-user-a
 import {SprintDurationSettingInput} from "../../sprint/models/sprint-duration-setting-input";
 import {SprintMoveNotCompletedTaskSettingInput} from "../../sprint/models/sprint-move-not-completed-task-setting-input";
 import { UpdateRoleInput } from "../../models/input/update-role-input";
-import { DomSanitizer } from "@angular/platform-browser";
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {ProjectService} from "../../../project/services/project.service";
 import {SearchProjectService} from "../../../search/services/search-project-service";
 import {InviteProjectTeamMemberInput} from "../../../project/detail/models/input/invite-project-team-member-input";
@@ -44,7 +44,7 @@ export class ProjectSettingsComponent implements OnInit {
 
   projectId: number = 0;
   companyId: number = 0;
-  userAvatarLink: any;
+  userAvatarLink: SafeUrl | undefined;
   isShowProfile: boolean = false;
   avatarFormData = new FormData();
   isShowScrumSettings: boolean = false;
