@@ -35,7 +35,8 @@ export class CalendarEmployeeComponent implements OnInit {
   calendarOptions: any = {
     initialView: 'dayGridMonth',
     plugins: [dayGridPlugin, interactionPlugin],
-    dateClick: (event: any) => this.onSelectDate(event),
+    // #39793553 - отключил отбработчик по клику на дату без события
+    // dateClick: (event: any) => this.onSelectDate(event),
     eventClick: (event: any) => this.onSelectEvent(event),
     locale: ruLocale,
     customButtons: {

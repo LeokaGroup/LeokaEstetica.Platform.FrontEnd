@@ -6,6 +6,7 @@
 
 .profile-left-menu {
   width: 240px;
+  z-index: 1000;
 }
 
 :host ::ng-deep .profile-left-menu .p-panelmenu {

@@ -407,6 +407,7 @@ export class WikiComponent implements OnInit {
   public async onRemoveFolderAsync() {
     (await this._projectManagmentService.removeFolderAsync(this.selectedTreeItem.folderId, this.removeFolderResponse$.value?.isNeedUserAction ?? false))
       .subscribe(async (_: any) => {
+        this.isSelectedFolder = false;
         if ((this.removeFolderResponse$.value?.isNeedUserAction ?? false)) {
           this.isNeedUserAction = true;
         }
@@ -425,6 +426,7 @@ export class WikiComponent implements OnInit {
   private async removePageAsync() {
     (await this._projectManagmentService.removePageAsync(this.selectedTreeItem.pageId))
       .subscribe(async (_: any) => {
+        this.isSelectedFolder = false;
       });
   };
 
