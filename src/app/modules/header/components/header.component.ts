@@ -61,7 +61,7 @@ export class HeaderComponent implements OnInit {
               if (item.id == "Profile") {
                 // Смотрим вложенность профиля.
                 item.items.forEach((p: any) => {
-                  p.command = (event: any) => {
+                  p.command = async (event: any) => {
                     switch (event.item.id) {
                       case "Orders":
                         this._router.navigate(["/profile/orders"]);
@@ -74,6 +74,7 @@ export class HeaderComponent implements OnInit {
                       case "Exit":
                         localStorage.clear();
                         this._router.navigate(["/user/signin"]);
+                        await this.checkUrlParams();
                         break;
                     }
                   };
