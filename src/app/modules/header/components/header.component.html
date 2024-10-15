@@ -2,9 +2,9 @@
   <a class="navbar-brand" routerLink="">
     <img class="logo" src="../../../../assets/images/logo/logo.svg">
   </a>
-
+  
   <p-menubar *ngIf="isShowLandingMenu" [model]="headerLandingData$.value?.items" />
-  <p-menubar *ngIf="isHideAuthButtons" [model]="headerData$.value?.items" />
+  <p-menubar *ngIf="isHideAuthButtons" [model]="menu" />
 
   <div class="header-buttons d-flex align-right" *ngIf="!isHideAuthButtons">
     <div class="menu-item">
