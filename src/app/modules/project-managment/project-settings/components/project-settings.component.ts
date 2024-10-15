@@ -48,7 +48,7 @@ export class ProjectSettingsComponent implements OnInit {
   isShowProfile: boolean = false;
   avatarFormData = new FormData();
   isShowScrumSettings: boolean = false;
-  checked: boolean = true;
+  // checked: boolean = true;
   isShowUsers: boolean = false;
   selectedUser: any;
   isShowUserRoles: boolean = false;
@@ -141,21 +141,21 @@ export class ProjectSettingsComponent implements OnInit {
 
   aScrumDurationSettings: any[] = [];
   aMoveNotCompletedTasksSettings: any[] = [];
-  aProjectInviteVarians: any[] = [
-    // { name: 'По ссылке', key: 'Link' },
-    { name: 'По почте', key: 'Email' },
-    // { name: 'По номеру телефона', key: 'PhoneNumber' },
-    { name: 'По логину', key: 'Login' }
-  ];
-  selectedInviteVariant: any;
+  // aProjectInviteVariants: any[] = [
+  //   // { name: 'По ссылке', key: 'Link' },
+  //   { name: 'По почте', key: 'Email' },
+  //   // { name: 'По номеру телефона', key: 'PhoneNumber' },
+  //   { name: 'По логину', key: 'Login' }
+  // ];
+  // selectedInviteVariant: any;
   availableInviteVacancies: any[] = [];
   selectedInviteVacancy: any;
   isVacancyInvite: boolean = false;
   searchText: string = "";
   selectedInviteUser: string = "";
   isVisibleAccessModal = false;
-  isInviteRole: boolean = false;
-  featureForbiddenText: string = "";
+  // isInviteRole: boolean = false;
+  // featureForbiddenText: string = "";
   isNotRoles: boolean = false;
   aUserRoles: any[] = [];
   isNotRolesAccessModal: boolean = false;
@@ -240,7 +240,7 @@ export class ProjectSettingsComponent implements OnInit {
       });
   };
 
-  public async onUpdateScrumDurationSettingsAsync(checked: boolean, sysName: string, i: number) {
+  public async onUpdateScrumDurationSettingsAsync(checked: boolean, sysName: string) {
     let sprintDurationSettingInput = new SprintDurationSettingInput();
     sprintDurationSettingInput.projectId = +this.projectId;
     sprintDurationSettingInput.isSettingSelected = checked;
@@ -252,7 +252,7 @@ export class ProjectSettingsComponent implements OnInit {
       });
   }
 
-  public async onUpdateProjectSprintsMoveNotCompletedTasksSettingsAsync(checked: boolean, sysName: string, i: number) {
+  public async onUpdateProjectSprintsMoveNotCompletedTasksSettingsAsync(checked: boolean, sysName: string) {
     let sprintMoveNotCompletedTaskSettingInput = new SprintMoveNotCompletedTaskSettingInput();
     sprintMoveNotCompletedTaskSettingInput.projectId = +this.projectId;
     sprintMoveNotCompletedTaskSettingInput.isSettingSelected = checked;
@@ -264,9 +264,9 @@ export class ProjectSettingsComponent implements OnInit {
       });
   };
 
-  public onSelect(event: any) {
-    console.log(event);
-  };
+  // public onSelect(event: any) {
+  //   console.log(event);
+  // };
 
   /**
    * Функция получает список пользователей, которые состоят в проекте.
