@@ -11,6 +11,8 @@ export class CommunicationsServiceService {
   public abstractScopes$ = new BehaviorSubject<any>(null);
   public communicationsAbstractGroups$ = new BehaviorSubject<any>(null);
   public groupObjects$ = new BehaviorSubject<any>(null);
+  public groupObjectDialogs$ = new BehaviorSubject<any>(null);
+  public receiptGroupObjectDialogs$ = new BehaviorSubject<any>(null);
 
   constructor(private readonly _http: HttpClient) {
   }
@@ -38,5 +40,21 @@ export class CommunicationsServiceService {
    */
   public sendGroupObjects(groupsObjects: any) {
     this.groupObjects$.next(groupsObjects);
+  }
+
+  /**
+   * Функция отправляет в прокси-сервис выбранный объект группы
+   * @param abstractScopeId - Id выбранной абстрактной области.
+   */
+  public sendGroupObject(abstractScopeId: number) {
+    this.groupObjectDialogs$.next({abstractScopeId, account: localStorage["u_e"]});
+  }
+
+  /**
+   * Функция отправляет в прокси-сервис результаты диалогов группы.
+   * @param abstractGroupId - Id выбранного объекта группы, для которого получить диалоги.
+   */
+  public getGroupObjectDialogs(objectDialogs: any[]) {
+    this.receiptGroupObjectDialogs$.next(objectDialogs);
   }
 }
