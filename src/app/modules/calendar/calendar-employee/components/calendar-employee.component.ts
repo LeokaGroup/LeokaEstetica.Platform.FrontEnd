@@ -168,7 +168,13 @@ export class CalendarEmployeeComponent implements OnInit {
       calendarInput.eventDescription = this.eventDescription;
     }
 
-    calendarInput.eventMembers = this.aEventMembers;
+    this.aEventMembers.forEach((em: any) => {
+      let addedEventMember = new EventMemberInput();
+      addedEventMember.eventMemberId = em.userId;
+      addedEventMember.eventMemberMail = em.displayName;
+
+      calendarInput.eventMembers.push(addedEventMember);
+    });
 
     if (this.eventLocation != null
       && this.eventLocation != ""
@@ -224,7 +230,13 @@ export class CalendarEmployeeComponent implements OnInit {
       calendarInput.eventDescription = this.detailEventDescription;
     }
 
-    calendarInput.eventMembers = this.aEventMembers;
+    this.aEventMembers.forEach((em: any) => {
+      let addedEventMember = new EventMemberInput();
+      addedEventMember.eventMemberId = em.userId;
+      addedEventMember.eventMemberMail = em.displayName;
+
+      calendarInput.eventMembers.push(addedEventMember);
+    });
 
     if (this.eventLocation != null
       && this.eventLocation != ""
