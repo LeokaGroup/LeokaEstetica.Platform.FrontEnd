@@ -115,7 +115,7 @@
                 </small>
               </div>
               } @else {
-                <div 
+                <div
                   class="d-inline-flex align-items-center gap-2"
                   pTooltip="Включенный режим - публичный проект.
                     Выключенный режим - приватный проект.
@@ -784,61 +784,51 @@
 </p-dialog>
 
 <!-- Диалог инвайта в проект. -->
-<p-dialog header="Приглашение пользователя в проект"
-          [(visible)]="isProjectInvite"
-          [breakpoints]="{'960px': '75vw'}"
-          [style]="{width: '60%', height: '60%'}"
-          [draggable]="false"
-          [resizable]="false">
-          <div class="d-flex justify-content-around">
-
-            <div>
-              <div>
-                <div class="mb-3 mt-3">
-                  <div>
-                    <label>Выберите вакансию для приглашения</label>
-                </div>
-                <div>
-                  <p-dropdown [options]="availableInviteVacancies"
-                              [(ngModel)]="selectedInviteVacancy"
-                              optionLabel="vacancyName"
-                              emptyMessage="Нет данных">
-                  </p-dropdown>
-                </div>
-
-                <div class="field-checkbox mb-3">
-                  <p-checkbox [binary]="true"
-                              inputId="binary"
-                              (onChange)="isVacancyInvite=!isVacancyInvite">
-                </p-checkbox>
-                  <label for="binary">
-                      <small>Пригласить без указания вакансии</small>
-                  </label>
-              </div>
-                </div>
-
-                <div class="d-flex">
-                  <span class="p-fluid">
-                    <p-autoComplete [(ngModel)]="searchText"
-                                    [suggestions]="aProjectInvitesUsers"
-                                    (completeMethod)="onSearchInviteProjectMembersAsync($event)"
-                                    field="displayName"
-                                    [multiple]="false"
-                                    (onSelect)="onSelectProjectMember($event)"
-                                    placeholder="Введите для поиска пользователя"
-                                    [showEmptyMessage]="true"
-                                    emptyMessage="Результатов не найдено">
-                    </p-autoComplete>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-<ng-template pTemplate="footer">
-<p-button (click)="isProjectInvite=false" label="Отменить" styleClass="p-button-text p-button-danger"></p-button>
-<p-button (click)="onSendInviteProjectTeamAsync()" label="Отправить приглашение" styleClass="p-button-text p-button-text">
-</p-button>
-</ng-template>
+<p-dialog
+  header="Приглашение пользователя в проект"
+  [(visible)]="isProjectInvite"
+  [draggable]="false"
+  [resizable]="false"
+  [breakpoints]="{'960px': '75vw'}"
+  [style]="{width: '50vw'}">
+    <form [formGroup]="inviteEmailForm">
+      <div class="d-flex flex-column p-fluid gap-4">
+        <p-dropdown [options]="availableInviteVacancies"
+                    [(ngModel)]="selectedInviteVacancy"
+                    optionLabel="vacancyName"
+                    id="vacancies"
+                    [disabled]="inviteEmailForm.controls.isVacancyInvite.value"
+                    placeholder="Выберите вакансию для приглашения"
+                    emptyMessage="Вакансий не найдено..."
+                    />
+        <div class="form-group form-check">
+          <p-checkbox [binary]="true"
+                      inputId="binary"
+                      id="binary"
+                      formControlName="isVacancyInvite"
+                      class="form-check-input d-flex"
+          />
+          <label class="form-check-label" for="binary">
+            Пригласить без указания вакансии
+          </label>
+        </div>
+        <p-floatLabel>
+          <input pInputText id="invite-email" formControlName="email" />
+          <label for="invite-email">Введите электронную почту пользователя</label>
+        </p-floatLabel>
+        <div class="form-group d-flex gap-3 justify-content-end">
+          <p-button
+            (click)="isProjectInvite=false"
+            label="Отменить"
+            styleClass="p-button-danger" />
+          <p-button
+            (click)="onSendInviteProjectTeamAsync()"
+            [disabled]="inviteEmailForm.invalid"
+            label="Отправить приглашение"
+            styleClass="p-button-success" />
+        </div>
+      </div>
+    </form>
 </p-dialog>
 
 <!-- Диалог исключения участника команды проекта. -->
