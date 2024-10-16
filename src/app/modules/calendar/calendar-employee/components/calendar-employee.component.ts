@@ -5,7 +5,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import ruLocale from '@fullcalendar/core/locales/ru';
 import {EventInput} from "@fullcalendar/core";
 import {ProjectManagementHumanResourcesService} from "../../services/project-management-human-resources.service";
-import {CalendarInput} from "../../models/input/calendar-input";
+import {CalendarInput, EventMemberInput} from "../../models/input/calendar-input";
 import {ConfirmationService} from "primeng/api";
 import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 
@@ -235,7 +235,15 @@ export class CalendarEmployeeComponent implements OnInit {
     calendarInput.eventStartDate = this.detailDatesRange[0];
     calendarInput.eventEndDate = this.detailDatesRange[1];
     calendarInput.eventId = this.selectedEventId;
-    calendarInput.eventMembers = this.aDetailsEventMembers;
+
+    this.aDetailsEventMembers.forEach((em: any) => {
+      let addedEventMember = new EventMemberInput();
+      addedEventMember.eventMemberId = em.eventMemberId;
+      addedEventMember.eventMemberMail = em.email;
+
+      calendarInput.eventMembers.push(addedEventMember);
+    });
+
     calendarInput.calendarEventMemberStatus = this.formBusy.get("selectedBusyVariant")?.value.sysName;
 
     (await this._projectManagementHumanResourcesService.updateEventAsync(calendarInput))

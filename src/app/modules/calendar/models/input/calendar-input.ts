@@ -30,7 +30,7 @@ export class CalendarInput {
   /**
    * Список участников события.
    */
-  eventMembers: any[] = [];
+  eventMembers: EventMemberInput[] = [];
 
   /**
    * Статус.
@@ -41,4 +41,16 @@ export class CalendarInput {
    * Id события.
    */
   eventId?: number;
+}
+
+export class EventMemberInput {
+  /**
+   * Id участника события.
+   */
+  eventMemberId?: number;
+
+  /**
+   * Почта участника события.
+   */
+  eventMemberMail?: string;
 }
