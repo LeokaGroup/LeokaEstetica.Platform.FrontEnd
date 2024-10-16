@@ -669,27 +669,6 @@ export class AppComponent implements OnInit {
             });
           }
         });
-
-        this._communicationsServiceService.groupObjectDialogs$.subscribe((objectDialog: any) => {
-          if (objectDialog !== null) {
-            // Вызываем хаб бэка для получения групп объектов абстрактной области чата.
-            <HubConnection>this.hubCommunicationsConnection.invoke(
-              "GetObjectDialogsAsync",
-              objectDialog.abstractScopeId,
-              localStorage["u_e"])
-              .catch((err: any) => {
-                console.error(err);
-              });
-
-            // Получаем ответ из хаба бэка.
-            this.hubCommunicationsConnection.on("getObjectDialogs", (objectDialogs: any) => {
-              console.log("Диалоги объекта выбранной группы ", objectDialogs);
-
-              // Отправляем диалоги объекта в прокси-сервис.
-              this._communicationsServiceService.getGroupObjectDialogs(objectDialogs);
-            });
-          }
-        });
       }
 
       else {

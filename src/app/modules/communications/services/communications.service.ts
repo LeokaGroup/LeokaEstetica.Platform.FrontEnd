@@ -49,12 +49,4 @@ export class CommunicationsServiceService {
   public sendGroupObject(abstractScopeId: number) {
     this.groupObjectDialogs$.next({abstractScopeId, account: localStorage["u_e"]});
   }
-
-  /**
-   * Функция отправляет в прокси-сервис результаты диалогов группы.
-   * @param abstractGroupId - Id выбранного объекта группы, для которого получить диалоги.
-   */
-  public getGroupObjectDialogs(objectDialogs: any[]) {
-    this.receiptGroupObjectDialogs$.next(objectDialogs);
-  }
 }

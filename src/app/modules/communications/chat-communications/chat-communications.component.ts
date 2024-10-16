@@ -52,23 +52,9 @@ export class ChatCommunicationsComponent implements OnInit {
         this.aGroupObjects = groupObjects.objects;
 
         // Навешиваем команды всем элементам.
-        // Подгружаем с бэка для нужного элемента данные,
-        // чтобы не нагружать фронт сразу всеми диалогами всех элементов меню.
         this.aGroupObjects.forEach((item: any) => {
           item.command = (event: any) => {
             console.log(event.item);
-
-            // Получаем диалоги выбранного объекта группы.
-            this._communicationsServiceService.sendGroupObject(event.item.abstractGroupId);
-
-            this._communicationsServiceService.receiptGroupObjectDialogs$.subscribe((objectDialogs: any) => {
-              if (objectDialogs !== null) {
-                debugger;
-                this.aGroupObjects = [];
-                // this.aObjectDialogs = objectDialogs;
-                this.aGroupObjects = objectDialogs;
-              }
-            });
           };
         });
       }
@@ -82,12 +68,4 @@ export class ChatCommunicationsComponent implements OnInit {
   public onSelectAbstractScopeAndGetScopeGroupObjects(selectedItem: MenuItem) {
     this._communicationsServiceService.sendAbstractScopeGroupObjects(selectedItem['abstractScopeId'], selectedItem['abstractScopeType']);
   };
-
-  /**
-   * Функция выбирает объект из группы объектов абстрактной области чата.
-   * @param ac - Выбранный объект группы.
-   */
-  public onSelectGroupObject(selectedItem: any) {
-    console.log(selectedItem);
-  }
 }
