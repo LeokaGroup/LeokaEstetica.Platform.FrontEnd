@@ -168,7 +168,13 @@ export class CalendarEmployeeComponent implements OnInit {
       calendarInput.eventDescription = this.eventDescription;
     }
 
-    calendarInput.eventMembers = this.aEventMembers;
+    this.aDetailsEventMembers.forEach((em: any) => {
+      let addedEventMember = new EventMemberInput();
+      addedEventMember.eventMemberId = em.eventMemberId;
+      addedEventMember.eventMemberMail = em.email;
+
+      calendarInput.eventMembers.push(addedEventMember);
+    });
 
     if (this.eventLocation != null
       && this.eventLocation != ""
