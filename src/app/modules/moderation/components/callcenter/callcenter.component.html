@@ -77,7 +77,7 @@
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-vac>
-          <tr>
+          <tr [ngClass]="{'row-green':vac.isPaymentCompleted,'row-red':!vac.isPaymentCompleted}">
             <td>{{vac.vacancyId}}</td>
             <td>{{vac.vacancyName}}</td>
             <td>{{vac.dateModeration}}</td>
