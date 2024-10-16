@@ -17,6 +17,7 @@ import { UpdateProjectInput } from "../models/input/update-project-input";
 import { AddProjectArchiveInput } from "src/app/modules/backoffice/models/input/project/add-project-archive-input";
 import { DialogInput } from "src/app/modules/messages/chat/models/input/dialog-input";
 import {AccessService} from "../../../access/access.service";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
     selector: "detail",
@@ -29,6 +30,12 @@ import {AccessService} from "../../../access/access.service";
  * Класс деталей проекта (используется для изменения и просмотра проекта).
  */
 export class DetailProjectComponent implements OnInit {
+  inviteEmailForm = new FormGroup({
+      email: new FormControl('', [Validators.required, Validators.email]),
+      isVacancyInvite: new FormControl(false, {nonNullable: true})
+    }
+  );
+
   constructor(private readonly _projectService: ProjectService,
               private readonly _activatedRoute: ActivatedRoute,
               private readonly _messageService: MessageService,
@@ -84,7 +91,7 @@ export class DetailProjectComponent implements OnInit {
     searchText: string = "";
     aProjectInvitesUsers: any[] = [];
     selectedInviteVacancy: any;
-    selectedInviteUser: string = "";
+    selectedInviteUser: string | null = null;
     isDeleteProject: boolean = false;
     isDeleteVacancyInProject: boolean = false;
     vacancyNameForDelete: any;
@@ -93,15 +100,13 @@ export class DetailProjectComponent implements OnInit {
     isVisibleActionAddProjectArchive: boolean = false;
     isVisibleDeleteButton: boolean = false;
     isProjectInvite: boolean = false;
-    selectedInviteVariant: any;
-    isVacancyInvite: boolean = false;
     availableAttachVacancies: any[] = [];
     availableInviteVacancies: any[] = [];
     deleteMember: string = "";
     isDeleteProjectTeamMember: boolean = false;
     isLeaveProjectTeamMember: boolean = false;
     userId: number = 0;
-    isVisibleActionDeleteProjectTeamMember: boolean = false;
+    // isVisibleActionDeleteProjectTeamMember: boolean = false;
     isVisibleActionLeaveProjectTeam: boolean = false;
     aProjectRemarks: string[] = [];
     isShowRemarks: boolean = false;
@@ -196,7 +201,7 @@ export class DetailProjectComponent implements OnInit {
 
         (await this._projectService.updateProjectAsync(model))
         .subscribe(async _ => {
-            // TODO: setVisibleProjectAsync убрать после того как поправят 
+            // TODO: setVisibleProjectAsync убрать после того как поправят
             // на бэке установку isPublic в updateProjectAsync
             await firstValueFrom(await this._projectService.setVisibleProjectAsync(
                                  this.projectId, model.isPublic));
@@ -520,49 +525,52 @@ export class DetailProjectComponent implements OnInit {
 
     /**
      * Функция получает данные для таблицы команда проекта.
-     * @param event - Событие. Чтобы достать текст, надо вызвать event.query.
      * @returns - Данные для таблицы команда проекта.
+     * @param userEmail
      */
-     public async onSearchInviteProjectMembersAsync(event: any) {
-        (await this._searchProjectService.searchInviteProjectMembersAsync(event.query))
+     public async onSearchInviteProjectMembersAsync(userEmail: string) {
+        (this._searchProjectService.searchInviteProjectMembersAsync(userEmail))
         .subscribe(async (response: any) => {
             console.log("Пользователи для добавления в команду проекта: ", response);
-            this.aProjectInvitesUsers = response;
+            if (response.hasOwnProperty('displayName') && response.displayName) {
+              this.selectedInviteUser = response.displayName;
+            } else {
+              this.selectedInviteUser = null
+            }
         });
-    };
-
-    public onSelectProjectMember(event: any) {
-        console.log(event);
-        this.selectedInviteUser = event.displayName;
     };
 
     /**
      * Функция отправляет приглашение в команду проекта пользователю.
      */
     public async onSendInviteProjectTeamAsync() {
-        const inviteProjectTeamMemberInput: InviteProjectTeamMemberInput = {
+        await this.onSearchInviteProjectMembersAsync(this.inviteEmailForm.controls.email.value ?? '');
+        if (this.selectedInviteUser) {
+          const inviteProjectTeamMemberInput: InviteProjectTeamMemberInput = {
             ProjectId: +this.projectId,
             InviteText: this.selectedInviteUser,
-            VacancyId: !this.isVacancyInvite ? this.selectedInviteVacancy.vacancyId : null,
+            VacancyId: this.inviteEmailForm.controls.isVacancyInvite.value ? this.selectedInviteVacancy.vacancyId : null,
             InviteType: 'Email'
-        };
+          };
 
-        (await this._projectService.sendInviteProjectTeamAsync(inviteProjectTeamMemberInput))
-        .subscribe(async (response: any) => {
-            console.log("Добавленный в команду пользователь: ", response);
+          (await this._projectService.sendInviteProjectTeamAsync(inviteProjectTeamMemberInput))
+            .subscribe(async (response: any) => {
+              console.log("Добавленный в команду пользователь: ", response);
 
-            if (!response.isAccess) {
-              this.isVisibleAccessModal = true;
+              if (!response.isAccess) {
+                this.isVisibleAccessModal = true;
 
-              return ;
-            }
+                return ;
+              }
 
-            // TODO: Костыль для бага ререндера уведомлений.
-            // TODO: Не можем отображать уведомления без обновления страницы после роута из проектов пользователя.
-            this._messageService.add({ severity: 'success', summary: "Все хорошо", detail: response.successMessage });
-        });
+              // TODO: Костыль для бага ререндера уведомлений.
+              // TODO: Не можем отображать уведомления без обновления страницы после роута из проектов пользователя.
+              this._messageService.add({ severity: 'success', summary: "Все хорошо", detail: response.successMessage });
+            });
 
-        this.isProjectInvite = false;
+          this.isProjectInvite = false;
+          this.inviteEmailForm.reset()
+        }
     };
 
     /**
