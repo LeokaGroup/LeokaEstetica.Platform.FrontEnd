@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { forkJoin } from "rxjs";
 import { BackOfficeService } from "../../services/backoffice.service";
 import { ProfileInfoInput } from "../models/input/profile-info-input";
-import { Router, ActivatedRoute } from "@angular/router";
+import {Router, ActivatedRoute, Event as NavigationEvent, NavigationStart} from "@angular/router";
 import { MessageService } from "primeng/api";
 import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 
@@ -60,6 +60,7 @@ export class AboutmeComponent implements OnInit {
       Validators.required
     ])
   });
+  isShowInviteBlock: boolean = true;
 
   constructor(private readonly _backofficeService: BackOfficeService,
               private readonly _activatedRoute: ActivatedRoute,
@@ -80,6 +81,19 @@ export class AboutmeComponent implements OnInit {
     };
 
   private checkUrlParams() {
+    this._router.events
+      .subscribe((event: NavigationEvent) => {
+          if (event instanceof NavigationStart) {
+            if (!event.url.includes("/aboutme")) {
+              this.isShowInviteBlock = false;
+            }
+
+            else {
+              this.isShowInviteBlock = true;
+            }
+          }
+        });
+
     this._activatedRoute.queryParams
       .subscribe(async params => {
         let mode = params["mode"];
