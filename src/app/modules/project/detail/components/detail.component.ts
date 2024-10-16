@@ -30,12 +30,6 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
  * Класс деталей проекта (используется для изменения и просмотра проекта).
  */
 export class DetailProjectComponent implements OnInit {
-  inviteEmailForm = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      isVacancyInvite: new FormControl(false, {nonNullable: true})
-    }
-  );
-
   constructor(private readonly _projectService: ProjectService,
               private readonly _activatedRoute: ActivatedRoute,
               private readonly _messageService: MessageService,
@@ -116,6 +110,12 @@ export class DetailProjectComponent implements OnInit {
     isCollapsed: boolean = true;
     isActiveRole: boolean = false;
     isVisibleAccessModal = false;
+    inviteEmailForm = new FormGroup({
+        email: new FormControl('', [Validators.required, Validators.email]),
+        isVacancyInvite: new FormControl(false, {nonNullable: true}),
+        vacancies: new FormControl([...this.availableInviteVacancies])
+      }
+    );
 
   public async ngOnInit() {
         forkJoin([
@@ -689,4 +689,11 @@ export class DetailProjectComponent implements OnInit {
         this.isActiveRole = false;
       });
   };
+
+  onCloseInviteToProjectDialog() {
+    this.isProjectInvite = false;
+    this.inviteEmailForm.reset()
+  }
+
+  protected readonly console = console;
 }
