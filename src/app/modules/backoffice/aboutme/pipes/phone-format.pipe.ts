@@ -10,7 +10,7 @@ export class PhoneFormatPipe implements PipeTransform {
 
   transform(value: string): string {
     if (value.length < 10) return '';
-    return `(${value.slice(0,3)}) ${value.slice(3,6)}-${value.slice(6,8)}-${value.slice(9,11)}`;
+    return `(${value.slice(0,3)}) ${value.slice(3,6)}-${value.slice(6,8)}-${value.slice(8,11)}`;
   }
 
 }
