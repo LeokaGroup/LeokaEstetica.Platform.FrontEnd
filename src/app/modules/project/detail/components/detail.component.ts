@@ -118,17 +118,17 @@ export class DetailProjectComponent implements OnInit {
     );
 
   public async ngOnInit() {
+        this.checkUrlParams()
         forkJoin([
-        this.checkUrlParams(),
-        await this.getProjectStagesAsync(),
-        await this.getProjectVacanciesAsync(),
-        await this.getProjectVacanciesColumnNamesAsync(),
-        await this.getAvailableAttachVacanciesAsync(),
-        await this.getAvailableInviteVacanciesAsync(),
-        await this.getProjectCommentsAsync(),
-        await this.getProjectTeamColumnsNamesAsync(),
-        await this.getProjectTeamAsync(),
-        await this.getProjectRemarksAsync()
+          await this.getProjectStagesAsync(),
+          await this.getProjectVacanciesAsync(),
+          await this.getProjectVacanciesColumnNamesAsync(),
+          await this.getAvailableAttachVacanciesAsync(),
+          await this.getAvailableInviteVacanciesAsync(),
+          await this.getProjectCommentsAsync(),
+          await this.getProjectTeamColumnsNamesAsync(),
+          await this.getProjectTeamAsync(),
+          await this.getProjectRemarksAsync()
         ]);
     };
 
