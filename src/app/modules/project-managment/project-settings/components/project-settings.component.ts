@@ -357,7 +357,7 @@ export class ProjectSettingsComponent implements OnInit {
    * @param searchText - Поисковый текст.
    */
   public async onSendInviteProjectTeamAsync(searchText: string) {
-    (await this._searchProjectService.searchInviteProjectMembersAsync(searchText))
+    (this._searchProjectService.searchInviteProjectMembersAsync(searchText))
       .subscribe(async (response: any) => {
         this.selectedInviteUser = response.displayName;
 
