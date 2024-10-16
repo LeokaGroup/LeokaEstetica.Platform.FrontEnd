@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { UserService } from '../user/services/user.service';
@@ -31,6 +31,8 @@ import { MessageModule } from 'primeng/message';
 import { CardModule } from 'primeng/card';
 import {InplaceModule} from 'primeng/inplace';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import {FloatLabelModule} from "primeng/floatlabel";
+import {TriStateCheckboxModule} from "primeng/tristatecheckbox";
 
 @NgModule({
     declarations: [
@@ -38,36 +40,38 @@ import { InputSwitchModule } from 'primeng/inputswitch';
         DetailProjectComponent
     ],
 
-    imports: [
-        CommonModule,
-        FormsModule,
-        HttpClientModule,
-        PanelModule,
-        MenuModule,
-        InputTextModule,
-        CheckboxModule,
-        InputMaskModule,
-        InputTextareaModule,
-        PanelMenuModule,
-        ToastModule,
-        EditorModule,
-        ProjectRoutingModule,
-        DropdownModule,
-        TableModule,
-        ButtonModule,
-        DialogModule,
-        SplitterModule,
-        OverlayPanelModule,
-        AutoCompleteModule,
-        PaginatorModule,
-        RadioButtonModule,
-        TagModule,
-        MessagesModule,
-        MessageModule,
-        CardModule,
-        InplaceModule,
-        InputSwitchModule
-    ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    HttpClientModule,
+    PanelModule,
+    MenuModule,
+    InputTextModule,
+    CheckboxModule,
+    InputMaskModule,
+    InputTextareaModule,
+    PanelMenuModule,
+    ToastModule,
+    EditorModule,
+    ProjectRoutingModule,
+    DropdownModule,
+    TableModule,
+    ButtonModule,
+    DialogModule,
+    SplitterModule,
+    OverlayPanelModule,
+    AutoCompleteModule,
+    PaginatorModule,
+    RadioButtonModule,
+    TagModule,
+    MessagesModule,
+    MessageModule,
+    CardModule,
+    InplaceModule,
+    InputSwitchModule,
+    FloatLabelModule,
+    ReactiveFormsModule
+  ],
 
     exports: [],
 
