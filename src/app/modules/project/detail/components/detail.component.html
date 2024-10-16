@@ -12,7 +12,7 @@
 
     <div class="" *ngFor="let r of selectedProject$.value?.projectRemarks">
       <div class="mb-1">
-        <p-message severity="warning" text="{{r.remarkText}}"></p-message>
+        <p-message severity="warn" text="{{r.remarkText}}"></p-message>
       </div>
     </div>
 
@@ -579,8 +579,7 @@
           [style]="{width: '50vw', height: '50vw'}"
           [maximizable]="false"
           [draggable]="false"
-          [resizable]="false"
-          emptyMessage="Нет данных">
+          [resizable]="false">
 
   <div class="d-flex mt-3">
     <div class="control-input-text-worksheet">

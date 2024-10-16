@@ -427,7 +427,7 @@ export class DetailProjectComponent implements OnInit {
 
     /**
      * Функция получает диалог и его сообщения.
-     * @param discussionTypeId - Id типа обсуждения.
+     * @param dialogId - Id типа обсуждения.
      * @returns - Диалог и его сообщения.
      */
     public async onGetDialogAsync(dialogId: number) {
@@ -575,7 +575,6 @@ export class DetailProjectComponent implements OnInit {
 
     /**
      * Функция удаляет проект.
-     * @param projectId - Id проекта.
      */
     public async onDeleteProjectAsync() {
         (await this._projectService.deleteProjectsAsync(this.projectId))
@@ -624,7 +623,6 @@ export class DetailProjectComponent implements OnInit {
 
   /**
    * Функция удаляет пользователя из команды проекта.
-   * @param userId - Id участника проекта, которого будем удалять.
    */
     public async onDeleteProjectTeamAsync() {
         (await this._projectService.deleteProjectTeamAsync(this.projectId, this.userId))
@@ -648,7 +646,6 @@ export class DetailProjectComponent implements OnInit {
 
     /**
  * Функция получает список замечаний проекта.
- * @param projectId - Id проекта.
  * @returns - Список замечаний проекта.
  */
     private async getProjectRemarksAsync() {

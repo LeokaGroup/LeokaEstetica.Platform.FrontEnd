@@ -32,7 +32,7 @@ import { CardModule } from 'primeng/card';
 import {InplaceModule} from 'primeng/inplace';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import {FloatLabelModule} from "primeng/floatlabel";
-import {TriStateCheckboxModule} from "primeng/tristatecheckbox";
+import {Ripple} from "primeng/ripple";
 
 @NgModule({
     declarations: [
@@ -70,7 +70,8 @@ import {TriStateCheckboxModule} from "primeng/tristatecheckbox";
     InplaceModule,
     InputSwitchModule,
     FloatLabelModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    Ripple
   ],
 
     exports: [],
