@@ -22,6 +22,8 @@ export class HeaderComponent implements OnInit {
     currentUrl = '';
     isShowLandingMenu: boolean = false;
 
+  menu: any[] = [];
+
   constructor(private readonly _headerService: HeaderService,
               private readonly _router: Router,
               private readonly _activatedRoute: ActivatedRoute,
@@ -45,7 +47,7 @@ export class HeaderComponent implements OnInit {
             console.log("Данные хидера: ", this.headerData$.value);
 
             // Навешиваем команды для каждого пункта меню.
-            this.headerData$.value.items.forEach((item: any) => {
+            this.menu = this.headerData$.value.items.map((item: any) => {
               // Навешиваем команды 1 уровню.
               item.command = (event: any) => {
                 switch (event.item.id) {
@@ -63,7 +65,7 @@ export class HeaderComponent implements OnInit {
               if (item.id == "Profile") {
                 // Смотрим вложенность профиля.
                 item.items.forEach((p: any) => {
-                  p.command = (event: any) => {
+                  p.command = async (event: any) => {
                     switch (event.item.id) {
                       case "Orders":
                         this._router.navigate(["/profile/orders"]);
@@ -75,15 +77,14 @@ export class HeaderComponent implements OnInit {
 
                       case "Exit":
                         localStorage.clear();
-
-                        // TODO: В идеале отрефачить без этого.
-                        // Нужно, чтобы избежать бага с рендером хидера (оставался верхний хидер при логауте).
-                        window.location.href = window.location.href + "/user/signin";
+                        this._router.navigate(["/user/signin"]);
+                        await this.checkUrlParams();
                         break;
                     }
                   };
                 });
               }
+              return item;
             });
         });
     };
