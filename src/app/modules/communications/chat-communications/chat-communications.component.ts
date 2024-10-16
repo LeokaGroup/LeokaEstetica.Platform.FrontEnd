@@ -20,6 +20,7 @@ export class ChatCommunicationsComponent implements OnInit {
 
   aAbstractScopes: any[] = [];
   aGroupObjects: any[] = [];
+  aObjectDialogs: any[] = [];
 
   public async ngOnInit() {
     await this.checkUrlParams();
@@ -63,6 +64,9 @@ export class ChatCommunicationsComponent implements OnInit {
             this._communicationsServiceService.receiptGroupObjectDialogs$.subscribe((objectDialogs: any) => {
               if (objectDialogs !== null) {
                 debugger;
+                this.aGroupObjects = [];
+                // this.aObjectDialogs = objectDialogs;
+                this.aGroupObjects = objectDialogs;
               }
             });
           };

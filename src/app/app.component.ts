@@ -672,7 +672,6 @@ export class AppComponent implements OnInit {
 
         this._communicationsServiceService.groupObjectDialogs$.subscribe((objectDialog: any) => {
           if (objectDialog !== null) {
-            debugger;
             // Вызываем хаб бэка для получения групп объектов абстрактной области чата.
             <HubConnection>this.hubCommunicationsConnection.invoke(
               "GetObjectDialogsAsync",
