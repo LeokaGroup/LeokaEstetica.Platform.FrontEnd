@@ -1,6 +1,13 @@
 @use "/src/app/common/styles/spaces.scss";
 @use "/src/app/common/styles/control.scss";
+@use "/src/app/common/styles/color.scss";
 
 .control-textarea {
     width: 700px;
+}
+.row-red {
+    background: color.$red-bg;
+}
+.row-green {
+    background: color.$green-bg;
 }
