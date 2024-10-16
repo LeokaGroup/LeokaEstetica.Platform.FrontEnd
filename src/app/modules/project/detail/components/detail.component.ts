@@ -316,6 +316,7 @@ export class DetailProjectComponent implements OnInit {
     /**
      * Функция показывает модалку вакансии.
      * @param vacancyId - Id вакансии.
+     * @param isEdit
      */
     public async onShowVacancyModal(vacancyId: number, isEdit: boolean) {
         console.log(this.isShowVacancyModal);
@@ -391,7 +392,7 @@ export class DetailProjectComponent implements OnInit {
     /**
      * Первичная обработка отклика на проект без вакансии.
      * С вакансией либо без нее.
-     * @param isResponseVacancy - Признак отклика с вакансией либо без нее.
+     * @param isResponseNotVacancy - Признак отклика с вакансией либо без нее.
      */
      public onShowProjectResponseNotVacancyModal(isResponseNotVacancy: boolean) {
         this.isResponseNotVacancy = isResponseNotVacancy;
