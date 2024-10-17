@@ -333,7 +333,7 @@ export class AppComponent implements OnInit {
               private readonly _redisService: RedisService,
               private readonly _messageService: MessageService,
               private readonly _route: ActivatedRoute,
-              private _communicationsServiceService: CommunicationsServiceService) {
+              private _communicationsService: CommunicationsServiceService) {
     this.aHubCommunicationsOnMethods = [];
   }
 
@@ -644,11 +644,11 @@ export class AppComponent implements OnInit {
           console.log("Список абстрактных областей чата: ", response);
 
           // Используем прокси-сервис для передачи данных.
-          this._communicationsServiceService.sendAbstractScopes(response);
+          this._communicationsService.sendAbstractScopes(response);
         });
 
         // Подписка на получение групп объектов абстрактной области из прокси-сервиса.
-        this._communicationsServiceService.communicationsAbstractGroups$.subscribe((selectedAbstractScope: any) => {
+        this._communicationsService.communicationsAbstractGroups$.subscribe((selectedAbstractScope: any) => {
           if (selectedAbstractScope !== null) {
             // Вызываем хаб бэка для получения групп объектов абстрактной области чата.
             <HubConnection>this.hubCommunicationsConnection.invoke(
@@ -665,9 +665,27 @@ export class AppComponent implements OnInit {
               console.log("Список групп объектов абстрактной области чата: ", groupObjects);
 
               // Используем прокси-сервис для передачи данных.
-              this._communicationsServiceService.sendGroupObjects(groupObjects);
+              this._communicationsService.sendGroupObjects(groupObjects);
             });
           }
+        });
+
+        this._communicationsService.dialogMessages$.subscribe((selectedDialog: any) => {
+          // Вызываем хаб бэка для получения сообщений диалога.
+          <HubConnection>this.hubCommunicationsConnection.invoke(
+            "GetDialogMessagesAsync",
+            selectedDialog.dialogId,
+            localStorage["u_e"])
+            .catch((err: any) => {
+              console.error(err);
+            });
+        });
+
+        // Получаем ответ из хаба бэка.
+        this.hubCommunicationsConnection.on("getDialogMessages", (dialogMessages: any) => {
+          console.log("Список сообщений диалога: ", dialogMessages);
+
+          this._communicationsService.receiveDialogMessages(dialogMessages);
         });
       }
 

@@ -6,7 +6,6 @@
   <div class="col-lg-10">
     <p-splitter
       [style]="{ height: '600px' }"
-      [minSizes]="[10, 0]"
       styleClass="mb-5">
       <ng-template pTemplate>
         <p-splitter layout="vertical" [panelSizes]="[15, 85]">
@@ -31,14 +30,30 @@
               </ng-template>
 
               <ng-template pTemplate>
-                <div class="col flex align-items-center justify-content-center">
-                  Panel 4
+                <div class="block-messages">
+                  <div *ngFor="let item of aMessages">
+                    <div class="d-flex justify-content-between message" [ngClass]="{blockMessage: item.isMyMessage}">
+                      <p>{{item.label}}</p>
+                      <span class="time-right">{{item.createdAt}}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="footer-messages">
+                  <input type="text"
+                         class=""
+                         *ngIf="aMessages.length > 0"
+                         [style]="{ width: '100%' }"
+                         pInputText
+                         autocomplete="new-password"
+                         [(ngModel)]="message"
+                         (keyup.enter)="onSendMessageAsync()"/>
                 </div>
               </ng-template>
 
               <ng-template pTemplate>
                 <div class="col flex align-items-center justify-content-center">
-                  Panel 4
+
                 </div>
               </ng-template>
             </p-splitter>

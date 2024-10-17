@@ -13,6 +13,8 @@ export class CommunicationsServiceService {
   public groupObjects$ = new BehaviorSubject<any>(null);
   public groupObjectDialogs$ = new BehaviorSubject<any>(null);
   public receiptGroupObjectDialogs$ = new BehaviorSubject<any>(null);
+  public dialogMessages$ = new BehaviorSubject<any>(null);
+  public receiveDialogMessages$ = new BehaviorSubject<any>(null);
 
   constructor(private readonly _http: HttpClient) {
   }
@@ -48,5 +50,21 @@ export class CommunicationsServiceService {
    */
   public sendGroupObject(abstractScopeId: number) {
     this.groupObjectDialogs$.next({abstractScopeId, account: localStorage["u_e"]});
+  }
+
+  /**
+   * Функция отправляет в прокси-сервис выбранный объект группы
+   * @param dialogId - Id диалога.
+   */
+  public sendDialogMessages(dialogId: number) {
+    this.dialogMessages$.next({dialogId, account: localStorage["u_e"]});
+  }
+
+  /**
+   * Функция отправляет в прокси-сервис сообщения выбранного диалога.
+   * @param dialogMessages - Сообщения диалога.
+   */
+  public receiveDialogMessages(dialogMessages: any[]) {
+    this.receiveDialogMessages$.next({dialogMessages});
   }
 }

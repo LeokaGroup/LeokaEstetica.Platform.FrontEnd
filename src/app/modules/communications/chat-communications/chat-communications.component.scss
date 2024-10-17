@@ -12,3 +12,45 @@
     margin: 0 10px;
   }
 }
+
+.block-messages {
+  height: 600px;
+  //height: 100vh;
+  //overflow-y: scroll;
+  //min-windth: 70%;
+}
+
+.block-message {
+  border: 2px solid #dedede;
+  // background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.blockMessage {
+  background: #F2F4F9;
+  margin: 5px 0px;
+}
+
+.time-right {
+  float: right;
+  color: #aaa;
+}
+
+.time-left {
+  float: left;
+  color: #999;
+}
+
+.message {
+  width: 800px;
+}
+
+.footer-messages {
+  position:absolute;
+  bottom:0;
+  width: 800px;
+  margin-bottom: 10px;
+  //height:70px;   /* Высота блока "footer" */
+}

@@ -9,7 +9,7 @@ import { ButtonModule } from 'primeng/button';
 import {ChatCommunicationsComponent} from "./chat-communications/chat-communications.component";
 import {CommunicationsRoutingModule} from "./communications-routing.module";
 import { SplitterModule } from 'primeng/splitter';
-import {NgFor} from "@angular/common";
+import {NgClass, NgFor, NgIf} from "@angular/common";
 import { TabMenuModule } from 'primeng/tabmenu';
 
 @NgModule({
@@ -28,7 +28,9 @@ import { TabMenuModule } from 'primeng/tabmenu';
     ButtonModule,
     SplitterModule,
     NgFor,
-    TabMenuModule
+    TabMenuModule,
+    NgClass,
+    NgIf
   ],
 
   providers: [

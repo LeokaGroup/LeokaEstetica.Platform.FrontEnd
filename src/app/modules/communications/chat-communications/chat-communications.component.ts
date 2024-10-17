@@ -15,12 +15,14 @@ import {MenuItem} from "primeng/api";
 export class ChatCommunicationsComponent implements OnInit {
 
   constructor(private readonly _router: Router,
-              private _communicationsServiceService: CommunicationsServiceService) {
+              private _communicationsService: CommunicationsServiceService) {
   }
 
   aAbstractScopes: any[] = [];
   aGroupObjects: any[] = [];
   aObjectDialogs: any[] = [];
+  aMessages: any[] = [];
+  message: string = "";
 
   public async ngOnInit() {
     await this.checkUrlParams();
@@ -38,7 +40,7 @@ export class ChatCommunicationsComponent implements OnInit {
    */
   private executeSubscriptionLogic() {
     // Подписка на получение абстрактных областей из прокси-сервиса.
-    this._communicationsServiceService.abstractScopes$.subscribe((abstractScopes: any) => {
+    this._communicationsService.abstractScopes$.subscribe((abstractScopes: any) => {
       if (abstractScopes !== null) {
         this.aAbstractScopes = [];
         this.aAbstractScopes = abstractScopes;
@@ -46,7 +48,7 @@ export class ChatCommunicationsComponent implements OnInit {
     });
 
     // Подписка на получение групп объектов абстрактной области из прокси-сервиса.
-    this._communicationsServiceService.groupObjects$.subscribe((groupObjects: any) => {
+    this._communicationsService.groupObjects$.subscribe((groupObjects: any) => {
       if (groupObjects !== null) {
         this.aGroupObjects = [];
         this.aGroupObjects = groupObjects.objects;
@@ -55,6 +57,22 @@ export class ChatCommunicationsComponent implements OnInit {
         this.aGroupObjects.forEach((item: any) => {
           item.command = (event: any) => {
             console.log(event.item);
+
+            if (event.item.items !== null && event.item.items.length > 0) {
+              event.item.items.forEach((msg: any) => {
+                msg.command = (event: any) => {
+                  console.log(event.item);
+
+                  this._communicationsService.sendDialogMessages(event.item.dialogId);
+
+                  this._communicationsService.receiveDialogMessages$.subscribe((dialogMessages: any) => {
+                    if (dialogMessages !== null) {
+                      this.aMessages = dialogMessages.dialogMessages;
+                    }
+                  });
+                };
+              });
+            }
           };
         });
       }
@@ -66,6 +84,10 @@ export class ChatCommunicationsComponent implements OnInit {
    * @param ac - Выбранная абстрактная область чата.
    */
   public onSelectAbstractScopeAndGetScopeGroupObjects(selectedItem: MenuItem) {
-    this._communicationsServiceService.sendAbstractScopeGroupObjects(selectedItem['abstractScopeId'], selectedItem['abstractScopeType']);
+    this._communicationsService.sendAbstractScopeGroupObjects(selectedItem['abstractScopeId'], selectedItem['abstractScopeType']);
+  };
+
+  public async onSendMessageAsync() {
+
   };
 }
