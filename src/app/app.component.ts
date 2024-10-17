@@ -13,9 +13,9 @@ import { NetworkService } from './core/interceptors/network.service';
 import {API_URL} from "./core/core-urls/api-urls";
 import {HttpTransportType, HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
 import {RedisService} from "./modules/redis/services/redis.service";
-import {DialogInput} from "./modules/messages/chat/models/input/dialog-input";
 import { BehaviorSubject, Subscription  } from 'rxjs';
 import {MessageService} from "primeng/api";
+import {CommunicationsServiceService} from "./modules/communications/services/communications.service";
 
 @Component({
   selector: 'app-root',
@@ -57,6 +57,7 @@ export class AppComponent implements OnInit {
   isVisibleProjectManagementMenu: boolean = false;
   hubMainConnection: any;
   hubProjectManagementConnection: any;
+  hubCommunicationsConnection: any;
 
   // Для добавления нового метода хаба, достаточно просто добавить в массив название метода на бэке.
   aHubOnMethods: string[] = [
@@ -303,7 +304,18 @@ export class AppComponent implements OnInit {
     "SendNotificationWarningNotFoundUserByEmail"
   ];
 
+  aHubCommunicationsOnMethods: [];
+
   public $allFeed = new BehaviorSubject<any>(null);
+
+  // Абстрактные области чата.
+  // public communicationsAbstractScopes$ = new BehaviorSubject<any>(null);
+
+  // Группы абстрактной области чата.
+  // public communicationsAbstractGroups$ = new BehaviorSubject<any>(null);
+
+  // Сообщения диалога группы абстрактной области чата.
+  // public communicationsAbstractGroupMessages$ = new BehaviorSubject<any>(null);
 
   aMessages: any[] = [];
   aDialogs: any[] = [];
@@ -317,11 +329,12 @@ export class AppComponent implements OnInit {
 
   constructor(private _networkService: NetworkService,
               private readonly _router: Router,
-              private readonly _activatedRoute: ActivatedRoute,
               private _changeDetectorRef: ChangeDetectorRef,
               private readonly _redisService: RedisService,
               private readonly _messageService: MessageService,
-              private readonly _route: ActivatedRoute) {
+              private readonly _route: ActivatedRoute,
+              private _communicationsService: CommunicationsServiceService) {
+    this.aHubCommunicationsOnMethods = [];
   }
 
   public async ngOnInit() {
@@ -335,10 +348,6 @@ export class AppComponent implements OnInit {
         await this.configureHubsAsync();
       }
     });
-  };
-
-  public async ngAfterViewInit() {
-
   };
 
   public get AllFeedObservable() {
@@ -356,6 +365,14 @@ export class AppComponent implements OnInit {
   private listenAllHubsProjectManagementNotifications() {
     this.aHubOnMethods.forEach((method: any) => {
       (<HubConnection>this.hubProjectManagementConnection).on(method, (response: any) => {
+        this.$allFeed.next(response);
+      });
+    });
+  };
+
+  private listenHubCommunications() {
+    this.aHubCommunicationsOnMethods.forEach((method: any) => {
+      (<HubConnection>this.hubCommunicationsConnection).on(method, (response: any) => {
         this.$allFeed.next(response);
       });
     });
@@ -461,59 +478,21 @@ export class AppComponent implements OnInit {
     if (currentUrl.indexOf("press/offer") >= 0) {
       this.isVisibleMenu = false;
     }
-  };
 
-  /**
-   * Функция получает диалоги проекта.
-   * @param projectId - Id проекта.
-   */
-  public getDialogsAsync(projectId: number | null) {
-    <HubConnection>this.hubMainConnection.invoke("GetDialogsAsync", localStorage["u_e"], localStorage["t_n"], +projectId!)
-      .catch((err: any) => {
-        console.error(err);
-      });
-  };
-
-  /**
-   * Функция получает диалог проекта.
-   * @param diaalogId - Id диалога.
-   */
-  public getDialogAsync(dialogInput: DialogInput) {
-    <HubConnection>this.hubMainConnection.invoke("GetDialogAsync", localStorage["u_e"], localStorage["t_n"], JSON.stringify(dialogInput))
-      .catch((err: any) => {
-        console.error(err);
-      });
-  };
-
-  /**
-   * Функция отправляет сообщение.
-   */
-  public sendMessageAsync(message: string, dialogId: number) {
-    <HubConnection>this.hubMainConnection.invoke("SendMessageAsync", message, dialogId, localStorage["u_e"], localStorage["t_n"], API_URL.apiUrl)
-      .catch((err: any) => {
-        console.error(err);
-      });
-  };
-
-  /**
-   * Функция получает диалоги ЛК.
-   * @param projectId - Id проекта.
-   */
-  public getProfileDialogsAsync() {
-    <HubConnection>this.hubMainConnection.invoke("GetProfileDialogsAsync", localStorage["u_e"], localStorage["t_n"])
-      .catch((err: any) => {
-        console.error(err);
-      });
+    if (currentUrl.indexOf("chat") >= 0) {
+      this.isVisibleHeader = true;
+      this.isVisibleMenu = true;
+    }
   };
 
   /**
    * Функция настраивает хабы для работы уведомлений SignalR.
    */
   private async configureHubsAsync() {
-    if (this.currentUrl != "user/signin") {
+    if (this.currentUrl !== "user/signin") {
       // Подписываемся на получение всех сообщений.
       this.AllFeedObservable
-        .subscribe((response: any) => {
+        .subscribe(async (response: any) => {
           console.log("Подписались на сообщения", response);
 
           // Если пришел тип уведомления, то просто показываем его.
@@ -589,14 +568,14 @@ export class AppComponent implements OnInit {
       }
 
       (await this._redisService.checkConnectionIdCacheAsync(localStorage["u_c"], module))
-        .subscribe((_: any) => {
+        .subscribe(async (_: any) => {
           this.hubMainConnection = new HubConnectionBuilder()
             .withUrl(API_URL.apiUrl + `/notify?userCode=${localStorage["u_c"]}&module=Main`, HttpTransportType.LongPolling)
             .build();
 
           this.listenAllHubsMainNotifications();
 
-          if (this.hubMainConnection.state != "Connected" && this.hubMainConnection.connectionId == null) {
+          if (this.hubMainConnection.state !== "Connected" && this.hubMainConnection.connectionId == null) {
             this.hubMainConnection.start().then(async () => {
               console.log("Соединение Main установлено");
               console.log("Main ConnectionId:", this.hubMainConnection.connectionId);
@@ -612,10 +591,28 @@ export class AppComponent implements OnInit {
 
           this.listenAllHubsProjectManagementNotifications();
 
-          if (this.hubMainConnection.state != "Connected" && this.hubProjectManagementConnection.connectionId == null) {
+          if (this.hubMainConnection.state !== "Connected" && this.hubProjectManagementConnection.connectionId == null) {
             this.hubProjectManagementConnection.start().then(async () => {
               console.log("Соединение ProjectManagement установлено");
               console.log("ProjectManagement ConnectionId:", this.hubProjectManagementConnection.connectionId);
+            })
+              .catch((err: any) => {
+                console.error(err);
+              });
+          }
+
+          this.hubCommunicationsConnection = new HubConnectionBuilder()
+            .withUrl(API_URL.apiUrlCommunications + `/communications?userCode=${localStorage["u_c"]}&module=Communications`, HttpTransportType.LongPolling)
+            .build();
+
+          this.listenHubCommunications();
+
+          if (this.hubCommunicationsConnection.state !== "Connected" && this.hubCommunicationsConnection.connectionId == null) {
+            this.hubCommunicationsConnection.start().then(async () => {
+              console.log("Соединение Communications установлено");
+              console.log("Communications ConnectionId:", this.hubCommunicationsConnection.connectionId);
+
+              await this.executeCommunicationsHubActions();
             })
               .catch((err: any) => {
                 console.error(err);
@@ -627,5 +624,75 @@ export class AppComponent implements OnInit {
     setTimeout(() => {
       this.routeSubscription.unsubscribe();
     }, 1000);
+  };
+
+  /**
+   * Функция выполняет действия с модулем коммуникаций.
+   */
+  private async executeCommunicationsHubActions() {
+    if (this.currentUrl.includes("/chat")) {
+      // Если успешно подключились, то выполняем действия.
+      if (this.hubCommunicationsConnection.state == "Connected") {
+        // Вызываем хаб бэка для получения абстрактных областей чата.
+        <HubConnection>this.hubCommunicationsConnection.invoke("GetScopesAsync", localStorage["u_e"])
+          .catch((err: any) => {
+            console.error(err);
+          });
+
+        // Получаем ответ из хаба бэка.
+        this.hubCommunicationsConnection.on("getAbstractScopes", (response: any) => {
+          console.log("Список абстрактных областей чата: ", response);
+
+          // Используем прокси-сервис для передачи данных.
+          this._communicationsService.sendAbstractScopes(response);
+        });
+
+        // Подписка на получение групп объектов абстрактной области из прокси-сервиса.
+        this._communicationsService.communicationsAbstractGroups$.subscribe((selectedAbstractScope: any) => {
+          if (selectedAbstractScope !== null) {
+            // Вызываем хаб бэка для получения групп объектов абстрактной области чата.
+            <HubConnection>this.hubCommunicationsConnection.invoke(
+              "GetScopeGroupObjectsAsync",
+              selectedAbstractScope.abstractScopeId,
+              selectedAbstractScope.abstractScopeType,
+              localStorage["u_e"])
+              .catch((err: any) => {
+                console.error(err);
+              });
+
+            // Получаем ответ из хаба бэка.
+            this.hubCommunicationsConnection.on("getScopeGroupObjects", (groupObjects: any) => {
+              console.log("Список групп объектов абстрактной области чата: ", groupObjects);
+
+              // Используем прокси-сервис для передачи данных.
+              this._communicationsService.sendGroupObjects(groupObjects);
+            });
+          }
+        });
+
+        this._communicationsService.dialogMessages$.subscribe((selectedDialog: any) => {
+          // Вызываем хаб бэка для получения сообщений диалога.
+          <HubConnection>this.hubCommunicationsConnection.invoke(
+            "GetDialogMessagesAsync",
+            selectedDialog.dialogId,
+            localStorage["u_e"])
+            .catch((err: any) => {
+              console.error(err);
+            });
+        });
+
+        // Получаем ответ из хаба бэка.
+        this.hubCommunicationsConnection.on("getDialogMessages", (dialogMessages: any) => {
+          console.log("Список сообщений диалога: ", dialogMessages);
+
+          this._communicationsService.receiveDialogMessages(dialogMessages);
+        });
+      }
+
+      else {
+        throw new Error("Хаб коммуникаций не был подключен. Действия с ним не будут выполнены. " +
+          `HubCommunicationsConnectionState: ${this.hubCommunicationsConnection.state}.`);
+      }
+    }
   };
 }

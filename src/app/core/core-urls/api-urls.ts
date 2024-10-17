@@ -22,5 +22,12 @@ export const API_URL = {
     // ? "http://localhost:9998"
     : window.location.href.includes("https://leoka-estetica-test.ru")
       ? "https://leoka-estetica-test-project-management-human-resources.ru"
-      : "https://leoka-estetica-project-management-human-resources.ru"
+      : "https://leoka-estetica-project-management-human-resources.ru",
+  apiUrlCommunications: window.location.href.includes("https://leoka-estetica-dev.ru")
+  || window.location.href.includes("http://localhost:4200/")
+    ? "https://leoka-estetica-dev-communications.ru"
+    // ? "http://localhost:10002"
+    : window.location.href.includes("https://leoka-estetica-test.ru")
+      ? "https://leoka-estetica-test-communications.ru"
+      : "https://leoka-estetica-communications.ru"
 };
