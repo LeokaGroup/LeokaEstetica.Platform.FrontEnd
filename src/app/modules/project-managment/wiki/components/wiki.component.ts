@@ -143,7 +143,7 @@ export class WikiComponent implements OnInit {
     console.log(e.node);
 
     // Значит выбрали папку.
-    if (e.node.projectId > 0) {
+    if (!e.node.isPage) {
       this.folderId = e.node.folderId;
 
       (await this._projectManagmentService.getTreeItemFolderAsync(e.node.projectId, e.node.folderId))
@@ -204,10 +204,11 @@ export class WikiComponent implements OnInit {
     (await this._projectManagmentService.updateFolderPageNameAsync(updateFolderPageNameInput))
       .subscribe(async _ => {
         (await this._projectManagmentService.getTreeItemPageAsync(this.pageId))
-          .subscribe(_ => {
+          .subscribe(async _ => {
             console.log("Выбранная страница: ", this.wikiTreeFolderPage$.value);
             this.isActiveFolderPageName = false;
             this.pageName = this.wikiTreeFolderPage$.value.label;
+            await this.getTreeAsync();
           });
       });
   };
