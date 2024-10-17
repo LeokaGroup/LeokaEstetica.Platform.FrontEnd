@@ -2,7 +2,7 @@
 
 <div class="mb-1 telegram-invite d-flex justify-content-center col-lg-12">
   <div class="invite-telegram">
-    <div class="block-invite">
+    <div class="block-invite" *ngIf="isShowInviteBlock">
       <div *ngIf="!isVisibleNotifyChat">
         <span>Будьте всегда в курсе новых событий на платформе вступив в наш уютный Telegram-канал.</span>&nbsp;
       </div>

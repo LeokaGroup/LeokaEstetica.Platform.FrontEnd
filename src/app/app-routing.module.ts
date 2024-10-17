@@ -77,6 +77,12 @@ const routes: Routes = [
     path: "calendar",
     loadChildren: () => import('./modules/calendar/calendar.module').then(m => m.CalendarEmployeeModule),
     canActivate: [authGuard]
+  },
+
+  {
+    path: "chat",
+    loadChildren: () => import('./modules/communications/communications.module').then(m => m.CommunicationsModule),
+    canActivate: [authGuard]
   }
 ];
 
