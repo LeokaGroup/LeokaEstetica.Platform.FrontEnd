@@ -790,7 +790,7 @@
   [resizable]="false"
   [breakpoints]="{'960px': '75vw'}"
   [style]="{width: '50vw'}">
-    <form [formGroup]="inviteEmailForm" (submit)="onSendInviteProjectTeamAsync()">
+    <form [formGroup]="inviteEmailForm" (submit)="onSendInviteProjectTeamAsync()" (reset)="onCloseInviteToProjectDialog()">
       <div class="d-flex flex-column p-fluid gap-4">
         <p-dropdown [options]="availableInviteVacancies"
                     optionLabel="vacancyName"
@@ -817,14 +817,14 @@
         </p-floatLabel>
         <div class="form-group d-flex gap-3 justify-content-end">
           <p-button
-            (click)="onCloseInviteToProjectDialog()"
+            type="reset"
             label="Отменить"
-            styleClass="p-button-danger" />
+            styleClass="p-button-danger p-button-text" />
           <p-button
             type="submit"
-            [disabled]="inviteEmailForm.invalid"
             label="Отправить приглашение"
-            styleClass="p-button-success" />
+            styleClass="p-button-success p-button-text"
+            [disabled]="inviteEmailForm.invalid"/>
         </div>
       </div>
     </form>
