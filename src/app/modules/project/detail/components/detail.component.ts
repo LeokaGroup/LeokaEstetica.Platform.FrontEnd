@@ -17,6 +17,7 @@ import { UpdateProjectInput } from "../models/input/update-project-input";
 import { AddProjectArchiveInput } from "src/app/modules/backoffice/models/input/project/add-project-archive-input";
 import { DialogInput } from "src/app/modules/messages/chat/models/input/dialog-input";
 import {AccessService} from "../../../access/access.service";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
     selector: "detail",
@@ -84,7 +85,7 @@ export class DetailProjectComponent implements OnInit {
     searchText: string = "";
     aProjectInvitesUsers: any[] = [];
     selectedInviteVacancy: any;
-    selectedInviteUser: string = "";
+    selectedInviteUser: string | null = null;
     isDeleteProject: boolean = false;
     isDeleteVacancyInProject: boolean = false;
     vacancyNameForDelete: any;
@@ -93,15 +94,13 @@ export class DetailProjectComponent implements OnInit {
     isVisibleActionAddProjectArchive: boolean = false;
     isVisibleDeleteButton: boolean = false;
     isProjectInvite: boolean = false;
-    selectedInviteVariant: any;
-    isVacancyInvite: boolean = false;
     availableAttachVacancies: any[] = [];
     availableInviteVacancies: any[] = [];
     deleteMember: string = "";
     isDeleteProjectTeamMember: boolean = false;
     isLeaveProjectTeamMember: boolean = false;
     userId: number = 0;
-    isVisibleActionDeleteProjectTeamMember: boolean = false;
+    // isVisibleActionDeleteProjectTeamMember: boolean = false;
     isVisibleActionLeaveProjectTeam: boolean = false;
     aProjectRemarks: string[] = [];
     isShowRemarks: boolean = false;
@@ -111,19 +110,25 @@ export class DetailProjectComponent implements OnInit {
     isCollapsed: boolean = true;
     isActiveRole: boolean = false;
     isVisibleAccessModal = false;
+    inviteEmailForm = new FormGroup({
+        email: new FormControl('', [Validators.required, Validators.email]),
+        isVacancyInvite: new FormControl(false, {nonNullable: true}),
+        vacancies: new FormControl([...this.availableInviteVacancies])
+      }
+    );
 
   public async ngOnInit() {
+        this.checkUrlParams()
         forkJoin([
-        this.checkUrlParams(),
-        await this.getProjectStagesAsync(),
-        await this.getProjectVacanciesAsync(),
-        await this.getProjectVacanciesColumnNamesAsync(),
-        await this.getAvailableAttachVacanciesAsync(),
-        await this.getAvailableInviteVacanciesAsync(),
-        await this.getProjectCommentsAsync(),
-        await this.getProjectTeamColumnsNamesAsync(),
-        await this.getProjectTeamAsync(),
-        await this.getProjectRemarksAsync()
+          await this.getProjectStagesAsync(),
+          await this.getProjectVacanciesAsync(),
+          await this.getProjectVacanciesColumnNamesAsync(),
+          await this.getAvailableAttachVacanciesAsync(),
+          await this.getAvailableInviteVacanciesAsync(),
+          await this.getProjectCommentsAsync(),
+          await this.getProjectTeamColumnsNamesAsync(),
+          await this.getProjectTeamAsync(),
+          await this.getProjectRemarksAsync()
         ]);
     };
 
@@ -196,7 +201,7 @@ export class DetailProjectComponent implements OnInit {
 
         (await this._projectService.updateProjectAsync(model))
         .subscribe(async _ => {
-            // TODO: setVisibleProjectAsync убрать после того как поправят 
+            // TODO: setVisibleProjectAsync убрать после того как поправят
             // на бэке установку isPublic в updateProjectAsync
             await firstValueFrom(await this._projectService.setVisibleProjectAsync(
                                  this.projectId, model.isPublic));
@@ -311,6 +316,7 @@ export class DetailProjectComponent implements OnInit {
     /**
      * Функция показывает модалку вакансии.
      * @param vacancyId - Id вакансии.
+     * @param isEdit
      */
     public async onShowVacancyModal(vacancyId: number, isEdit: boolean) {
         console.log(this.isShowVacancyModal);
@@ -386,7 +392,7 @@ export class DetailProjectComponent implements OnInit {
     /**
      * Первичная обработка отклика на проект без вакансии.
      * С вакансией либо без нее.
-     * @param isResponseVacancy - Признак отклика с вакансией либо без нее.
+     * @param isResponseNotVacancy - Признак отклика с вакансией либо без нее.
      */
      public onShowProjectResponseNotVacancyModal(isResponseNotVacancy: boolean) {
         this.isResponseNotVacancy = isResponseNotVacancy;
@@ -422,7 +428,7 @@ export class DetailProjectComponent implements OnInit {
 
     /**
      * Функция получает диалог и его сообщения.
-     * @param discussionTypeId - Id типа обсуждения.
+     * @param dialogId - Id типа обсуждения.
      * @returns - Диалог и его сообщения.
      */
     public async onGetDialogAsync(dialogId: number) {
@@ -520,54 +526,56 @@ export class DetailProjectComponent implements OnInit {
 
     /**
      * Функция получает данные для таблицы команда проекта.
-     * @param event - Событие. Чтобы достать текст, надо вызвать event.query.
      * @returns - Данные для таблицы команда проекта.
+     * @param userEmail
      */
-     public async onSearchInviteProjectMembersAsync(event: any) {
-        (await this._searchProjectService.searchInviteProjectMembersAsync(event.query))
+     public async onSearchInviteProjectMembersAsync(userEmail: string) {
+        (this._searchProjectService.searchInviteProjectMembersAsync(userEmail))
         .subscribe(async (response: any) => {
             console.log("Пользователи для добавления в команду проекта: ", response);
-            this.aProjectInvitesUsers = response;
+            if (response.hasOwnProperty('displayName') && response.displayName) {
+              this.selectedInviteUser = response.displayName;
+            } else {
+              this.selectedInviteUser = null
+            }
         });
-    };
-
-    public onSelectProjectMember(event: any) {
-        console.log(event);
-        this.selectedInviteUser = event.displayName;
     };
 
     /**
      * Функция отправляет приглашение в команду проекта пользователю.
      */
     public async onSendInviteProjectTeamAsync() {
-        const inviteProjectTeamMemberInput: InviteProjectTeamMemberInput = {
+        await this.onSearchInviteProjectMembersAsync(this.inviteEmailForm.controls.email.value ?? '');
+        if (this.selectedInviteUser) {
+          const inviteProjectTeamMemberInput: InviteProjectTeamMemberInput = {
             ProjectId: +this.projectId,
             InviteText: this.selectedInviteUser,
-            VacancyId: !this.isVacancyInvite ? this.selectedInviteVacancy.vacancyId : null,
+            VacancyId: this.inviteEmailForm.controls.isVacancyInvite.value ? this.selectedInviteVacancy.vacancyId : null,
             InviteType: 'Email'
-        };
+          };
 
-        (await this._projectService.sendInviteProjectTeamAsync(inviteProjectTeamMemberInput))
-        .subscribe(async (response: any) => {
-            console.log("Добавленный в команду пользователь: ", response);
+          (await this._projectService.sendInviteProjectTeamAsync(inviteProjectTeamMemberInput))
+            .subscribe(async (response: any) => {
+              console.log("Добавленный в команду пользователь: ", response);
 
-            if (!response.isAccess) {
-              this.isVisibleAccessModal = true;
+              if (!response.isAccess) {
+                this.isVisibleAccessModal = true;
 
-              return ;
-            }
+                return ;
+              }
 
-            // TODO: Костыль для бага ререндера уведомлений.
-            // TODO: Не можем отображать уведомления без обновления страницы после роута из проектов пользователя.
-            this._messageService.add({ severity: 'success', summary: "Все хорошо", detail: response.successMessage });
-        });
+              // TODO: Костыль для бага ререндера уведомлений.
+              // TODO: Не можем отображать уведомления без обновления страницы после роута из проектов пользователя.
+              this._messageService.add({ severity: 'success', summary: "Все хорошо", detail: response.successMessage });
+            });
 
-        this.isProjectInvite = false;
+          this.isProjectInvite = false;
+          this.inviteEmailForm.reset()
+        }
     };
 
     /**
      * Функция удаляет проект.
-     * @param projectId - Id проекта.
      */
     public async onDeleteProjectAsync() {
         (await this._projectService.deleteProjectsAsync(this.projectId))
@@ -616,7 +624,6 @@ export class DetailProjectComponent implements OnInit {
 
   /**
    * Функция удаляет пользователя из команды проекта.
-   * @param userId - Id участника проекта, которого будем удалять.
    */
     public async onDeleteProjectTeamAsync() {
         (await this._projectService.deleteProjectTeamAsync(this.projectId, this.userId))
@@ -640,7 +647,6 @@ export class DetailProjectComponent implements OnInit {
 
     /**
  * Функция получает список замечаний проекта.
- * @param projectId - Id проекта.
  * @returns - Список замечаний проекта.
  */
     private async getProjectRemarksAsync() {
@@ -681,4 +687,11 @@ export class DetailProjectComponent implements OnInit {
         this.isActiveRole = false;
       });
   };
+
+  onCloseInviteToProjectDialog() {
+    this.isProjectInvite = false;
+    this.inviteEmailForm.reset()
+  }
+
+  protected readonly console = console;
 }

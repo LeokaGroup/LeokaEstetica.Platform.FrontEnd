@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { UserService } from '../user/services/user.service';
@@ -38,36 +38,37 @@ import { InputSwitchModule } from 'primeng/inputswitch';
         DetailProjectComponent
     ],
 
-    imports: [
-        CommonModule,
-        FormsModule,
-        HttpClientModule,
-        PanelModule,
-        MenuModule,
-        InputTextModule,
-        CheckboxModule,
-        InputMaskModule,
-        InputTextareaModule,
-        PanelMenuModule,
-        ToastModule,
-        EditorModule,
-        ProjectRoutingModule,
-        DropdownModule,
-        TableModule,
-        ButtonModule,
-        DialogModule,
-        SplitterModule,
-        OverlayPanelModule,
-        AutoCompleteModule,
-        PaginatorModule,
-        RadioButtonModule,
-        TagModule,
-        MessagesModule,
-        MessageModule,
-        CardModule,
-        InplaceModule,
-        InputSwitchModule
-    ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    HttpClientModule,
+    PanelModule,
+    MenuModule,
+    InputTextModule,
+    CheckboxModule,
+    InputMaskModule,
+    InputTextareaModule,
+    PanelMenuModule,
+    ToastModule,
+    EditorModule,
+    ProjectRoutingModule,
+    DropdownModule,
+    TableModule,
+    ButtonModule,
+    DialogModule,
+    SplitterModule,
+    OverlayPanelModule,
+    AutoCompleteModule,
+    PaginatorModule,
+    RadioButtonModule,
+    TagModule,
+    MessagesModule,
+    MessageModule,
+    CardModule,
+    InplaceModule,
+    InputSwitchModule,
+    ReactiveFormsModule,
+  ],
 
     exports: [],
 
