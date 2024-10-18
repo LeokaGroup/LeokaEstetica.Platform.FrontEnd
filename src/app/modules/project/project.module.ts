@@ -31,8 +31,6 @@ import { MessageModule } from 'primeng/message';
 import { CardModule } from 'primeng/card';
 import {InplaceModule} from 'primeng/inplace';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import {FloatLabelModule} from "primeng/floatlabel";
-import {Ripple} from "primeng/ripple";
 
 @NgModule({
     declarations: [
@@ -69,9 +67,7 @@ import {Ripple} from "primeng/ripple";
     CardModule,
     InplaceModule,
     InputSwitchModule,
-    FloatLabelModule,
     ReactiveFormsModule,
-    Ripple
   ],
 
     exports: [],
