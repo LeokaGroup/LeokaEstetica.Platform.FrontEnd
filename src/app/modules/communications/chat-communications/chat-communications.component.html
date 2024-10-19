@@ -19,13 +19,33 @@
           </ng-template>
 
           <ng-template pTemplate>
-            <p-splitter [panelSizes]="[25, 100]">
+            <p-splitter [panelSizes]="[30, 100]">
               <ng-template pTemplate>
-                <div class="group-objects">
-                  <p-slideMenu [model]="aGroupObjects"
-                               backLabel="Назад">
+                <div>
+                  <div>
+                    <div *ngIf="aGroupObjects.length > 0">
+                      <div class="d-flex mb-3">
+                        <div>
+                          <p-iconField iconPosition="left">
+                            <p-inputIcon styleClass="pi pi-search" />
+                            <input type="text" pInputText />
+                          </p-iconField>
+                        </div>
 
-                  </p-slideMenu>
+                        <div>
+                          <p-menu #menu [model]="aGroupObjectActions" [popup]="true" />
+                          <p-button class="button-menu" (onClick)="menu.toggle($event)" icon="pi pi-ellipsis-v"/>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="group-objects">
+                      <p-slideMenu [model]="aGroupObjects"
+                                   backLabel="Назад">
+
+                      </p-slideMenu>
+                    </div>
+                  </div>
                 </div>
               </ng-template>
 

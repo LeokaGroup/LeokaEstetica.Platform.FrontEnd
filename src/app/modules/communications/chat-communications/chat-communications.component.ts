@@ -24,6 +24,16 @@ export class ChatCommunicationsComponent implements OnInit {
   aMessages: any[] = [];
   message: string = "";
 
+  // TODO: Перенести на бэк и получать все это оттуда.
+  aGroupObjectActions: any[] = [
+    {
+      label: 'Новый групповой чат'
+    },
+    {
+      label: 'Новый чат'
+    }
+  ];
+
   public async ngOnInit() {
     await this.checkUrlParams();
     this.executeSubscriptionLogic();
