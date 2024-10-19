@@ -13,6 +13,8 @@ import {NgClass, NgFor, NgIf} from "@angular/common";
 import { TabMenuModule } from 'primeng/tabmenu';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { DialogModule } from 'primeng/dialog';
+import { ListboxModule } from 'primeng/listbox';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { InputIconModule } from 'primeng/inputicon';
     NgClass,
     NgIf,
     IconFieldModule,
-    InputIconModule
+    InputIconModule,
+    DialogModule,
+    ListboxModule
   ],
 
   providers: [

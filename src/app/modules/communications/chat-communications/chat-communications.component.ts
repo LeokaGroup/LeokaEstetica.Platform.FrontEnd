@@ -18,6 +18,8 @@ export class ChatCommunicationsComponent implements OnInit {
               private _communicationsService: CommunicationsServiceService) {
   }
 
+  public readonly createdDialog$ = this._communicationsService.createdDialog$;
+
   aAbstractScopes: any[] = [];
   aGroupObjects: any[] = [];
   aObjectDialogs: any[] = [];
@@ -27,12 +29,22 @@ export class ChatCommunicationsComponent implements OnInit {
   // TODO: Перенести на бэк и получать все это оттуда.
   aGroupObjectActions: any[] = [
     {
-      label: 'Новый групповой чат'
+      label: 'Новый групповой чат',
+      command: (event: any) => {
+        this.isShowCreateChat = true;
+      }
     },
     {
-      label: 'Новый чат'
+      label: 'Новый чат',
+      command: (event: any) => {
+        this.isShowCreateChat = true;
+      }
     }
   ];
+  isShowCreateChat: boolean = false;
+  dialogName: string = "";
+  aChatMembers: any[] = [];
+  selectedChatMember: any;
 
   public async ngOnInit() {
     await this.checkUrlParams();
@@ -99,5 +111,24 @@ export class ChatCommunicationsComponent implements OnInit {
 
   public async onSendMessageAsync() {
 
+  };
+
+  /**
+   * Функция добавляет участников в массив.
+   */
+  public onAddChatMember() {
+    this.aChatMembers.push(this.selectedChatMember);
+    this.selectedChatMember = "";
+  };
+
+  /**
+   * Функция создает диалог и добавляет его участников.
+   */
+  public async onCreateDialogAsync() {
+    (await this._communicationsService.onCreateDialogAsync(this.aChatMembers, this.dialogName))
+      .subscribe(_ => {
+        console.log("Созданный диалог: ", this.createdDialog$.value);
+        this.isShowCreateChat = false;
+      });
   };
 }
