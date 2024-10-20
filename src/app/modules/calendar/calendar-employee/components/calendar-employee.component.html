@@ -18,6 +18,7 @@
 <p-dialog header="Создание события"
           [(visible)]="isCreateEvent"
           [breakpoints]="{'960px': '75vw'}"
+          [modal]="true"
           [style]="{width: '100vh', height: '100vh'}"
           [draggable]="false"
           [resizable]="false">
@@ -153,6 +154,7 @@
 <p-dialog header="Создание события"
           [(visible)]="isEditEvent"
           [breakpoints]="{'960px': '75vw'}"
+          [modal]="true"
           [style]="{width: '100vh', height: '100vh'}"
           [draggable]="false"
           [resizable]="false">
@@ -287,6 +289,7 @@
 <p-dialog header="Выбор действия"
           [(visible)]="isNeedUserActionEvent"
           [breakpoints]="{'960px': '75vw'}"
+          [modal]="true"
           [draggable]="false"
           [resizable]="false">
 
@@ -314,6 +317,7 @@
 <p-dialog header="Просмотр события"
           [(visible)]="isDetailsEvent"
           [breakpoints]="{'960px': '75vw'}"
+          [modal]="true"
           [style]="{width: '100vh', height: '100vh'}"
           [draggable]="false"
           [resizable]="false">
