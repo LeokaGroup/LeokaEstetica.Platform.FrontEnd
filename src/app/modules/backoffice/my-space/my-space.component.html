@@ -16,7 +16,7 @@
       </h5>
       <form class="d-flex w-50 gap-1" [formGroup]="searchProjectForm" (ngSubmit)="onSubmitSearchForm()">
         <div class="p-inputgroup h-75 w-50">
-          <input type="text" formControlName="searchText" pInputText placeholder="Что будем искать?">
+          <input type="search" (search)="search($event)" formControlName="searchText" pInputText placeholder="Что будем искать?">
           <button type="submit" [disabled]="searchProjectForm.invalid" pButton label="Найти"></button>
         </div>
         <div class="flex h-75">
@@ -62,7 +62,7 @@
           <p class="m-0">
           <div class="">
             <p-dataView #dv [value]="workspaces$.value.userCompanyWorkSpaces"
-                        [paginator]="isPaginator"
+                        [paginator]="isUserCompanyPaginator"
                         [rows]="10"
                         layout="list"
                         emptyMessage="Проектов еще не создано...">
@@ -113,7 +113,7 @@
           </ng-template>
           <div class="">
             <p-dataView #dv [value]="workspaces$.value.otherCompanyWorkSpaces"
-                        [paginator]="isPaginator"
+                        [paginator]="isOtherCompanyPaginator"
                         [rows]="10"
                         layout="list"
                         emptyMessage="Проектов еще не создано...">
