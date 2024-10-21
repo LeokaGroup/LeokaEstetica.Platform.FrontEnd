@@ -5,7 +5,7 @@ import {API_URL} from "../../../core/core-urls/api-urls";
 
 /**
  * Класс сервиса модуля коммуникаций.
- * Используется как прокси-сервис для передачи данных между компонентами.
+ * Используется как прокси-сервис для передачи данных между компонентами и как API-сервис.
  */
 @Injectable()
 export class CommunicationsServiceService {
@@ -17,6 +17,8 @@ export class CommunicationsServiceService {
   public dialogMessages$ = new BehaviorSubject<any>(null);
   public receiveDialogMessages$ = new BehaviorSubject<any>(null);
   public createdDialog$ = new BehaviorSubject<any>(null);
+  public sendMessage$ = new BehaviorSubject<any>(null);
+  public receiveMessage$ = new BehaviorSubject<any>(null);
 
   constructor(private readonly _http: HttpClient) {
   }
@@ -82,5 +84,21 @@ export class CommunicationsServiceService {
     }).pipe(
       tap((data: any) => this.createdDialog$.next(data))
     );
+  };
+
+  /**
+   * Функция отправляет в прокси-сервис сообщение диалога.
+   * @param dialogMessages - Сообщение диалога.
+   */
+  public sendMessage(message: any) {
+    this.sendMessage$.next(message);
+  };
+
+  /**
+   * Функция получает из прокси-сервиса сообщение диалога.
+   * @param dialogMessages - Сообщение диалога.
+   */
+  public receiveMessage(message: any) {
+    this.receiveMessage$.next(message);
   };
 }

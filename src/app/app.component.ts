@@ -308,15 +308,6 @@ export class AppComponent implements OnInit {
 
   public $allFeed = new BehaviorSubject<any>(null);
 
-  // Абстрактные области чата.
-  // public communicationsAbstractScopes$ = new BehaviorSubject<any>(null);
-
-  // Группы абстрактной области чата.
-  // public communicationsAbstractGroups$ = new BehaviorSubject<any>(null);
-
-  // Сообщения диалога группы абстрактной области чата.
-  // public communicationsAbstractGroupMessages$ = new BehaviorSubject<any>(null);
-
   aMessages: any[] = [];
   aDialogs: any[] = [];
   lastMessage: any;
@@ -686,6 +677,25 @@ export class AppComponent implements OnInit {
           console.log("Список сообщений диалога: ", dialogMessages);
 
           this._communicationsService.receiveDialogMessages(dialogMessages);
+        });
+
+        this._communicationsService.sendMessage$.subscribe((sendedMessage: any) => {
+          // Вызываем хаб бэка для отправки сообщения диалога.
+          <HubConnection>this.hubCommunicationsConnection.invoke(
+            "SendMessageToBackAsync",
+            sendedMessage.message,
+            sendedMessage.dialogId,
+            localStorage["u_e"])
+            .catch((err: any) => {
+              console.error(err);
+            });
+        });
+
+        // Получаем ответ из хаба бэка.
+        this.hubCommunicationsConnection.on("sendMessageToFront", (dialogMessage: any) => {
+          console.log("Сообщение диалога: ", dialogMessage);
+
+          this._communicationsService.receiveMessage(dialogMessage);
         });
       }
 
