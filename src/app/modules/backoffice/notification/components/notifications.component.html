@@ -9,11 +9,14 @@
         <div *ngFor="let notify of userNotifications$.value.notifications">
           <div class="block-notify-item">
             <div class="mb-1">
-              <strong>{{notify.notificationName}}</strong>
+              <strong>
+                {{notify.notificationName}}</strong>
             </div>
 
             <div>
-              <p>{{notify.notificationText}}</p>
+              <p>{{notify.notificationText}} 
+                <a href="mailto:{{notify.emailInvitee}}">{{notify.emailInvitee}}</a>
+                {{notify.isVacancyDisplay ? 'на вакансию "' + notify.vacancy +'"' : ''}}</p>
             </div>
 
             <div *ngIf="notify.isNeedAccepted && notify.isVisibleNotificationsButtons">

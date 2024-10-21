@@ -6,7 +6,7 @@ import {ProjectUserAvatarFileInput} from "../../task/models/input/project-user-a
 import {SprintDurationSettingInput} from "../../sprint/models/sprint-duration-setting-input";
 import {SprintMoveNotCompletedTaskSettingInput} from "../../sprint/models/sprint-move-not-completed-task-setting-input";
 import { UpdateRoleInput } from "../../models/input/update-role-input";
-import { DomSanitizer } from "@angular/platform-browser";
+import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {ProjectService} from "../../../project/services/project.service";
 import {SearchProjectService} from "../../../search/services/search-project-service";
 import {InviteProjectTeamMemberInput} from "../../../project/detail/models/input/invite-project-team-member-input";
@@ -44,11 +44,11 @@ export class ProjectSettingsComponent implements OnInit {
 
   projectId: number = 0;
   companyId: number = 0;
-  userAvatarLink: any;
+  userAvatarLink: SafeUrl | undefined;
   isShowProfile: boolean = false;
   avatarFormData = new FormData();
   isShowScrumSettings: boolean = false;
-  checked: boolean = true;
+  // checked: boolean = true;
   isShowUsers: boolean = false;
   selectedUser: any;
   isShowUserRoles: boolean = false;
@@ -141,21 +141,21 @@ export class ProjectSettingsComponent implements OnInit {
 
   aScrumDurationSettings: any[] = [];
   aMoveNotCompletedTasksSettings: any[] = [];
-  aProjectInviteVarians: any[] = [
-    // { name: 'По ссылке', key: 'Link' },
-    { name: 'По почте', key: 'Email' },
-    // { name: 'По номеру телефона', key: 'PhoneNumber' },
-    { name: 'По логину', key: 'Login' }
-  ];
-  selectedInviteVariant: any;
+  // aProjectInviteVariants: any[] = [
+  //   // { name: 'По ссылке', key: 'Link' },
+  //   { name: 'По почте', key: 'Email' },
+  //   // { name: 'По номеру телефона', key: 'PhoneNumber' },
+  //   { name: 'По логину', key: 'Login' }
+  // ];
+  // selectedInviteVariant: any;
   availableInviteVacancies: any[] = [];
   selectedInviteVacancy: any;
   isVacancyInvite: boolean = false;
   searchText: string = "";
   selectedInviteUser: string = "";
   isVisibleAccessModal = false;
-  isInviteRole: boolean = false;
-  featureForbiddenText: string = "";
+  // isInviteRole: boolean = false;
+  // featureForbiddenText: string = "";
   isNotRoles: boolean = false;
   aUserRoles: any[] = [];
   isNotRolesAccessModal: boolean = false;
@@ -240,7 +240,7 @@ export class ProjectSettingsComponent implements OnInit {
       });
   };
 
-  public async onUpdateScrumDurationSettingsAsync(checked: boolean, sysName: string, i: number) {
+  public async onUpdateScrumDurationSettingsAsync(checked: boolean, sysName: string) {
     let sprintDurationSettingInput = new SprintDurationSettingInput();
     sprintDurationSettingInput.projectId = +this.projectId;
     sprintDurationSettingInput.isSettingSelected = checked;
@@ -252,7 +252,7 @@ export class ProjectSettingsComponent implements OnInit {
       });
   }
 
-  public async onUpdateProjectSprintsMoveNotCompletedTasksSettingsAsync(checked: boolean, sysName: string, i: number) {
+  public async onUpdateProjectSprintsMoveNotCompletedTasksSettingsAsync(checked: boolean, sysName: string) {
     let sprintMoveNotCompletedTaskSettingInput = new SprintMoveNotCompletedTaskSettingInput();
     sprintMoveNotCompletedTaskSettingInput.projectId = +this.projectId;
     sprintMoveNotCompletedTaskSettingInput.isSettingSelected = checked;
@@ -264,9 +264,9 @@ export class ProjectSettingsComponent implements OnInit {
       });
   };
 
-  public onSelect(event: any) {
-    console.log(event);
-  };
+  // public onSelect(event: any) {
+  //   console.log(event);
+  // };
 
   /**
    * Функция получает список пользователей, которые состоят в проекте.
@@ -357,7 +357,7 @@ export class ProjectSettingsComponent implements OnInit {
    * @param searchText - Поисковый текст.
    */
   public async onSendInviteProjectTeamAsync(searchText: string) {
-    (await this._searchProjectService.searchInviteProjectMembersAsync(searchText))
+    (this._searchProjectService.searchInviteProjectMembersAsync(searchText))
       .subscribe(async (response: any) => {
         this.selectedInviteUser = response.displayName;
 

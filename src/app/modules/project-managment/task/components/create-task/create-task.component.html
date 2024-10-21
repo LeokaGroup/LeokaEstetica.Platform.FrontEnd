@@ -117,7 +117,7 @@
                           optionLabel="tagName"
                           [showClear]="true"
                           placeholder="Выберите тег"
-                          [emptyMessage]="(projectTags$ | async) === true ? 'Результатов не найдено' : 'Загрузка...'"
+                          emptyMessage="Метки еще не созданы"
                           (onClick)="onGetProjectTagsAsync()"
                           (onChange)="onSelectTaskTag()">
 
