@@ -45,6 +45,7 @@ export class ChatCommunicationsComponent implements OnInit {
   dialogName: string = "";
   aChatMembers: any[] = [];
   selectedChatMember: any;
+  dialogId: number = 0;
 
   public async ngOnInit() {
     await this.checkUrlParams();
@@ -85,7 +86,9 @@ export class ChatCommunicationsComponent implements OnInit {
                 msg.command = (event: any) => {
                   console.log(event.item);
 
-                  this._communicationsService.sendDialogMessages(event.item.dialogId);
+                  this.dialogId = event.item.dialogId;
+
+                  this._communicationsService.sendDialogMessages(this.dialogId);
 
                   this._communicationsService.receiveDialogMessages$.subscribe((dialogMessages: any) => {
                     if (dialogMessages !== null) {
@@ -99,6 +102,14 @@ export class ChatCommunicationsComponent implements OnInit {
         });
       }
     });
+
+    // Подписка на получение сообщения из прокси-сервиса.
+    this._communicationsService.receiveMessage$.subscribe((dialogMessage: any) => {
+      if (dialogMessage !== null) {
+        // Находим диалог, в котором пишут и добавляем новое сообщение.
+        this.aMessages.push(dialogMessage);
+      }
+    });
   };
 
   /**
@@ -109,8 +120,12 @@ export class ChatCommunicationsComponent implements OnInit {
     this._communicationsService.sendAbstractScopeGroupObjects(selectedItem['abstractScopeId'], selectedItem['abstractScopeType']);
   };
 
+  /**
+   * Функция отправляет сообщение.
+   */
   public async onSendMessageAsync() {
-
+    this._communicationsService.sendMessage({message: this.message, dialogId: this.dialogId});
+    this.message = "";
   };
 
   /**

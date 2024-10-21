@@ -9,7 +9,7 @@ export const API_URL = {
     : window.location.href.includes("https://leoka-estetica-test.ru")
       ? "https://leoka-estetica-test.ru.net"
       : "https://leoka-estetica.ru.net",
-  apiUrlProjectManagment: window.location.href.includes("https://leoka-estetica-dev.ru")
+  apiUrlProjectManagment: window.location.href.includes("https://leoka-estetica-defeature/39882972-send-messagev.ru")
   || window.location.href.includes("http://localhost:4200/")
     ? "https://leoka-estetica-dev-project-management.ru"
     // ? "http://localhost:9995"
