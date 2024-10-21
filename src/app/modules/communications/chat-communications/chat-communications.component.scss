@@ -54,3 +54,25 @@
   margin-bottom: 10px;
   //height:70px;   /* Высота блока "footer" */
 }
+
+.group-objects {
+  display: flex;
+}
+
+.button-context-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  color: #878787;
+}
+
+::ng-deep .button-menu button {
+  background: none;
+  color: black;
+  border: none;
+  padding: 0px;
+  width: 20px;
+}

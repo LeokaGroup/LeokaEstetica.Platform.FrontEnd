@@ -19,13 +19,33 @@
           </ng-template>
 
           <ng-template pTemplate>
-            <p-splitter [panelSizes]="[25, 100]">
+            <p-splitter [panelSizes]="[27, 100]">
               <ng-template pTemplate>
-                <div class="group-objects">
-                  <p-slideMenu [model]="aGroupObjects"
-                               backLabel="Назад">
+                <div>
+                  <div>
+                    <div *ngIf="aGroupObjects.length > 0">
+                      <div class="d-flex mb-3">
+                        <div>
+                          <p-iconField iconPosition="left">
+                            <p-inputIcon styleClass="pi pi-search" />
+                            <input type="text" pInputText />
+                          </p-iconField>
+                        </div>
 
-                  </p-slideMenu>
+                        <div>
+                          <p-menu #menu [model]="aGroupObjectActions" [popup]="true" />
+                          <p-button class="button-menu" (onClick)="menu.toggle($event)" icon="pi pi-ellipsis-v"/>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="group-objects">
+                      <p-slideMenu [model]="aGroupObjects"
+                                   backLabel="Назад">
+
+                      </p-slideMenu>
+                    </div>
+                  </div>
                 </div>
               </ng-template>
 
@@ -63,3 +83,75 @@
     </p-splitter>
   </div>
 </div>
+
+<!-- Диалог создания диалога. -->
+<p-dialog header="Создание нового чата"
+          [(visible)]="isShowCreateChat"
+          [modal]="true"
+          [style]="{width: '50vw', height: '50vw'}"
+          [maximizable]="false"
+          [draggable]="false"
+          [resizable]="false">
+
+  <div class="mt-3">
+    <div class="control-input-text-worksheet">
+      <div>
+        <strong>Название чата</strong>
+      </div>
+      <div>
+        <input type="text"
+               class=""
+               [style]="{ width: '600px' }"
+               pInputText
+               autocomplete="new-password"
+               [(ngModel)]="dialogName"/>
+      </div>
+    </div>
+
+    <div class="control-input-text-worksheet mt-3">
+      <div>
+        <strong>Добавить участника чата</strong>
+      </div>
+      <div>
+        <input type="text"
+               class=""
+               [style]="{ width: '600px' }"
+               pInputText
+               autocomplete="new-password"
+               [(ngModel)]="selectedChatMember"/>
+      </div>
+
+      <p-button icon="pi pi-check"
+                label="Добавить"
+                styleClass="p-button-text p-button-success"
+                (click)="onAddChatMember()">
+      </p-button>
+    </div>
+
+    <div class="mt-3">
+      <div>
+        <strong>Участники чата</strong>
+      </div>
+
+      <div>
+        <p-listbox [options]="aChatMembers"
+                   [(ngModel)]="selectedChatMember">
+
+        </p-listbox>
+      </div>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-times"
+              label="Отменить"
+              styleClass="p-button-text p-button-danger">
+    </p-button>
+
+    <p-button icon="pi pi-check"
+              label="Создать чат"
+              styleClass="p-button-text p-button-success"
+              [disabled]="aChatMembers.length == 0"
+              (click)="onCreateDialogAsync()">
+    </p-button>
+  </ng-template>
+</p-dialog>

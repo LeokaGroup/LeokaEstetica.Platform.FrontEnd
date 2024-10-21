@@ -11,6 +11,10 @@ import {CommunicationsRoutingModule} from "./communications-routing.module";
 import { SplitterModule } from 'primeng/splitter';
 import {NgClass, NgFor, NgIf} from "@angular/common";
 import { TabMenuModule } from 'primeng/tabmenu';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { DialogModule } from 'primeng/dialog';
+import { ListboxModule } from 'primeng/listbox';
 
 @NgModule({
   declarations: [
@@ -30,7 +34,11 @@ import { TabMenuModule } from 'primeng/tabmenu';
     NgFor,
     TabMenuModule,
     NgClass,
-    NgIf
+    NgIf,
+    IconFieldModule,
+    InputIconModule,
+    DialogModule,
+    ListboxModule
   ],
 
   providers: [
