@@ -44,7 +44,7 @@
           </ng-template>
           <p class="m-0">
           <div class="">
-            <p-dataView #dv [value]="workspaces$.value.userCompanyWorkSpaces"
+            <p-dataView #dv [value]="workspaces$.value?.userCompanyWorkSpaces"
                         [paginator]="isPaginator"
                         [rows]="10"
                         layout="list"
@@ -95,7 +95,7 @@
 <!--            <p-menu #menu id="config_menu" [model]="items" [popup]="true"/>-->
           </ng-template>
           <div class="">
-            <p-dataView #dv [value]="workspaces$.value.otherCompanyWorkSpaces"
+            <p-dataView #dv [value]="workspaces$.value?.otherCompanyWorkSpaces"
                         [paginator]="isPaginator"
                         [rows]="10"
                         layout="list"
