@@ -1,0 +1,50 @@
+<div class="d-flex">
+  <div class="col-lg-2">
+
+  </div>
+
+  <div class="col-lg-10">
+    <p-splitter
+      [style]="{ height: '250px' }"
+      [panelSizes]="[20, 80]"
+      [minSizes]="[10, 0]"
+      styleClass="mb-5">
+      <ng-template pTemplate>
+        <p-splitter layout="vertical" [panelSizes]="[15, 85]">
+          <ng-template pTemplate>
+            <div class="abstract-scopes">
+              <div *ngFor="let ac of aAbstractScopes">
+                <div class="abstract-scope">
+                  {{ac.scopeName}}
+                </div>
+              </div>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate>
+            <p-splitter>
+              <ng-template pTemplate>
+                <div class="col flex align-items-center justify-content-center">
+                  Panel 3
+                </div>
+              </ng-template>
+
+              <ng-template pTemplate>
+                <div class="col flex align-items-center justify-content-center">
+                  Panel 4
+                </div>
+              </ng-template>
+
+              <ng-template pTemplate>
+                <div class="col flex align-items-center justify-content-center">
+                  Panel 4
+                </div>
+              </ng-template>
+            </p-splitter>
+          </ng-template>
+        </p-splitter>
+      </ng-template>
+    </p-splitter>
+
+  </div>
+</div>
