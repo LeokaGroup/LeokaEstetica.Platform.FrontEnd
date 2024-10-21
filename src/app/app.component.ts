@@ -11,7 +11,7 @@ import {
 } from "@angular/router";
 import { NetworkService } from './core/interceptors/network.service';
 import {API_URL} from "./core/core-urls/api-urls";
-import {HttpTransportType, HubConnection, HubConnectionBuilder} from "@microsoft/signalr";
+import {HttpTransportType, HubConnection, HubConnectionBuilder, LogLevel} from "@microsoft/signalr";
 import {RedisService} from "./modules/redis/services/redis.service";
 import { BehaviorSubject, Subscription  } from 'rxjs';
 import {MessageService} from "primeng/api";
@@ -561,6 +561,7 @@ export class AppComponent implements OnInit {
       (await this._redisService.checkConnectionIdCacheAsync(localStorage["u_c"], module))
         .subscribe(async (_: any) => {
           this.hubMainConnection = new HubConnectionBuilder()
+            .configureLogging(LogLevel.Debug)
             .withUrl(API_URL.apiUrl + `/notify?userCode=${localStorage["u_c"]}&module=Main`, HttpTransportType.LongPolling)
             .build();
 
@@ -577,6 +578,7 @@ export class AppComponent implements OnInit {
           }
 
           this.hubProjectManagementConnection = new HubConnectionBuilder()
+            .configureLogging(LogLevel.Debug)
             .withUrl(API_URL.apiUrlProjectManagment + `/project-management-notify?userCode=${localStorage["u_c"]}&module=ProjectManagement`, HttpTransportType.LongPolling)
             .build();
 
@@ -593,6 +595,7 @@ export class AppComponent implements OnInit {
           }
 
           this.hubCommunicationsConnection = new HubConnectionBuilder()
+            .configureLogging(LogLevel.Debug)
             .withUrl(API_URL.apiUrlCommunications + `/communications?userCode=${localStorage["u_c"]}&module=Communications`, HttpTransportType.LongPolling)
             .build();
 
