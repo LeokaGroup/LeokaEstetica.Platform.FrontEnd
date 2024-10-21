@@ -309,13 +309,13 @@ export class AppComponent implements OnInit {
   public $allFeed = new BehaviorSubject<any>(null);
 
   // Абстрактные области чата.
-  public communicationsAbstractScopes$ = new BehaviorSubject<any>(null);
+  // public communicationsAbstractScopes$ = new BehaviorSubject<any>(null);
 
   // Группы абстрактной области чата.
-  public communicationsAbstractGroups$ = new BehaviorSubject<any>(null);
+  // public communicationsAbstractGroups$ = new BehaviorSubject<any>(null);
 
   // Сообщения диалога группы абстрактной области чата.
-  public communicationsAbstractGroupMessages$ = new BehaviorSubject<any>(null);
+  // public communicationsAbstractGroupMessages$ = new BehaviorSubject<any>(null);
 
   aMessages: any[] = [];
   aDialogs: any[] = [];
@@ -633,7 +633,7 @@ export class AppComponent implements OnInit {
     if (this.currentUrl.includes("/chat")) {
       // Если успешно подключились, то выполняем действия.
       if (this.hubCommunicationsConnection.state == "Connected") {
-        // Вызываем хаб бэка.
+        // Вызываем хаб бэка для получения абстрактных областей чата.
         <HubConnection>this.hubCommunicationsConnection.invoke("GetScopesAsync", localStorage["u_e"])
           .catch((err: any) => {
             console.error(err);
@@ -645,6 +645,29 @@ export class AppComponent implements OnInit {
 
           // Используем прокси-сервис для передачи данных.
           this._communicationsServiceService.sendAbstractScopes(response);
+        });
+
+        // Подписка на получение групп объектов абстрактной области из прокси-сервиса.
+        this._communicationsServiceService.communicationsAbstractGroups$.subscribe((selectedAbstractScope: any) => {
+          if (selectedAbstractScope !== null) {
+            // Вызываем хаб бэка для получения групп объектов абстрактной области чата.
+            <HubConnection>this.hubCommunicationsConnection.invoke(
+              "GetScopeGroupObjectsAsync",
+              selectedAbstractScope.abstractScopeId,
+              selectedAbstractScope.abstractScopeType,
+              localStorage["u_e"])
+              .catch((err: any) => {
+                console.error(err);
+              });
+
+            // Получаем ответ из хаба бэка.
+            this.hubCommunicationsConnection.on("getScopeGroupObjects", (groupObjects: any) => {
+              console.log("Список групп объектов абстрактной области чата: ", groupObjects);
+
+              // Используем прокси-сервис для передачи данных.
+              this._communicationsServiceService.sendGroupObjects(groupObjects);
+            });
+          }
         });
       }
 

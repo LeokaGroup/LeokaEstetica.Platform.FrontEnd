@@ -10,6 +10,7 @@ import {ChatCommunicationsComponent} from "./chat-communications/chat-communicat
 import {CommunicationsRoutingModule} from "./communications-routing.module";
 import { SplitterModule } from 'primeng/splitter';
 import {NgFor} from "@angular/common";
+import { TabMenuModule } from 'primeng/tabmenu';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {NgFor} from "@angular/common";
     FormsModule,
     ButtonModule,
     SplitterModule,
-    NgFor
+    NgFor,
+    TabMenuModule
   ],
 
   providers: [

@@ -5,27 +5,25 @@
 
   <div class="col-lg-10">
     <p-splitter
-      [style]="{ height: '250px' }"
-      [panelSizes]="[20, 80]"
+      [style]="{ height: '600px' }"
       [minSizes]="[10, 0]"
       styleClass="mb-5">
       <ng-template pTemplate>
         <p-splitter layout="vertical" [panelSizes]="[15, 85]">
           <ng-template pTemplate>
             <div class="abstract-scopes">
-              <div *ngFor="let ac of aAbstractScopes">
-                <div class="abstract-scope">
-                  {{ac.scopeName}}
-                </div>
-              </div>
+              <p-tabMenu [model]="aAbstractScopes"
+                         (activeItemChange)="onSelectAbstractScopeAndGetScopeGroupObjects($event)">
+
+              </p-tabMenu>
             </div>
           </ng-template>
 
           <ng-template pTemplate>
-            <p-splitter>
+            <p-splitter [panelSizes]="[25, 100]">
               <ng-template pTemplate>
-                <div class="col flex align-items-center justify-content-center">
-                  Panel 3
+                <div class="group-objects">
+                  <p-slideMenu [model]="aGroupObjects"></p-slideMenu>
                 </div>
               </ng-template>
 
@@ -45,6 +43,5 @@
         </p-splitter>
       </ng-template>
     </p-splitter>
-
   </div>
 </div>
