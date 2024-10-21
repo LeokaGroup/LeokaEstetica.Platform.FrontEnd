@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {BackOfficeService} from "../services/backoffice.service";
 import {ProjectManagmentService} from "../../project-managment/services/project-managment.service";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: "my-space",
@@ -24,6 +25,11 @@ export class MySpaceComponent implements OnInit {
 
   aWorkspaces: any[] = [];
   isPaginator: boolean = false;
+  searchProjectForm = new FormGroup({
+    isById: new FormControl(false, [Validators.required]),
+    isByProjectName: new FormControl(true, [Validators.required]),
+    searchText: new FormControl('', [Validators.required]),
+  })
 
   items = [
     {
@@ -91,4 +97,14 @@ export class MySpaceComponent implements OnInit {
         }
       });
   };
+
+  onChangeSearchTypeSelection(isChangeId: boolean) {
+    isChangeId
+      ? this.searchProjectForm.controls.isByProjectName.setValue(!this.searchProjectForm.controls.isById.value)
+      : this.searchProjectForm.controls.isById.setValue(!this.searchProjectForm.controls.isByProjectName.value)
+  }
+
+  onSubmitSearchForm() {
+    console.log(this.searchProjectForm.value)
+  }
 }

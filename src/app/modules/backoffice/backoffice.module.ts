@@ -42,6 +42,7 @@ import {TieredMenuModule} from 'primeng/tieredmenu';
 import {TooltipModule} from 'primeng/tooltip';
 import {MySpaceComponent} from "./my-space/my-space.component";
 import { DataViewModule } from 'primeng/dataview';
+import {ToggleButtonModule} from "primeng/togglebutton";
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { DataViewModule } from 'primeng/dataview';
     InputSwitchModule,
     TieredMenuModule,
     TooltipModule,
-    DataViewModule
+    DataViewModule,
+    ToggleButtonModule,
   ],
 
   exports: [],
