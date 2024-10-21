@@ -179,6 +179,7 @@ export class ProjectManagmentService {
    * @param paginatorStatusId - Id статуса, для которого нужно применить пагинатор.
    * Если он null, то пагинатор применится для задач всех статусов шаблона.
    * @param page - Номер страницы..
+   * @param type
    * @returns - Данные конфигурации.
    */
   public async getConfigurationWorkSpaceBySelectedTemplateAsync(projectId: number, paginatorStatusId: number | null, page: number, type: string) {
@@ -400,7 +401,7 @@ export class ProjectManagmentService {
 
     /**
     * Функция сохраняет описание задачи.
-    * @param changeTaskNameInput - Входная модель.
+    * @param changeTaskDetailsInput - Входная модель.
     */
      public async saveTaskDetailsAsync(changeTaskDetailsInput: ChangeTaskDetailsInput) {
         return await this._http.patch(this.apiUrl + `/project-management/task-details`, changeTaskDetailsInput).pipe(
@@ -431,7 +432,7 @@ export class ProjectManagmentService {
 
     /**
     * Функция обновляет приоритет задачи.
-    * @param projectTaskTagInput - Входная модель.
+    * @param taskPriorityInput - Входная модель.
     */
      public async updateTaskPriorityAsync(taskPriorityInput: TaskPriorityInput) {
         return await this._http.patch(this.apiUrl + `/project-management/task-priority`, taskPriorityInput).pipe(
@@ -586,10 +587,11 @@ export class ProjectManagmentService {
     };
 
      /**
-     * Функция добавляет файл к задаче.
-     * @param projectId - Id проекта.
-     * @param projectTaskId - Id задачи в рамках проекта.
-     */
+      * Функция добавляет файл к задаче.
+      * @param projectId - Id проекта.
+      * @param projectTaskId - Id задачи в рамках проекта.
+      * @param taskTypeId
+      */
       public async getTaskFilesAsync(projectId: number, projectTaskId: string, taskTypeId: number) {
         return await this._http.get(this.apiUrl + `/project-management/task-files?projectId=${projectId}&projectTaskId=${projectTaskId}&taskTypeId=${taskTypeId}`).pipe(
             tap(data => this.taskFiles$.next(data))
@@ -623,8 +625,7 @@ export class ProjectManagmentService {
 
   /**
    * Функция фиксирует выбранную пользователем стратегию представления.
-   * @param strategySysName - Системное название выбранной стратегии представления.
-   * @param projectId - Id проекта.
+   * @param fixationStrategyInput
    */
   public async fixationSelectedViewStrategyAsync(fixationStrategyInput: FixationStrategyInput) {
     return await this._http.patch(this.apiUrl + `/project-management-settings/fixation-strategy`, fixationStrategyInput).pipe(
@@ -656,7 +657,7 @@ export class ProjectManagmentService {
 
   /**
    * Функция обновляет комментарий задачи.
-   * @param taskCommentInput - Входная модель.
+   * @param taskCommentExtendedInput - Входная модель.
    */
   public async updateTaskCommentAsync(taskCommentExtendedInput: TaskCommentExtendedInput) {
     return await this._http.put(this.apiUrl + `/project-management/task-comment`, taskCommentExtendedInput).pipe(
@@ -702,7 +703,7 @@ export class ProjectManagmentService {
    * @param projectIds - Id проектов, по которым искать.
    * @param isById - Признак поиска по Id задачи.
    * @param isByName - Признак поиска по названию задачи.
-   * @param IsByDescription - Признак поиска по описанию задачи.
+   * @param isByDescription - Признак поиска по описанию задачи.
    */
   public async searchTasksAsync(searchText: string, projectIds: number[], isById: boolean, isByName: boolean, isByDescription: boolean) {
     return await this._http.get(this.apiUrl +
@@ -834,7 +835,7 @@ export class ProjectManagmentService {
 
   /**
    * Функция обновляет спринт, в который входит задача.
-   * @param UudateTaskSprintInput - Входная модель.
+   * @param updateTaskSprintInput - Входная модель.
    */
   public async updateTaskSprintAsync(updateTaskSprintInput: UpdateTaskSprintInput) {
     return await this._http.put(this.apiUrl + `/project-management/task/sprint`, updateTaskSprintInput).pipe(
@@ -1111,6 +1112,7 @@ export class ProjectManagmentService {
    * Функция получает элементы контекстного меню.
    * @param projectId - Id проекта, если передан.
    * @param pageId - Id страницы, если передан.
+   * @param isParentFolder
    */
   public async getContextMenuAsync(projectId: number | null = null, pageId: number | null, isParentFolder: boolean = false) {
     if (isParentFolder) {
@@ -1152,7 +1154,8 @@ export class ProjectManagmentService {
 
   /**
    * Функция удаляет папку.
-   * @param createWikiPageInput - Входная модель.
+   * @param folderId
+   * @param isApprove
    */
   public async removeFolderAsync(folderId: number, isApprove: boolean) {
     return await this._http.delete(this.apiUrl + `/project-management-wiki/tree-item-folder?folderId=${folderId}&isApprove=${isApprove}`).pipe(
@@ -1205,7 +1208,7 @@ export class ProjectManagmentService {
    * Функция удаляет задачу.
    * @param projectId - Id проекта.
    * @param projectTaskId - Id задачи в рамках проекта.
-   * @param TaskDetailTypeEnum - Тип задачи.
+   * @param taskType - Тип задачи.
    */
   public async removeProjectTaskAsync(projectId: number, projectTaskId: string, taskType: string) {
     return await this._http.delete(this.apiUrl + `/project-management/task?projectId=${projectId}&projectTaskId=${projectTaskId}&taskType=${taskType}`).pipe(
