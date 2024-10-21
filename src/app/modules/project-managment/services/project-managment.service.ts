@@ -1,4 +1,4 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, tap} from 'rxjs';
 import {API_URL} from 'src/app/core/core-urls/api-urls';
@@ -37,6 +37,8 @@ import {CreateWikiPageInput} from "../models/input/create-page-input";
 import {ExcludeTaskInput} from "../models/input/exclude-task-input";
 import {CompanyInput} from "../models/input/company-input";
 import {IncludeTaskSprintInput} from "../sprint-details/models/input/include-sprint-task-input";
+import SearchProjectDTO from "../../backoffice/my-space/search-project-dto";
+import SearchProjectResponseObject from "../../backoffice/my-space/search-project-response-object";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -87,7 +89,7 @@ export class ProjectManagmentService {
     public sprintDetails$ = new BehaviorSubject<any>(null);
     public sprintDurationSettings$ = new BehaviorSubject<any>(null);
     public sprintMoveNotCompletedTasksSettings$ = new BehaviorSubject<any>(null);
-    public workspaces$ = new BehaviorSubject<any>(null);
+    public workspaces$ = new BehaviorSubject<SearchProjectResponseObject>({userCompanyWorkSpaces: [], otherCompanyWorkSpaces: []});
     public wikiContextMenu$ = new BehaviorSubject<any>(null);
     public selectedWorkSpace$ = new BehaviorSubject<any>(null);
     public settingUsers = new BehaviorSubject<any>(null);
@@ -986,8 +988,8 @@ export class ProjectManagmentService {
   /**
    * Функция получает все раб.пространства, в которых есть текущий пользователь.
    */
-  public async getWorkSpacesAsync() {
-    return await this._http.get(this.apiUrl + `/project-management/workspaces`).pipe(
+  public getWorkSpacesAsync() {
+    return this._http.get<SearchProjectResponseObject>(this.apiUrl + `/project-management/workspaces`).pipe(
       tap(data => this.workspaces$.next(data))
     );
   };
@@ -1267,4 +1269,15 @@ export class ProjectManagmentService {
       tap(data => this.quickActions$.next(data))
     );
   };
+
+  public getWorkspaceByCondition(searchTerm: Partial<SearchProjectDTO>) {
+    const searchParams = new HttpParams();
+    Object.entries(searchTerm).forEach(([key, value]) => {searchParams.append(key, value)});
+    return this._http.get<SearchProjectResponseObject>(
+      this.apiUrl.concat('/project-management-search/workspaces'),
+      {params: searchParams}
+    ).pipe(
+      tap(data => this.workspaces$.next(data))
+    )
+  }
 }
