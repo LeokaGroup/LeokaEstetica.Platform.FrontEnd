@@ -20,6 +20,7 @@ export class ChatCommunicationsComponent implements OnInit {
 
   aAbstractScopes: any[] = [];
   aGroupObjects: any[] = [];
+  aObjectDialogs: any[] = [];
 
   public async ngOnInit() {
     await this.checkUrlParams();
@@ -49,6 +50,13 @@ export class ChatCommunicationsComponent implements OnInit {
       if (groupObjects !== null) {
         this.aGroupObjects = [];
         this.aGroupObjects = groupObjects.objects;
+
+        // Навешиваем команды всем элементам.
+        this.aGroupObjects.forEach((item: any) => {
+          item.command = (event: any) => {
+            console.log(event.item);
+          };
+        });
       }
     });
   };
@@ -60,8 +68,4 @@ export class ChatCommunicationsComponent implements OnInit {
   public onSelectAbstractScopeAndGetScopeGroupObjects(selectedItem: MenuItem) {
     this._communicationsServiceService.sendAbstractScopeGroupObjects(selectedItem['abstractScopeId'], selectedItem['abstractScopeType']);
   };
-
-  public onSelectGroupObject(go: any) {
-
-  }
 }
