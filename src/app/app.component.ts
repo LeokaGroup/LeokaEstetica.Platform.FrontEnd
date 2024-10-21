@@ -1,6 +1,6 @@
 import {
   ChangeDetectorRef,
-  Component,
+  Component, OnDestroy,
   OnInit
 } from '@angular/core';
 import {
@@ -22,7 +22,7 @@ import {CommunicationsServiceService} from "./modules/communications/services/co
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   public loading$ = this._networkService.loading$;
   public readonly checkUserCode$ = this._redisService.checkUserCode$;
 
@@ -614,10 +614,6 @@ export class AppComponent implements OnInit {
           }
         });
     }
-
-    setTimeout(() => {
-      this.routeSubscription.unsubscribe();
-    }, 1000);
   };
 
   /**
@@ -708,4 +704,8 @@ export class AppComponent implements OnInit {
       }
     }
   };
+
+  public ngOnDestroy(): void {
+    this.routeSubscription.unsubscribe();
+  }
 }
