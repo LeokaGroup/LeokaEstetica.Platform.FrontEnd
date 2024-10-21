@@ -39,7 +39,7 @@
                       </div>
                     </div>
 
-                    <div class="group-objects">
+                    <div class="group-objects" [ngClass]="{isHideGroupObjects: aGroupObjects.length == 0}">
                       <p-slideMenu [model]="aGroupObjects"
                                    backLabel="Назад">
 
