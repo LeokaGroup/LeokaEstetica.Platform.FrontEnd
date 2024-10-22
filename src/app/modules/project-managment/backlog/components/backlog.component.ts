@@ -28,9 +28,10 @@ export class BacklogComponent implements OnInit {
   selectedProjectId: number = 0;
   isLoading: boolean = false;
 
+
   public async ngOnInit() {
     this._projectManagmentService.isLeftPanel = false;
-
+      // this.backlogData$.subscribe((e))
     forkJoin([
       this.checkUrlParams(),
       await this.getBacklogTasksAsync(),

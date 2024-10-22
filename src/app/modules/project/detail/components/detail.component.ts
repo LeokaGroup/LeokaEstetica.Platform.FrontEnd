@@ -217,7 +217,7 @@ export class DetailProjectComponent implements OnInit {
       }
     );
   }
-
+  
   /**
    * Функция получает список стадий проекта.
    * @returns - Список стадий проекта.

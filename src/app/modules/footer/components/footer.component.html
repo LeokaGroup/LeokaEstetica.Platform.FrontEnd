@@ -29,7 +29,19 @@
             <ul class="footer-menu-list">
               @for (menuItem of menuItems.info; track $index) {
               <li>
-                <a class="footer-menu-item" [routerLink]="[menuItem.link]">
+                <a
+                  class="footer-menu-item"
+                  href="{{ menuItem.hash }}"
+                  *ngIf="menuItem.hash"
+                >
+                  <span>{{ menuItem.label }}</span>
+                </a>
+
+                <a
+                  class="footer-menu-item"
+                  *ngIf="!menuItem.hash"
+                  [routerLink]="[menuItem.link]"
+                >
                   <span>{{ menuItem.label }}</span>
                 </a>
               </li>
@@ -60,25 +72,39 @@
               @for (menuItem of menuItems.social; track $index) {
               <li>
                 <a class="footer-menu-item" [href]="[menuItem.link]">
-                  <img [src]="menuItem.imgSrc" [alt]="menuItem.label" class="social-logo" />
+                  <img
+                    [src]="menuItem.imgSrc"
+                    [alt]="menuItem.label"
+                    class="social-logo"
+                  />
                 </a>
               </li>
               }
             </ul>
           </nav>
         </div>
-
       </div>
     </div>
 
     <div class="footer-bottom">
       <div class="footer-paysys">
-        <img src="/assets/images/logo/visa.png" alt="VISA" class="paysys-logo" />
-        <img src="/assets/images/logo/mastercard.png" alt="Mastercard" class="paysys-logo" />
+        <img
+          src="/assets/images/logo/visa.png"
+          alt="VISA"
+          class="paysys-logo"
+        />
+        <img
+          src="/assets/images/logo/mastercard.png"
+          alt="Mastercard"
+          class="paysys-logo"
+        />
         <img src="/assets/images/logo/mir.png" alt="МИР" class="paysys-logo" />
       </div>
       <div class="footer-copyright">
-        <span>© 2023-{{ currentDate | date: 'yyyy' }} Leoka Estetica. Сделано с заботой.</span>
+        <span
+          >© 2023-{{ currentDate | date : "yyyy" }} Leoka Estetica. Сделано с
+          заботой.</span
+        >
       </div>
     </div>
   </div>
