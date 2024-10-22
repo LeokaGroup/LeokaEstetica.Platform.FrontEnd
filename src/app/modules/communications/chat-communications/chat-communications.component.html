@@ -1,0 +1,157 @@
+<div class="d-flex">
+  <div class="col-lg-2">
+
+  </div>
+
+  <div class="col-lg-10">
+    <p-splitter
+      [style]="{ height: '600px' }"
+      styleClass="mb-5">
+      <ng-template pTemplate>
+        <p-splitter layout="vertical" [panelSizes]="[15, 85]">
+          <ng-template pTemplate>
+            <div class="abstract-scopes">
+              <p-tabMenu [model]="aAbstractScopes"
+                         (activeItemChange)="onSelectAbstractScopeAndGetScopeGroupObjects($event)">
+
+              </p-tabMenu>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate>
+            <p-splitter [panelSizes]="[27, 100]">
+              <ng-template pTemplate>
+                <div>
+                  <div>
+                    <div *ngIf="aGroupObjects.length > 0">
+                      <div class="d-flex mb-3">
+                        <div>
+                          <p-iconField iconPosition="left">
+                            <p-inputIcon styleClass="pi pi-search" />
+                            <input type="text" pInputText />
+                          </p-iconField>
+                        </div>
+
+                        <div>
+                          <p-menu #menu [model]="aGroupObjectActions" [popup]="true" />
+                          <p-button class="button-menu" (onClick)="menu.toggle($event)" icon="pi pi-ellipsis-v"/>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="group-objects" [ngClass]="{isHideGroupObjects: aGroupObjects.length == 0}">
+                      <p-slideMenu [model]="aGroupObjects"
+                                   backLabel="Назад">
+
+                      </p-slideMenu>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+
+              <ng-template pTemplate>
+                <div class="block-messages">
+                  <div *ngFor="let item of aMessages">
+                    <div class="d-flex justify-content-between message" [ngClass]="{blockMessage: item.isMyMessage}">
+                      <p>{{item.label}}</p>
+                      <span class="time-right">{{item.createdAt}}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="footer-messages">
+                  <input type="text"
+                         class=""
+                         *ngIf="aMessages.length > 0"
+                         [style]="{ width: '100%' }"
+                         pInputText
+                         autocomplete="new-password"
+                         [(ngModel)]="message"
+                         (keyup.enter)="onSendMessageAsync()"/>
+                </div>
+              </ng-template>
+
+              <ng-template pTemplate>
+                <div class="col flex align-items-center justify-content-center">
+
+                </div>
+              </ng-template>
+            </p-splitter>
+          </ng-template>
+        </p-splitter>
+      </ng-template>
+    </p-splitter>
+  </div>
+</div>
+
+<!-- Диалог создания диалога. -->
+<p-dialog header="Создание нового чата"
+          [(visible)]="isShowCreateChat"
+          [modal]="true"
+          [style]="{width: '50vw', height: '50vw'}"
+          [maximizable]="false"
+          [draggable]="false"
+          [resizable]="false">
+
+  <div class="mt-3">
+    <div class="control-input-text-worksheet">
+      <div>
+        <strong>Название чата</strong>
+      </div>
+      <div>
+        <input type="text"
+               class=""
+               [style]="{ width: '600px' }"
+               pInputText
+               autocomplete="new-password"
+               [(ngModel)]="dialogName"/>
+      </div>
+    </div>
+
+    <div class="control-input-text-worksheet mt-3">
+      <div>
+        <strong>Добавить участника чата</strong>
+      </div>
+      <div>
+        <input type="text"
+               class=""
+               [style]="{ width: '600px' }"
+               pInputText
+               autocomplete="new-password"
+               [(ngModel)]="selectedChatMember"/>
+      </div>
+
+      <p-button icon="pi pi-check"
+                label="Добавить"
+                styleClass="p-button-text p-button-success"
+                (click)="onAddChatMember()">
+      </p-button>
+    </div>
+
+    <div class="mt-3">
+      <div>
+        <strong>Участники чата</strong>
+      </div>
+
+      <div>
+        <p-listbox [options]="aChatMembers"
+                   [(ngModel)]="selectedChatMember">
+
+        </p-listbox>
+      </div>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-times"
+              label="Отменить"
+              styleClass="p-button-text p-button-danger">
+    </p-button>
+
+    <p-button icon="pi pi-check"
+              label="Создать чат"
+              styleClass="p-button-text p-button-success"
+              [disabled]="aChatMembers.length == 0"
+              (click)="onCreateDialogAsync()">
+    </p-button>
+  </ng-template>
+</p-dialog>

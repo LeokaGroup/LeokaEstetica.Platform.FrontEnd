@@ -1,0 +1,97 @@
+@use "/src/app/common/styles/font.scss";
+@use "/src/app/common/styles/color.scss";
+@use "/src/app/common/styles/spaces.scss";
+@use "/src/app/common/styles/styles.scss";
+@use "/src/app/common/styles/control.scss";
+
+.abstract-scopes {
+  display: flex;
+  align-items: center;
+
+  .abstract-scope {
+    margin: 0 10px;
+  }
+}
+
+.block-messages {
+  height: 600px;
+  //height: 100vh;
+  //overflow-y: scroll;
+  //min-windth: 70%;
+}
+
+.block-message {
+  border: 2px solid #dedede;
+  // background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.blockMessage {
+  background: #F2F4F9;
+  margin: 5px 0px;
+}
+
+.time-right {
+  float: right;
+  color: #aaa;
+}
+
+.time-left {
+  float: left;
+  color: #999;
+}
+
+.message {
+  width: 800px;
+}
+
+.footer-messages {
+  position:absolute;
+  bottom:0;
+  width: 800px;
+  margin-bottom: 10px;
+  //height:70px;   /* Высота блока "footer" */
+}
+
+.group-objects {
+  display: flex;
+}
+
+.button-context-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  color: #878787;
+}
+
+::ng-deep .button-menu button {
+  background: none;
+  color: black;
+  border: none;
+  padding: 0px;
+  width: 20px;
+}
+
+::ng-deep .p-splitter-gutter {
+  width: 0px;
+  //border: 1px solid black;
+  padding: 0 5px;
+}
+
+.isHideGroupObjects {
+  display: none;
+}
+
+::ng-deep .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
+  margin: 0 0 -3px 0;
+}
+
+// TODO: Скрытый баг. Чтоб не догадались, что мжно сдвигать области у каждой секции чата. Не понятно как запретить двигать их.
+::ng-deep .p-splitter-gutter {
+  cursor: none;
+}
