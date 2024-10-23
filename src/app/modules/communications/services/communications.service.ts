@@ -20,6 +20,7 @@ export class CommunicationsServiceService {
   public sendMessage$ = new BehaviorSubject<any>(null);
   public receiveMessage$ = new BehaviorSubject<any>(null);
   public aGroupObjectActions$ = new BehaviorSubject<any>(null);
+  public aDialogGroups$ = new BehaviorSubject<any>(null);
 
   constructor(private readonly _http: HttpClient) {
   }
@@ -109,6 +110,15 @@ export class CommunicationsServiceService {
   public async getGroupObjectMenuItemsAsync() {
     return await this._http.get(API_URL.apiUrlCommunications + "/communications/menu/group-objects-menu").pipe(
       tap((data: any) => this.aGroupObjectActions$.next(data))
+    );
+  };
+
+  /**
+   * Функция получает элементы меню группировок диалогов чата.
+   */
+  public async getDialogGroupMenuItemsAsync() {
+    return await this._http.get(API_URL.apiUrlCommunications + "/communications/menu/dialog-group-menu").pipe(
+      tap((data: any) => this.aDialogGroups$.next(data))
     );
   };
 }
