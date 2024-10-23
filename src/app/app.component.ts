@@ -597,6 +597,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.hubCommunicationsConnection = new HubConnectionBuilder()
             .configureLogging(LogLevel.Debug)
             .withUrl(API_URL.apiUrlCommunications + `/communications?userCode=${localStorage["u_c"]}&module=Communications`, HttpTransportType.LongPolling)
+            .withAutomaticReconnect()
             .build();
 
           this.listenHubCommunications();
