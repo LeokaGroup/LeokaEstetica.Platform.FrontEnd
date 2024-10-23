@@ -33,7 +33,8 @@
                         </div>
 
                         <div>
-                          <p-menu #menu [model]="aGroupObjectActions" [popup]="true" />
+                          <p-menu #menu [model]="aGroupObjectActions" [popup]="true"/>
+
                           <p-button class="button-menu" (onClick)="menu.toggle($event)" icon="pi pi-ellipsis-v"/>
                         </div>
                       </div>
@@ -144,7 +145,8 @@
   <ng-template pTemplate="footer">
     <p-button icon="pi pi-times"
               label="Отменить"
-              styleClass="p-button-text p-button-danger">
+              styleClass="p-button-text p-button-danger"
+              (click)="isShowCreateChat = !isShowCreateChat">
     </p-button>
 
     <p-button icon="pi pi-check"

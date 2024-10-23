@@ -19,28 +19,14 @@ export class ChatCommunicationsComponent implements OnInit {
   }
 
   public readonly createdDialog$ = this._communicationsService.createdDialog$;
+  public readonly aGroupObjectActions$ = this._communicationsService.aGroupObjectActions$;
 
   aAbstractScopes: any[] = [];
   aGroupObjects: any[] = [];
   aObjectDialogs: any[] = [];
   aMessages: any[] = [];
   message: string = "";
-
-  // TODO: Перенести на бэк и получать все это оттуда.
-  aGroupObjectActions: any[] = [
-    {
-      label: 'Новый групповой чат',
-      command: (event: any) => {
-        this.isShowCreateChat = true;
-      }
-    },
-    {
-      label: 'Новый чат',
-      command: (event: any) => {
-        this.isShowCreateChat = true;
-      }
-    }
-  ];
+  aGroupObjectActions: any[] = [];
   isShowCreateChat: boolean = false;
   dialogName: string = "";
   aChatMembers: any[] = [];
@@ -50,6 +36,7 @@ export class ChatCommunicationsComponent implements OnInit {
   public async ngOnInit() {
     await this.checkUrlParams();
     this.executeSubscriptionLogic();
+    await this.getGroupObjectMenuItemsAsync();
   };
 
   private async checkUrlParams() {
@@ -143,7 +130,29 @@ export class ChatCommunicationsComponent implements OnInit {
     (await this._communicationsService.onCreateDialogAsync(this.aChatMembers, this.dialogName))
       .subscribe(_ => {
         console.log("Созданный диалог: ", this.createdDialog$.value);
+
         this.isShowCreateChat = false;
+      });
+  };
+
+  /**
+   * Функция создает диалог и добавляет его участников.
+   */
+  private async getGroupObjectMenuItemsAsync() {
+    (await this._communicationsService.getGroupObjectMenuItemsAsync())
+      .subscribe(_ => {
+        console.log("Меню возможных действий групп объектов: ", this.aGroupObjectActions$.value);
+
+        this.aGroupObjectActions = this.aGroupObjectActions$.value.items;
+
+        // Навешиваем команды.
+        this.aGroupObjectActions.forEach((item: any) => {
+          item.command = (event: any) => {
+            if (event.item.id == "GroupChat") {
+              this.isShowCreateChat = true;
+            }
+          }
+        });
       });
   };
 }
