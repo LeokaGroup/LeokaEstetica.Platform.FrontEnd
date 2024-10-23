@@ -37,9 +37,10 @@ export class CommunicationsServiceService {
    * Функция отправляет в прокси-сервис выбранную абстрактную область чата.
    * @param abstractScopeId - Id выбранной абстрактной области.
    * @param abstractScopeType - Тип выбранной абстрактной области.
+   * @param dialogGroupType - Тип группировки диалогов.
    */
-  public sendAbstractScopeGroupObjects(abstractScopeId: number, abstractScopeType: number) {
-    this.communicationsAbstractGroups$.next({abstractScopeId, abstractScopeType, account: localStorage["u_e"]});
+  public sendAbstractScopeGroupObjects(abstractScopeId: number, abstractScopeType: number, dialogGroupType: string) {
+    this.communicationsAbstractGroups$.next({abstractScopeId, abstractScopeType, account: localStorage["u_e"], dialogGroupType});
   };
 
   /**
