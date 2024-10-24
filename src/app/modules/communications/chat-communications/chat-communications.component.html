@@ -5,14 +5,14 @@
 
   <div class="col-lg-10">
     <p-splitter
-      [style]="{ height: '600px' }"
+      [style]="{ height: '100vh' }"
       styleClass="mb-5">
       <ng-template pTemplate>
         <p-splitter layout="vertical" [panelSizes]="[15, 85]">
           <ng-template pTemplate>
             <div class="abstract-scopes">
               <p-tabMenu [model]="aAbstractScopes"
-                         (activeItemChange)="onSelectAbstractScopeAndGetScopeGroupObjectsAsync($event)">
+                         (activeItemChange)="onSelectAbstractScopeAndGetScopeGroupObjectsAsync($event, 'Project')">
 
               </p-tabMenu>
             </div>
@@ -21,7 +21,7 @@
           <ng-template pTemplate>
             <p-splitter [panelSizes]="[35, 100]">
               <ng-template pTemplate>
-                <div>
+                <div class="block-groups">
                   <div *ngIf="aGroupObjects.length > 0">
                     <div class="d-flex mb-3 group-items">
                       <div>
@@ -56,20 +56,19 @@
               </ng-template>
 
               <ng-template pTemplate>
-                <div class="block-messages">
+                <div [ngClass]="{overflowMessages: aMessages.length > 0}">
                   <div *ngFor="let item of aMessages">
-                    <div class="d-flex justify-content-between message" [ngClass]="{blockMessage: item.isMyMessage}">
+                    <div class="d-flex justify-content-between" [ngClass]="{blockMessage: item.isMyMessage}">
                       <p>{{item.label}}</p>
                       <span class="time-right">{{item.createdAt}}</span>
                     </div>
                   </div>
                 </div>
 
-                <div class="footer-messages">
+                <div class="control-send-message">
                   <input type="text"
                          class=""
                          *ngIf="aMessages.length > 0"
-                         [style]="{ width: '100%' }"
                          pInputText
                          autocomplete="new-password"
                          [(ngModel)]="message"

@@ -648,7 +648,8 @@ export class AppComponent implements OnInit, OnDestroy {
               "GetScopeGroupObjectsAsync",
               selectedAbstractScope.abstractScopeId,
               selectedAbstractScope.abstractScopeType,
-              localStorage["u_e"])
+              localStorage["u_e"],
+              selectedAbstractScope.dialogGroupType)
               .catch((err: any) => {
                 console.error(err);
               });

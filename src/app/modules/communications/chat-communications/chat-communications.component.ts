@@ -34,6 +34,9 @@ export class ChatCommunicationsComponent implements OnInit {
   aChatMembers: any[] = [];
   selectedChatMember: any;
   dialogId: number = 0;
+  abstractScopeId: number = 0;
+  abstractGroupId: number = 0;
+  dialogGroupType: string = "";
 
   public async ngOnInit() {
     await this.checkUrlParams();
@@ -62,14 +65,32 @@ export class ChatCommunicationsComponent implements OnInit {
     this._communicationsService.groupObjects$.subscribe((groupObjects: any) => {
       if (groupObjects !== null) {
         this.aGroupObjects = [];
-        this.aGroupObjects = groupObjects.objects;
+        this.dialogGroupType = groupObjects.dialogGroupType;
+
+        if (groupObjects.dialogGroupType == "Project") {
+          this.aGroupObjects = groupObjects.objects;
+        }
+
+        else if (groupObjects.dialogGroupType == "Company") {
+          this.aGroupObjects = groupObjects.objects[0].items;
+        }
+
+        else {
+          throw new Error(`Неизвестный тип DialogGroupType. DialogGroupType: ${groupObjects.dialogGroupType}.`);
+        }
 
         // Навешиваем команды всем элементам.
         this.aGroupObjects.forEach((item: any) => {
           item.command = (event: any) => {
             console.log(event.item);
 
-            if (event.item.items !== null && event.item.items.length > 0) {
+            this.abstractGroupId = event.item.abstractGroupId;
+            // this.dialogGroupType = event.item.dialogGroupType;
+
+            // Если получили диалоги проектов, то они имеют вложенность.
+            if (groupObjects.dialogGroupType == "Project"
+              && event.item.items !== null
+              && event.item.items.length > 0) {
               event.item.items.forEach((msg: any) => {
                 msg.command = (event: any) => {
                   console.log(event.item);
@@ -84,6 +105,19 @@ export class ChatCommunicationsComponent implements OnInit {
                     }
                   });
                 };
+              });
+            }
+
+            // Если получили диалоги компании, то вложенности у них нету.
+            else if (groupObjects.dialogGroupType == "Company") {
+              this.dialogId = event.item.dialogId;
+
+              this._communicationsService.sendDialogMessages(this.dialogId);
+
+              this._communicationsService.receiveDialogMessages$.subscribe((dialogMessages: any) => {
+                if (dialogMessages !== null) {
+                  this.aMessages = dialogMessages.dialogMessages;
+                }
               });
             }
           };
@@ -104,8 +138,11 @@ export class ChatCommunicationsComponent implements OnInit {
    * Функция выбирает абстрактную группу чата и получает ее объекты.
    * @param ac - Выбранная абстрактная область чата.
    */
-  public async onSelectAbstractScopeAndGetScopeGroupObjectsAsync(selectedItem: MenuItem) {
-    this._communicationsService.sendAbstractScopeGroupObjects(selectedItem['abstractScopeId'], selectedItem['abstractScopeType']);
+  public async onSelectAbstractScopeAndGetScopeGroupObjectsAsync(selectedItem: MenuItem, dialogGroupType: string) {
+    this.abstractScopeId = selectedItem["abstractScopeId"];
+    this.abstractGroupId = this.abstractGroupId;
+
+    this._communicationsService.sendAbstractScopeGroupObjects(this.abstractScopeId, selectedItem['abstractScopeType'], dialogGroupType);
 
     await this.getGroupObjectMenuItemsAsync();
     await this.getDialogGroupMenuItemsAsync();
@@ -131,7 +168,17 @@ export class ChatCommunicationsComponent implements OnInit {
    * Функция создает диалог и добавляет его участников.
    */
   public async onCreateDialogAsync() {
-    (await this._communicationsService.onCreateDialogAsync(this.aChatMembers, this.dialogName))
+    let abstractId: number = 0;
+
+    if (this.dialogGroupType == "Project") {
+      abstractId = this.abstractGroupId;
+    }
+
+    else if (this.dialogGroupType == "Company") {
+      abstractId = this.abstractScopeId;
+    }
+
+    (await this._communicationsService.onCreateDialogAsync(this.aChatMembers, this.dialogName, this.dialogGroupType, abstractId))
       .subscribe(_ => {
         console.log("Созданный диалог: ", this.createdDialog$.value);
 
@@ -171,13 +218,25 @@ export class ChatCommunicationsComponent implements OnInit {
         this.aDialogGroups = this.aDialogGroups$.value.items;
 
         // Навешиваем команды.
-        // this.aGroupObjectActions.forEach((item: any) => {
-        //   item.command = (event: any) => {
-        //     if (event.item.id == "GroupChat") {
-        //       this.isShowCreateChat = true;
-        //     }
-        //   }
-        // });
+        this.aDialogGroups.forEach((item: any) => {
+          item.command = async (event: any) => {
+            if (event.item.id == "CompanyChat") {
+              await this.onSelectAbstractScopeAndGetScopeGroupObjectsAsync(
+                {
+                  abstractScopeId: this.abstractScopeId,
+                  abstractScopeType: "company"
+                }, "Company");
+            }
+
+            else if (event.item.id == "ProjectChat") {
+              await this.onSelectAbstractScopeAndGetScopeGroupObjectsAsync(
+                {
+                  abstractScopeId: this.abstractScopeId,
+                  abstractScopeType: "company"
+                }, "Project");
+            }
+          }
+        });
       });
   };
 }
