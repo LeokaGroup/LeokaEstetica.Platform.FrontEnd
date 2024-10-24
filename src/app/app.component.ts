@@ -563,6 +563,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.hubMainConnection = new HubConnectionBuilder()
             .configureLogging(LogLevel.Debug)
             .withUrl(API_URL.apiUrl + `/notify?userCode=${localStorage["u_c"]}&module=Main`, HttpTransportType.LongPolling)
+            .withAutomaticReconnect()
             .build();
 
           this.listenAllHubsMainNotifications();
@@ -580,6 +581,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.hubProjectManagementConnection = new HubConnectionBuilder()
             .configureLogging(LogLevel.Debug)
             .withUrl(API_URL.apiUrlProjectManagment + `/project-management-notify?userCode=${localStorage["u_c"]}&module=ProjectManagement`, HttpTransportType.LongPolling)
+            .withAutomaticReconnect()
             .build();
 
           this.listenAllHubsProjectManagementNotifications();
@@ -597,6 +599,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.hubCommunicationsConnection = new HubConnectionBuilder()
             .configureLogging(LogLevel.Debug)
             .withUrl(API_URL.apiUrlCommunications + `/communications?userCode=${localStorage["u_c"]}&module=Communications`, HttpTransportType.LongPolling)
+            .withAutomaticReconnect()
             .build();
 
           this.listenHubCommunications();
