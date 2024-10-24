@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {BackOfficeService} from "../services/backoffice.service";
 import {ProjectManagmentService} from "../../project-managment/services/project-managment.service";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import SearchProjectResponseObject from "./search-project-response-object";
 
 @Component({
   selector: "my-space",
@@ -22,8 +24,14 @@ export class MySpaceComponent implements OnInit {
   public readonly workspaces$ = this._projectManagmentService.workspaces$;
   public readonly projectWorkspaceSettings$ = this._projectManagmentService.projectWorkspaceSettings$;
 
-  aWorkspaces: any[] = [];
-  isPaginator: boolean = false;
+  aWorkspaces: SearchProjectResponseObject = {otherCompanyWorkSpaces: [], userCompanyWorkSpaces: []};
+  isUserCompanyPaginator: boolean = false;
+  isOtherCompanyPaginator: boolean = false;
+  searchProjectForm = new FormGroup({
+    isById: new FormControl(false, {nonNullable: true, validators: [Validators.required]}),
+    isByProjectName: new FormControl(true, {nonNullable: true, validators: [Validators.required]}),
+    searchText: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
+  })
 
   items = [
     {
@@ -44,18 +52,19 @@ export class MySpaceComponent implements OnInit {
   ];
 
   public async ngOnInit() {
-    await this.getWorkSpacesAsync();
+    this.getWorkSpacesAsync();
   };
 
   /**
    * Функция получает все раб.пространства, в которых есть текущий пользователь.
    */
-  private async getWorkSpacesAsync() {
-    (await this._projectManagmentService.getWorkSpacesAsync())
+  private getWorkSpacesAsync() {
+    this._projectManagmentService.getWorkSpacesAsync()
       .subscribe(_ => {
         console.log("Список раб.пространств проектов: ", this.workspaces$.value);
         this.aWorkspaces = this.workspaces$.value;
-        this.isPaginator = this.workspaces$.value.length > 0;
+        this.isOtherCompanyPaginator = this.workspaces$.value.otherCompanyWorkSpaces.length > 10;
+        this.isUserCompanyPaginator = this.workspaces$.value.userCompanyWorkSpaces.length > 10;
       });
   };
 
@@ -91,4 +100,26 @@ export class MySpaceComponent implements OnInit {
         }
       });
   };
+
+  onChangeSearchTypeSelection(isChangeId: boolean) {
+    isChangeId
+      ? this.searchProjectForm.controls.isByProjectName.setValue(!this.searchProjectForm.controls.isById.value)
+      : this.searchProjectForm.controls.isById.setValue(!this.searchProjectForm.controls.isByProjectName.value)
+  }
+
+  onSubmitSearchForm() {
+    this._projectManagmentService.getWorkspaceByCondition(this.searchProjectForm.value).subscribe(_ => {
+      this.aWorkspaces = this.workspaces$.value;
+      this.isOtherCompanyPaginator = this.workspaces$.value.otherCompanyWorkSpaces.length > 10;
+      this.isUserCompanyPaginator = this.workspaces$.value.userCompanyWorkSpaces.length > 10;
+    })
+  }
+
+  search(ev: Event) {
+    if (ev.target instanceof HTMLInputElement) {
+      if (ev.target.value.trim() === "") {
+        this.getWorkSpacesAsync()
+      }
+    }
+  }
 }
