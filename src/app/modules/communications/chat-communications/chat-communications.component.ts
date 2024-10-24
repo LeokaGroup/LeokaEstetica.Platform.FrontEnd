@@ -113,7 +113,6 @@ export class ChatCommunicationsComponent implements OnInit {
 
                 this._communicationsService.receiveDialogMessages$.subscribe((dialogMessages: any) => {
                   if (dialogMessages !== null) {
-                    debugger;
                     this.aMessages = dialogMessages.dialogMessages;
                   }
                 });

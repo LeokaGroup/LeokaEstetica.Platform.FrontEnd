@@ -21,7 +21,7 @@
           <ng-template pTemplate>
             <p-splitter [panelSizes]="[35, 100]">
               <ng-template pTemplate>
-                <div>
+                <div class="block-groups">
                   <div *ngIf="aGroupObjects.length > 0">
                     <div class="d-flex mb-3 group-items">
                       <div>
@@ -56,7 +56,7 @@
               </ng-template>
 
               <ng-template pTemplate>
-                <div class="block-messages">
+                <div class="block-messages" [ngClass]="{overflowMessages: aMessages.length > 0}">
                   <div *ngFor="let item of aMessages">
                     <div class="d-flex justify-content-between message" [ngClass]="{blockMessage: item.isMyMessage}">
                       <p>{{item.label}}</p>
