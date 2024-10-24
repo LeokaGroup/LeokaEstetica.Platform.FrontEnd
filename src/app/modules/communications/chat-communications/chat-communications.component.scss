@@ -13,13 +13,6 @@
   }
 }
 
-//.block-messages {
-//  height: 600px;
-//  //height: 100vh;
-//  //overflow-y: scroll;
-//  //min-windth: 70%;
-//}
-
 .block-message {
   border: 2px solid #dedede;
   // background-color: #f1f1f1;
@@ -43,16 +36,11 @@
   color: #999;
 }
 
-.message {
-  width: 800px;
-}
-
-.footer-messages {
-  position:absolute;
-  bottom:0;
-  width: 800px;
+.control-send-message {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
   margin-bottom: 10px;
-  //height:70px;   /* Высота блока "footer" */
 }
 
 .group-objects {
@@ -79,7 +67,6 @@
 
 ::ng-deep .p-splitter-gutter {
   width: 0px;
-  //border: 1px solid black;
   padding: 0 5px;
 }
 
@@ -107,5 +94,9 @@
 
 .overflowMessages {
   overflow-y: scroll;
-  //height: 100vh;
+  height: 100vh;
+}
+
+::ng-deep .p-splitter-panel-nested {
+  display: block;
 }

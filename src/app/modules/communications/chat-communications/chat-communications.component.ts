@@ -104,19 +104,15 @@ export class ChatCommunicationsComponent implements OnInit {
 
             // Если получили диалоги компании, то вложенности у них нету.
             else if (groupObjects.dialogGroupType == "Company") {
-              item.command = (event: any) => {
-                console.log(event.item);
+              this.dialogId = event.item.dialogId;
 
-                this.dialogId = event.item.dialogId;
+              this._communicationsService.sendDialogMessages(this.dialogId);
 
-                this._communicationsService.sendDialogMessages(this.dialogId);
-
-                this._communicationsService.receiveDialogMessages$.subscribe((dialogMessages: any) => {
-                  if (dialogMessages !== null) {
-                    this.aMessages = dialogMessages.dialogMessages;
-                  }
-                });
-              };
+              this._communicationsService.receiveDialogMessages$.subscribe((dialogMessages: any) => {
+                if (dialogMessages !== null) {
+                  this.aMessages = dialogMessages.dialogMessages;
+                }
+              });
             }
           };
         });
