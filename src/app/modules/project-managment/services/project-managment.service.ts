@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, tap} from 'rxjs';
+import {BehaviorSubject, Observable, tap} from 'rxjs';
 import {API_URL} from 'src/app/core/core-urls/api-urls';
 import {ChangeTaskDetailsInput} from '../task/models/input/change-task-details-input';
 import {ChangeTaskNameInput} from '../task/models/input/change-task-name-input';
@@ -37,6 +37,7 @@ import {CreateWikiPageInput} from "../models/input/create-page-input";
 import {ExcludeTaskInput} from "../models/input/exclude-task-input";
 import {CompanyInput} from "../models/input/company-input";
 import {IncludeTaskSprintInput} from "../sprint-details/models/input/include-sprint-task-input";
+import {MenuItem} from "primeng/api";
 
 /**
  * Класс сервиса модуля управления проектами.
@@ -101,7 +102,7 @@ export class ProjectManagmentService {
     public epicStatuses$ = new BehaviorSubject<any>(null);
     public calculateUserCompanies = new BehaviorSubject<any>(null);
     public userCompanies$ = new BehaviorSubject<any>(null);
-    public quickActions$ = new BehaviorSubject<any>(null);
+    public quickActions$ = new BehaviorSubject<MenuItem[]>(new Array<MenuItem>());
 
     public isLeftPanel = false;
     public companyId: number = 0;
@@ -177,6 +178,7 @@ export class ProjectManagmentService {
    * @param paginatorStatusId - Id статуса, для которого нужно применить пагинатор.
    * Если он null, то пагинатор применится для задач всех статусов шаблона.
    * @param page - Номер страницы..
+   * @param type
    * @returns - Данные конфигурации.
    */
   public async getConfigurationWorkSpaceBySelectedTemplateAsync(projectId: number, paginatorStatusId: number | null, page: number, type: string) {
@@ -398,7 +400,7 @@ export class ProjectManagmentService {
 
     /**
     * Функция сохраняет описание задачи.
-    * @param changeTaskNameInput - Входная модель.
+    * @param changeTaskDetailsInput - Входная модель.
     */
      public async saveTaskDetailsAsync(changeTaskDetailsInput: ChangeTaskDetailsInput) {
         return await this._http.patch(this.apiUrl + `/project-management/task-details`, changeTaskDetailsInput).pipe(
@@ -429,7 +431,7 @@ export class ProjectManagmentService {
 
     /**
     * Функция обновляет приоритет задачи.
-    * @param projectTaskTagInput - Входная модель.
+    * @param taskPriorityInput - Входная модель.
     */
      public async updateTaskPriorityAsync(taskPriorityInput: TaskPriorityInput) {
         return await this._http.patch(this.apiUrl + `/project-management/task-priority`, taskPriorityInput).pipe(
@@ -584,10 +586,11 @@ export class ProjectManagmentService {
     };
 
      /**
-     * Функция добавляет файл к задаче.
-     * @param projectId - Id проекта.
-     * @param projectTaskId - Id задачи в рамках проекта.
-     */
+      * Функция добавляет файл к задаче.
+      * @param projectId - Id проекта.
+      * @param projectTaskId - Id задачи в рамках проекта.
+      * @param taskTypeId
+      */
       public async getTaskFilesAsync(projectId: number, projectTaskId: string, taskTypeId: number) {
         return await this._http.get(this.apiUrl + `/project-management/task-files?projectId=${projectId}&projectTaskId=${projectTaskId}&taskTypeId=${taskTypeId}`).pipe(
             tap(data => this.taskFiles$.next(data))
@@ -1262,9 +1265,15 @@ export class ProjectManagmentService {
   /**
    * Функция получает элементы меню для блока быстрых действий в раб.пространстве проекта.
    */
-  public async getProjectManagementLineMenuAsync() {
-    return await this._http.get(this.apiUrl + `/project-management/menu/project-management-line-menu`).pipe(
-      tap(data => this.quickActions$.next(data))
-    );
+  public getProjectManagementLineMenuAsync(): Observable<{ items: MenuItem[] }> {
+    return this._http
+      .get<{ items: MenuItem[] }>(
+        this.apiUrl + `/project-management/menu/project-management-line-menu`
+      )
+      .pipe(
+        tap((data) =>
+          this.quickActions$.next(data.items)
+        )
+      );
   };
 }

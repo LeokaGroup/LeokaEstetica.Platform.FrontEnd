@@ -7,11 +7,11 @@
 }
 
 .block-task {
-  margin: 0px 10px 0px 10px;
+  margin: 0 10px 0 10px;
 }
 
 .block-title {
-  margin: 0px 10px 0px 10px;
+  margin: 0 10px 0 10px;
 }
 
 .title {
@@ -23,6 +23,8 @@
 }
 
 .block-create-tag {
+  margin: 20px 300px;
+  width: max-content;
   .tag {
     box-shadow: 0 0 12px 0 rgba(0,0,0,.18);
     padding: 20px;
@@ -30,8 +32,21 @@
 }
 
 .block-create-status {
+  margin: 20px 300px;
+  width: max-content;
+
   .status {
     box-shadow: 0 0 12px 0 rgba(0,0,0,.18);
     padding: 20px;
+  }
+}
+
+:host {
+  display: flex;
+  min-height: 50vh;
+
+  .settings-menu {
+    position: absolute;
+    top: 250px
   }
 }

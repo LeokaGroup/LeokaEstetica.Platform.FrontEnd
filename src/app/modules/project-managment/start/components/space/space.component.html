@@ -13,10 +13,10 @@
     </div>
 
     <div class="d-flex project-management-line">
-      <p-menubar [model]="quickActions$.value?.items"
-                 [autoDisplay]="false"
-                 [class.isVisibleMenuHide]="!isVisibleDropDownMenu">
-
+      <p-menubar
+        [model]="quickActions$.value"
+        [autoDisplay]="false"
+        [class.isVisibleMenuHide]="!isVisibleDropDownMenu">
       </p-menubar>
     </div>
 

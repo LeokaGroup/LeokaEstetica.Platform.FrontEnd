@@ -20,13 +20,13 @@
 
   // FIXME: Сделать это динамически, по задаче #26072758 Добавление выдвижного меню в рабочем пространстве.
   // margin: 0px 10px 0px 400px;
-  margin: 0px 10px 0px 10px;
+  margin: 0 10px 0 10px;
 
   .task-ver-line {
     // min-height: 300px;
     min-width: 280px;
-    background: #F1F3F5;
-    margin: 0 10px 0 0px;
+    background: #f1f3f5;
+    margin: 0 10px 0 0;
     // max-height: 500px;
     //   min-height: 800px;
     // max-height: 810px;
@@ -34,13 +34,13 @@
 }
 
 .block-title {
-  margin: 0px 10px 0px 10px;
+  margin: 0 10px 0 10px;
 }
 
 .status-name {
   font-weight: 700;
   margin: 0 5px;
-  color: #717D94;
+  color: #717d94;
 }
 
 .card {
@@ -48,7 +48,7 @@
   font-size: 15px;
   line-height: 16px;
   word-break: break-word;
-  color: #717D94;
+  color: #717d94;
   min-height: 90px;
   font-weight: 400;
   flex-wrap: nowrap;
@@ -59,7 +59,7 @@
 
   &:hover {
     //background: #ffffff1a;
-    background: #DEEBFF;
+    background: #deebff;
     // box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   }
 }
@@ -78,7 +78,7 @@
 }
 
 .scrum-task-line {
-  padding: 7px 0px;
+  padding: 7px 0;
 }
 
 .laconic-text {
@@ -91,33 +91,30 @@
   cursor: pointer;
 
   &:hover {
-    box-shadow:
-      -5px -7px 2px -5px #6c757d,
-      -5px 7px 2px -5px #6c757d,
-      5px -7px 2px -5px #6c757d,
-      5px 7px 2px -5px #6c757d;
+    box-shadow: -5px -7px 2px -5px #6c757d, -5px 7px 2px -5px #6c757d,
+      5px -7px 2px -5px #6c757d, 5px 7px 2px -5px #6c757d;
     position: relative;
   }
 }
 
 .low {
-  background: #F7F7F7;
+  background: #f7f7f7;
 }
 
 .medium {
-  background: #C6E2FF;
+  background: #c6e2ff;
 }
 
 .high {
-  background: #FFE1D7;
+  background: #ffe1d7;
 }
 
 .urgent {
-  background: #FFD6C8;
+  background: #ffd6c8;
 }
 
 .blocker {
-  background: #FF9696;
+  background: #ff9696;
 }
 
 .line-see-more {
@@ -156,22 +153,21 @@
 }
 
 :host ::ng-deep .p-menuitem-link {
-  font-size: 15px;
   font-weight: 700;
 }
 
 :host ::ng-deep .p-menu .p-menuitem-link .p-menuitem-text {
-  color: #717D94;
+  color: #717d94;
 }
 
 :host ::ng-deep .p-menu .p-menuitem-link {
   &:focus {
-    box-shadow: none;
+    //box-shadow: none;
   }
 }
 
 .panel-text {
-  color: #717D94;
+  color: #717d94;
   font-size: 15px;
   font-weight: 700;
 }
@@ -198,4 +194,14 @@
 // Для видимости в быстрых действиях элемента фильтров (чтобы не выпадал expand раньше времени).
 .isVisibleMenuHide ::ng-deep .p-submenu-list {
   visibility: hidden;
+}
+
+::ng-deep .active {
+  background-color: #eeeeee;
+  cursor: none;
+}
+
+::ng-deep #ScrumView span,
+::ng-deep #KanbanView span {
+  margin-right: 0;
 }
