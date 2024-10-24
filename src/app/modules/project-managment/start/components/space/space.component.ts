@@ -1,14 +1,14 @@
-import {Component, OnInit, Sanitizer} from "@angular/core";
+import { Component, OnInit, Sanitizer } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { firstValueFrom, tap } from "rxjs";
 import { RedirectService } from "src/app/common/services/redirect.service";
 import { ProjectManagmentService } from "../../../services/project-managment.service";
-import {DomSanitizer} from "@angular/platform-browser";
-import {ChangeTaskStatusInput} from "../../../task/models/input/change-task-status-input";
+import { DomSanitizer } from "@angular/platform-browser";
+import { ChangeTaskStatusInput } from "../../../task/models/input/change-task-status-input";
 import { MenuItem } from "primeng/api";
 import { Menu } from "primeng/menu";
-import {FixationStrategyInput} from "../../../task/models/input/fixation-strategy-input";
-import {AccessService} from "../../../../access/access.service";
+import { FixationStrategyInput } from "../../../task/models/input/fixation-strategy-input";
+import { AccessService } from "../../../../access/access.service";
 
 @Component({
     selector: "",
@@ -62,11 +62,13 @@ export class SpaceComponent implements OnInit {
     await this.getProjectTagsAsync();
     await this.getConfigurationWorkSpaceBySelectedTemplateAsync();
     await this.getSelectedWorkSpaceAsync();
-    await this.getProjectManagementLineMenuAsync();
+    this.workSpaceConfig$.subscribe(() => {
+      this.getProjectManagementLineMenuAsync();
+    })
   };
 
   private async getProjectTagsAsync() {
-    firstValueFrom((await this._projectManagmentService.getProjectTagsAsync(this.selectedProjectId))
+    await firstValueFrom((await (this._projectManagmentService.getProjectTagsAsync(this.selectedProjectId)))
       .pipe(
         tap((v) => this.tagNames = <any[]>v)
       ));
@@ -120,7 +122,6 @@ export class SpaceComponent implements OnInit {
 
                 console.log("Конфигурация рабочего пространства: ", this.workSpaceConfig$.value);
                 this.mode = this.workSpaceConfig$.value.strategy;
-
               this.workSpaceConfig$.value?.projectManagmentTaskStatuses?.forEach((p1: any) => {
                 p1.projectManagmentTasks?.forEach((p2: any) => {
                   if (p2.executor?.avatar != null) {
@@ -198,7 +199,7 @@ export class SpaceComponent implements OnInit {
                 taskId: projectTaskId,
                 companyId
             }
-        });
+        }).catch();
     };
 
     public onSelectPanelMenu() {
@@ -289,16 +290,20 @@ export class SpaceComponent implements OnInit {
    * Функция получает элементы меню для блока быстрых действий в раб.пространстве проекта.
    */
   private async getProjectManagementLineMenuAsync() {
-    (await this._projectManagmentService.getProjectManagementLineMenuAsync())
+    (this._projectManagmentService.getProjectManagementLineMenuAsync())
       .subscribe(_ => {
         console.log("Меню быстрых действий: ", this.quickActions$.value);
 
         let projectId = this.selectedProjectId;
 
-        this.quickActions$.value.items.forEach(async (item: any) => {
+        this.quickActions$.value.forEach(async (item: MenuItem) => {
           switch (item.id) {
             case "ScrumView":
-              item.command = async (event: any) => {
+              if (this.mode === 'sm') {
+                item.styleClass = 'active';
+                item.disabled = true
+              }
+              item.command = async () => {
                 let fixationScrumInput: FixationStrategyInput = new FixationStrategyInput();
                 fixationScrumInput.projectId = projectId;
                 fixationScrumInput.strategySysName = "Scrum";
@@ -313,7 +318,11 @@ export class SpaceComponent implements OnInit {
               break;
 
             case "KanbanView":
-              item.command = async (event: any) => {
+              if (this.mode === 'kn') {
+                item.styleClass = 'active';
+                item.disabled = true
+              }
+              item.command = async () => {
                 let fixationKanbanInput: FixationStrategyInput = new FixationStrategyInput();
                 fixationKanbanInput.projectId = projectId;
                 fixationKanbanInput.strategySysName = "Kanban";
@@ -328,11 +337,11 @@ export class SpaceComponent implements OnInit {
               break;
 
             case "CreateAction":
-              item.command = async (event: any) => {
+              item.command = async () => {
                 this.isVisibleDropDownMenu = true;
               };
 
-              item.items.forEach((item1: any) => {
+              item.items?.forEach((item1: MenuItem) => {
                 item1.command = async (event: any) => {
                   switch (event.item.id) {
                     case "CreateTask":
@@ -348,11 +357,11 @@ export class SpaceComponent implements OnInit {
               break;
 
             case "Settings":
-              item.command = async (event: any) => {
+              item.command = async () => {
                 this.isVisibleDropDownMenu = true;
               };
 
-              item.items.forEach((item1: any) => {
+              item.items?.forEach((item1: MenuItem) => {
                 item1.command = async (event: any) => {
                   switch (event.item.id) {
                     case "ProjectSettings":
@@ -380,7 +389,7 @@ export class SpaceComponent implements OnInit {
               break;
 
             case "Filters":
-              item.command = async (event: any) => {
+              item.command = async () => {
                 (await this._accessService.checkAccessProjectManagementModuleOrComponentAsync(
                   this.selectedProjectId, "ProjectManagement", "ProjectTaskFilter"))
                   .subscribe(_ => {
@@ -399,7 +408,6 @@ export class SpaceComponent implements OnInit {
                     }
                   });
               }
-
               break;
           }
         });
