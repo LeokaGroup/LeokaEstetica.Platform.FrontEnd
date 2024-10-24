@@ -19,28 +19,16 @@ export class ChatCommunicationsComponent implements OnInit {
   }
 
   public readonly createdDialog$ = this._communicationsService.createdDialog$;
+  public readonly aGroupObjectActions$ = this._communicationsService.aGroupObjectActions$;
+  public readonly aDialogGroups$ = this._communicationsService.aDialogGroups$;
 
   aAbstractScopes: any[] = [];
   aGroupObjects: any[] = [];
   aObjectDialogs: any[] = [];
   aMessages: any[] = [];
   message: string = "";
-
-  // TODO: Перенести на бэк и получать все это оттуда.
-  aGroupObjectActions: any[] = [
-    {
-      label: 'Новый групповой чат',
-      command: (event: any) => {
-        this.isShowCreateChat = true;
-      }
-    },
-    {
-      label: 'Новый чат',
-      command: (event: any) => {
-        this.isShowCreateChat = true;
-      }
-    }
-  ];
+  aGroupObjectActions: any[] = [];
+  aDialogGroups: any[] = [];
   isShowCreateChat: boolean = false;
   dialogName: string = "";
   aChatMembers: any[] = [];
@@ -116,8 +104,11 @@ export class ChatCommunicationsComponent implements OnInit {
    * Функция выбирает абстрактную группу чата и получает ее объекты.
    * @param ac - Выбранная абстрактная область чата.
    */
-  public onSelectAbstractScopeAndGetScopeGroupObjects(selectedItem: MenuItem) {
+  public async onSelectAbstractScopeAndGetScopeGroupObjectsAsync(selectedItem: MenuItem) {
     this._communicationsService.sendAbstractScopeGroupObjects(selectedItem['abstractScopeId'], selectedItem['abstractScopeType']);
+
+    await this.getGroupObjectMenuItemsAsync();
+    await this.getDialogGroupMenuItemsAsync();
   };
 
   /**
@@ -143,7 +134,50 @@ export class ChatCommunicationsComponent implements OnInit {
     (await this._communicationsService.onCreateDialogAsync(this.aChatMembers, this.dialogName))
       .subscribe(_ => {
         console.log("Созданный диалог: ", this.createdDialog$.value);
+
         this.isShowCreateChat = false;
+      });
+  };
+
+  /**
+   * Функция получает элементы меню для групп объектов чата.
+   */
+  private async getGroupObjectMenuItemsAsync() {
+    (await this._communicationsService.getGroupObjectMenuItemsAsync())
+      .subscribe(_ => {
+        console.log("Меню возможных действий групп объектов: ", this.aGroupObjectActions$.value);
+
+        this.aGroupObjectActions = this.aGroupObjectActions$.value.items;
+
+        // Навешиваем команды.
+        this.aGroupObjectActions.forEach((item: any) => {
+          item.command = (event: any) => {
+            if (event.item.id == "GroupChat") {
+              this.isShowCreateChat = true;
+            }
+          }
+        });
+      });
+  };
+
+  /**
+   * Функция получает элементы меню группировок диалогов чата.
+   */
+  private async getDialogGroupMenuItemsAsync() {
+    (await this._communicationsService.getDialogGroupMenuItemsAsync())
+      .subscribe(_ => {
+        console.log("Меню группировок диалогов: ", this.aDialogGroups$.value);
+
+        this.aDialogGroups = this.aDialogGroups$.value.items;
+
+        // Навешиваем команды.
+        // this.aGroupObjectActions.forEach((item: any) => {
+        //   item.command = (event: any) => {
+        //     if (event.item.id == "GroupChat") {
+        //       this.isShowCreateChat = true;
+        //     }
+        //   }
+        // });
       });
   };
 }

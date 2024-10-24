@@ -12,39 +12,45 @@
           <ng-template pTemplate>
             <div class="abstract-scopes">
               <p-tabMenu [model]="aAbstractScopes"
-                         (activeItemChange)="onSelectAbstractScopeAndGetScopeGroupObjects($event)">
+                         (activeItemChange)="onSelectAbstractScopeAndGetScopeGroupObjectsAsync($event)">
 
               </p-tabMenu>
             </div>
           </ng-template>
 
           <ng-template pTemplate>
-            <p-splitter [panelSizes]="[27, 100]">
+            <p-splitter [panelSizes]="[35, 100]">
               <ng-template pTemplate>
                 <div>
-                  <div>
-                    <div *ngIf="aGroupObjects.length > 0">
-                      <div class="d-flex mb-3">
-                        <div>
-                          <p-iconField iconPosition="left">
-                            <p-inputIcon styleClass="pi pi-search" />
-                            <input type="text" pInputText />
-                          </p-iconField>
-                        </div>
+                  <div *ngIf="aGroupObjects.length > 0">
+                    <div class="d-flex mb-3 group-items">
+                      <div>
+                        <p-iconField iconPosition="left">
+                          <p-inputIcon styleClass="pi pi-search" />
+                          <input type="text" pInputText />
+                        </p-iconField>
+                      </div>
 
-                        <div>
-                          <p-menu #menu [model]="aGroupObjectActions" [popup]="true" />
-                          <p-button class="button-menu" (onClick)="menu.toggle($event)" icon="pi pi-ellipsis-v"/>
-                        </div>
+                      <div class="group-item">
+                        <p-menu #menuDialogGroups [model]="aDialogGroups" [popup]="true"/>
+
+                        <p-button class="button-menu" (onClick)="menuDialogGroups.toggle($event)" icon="pi pi-align-justify"/>
+                      </div>
+
+                      <div class="group-item">
+                        <p-menu #menuGroupObjectActions [model]="aGroupObjectActions" [popup]="true"/>
+
+                        <p-button class="button-menu" (onClick)="menuGroupObjectActions.toggle($event)" icon="pi pi-ellipsis-v"/>
                       </div>
                     </div>
+                  </div>
 
-                    <div class="group-objects" [ngClass]="{isHideGroupObjects: aGroupObjects.length == 0}">
-                      <p-slideMenu [model]="aGroupObjects"
-                                   backLabel="Назад">
+                  <div class="group-objects" [ngClass]="{isHideGroupObjects: aGroupObjects.length == 0}">
+                    <p-slideMenu [model]="aGroupObjects"
+                                 backLabel="Назад"
+                                 class="group-object-menu">
 
-                      </p-slideMenu>
-                    </div>
+                    </p-slideMenu>
                   </div>
                 </div>
               </ng-template>
@@ -144,7 +150,8 @@
   <ng-template pTemplate="footer">
     <p-button icon="pi pi-times"
               label="Отменить"
-              styleClass="p-button-text p-button-danger">
+              styleClass="p-button-text p-button-danger"
+              (click)="isShowCreateChat = !isShowCreateChat">
     </p-button>
 
     <p-button icon="pi pi-check"

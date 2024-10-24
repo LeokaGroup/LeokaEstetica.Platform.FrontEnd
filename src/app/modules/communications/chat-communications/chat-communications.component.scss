@@ -95,3 +95,16 @@
 ::ng-deep .p-splitter-gutter {
   cursor: none;
 }
+
+.group-items {
+  justify-content: center;
+  align-items: center;
+
+  .group-item {
+    margin: 0 5px;
+  }
+}
+
+//::ng-deep .group-object-menu .p-slidemenu {
+//  width: 258px;
+//}
