@@ -79,11 +79,15 @@ export class CommunicationsServiceService {
    * Функция создает диалог и добавляет в него участников.
    @param memberMails - Почты участников.
    @param dialogName - Название диалога.
+   @param dialogGroupType - Тип группировки диалога.
+   @param abstractId - Id абстрактной записи.
    */
-  public async onCreateDialogAsync(memberMails: string[], dialogName: string) {
+  public async onCreateDialogAsync(memberMails: string[], dialogName: string, dialogGroupType: string, abstractId: number) {
     return await this._http.post(API_URL.apiUrlCommunications + "/communications/dialogs/dialog", {
       memberEmails: memberMails,
-      dialogName: dialogName
+      dialogName: dialogName,
+      dialogGroupType,
+      abstractId
     }).pipe(
       tap((data: any) => this.createdDialog$.next(data))
     );
